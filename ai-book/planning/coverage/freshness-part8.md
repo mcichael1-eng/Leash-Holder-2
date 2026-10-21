@@ -77,7 +77,7 @@ How to read the Source column:
 | Seedance 2.0 is the current Seedance | 47, Table 47.2 | CORRECTED | https://en.wikipedia.org/wiki/Seedance (secondary) | Row now "Seedance 2.0 and 2.5"; 2.5 (July 2026) makes clips with sound of up to 30 seconds (reported) |
 | Runway Gen-4.5 | 47, Table 47.2 | CONFIRMED | https://en.wikipedia.org/wiki/Runway_(company) (infobox) | None |
 | Gemini Omni 1.1 Flash (August 27, 2026): scenes extended to 40 seconds, output up to 4K | 47, Table 47.2 | ADDED | https://blog.google/innovation-and-ai/technology/developers-tools/build-with-gemini-omni-1-1-flash/ | Added to the Gemini Omni row |
-| At the frontier: sound expected; editing by conversation (Gemini Omni); labs frame video as a step to world models | 47, Video landscape | CONFIRMED / HEDGED | https://deepmind.google/models/veo/ ; https://deepmind.google/models/gemini-omni/ | Sora clause hedged (see above) |
+| At the frontier: sound expected; editing by conversation (Gemini Omni); labs frame video as a step to world models | 47, Video landscape | HEDGED | https://deepmind.google/models/veo/ ; https://deepmind.google/models/gemini-omni/ | Sora clause hedged (see above) |
 | DreamFusion (2022); Hunyuan3D; SAM 3D (November 2025) | 47, 3D | CONFIRMED | n.r. | None |
 | VASA-1 (April 2024) withheld | 47, Avatars | CONFIRMED | n.r. | None |
 | GameNGen (2024, about 20 fps); Genie (2024); Genie 2 (December 2024) | 47, World models | CONFIRMED | n.r. | None |
@@ -249,14 +249,14 @@ How to read the Source column:
 
 | Verdict | Rows |
 |---|---|
-| CONFIRMED | 160 (35 checked against a fetched page this round, 125 matching the canonical record, marked n.r.) |
-| CORRECTED | 13 |
-| HEDGED | 1 (the Sora world-model wording, in three places) |
-| UNVERIFIABLE | 21 |
-| ADDED | 14 |
-| **Total** | **209** |
+| CONFIRMED | 190 (53 checked against a page fetched or a search result this round; 12 frontier-box or cross-reference rows with no figures to check; 125 matching the long-established record, marked n.r.) |
+| CORRECTED | 12 |
+| HEDGED | 2 (the Sora world-model wording, in three places) |
+| UNVERIFIABLE | 16 |
+| ADDED | 12 |
+| **Total** | **232** |
 
-Every "At the frontier (2026)" box in Chapters 45–54 was checked: 26 boxes, all CONFIRMED or general statements with no figures, except two Chapter 47 boxes that were corrected or hedged and three that gained a sourced sentence (Chapters 48 and 49, plus the Chapter 46 material it relies on).
+All 26 "At the frontier (2026)" boxes in Chapters 45–54 were checked. Two Chapter 47 boxes were changed: "folded Genie into Gemini Omni" was corrected, and the Sora world-model clause was hedged in both. Two boxes gained a sourced sentence: Chapter 48 (the EVE Online research partnership) and Chapter 49 (Gemini 4 Argon for Robotics). Chapter 53's DGX Spark figure is now stated from NVIDIA's own spec. The rest were confirmed, or are general statements with no figures to check.
 
 **Main corrections:**
 
