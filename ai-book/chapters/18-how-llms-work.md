@@ -320,6 +320,23 @@ Here is how these settings are typically used:
 
 > **At the frontier (2026):** Many reasoning models limit or fix the sampling settings developers can change, because they were trained to think at a particular temperature and behave worse at others. On Claude Opus 5.5, thinking can no longer be turned off at all; developers steer an "effort" setting instead (see Chapter 21). Sampling dials matter most today for open-weight models you run yourself and for non-reasoning API models.
 
+### Beam search: looking a few steps ahead
+
+Every method above picks one token at a time and never looks back. That can go wrong, because the best first word can lead into a worse sentence overall. **Beam search** keeps several candidate replies alive at once and, at the end, returns the one whose whole sequence is most probable.
+
+Worked example with a beam width of 2. After "The cat sat on the", suppose the model gives " mat" 0.40 and " sofa" 0.35. Greedy decoding commits to " mat". Beam search keeps both. At the next step, the model is unsure what follows " mat": its top choice, a full stop, gets only 0.30, because "mat by the door", "mat and purred" and many others share the rest. After " sofa" it is confident: a full stop gets 0.80. Multiply along each path:
+
+- " mat" then ".": 0.40 × 0.30 = 0.12
+- " sofa" then ".": 0.35 × 0.80 = 0.28
+
+Beam search ends with " sofa." at 0.28, more than twice as probable as the greedy path's 0.12. Real systems add log-probabilities instead of multiplying, and they adjust for length, because a longer sequence always has a smaller product and would otherwise lose unfairly.
+
+> **Definition — Beam search:** A decoding method that keeps the k most probable partial outputs at every step (k is the beam width) and finally returns the most probable complete sequence, instead of committing to one token at a time.
+
+> **Definition — Beam width:** The number of candidate sequences beam search keeps alive at each step. A width of 1 is the same as greedy decoding.
+
+Beam search was the standard way to decode machine translation and speech recognition, where there is roughly one right output and the most probable one is usually good. Chatbots rarely use it. A 2019 study, the same one that introduced top-p sampling, showed that the single most probable continuation of open-ended text tends to be bland and to repeat itself, which is why sampling became the norm for conversation. Beam search also multiplies the computation per reply by roughly the beam width.
+
 ### Why "temperature 0" is still not perfectly repeatable
 
 If temperature 0 always picks the top token, the same question should always get the same answer. On a big provider's servers, it sometimes doesn't, for surprisingly physical reasons.
@@ -704,7 +721,7 @@ Finally, models produce plausible text, not looked-up facts. Rare facts, guess-r
 
 ## Key terms
 
-Large language model (LLM), Model (AI model), Chatbot app, API (Application Programming Interface), Inference, Next-token prediction, Autoregressive generation, Stop token (end-of-turn token), Base model, Token, Tokenizer, Vocabulary, Token ID, BPE (Byte-Pair Encoding), WordPiece, Unigram tokenizer (SentencePiece), Logit, Softmax, Temperature, Greedy decoding, Sampling, Top-k sampling, Top-p sampling (nucleus sampling), Min-p sampling, Floating-point number, Context window, Stateless, Max output tokens (output limit), Prompt caching, Lost in the middle, Chat template, Special token, Role, System prompt, Instruction hierarchy, Prompt injection, Jailbreak, Parameter (weight), BF16 (bfloat16), Quantization, FLOP (floating-point operation), Dense model, Mixture of experts (MoE), Total parameters, Active parameters, Embedding, Transformer, Attention, MLP (feed-forward) layer, Residual stream, Unembedding, KV cache, Parametric knowledge, In-context learning, Knowledge cutoff, Hallucination, Calibration, Abstention, Grounding, RAG (Retrieval-Augmented Generation), Sycophancy, Over-refusal.
+Large language model (LLM), Model (AI model), Chatbot app, API (Application Programming Interface), Inference, Next-token prediction, Autoregressive generation, Stop token (end-of-turn token), Base model, Token, Tokenizer, Vocabulary, Token ID, BPE (Byte-Pair Encoding), WordPiece, Unigram tokenizer (SentencePiece), Logit, Softmax, Temperature, Greedy decoding, Sampling, Top-k sampling, Top-p sampling (nucleus sampling), Min-p sampling, Beam search, Beam width, Floating-point number, Context window, Stateless, Max output tokens (output limit), Prompt caching, Lost in the middle, Chat template, Special token, Role, System prompt, Instruction hierarchy, Prompt injection, Jailbreak, Parameter (weight), BF16 (bfloat16), Quantization, FLOP (floating-point operation), Dense model, Mixture of experts (MoE), Total parameters, Active parameters, Embedding, Transformer, Attention, MLP (feed-forward) layer, Residual stream, Unembedding, KV cache, Parametric knowledge, In-context learning, Knowledge cutoff, Hallucination, Calibration, Abstention, Grounding, RAG (Retrieval-Augmented Generation), Sycophancy, Over-refusal.
 
 ## Exercises
 

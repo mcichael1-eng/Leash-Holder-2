@@ -453,6 +453,10 @@ the prompt using sections for role, context, task, format and constraints.
 
 Then test the prompt it writes on three real sets of notes, fix what goes wrong, and save the final version. The "ask me questions first" move is useful on its own, too: adding "If anything important is missing, ask me up to three questions before you start" to any prompt surfaces the gaps you did not notice.
 
+Developers take this one step further and automate it. Given a set of test inputs with a way to score the outputs (an eval, Chapter 31), a prompt optimizer has a model propose many variations of a prompt, and of the examples inside it, runs each one on the test set, keeps the best scorers and repeats. DSPy, an open-source framework from Stanford researchers, is the best-known tool of this kind. It can find wording no person would have tried, but it needs a good test set, it can quietly run up hundreds of model calls, and the winning prompt can overfit the test inputs the same way a model can (Chapter 9). Read whatever it produces before you ship it.
+
+> **Definition — Automatic prompt optimization:** Using software to generate many variations of a prompt, score each on a test set, and keep the best, so the search for good wording is done by trial at scale rather than by hand.
+
 ### Technique 12: Iterate like an editor
 
 The first answer is a draft. The fastest way to a great result is specific feedback, the way you would mark up a colleague's work.
@@ -887,7 +891,7 @@ For long work, the question becomes what is on the desk at each step. Long chats
 
 ## Key terms
 
-Large language model (LLM), Model, Chat app, Token, Tokenizer, Context window, Stateless, Inference, Hallucination, Knowledge cutoff, Grounding, Prompt, Prompt engineering, Zero-shot, one-shot and few-shot prompting, Delimiter, XML tags, Markdown, Prompt injection, System prompt, Role prompting, Chain-of-thought (CoT), Reasoning model, Effort, Adaptive thinking, Prompt chaining, Lost in the middle, Prefill, Meta-prompting, Sycophancy, Leading question, Silent truncation, Custom instructions, Memory (in chat apps), Incognito or temporary chat, Project, Custom GPT or Gem, Agent Skill, Artifact or Canvas, Multimodal, Code execution, Citation, Deep research, Voice mode, Connector, MCP (Model Context Protocol), OAuth, Agent, Agent mode, Data retention, Training opt-out, PII (personally identifiable information), Context engineering, Context rot, Compaction, Structured note-taking, Just-in-time retrieval, Sub-agent, Progressive disclosure
+Large language model (LLM), Model, Chat app, Token, Tokenizer, Context window, Stateless, Inference, Hallucination, Knowledge cutoff, Grounding, Prompt, Prompt engineering, Zero-shot, one-shot and few-shot prompting, Delimiter, XML tags, Markdown, Prompt injection, System prompt, Role prompting, Chain-of-thought (CoT), Reasoning model, Effort, Adaptive thinking, Prompt chaining, Lost in the middle, Prefill, Meta-prompting, Automatic prompt optimization, Sycophancy, Leading question, Silent truncation, Custom instructions, Memory (in chat apps), Incognito or temporary chat, Project, Custom GPT or Gem, Agent Skill, Artifact or Canvas, Multimodal, Code execution, Citation, Deep research, Voice mode, Connector, MCP (Model Context Protocol), OAuth, Agent, Agent mode, Data retention, Training opt-out, PII (personally identifiable information), Context engineering, Context rot, Compaction, Structured note-taking, Just-in-time retrieval, Sub-agent, Progressive disclosure
 
 ## Exercises
 

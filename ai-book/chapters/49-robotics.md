@@ -111,6 +111,28 @@ If each of those 53 joints receives one command 200 times a second, the robot's 
 
 > **Watch out:** "Robot" in the news can mean anything from a vacuum cleaner to a humanoid. Most of the world's industrial robots contain no machine learning at all. They replay precisely programmed motions inside safety cages, which is why they are so reliable. "AI robot" usually means a robot whose behavior is learned from data rather than programmed step by step.
 
+### From "go there" to motor commands: the classic toolkit
+
+Before learned robot models, roboticists split the middle and fast layers of Figure 49.1 into three classic problems, and most robots still contain all three.
+
+**Geometry.** Knowing where the hand should go does not tell you the joint angles that put it there. Working out the hand's position from the joint angles is straightforward trigonometry. The reverse, finding joint angles that put the hand at a target, is harder and may have many answers or none: a 7-joint arm can reach most points in many different poses, the way you can touch your nose with your elbow held high or low.
+
+> **Definition — Forward and inverse kinematics:** Forward kinematics computes where a robot's hand ends up from its joint angles; inverse kinematics works backward from a desired hand position to joint angles that achieve it, which may have many solutions or none.
+
+**Collision-free paths.** A motion of a 7-joint arm is a path through a 7-dimensional space of joint angles, the configuration space, in which every obstacle in the room becomes an oddly shaped forbidden region. Grid search such as A* (Chapter 48) works for a car on a map but chokes here: even 100 settings per joint gives 100^7 = 10^14 grid cells. So robots use sampling-based planners. A rapidly-exploring random tree (RRT) grows a tree from the starting pose by repeatedly picking a random pose, finding the nearest pose already in the tree, and stepping a little toward the random one if that step hits nothing, until a branch reaches the goal. It finds a path quickly, though not the shortest, and the path is then smoothed.
+
+> **Definition — Configuration space:** The space of all possible settings of a robot's joints (or of a vehicle's position and heading). Planning a collision-free motion means finding a path through this space that avoids the regions where the robot would hit something.
+
+> **Definition — RRT (rapidly-exploring random tree):** A motion-planning method that grows a tree of collision-free poses outward from the start by repeatedly stepping toward randomly chosen poses until it reaches the goal. It works well in the many-dimensional spaces of robot arms.
+
+**Holding steady.** The fast layer must make each joint follow the plan despite friction, gravity and bumps. The classic tool, the PID controller, sets the motor's push from three terms of the error between where a joint should be and where it is: one Proportional to the error now, one for the Integral, the error accumulated over time (which removes a steady offset, such as an arm sagging under its own weight), and one for the Derivative, how fast the error is changing (which brakes before the joint overshoots). Worked example: the target is 90 degrees and the joint is at 80, so the error is 10. With a proportional gain of 0.5, the P term asks for 0.5 × 10 = 5 units of push. The joint is already closing the gap at 4 degrees per step, so with a derivative gain of 0.5 the D term subtracts 0.5 × 4 = 2, leaving 3: the controller eases off as the joint approaches the target. Running hundreds of times a second, versions of this simple formula keep most machines in the world steady, from drones and robot arms to cruise control.
+
+> **Definition — PID controller:** A feedback controller that sets its output from the current error (proportional), the error accumulated over time (integral) and the error's rate of change (derivative). It is the most widely used control method in engineering.
+
+Not every robot was built this way. In the 1980s Rodney Brooks at MIT argued that robots should skip the big world model and the slow planner, and instead stack simple reactive behaviors ("avoid obstacles" beneath "wander" beneath "explore"), each able to override the ones below. His subsumption architecture produced robust insect-like robots, and iRobot, the company he co-founded, carried the reactive style into the Roomba. Today's learned controllers, later in this chapter, are a third way: neither hand-planned nor hand-layered, but trained.
+
+> **Definition — Subsumption architecture:** Rodney Brooks's 1980s robot design in which simple behaviors are stacked in layers, each reacting directly to the sensors and able to override the layers below, with no central world model or planner.
+
 ## A field guide to robot bodies
 
 Robots come in many shapes, and how much learned AI they contain varies enormously. The table below is your field guide.
@@ -612,7 +634,7 @@ Humanoid companies shipped about 13,000 robots in 2025, mostly from China, but r
 
 ## Key terms
 
-Robot, Physical AI, Moravec's paradox, Sensor, Actuator, Sense–plan–act loop, Proprioception, IMU (inertial measurement unit), Hertz (Hz), Controller, Degrees of freedom (DoF), End effector (gripper), Industrial robot, Collaborative robot (cobot), Autonomous mobile robot (AMR), Quadruped, Humanoid robot, Reinforcement learning (RL), Policy, Reward function, Physics simulator, Sim-to-real gap, Domain randomization, Locomotion, Manipulation, Dexterous manipulation, Tactile sensing, Deformable object, Demonstration (episode), Imitation learning (behavior cloning), Teleoperation, UMI (Universal Manipulation Interface), Cross-embodiment, Egocentric video, Synthetic data, Fleet learning, Compounding error, Vision-language model (VLM), Vision-language-action model (VLA), Robot foundation model, Action tokens, Flow matching, Action expert, Action chunking, Embodied reasoning, Onboard compute, World model, JEPA (joint-embedding predictive architecture), Robots-as-a-service (RaaS), Shared autonomy, Remote assistance, Intervention rate, Emergency stop (e-stop), Dynamic stability
+Robot, Physical AI, Moravec's paradox, Sensor, Actuator, Sense–plan–act loop, Proprioception, IMU (inertial measurement unit), Hertz (Hz), Controller, Degrees of freedom (DoF), End effector (gripper), Forward and inverse kinematics, Configuration space, RRT (rapidly-exploring random tree), PID controller, Subsumption architecture, Industrial robot, Collaborative robot (cobot), Autonomous mobile robot (AMR), Quadruped, Humanoid robot, Reinforcement learning (RL), Policy, Reward function, Physics simulator, Sim-to-real gap, Domain randomization, Locomotion, Manipulation, Dexterous manipulation, Tactile sensing, Deformable object, Demonstration (episode), Imitation learning (behavior cloning), Teleoperation, UMI (Universal Manipulation Interface), Cross-embodiment, Egocentric video, Synthetic data, Fleet learning, Compounding error, Vision-language model (VLM), Vision-language-action model (VLA), Robot foundation model, Action tokens, Flow matching, Action expert, Action chunking, Embodied reasoning, Onboard compute, World model, JEPA (joint-embedding predictive architecture), Robots-as-a-service (RaaS), Shared autonomy, Remote assistance, Intervention rate, Emergency stop (e-stop), Dynamic stability
 
 ## Exercises
 

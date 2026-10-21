@@ -600,6 +600,26 @@ What has actually happened: Anthropic launched a model welfare research program 
 
 > **Analogy:** We extend some protections to animals even though we are unsure what many of them experience, because the cost of caution is low and the cost of being wrong could be high. Skeptics reply that an AI is less like an animal and more like a brilliant actor reading a script: the performance of feeling is convincing precisely because it was learned from people who feel.
 
+### The classic arguments about machine minds
+
+Arguments about whether machines can have minds are older than any computer that could hold a conversation, and three classics still frame the debate.
+
+**Can a machine understand? The Chinese room.** In 1980 the philosopher John Searle imagined himself locked in a room with a rulebook for manipulating Chinese characters. Notes in Chinese come in under the door; by following the rules, he sends back replies so good that people outside believe a Chinese speaker is inside. Yet Searle understands no Chinese. A computer running a program, he argued, is in the same position: it manipulates symbols by rules, and that alone is not understanding. The best-known reply, the "systems reply", says the understanding belongs to the whole system of man, rulebook and room, not to the man, just as no single neuron of yours understands English. The argument is more alive than ever, because a chatbot is close to a real Chinese room, and people who agree on every fact about how it works still disagree about whether it understands.
+
+> **Definition — Chinese room argument:** John Searle's 1980 thought experiment claiming that a system could produce perfect answers in a language by following rules without understanding anything, so that running the right program is not enough for a mind.
+
+> **Definition — Strong AI and weak AI (philosophy):** In Searle's terms, "weak AI" is the claim that machines can act as if they think, and "strong AI" the claim that a suitably programmed machine really would have a mind and understanding. The terms are about minds, not about how capable a system is.
+
+**Can intelligence be written down as rules? Dreyfus.** In *What Computers Can't Do* (1972), the philosopher Hubert Dreyfus argued that human expertise rests on intuition, bodily skill and background know-how that cannot be captured as explicit rules. Many AI researchers dismissed him at the time, but the brittleness of expert systems (Chapter 54) largely bore him out. The twist is that machine learning sidestepped his target: neural networks do not run on hand-written rules either, so much of his critique now reads as an argument for learning rather than against AI.
+
+> **Definition — Argument from informality:** Hubert Dreyfus's claim that human intelligence depends on intuition and background know-how that cannot be reduced to formal rules, so that rule-based AI could never reach human level.
+
+**Does mathematics forbid it? Gödel.** Kurt Gödel's incompleteness theorem (1931) shows that any consistent formal system powerful enough for arithmetic contains true statements it cannot prove. The philosopher J. R. Lucas (1961) and later the physicist Roger Penrose argued that humans can see such truths while machines cannot, so minds cannot be machines. Most researchers reject the step from the theorem to that conclusion: nothing shows that humans can always see these truths, or that human reasoning is itself consistent, and the theorem limits people as much as programs.
+
+> **Definition — Gödel's incompleteness theorem:** Kurt Gödel's 1931 result that any consistent formal system powerful enough to describe arithmetic contains true statements that cannot be proved within that system.
+
+None of these arguments is settled, and none changes what AI systems can do in practice. They are about whether doing is the same as understanding or experiencing, which is exactly the question the model-welfare debate above inherits.
+
 ## Thinking for yourself: cruxes and signposts
 
 You now have seven debates, each with a strong case on both sides. How do you decide what to believe, and how do you notice when the evidence shifts? Write down your current view as a probability, identify the crux, and pick signposts: observable events that would move you.
@@ -647,7 +667,7 @@ Some experts think advanced AI could be catastrophic; others think that view is 
 Your job is not to pick a team. It is to find the crux, watch the evidence and update.
 
 ## Key terms
-Steelman, Strawman, Crux, Calibration, Forecast, Task, Labor market, Exposure (to AI), Displacement, Automation, Augmentation, Complement (economics), Entry-level job, Descriptive (vs causal) evidence, Null result, Productivity, Randomized controlled trial (RCT), Jagged frontier, Universal basic income (UBI), GDP (gross domestic product), Total factor productivity (TFP), Capex (capital expenditure), Depreciation, Run-rate (annualized revenue), Recognized revenue, Free cash flow, Circular deal, Credit default swap (CDS), Bubble, Jevons paradox, Market concentration, Super PAC, Gradual disempowerment, Regulatory capture, Public benefit corporation (PBC), Corporate governance, Open-weight model, Open-source AI, Closed model, Structured access, Marginal risk, Narrow AI, AGI (artificial general intelligence), ASI (artificial superintelligence), Levels of AGI, Benchmark saturation, Harness, Time horizon (METR), Doubling time, Recursive self-improvement, Catastrophic risk, Existential risk (x-risk), Loss of control, P(doom), Racing dynamics, Instrumental convergence, Pascal's mugging, Consciousness, Sentience, Moral status (moral patient), Model welfare, Anthropomorphism
+Steelman, Strawman, Crux, Calibration, Forecast, Task, Labor market, Exposure (to AI), Displacement, Automation, Augmentation, Complement (economics), Entry-level job, Descriptive (vs causal) evidence, Null result, Productivity, Randomized controlled trial (RCT), Jagged frontier, Universal basic income (UBI), GDP (gross domestic product), Total factor productivity (TFP), Capex (capital expenditure), Depreciation, Run-rate (annualized revenue), Recognized revenue, Free cash flow, Circular deal, Credit default swap (CDS), Bubble, Jevons paradox, Market concentration, Super PAC, Gradual disempowerment, Regulatory capture, Public benefit corporation (PBC), Corporate governance, Open-weight model, Open-source AI, Closed model, Structured access, Marginal risk, Narrow AI, AGI (artificial general intelligence), ASI (artificial superintelligence), Levels of AGI, Benchmark saturation, Harness, Time horizon (METR), Doubling time, Recursive self-improvement, Catastrophic risk, Existential risk (x-risk), Loss of control, P(doom), Racing dynamics, Instrumental convergence, Pascal's mugging, Consciousness, Sentience, Moral status (moral patient), Model welfare, Anthropomorphism, Chinese room argument, Strong AI and weak AI (philosophy), Argument from informality, Gödel's incompleteness theorem
 
 ## Exercises
 

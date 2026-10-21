@@ -272,6 +272,12 @@ A few settings shape the whole run:
 
 > **Definition — Warmup:** The opening phase of training in which the learning rate rises gradually from near zero, preventing huge, destabilizing updates while the weights are still random.
 
+How do teams choose these numbers for a run they can afford only once? Mostly the way they choose data mixtures: by experimenting on small proxy models. The catch is that the best learning rate usually shifts as a model gets wider, so a value tuned on a small model can be badly wrong for a big one. A 2022 method from Microsoft and OpenAI researchers, μP ("maximal update parametrization"), rescales each layer's starting weights and learning rate according to its width so that the best settings stay put as the model grows. In their demonstration, settings tuned on a model of about 40 million parameters transferred to a 6.7-billion-parameter model of GPT-3's design and beat the original hand-tuned version. Other labs, DeepSeek among them, have published scaling laws for the hyperparameters themselves: formulas for how the best batch size and learning rate change as the compute budget grows.
+
+> **Definition — Hyperparameter transfer:** Choosing training settings such as the learning rate on small, cheap models and reusing them, unchanged or adjusted by formula, for a much larger model.
+
+> **Definition — μP (maximal update parametrization):** A 2022 recipe for scaling each layer's initial weights and learning rate with the model's width, so that the best hyperparameters found on a small model also work on a large one.
+
 ### Watching the loss
 
 The engineers' main window into a run is the loss curve. It falls steeply at first, as the model learns spelling, grammar and common facts, and then keeps falling more and more slowly for the rest of the run.
@@ -634,7 +640,7 @@ Abilities that seem to appear suddenly are often smooth improvements seen throug
 
 ## Key terms
 
-Pretraining, Training run, Corpus, Self-supervised learning, Loss, Cross-entropy loss, Perplexity, Gradient descent, Learning rate, Batch and step, Common Crawl, Web crawler, Synthetic data, robots.txt, Data curation, Text extraction (boilerplate removal), Language identification, Deduplication, Jaccard similarity, Near-duplicate detection (MinHash), Heuristic filter, Quality classifier, PII (Personally Identifiable Information), Decontamination, Benchmark contamination, Data mixture, Upsampling, Epoch (training pass), Proxy model, Ablation, Curriculum (training curriculum), GPU-hour, Parallelism (distributed training), Learning-rate schedule, Warmup, Loss spike, Checkpoint, MFU (Model FLOPs Utilization), Goodput, FP8 and FP4, Mixed precision, Few-shot prompting, Scaling law, Power law, Log-log plot, Training compute, Compute-optimal (Chinchilla-optimal), 6ND rule, H100, Over-training, Inference-aware scaling, Emergent abilities, Exact match, Data wall, Model collapse, Mid-training, Annealing, Context extension.
+Pretraining, Training run, Corpus, Self-supervised learning, Loss, Cross-entropy loss, Perplexity, Gradient descent, Learning rate, Batch and step, Common Crawl, Web crawler, Synthetic data, robots.txt, Data curation, Text extraction (boilerplate removal), Language identification, Deduplication, Jaccard similarity, Near-duplicate detection (MinHash), Heuristic filter, Quality classifier, PII (Personally Identifiable Information), Decontamination, Benchmark contamination, Data mixture, Upsampling, Epoch (training pass), Proxy model, Ablation, Curriculum (training curriculum), GPU-hour, Parallelism (distributed training), Learning-rate schedule, Warmup, Hyperparameter transfer, μP (maximal update parametrization), Loss spike, Checkpoint, MFU (Model FLOPs Utilization), Goodput, FP8 and FP4, Mixed precision, Few-shot prompting, Scaling law, Power law, Log-log plot, Training compute, Compute-optimal (Chinchilla-optimal), 6ND rule, H100, Over-training, Inference-aware scaling, Emergent abilities, Exact match, Data wall, Model collapse, Mid-training, Annealing, Context extension.
 
 ## Exercises
 

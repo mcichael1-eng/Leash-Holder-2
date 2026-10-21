@@ -127,7 +127,7 @@ Look at what the division does. Suppose one parameter's gradient is steadily 0.0
 | Plain SGD, learning rate 0.001 | moves 0.000001 per step | moves 0.1 per step |
 | Adam, learning rate 0.001 | moves about 0.001 per step | moves about 0.001 per step |
 
-With SGD, one parameter barely moves while the other jumps around. Adam equalizes them. It combines this per-parameter scaling with momentum, and it works well with little tuning, which is why it became the default optimizer of deep learning for about a decade. Its direct ancestor, RMSProp (Geoffrey Hinton, 2012), introduced the dividing-by-average-size idea.
+With SGD, one parameter barely moves while the other jumps around. Adam equalizes them. It combines this per-parameter scaling with momentum, and it works well with little tuning, which is why it became the default optimizer of deep learning for about a decade. Its direct ancestor, RMSProp (Geoffrey Hinton, 2012), introduced the dividing-by-average-size idea. RMSProp in turn fixed AdaGrad (2011), which divided by the running total of every past squared gradient, so its steps only ever shrank and could stall long before training was done.
 
 > **Definition — Adam:** An optimizer (2014) that combines momentum with a separate, automatically adjusted step size for each parameter, based on running averages of each parameter's gradients and squared gradients.
 

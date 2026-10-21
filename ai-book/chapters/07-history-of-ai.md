@@ -313,7 +313,7 @@ Neural networks survived in niches: in 1997 Sepp Hochreiter and Jürgen Schmidhu
 
 Between 2006 and 2011 the three ingredients of the coming boom fell into place, mostly unnoticed.
 
-- **Ideas:** In 2006 Geoffrey Hinton and colleagues showed a way to train networks with many layers, and the phrase "deep learning" spread.
+- **Ideas:** In 2006 Geoffrey Hinton and colleagues showed a way to train networks with many layers, by pretraining them one layer at a time on unlabeled data (the "deep belief nets" described in Chapter 16), and the phrase "deep learning" spread.
 - **Compute:** In 2006 Amazon Web Services began renting computers by the hour. In 2007 NVIDIA released CUDA, which let programmers use graphics cards, built for video games, for general math.
 - **Data:** In 2009 Fei-Fei Li and colleagues released ImageNet, millions of photos sorted into thousands of categories by paid online crowd workers, with a yearly contest from 2010.
 

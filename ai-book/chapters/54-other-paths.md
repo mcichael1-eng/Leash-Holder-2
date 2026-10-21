@@ -320,6 +320,16 @@ For big networks, even clever exact methods can be too slow, so software estimat
 
 > **Definition — Monte Carlo inference (sampling):** Estimating probabilities by generating many random examples from a model and counting, instead of computing the answer exactly. Markov chain Monte Carlo (MCMC) is an advanced version, standard in Bayesian statistics, that wanders through the likely possibilities.
 
+The other big shortcut gives up on the exact answer in a different way. Variational inference picks a simpler family of distributions that are easy to compute with and finds the member closest to the true one, turning a hopeless counting problem into an optimization problem that gradient descent can handle. It is the "variational" in the variational autoencoder (Chapter 16).
+
+> **Definition — Variational inference:** Approximating a complicated probability distribution with the closest member of a simpler, easy-to-compute family, which turns a hard counting problem into an optimization problem.
+
+Bayesian networks belong to a larger family called probabilistic graphical models: diagrams whose dots are uncertain variables and whose lines say which variables directly depend on which. In a Bayesian network the lines are arrows, from causes to effects. In a Markov random field they have no direction and mean "these influence each other," like neighboring pixels in a photo, which tend to share a color. The hidden Markov models of the next section are graphical models laid out along time.
+
+> **Definition — Probabilistic graphical model:** A way of describing many uncertain variables with a diagram whose lines show which variables directly depend on which, plus the probabilities attached. Bayesian networks, Markov random fields and hidden Markov models are all examples.
+
+> **Definition — Markov random field:** A probabilistic graphical model whose links have no direction, used when variables influence each other symmetrically, such as neighboring pixels in an image.
+
 > **Analogy:** A Bayesian network is a detective's corkboard. Each card is a possibility, each string says what can cause what, and every new clue (the sprinkler log, the alibi) shifts suspicion across the whole board at once, sometimes away from suspects you were never directly asking about.
 
 **Where they are used.** In the late 1980s a Bayesian network called Pathfinder helped pathologists diagnose lymph-node diseases. Microsoft research on Bayesian user modeling in the 1990s fed into the Office Assistant ("Clippy") and into Windows troubleshooting wizards. The naive Bayes spam filter of Chapter 10 is the simplest Bayesian network of all. Today their descendants, probabilistic programming tools, model risk in insurance, epidemics in public health, faults in jet engines and uncertainty in scientific measurements. Pearl's later work, on causal diagrams, comes up again in the causality section.
@@ -702,6 +712,12 @@ Before chatbots, NLP was a toolbox of separate tasks, each turning text into som
 | Information extraction | The review | product: Aurora X2; city: Berlin; date: 3 May; praised: battery; problem: case cracked |
 | Summarization | The review | "Great battery, fragile case." |
 | Question answering | "Where were they bought?" | "Berlin" |
+| Coreference resolution | The review plus a follow-up: "I returned them." | "them" = the Aurora X2 headphones |
+| Natural language inference | The review plus the claim "The buyer had no complaints" | Contradiction |
+
+> **Definition — Coreference resolution:** Working out which words and phrases refer to the same thing, such as linking "them" to "the headphones" or "she" to "Dr. Patel" earlier in a text.
+
+> **Definition — Natural language inference (NLI):** Deciding whether a statement follows from a passage (entailment), contradicts it, or neither. It was a standard test of language understanding before LLMs.
 
 > **Definition — Sentiment analysis:** Detecting the emotional tone of text, such as positive, negative or mixed, often per aspect (battery versus durability). Companies run it over millions of reviews and social posts.
 
@@ -709,7 +725,7 @@ Before chatbots, NLP was a toolbox of separate tasks, each turning text into som
 
 > **Definition — Information extraction:** Pulling structured facts, such as fields, tables and relationships, out of unstructured text like contracts, medical notes or reviews.
 
-A single LLM prompt now does all six tasks at once. So why do specialized small models still process billions of documents a day? Cost, speed and consistency. Suppose a company classifies 10 million incoming emails a day, about 500 tokens each.
+A single LLM prompt now does all eight tasks at once. So why do specialized small models still process billions of documents a day? Cost, speed and consistency. Suppose a company classifies 10 million incoming emails a day, about 500 tokens each.
 
 - With a cheap LLM at about $0.10 per million input tokens (roughly the cheapest tier of a major lab in late 2026): 10 million × 500 = 5 billion tokens = $500 a day, plus a little for output: around $190,000 a year.
 - A small fine-tuned classifier on a few ordinary servers might cost a small fraction of that (illustrative), answer in milliseconds rather than hundreds of milliseconds, and give exactly the same answer every time.
@@ -855,7 +871,7 @@ Neuro-symbolic AI combines neural intuition with symbolic rigor, as in AlphaGeom
 
 ## Key terms
 
-Case-based reasoning, Symbolic AI (GOFAI), Production rule, Expert system, Knowledge base, Inference engine, Certainty factor, Forward chaining, Backward chaining, Brittleness, Knowledge acquisition bottleneck, Propositional logic, Entailment, Resolution, First-order logic, Logic programming (Prolog), SAT solver, Knowledge graph, Triple, Ontology, Semantic network, Frame (knowledge representation), Default reasoning (non-monotonic reasoning), Frame problem, Bayes' rule, Bayesian network, Conditional probability table, Explaining away, Full joint distribution, Conditional independence, Monte Carlo inference (sampling), Probabilistic programming, Markov chain, Hidden Markov model (HMM), Filtering (state estimation), Kalman filter, Particle filter, Fuzzy logic, Membership function, Evolutionary algorithm, Genetic algorithm, Fitness function, Crossover, Mutation, Swarm intelligence, Causal inference, Confounder, Simpson's paradox, Causal diagram, Randomized controlled trial (RCT), A/B test, Intervention, Counterfactual, Ladder of causation, Distribution shift, Neuro-symbolic AI, Formal proof, Verifier, Symbolic deduction engine, Compositional generalization, Natural language processing (NLP), Statistical machine translation, Parallel corpus, Neural machine translation, BLEU score, Sentiment analysis, Named entity recognition (NER), Information extraction, Part-of-speech tagging, Formal grammar, Parsing, Ambiguity (language), Synapse, Action potential (spike), Reward prediction error, Spiking neural network, Neuromorphic chip, Brain-computer interface (BCI), EEG (electroencephalography), Neuroprosthesis, fMRI (functional magnetic resonance imaging), Neural data
+Case-based reasoning, Symbolic AI (GOFAI), Production rule, Expert system, Knowledge base, Inference engine, Certainty factor, Forward chaining, Backward chaining, Brittleness, Knowledge acquisition bottleneck, Propositional logic, Entailment, Resolution, First-order logic, Logic programming (Prolog), SAT solver, Knowledge graph, Triple, Ontology, Semantic network, Frame (knowledge representation), Default reasoning (non-monotonic reasoning), Frame problem, Bayes' rule, Bayesian network, Conditional probability table, Explaining away, Full joint distribution, Conditional independence, Monte Carlo inference (sampling), Variational inference, Probabilistic graphical model, Markov random field, Probabilistic programming, Markov chain, Hidden Markov model (HMM), Filtering (state estimation), Kalman filter, Particle filter, Fuzzy logic, Membership function, Evolutionary algorithm, Genetic algorithm, Fitness function, Crossover, Mutation, Swarm intelligence, Causal inference, Confounder, Simpson's paradox, Causal diagram, Randomized controlled trial (RCT), A/B test, Intervention, Counterfactual, Ladder of causation, Distribution shift, Neuro-symbolic AI, Formal proof, Verifier, Symbolic deduction engine, Compositional generalization, Natural language processing (NLP), Statistical machine translation, Parallel corpus, Neural machine translation, BLEU score, Sentiment analysis, Named entity recognition (NER), Information extraction, Coreference resolution, Natural language inference (NLI), Part-of-speech tagging, Formal grammar, Parsing, Ambiguity (language), Synapse, Action potential (spike), Reward prediction error, Spiking neural network, Neuromorphic chip, Brain-computer interface (BCI), EEG (electroencephalography), Neuroprosthesis, fMRI (functional magnetic resonance imaging), Neural data
 
 ## Exercises
 

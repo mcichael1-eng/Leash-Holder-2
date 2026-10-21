@@ -77,6 +77,19 @@ A second useful idea is that the goal keeps moving. When a computer first beat t
 
 > **Definition — Algorithm:** A step-by-step method for solving a problem, like a recipe. The same algorithm can be written in any programming language, or in plain words.
 
+Textbooks slice the definition one more way. The standard university text, Stuart Russell and Peter Norvig's *Artificial Intelligence: A Modern Approach*, sorts the classic definitions by two questions. Should a machine match *humans*, or be *rational*, meaning do the right thing by some fixed standard? And does the definition care about *thinking* or about *acting*?
+
+| | Like a human | Rationally |
+|---|---|---|
+| **Thinking** | Model how people actually think (cognitive science) | Reason with correct logic, the "laws of thought" |
+| **Acting** | Behave so that people cannot tell it from a person (the Turing test, Chapter 7) | Act to get the best expected outcome: a rational agent |
+
+Most of the field, and most of this book, works in the bottom-right box. An AI system is treated as an agent that perceives its surroundings and acts, and it is judged by how well its actions achieve a goal, not by whether it thinks the way we do. A chess engine that plays brilliantly with nothing like human thought counts, and so does a route planner. Chapter 48 develops this view of AI as decision-making.
+
+> **Definition — Rational agent:** A system that perceives its environment and chooses whatever action is expected to achieve the best outcome by some measure of success, given what it knows. It is the textbook's working definition of what AI tries to build.
+
+AI also borrowed from much older fields: philosophy (logic and the nature of mind), mathematics (logic, probability and algorithms), economics (how to make decisions and how players in a market interact), neuroscience and psychology (how brains and minds work), control engineering (machines that steer themselves using feedback) and linguistics (the structure of language). You will meet each of them in later chapters.
+
 ## Nested circles: AI, machine learning, deep learning, generative AI, LLMs and agents
 
 The words you hear most often in AI news are not competing technologies. Most of them sit inside each other, like a set of nesting dolls. Learning this picture once will save you a lot of confusion.
@@ -564,7 +577,7 @@ All of it rests on a physical stack: sand becomes chips, chips fill servers, ser
 
 ## Key terms
 
-Chatbot, Program, Data center, Model, Parameter, Token, Artificial intelligence (AI), Algorithm, Symbolic AI, Machine learning (ML), Training, Inference, Neural network, Deep learning, Generative AI, Large language model (LLM), Transformer, Agent, Multimodal, Rule-based system, Expert system, Training data, Label, Classifier, Reinforcement learning (RL), Reward, RLHF (reinforcement learning from human feedback), Prediction (in AI), Recommender system, Narrow AI, Artificial general intelligence (AGI), Artificial superintelligence (ASI), Jagged frontier, Supervised learning, Unsupervised learning, Knowledge graph, Computer vision, Natural language processing (NLP), Chip (integrated circuit), GPU (graphics processing unit), Compute, Gigawatt (GW), AI winter, Reasoning model, Frontier model, Open-weight model, Frontier lab
+Chatbot, Program, Data center, Model, Parameter, Token, Artificial intelligence (AI), Algorithm, Rational agent, Symbolic AI, Machine learning (ML), Training, Inference, Neural network, Deep learning, Generative AI, Large language model (LLM), Transformer, Agent, Multimodal, Rule-based system, Expert system, Training data, Label, Classifier, Reinforcement learning (RL), Reward, RLHF (reinforcement learning from human feedback), Prediction (in AI), Recommender system, Narrow AI, Artificial general intelligence (AGI), Artificial superintelligence (ASI), Jagged frontier, Supervised learning, Unsupervised learning, Knowledge graph, Computer vision, Natural language processing (NLP), Chip (integrated circuit), GPU (graphics processing unit), Compute, Gigawatt (GW), AI winter, Reasoning model, Frontier model, Open-weight model, Frontier lab
 
 ## Exercises
 

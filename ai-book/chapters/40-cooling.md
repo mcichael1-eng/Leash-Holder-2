@@ -567,6 +567,22 @@ PUE is a good thermometer for building overhead, but it is easy to misuse.
 
 > **Watch out:** "PUE 1.1 means this data center is efficient at AI." PUE only measures building overhead. It says nothing about how efficiently the chips turn electricity into useful answers, nothing about water and nothing about carbon.
 
+### Idle power and energy proportionality
+
+PUE's first blind spot deserves numbers. Inside the IT load, how much useful work does each watt buy? A machine that draws plenty of power while doing little is wasteful, however good its building.
+
+In 2007, Google's Luiz André Barroso and Urs Hölzle pointed out two facts about their servers. They spent most of their time between about 10 and 50% of their maximum load, rarely idle and rarely flat out. And even an energy-efficient server drew about half of its full power while doing almost nothing. They called on the industry to build energy-proportional computers.
+
+> **Definition — Energy proportionality:** The goal that a computer's power draw should rise and fall in step with the work it does, so that a machine at 10% load uses about 10% of its peak power. Real machines fall short because some power is drawn just for being switched on.
+
+> **Definition — Idle power:** The power a server or chip draws while switched on but doing no useful work, from memory, fans, power supplies and leaking transistors. It is pure overhead.
+
+**Worked example.** A server draws 1,000 W at full load and 500 W when idle, rising in a straight line in between. At 30% load it draws 500 + 0.3 × 500 = 650 W. It does 30% of its maximum work for 65% of its maximum power, so each unit of work costs 0.65 ÷ 0.3 ≈ 2.2 times as much energy as at full load. A perfectly proportional server would draw 300 W.
+
+Hardware has narrowed the gap since 2007, but the idea still shapes AI operations. Training clusters run near full load, so idle power matters little there, except in the moments when every GPU waits on the network (Chapter 37). Inference fleets are sized for peak demand and follow the daily rhythm of their users, so in the small hours many chips are partly idle yet still drawing power. That is one more reason providers fill quiet hours with discounted batch work (Chapter 43): much of the power is being drawn anyway.
+
+> **Watch out:** "Low utilization only wastes money, not energy." Because of idle power, a half-busy fleet uses far more energy per answer than a busy one. Keeping chips busy is an energy decision as well as a financial one.
+
 ### WUE: how much water?
 
 > **Definition — WUE (water usage effectiveness):** Liters of water consumed on site per kWh of IT energy. It usually counts only the site's own water (mostly cooling-tower evaporation), not the water used by power plants to make its electricity.
@@ -746,7 +762,7 @@ PUE measures building overhead (1.1 is excellent), WUE measures on-site water, C
 
 ## Key terms
 
-Heat, BTU (British thermal unit), Ton of cooling (refrigeration ton), Junction temperature, Thermal throttling, TDP (thermal design power), Heat flux, Conduction, Convection, Thermal radiation, ΔT (delta T), Specific heat capacity, Fan affinity laws, Heat exchanger, Heat rejection, Thermal interface material (TIM), Cold plate, Technology cooling system (TCS), Quick disconnect, CDU (coolant distribution unit), Facility water system (FWS), Approach temperature, CRAC (computer room air conditioner), CRAH (computer room air handler), Hot aisle / cold aisle, Containment, ASHRAE thermal guidelines, In-row cooler, Rear-door heat exchanger (RDHx), Direct-to-chip (DTC) liquid cooling, Latent heat, Two-phase cooling, Dielectric fluid, Immersion cooling, Chiller, Vapor-compression refrigeration cycle, COP (coefficient of performance), Cooling tower, Blowdown, Wet-bulb temperature, Dry cooler, Adiabatic (evaporative) cooling, Free cooling, Economizer, Warm-water cooling, PUE (power usage effectiveness), IT load, WUE (water usage effectiveness), CUE (carbon usage effectiveness), Carbon intensity (of electricity), Embodied carbon, ERE (energy reuse effectiveness), Water withdrawal, Water consumption, Direct water, Indirect water, Reclaimed water, Water stress, District heating, Heat pump
+Heat, BTU (British thermal unit), Ton of cooling (refrigeration ton), Junction temperature, Thermal throttling, TDP (thermal design power), Heat flux, Conduction, Convection, Thermal radiation, ΔT (delta T), Specific heat capacity, Fan affinity laws, Heat exchanger, Heat rejection, Thermal interface material (TIM), Cold plate, Technology cooling system (TCS), Quick disconnect, CDU (coolant distribution unit), Facility water system (FWS), Approach temperature, CRAC (computer room air conditioner), CRAH (computer room air handler), Hot aisle / cold aisle, Containment, ASHRAE thermal guidelines, In-row cooler, Rear-door heat exchanger (RDHx), Direct-to-chip (DTC) liquid cooling, Latent heat, Two-phase cooling, Dielectric fluid, Immersion cooling, Chiller, Vapor-compression refrigeration cycle, COP (coefficient of performance), Cooling tower, Blowdown, Wet-bulb temperature, Dry cooler, Adiabatic (evaporative) cooling, Free cooling, Economizer, Warm-water cooling, PUE (power usage effectiveness), IT load, WUE (water usage effectiveness), CUE (carbon usage effectiveness), Carbon intensity (of electricity), Embodied carbon, ERE (energy reuse effectiveness), Water withdrawal, Water consumption, Direct water, Indirect water, Reclaimed water, Water stress, District heating, Heat pump, Energy proportionality, Idle power
 
 ## Exercises
 
