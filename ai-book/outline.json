@@ -1,0 +1,469 @@
+{
+ "title": "The AI Field Guide",
+ "parts": [
+  {
+   "title": "Foundations: How Computers Work and the Math Behind AI",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "What AI Is: A Map of the Whole Field",
+     "file": "01-what-ai-is.md"
+    },
+    {
+     "n": 2,
+     "title": "How Computers Work: Bits, Transistors and Processors",
+     "file": "02-how-computers-work.md"
+    },
+    {
+     "n": 3,
+     "title": "Software, Code and Data: How Everything Becomes Numbers",
+     "file": "03-software-code-data.md"
+    },
+    {
+     "n": 4,
+     "title": "The Internet and the Cloud: How Your Message Reaches a Data Center",
+     "file": "04-internet-and-cloud.md"
+    },
+    {
+     "n": 5,
+     "title": "The Math of AI, Part 1: Functions, Vectors and Matrices",
+     "file": "05-math-vectors-matrices.md"
+    },
+    {
+     "n": 6,
+     "title": "The Math of AI, Part 2: Probability, Statistics and Learning by Slopes",
+     "file": "06-math-probability-gradients.md"
+    },
+    {
+     "n": 7,
+     "title": "A History of AI: 1843 to 2026",
+     "file": "07-history-of-ai.md"
+    }
+   ],
+   "blurb": "What a computer is, how everything becomes numbers, how your message reaches a data center, the math every model uses, and the 180-year story of AI."
+  },
+  {
+   "title": "How Machines Learn",
+   "chapters": [
+    {
+     "n": 8,
+     "title": "Learning From Examples: What Machine Learning Really Is",
+     "file": "08-learning-from-examples.md"
+    },
+    {
+     "n": 9,
+     "title": "Is the Model Any Good? Evaluation, Overfitting and Metrics",
+     "file": "09-evaluation-and-metrics.md"
+    },
+    {
+     "n": 10,
+     "title": "The Classical Machine Learning Toolkit",
+     "file": "10-classical-ml-toolkit.md"
+    },
+    {
+     "n": 11,
+     "title": "Data: The Fuel of AI",
+     "file": "11-data-the-fuel.md"
+    }
+   ],
+   "blurb": "How a computer can learn a rule from examples instead of being told it, how to tell whether it learned anything, the classic algorithms, and the data that feeds them."
+  },
+  {
+   "title": "Neural Networks and Deep Learning",
+   "chapters": [
+    {
+     "n": 12,
+     "title": "Neural Networks From Scratch",
+     "file": "12-neural-networks-from-scratch.md"
+    },
+    {
+     "n": 13,
+     "title": "Training Deep Networks: Optimizers, Tricks and Why Depth Works",
+     "file": "13-training-deep-networks.md"
+    },
+    {
+     "n": 14,
+     "title": "Seeing and Remembering: CNNs, RNNs, Embeddings and the Deep Learning Boom",
+     "file": "14-cnns-rnns-embeddings.md"
+    },
+    {
+     "n": 15,
+     "title": "The Transformer, Piece by Piece",
+     "file": "15-the-transformer.md"
+    },
+    {
+     "n": 16,
+     "title": "Generative Models: Autoencoders, GANs, Diffusion and Flow",
+     "file": "16-generative-models.md"
+    },
+    {
+     "n": 17,
+     "title": "Beyond the Transformer: Mixture of Experts, State Space Models and New Architectures",
+     "file": "17-beyond-the-transformer.md"
+    }
+   ],
+   "blurb": "The artificial neuron, how networks learn, and the architectures that power modern AI, from convolutional networks to the Transformer, diffusion and mixture of experts."
+  },
+  {
+   "title": "Large Language Models: How Frontier Models Are Made",
+   "chapters": [
+    {
+     "n": 18,
+     "title": "How a Large Language Model Works",
+     "file": "18-how-llms-work.md"
+    },
+    {
+     "n": 19,
+     "title": "Pretraining: Data, Scale and Scaling Laws",
+     "file": "19-pretraining-and-scaling.md"
+    },
+    {
+     "n": 20,
+     "title": "Post-Training: Turning a Text Predictor Into an Assistant",
+     "file": "20-post-training.md"
+    },
+    {
+     "n": 21,
+     "title": "Reasoning Models and Reinforcement Learning",
+     "file": "21-reasoning-models.md"
+    },
+    {
+     "n": 22,
+     "title": "Multimodal Models: Seeing, Hearing and Speaking",
+     "file": "22-multimodal-models.md"
+    },
+    {
+     "n": 23,
+     "title": "Inference: Making Models Fast and Cheap",
+     "file": "23-inference.md"
+    },
+    {
+     "n": 24,
+     "title": "The 2026 Model Landscape and How to Read Benchmarks",
+     "file": "24-model-landscape-benchmarks.md"
+    }
+   ],
+   "blurb": "How the chatbots you use every day are actually built: tokens, pretraining, post-training, reasoning, multimodality, serving, and the 2026 model landscape."
+  },
+  {
+   "title": "Using and Building With AI",
+   "chapters": [
+    {
+     "n": 25,
+     "title": "Mastering the Chat Interface: Prompting and Context Engineering",
+     "file": "25-prompting-and-context.md"
+    },
+    {
+     "n": 26,
+     "title": "APIs: Talking to Models With Code",
+     "file": "26-apis.md"
+    },
+    {
+     "n": 27,
+     "title": "Retrieval: Giving AI Your Knowledge",
+     "file": "27-retrieval-rag.md"
+    },
+    {
+     "n": 28,
+     "title": "Tools and Agents: From Function Calling to MCP",
+     "file": "28-tools-and-agents.md"
+    },
+    {
+     "n": 29,
+     "title": "Coding With AI and Building Without Code",
+     "file": "29-coding-and-no-code.md"
+    },
+    {
+     "n": 30,
+     "title": "Customizing Models: Fine-Tuning, Open Weights and Running AI Locally",
+     "file": "30-fine-tuning-and-local.md"
+    },
+    {
+     "n": 31,
+     "title": "Shipping AI: Evals, Reliability, Security and Product Design",
+     "file": "31-evals-security-product.md"
+    }
+   ],
+   "blurb": "From expert prompting to APIs, retrieval, tools, agents, coding agents, fine-tuning, local models and shipping reliable, secure AI products."
+  },
+  {
+   "title": "Compute: The Machines Behind AI",
+   "chapters": [
+    {
+     "n": 32,
+     "title": "From Transistor to Accelerator: CPUs, GPUs, TPUs and FLOPs",
+     "file": "32-cpus-gpus-tpus.md"
+    },
+    {
+     "n": 33,
+     "title": "Memory and the Memory Wall",
+     "file": "33-memory-wall.md"
+    },
+    {
+     "n": 34,
+     "title": "Wiring Thousands of Chips Together: Servers, Racks, Networks and Clusters",
+     "file": "34-servers-racks-networks.md"
+    },
+    {
+     "n": 35,
+     "title": "The AI Chip Industry: NVIDIA, AMD, Google, Custom Silicon and Startups",
+     "file": "35-ai-chip-industry.md"
+    },
+    {
+     "n": 36,
+     "title": "How Chips Are Made: Fabs, Lithography, Packaging and Geopolitics",
+     "file": "36-how-chips-are-made.md"
+    },
+    {
+     "n": 37,
+     "title": "Training and Serving at Scale: The Math of Compute",
+     "file": "37-training-serving-at-scale.md"
+    }
+   ],
+   "blurb": "The machines behind AI: GPUs and TPUs, memory, networks, the chip industry, how chips are made, and how training and serving work at the scale of 100,000 chips."
+  },
+  {
+   "title": "Data Centers and Energy",
+   "chapters": [
+    {
+     "n": 38,
+     "title": "Inside a Data Center",
+     "file": "38-inside-a-data-center.md"
+    },
+    {
+     "n": 39,
+     "title": "Power: From the Grid to the GPU",
+     "file": "39-power.md"
+    },
+    {
+     "n": 40,
+     "title": "Cooling: Where the Heat Goes",
+     "file": "40-cooling.md"
+    },
+    {
+     "n": 41,
+     "title": "Energy for AI: Grids, Gas, Nuclear and Renewables",
+     "file": "41-energy-for-ai.md"
+    },
+    {
+     "n": 42,
+     "title": "The Great Buildout: Hyperscalers, Neoclouds and Megaprojects",
+     "file": "42-the-buildout.md"
+    },
+    {
+     "n": 43,
+     "title": "The Economics of AI Compute",
+     "file": "43-economics-of-compute.md"
+    },
+    {
+     "n": 44,
+     "title": "How It All Comes Together: The Life of a Prompt and the Making of a Frontier Model",
+     "file": "44-how-it-all-comes-together.md"
+    }
+   ],
+   "blurb": "The buildings, power plants, cooling systems and money behind AI, and how every layer from sand to your screen comes together."
+  },
+  {
+   "title": "The Branches of AI",
+   "chapters": [
+    {
+     "n": 45,
+     "title": "Computer Vision",
+     "file": "45-computer-vision.md"
+    },
+    {
+     "n": 46,
+     "title": "Speech, Audio and Music",
+     "file": "46-speech-audio-music.md"
+    },
+    {
+     "n": 47,
+     "title": "Generative Media: Images, Video, 3D and World Models",
+     "file": "47-generative-media.md"
+    },
+    {
+     "n": 48,
+     "title": "Reinforcement Learning, Games and Planning",
+     "file": "48-rl-games-planning.md"
+    },
+    {
+     "n": 49,
+     "title": "Robotics and Physical AI",
+     "file": "49-robotics.md"
+    },
+    {
+     "n": 50,
+     "title": "Self-Driving Vehicles",
+     "file": "50-self-driving.md"
+    },
+    {
+     "n": 51,
+     "title": "Recommenders, Search and Ads: The AI You Use Without Noticing",
+     "file": "51-recommenders-search-ads.md"
+    },
+    {
+     "n": 52,
+     "title": "AI for Science and Medicine",
+     "file": "52-science-and-medicine.md"
+    },
+    {
+     "n": 53,
+     "title": "AI Across Industries and at the Edge",
+     "file": "53-industries-and-edge.md"
+    },
+    {
+     "n": 54,
+     "title": "Other Paths to Intelligence: Symbolic AI, Language Before LLMs, Evolution, Bayes, Causality and Brains",
+     "file": "54-other-paths.md"
+    }
+   ],
+   "blurb": "AI beyond chatbots: vision, speech, generative media, games, robots, self-driving cars, recommenders, science, medicine and every major industry."
+  },
+  {
+   "title": "Safety, Ethics, Law and Society",
+   "chapters": [
+    {
+     "n": 55,
+     "title": "What Can Go Wrong: Reliability and the Alignment Problem",
+     "file": "55-alignment-problem.md"
+    },
+    {
+     "n": 56,
+     "title": "How Labs Make AI Safer: Alignment Techniques, Safety Frameworks and Control",
+     "file": "56-making-ai-safer.md"
+    },
+    {
+     "n": 57,
+     "title": "Interpretability and Evaluations: Looking Inside and Testing",
+     "file": "57-interpretability-and-evals.md"
+    },
+    {
+     "n": 58,
+     "title": "Misuse, Security and Everyday Harms",
+     "file": "58-misuse-and-harms.md"
+    },
+    {
+     "n": 59,
+     "title": "AI Law and Policy Around the World",
+     "file": "59-law-and-policy.md"
+    },
+    {
+     "n": 60,
+     "title": "AI, Work, the Economy and the Big Debates",
+     "file": "60-work-economy-debates.md"
+    }
+   ],
+   "blurb": "What can go wrong, how labs try to make AI safe, how we look inside models, misuse and harms, the law, and AI's effect on work and society."
+  },
+  {
+   "title": "Your Path: Skills, Careers and Opportunity",
+   "chapters": [
+    {
+     "n": 61,
+     "title": "The AI Industry Map: Who Makes Money and How",
+     "file": "61-industry-map.md"
+    },
+    {
+     "n": 62,
+     "title": "The Complete AI Skills Map",
+     "file": "62-skills-map.md"
+    },
+    {
+     "n": 63,
+     "title": "Careers in AI: Every Role Explained",
+     "file": "63-careers.md"
+    },
+    {
+     "n": 64,
+     "title": "Opportunities: Where You Can Win",
+     "file": "64-opportunities.md"
+    },
+    {
+     "n": 65,
+     "title": "Your Learning Roadmap and How to Stay Current",
+     "file": "65-learning-roadmap.md"
+    },
+    {
+     "n": 66,
+     "title": "The Road Ahead: Open Problems and the Future of AI",
+     "file": "66-the-road-ahead.md"
+    }
+   ],
+   "blurb": "Who makes money in AI, every skill and role, where the opportunities are, a learning roadmap, and what comes next."
+  }
+ ],
+ "appendices": [
+  {
+   "letter": "A",
+   "title": "Numbers and Units Cheat Sheet",
+   "file": "A-numbers-and-units.md"
+  },
+  {
+   "letter": "B",
+   "title": "Math Cheat Sheet",
+   "file": "B-math-cheat-sheet.md"
+  },
+  {
+   "letter": "C",
+   "title": "AI Timeline, 1843–2026",
+   "file": "C-timeline.md"
+  },
+  {
+   "letter": "D",
+   "title": "Who's Who: Companies, Labs, Products and People",
+   "file": "D-whos-who.md"
+  },
+  {
+   "letter": "E",
+   "title": "Resources: Courses, Books, Newsletters, Podcasts and Communities",
+   "file": "E-resources.md"
+  }
+ ],
+ "stack": [
+  {
+   "label": "Sand, silicon and chips",
+   "note": "Part VI",
+   "href": "#part6"
+  },
+  {
+   "label": "Power, cooling and data centers",
+   "note": "Part VII",
+   "href": "#part7"
+  },
+  {
+   "label": "Data",
+   "note": "Ch 11",
+   "href": "#ch11"
+  },
+  {
+   "label": "Learning algorithms",
+   "note": "Parts II-III",
+   "href": "#part2"
+  },
+  {
+   "label": "Frontier models",
+   "note": "Part IV",
+   "href": "#part4"
+  },
+  {
+   "label": "Apps, tools and agents",
+   "note": "Part V",
+   "href": "#part5"
+  },
+  {
+   "label": "Every branch of AI",
+   "note": "Part VIII",
+   "href": "#part8"
+  },
+  {
+   "label": "Safety, law and society",
+   "note": "Part IX",
+   "href": "#part9"
+  },
+  {
+   "label": "You",
+   "note": "Part X",
+   "href": "#part10"
+  }
+ ]
+}
