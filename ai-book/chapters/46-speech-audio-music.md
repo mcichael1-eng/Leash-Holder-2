@@ -306,3 +306,318 @@ A close relative is checking *who* someone is from their voice.
 Voice cloning has badly weakened this. In 2023 a journalist used a free AI voice tool to clone his own voice and got into his own bank account by phone, passing the bank's voice-ID check. Banks and call centers now treat voice as one weak signal among several, not as a password.
 
 > **Watch out:** If your bank offers "my voice is my password," treat it as a convenience, not as security. Ask for additional verification, and never assume a familiar voice on the phone proves who is calling.
+
+## Teaching machines to speak: text-to-speech
+
+> **Definition — TTS (text-to-speech):** Generating spoken audio from written text. Also called speech synthesis.
+
+The history of synthetic speech is a march from "obviously a machine" to "indistinguishable from a person."
+
+- **1939: the Voder.** At the New York World's Fair, Bell Labs showed an electronic speaking machine played by a trained operator with keys and a foot pedal, like an instrument.
+- **1980s: formant synthesis.** Rules described how the throat and mouth shape sound, and electronics imitated them.
+- **1990s–2010s: stitching recordings together.** A voice actor read many hours of text; the system cut it into tiny pieces and glued the best-matching pieces together for each new sentence.
+- **2000s: statistical models.** Smoother and more flexible than stitching, but with a muffled, buzzy quality.
+- **2016 onward: neural networks.** Voices became natural.
+
+> **Definition — Formant synthesis:** Making speech by generating the resonant frequencies (formants) that the human vocal tract produces, using rules rather than recordings. It sounds robotic but is very intelligible; Stephen Hawking's famous voice came from a 1980s synthesizer of this kind.
+
+> **Definition — Concatenative synthesis:** Making speech by cutting a large recording of one voice actor into small units and joining the best-matching units for each new sentence. It sounds natural in the middle of phrases and glitchy at the joins.
+
+In September 2016 DeepMind's WaveNet generated the raw waveform directly, predicting each audio sample from all the samples before it, the same "predict the next piece" idea your chatbot uses for words (Chapter 18). Listeners rated it far more natural than any earlier system.
+
+**Worked example: why WaveNet was slow at first.** At 24,000 samples per second, one second of speech requires 24,000 predictions made one after another, each waiting for the previous one. If each prediction took one millisecond (an illustrative figure), a single second of speech would take 24 seconds to generate. In 2017 a "parallel" version made generation about a thousand times faster, and WaveNet voices went into Google Assistant. Modern systems avoid the problem by generating compact codec tokens instead of raw samples. Kyutai's Mimi codec (Chapter 22), for example, runs at 12.5 frames per second, so a model predicts 12.5 small bundles of tokens per second of speech instead of 24,000 samples.
+
+Most neural TTS systems since 2017 work in two stages, popularized by Google's Tacotron 2: one model turns text into a spectrogram-like representation, and a second turns that back into sound.
+
+> **Definition — Vocoder:** The component that turns a spectrogram or audio tokens back into a playable waveform. Neural vocoders made synthetic speech sound natural instead of buzzy.
+
+Before any of that, the text has to be made speakable.
+
+> **Definition — Text normalization:** Converting written text into the words a person would actually say: "Dr. Lee paid $3.50 on 3/4" becomes "Doctor Lee paid three dollars fifty on March fourth" (or "the third of April," depending on the country).
+
+```mermaid
+flowchart LR
+    A["Written text"] --> B["Text normalization<br/>numbers, dates and<br/>abbreviations into words"]
+    B --> C["Acoustic model<br/>predicts audio tokens<br/>or a spectrogram"]
+    V["Voice prompt<br/>a few seconds of a speaker"] --> C
+    S["Style instruction<br/>calm, cheerful, whispering"] --> C
+    C --> D["Vocoder or codec decoder<br/>back to a waveform"]
+    D --> E["Speaker"]
+```
+
+*Figure 46.9: A modern TTS pipeline. The voice prompt and style instruction are what make cloning and expressive delivery possible.*
+
+From 2023, TTS began to look like language modeling. Microsoft's VALL-E (January 2023) treated speech as a sequence of codec tokens, predicted them with a Transformer, and imitated a new voice from a three-second sample. Diffusion and flow-matching methods (Chapter 16) gave another route to fast, high-quality voices. By 2025 several providers let developers describe the delivery in plain words ("speak like a calm nurse, slowly"), and native omni models (Chapter 22) could laugh, whisper and change tone mid-sentence.
+
+> **Definition — Mean opinion score (MOS):** A rating of speech quality or naturalness, usually on a 1–5 scale, averaged across many human listeners. It is the standard way to compare TTS systems, since no formula captures "sounds human."
+
+> **Try it:** In Microsoft Edge, open any article and use the "Read aloud" feature, which offers free neural voices. Then open your phone's accessibility settings and listen to an older system voice reading the same paragraph. Listen for pauses, emphasis on the right words, and how each voice handles a number like "1,284.50."
+
+## Voice cloning: a gift and a weapon
+
+> **Definition — Voice cloning:** Making a TTS system speak in a specific person's voice, from a recording of that person. Higher-quality clones use minutes or hours of audio; modern systems produce a convincing likeness from seconds.
+
+> **Definition — Zero-shot voice cloning:** Imitating a voice from a short sample the model has never been trained on, with no additional training, by feeding the sample in as a prompt alongside the text.
+
+Technically, cloning is TTS conditioned on a voice. The model has heard tens of thousands of speakers in training, so it has learned a "space of voices." A few seconds of a new voice locate a point in that space (much like a speaker embedding), and the model speaks from there.
+
+### The good uses
+
+Cloning gives voices back. Apple's Personal Voice (2023) lets people at risk of losing their speech, for example from ALS, record about 15 minutes of phrases on their iPhone and then type to speak in a synthetic version of their own voice, generated on the device. Voice banking services do the same for patients before throat surgery. Creators dub their videos into other languages in their own voice. Publishers produce audiobooks for titles that would never get a human narrator. Game studios and advertisers license voices from actors who agree and are paid.
+
+### The harms
+
+The same technology lets anyone with a short clip impersonate someone.
+
+> **Definition — Audio deepfake:** Synthetic speech that imitates a real person saying something they never said, used to deceive.
+
+- **Family-emergency scams.** A caller sounding exactly like your child or grandchild says they are in trouble and need money now. A few seconds of their voice from a social-media video is enough.
+- **Executive fraud.** In 2019 the head of a UK energy company reportedly transferred about $243,000 after a phone call from what sounded like his boss at the parent company. In 2024 an employee of the engineering firm Arup in Hong Kong paid out about $25 million after a video call in which the "colleagues," including the finance chief, were deepfakes.
+- **Election interference.** In January 2024 voters in New Hampshire received robocalls with an AI-generated imitation of President Biden's voice telling them not to vote in the primary. In February 2024 the US Federal Communications Commission ruled that AI-generated voices in robocalls count as "artificial" voices under the existing robocall law (the Telephone Consumer Protection Act), so such calls need the recipient's prior consent.
+- **Performers' livelihoods.** Voice actors found clones of their voices used without consent or pay. Tennessee's ELVIS Act (March 2024) added protection for a person's voice against unauthorized AI imitation, and performers' unions made consent and payment for digital replicas central demands in the 2023 Hollywood strike and in a video-game performers' strike that began in 2024.
+
+Some companies held back. Meta did not publicly release its Voicebox speech model in 2023, citing misuse risks, and in March 2024 OpenAI previewed Voice Engine, which could clone a voice from a 15-second sample, while saying it would not release it widely yet for the same reason. But open-source cloning models are freely available, so restraint by a few companies does not remove the capability.
+
+```mermaid
+sequenceDiagram
+    participant S as Scammer
+    participant C as Cloning tool
+    participant P as Parent
+    participant K as Real child
+    S->>C: 10 seconds of the child from a public video
+    C->>S: Synthetic voice that sounds like the child
+    S->>P: Panicked call asking for money right now
+    P->>S: What is our family safe word
+    S->>P: Excuses and more pressure
+    P->>K: Hangs up and calls back on the known number
+    K->>P: I am fine, that was not me
+```
+
+*Figure 46.10: How a voice-clone scam works, and the two habits that defeat it: a pre-agreed safe word and calling back on a number you already know.*
+
+### Defenses
+
+No single defense is enough, so people and organizations layer several:
+
+- **Habits.** Agree on a family safe word. Hang up and call back on a known number. Treat urgency, secrecy and unusual payment methods (gift cards, crypto, wire transfers) as red flags whatever the voice sounds like.
+- **Process.** Companies require a second channel and a second person to approve large payments, so no single call can move money.
+- **Provenance and watermarks.** Some providers embed hidden signals in generated audio.
+
+> **Definition — Audio watermark:** A hidden signal embedded in generated audio, inaudible to people but detectable by software, so the audio can later be identified as AI-made. Google's SynthID and Meta's AudioSeal (2024) are examples.
+
+Watermarks only help when the generator adds them, and they can sometimes be weakened by editing. Deepfake detectors that analyze audio for telltale artifacts help but are in an arms race with generators. That is why habits and processes, which do not depend on spotting the fake, are the most reliable protection (Chapter 58 covers misuse more broadly).
+
+> **Watch out:** "I would recognize my own child's voice" is exactly the instinct scammers exploit. Modern clones fool family members. Verify through a separate channel, not by listening harder.
+
+The policy debate has strong arguments on both sides. Open voice models let researchers build detectors, let small companies and accessibility projects compete, and support languages big companies ignore. Restricting them, the other side argues, raises the cost of mass fraud and harassment, and the people harmed (often elderly, often not tech-savvy) did not choose the risk. Most proposals land in the middle: consent checks for cloning a voice, watermarking by default, clear liability for misuse, and legal rights over one's own voice.
+
+## Real-time voice agents
+
+Chapter 22 explained the two designs of a talking assistant. The **cascade** chains speech recognition, a text language model and TTS; it is flexible, produces a transcript and lets you use any text model, but every hand-off adds delay and the language model never hears your tone. A **native speech-to-speech** ("omni") model listens and speaks directly, which is faster and hears emotion, but offers less control. This section is about the engineering that makes either one work on a real phone line with real customers.
+
+> **Definition — Voice agent:** An AI system that holds a spoken conversation and takes actions, such as booking an appointment, taking an order or answering account questions, usually over the phone or in an app.
+
+### What makes conversation hard
+
+A text chatbot waits for you to press Enter. A voice agent must decide for itself when you have finished, which is harder than it sounds: people pause mid-sentence to think, say "um," and trail off.
+
+> **Definition — Turn-taking:** Managing who speaks when in a conversation: detecting that the other person has finished (endpointing, Chapter 22), starting to reply promptly, and yielding when they start talking again.
+
+> **Definition — Barge-in:** The caller's ability to interrupt the agent mid-sentence and have it stop, listen and respond to what they just said.
+
+Barge-in creates a technical problem: the agent's microphone hears the agent's own voice coming out of the caller's phone speaker.
+
+> **Definition — Echo cancellation:** Removing the agent's own outgoing audio from the incoming signal, so it does not mistake its own voice for the caller interrupting.
+
+> **Definition — Backchannel:** The small sounds listeners make while someone else talks, such as "mm-hm," "right" and "yeah," which signal "keep going," not "my turn." A good voice agent must not treat these as interruptions, and the best ones produce them.
+
+```mermaid
+stateDiagram-v2
+    [*] --> Listening
+    Listening --> CallerSpeaking: voice detected
+    CallerSpeaking --> Listening: only noise or a cough
+    CallerSpeaking --> Thinking: end of turn detected
+    Thinking --> Speaking: first audio ready
+    Speaking --> CallerSpeaking: caller barges in
+    Speaking --> Listening: reply finished
+    Thinking --> HandOff: needs a human
+    HandOff --> [*]
+```
+
+*Figure 46.11: A voice agent's turn-taking as a set of states. Most bad experiences come from wrong transitions: replying while the caller is still thinking, or not stopping when interrupted.*
+
+Phone lines add their own handicaps. Calls traditionally carry narrowband audio at 8,000 samples per second, so frequencies above about 3,400 Hz are gone and "s" and "f" blur together; mobile networks and internet calling add compression and delay; and the caller may be in a car or a kitchen.
+
+### The latency budget
+
+People expect a reply within roughly a second; beyond that, they start repeating themselves or talking over the agent (Chapter 22 cites the roughly 200-millisecond gap typical of human turn-taking).
+
+| Stage | Illustrative delay | How engineers shrink it |
+|---|---|---|
+| Deciding the caller has finished | 200–500 ms | Smarter turn detectors that use words and intonation, not just silence |
+| Final speech recognition | 100–200 ms | Streaming recognition that transcribes while the caller talks |
+| Language model's first words | 200–600 ms | Smaller, faster models; short first sentence; cached instructions |
+| TTS first audio | 100–200 ms | Streaming TTS that starts speaking from the first phrase |
+| Network and phone system | 100–200 ms | Servers near the phone carrier; fewer hops |
+| **Total** | **700–1,700 ms** | Target: under about one second |
+
+*Table 46.2: An illustrative latency budget for a cascade phone agent. These are teaching ranges, not measurements of a particular product.*
+
+When an action takes longer (looking up an order), good agents say a short filler ("let me check that for you") so the silence does not feel like a dropped call.
+
+### Guardrails for agents that talk and act
+
+Voice agents are language models with a phone line, so they inherit every reliability issue of Chapter 18, plus a few of their own:
+
+- **Read back what matters.** Repeat names, dates, phone numbers and amounts, and ask for confirmation, because ASR errors on digits are common and costly.
+- **Act through tools, not words.** Bookings and refunds should go through structured tool calls with checks (Chapter 28), so the agent cannot "promise" something the system cannot do.
+- **Know when to hand off.** Detect frustration, confusion, emergencies and out-of-scope requests, and transfer to a person with a summary so the caller does not start over.
+- **Disclose and get consent.** Several jurisdictions require bots to disclose that they are not human in some situations (California has required this for bots used to sell or to influence votes since 2019), and some US states, such as California, require everyone on a call to consent to recording.
+
+> **Definition — Containment rate:** The share of calls a voice agent resolves completely without transferring to a human. Companies track it alongside customer satisfaction, because a high containment rate achieved by frustrating callers into hanging up is a false success.
+
+### Where voice agents work, and where they stumble
+
+Call centers use voice AI in three layers: transcribing and summarizing every call, suggesting answers to human agents in real time ("agent assist"), and fully automated agents for routine requests. Small businesses, from dental clinics to plumbers, use AI receptionists to answer calls they would otherwise miss. Language apps offer spoken conversation practice. Healthcare's fastest-spreading AI tools are ambient scribes, which listen to the doctor–patient conversation and draft the clinical note; leading products include Abridge and Microsoft's Dragon Copilot, and Intermountain Health reported a 27% reduction in time spent on notes per appointment.
+
+There are cautionary tales too. In June 2024 McDonald's ended a test of AI voice ordering at more than 100 US drive-thrus, after viral videos showed orders going comically wrong; drive-thrus combine noise, accents, children shouting from the back seat and orders that change mid-sentence. The lesson for anyone building in this space: a demo in a quiet room says little about a noisy, real setting.
+
+> **At the frontier (2026):** Native speech-to-speech models are closing the gap on control and reliability. Google released Gemini 3.8 Live for real-time voice on September 15, 2026, and full-duplex research systems (Kyutai's Moshi, 2024, was an early example) listen and speak at the same time, producing natural "mm-hm"s and handling interruptions gracefully. Many businesses still run cascades or hybrids because they want transcripts, tighter control over what is said, and the freedom to choose the text model.
+
+## Music and sound generation
+
+> **Definition — Music generation:** Using AI to create music, from melodies and accompaniments to complete songs with lyrics, vocals and production, usually from a text description.
+
+There are two ways to represent music for a model.
+
+> **Definition — Symbolic music (MIDI):** Music stored as notes and instructions (which note, when, how long, how loud, which instrument) rather than as sound. MIDI is the standard format. It is compact and easy to edit but carries no actual timbre or voice.
+
+Early AI music worked symbolically: models wrote notes, and software instruments played them. Generating actual audio, with singing and real-sounding instruments, is much harder because a three-minute song at CD quality is about 16 million samples per channel. OpenAI's Jukebox (2020) generated raw-audio songs with vocals, but OpenAI said it took roughly nine hours to render one minute. Google's MusicLM (January 2023) and Meta's open MusicGen (June 2023) generated short instrumental pieces from text descriptions using audio codec tokens (Chapter 22). Then, in 2024, Suno and Udio made full songs, with lyrics, vocals, verses and choruses, from a one-line prompt, in under a minute.
+
+Under the hood these systems use the same machinery as the rest of the book. Audio is compressed into codec tokens or a compact latent representation; a Transformer predicts the tokens, or a diffusion model (Chapter 16) denoises a latent, conditioned on the text prompt and lyrics; and a decoder turns the result back into sound. What makes them good is training on very large collections of recorded music, which is exactly where the legal fight began.
+
+### Tools musicians actually use
+
+> **Definition — Stem separation:** Splitting a finished song into its separate parts ("stems"), such as vocals, drums, bass and other instruments, so each can be edited, remixed or removed.
+
+Open separation tools such as Deezer's Spleeter (2019) and Meta's Demucs made this widely available. Its most famous use came in November 2023, when the Beatles released "Now and Then." Machine-learning audio separation, developed by Peter Jackson's film team, pulled John Lennon's voice cleanly away from the piano on an old cassette demo, letting the surviving Beatles finish the song. It won a Grammy in 2025.
+
+> **Definition — Voice conversion:** Changing the voice in a recording to sound like a different person while keeping the words, melody and timing. In music it lets a singer's performance be "re-sung" in another voice.
+
+Voice conversion went viral in April 2023 with "Heart on My Sleeve," a track using AI imitations of Drake and The Weeknd. It was pulled from streaming services after complaints from their label. Other artists took the opposite approach and invited fans to use licensed AI versions of their voices in exchange for a share of royalties.
+
+Beyond music, text-to-audio models generate sound effects and ambience for videos and games, and video generators such as Google's Veo 3 (May 2025) produce synchronized sound and dialogue along with the picture (Chapter 47). Mastering, mixing and noise-removal tools quietly use AI in most home studios.
+
+### The law, the labels and the settlements
+
+```mermaid
+timeline
+    title AI music and the law
+    2020 : OpenAI Jukebox generates songs as raw audio
+    2023 : Google MusicLM and Meta MusicGen
+         : AI fake Drake track goes viral
+    2024 : Suno and Udio generate full songs with vocals
+         : Major labels sue Suno and Udio in June
+    2025 : Universal settles with Udio in October
+         : Warner settles with Udio and Suno in November
+    2026 : Udio signs Merlin and Kobalt licensing deals
+         : Licensed music models promised
+```
+
+*Figure 46.12: From research demos to lawsuits to licensing, 2020–2026.*
+
+In June 2024 the three major record companies, Universal, Sony and Warner, sued Suno and Udio, alleging that they had trained on copyrighted recordings without permission. The companies argued that training was fair use. Rather than ending in court rulings, much of the fight turned into deals. Universal settled with Udio in October 2025 and struck a deal for a licensed AI music platform; Warner settled with Udio in November 2025 and also settled with Suno, which is to launch licensed models in 2026. Udio went on to sign licensing deals with Merlin, which represents independent labels (January 2026), and the publisher Kobalt (April 2026). In the reports available as of mid-2026, Sony was still litigating. The likely shape of the industry is licensed training with payments to rights holders, but terms, prices and the treatment of artists who never opted in remain contested.
+
+Two further questions are unsettled. **Who owns AI music?** The US Copyright Office's position, restated in a January 2025 report, is that copyright requires human authorship: purely AI-generated material is not protected, though human contributions such as lyrics, arrangement and the selection and editing of outputs can be. **What happens to streaming?** Services reported fast-growing uploads of fully AI-generated tracks in 2025, raising fears of royalty pools diluted by spam. Deezer began labeling fully AI-generated albums, and Spotify announced policies against AI impersonation and spam the same year.
+
+The debate is real on both sides. Supporters say AI music tools democratize creation, letting people with no training make songs for a birthday, a video or a small business, and that musicians themselves use them as instruments. Critics say the tools were built from musicians' work without consent or payment and now compete with those musicians, especially in production music for ads, games and videos, where "good enough and free" wins. Licensing deals address the first complaint more than the second.
+
+## Listening to the world: audio understanding
+
+Not all audio is speech. Many valuable systems simply recognize sounds.
+
+> **Definition — Sound event detection:** Recognizing and timestamping specific sounds in audio, such as glass breaking, a smoke alarm, a baby crying, a cough, a dog barking or a car horn.
+
+The field's ImageNet moment was AudioSet (Google, 2017): roughly two million ten-second clips from YouTube videos, labeled with 527 sound categories. Models trained on it, often by treating spectrograms as images, now run in phones and smart speakers. Since 2020 iPhones have offered Sound Recognition, which alerts deaf and hard-of-hearing users to alarms, doorbells and crying babies, processed on the device.
+
+Factories use acoustic monitoring for predictive maintenance: a bearing about to fail, a pump losing pressure or a leaking valve often sounds different weeks before it breaks, and tiny models on sensors can listen around the clock (Chapter 53 covers this kind of edge AI). Researchers study cough sounds, breathing and snoring as health signals, though few such tools have proven clinical value yet.
+
+Acoustic gunshot detection shows the stakes of errors. Networks of microphones in some US cities alert police to probable gunfire. Supporters say they speed response to shootings that are never reported; critics, citing studies of false alerts and police stops in the alerted areas, say they are inaccurate and concentrated in minority neighborhoods. Chicago ended its contract with the largest provider, ShotSpotter, in 2024, while other cities kept using it.
+
+### Bioacoustics: listening to nature
+
+> **Definition — Bioacoustics:** The study of sounds made by animals. AI bioacoustics uses models to detect and identify species in large volumes of recordings from forests, oceans and cities.
+
+**Worked example: why nature needs AI ears.** One weatherproof recorder in a forest, sampling at 48,000 times per second, collects 48,000 × 86,400 seconds = about 4.1 billion samples per day, and about 124 billion in a month: 720 hours of audio. A research project might deploy hundreds of recorders. No team of humans can listen to that, but a classifier can scan it in hours and hand experts a short list of detections to check.
+
+```mermaid
+flowchart LR
+    A["Recorders in a forest<br/>or hydrophones at sea"] --> B["Months of audio"]
+    B --> C["Cut into short clips<br/>and make spectrograms"]
+    C --> D["Classifier<br/>species or sound type"]
+    D --> E["Detections with<br/>confidence scores"]
+    E --> F["Experts check<br/>a sample"]
+    F --> G["Maps of where and when<br/>species are calling"]
+    F --> H["Corrected labels<br/>retrain the model"]
+```
+
+*Figure 46.13: An AI bioacoustics pipeline, from field recorders to maps of wildlife activity.*
+
+The best-known example sits in many birdwatchers' pockets. Cornell Lab of Ornithology's free Merlin Bird ID app added "Sound ID" in 2021, identifying birds from their songs in real time, and the related BirdNET project lets researchers and volunteers analyze recordings at scale. Google worked with the US National Oceanic and Atmospheric Administration (NOAA) to detect humpback whale songs in years of underwater recordings. Project CETI studies the click patterns sperm whales use to communicate, and in 2024 its researchers reported that those patterns have more structure than previously known. Rainforest Connection hangs old phones in trees to listen for chainsaws and alert rangers to illegal logging.
+
+> **Definition — Wake word:** A trigger phrase, such as "Hey Siri" or "Alexa," detected by a tiny model that runs constantly on the device. Only after it fires does the device start recording and, usually, sending audio to the cloud.
+
+> **Watch out:** A popular belief holds that phones secretly listen to your conversations to target ads. There is no credible evidence of mass covert eavesdropping for advertising; it would be expensive and easy to detect in battery use and network traffic. Behavioral data, location, purchases, contacts and "people like you" modeling explain the eerie accuracy (Chapter 51). Wake-word devices do occasionally mis-trigger and record snippets, which is a real, smaller privacy issue worth checking in your device settings.
+
+## Hearing aids, captions and accessibility
+
+The World Health Organization estimates that more than 1.5 billion people live with some degree of hearing loss, about 430 million of them to a disabling degree. The hardest situation for them is a noisy room.
+
+> **Definition — Cocktail party problem:** The challenge of picking out one voice from a mix of many voices and background noise, which healthy human hearing does well and hearing aids have long done poorly.
+
+Traditional hearing aids amplify sound, including the noise. AI-based noise reduction is trained on thousands of hours of speech mixed with noise, so it learns to keep the voice and suppress the clatter. Running it inside a hearing aid is hard: the device has a tiny battery, and the processing delay must stay very short, on the order of ten milliseconds, or the wearer hears an echo between the sound reaching the ear directly and the processed version. In 2024 Phonak introduced a hearing aid with a dedicated chip running a neural network to separate speech from noise, and other makers are following.
+
+Access has widened too. In 2022 a US Food and Drug Administration rule created a category of over-the-counter hearing aids for adults with mild to moderate loss, sold without a prescription. In September 2024 the FDA authorized hearing-aid software for Apple's AirPods Pro 2, turning popular earbuds into an over-the-counter hearing aid after a built-in hearing test.
+
+> **Definition — Live captions:** Real-time, on-device speech recognition that captions any audio playing on a phone or computer (videos, calls, podcasts), built into Android since 2019 and iPhones since 2022.
+
+> **Definition — Speech-to-speech translation:** Translating spoken words in one language directly into spoken words in another, ideally in the speaker's own voice and with little delay. Meta's SeamlessM4T (2023) handled speech and text translation across nearly 100 languages.
+
+Together, captions, translation, voice banking, atypical-speech recognition and sound alerts are among the most clearly beneficial uses of audio AI, and they are a large share of why this branch matters.
+
+## How audio AI fails, and the ethics around it
+
+| Failure mode | Example | Mitigation |
+|---|---|---|
+| Uneven accuracy | Higher WER for some accents, dialects, ages and speech conditions | Representative data, per-group WER testing, letting users correct transcripts |
+| Hallucination | Invented sentences during silence in a medical transcript | Strip silences, keep audio for review, human sign-off for records |
+| Noise and channel shift | A model trained on clean audio fails on phone calls or in cars | Train on noisy and narrowband audio; test in the real setting |
+| Number and name errors | "Fifteen" heard as "fifty" in an order or dosage | Read back and confirm critical fields |
+| Turn-taking mistakes | Agent interrupts a caller who paused to think | Better endpointing, tuning on real calls |
+| Impersonation | Cloned voices pass voiceprint checks | Do not rely on voice alone; second channels; watermarks |
+| False alarms in detection | Fireworks flagged as gunshots | Human review before action; publish error rates |
+
+*Table 46.3: How audio AI systems fail and how practitioners respond.*
+
+The ethical questions cluster around consent. **Consent to be recorded and analyzed:** meetings, calls and clinic visits are now routinely transcribed, summarized and stored, often with participants only vaguely aware. **Consent over one's voice:** a voice is part of a person's identity and, for performers, their livelihood. **Consent to train:** speech and music datasets were often assembled from material whose creators never agreed. Alongside consent sit fairness (whose voices are understood), honesty (disclosing that a caller is an AI) and security (voice is no longer proof of identity).
+
+## At the frontier, and what is still unsolved
+
+> **At the frontier (2026):** The direction of travel is one model that hears and speaks natively, in many languages, with emotion and natural timing, cheap enough to run for every phone call. Native omni models such as Gemini 3.8 Live (September 2026), full-duplex research systems, instructable expressive TTS, live speech translation in earbuds and phones, licensed music models following the label settlements, and on-device recognition that never sends audio to the cloud are all live areas in late 2026.
+
+Open problems include truly natural turn-taking and emotional understanding; equal accuracy across accents, dialects and the thousands of low-resource languages; transcription that never invents words; reliable detection of cloned voices; consent and payment systems for voices and music used in training; and hearing aids that solve the cocktail party problem in real time on a tiny battery.
+
+## In plain English
+
+Sound is air wiggling, and a microphone turns it into thousands of numbers a second. AI usually converts those numbers into a spectrogram, a picture of which pitches are loud when, so the same tools that recognize images can recognize sounds.
+
+Speech recognition took seventy years to go from ten digits to almost any speech. The big lessons were the same as for chatbots: learn from data rather than rules, and use huge, messy datasets. Whisper, trained on 680,000 hours of internet audio, made good transcription free and open. Accuracy is measured with word error rate, but a single number hides real gaps: some accents and speech conditions get far worse results, and transcripts can even invent sentences. Diarization labels who spoke when.
+
+Synthetic voices went from robotic to human-sounding after 2016, and now a few seconds of audio can clone a voice. That helps people who are losing their speech and creators dubbing videos, and it also powers scams, fake robocalls and unauthorized copies of performers. A family safe word and calling back on a known number beat trying to hear the difference.
+
+Voice agents chain or merge listening, thinking and speaking, and must manage turn-taking, interruptions and a latency budget of about a second. Music AI can write full songs; labels sued in 2024 and many disputes turned into licensing deals in 2025–26. Beyond speech, audio AI detects alarms, failing machines, birds and whales, and it powers live captions and smarter hearing aids.
+
+## Key terms
+
+Audio AI, Waveform, Sampling rate, Bit depth, Frequency, Nyquist limit, Fourier transform, Spectrogram, Mel scale, Log-mel spectrogram, ASR (automatic speech recognition), Phoneme, Acoustic model, Hidden Markov model (HMM), Language model (in speech recognition), End-to-end speech recognition, Weak supervision, Word error rate (WER), Character error rate (CER), Low-resource language, Hallucination (in speech recognition), Speaker diarization, Speaker embedding, Diarization error rate (DER), Speaker verification (voice biometrics), TTS (text-to-speech), Formant synthesis, Concatenative synthesis, Vocoder, Text normalization, Mean opinion score (MOS), Voice cloning, Zero-shot voice cloning, Audio deepfake, Audio watermark, Voice agent, Turn-taking, Barge-in, Echo cancellation, Backchannel, Containment rate, Music generation, Symbolic music (MIDI), Stem separation, Voice conversion, Sound event detection, Bioacoustics, Wake word, Cocktail party problem, Live captions, Speech-to-speech translation
+

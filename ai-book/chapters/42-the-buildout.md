@@ -367,7 +367,7 @@ The workforce is a bottleneck that money alone cannot fix quickly. A gigawatt ca
 
 Even with a finished building, you need chips, and the chip supply chain has its own bottlenecks (Chapters 33, 35 and 36):
 
-- **HBM memory**, the stacked memory next to every AI chip, comes from only three suppliers (SK hynix, Samsung and Micron). Memory makers shifting capacity to HBM tightened supplies of ordinary memory in 2025 and 2026, and Amazon cited higher memory prices when it raised its 2026 spending plan.
+- **HBM memory**, the stacked memory next to every AI chip, comes from only three suppliers (SK hynix, Samsung and Micron). Memory makers shifting capacity to HBM reportedly tightened supplies of ordinary memory in 2025 and 2026, and Amazon reportedly cited higher memory prices when it raised its 2026 spending plan.
 - **Advanced packaging**, especially TSMC's CoWoS, which bonds GPU dies and HBM onto one package, has been the gating capacity for AI accelerators since 2023.
 - **Optical transceivers**, the plug-in modules that turn electrical signals into light for the network, are needed by the hundreds of thousands per campus.
 

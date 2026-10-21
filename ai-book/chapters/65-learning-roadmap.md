@@ -752,3 +752,424 @@ The field is small, which means individual contributions are visible. 80,000 Hou
 **Read across the debate.** Policy and safety work requires understanding people you disagree with (Chapter 60). Read at least one book from each side: Arvind Narayanan and Sayash Kapoor's *AI Snake Oil* and their "AI as Normal Technology" essays argue that AI is a powerful but ordinary technology whose main harms are present-day ones; Stuart Russell's *Human Compatible* and Brian Christian's *The Alignment Problem* explain why aligning powerful AI is hard; and Eliezer Yudkowsky and Nate Soares's *If Anyone Builds It, Everyone Dies* (2025) is the starkest statement of the extinction-risk case. You do not have to agree with any of them, but you should be able to state each side's best argument in a way its proponents would accept.
 
 > **Watch out:** Policy work is not "non-technical" by default. The most effective policy people understand how models are trained, evaluated and deployed (Parts IV and V of this book) well enough to know which rules are enforceable and which are not. Technical literacy is what separates a credible policy voice from a commentator.
+
+## Certifications: when they matter
+
+Should you collect certificates? The honest answer is: sometimes, and less often than course marketing suggests.
+
+> **Definition — Certification:** A credential earned by passing an exam set by a company or professional body, such as the AWS Certified AI Practitioner or the IAPP AI Governance Professional (AIGP). It tests a defined body of knowledge and often has to be renewed.
+
+> **Definition — Certificate of completion:** Proof that you finished a course, such as those from Anthropic Academy, DeepLearning.AI or Hugging Face. It shows initiative and structured learning, but it is not a tested qualification.
+
+Certifications matter most where a buyer or a human-resources filter asks for them: cloud-centered enterprises, consulting firms and systems integrators, government contracting, and governance and compliance roles. They matter little for frontier-lab research, research engineering and startup engineering, where public work (code, papers, evaluations, write-ups) dominates. For the trades, the reverse is true: a license or a completed apprenticeship is not optional, it is the job's entry ticket.
+
+| Credential | Cost | Helps most for | Matters little for |
+|---|---|---|---|
+| AWS Certified AI Practitioner | $100; 65 questions in 90 minutes; no prerequisites (as of October 2026) | Roles in companies that run on AWS; consulting | Research and startup engineering |
+| Cloud ML certifications (AWS Machine Learning Engineer Associate, Google Cloud Professional Machine Learning Engineer, Microsoft's Azure AI certifications) | Paid | Enterprise-facing ML and AI engineering roles | Research roles |
+| IAPP AIGP (AI Governance Professional) | Paid | Governance, privacy, compliance and risk roles | Engineering roles |
+| ISO/IEC 42001 implementer or auditor training | Paid | Auditors and compliance teams | Most other roles |
+| Electrical license or completed apprenticeship; professional engineering license | Through an apprenticeship or exams | Data-center trades and facility design | Software roles |
+| Completion certificates from free courses | Free (some providers charge for the certificate) | Showing initiative; structuring your learning | Being treated as a qualification |
+
+**A worked example: certificates versus portfolio.** Suppose, for illustration, that preparing for a certification takes about 40 hours and a solid portfolio project takes about 50.
+
+```
+Option 1: five certifications       5 x 40 hours = 200 hours
+Option 2: one certification          1 x 40 hours =  40 hours
+          plus three projects        3 x 50 hours = 150 hours
+                                     total        = 190 hours
+```
+
+The time is about the same. But Option 2 gives a hiring manager three concrete things to look at and three stories for you to tell in an interview, plus the one certificate that a filter might require. The rule of thumb in AI hiring: one relevant certification plus three strong portfolio pieces beats five certifications and no portfolio.
+
+> **Watch out:** "Certifications are the way in" is one of the most common misconceptions about AI careers. They help at the door of some enterprises. For building roles, what gets you hired is evidence that you can build things that work and that you know how to prove it.
+
+## Portfolio projects that prove what you can do
+
+> **Definition — Portfolio:** Public evidence of what you can do: projects, write-ups, code repositories, demos and case studies. In AI hiring it often matters more than credentials, because skills change faster than degrees can track them.
+
+> **Definition — Case study:** A short write-up of one real project: the problem, who had it, what you built, how you measured it, the results, and what you would do next. It is the standard portfolio format for consultants, forward-deployed engineers and product people.
+
+> **Definition — README:** The front-page document of a code repository, explaining what the project does, how to run it and what results it achieved. For many reviewers it is the only part of your project they will read.
+
+What makes a portfolio project convincing? Hiring managers in AI repeatedly describe the same features. It solves a real problem for a real person, not a toy. It has an evaluation with numbers. It shows an error analysis: what went wrong, how often, and what you did about it. It reports cost per use. It is honest about limitations. And it is written up clearly enough that a busy person can understand it in three minutes.
+
+```mermaid
+flowchart LR
+  A["Pick a real problem<br/>with a real user"] --> B["Build the smallest<br/>version that works"]
+  B --> C["Write 20–30<br/>test cases"]
+  C --> D["Measure: how many pass?"]
+  D --> E["Error analysis:<br/>label and count failures"]
+  E --> F["Fix the most<br/>common failure"]
+  F --> D
+  D --> G["Write it up<br/>and share it"]
+  G --> H["Feedback from users<br/>and readers"]
+  H --> A
+```
+
+*Figure 65.9: The portfolio project cycle. The inner loop (measure, analyze, fix, measure again) is what separates a product from a demo; the outer loop keeps you working on problems people care about.*
+
+**A worked example: the numbers that make a write-up.** Suppose you build a question-answering assistant over a 150-page employee handbook, and write 30 test questions with correct answers.
+
+```
+First run:    19 of 30 correct = 63%
+Failures (11), labeled by hand:
+  6  retrieval missed the right section
+  3  right section found, answer ignored it
+  2  correct answer, wrong format
+Fix the biggest category (smaller chunks with section titles attached)
+Second run:   25 of 30 correct = 83%
+```
+
+Then add cost. If each question sends about 3,000 tokens and gets about 500 back, at an illustrative $3 per million input tokens and $15 per million output tokens:
+
+```
+3,000 x $3  / 1,000,000 = $0.0090
+  500 x $15 / 1,000,000 = $0.0075
+Cost per question        = $0.0165, about 1.7 cents
+```
+
+"I raised accuracy from 63% to 83% by fixing retrieval, at under two cents a question" is a sentence that gets interviews. "I built a chatbot for our handbook" is not.
+
+Here are portfolio ideas for every track, roughly in order of difficulty:
+
+| Project | Track | Rough time | What it proves |
+|---|---|---|---|
+| Automation map of your own job, with hours saved measured over a month | A | 5–10 hours | You can find where AI pays off |
+| A reusable assistant for a colleague, improved through feedback on 10 real uses | A | 10 hours | User research for AI |
+| A three-step automation (form, AI summary, spreadsheet, email) with error handling | A | 10–15 hours | You can build systems, not just chats |
+| Free AI implementation for a local small business, written up as a case study | A, B | 20–40 hours | Discovery, delivery and measurement; the best item for consultants and FDEs |
+| A small app built with an AI app builder that real people use | A, B | 10–30 hours | Shipping |
+| A RAG app with citations and a 30-question eval, comparing two chunking strategies | B | 30–50 hours | Retrieval and evaluation skills |
+| An agent with two or three tools and an MCP server you wrote, with a failure log | B | 40–60 hours | Agent engineering |
+| A prompt-injection red-team of your own agent: 15 attacks and the mitigations | B, E | 15–25 hours | Security thinking |
+| Fine-tuning a small open model with LoRA, compared against prompting a frontier model on cost and quality | B, C | 30–50 hours | Knowing when fine-tuning is worth it |
+| Training a tiny language model end to end with nanochat, documenting each stage | C | 20–40 hours plus about $48 | Understanding of the whole training pipeline |
+| A Triton or CUDA kernel benchmarked against PyTorch's built-in version | D | 30–60 hours | GPU performance skills |
+| A quarterly hyperscaler capital-spending tracker built from company filings | D | 15–25 hours | Reading primary sources about the industry |
+| A risk register for one AI tool, following the NIST AI RMF | E | 15–25 hours | Practical governance |
+| A replication of a small interpretability or post-training paper, with code and write-up | C, E | 60–120 hours | Research ability; doubles as a fellowship application |
+| A new benchmark of 50–200 hard tasks in your own field, with expert answers and a rubric, run on several models | All | 40–100 hours | Turns domain expertise directly into AI-research credibility |
+
+A good write-up follows a simple shape, which you can paste into your notes and fill in:
+
+```
+TITLE: what it does, for whom, in one line
+PROBLEM: who has it, how they solve it today, what it costs them
+APPROACH: what you built and why this design
+EVALUATION: the test set, the metric, how you scored it
+RESULTS: before and after, with numbers
+FAILURES: the main error types and how often each happened
+COST: per use and per month at realistic volume
+LIMITS: what it does not do, and what could go wrong
+NEXT: what you would do with another month
+```
+
+*Figure 65.10: A one-page write-up template for any portfolio project.*
+
+## Building in public
+
+> **Definition — Building in public:** Sharing your work and what you are learning as you go, through posts, code and write-ups, rather than only showing finished results. It builds visibility, invites feedback and creates a record of steady progress.
+
+Building in public does three things for you. It makes you finish things, because you told people you would. It brings feedback from people who know more than you. And it creates a visible trail that employers, clients and collaborators can follow, which matters more than any single polished project. A hiring manager who can see twelve weeks of steady, honest progress learns more about you than from a résumé line.
+
+Where to share: GitHub for code (with a good README); a personal blog or newsletter for write-ups; LinkedIn, X or Bluesky for short updates; Hugging Face Spaces for live demos; YouTube for walkthroughs; and the communities listed later in this chapter for questions and feedback. Local meetups and company "AI guilds" are excellent places to give your first five-minute talk.
+
+> **Definition — Hugging Face Space:** A free hosted web page on the Hugging Face platform where you can publish a working demo of an AI app that anyone can try in their browser.
+
+What to post: weekly progress notes; short "today I learned" posts; full project write-ups using the template above; honest accounts of what failed and why; and summaries of papers you read, in your own words.
+
+```mermaid
+timeline
+  title Twelve weeks of building in public
+  section Weeks 1 to 4
+    Week 1 : Set up a GitHub profile and a simple blog
+    Weeks 2 to 4 : Weekly progress notes and a first small project
+  section Weeks 5 to 8
+    Week 6 : First full project write-up with eval numbers
+    Weeks 5 to 8 : Weekly notes and one paper summary
+  section Weeks 9 to 12
+    Week 10 : Second write-up and a five-minute meetup talk
+    Week 12 : Third write-up and a review of what you learned
+```
+
+*Figure 65.11: A 12-week building-in-public plan. By week 12 you have about 12 weekly notes, 3 write-ups and a talk: some 16 public pieces of evidence.*
+
+A few rules keep building in public safe:
+
+- **Never post your employer's or clients' data, code or documents**, and never paste confidential material into public tools. Check your employer's policies on AI use and on social media before you post about work.
+- **Credit your sources** and the people who helped you.
+- **Say when AI helped you write or build something.** It is normal now, and hiding it damages trust if discovered.
+- **Be honest about failures and limits.** Inflated claims are easy to spot and they follow you.
+- **Do not chase hype.** Posts that explain one thing clearly age far better than posts that call every release a revolution.
+
+> **Key idea:** Your public record is a compounding asset. Small, honest, regular posts beat rare, polished ones, because they show the thing employers most want to see: that you keep learning.
+
+## Staying current without drowning
+
+AI news never stops. Several major model releases can land in a single month, alongside new papers, products, funding rounds, lawsuits and policy changes. Trying to follow all of it is a recipe for anxiety and shallow knowledge. The goal is not to know everything; it is to notice the few changes that matter for your work, and to keep building durable skills while the surface churns.
+
+> **Definition — Information diet:** A deliberate, limited set of sources and times for consuming news, chosen for quality and relevance, so that staying informed takes a fixed, small amount of time instead of an endless scroll.
+
+> **Definition — Newsletter:** A regular email publication, often written by one expert, that summarizes and analyzes news in a field. Many are free; some charge for full access.
+
+> **Definition — RSS feed:** A standard format that websites use to publish their latest posts, which a feed-reader app collects in one place in the order they appear, with no algorithm deciding what you see.
+
+### A sustainable routine
+
+A routine that works for most people has four rhythms:
+
+- **Daily, 20 minutes:** one newsletter, plus one hands-on try of something new (a feature, a model, a tool).
+- **Weekly, 1 hour:** one long-form podcast episode or one paper, read with the three-pass method.
+- **Monthly, 1 hour:** re-run your personal jagged-frontier test from Stage 1 and note what changed.
+- **Quarterly, 2 hours:** update your skills map, your portfolio and your plan for the next quarter.
+
+How much time is that per week, on average?
+
+```
+Daily:      20 min x 5 weekdays           = 100 min
+Weekly:     60 min                        =  60 min
+Monthly:    60 min / about 4.3 weeks      =  14 min
+Quarterly: 120 min / 13 weeks             =   9 min
+Total                                     = 183 min, about 3 hours
+```
+
+```mermaid
+pie title Average weekly minutes in the routine
+  "Daily newsletter and hands-on try" : 100
+  "Weekly podcast or paper" : 60
+  "Monthly jagged-frontier test" : 14
+  "Quarterly plan review" : 9
+```
+
+*Figure 65.12: A sustainable routine takes about three hours a week. More than half of it is the daily habit; the rest is slower, deeper material.*
+
+Three hours a week is enough to stay well informed. It is also a ceiling worth respecting: if you find yourself spending far more time reading about AI than using it, cut sources.
+
+### Newsletters and blogs
+
+Pick one or two to start. Free means free to read; several offer an optional paid tier, and two (SemiAnalysis and Stratechery) put most of their best material behind a subscription.
+
+| Newsletter or blog | Focus | Best for track | Cost |
+|---|---|---|---|
+| Import AI (Jack Clark) | Research and policy, weekly | C, E | Free |
+| The Batch (DeepLearning.AI) | Broad weekly news with explanations | All | Free |
+| One Useful Thing (Ethan Mollick) | Practical use of AI at work | A | Free |
+| Simon Willison's blog | Hands-on notes on new models, tools and AI security | A, B | Free |
+| Latent Space (swyx and Alessio) | AI engineering | B | Free |
+| Interconnects (Nathan Lambert) | Post-training and open models | C | Free with a paid tier |
+| Ahead of AI (Sebastian Raschka) | Research digests | C | Free with a paid tier |
+| SemiAnalysis (Dylan Patel) | Chips, data centers and compute economics | D | Mostly paid |
+| Stratechery (Ben Thompson) | Business strategy of tech and AI | A, D | Mostly paid |
+| AI as Normal Technology (Narayanan and Kapoor) | Skeptical, evidence-based analysis | All, especially E | Free |
+| Don't Worry About the Vase (Zvi Mowshowitz) | Exhaustive weekly roundups, with a safety focus | E | Free |
+| Epoch AI | Data and analysis on compute, training costs and trends | C, D, E | Free |
+
+### Podcasts
+
+All free. Pick one for your commute or walk.
+
+| Podcast | What it is | Best for |
+|---|---|---|
+| Dwarkesh Podcast | Long, deep interviews with lab leaders and researchers | Big-picture understanding |
+| Latent Space | AI engineering, from practitioners | Track B |
+| No Priors | Interviews with founders and researchers | Business and products |
+| Hard Fork (The New York Times) | Weekly tech news for a general audience | Everyone |
+| Lenny's Podcast | Product management, including many AI episodes | AI product work |
+| Training Data (Sequoia) | Founders and builders of AI companies | Business |
+| The Cognitive Revolution | Interviews on AI capabilities and impacts | Broad coverage |
+| Acquired | Long company histories, including NVIDIA | Track D, business |
+| 80,000 Hours Podcast | AI safety, policy and careers | Track E |
+| Machine Learning Street Talk | Technical and philosophical conversations with researchers | Track C |
+
+### Data, leaderboards and primary documents
+
+Use these critically: each measures something specific, and none measures "which AI is best".
+
+- **Epoch AI:** trends in compute, cost, hardware and benchmarks.
+- **METR:** evaluations of how long a task AI agents can complete.
+- **Artificial Analysis:** independent comparisons of model price, speed and quality.
+- **LMArena:** rankings from human preference votes, which are sensitive to style as well as substance.
+- **Stanford AI Index:** the annual report on the state of AI.
+- **Lab system cards and model cards:** the primary source for what a model can do and how it was safety-tested.
+
+> **Definition — Leaderboard:** A public ranking of AI models on a benchmark or by human votes. Leaderboards are useful snapshots, but each measures one narrow thing and can be gamed or saturated (Chapter 24).
+
+### Communities
+
+Communities are where you ask questions, get feedback and meet collaborators.
+
+| Community | Good for |
+|---|---|
+| Hugging Face forums and Discord | Open models, courses, datasets and demos |
+| Kaggle | Practice datasets, competitions and public notebooks |
+| r/LocalLLaMA (Reddit) | Running open-weight models on your own hardware |
+| GPU MODE Discord | GPU kernels and performance engineering |
+| MLOps Community | Production ML and AI engineering |
+| fast.ai forums | Learners working through the fast.ai courses |
+| EleutherAI Discord | Open-source AI research |
+| LessWrong and the AI Alignment Forum | AI safety and alignment discussion |
+| Local meetups and company AI guilds | Talks, demos and in-person connections |
+
+### People worth following
+
+Following individuals often gives better signal than following outlets. A balanced set, by area:
+
+- **Teaching and fundamentals:** Andrej Karpathy, Andrew Ng, Jeremy Howard.
+- **Applied AI engineering:** Simon Willison, Chip Huyen, Hamel Husain, swyx.
+- **Research digests:** Sebastian Raschka, Nathan Lambert, Lilian Weng (her blog).
+- **Lab leaders:** Dario Amodei (essays such as "Machines of Loving Grace"), Sam Altman (his blog), Demis Hassabis, Jack Clark.
+- **Interpretability:** Chris Olah.
+- **Economics and work:** Ethan Mollick, Erik Brynjolfsson.
+- **Industry and compute:** Dylan Patel, Ben Thompson.
+- **Interviews:** Dwarkesh Patel.
+- **Skeptics and critics:** Arvind Narayanan and Sayash Kapoor, Gary Marcus, François Chollet (creator of the ARC Prize benchmarks).
+
+Follow at least one skeptic, even if you are enthusiastic, and at least one enthusiast, even if you are skeptical. Your errors will mostly come from the side you do not read.
+
+### Using AI to keep up with AI
+
+Your chatbot can help, with care. Deep-research tools can produce a weekly digest of developments in your niche, and a reusable assistant can summarize your newsletters into one page. But AI summaries of news inherit the news's errors and add their own, and models can confidently misstate dates, numbers and who said what. Use AI to triage and explain, then read the original for anything you will act on or repeat.
+
+> **Try it:** Create a reusable assistant called "Weekly AI briefing". In its instructions, list your track, your two newsletters, and the topics you care about, and tell it: "Separate confirmed facts from claims and predictions. For every number, say whether it is revenue, run-rate, valuation or an 'up to' figure, and give the original source." Run it once a week for a month and spot-check three claims each time.
+
+> **At the frontier (2026):** The companies building frontier AI have become major educators. As of October 2026, Anthropic Academy listed 23 free courses (including Claude Code 101, Building with the Claude API, Introduction to MCP, Introduction to agent skills and an AI Fluency series), OpenAI Academy offered tracks for working, building, leading adoption and teaching, and Hugging Face offered 12 free courses ranging from LLMs and agents to robotics. Because they are made by the builders, they are often the fastest way to learn new features, but remember that each teaches its maker's products first.
+
+> **Watch out:** You do not need to try every new model in its first week. Most releases change little about how you should work, and the ones that matter will still matter a month later. Spend your energy on durable skills (briefing, context, verification, evaluation, your domain) that improve with every model, rather than on tricks that expire with the next release.
+
+## Checking AI news and hype: a ten-point checklist
+
+AI news is full of enormous numbers, bold claims and impressive demos. Some are exactly right, some are technically true but misleading, and some are wrong. You do not need to be an accountant or a researcher to tell them apart. You need a habit: run the same ten questions over any claim that matters to you.
+
+> **Definition — Hype cycle:** The pattern new technologies often follow: inflated expectations, then disillusionment, then steady productive use. Being able to tell which phase a claim belongs to is a valuable skill.
+
+> **Definition — Primary source:** The original document behind a claim: a company's official filing, a research paper, a system card, a court document or an official announcement. Primary sources can still be biased, but they are where the facts start.
+
+> **Definition — Secondary source:** A report about a primary source, such as a news article, an analyst's estimate or a social-media thread. Useful, but each retelling can add errors, drop caveats or exaggerate.
+
+**1. What kind of number is it?** Revenue, run-rate, recurring revenue, bookings, valuation and "up to" commitments are different things, and headlines often blur them.
+
+> **Definition — Recognized revenue:** Money counted under formal accounting rules, only once the service has actually been delivered. It is the most conservative and comparable revenue figure.
+
+> **Definition — Run-rate (annualized revenue):** Recent revenue, often a single month, multiplied up to a full year. One $5 billion month gives a "$60 billion run-rate". It flatters fast-growing companies, and different firms calculate it differently.
+
+> **Definition — ARR (annual recurring revenue):** The yearly value of a company's ongoing subscriptions or contracts. Like run-rate, it is a reading of current pace, not money already collected.
+
+> **Analogy:** Run-rate is a speedometer: how fast the car is going this minute. Recognized revenue is the odometer: how far it actually went. Both are true, but they answer different questions.
+
+A worked example from 2026, based on secondary reports gathered by the research firm Sacra and others: Anthropic's reported recognized revenue for the first three quarters of 2026 was $4.8 billion, $11.5 billion and $16.8 billion.
+
+```
+Recognized revenue, Q1 to Q3 2026: 4.8 + 11.5 + 16.8 = $33.1 billion
+Reported run-rate at the end of July 2026: over $65 billion
+```
+
+Both figures can be true at once, because a fast-growing company's current pace is far above what it booked earlier in the year. Methods matter too: Anthropic reportedly books sales made through cloud resellers at their gross value, which inflates its top line relative to companies that report such sales net. And OpenAI's annualized revenue was reported at about $50 billion in September 2026 by the Financial Times, with Bloomberg reporting a company expectation of $70 billion or more by the end of 2026; the FT noted that an earlier $70 billion figure came from a different method. Compare like with like.
+
+**2. Who says so, and what do they gain?** Venture-capital surveys come from firms with portfolio interests. Company blogs are marketing. Short-sellers profit when a stock falls. Rival labs have reasons to talk each other down. A source with an incentive can still be right, so the response is not to dismiss it but to look for independent corroboration.
+
+**3. Find the primary source.** Read the filing, the paper, the system card or the official blog, not the post about the article about the paper. NVIDIA's quarterly earnings release is a model of a clear primary source: for the quarter ending July 26, 2026 it reported revenue of $96.2 billion, of which $89.0 billion came from its data-center business.
+
+**4. Look for the denominator and the comparison.** Percentages without a base hide the story. A job category that grows from 20 postings to 220 has grown 1,000%, yet it is still tiny. And framing changes meaning: an MIT study from July 2025 reportedly found that about 5% of enterprise generative-AI pilots achieved rapid revenue gains or measurable profit impact. Media turned that into "95% of AI pilots fail", which is not what the study measured.
+
+> **Definition — Base rate:** How common something is to begin with, the "denominator" that gives a number meaning. A tenfold rise in something rare can still leave it rare, and a 95% figure means little until you know 95% of what.
+
+**5. Benchmarks: independent, uncontaminated, unsaturated?** A lab's own chart of its own model is a starting point, not proof. Prefer third-party evaluations from organizations such as METR, Epoch AI and government AI institutes. Ask whether the test questions could have leaked into training data, and whether top models all score near 100% already, in which case the benchmark no longer separates them. And remember the jagged frontier: a gold medal at the International Mathematical Olympiad tells you little about reading an analog clock.
+
+> **Definition — Benchmark contamination:** When a benchmark's test questions, or close copies, end up in a model's training data, so a high score reflects memory rather than ability (Chapter 24).
+
+> **Definition — Benchmark saturation:** When the best models all score near the maximum on a benchmark, so it can no longer tell them apart and a new, harder test is needed.
+
+**6. Demo or deployment?** A demo shows that something can work at least once, under chosen conditions. Deployment shows it works for real users at scale. Ask: has it shipped, to how many people, and what do they report? Stanford's 2026 AI Index found 88% of organizations saying they had adopted AI; adoption is not the same as impact. For robots in particular, check whether a demo was teleoperated by a hidden human (Chapter 49).
+
+**7. "Up to", contingent and circular deals.** Headline figures are often maximums that depend on conditions.
+
+> **Definition — "Up to" deal:** A deal announced at its maximum possible value, where much of the money depends on conditions such as milestones, an IPO or future purchases. The headline is the ceiling, not what will necessarily happen.
+
+> **Definition — Circular deal:** An arrangement in which a supplier invests in a customer that then spends the money buying from that supplier, such as a chipmaker investing in an AI lab that buys its chips. It is real business, but it can make demand look larger and more independent than it is.
+
+> **Analogy:** An "up to" deal is like a gym membership that offers "up to 365 visits a year". The headline is the maximum, not a forecast of how often anyone will go.
+
+A worked example: Bloomberg Law reported in March 2026 that Amazon agreed to invest $50 billion in OpenAI, of which $35 billion was contingent on an IPO or a technical milestone.
+
+```
+Headline:       $50 billion
+Contingent:     $35 billion
+Unconditional:  50 - 35 = $15 billion, or 30% of the headline
+```
+
+The same discipline applies to valuations.
+
+> **Definition — Valuation (post-money):** What investors agree a company is worth immediately after a funding round, including the new money. It is the price of a small slice multiplied up to the whole company, not cash anyone holds.
+
+When Anthropic reportedly raised $65 billion at a $965 billion post-money valuation in May 2026, the pre-money valuation was 965 − 65 = $900 billion, and the new investors bought roughly 65 ÷ 965 ≈ 6.7% of the company. Nobody paid $965 billion for anything.
+
+**8. Wait 48 hours.** First reports of leaks, valuations and "breakthroughs" are frequently revised, corrected or retracted. If a story still matters in two days, it will still be there, with better details.
+
+**9. Track predictions.** Keep a simple log of what experts, companies and you yourself predicted, with dates, and check back. Over a year this is the best way to learn whose judgment to trust, including your own.
+
+**10. Separate "can", "will" and "should".** Whether something is technically possible, whether it will actually be adopted at scale, and whether it would be good are three different questions with different kinds of evidence. Many arguments about AI go wrong by answering one and claiming to have answered the others.
+
+Figure 65.13 compresses the checklist into a flow you can run in about two minutes.
+
+```mermaid
+flowchart TD
+  A["A big AI claim"] --> B["What kind of number?<br/>revenue, run-rate, valuation, up to"]
+  B --> C["Who says so<br/>and what do they gain?"]
+  C --> D["Is there a primary source?"]
+  D -->|"No"| W["Wait 48 hours<br/>and look again"]
+  D -->|"Yes"| E["What is the denominator<br/>and the comparison?"]
+  E --> F["Independent, uncontaminated,<br/>unsaturated benchmark?"]
+  F --> G["Shipped to real users<br/>or only a demo?"]
+  G --> H["Any up-to, contingent<br/>or circular terms?"]
+  H --> I["Is this about can,<br/>will or should?"]
+  I --> J["Log your judgment<br/>and check back later"]
+```
+
+*Figure 65.13: The hype check as a flow. Most misleading claims fail at the first, fourth or sixth question.*
+
+**A worked dissection.** Here is an invented headline of the kind you will see every week: "AI startup Nimbus hits $1 billion ARR, raises $2 billion at a $40 billion valuation, signs up-to-$10 billion compute deal with its chip investor, and beats GPT on a top benchmark." Running the checklist:
+
+- "$1 billion ARR" is a pace, not money collected. Is it based on one strong month? Gross or net of reseller fees?
+- "$40 billion valuation" means investors bought about 2 ÷ 40 = 5% of the company at that price. It says nothing about profit.
+- "Up to $10 billion" is a ceiling over several years, probably with conditions, and the deal is with an investor: a possible circular flow.
+- "Beats GPT on a top benchmark" raises three questions: which model version, run by whom, and is the benchmark saturated or contaminated?
+- What is missing: recognized revenue, gross margin, customer concentration and any independent evaluation.
+
+None of this means Nimbus is a bad company. It means the headline, by itself, tells you much less than it seems to.
+
+> **Key idea:** You do not have to decide whether AI is "overhyped" in general. Judge each claim on its own: what kind of number, from whom, compared with what, measured how, shipped or not.
+
+## Your one-page plan
+
+Everything in this chapter fits on one page. Fill this in, put it somewhere you will see it, and review it each quarter.
+
+```
+MY TRACK (and why):
+WEEKLY HOURS I CAN PROTECT:          WHEN (days and times):
+STAGE AND DATES:  Stage __, from ______ to ______
+THIS QUARTER'S MILESTONE (checkable):
+RESOURCES THIS QUARTER (max 3):
+  1.
+  2.
+  3.
+PORTFOLIO PROJECT THIS QUARTER:
+  Real user:                 Eval set size:
+INFORMATION DIET: newsletter ______  podcast ______
+                  community ______
+PUBLIC OUTPUT: where ______  how often ______
+NEXT REVIEW DATE:
+```
+
+*Figure 65.14: A one-page learning plan. Three resources at most per quarter: finishing beats collecting.*
+
+## In plain English
+
+Learning AI is less about finding resources than about choosing a direction, putting things in order, and finishing. Everyone should start the same way: spend about three months, at roughly five hours a week, becoming a fluent and careful power user. That means understanding in broad strokes how chatbots work, taking a couple of short courses, practicing on your real work, writing down your own rules for when to trust AI, and reading two good books.
+
+Then pick a track. Track A makes you the person who redesigns how work gets done with AI, without becoming a programmer. Track B makes you an AI engineer who builds products on top of models. Track C goes into training models and research, and takes the longest. Track D is about the physical and economic machinery: GPUs, data centers, trades and the industry. Track E is about governance, policy and safety. Each track has its own three-to-twelve-month and one-to-three-year stages, with specific free and paid resources.
+
+Throughout, build things and show them. A few strong projects with real users, honest numbers and clear write-ups beat a pile of certificates, except in the enterprise, cloud, governance and trades settings where specific credentials open doors. Sharing your progress publicly, safely and honestly, compounds over time.
+
+To stay current, keep a small information diet of about three hours a week: one newsletter a day, one podcast or paper a week, a monthly test of what models can now do, and a quarterly review. And run a simple checklist over any big AI claim: what kind of number it is, who says it and why, where the original source is, what it is compared with, whether the test was independent, whether it has really shipped, and whether any "up to" or circular terms hide inside it.

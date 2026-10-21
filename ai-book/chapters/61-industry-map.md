@@ -382,3 +382,306 @@ Two cautions. Not all capex is for AI (Amazon's includes robotics and satellites
 Bulls point to how fast lab revenue has grown (Anthropic's reported run-rate rose about sevenfold in seven months), to clouds saying demand still exceeds supply, and to AWS's reported $496 billion backlog. Bears point to projected cash losses, circular financing, Oracle's credit rating being cut to BBB-, the lowest investment grade, in July 2026, and to railroads and 1990s fiber-optic networks, real technologies that attracted more investment than they could repay in time. Chapter 43 covers financing and Chapter 60 presents both sides of the bubble debate.
 
 > **Key idea:** The AI industry in 2026 is a bet that application revenue will grow into the infrastructure being built for it. The richest companies in the world are making that bet, but it is still a bet, and so far the layer capturing the most profit is the one selling the shovels.
+
+## Inside a frontier lab
+
+From outside, a frontier lab looks like a research group that occasionally releases a model. Inside, it is a large company with sales teams, lawyers, data-center builders and security staff.
+
+> **Analogy:** A frontier lab is like a film studio. Research is the creative team, infrastructure is the soundstages and cameras, product is distribution, Applied AI is marketing and the theater partnerships, and safety is standards and practices. Most studio employees are not directors, and most lab employees are not researchers.
+
+```mermaid
+flowchart TD
+    LEAD["Leadership<br/>CEO, board, PBC mission"]
+    LEAD --> RES["Research<br/>pretraining, post-training and RL,<br/>multimodal, agents, interpretability,<br/>alignment, evals"]
+    LEAD --> SCL["Scaling and compute<br/>training infrastructure, inference,<br/>kernels, data-center delivery"]
+    LEAD --> PRD["Product<br/>consumer apps, API platform,<br/>coding agents, devices"]
+    LEAD --> GTM["Applied AI and go-to-market<br/>sales, solutions architects,<br/>FDEs, customer success"]
+    LEAD --> SAF["Safeguards and policy<br/>trust and safety, public policy"]
+    LEAD --> SEC["Security<br/>model weights, infrastructure, users"]
+    LEAD --> GA["General and administrative<br/>finance, legal, people, communications"]
+```
+*Figure 61.5: A typical frontier-lab organization in 2026. Real labs name and group these differently, and program managers and data scientists serve all of them.*
+
+> **Definition — Go-to-market (GTM):** Everything involved in selling a product: sales, marketing, partnerships, solutions engineering and customer success (the people who make sure customers get value after they buy).
+
+> **Definition — Applied AI:** The teams at a lab that help customers put models to work: solutions architects who design deployments and run proofs of concept, and forward-deployed engineers who build them.
+
+Research trains the models (Chapters 19 to 21). Scaling and compute keeps hundreds of thousands of accelerators busy and increasingly delivers the data centers themselves. Product builds the apps, the developer platform and new devices. Applied AI and go-to-market sells to businesses and governments. Safeguards and policy decides what the model should and should not do and enforces usage rules (Chapter 56). Security protects the lab's most valuable asset, its model weights.
+
+### Who labs actually hire
+
+Job boards reveal priorities that press releases do not. On October 21, 2026, Anthropic listed 675 open roles and OpenAI listed 809. Grouping each company's own department labels into the blocks of Figure 61.5 gives this picture:
+
+```
+Open roles by group, October 21, 2026 (each # = 10 roles)
+
+Anthropic (675)
+ Applied AI, sales, marketing  ##################### 207
+ Finance, legal, people, comms ##########            95
+ Infrastructure and compute    ########              79
+ Product                       ########              75
+ Research and engineering      #######               68
+ Safeguards, policy, benefit   ######                62
+ Security                      #####                 53
+ TPM and data science          ####                  36
+
+OpenAI (809)
+ GTM, Applied AI, FDE, mktg    ####################################  361
+ Scaling                       ###########           106
+ User ops, finance, people     ##########            101
+ Smaller groups                ##########             98
+ Research                      #####                  51
+ Safety systems, data science  ####                   36
+ Security                      ###                    29
+ Consumer devices              ###                    27
+```
+*Figure 61.6: Open roles at two frontier labs on October 21, 2026, from their public job boards, grouped by the author. Open roles are not headcount, and each company labels departments differently.*
+
+Research was 68 of 675 open roles at Anthropic (about 10%) and 51 of 809 at OpenAI (about 6%). Anthropic's largest single department was Sales, with 124 open roles; OpenAI's were Go To Market (149), Applied AI (120) and Scaling (106).
+
+> **Key idea:** Research is only about 5–10% of open roles at the two leading US labs. Most hiring is for selling, deploying, scaling, securing and governing AI. The industry's growth in 2026 is a deployment story as much as a research story.
+
+> **Watch out:** "You need a PhD to work at an AI lab" is a myth. Most open roles are outside research, and even lab research postings typically ask for a degree "or an equivalent combination of education, training, and/or experience." Chapter 62 maps the skills and Chapter 63 describes every role with its pay.
+
+### Shipping a model is a team sport
+
+A new model passes along a relay, and each handoff has an owner.
+
+```mermaid
+flowchart LR
+    D["Data<br/>data engineers,<br/>human-data vendors"] --> PRE["Pretraining<br/>research scientists,<br/>research engineers"]
+    PRE --> POST["Post-training and RL<br/>RL researchers,<br/>expert contractors"]
+    POST --> EV["Evals<br/>evals engineers,<br/>domain experts"]
+    EV --> SR["Safety review<br/>safeguards, red team,<br/>policy"]
+    SR --> INF["Inference<br/>performance and<br/>kernel engineers"]
+    INF --> PR["Product launch<br/>PMs, designers,<br/>engineers"]
+    PR --> DEP["Customer deployment<br/>solutions architects,<br/>FDEs, customer success"]
+    DEP -->|"what customers need"| POST
+    INFRA["Infrastructure and compute<br/>clusters, reliability, data centers"] --> PRE
+    INFRA --> INF
+```
+*Figure 61.7: How a model is made and shipped, with the roles that own each handoff. What customers need loops back into the next round of post-training.*
+
+> **At the frontier (2026):** Labs are moving down the value chain. Anthropic listed 25 open roles in "Compute" and posted data-center engineering and regional community-engagement roles; OpenAI's 106 "Scaling" roles included technicians for its Stargate sites. Companies that began as research groups now hire people who negotiate power contracts and talk to county commissioners.
+
+## Business models
+
+> **Definition — Seat-based pricing:** Charging a fixed fee per user per month, the classic software model.
+
+> **Definition — Usage-based pricing:** Charging per amount used: per token, per API call or per "credit." Model APIs are usage-based.
+
+> **Definition — Outcome-based pricing:** Charging only when a result is achieved, such as per resolved customer-support ticket.
+
+> **Definition — Services-as-software:** Selling the outcome of a service (the books closed, the tickets resolved) delivered largely by AI agents, instead of selling a tool for humans to use.
+
+| Model | Example (reported, 2026) | Strength | Weakness |
+|---|---|---|---|
+| Usage-based API | Claude and GPT APIs, priced per million tokens | Grows with use | Price wars; revenue swings |
+| Consumer subscription | Claude Pro $20; Max $100 and $200 | Predictable | Heavy users can cost more than they pay |
+| Per-seat enterprise | Harvey, about $1,200 per lawyer a month, about 20-seat minimum | High value per customer | Shrinks if AI reduces headcount |
+| Subscription plus credits | Lovable, $25–50 a month plus usage credits | Protects margins from heavy users | More complex to buy |
+| Outcome-based | Sierra, per conversation or per resolution | Price matches value | Outcomes must be measured reliably |
+| Advertising | ChatGPT ads, $1B annualized (August 2026) | Earns from free users | Trust and privacy concerns |
+| Marketplace | Mercor keeps about 30–40% of gross; contractors get 60–70% | Scales with its network | Few, powerful customers |
+| Infrastructure rental | CoreWeave GPU-hours and capacity contracts | Long contracts, big backlogs | Capital-heavy and debt-funded |
+
+*Table 61.5: Business models in the AI industry, with examples and trade-offs.*
+
+```mermaid
+quadrantChart
+    title What is sold and to whom
+    x-axis Horizontal --> Vertical
+    y-axis Sells a tool --> Sells an outcome
+    quadrant-1 Vertical outcomes
+    quadrant-2 Horizontal outcomes
+    quadrant-3 Horizontal tools
+    quadrant-4 Vertical tools
+    Chat assistants: [0.15, 0.2]
+    Cursor: [0.35, 0.3]
+    Harvey: [0.85, 0.3]
+    Sierra: [0.4, 0.8]
+    AI bookkeeping firm: [0.85, 0.85]
+```
+*Figure 61.8: The business-model matrix. Moving right means serving one industry deeply; moving up means charging for results instead of access to a tool.*
+
+Why the drift toward outcomes? Seat compression. If software lets a customer do the same work with fewer people, a per-seat price shrinks with the headcount. Charging per resolved ticket or completed task keeps revenue tied to the work, not to the number of humans doing it.
+
+## AI unit economics
+
+> **Definition — Unit economics:** The revenue and costs of one unit of a business, such as one customer, one query or one seat: does serving one more unit make or lose money? (Chapter 31 works a product-level example.)
+
+> **Definition — CAC and LTV (customer acquisition cost and lifetime value):** CAC is what it costs in sales and marketing to win one customer; LTV is the gross profit you expect from that customer over the whole relationship. Healthy businesses have LTV several times CAC.
+
+> **Definition — Net revenue retention (NRR):** This year's revenue from last year's customers divided by last year's revenue from them. Above 100% means existing customers spend more each year even after counting those who leave (churn).
+
+Classic software has a beautiful property: once the code is written, serving one more customer costs almost nothing, so software companies often report gross margins around 80%. AI breaks this. Every query runs on GPUs, and every token costs money.
+
+```
+Where one dollar of revenue goes (illustrative)
+
+Classic software (SaaS)
+ Delivery cost     |####                | about 20 cents
+ Gross profit      |################    | about 80 cents
+
+AI application on a frontier model
+ Model and compute |##########          | 30 to 70 cents
+ Gross profit      |##########          | what is left
+
+Reported company-level figures
+ OpenAI gross margin, Sacra estimate:       about 33%
+ Anthropic revenue per $1 of compute, Q3:   about $1.70
+ NVIDIA gross margin, July 2026 quarter:    75.0%
+```
+*Figure 61.9: Why AI gross margins tend to be lower than classic software's. The application range is illustrative and varies with the model, the task and the pricing.*
+
+### Worked example: a legal-AI seat
+
+Take a product priced like Harvey: about $1,200 per lawyer per month, 20-seat minimum. The minimum contract is 20 × $1,200 × 12 = **$288,000 a year**.
+
+Now the compute cost, with made-up usage: a lawyer runs 40 document reviews a day for 22 days a month (880 reviews), each sending 100,000 tokens in and getting 5,000 out.
+
+- On a mid-tier model at $2 and $10 per million tokens (Claude Sonnet 5.5's list price in late 2026): 0.1 × 2 + 0.005 × 10 = **$0.25 per review**, or 880 × 0.25 = **$220 a month**. Gross margin before other costs: (1,200 − 220) ÷ 1,200 ≈ **82%**.
+- On a top-tier model at $10 and $50: 0.1 × 10 + 0.005 × 50 = **$1.25 per review**, or **$1,100 a month**. Gross margin: about **8%**.
+
+Same customer, same price, same work: the model choice moves the margin from 82% to 8%. That is why AI companies route easy tasks to cheap models, cache repeated text (Chapter 23) and cap heavy users.
+
+Add acquisition. Suppose (another made-up number) winning a law firm costs $50,000 of sales effort. At 80% margin the minimum contract yields about $230,400 of gross profit a year, so the firm repays its CAC in about 50,000 ÷ 230,400 × 12 ≈ **2.6 months**. Keep the customer five years and LTV dwarfs CAC; lose it after six months and the picture darkens, which is why retention matters so much.
+
+Falling token prices help. Epoch AI found in March 2025 that the price of reaching a fixed benchmark score fell between 9× and 900× per year, depending on the benchmark. But customers want the newest model, priced at the top, and cheaper tokens invite heavier use: reasoning models think longer and agents run for hours. Cost per token falls while tokens per task rise (the Jevons paradox of Chapter 37).
+
+> **Key idea:** In AI, gross margin is a design decision. The same product can earn 80% or lose money depending on which model it calls, how much context it sends and how it prices heavy users.
+
+## Moats and "the model eats your feature"
+
+> **Definition — Moat:** A lasting advantage that stops competitors from copying a business and taking its customers, named after the water-filled ditch around a castle.
+
+> **Definition — "The model eats your feature":** The risk that a model provider releases your startup's main feature as a built-in capability, making your product redundant overnight.
+
+> **Definition — Data flywheel:** A loop in which product usage generates data that improves the product, which attracts more usage.
+
+> **Definition — Switching cost:** How painful it is for a customer to move to a competitor: retraining staff, migrating data, rebuilding integrations, re-passing security reviews.
+
+Every application buys its core ingredient, the model, from the same few suppliers as its competitors, and those suppliers sell their own apps. When a lab adds file uploads, web search, memory or a coding agent to its chatbot, every startup whose product was "a chatbot plus that feature" loses its reason to exist.
+
+> **Analogy:** AI wrappers are like restaurants that all buy from the same food wholesaler. Winners differ on recipe (workflow), location (distribution), service (trust) and loyalty (switching costs). If the wholesaler opens its own restaurant next door, that is "the model eats your feature."
+
+```mermaid
+flowchart TD
+    W["Thin wrapper<br/>a prompt and a nice screen"] --> WF["Workflow product<br/>fits how one job is really done"]
+    WF --> SOR["System of record<br/>holds the customer's data and history"]
+    SOR --> TOP["Data flywheel plus distribution<br/>plus trust and compliance"]
+    RISK["Model eats your feature<br/>risk is highest here"] -.-> W
+```
+*Figure 61.10: The moat ladder, from weakest (top of the figure) to strongest (bottom). Each rung is harder to copy than the one before.*
+
+Six things actually protect an AI business: **proprietary data loops** (data rivals cannot get, which improves with use); **deep workflow integration** (being woven into a team's systems and approvals); **distribution** (an existing route to customers, often a stronger moat than technology); **trust and compliance** (certifications, audit trails and a track record that let regulated buyers say yes); **switching costs**; and **speed**, which is weak on its own but buys time to build the rest.
+
+> **Key idea:** Ask one question of any AI product: when the next model ships, will this product get better or become obsolete? A good AI business is one that the next model makes stronger.
+
+> **Watch out:** "Wrappers are worthless" is also a myth. Cursor was built on other companies' models and became a reported $60 billion acquisition. Thin wrappers are fragile; thick ones, with workflow depth, distribution and data, can become very large businesses.
+
+## Case studies from 2025–2026
+
+All figures below are reported (mostly from Sacra company pages and news coverage) and dated. The last column divides the valuation by a revenue figure near the same date, so treat it as rough.
+
+| Company | What it does | Reported figures | Lesson | Revenue multiple |
+|---|---|---|---|---|
+| Cursor (Anysphere) | AI code editor on other labs' models | $2.6B to $4B+ annualized (mid-2026); SpaceX deal at about $60B in stock (June 2026) | A wrapper can win by owning a demanding user's daily workflow; its model suppliers sell rival coding agents | about 15–23× |
+| Harvey | Vertical AI for law firms | ARR over $400M (Aug 2026); $15.5B valuation (Sep 2026); about 10% of staff are ex-lawyers | Domain depth and trust justify premium seats in a conservative profession | about 39× |
+| Lovable | Builds apps from plain-language descriptions | About $400M run-rate (Mar 2026) to about $600M (Sep 2026); $13.3B (Aug 2026) | AI can create new customers (non-engineers who build); credits protect margins | about 22× |
+| Sierra | Customer-service agents for large brands | About $200M ARR and $15.8B valuation (May 2026) | Outcome pricing survives seat compression, and investors pay heavily for it | about 79× |
+| Mercor | Marketplace for expert training data | Gross run-rate from about $760M to about $2B in six months (to June 2026); $10B (Oct 2025) | Gross is not net: at a 30–40% take rate, $2B gross is $600–800M net | not computed |
+| Scale AI | Data labeling for labs | About $2B revenue (2025 est.); Meta bought 49% for $14.3B (Jun 2025), then customers reportedly left | For a supplier to rival labs, neutrality is itself a moat | not computed |
+| Perplexity | AI answer engine | About $750M annualized (Aug 2026 est.); $20B (Sep 2025) | The purest test of distribution against "the model eats your feature" | not computed (dates differ) |
+| CoreWeave | Neocloud renting NVIDIA GPUs | About $5.1B revenue (2025); $99.4B backlog; about $35.1B debt (June 2026); about 67% of 2025 revenue from Microsoft | Debt-funded infrastructure grows fast but is fragile to concentration | public company |
+
+*Table 61.6: Eight AI businesses, 2025–2026. For comparison, the labs: Anthropic's $965B post-money (May 2026) against an over-$47B run-rate (early May) is about 20×; OpenAI's $852B (March 2026) against $25B (February) is about 34×.*
+
+Read the multiples as a record of expectations. Twenty times revenue says investors expect very fast growth for years; 79× says they expect even more. Few companies sustain that, which is why most venture bets fail and a few pay for the rest.
+
+> **Try it:** Ask your chatbot: "Explain run-rate, recognized revenue, valuation and an 'up to' deal using a lemonade stand." Then paste in this week's biggest AI funding headline and ask it to label every number. Check its labels against Table 61.1, and look for a primary source such as an SEC filing.
+
+## In plain English
+
+The AI industry is a chain. At the bottom are power plants, land and the electricians who build data centers. Above them are the chip makers, led by NVIDIA, whose data-center business took in $89 billion in one 2026 quarter at a 75% gross margin. Next come the clouds, which planned to spend roughly $720–745 billion on buildings and equipment in 2026. Then the model labs, such as OpenAI and Anthropic, with reported revenue run-rates in the tens of billions and valuations near a trillion dollars. Around them sit data and tooling firms; above them, the apps you use and the consultants who help businesses use them.
+
+Money flows down the chain. Of your $20 subscription, roughly 60% goes to computing. Most of that repays chips, a big slice becomes the chip maker's profit, only about a nickel per dollar pays for electricity, and a few cents reach the factories in Taiwan and Korea. Some money loops, as suppliers invest in labs that buy from them, and many headline deals are "up to" maximums.
+
+The numbers need care. Run-rate is a speedometer, recognized revenue is an odometer, and a valuation is the price of a slice, not cash in the bank. AI products cost money every time they are used, so their margins depend on which model they call. Lasting businesses own something the next model cannot copy: data, workflow, distribution or trust.
+
+Inside a lab, most people are not researchers: sales, applied AI, infrastructure, security and policy are most of the hiring.
+
+## Key terms
+
+Value chain, Revenue, Recognized revenue (GAAP revenue), ARR (Annual Recurring Revenue), Run-rate (annualized revenue), Bookings, backlog and RPO (remaining performance obligations), Gross margin, Operating margin, Free cash flow, Capex (capital expenditure), Depreciation, Valuation, Pre-money and post-money valuation, Funding round (Seed, Series A, B, C and so on), Venture capital (VC), IPO (initial public offering), Revenue multiple, Public benefit corporation (PBC), Gigawatt (GW), Powered land, Foundry, Custom silicon (ASIC), Hyperscaler, Neocloud, GPU-hour, Compute commitment (compute deal), Take-or-pay contract, Customer concentration, Frontier lab, Open-weight model, Human data, RL environment, Horizontal AI, Vertical AI, Wrapper, Systems integrator (SI or GSI), Forward-deployed engineer (FDE), Pilot (proof of concept), Circular deal (vendor financing), "Up to" deal (contingent investment), Go-to-market (GTM), Applied AI, Seat-based pricing, Usage-based pricing, Outcome-based pricing, Services-as-software, Unit economics, CAC and LTV (customer acquisition cost and lifetime value), Net revenue retention (NRR), Moat, "The model eats your feature", Data flywheel, Switching cost.
+
+## Exercises
+
+1. **[Easy] Read the money.** (1) Find one AI funding or revenue headline from this week. (2) Copy every number in it into a list. (3) Label each one with a row of Table 61.1: recognized revenue, run-rate, backlog, "up to" commitment, valuation or capex. (4) Find the primary source if one exists (a company blog post, an SEC filing at sec.gov, or an official announcement). (5) Write three sentences on what the headline did and did not say. **What you'll learn:** to separate money earned from money promised and money imagined.
+
+2. **[Easy] Speedometer and odometer in a spreadsheet.** (1) In column A, list twelve months. (2) In column B, enter a made-up company's monthly revenue that starts at $100 million and grows 15% a month (in B3 type =B2*1.15 and fill down). (3) In column C, compute the run-rate as =B2*12. (4) In one cell, compute the year's recognized revenue as =SUM(B2:B13). (5) Compare December's run-rate with the year's total. **What you'll learn:** why fast-growing companies' run-rates far exceed what they actually earned in the year.
+
+3. **[Easy] Place twenty companies on the map.** (1) Draw seven horizontal bands labeled with the layers of Figure 61.1. (2) Place these companies: NVIDIA, TSMC, SK hynix, ASML, CoreWeave, AWS, Oracle, OpenAI, Anthropic, DeepSeek, Mistral, Scale AI, Mercor, LangChain, Cursor, Harvey, Perplexity, Sierra, Accenture and Crusoe. (3) Circle any company that appears in more than one layer (Google, Amazon and Microsoft are good test cases). (4) Ask a chatbot to check your placements and explain any disagreements. **What you'll learn:** how the industry fits together, and that the giants span several layers at once.
+
+4. **[Medium] Follow your own subscription dollar.** (1) Build the per-GPU cost model from "Follow one subscription dollar" in a spreadsheet: hardware cost, hardware life in years, building cost per GPU, building life, kilowatts per GPU, electricity price and other costs. (2) Compute the yearly cost and each line's share. (3) Apply the shares to 60 cents of a subscription dollar. (4) Now change one assumption at a time: three-year hardware life, 12-cent electricity, 50% utilization. (5) Write down which assumption changes the answer most. **What you'll learn:** why depreciation, not electricity, dominates AI's cost structure.
+
+5. **[Medium] Price an AI feature.** A company wants to summarize 1,000 support tickets a day, each about 2,000 tokens in and 200 tokens out. (1) Compute the daily and monthly cost with Claude Haiku 5.5 ($0.10 in and $0.50 out per million tokens), Sonnet 5.5 ($2 and $10) and Opus 5.5 ($4 and $20), using cost = (input tokens × input price + output tokens × output price) ÷ 1,000,000. (2) If you charge the company $500 a month, compute your gross margin with each model. (3) Decide which model you would use and what you would test first to make sure the cheap one is good enough. **What you'll learn:** how model choice sets the unit economics of an AI product.
+
+6. **[Medium] Read an earnings release.** (1) Go to nvidianews.nvidia.com and open the most recent quarterly results release. (2) Record total revenue, Data Center revenue, gross margin and next-quarter outlook. (3) Compute Data Center revenue as a share of the total. (4) Find one sentence about risks or assumptions (such as China). (5) Compare with the July 2026 quarter in this chapter: what changed? **What you'll learn:** how to get numbers from a primary source instead of a headline.
+
+7. **[Medium] Draw the circular-money map.** (1) Using this chapter and news from the last three months, list every investment between chip makers, clouds and labs you can find. (2) Draw them as arrows like Figure 61.4, with one color for investments and another for purchase commitments. (3) Mark which deals are "up to" or contingent. (4) Write a paragraph on which company is most exposed if one lab's growth slows. **What you'll learn:** to see the dependencies behind headline demand.
+
+8. **[Challenge] Count a company's open roles.** (1) Pick an AI company with a public job board (many use Greenhouse or Ashby; the lab boards in this chapter are job-boards.greenhouse.io/anthropic and jobs.ashbyhq.com/openai). (2) Count open roles by department. (3) Group them into the blocks of Figure 61.5 and draw a bar chart like Figure 61.6. (4) Compare research's share with this chapter's 5–10%. **What you'll learn:** what a company is really investing in, straight from its hiring.
+
+9. **[Challenge] Moat audit.** (1) Pick an AI startup you use or have read about. (2) Score it from 0 to 3 on each of the six moats in this chapter: data loop, workflow integration, distribution, trust and compliance, switching costs, speed. (3) Answer the key question: will the next frontier model make it stronger or obsolete? (4) Ask a chatbot to argue the opposite of your conclusion, then decide who made the better case. **What you'll learn:** to judge defensibility the way investors and founders do.
+
+10. **[Challenge] What would you have to believe?** (1) Take one company from Table 61.7. (2) Assume a mature company of its type might be valued at about 10 times revenue. (3) Compute the revenue it would need for today's valuation to equal 10× revenue. (4) Compute how many years of 50% annual growth that would take from its reported figure, using a spreadsheet column that multiplies by 1.5 each year. (5) Write two sentences on whether that seems plausible and what could go wrong. **What you'll learn:** how valuations encode growth expectations, and how to test them with arithmetic.
+
+## Areas of opportunity
+
+- **AI financial analyst or industry researcher.** Investors, corporate strategy teams and journalists need people who can read filings, separate run-rate from revenue and model compute economics. Equity research, venture firms and data providers pay for this skill, and it starts with the vocabulary in this chapter.
+- **Vertical AI founder in an unglamorous industry.** Harvey's pattern (deep workflow, practitioners on staff, premium seats) remains open in insurance claims, freight, construction estimating, compliance, dental billing and government services, where domain experts can build moats that general labs will not prioritize.
+- **Outcome-priced agent businesses.** Companies that charge per resolved ticket, completed claim or booked appointment align price with value and avoid seat compression. Buyers who are skeptical of AI hype often prefer paying only for results.
+- **Services-as-software firms.** Buying or building a bookkeeping, IT-support or back-office business and running it with AI agents captures margins that software alone cannot, because distribution and trust come with the business.
+- **Implementation and FDE-style services for mid-sized companies.** With only about 5% of pilots reaching measurable impact, firms that turn pilots into changed workflows are in demand. Small agencies can serve the mid-market that large integrators ignore.
+- **Picks-and-shovels tooling.** Evals, observability, prompt-injection defense, cost monitoring and model routing sell to every AI builder regardless of which lab wins. Cost-routing alone can move a product's margin by tens of points.
+- **Physical-buildout supply chain.** Power equipment, cooling, construction, workforce training and "powered land" development are bottlenecks that money cannot instantly fix. Trades, engineers and developers near major sites see strong demand.
+- **Human-data and RL-environment work.** Labs pay for expert judgment and training environments. It is a real business and a flexible income for professionals, but customer concentration makes it volatile.
+- **Unit-economics consulting for AI products.** Many startups do not know their cost per task or their heaviest users' margins. People who can model token costs, caching and pricing tiers save companies from growing into losses.
+
+## Check your understanding
+
+1. A company says it is "at a $60 billion run-rate." Explain what that means and why it is not the same as earning $60 billion last year.
+2. Anthropic raised $65 billion at a $965 billion post-money valuation. What was the pre-money valuation, and roughly what share did the new investors buy?
+3. Name the seven layers of the AI value chain in order, with one example company for each.
+4. In the subscription-dollar model, why does electricity take only about 5 cents while chips and servers take about 33 cents?
+5. What is a circular deal, and why can it make demand look larger than it is?
+6. Roughly what share of open roles at Anthropic and OpenAI were in research in October 2026, and which kinds of roles dominated?
+7. In the legal-AI worked example, why did the gross margin fall from about 82% to about 8%?
+8. Give three things that can protect an AI application from "the model eats your feature."
+
+<details><summary>Answers</summary>
+
+1. Run-rate is recent revenue (often one month) multiplied to a full year: a $5 billion month gives a $60 billion run-rate. It measures current speed, like a speedometer. Recognized revenue is what was actually earned for delivered services over a period, like an odometer. A fast-growing company's run-rate can be far above the revenue it booked last year, and companies compute run-rates in different ways.
+2. Pre-money = 965 − 65 = $900 billion. The new investors bought 65 ÷ 965 ≈ 6.7% of the company.
+3. Energy, land and construction (a utility or Crusoe); chips and hardware (NVIDIA or TSMC); cloud and compute (AWS or CoreWeave); model labs (OpenAI or Anthropic); data and tooling (Scale AI or Mercor); applications (Cursor or Harvey); services (Accenture or an FDE team).
+4. A GPU costs tens of thousands of dollars and is depreciated over about five years, so its yearly cost (about $10,000 in the model) dwarfs the electricity it uses (about $1,500 a year even running flat out at 7 cents per kilowatt-hour). Power is scarce because new grid connections take years, not because it is expensive per hour.
+5. A supplier invests in or lends to a customer, and the customer spends the money on the supplier's products, as when a chip maker invests in a lab that buys its chips. The sales are real, but part of the demand exists because the supplier financed it, so it is not fully independent demand.
+6. About 10% at Anthropic (68 of 675) and about 6% at OpenAI (51 of 809), so roughly 5–10%. Sales and go-to-market, applied AI and deployment, scaling and infrastructure, security and operations made up most open roles.
+7. The price and the workload stayed the same, but the top-tier model cost five times as much per token as the mid-tier model, raising compute cost per lawyer from about $220 to about $1,100 a month against $1,200 of revenue.
+8. Any three of: proprietary data loops, deep workflow integration, distribution, trust and compliance, switching costs, and speed of shipping.
+
+</details>
+
+## Going deeper
+
+- **Sacra company pages (sacra.com).** Regularly updated revenue, valuation and business-model estimates for OpenAI, Anthropic, CoreWeave, Scale AI, Mercor, Harvey, Lovable, Sierra and Perplexity; treat them as estimates and check dates.
+- **SEC EDGAR (sec.gov/edgar).** The primary source for public companies' quarterly filings and, once public, IPO prospectuses. NVIDIA's earnings releases are a model of clarity.
+- **Epoch AI (epoch.ai), especially its data-center hub and trends pages.** Independent data on AI compute, data centers, training costs and price trends.
+- **Stanford HAI, AI Index 2026 (hai.stanford.edu/ai-index).** The annual reference on investment, adoption, research and jobs.
+- **Menlo Ventures, "The State of Generative AI in the Enterprise."** A widely cited annual estimate of enterprise AI spending by layer; remember the authors invest in the sector.
+- **SemiAnalysis (semianalysis.com).** Deep, often paywalled analysis of chips, data centers and compute economics.
+- **Stratechery by Ben Thompson (stratechery.com).** Clear thinking on business models, distribution and why some companies win.
+- **Chris Miller, *Chip War* (2022).** The history of the semiconductor industry that underpins Layer 1.
+- **Acquired podcast, NVIDIA episodes (acquired.fm).** A long-form history of how NVIDIA built its position.
+- **Karen Hao, *Empire of AI*, or Parmy Olson, *Supremacy*.** Book-length accounts of how the frontier labs were built and financed.
