@@ -131,7 +131,7 @@ Look at the pattern: each input gets its own weight, you multiply each input by 
 
 ### Your chatbot is one enormous function
 
-Here is the leap. The model inside your chatbot is a function too. Its input is the conversation so far, as a list of tokens. Its output is a list of probabilities, one for every token it knows, saying how likely each one is to come next. If you type "The capital of France is", the output might give " Paris" a probability of 0.92 and every other token a small share of the rest.
+Here is the leap. The model inside your chatbot is a function too. Its input is the conversation so far, as a list of tokens. Its output is a list of probabilities, one for every token it knows, saying how likely each one is to come next. If you type "The capital of France is", the output might give " Paris" a probability of 0.92 (a 92% chance; Chapter 6 covers probability properly) and every other token a small share of the rest.
 
 > **Definition — Model:** In AI, the trained function itself: a fixed design (its architecture) plus all of its learned parameter values. "The model" is what actually turns your input into an output.
 
@@ -532,7 +532,7 @@ Three simpler cases show the full range:
 | [3, 4] and [4, −3] | 12 − 12 = 0 | 5 and 5 | 0 ÷ 25 = 0 | At right angles, unrelated |
 | [3, 4] and [−3, −4] | −9 − 16 = −25 | 5 and 5 | −25 ÷ 25 = −1 | Opposite directions |
 
-Many AI systems skip the division step by rescaling every vector to length 1 ahead of time (for example, [3, 4] becomes [0.6, 0.8]), which is called normalizing. After that, a plain dot product *is* the cosine similarity, and it is cheaper to compute.
+Many AI systems skip the division step by rescaling every vector to length 1 ahead of time (for example, [3, 4], whose length is 5, becomes [3 ÷ 5, 4 ÷ 5] = [0.6, 0.8]), which is called normalizing. After that, a plain dot product *is* the cosine similarity, and it is cheaper to compute.
 
 ### Why this matters to you
 
@@ -540,7 +540,7 @@ When a support chatbot finds the help article that answers "I forgot my login", 
 
 > **Watch out:** High cosine similarity means "about similar things", not "says the same thing". "I love this phone" and "I hate this phone" can have quite similar embeddings, because they are both short opinions about a phone. Systems that rely on similarity need other checks for meaning.
 
-> **At the frontier (2026):** Attention compares tokens to each other with dot products, so the number of comparisons grows with the square of the conversation length. That is a big problem for million-token contexts. DeepSeek's V4 models use compressed and sparse attention to cut this down; according to DeepSeek's technical report, at a 1-million-token context V4-Pro needs only 27% of the per-token computation of its predecessor, V3.2. Chapter 15 and Chapter 23 explain these tricks.
+> **At the frontier (2026):** Attention compares tokens to each other with dot products, so the number of comparisons grows with the square of the conversation length: double the length and there are four times as many comparisons. That is a big problem for million-token contexts (the context is all the text the model reads at once; Chapter 7 and Chapter 18 explain it). DeepSeek's V4 models use compressed and sparse attention to cut this down; according to DeepSeek's technical report, at a 1-million-token context V4-Pro needs only 27% of the per-token computation of its predecessor, V3.2. Chapter 15 and Chapter 23 explain these tricks.
 
 ## Matrices: tables of numbers
 
@@ -699,7 +699,7 @@ Each entry of an (m × n) times (n × p) product is a dot product of length n, w
 
 Notice the pattern: make the matrices 10 times wider and the work grows 1,000 times. Double the size and the work grows 8 times. A modern AI chip does on the order of 10^15 FLOPs per second, so even the 4,096-wide multiplication takes a fraction of a millisecond. That speed exists precisely because the chips were designed around this one operation (Chapter 32).
 
-> **At the frontier (2026):** Even something as old as matrix multiplication still has open problems. In 1969 Volker Strassen found a way to multiply 2 × 2 matrices with 7 multiplications instead of the obvious 8. In May 2025, Google DeepMind's AlphaEvolve system found a way to multiply 4 × 4 matrices of complex numbers with 48 multiplications, the first improvement on Strassen's approach for that case in 56 years. AI is now helping discover better ways to do the very math that AI runs on.
+> **At the frontier (2026):** Even something as old as matrix multiplication still has open problems. In 1969 Volker Strassen found a way to multiply 2 × 2 matrices with 7 multiplications instead of the obvious 8. In May 2025, Google DeepMind's AlphaEvolve system found a way to multiply 4 × 4 matrices of complex numbers (a kind of number, used in physics and engineering, that is really a pair of ordinary numbers) with 48 multiplications, the first improvement on Strassen's approach for that case in 56 years. AI is now helping discover better ways to do the very math that AI runs on.
 
 ## Tensors: stacks of matrices
 
@@ -727,7 +727,7 @@ The word appears all over AI: Google's TensorFlow library, its TPU (Tensor Proce
 
 | Name | Directions | Example shape | Example in AI |
 |---|---|---|---|
-| Scalar | 0 | (no shape) | A learning rate of 0.001 |
+| Scalar | 0 | (no shape) | A learning rate of 0.001 (a training setting, Chapter 6) |
 | Vector | 1 | 4,096 | One token's embedding |
 | Matrix | 2 | 4,096 × 4,096 | One layer's weights |
 | 3-D tensor | 3 | 8 × 1,000 × 4,096 | 8 conversations of 1,000 tokens, 4,096 numbers per token |
@@ -891,7 +891,7 @@ AI has walked steadily down a ladder of smaller and smaller number formats. Here
 
 > **Definition — FP16:** "Half precision": a 16-bit format with a little more detail than BF16 but a much smaller range (its largest value is 65,504), so it needs extra tricks to train safely.
 
-> **Definition — FP8:** An 8-bit (1-byte) floating-point format, supported in hardware since NVIDIA's Hopper chips. Variants trade detail against range (E4M3 keeps more detail, E5M2 more range).
+> **Definition — FP8:** An 8-bit (1-byte) floating-point format, supported in hardware since NVIDIA's Hopper chips (the H100 generation). Variants trade detail against range (E4M3 keeps more detail, E5M2 more range).
 
 > **Definition — FP4:** A 4-bit (half-byte) floating-point format with only 16 possible bit patterns, standing for 0, 0.5, 1, 1.5, 2, 3, 4, 6 and their negatives. It works only with scaling tricks that share one scale factor across a block of numbers.
 
@@ -916,7 +916,7 @@ How can a model work when its numbers are rounded this hard? Three reasons.
 
 1. **Errors average out.** Each output is a sum of thousands of products. Small rounding errors point in random directions and partly cancel.
 2. **Training is already noisy.** Models learn from random batches of data, so they become robust to small disturbances anyway.
-3. **Engineers protect the sensitive parts.** Running totals, the optimizer's memory and a few delicate layers stay in higher precision, while the bulk of the multiplications use low precision. New formats also give each small block of numbers (16 or 32 of them) its own shared scale factor, so a 4-bit number can mean 0.003 in one block and 300 in another.
+3. **Engineers protect the sensitive parts.** Running totals, the optimizer's memory (extra numbers the training procedure keeps about each parameter; Chapter 6 introduces optimizers) and a few delicate layers stay in higher precision, while the bulk of the multiplications use low precision. New formats also give each small block of numbers (16 or 32 of them) its own shared scale factor, so a 4-bit number can mean 0.003 in one block and 300 in another.
 
 > **Definition — Mixed precision:** Doing most of a model's arithmetic in a low-precision format while keeping key quantities (like running totals and optimizer state) in a higher-precision format. It gets most of the speed with little loss of accuracy.
 
@@ -1010,7 +1010,7 @@ Token, Function, Variable, Parameter, Weight, Bias, Model, Vocabulary, Training,
    **What you'll learn:** A weight sets the slope of a line and a bias sets where it starts, which is all "parameters" mean at the smallest scale.
 
 2. **[Easy] Movie matchmaking with SUMPRODUCT.** Build a tiny recommender out of dot products.
-   1. In row 1, cells B1 to F1, score your own taste for action, romance, comedy, horror and documentary from −5 (hate) to 5 (love). Put the genre names in a row above if you like.
+   1. In row 1, cells B1 to F1, score your own taste for action, romance, comedy, horror and documentary from −5 (hate) to 5 (love). If you want labels, put the genre names in row 8, below everything else, so the formulas in these exercises still line up.
    2. In rows 2 to 6, list five movies you know (name in column A) and score how much of each genre they contain, from 0 to 5.
    3. In G2 type `=SUMPRODUCT($B$1:$F$1, B2:F2)` and fill it down to G6. The dollar signs keep your taste row fixed while the movie row changes.
    4. Sort the movies by column G. Does the ranking match your gut? Change your horror score from 0 to −5 and watch horror movies drop.
@@ -1020,7 +1020,7 @@ Token, Function, Variable, Parameter, Weight, Bias, Model, Vocabulary, Training,
 3. **[Easy] Cosine similarity in a spreadsheet.** Separate direction from size.
    1. Using the sheet from Exercise 2, compute the length of your taste vector in H1 with `=SQRT(SUMSQ(B1:F1))`, and each movie's length in H2 to H6 with `=SQRT(SUMSQ(B2:F2))`.
    2. In I2 compute the cosine similarity: `=G2/($H$1*H2)`. Fill down.
-   3. Add a row 7 called "Superfan" whose scores are exactly double your own. Check that its dot product with each movie is double yours but its cosine with your vector is exactly 1.
+   3. Add a row 7 called "Superfan" whose scores are exactly double your own (in B7 type `=2*B1` and fill right to F7). In J2 type `=SUMPRODUCT($B$7:$F$7, B2:F2)` and fill down to J6: each Superfan dot product should be double the one in column G. In J7 type `=SUMPRODUCT(B1:F1, B7:F7)/(H1*SQRT(SUMSQ(B7:F7)))`: the Superfan's cosine with your own vector should be exactly 1.
    4. Compare the ranking by dot product (column G) with the ranking by cosine (column I). Do any movies swap places?
 
    **What you'll learn:** Cosine similarity compares what kind of thing a vector describes while ignoring how big it is, which is why search engines prefer it.
@@ -1047,7 +1047,7 @@ Token, Function, Variable, Parameter, Weight, Bias, Model, Vocabulary, Training,
 6. **[Medium] Make your own embeddings and test king − man + woman.** Turn meaning into geometry.
    1. In a spreadsheet, give eight words (king, queen, prince, princess, man, woman, boy, girl) three numbers each on axes you choose, such as royalty (0 to 1), gender (−1 to 1) and age (0 to 1).
    2. In a new row, compute king − man + woman, one column at a time.
-   3. Measure the distance from that result to every word with `=SQRT(SUMXMY2(result_range, word_range))`. SUMXMY2 adds up the squared differences between two ranges. Which word is closest?
+   3. Measure the distance from that result to every word with `=SQRT(SUMXMY2(result_range, word_range))`, replacing result_range with the cells of your result row (for example B10:D10) and word_range with one word's row (for example B2:D2). SUMXMY2 adds up the squared differences between two ranges. Which word is closest?
    4. Try prince − boy + girl.
    5. Optional, with real learned vectors: open colab.research.google.com, choose New notebook, paste the code below into a cell and press the play button. It downloads word vectors (about 130 MB) learned from Wikipedia and news text.
 
@@ -1073,7 +1073,7 @@ Token, Function, Variable, Parameter, Weight, Bias, Model, Vocabulary, Training,
    2. Put the weight matrix in D1:E3 with rows [0.5, −1], [1, 1] and [−2, 0.5]. Put the bias 0, −1, 1 in G1:G3.
    3. In I1 type `=MMULT(D1:E3, B1:B2)`. You should get −1.5, 3, −1 down the column.
    4. In K1 type `=I1+G1` and fill down to K3. In M1 type `=MAX(0, K1)` and fill down. That is ReLU. Check you get 0, 2, 0.
-   5. Add a second layer: a 2 × 3 weight matrix of your choice times M1:M3, plus a bias, plus ReLU.
+   5. Add a second layer: put a 2 × 3 weight matrix of your choice in O1:Q2, type `=MMULT(O1:Q2, M1:M3)` in S1, then add a bias and apply ReLU as in step 4.
    6. Change single weights in the first layer and watch which outputs switch on and off.
 
    **What you'll learn:** A neural-network layer really is just a matrix multiplication, an addition and a simple bend, and you can build one with three spreadsheet functions.
@@ -1091,7 +1091,7 @@ Token, Function, Variable, Parameter, Weight, Bias, Model, Vocabulary, Training,
    1. In a spreadsheet, compute GPT-3's training compute: `=6*175E9*300E9`. You should get about 3.15E+23.
    2. Compute Llama 3.1 405B's: `=6*405E9*15.6E12`, about 3.8E+25.
    3. A rule from 2022 research (Chapter 19) suggests training on about 20 tokens per parameter. Compute the training FLOPs for a 1-trillion-parameter model trained that way (D = 20 trillion). You should get 1.2E+26.
-   4. Turn compute into days: FLOPs ÷ (number of GPUs × 989E12 × 0.4) ÷ 86,400. Check that Llama 3.1 405B on 16,384 GPUs gives about 68 days.
+   4. Turn compute into days: FLOPs ÷ (number of GPUs × 989E12 × 0.4) ÷ 86,400 (the number of seconds in a day). Check that Llama 3.1 405B on 16,384 GPUs gives about 68 days.
    5. How many days would the 1-trillion-parameter run take on 100,000 of the same GPUs? Ask a chatbot to check your arithmetic and see whether it agrees.
 
    **What you'll learn:** You can estimate the scale of any model's training from two numbers, and you can see why frontier runs take months on enormous clusters.

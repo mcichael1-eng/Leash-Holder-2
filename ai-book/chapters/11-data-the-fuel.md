@@ -288,6 +288,14 @@ The classic text recipe is TF-IDF. Take 1,000 support emails. The word "the" app
 
 > **Definition — TF-IDF:** "Term frequency times inverse document frequency": a way to turn text into numbers by counting each word in a document and weighting rare, informative words up and common words down.
 
+Two more moves complete the standard kit. The first is bucketing, also called binning: turning a number into a few ordered ranges. A model predicting car-insurance claims may gain little from knowing whether a driver is 31 or 32, but a lot from knowing whether they are under 25, 25 to 64, or 65 and over. Drivers aged 19, 23, 31, 47 and 70 become "under 25," "under 25," "25 to 64," "25 to 64" and "65 and over," which can then be one-hot encoded like any other category. Bucketing tames extreme values (the impossible age of 340 from the cleaning example would simply land in the top bucket, though it should still be fixed) and lets a simple model capture effects that are not a straight line, such as risk that is high for the youngest drivers, lower in the middle and rising again later. The price is lost detail inside each bucket, and the cut points are a human choice worth testing.
+
+> **Definition — Bucketing (binning):** Turning a numeric feature into a small number of ordered ranges, such as ages "under 25," "25 to 64" and "65 and over," so a model can treat each range as a category.
+
+The second is feature selection, which removes columns instead of adding them. A real customer table can easily have 200 columns. Some are near-copies of each other (age and birth year), some are almost always empty, some are pure noise, and some would leak the answer (Chapter 9). Dropping them makes training faster, leaves less room for overfitting and gives a model people can explain. Common approaches are to drop columns that barely vary or that duplicate another, to rank the rest by a model's feature-importance scores and keep the top ones (Chapter 10), or to let L1 regularization push unhelpful weights to exactly zero (Chapter 9). Do the selecting on the training data only: choosing features by peeking at the test set quietly inflates the final score.
+
+> **Definition — Feature selection:** Choosing which input features to keep and dropping the rest, such as duplicates, nearly empty columns or columns that add only noise, to make a model faster, simpler and less prone to overfitting.
+
 Deep learning automated much of this for images and text: a neural network learns its own features from raw pixels and tokens (Chapter 10). For business tables, though, thoughtful feature engineering is still often the single biggest lever on accuracy.
 
 ## Databases and SQL: the four everyday moves
@@ -341,6 +349,14 @@ Data rarely stays where it was born. A pipeline moves it from apps, sensors and 
 > **Definition — Data pipeline:** An automated series of steps that moves data from its sources, transforms it, and delivers it to where it is used, such as a warehouse, a dashboard or a training job.
 
 > **Definition — ETL and ELT:** Two pipeline styles. Extract–Transform–Load cleans data before storing it; Extract–Load–Transform stores raw data first and cleans it later, inside the storage system.
+
+The choice between batch and streaming depends on how fresh the answer must be. A nightly batch job that totals yesterday's sales is simple and cheap, and nobody minds that the numbers are a few hours old. A card-fraud check cannot wait until tomorrow, so payments flow through a streaming pipeline and are scored within moments of arriving.
+
+> **Definition — Batch and streaming processing:** Two ways to run a pipeline. Batch processing handles data in scheduled chunks, such as once a night; streaming processing handles each record moments after it arrives, which matters for tasks like fraud checks.
+
+Real pipelines are also chains of steps that depend on one another: copy today's orders, then clean them, then join them with customer records, then retrain the churn model, then refresh the dashboard. If the cleaning step fails at 3 a.m., the later steps must not run on half-finished data. Software that runs such steps on schedule and in the right order, retries failures and alerts a person when something breaks is called an orchestrator. The text that trains a chatbot passes through exactly this kind of chain: crawling, text extraction, deduplication and filtering jobs, each waiting for the one before (Chapter 19).
+
+> **Definition — Orchestration:** Scheduling and coordinating the many dependent steps of a data pipeline so they run in the right order, are retried when they fail, and alert a person when they cannot recover. The software that does it is called an orchestrator.
 
 Where does it land? A data warehouse is a tidy library of cleaned, structured tables, built for fast business questions. A data lake is a huge, cheap storage room of raw files in every format, from logs to images, cleaned only when needed. A lakehouse tries to combine the two: lake-style cheap storage with warehouse-style tables and queries on top. Major platforms include Snowflake, Google BigQuery, Databricks and Amazon Redshift.
 
@@ -564,7 +580,7 @@ When real data runs short, synthetic data can help, especially where answers can
 
 ## Key terms
 
-Data, dataset, structured data, semi-structured data, unstructured data, categorical feature, token, data exhaust, Common Crawl, web crawler, web scraping, robots.txt, annotation (labeling), bounding box, segmentation mask, preference data, RL environment, gold standard, inter-annotator agreement, expert data, data cleaning, deduplication, feature engineering, one-hot encoding, standardization, TF-IDF, database, relational database, SQL, primary key, join, vector database, data pipeline, ETL, ELT, data warehouse, data lake, lakehouse, data quality, datasheet (data card), sampling bias, historical bias, proxy variable, feedback loop, algorithmic fairness, PII, re-identification, GDPR, CCPA, differential privacy, federated learning, memorization, synthetic data, model collapse, copyright, fair use, TDM exception, data wall.
+Data, dataset, structured data, semi-structured data, unstructured data, categorical feature, token, data exhaust, Common Crawl, web crawler, web scraping, robots.txt, annotation (labeling), bounding box, segmentation mask, preference data, RL environment, gold standard, inter-annotator agreement, expert data, data cleaning, deduplication, feature engineering, one-hot encoding, standardization, TF-IDF, bucketing (binning), feature selection, database, relational database, SQL, primary key, join, vector database, data pipeline, ETL, ELT, batch and streaming processing, orchestration, data warehouse, data lake, lakehouse, data quality, datasheet (data card), sampling bias, historical bias, proxy variable, feedback loop, algorithmic fairness, PII, re-identification, GDPR, CCPA, differential privacy, federated learning, memorization, synthetic data, model collapse, copyright, fair use, TDM exception, data wall.
 
 ## Exercises
 

@@ -49,11 +49,11 @@ Let us take that paragraph apart, phrase by phrase, and note where each piece is
 
 ### How much math is in one answer?
 
-Let us put a number on "trillions of multiplications," because it is the first of many worked examples in this book. A widely used rule of thumb says that producing one token costs about 2 arithmetic operations for every parameter the model uses. Labs rarely publish the exact sizes of their models, so imagine a model that uses 100 billion parameters for each token.
+Let us put a number on "trillions of multiplications," because it is the first of many worked examples in this book. A widely used rule of thumb says that producing one token costs about 2 arithmetic operations (one multiplication and one addition) for every parameter the model uses. Labs rarely publish the exact sizes of their models, so imagine a model that uses 100 billion parameters for each token. (We say "uses" because some very large models switch on only part of their parameters for each token; Chapter 17 explains how.)
 
 - One token: 2 × 100 billion = 200 billion operations.
-- A 500-token answer (roughly 375 words): 500 × 200 billion = 100 trillion operations, which you can write as 10^14.
-- If you did one multiplication per second by hand, never sleeping, 10^14 seconds would be about 3.2 million years.
+- A 500-token answer (roughly 375 words): 500 × 200 billion = 100 trillion operations, which you can write as 10^14 (a 1 followed by 14 zeros; Chapter 2 explains this notation).
+- If you did one multiplication per second by hand, never sleeping, 10^14 seconds would be about 3.2 million years (a year has about 31.5 million seconds, and 10^14 ÷ 31.5 million ≈ 3.2 million).
 
 The machines in the data center do it in a few seconds. That gap, between 3 million years of human arithmetic and a few seconds of machine arithmetic, is a good first sense of what modern AI is: not magic, but an astonishing amount of very simple math done very fast.
 
@@ -186,6 +186,8 @@ The first approach is to write the rules yourself. A rule-based spam filter from
 > **Definition — Rule-based system:** A program whose behavior comes entirely from IF-THEN rules written by people. It is predictable and easy to inspect, but it only knows what its authors thought of.
 
 This works, at first. Then spammers adapt. They write "FR3E M0NEY," or put the text in an image, or use exactly four exclamation marks. Someone has to notice and write a new rule. Meanwhile your aunt's email titled "Free lunch on Sunday!!!!!!" lands in the spam folder. Rule systems are brittle: they break on anything their authors did not imagine, and they need constant, expensive maintenance. This is exactly why the "expert systems" boom of the 1980s ended in disappointment (Chapter 7 and Chapter 54).
+
+> **Definition — Expert system:** A rule-based system that tries to capture a human specialist's know-how, such as a doctor's or an engineer's, as hundreds or thousands of hand-written IF-THEN rules. Expert systems were the main commercial AI of the 1980s (Chapter 7).
 
 ### Way 2: Learning from examples
 
@@ -328,6 +330,8 @@ flowchart TD
 
 > **Definition — Unsupervised learning:** Finding structure, such as groups or patterns, in data that has no labels, for example grouping customers by shopping habits.
 
+> **Definition — Knowledge graph:** A large network of facts stored as things and the named links between them, such as "Paris, is the capital of, France". Search engines and voice assistants use knowledge graphs to answer factual questions.
+
 AlphaGo, which beat world champion Lee Sedol at Go in March 2016, is a classic hybrid: it combined search (looking ahead through moves, an old symbolic idea), a neural network that judged positions, and reinforcement learning from playing against itself. Google DeepMind's AlphaEvolve (2025) joined language models with evolutionary search to discover new algorithms. The branches keep cross-pollinating.
 
 The same tree can be drawn by application area, which is how Part VIII of this book is organized.
@@ -413,7 +417,7 @@ flowchart TD
 
 > **Definition — Gigawatt (GW):** A billion watts of power. AI companies now describe the size of their biggest data center campuses in gigawatts, comparable to the output of a large power plant.
 
-Let us make one of those numbers concrete. A data center that draws 1 gigawatt around the clock uses 1 GW × 8,760 hours in a year = 8,760 gigawatt-hours, about 8.76 terawatt-hours of electricity. Epoch AI, a research group that tracks AI trends, estimates that building such a site costs about $38 billion per gigawatt and takes about two years. Chapter 2 teaches these units and Part VII teaches power; the point here is that your chatbot rests on infrastructure on the scale of power plants.
+Let us make one of those numbers concrete. A data center that draws 1 gigawatt around the clock uses 1 GW × 8,760 hours in a year = 8,760 gigawatt-hours, about 8.76 terawatt-hours of electricity. (Watts measure how fast electricity is being used at a moment, like a car's speed; watt-hours measure how much was used over a stretch of time, like distance driven. A terawatt-hour is 1,000 gigawatt-hours.) Epoch AI, a research group that tracks AI trends, estimates that building such a site costs about $38 billion per gigawatt and takes about two years. Chapter 2 teaches these units and Part VII teaches power; the point here is that your chatbot rests on infrastructure on the scale of power plants.
 
 > **Watch out:** "The cloud" is not weightless. It is rows of real computers in real buildings using real electricity and water. When people say an AI "lives in the cloud," they mean it lives in a data center like the ones described in Part VII.
 
@@ -439,6 +443,8 @@ sequenceDiagram
   A-->>U: Words appear on your screen
 ```
 *Figure 1.7: What happens when you press Enter, in nine steps. The first word usually appears within a second or so, and the rest streams at tens of tokens per second.*
+
+A few words in the diagram are new. "Encrypted" means scrambled so that only the provider can read it; "packets" are the small, numbered chunks your message is cut into for its trip across the internet; and the "provider gateway" is the AI company's front door, which checks who you are before passing your text to the model. Chapter 4 explains all three.
 
 Two details in that picture explain everyday chatbot behavior. First, the model is stateless: each time you send a message, the app sends the whole conversation again, and the model reads it all from scratch. It does not remember you between chats unless the app saves notes and feeds them back in (Chapter 25). Second, because the model predicts one token at a time, the answer streams; the pause before the first word is the model reading your conversation, and the steady trickle afterward is the prediction loop.
 
@@ -558,7 +564,7 @@ All of it rests on a physical stack: sand becomes chips, chips fill servers, ser
 
 ## Key terms
 
-Chatbot, Program, Data center, Model, Parameter, Token, Artificial intelligence (AI), Algorithm, Symbolic AI, Machine learning (ML), Training, Inference, Neural network, Deep learning, Generative AI, Large language model (LLM), Transformer, Agent, Multimodal, Rule-based system, Training data, Label, Classifier, Reinforcement learning (RL), Reward, RLHF (reinforcement learning from human feedback), Prediction (in AI), Recommender system, Narrow AI, Artificial general intelligence (AGI), Artificial superintelligence (ASI), Jagged frontier, Supervised learning, Unsupervised learning, Computer vision, Natural language processing (NLP), Chip (integrated circuit), GPU (graphics processing unit), Compute, Gigawatt (GW), AI winter, Reasoning model, Frontier model, Open-weight model, Frontier lab
+Chatbot, Program, Data center, Model, Parameter, Token, Artificial intelligence (AI), Algorithm, Symbolic AI, Machine learning (ML), Training, Inference, Neural network, Deep learning, Generative AI, Large language model (LLM), Transformer, Agent, Multimodal, Rule-based system, Expert system, Training data, Label, Classifier, Reinforcement learning (RL), Reward, RLHF (reinforcement learning from human feedback), Prediction (in AI), Recommender system, Narrow AI, Artificial general intelligence (AGI), Artificial superintelligence (ASI), Jagged frontier, Supervised learning, Unsupervised learning, Knowledge graph, Computer vision, Natural language processing (NLP), Chip (integrated circuit), GPU (graphics processing unit), Compute, Gigawatt (GW), AI winter, Reasoning model, Frontier model, Open-weight model, Frontier lab
 
 ## Exercises
 
@@ -568,13 +574,13 @@ Chatbot, Program, Data center, Model, Parameter, Token, Artificial intelligence 
 
 3. **[Easy] Be the spam filter.** Using the word scores from this chapter (winner +3.0, free +2.0, click +1.5, invoice −1.0, meeting −2.5, and a spam threshold of 2), score these by hand: (a) "Free invoice template, click to download." (b) "Winner of the team meeting raffle!" (c) "Click for your free winner bonus." For each, write the total and the verdict. Then invent one spam email that slips under the threshold and one normal email that gets wrongly flagged. **What you'll learn:** how a learned classifier weighs evidence, and why every filter makes some mistakes in both directions.
 
-4. **[Medium] Train an image classifier with no code.** (1) Go to teachablemachine.withgoogle.com and start an Image Project. (2) Create two classes, "thumbs up" and "thumbs down," and record about 50 webcam images of each. (3) Click Train, then test it live with your hand. (4) Now sabotage it: retrain with all "thumbs up" pictures taken while wearing a red shirt and all "thumbs down" pictures in a different shirt, then test with the shirts swapped. **What you'll learn:** what "learning from labeled examples" looks like in practice, and how a model can learn an accidental shortcut (the shirt) instead of the thing you meant (the thumb).
+4. **[Medium] Train an image classifier with no code.** (1) Go to teachablemachine.withgoogle.com and start an Image Project. (2) Create two classes, "thumbs up" and "thumbs down," and record about 50 webcam images of each. (3) Click Train, then test it live with your hand. (4) Now sabotage it: delete the images in both classes (or start a new project), record all "thumbs up" pictures while wearing a red shirt and all "thumbs down" pictures in a different shirt, click Train again, then test with the shirts swapped. **What you'll learn:** what "learning from labeled examples" looks like in practice, and how a model can learn an accidental shortcut (the shirt) instead of the thing you meant (the thumb).
 
 5. **[Medium] Watch a neural network guess your doodles.** (1) Go to quickdraw.withgoogle.com and play a round of six drawings. (2) Note which drawings it recognized quickly and which it missed. (3) Ask your chatbot: "How might a neural network learn to recognize doodles from millions of examples, and why might it fail on unusual drawings?" **What you'll learn:** that models learn from huge collections of examples, recognize "typical" inputs best, and struggle with unusual ones.
 
 6. **[Medium] Sort fifteen AI products by verb and branch.** (1) Make a table with three columns: product, verbs, branch. (2) Fill in fifteen products you know or use, for example: Google Lens, Waymo, Netflix recommendations, Gmail spam filter, a coding agent, an image generator, a voice assistant, a chess app, a bank fraud alert, a robot vacuum, AlphaFold, a translation app, a music generator, your chatbot, a smart doorbell. (3) For each, choose its verbs (perceive, predict, create, decide, act) and its branch from Figure 1.5. (4) Circle the products that use four or more verbs. **What you'll learn:** to organize the whole field with one simple framework, and to see why systems that act in the world are harder and riskier.
 
-7. **[Medium] How much math is in one answer?** (1) Ask your chatbot a question and copy its answer into a free word counter (search "word counter"). (2) Estimate tokens as words ÷ 0.75. (3) Using the rule of thumb of 2 operations per parameter per token, and assuming a model that uses 100 billion parameters per token, compute the total operations for the answer. (4) Divide by 31.5 million (seconds in a year) to find how many years it would take a person doing one multiplication per second. **What you'll learn:** a feel for the scale of computation behind every reply, and practice with the kind of rough estimate this book uses constantly.
+7. **[Medium] How much math is in one answer?** (1) Ask your chatbot a question and copy its answer into a free word counter (search "word counter"). (2) Estimate tokens as words ÷ 0.75. (3) Using the rule of thumb of 2 operations per parameter per token, and assuming a model that uses 100 billion parameters per token, compute the total operations for the answer (multiply your token count by 2 × 100 billion). (4) Divide by 31.5 million (seconds in a year) to find how many years it would take a person doing one multiplication per second. **What you'll learn:** a feel for the scale of computation behind every reply, and practice with the kind of rough estimate this book uses constantly.
 
 8. **[Challenge] Trace the stack for your favorite chatbot.** (1) Pick ChatGPT, Claude or Gemini. (2) For each layer of Figure 1.6 (chips, servers, data centers and power, training data, model, app), try to name one company or product involved, using your chatbot and a web search to help. (3) For every claim the chatbot gives you, find one independent source, such as the company's own announcement or a news article, and mark the claim as confirmed, unconfirmed or wrong. **What you'll learn:** how many companies sit beneath one chat window, and the habit of verifying AI-generated facts, which this book asks of you again and again.
 

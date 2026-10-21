@@ -41,6 +41,10 @@ Things that grow by multiplying, rather than adding, grow astonishingly fast. Th
 
 > **Definition — Doubling time:** How long something growing exponentially takes to double. Something that doubles every 5.2 months grows about 5 times in a year.
 
+You have met exponential growth in your bank account, under the name compound interest. Put $1,000 in an account that pays 7% a year and leave the interest in. After one year you have $1,000 × 1.07 = $1,070. In the second year you earn interest on the interest too: $1,070 × 1.07 ≈ $1,145. Every year multiplies the balance by the same 1.07, so after n years you have `1,000 × 1.07^n`. After 10 years that is about $1,967, almost exactly double, and after 30 years about $7,612, more than seven times the start, from a rate that sounds modest. Simple interest, which pays 7% of the original $1,000 each year ($70) and never pays interest on interest, gives only 1,000 + 30 × 70 = $3,100 after 30 years. The whole gap comes from multiplying instead of adding. A handy shortcut called the rule of 72 estimates the doubling time: divide 72 by the growth rate in percent. At 7% a year, 72 ÷ 7 ≈ 10 years, which matches the calculation.
+
+> **Definition — Compound interest:** Interest that is added to the balance and then earns interest itself, so the balance is multiplied by the same factor every period. It is the everyday example of exponential growth.
+
 ### Exponential growth in AI
 
 AI is full of exponentials. Epoch AI, a research group that tracks the field, estimates that the computing power used to train frontier models has grown about 5 times per year since 2020. Compare that with steady linear growth of "plus 5 units a year":
@@ -474,7 +478,11 @@ Now a billionaire walks in, earning $1 billion (1,000,000 thousand). There are n
 
 ### Spread: variance and standard deviation
 
-Two classes can both average 70% on a test, one with everyone between 65 and 75, the other split between 40s and 100s. To tell them apart you need a measure of spread. The standard one is computed in four steps. Take the numbers 2, 4, 4, 4, 5, 5, 7, 9:
+Two classes can both average 70% on a test, one with everyone between 65 and 75, the other split between 40s and 100s. To tell them apart you need a measure of spread. The simplest is the range: the largest value minus the smallest. The first class has a range of 75 − 65 = 10 points; if the second runs from 40 to 100, its range is 60 points. The range is quick to compute but fragile, because it depends on only the two most extreme values: one student who skipped the test and scored 0 would stretch the first class's range from 10 to 75 points, even though everyone else is tightly bunched.
+
+> **Definition — Range (statistics):** The largest value minus the smallest, the simplest measure of how spread out a set of numbers is. It is easy to compute but is set entirely by the two most extreme values, so a single outlier can distort it.
+
+A sturdier measure uses every value. The standard one is computed in four steps. Take the numbers 2, 4, 4, 4, 5, 5, 7, 9:
 
 1. Find the mean: 40 ÷ 8 = 5.
 2. Find each value's distance from the mean and square it: 9, 1, 1, 1, 0, 0, 4, 16.
@@ -910,7 +918,7 @@ Learning works by slopes. A loss function gives one number for how wrong the mod
 
 ## Key terms
 
-Exponent, Exponential growth, Doubling time, Exponential decay, Euler's number (e), Logarithm, Natural logarithm (ln), Log scale, Power law, Scaling laws, Probability, Complement, Independence, Expected value, Law of large numbers, Probability distribution, Logit, Softmax, Greedy decoding, Sampling, Temperature, Top-p sampling, Conditional probability, Language model, Log-probability, N-gram model, Base rate, False positive, Bayes' rule, Prior and posterior, Calibration, Mean, Median, Outlier, Variance, Standard deviation, Percentile, Normal distribution, Noise, Random initialization, Correlation, Confounder, Sampling bias, Training, validation and test sets, Overfitting, Generalization, Derivative, Partial derivative, Gradient, Loss landscape, Chain rule, Backpropagation, Automatic differentiation, Loss function, Cross-entropy, Perplexity, Gradient descent, Learning rate, Local minimum, Stochastic gradient descent (SGD), Mini-batch, Optimizer, Training loop, Epoch
+Exponent, Exponential growth, Doubling time, Compound interest, Exponential decay, Euler's number (e), Logarithm, Natural logarithm (ln), Log scale, Power law, Scaling laws, Probability, Complement, Independence, Expected value, Law of large numbers, Probability distribution, Logit, Softmax, Greedy decoding, Sampling, Temperature, Top-p sampling, Conditional probability, Language model, Log-probability, N-gram model, Base rate, False positive, Bayes' rule, Prior and posterior, Calibration, Mean, Median, Outlier, Range (statistics), Variance, Standard deviation, Percentile, Normal distribution, Noise, Random initialization, Correlation, Confounder, Sampling bias, Training, validation and test sets, Overfitting, Generalization, Derivative, Partial derivative, Gradient, Loss landscape, Chain rule, Backpropagation, Automatic differentiation, Loss function, Cross-entropy, Perplexity, Gradient descent, Learning rate, Local minimum, Stochastic gradient descent (SGD), Mini-batch, Optimizer, Training loop, Epoch
 
 ## Exercises
 

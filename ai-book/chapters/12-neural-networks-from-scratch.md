@@ -125,7 +125,7 @@ z = w1 × x1  +  w2 × x2  +  w3 × x3  +  b
   =  0.3
 ```
 
-Step 3, the activation. We will use the **sigmoid** function, which squeezes any number into the range 0 to 1, so the output can be read as "how strongly the neuron says yes". The formula is sigmoid(z) = 1 ÷ (1 + e^(−z)), where e ≈ 2.718. You can type it into any calculator or spreadsheet: sigmoid(0.3) = 1 ÷ (1 + 2.718^(−0.3)) = 1 ÷ (1 + 0.741) = **0.57**.
+Step 3, the activation. We will use the **sigmoid** function, which squeezes any number into the range 0 to 1, so the output can be read as "how strongly the neuron says yes". The formula is sigmoid(z) = 1 ÷ (1 + e^(−z)), where e ≈ 2.718 (a special constant called Euler's number, introduced in Chapter 6). You can type it into any calculator or spreadsheet: sigmoid(0.3) = 1 ÷ (1 + 2.718^(−0.3)) = 1 ÷ (1 + 0.741) = **0.57**. (In a spreadsheet, type `=1/(1+EXP(-0.3))`; EXP raises e to a power.)
 
 The neuron says 0.57: a slight lean towards the beach. Now change the inputs and watch the decision move:
 
@@ -249,7 +249,7 @@ Researchers have tried many activation functions. You will meet these names in p
 |---|---|---|---|---|---|
 | Step | 0 | (jump) | 1 | 0 or 1 | 1950s perceptron |
 | Sigmoid | 0.119 | 0.5 | 0.881 | 0 to 1 | Yes/no outputs, gates |
-| Tanh | −0.964 | 0 | 0.964 | −1 to 1 | Older networks, RNNs |
+| Tanh | −0.964 | 0 | 0.964 | −1 to 1 | Older networks, recurrent networks (RNNs, Chapter 14) |
 | ReLU | 0 | 0 | 2 | 0 to infinity | Most image networks |
 | Leaky ReLU (0.01) | −0.02 | 0 | 2 | any | Fix for silent neurons |
 | GELU | −0.046 | 0 | 1.954 | about −0.17 up | GPT-2, BERT |
@@ -460,7 +460,7 @@ Our ice-cream network has a loss of 0.5. With many examples, you average the squ
 
 ### Cross-entropy, for choosing between options
 
-When the network picks between options, such as which digit is shown or which token comes next, the standard loss is **cross-entropy**. Chapter 6 introduced it as surprise. You look at the probability the network gave to the *correct* answer and take the negative natural logarithm: loss = −ln(probability of the right answer).
+When the network picks between options, such as which digit is shown or which token comes next, the standard loss is **cross-entropy**. Chapter 6 introduced it as surprise. You look at the probability the network gave to the *correct* answer and take the negative natural logarithm: loss = −ln(probability of the right answer). (On a calculator use the ln key; in a spreadsheet, `=-LN(0.9)` gives 0.105.)
 
 | Probability given to the right answer | Cross-entropy loss | How surprised |
 |---|---|---|
@@ -487,7 +487,7 @@ We have a loss of 0.5 and nine knobs. Which way should each knob turn? Chapter 6
 
 ### One knob
 
-Suppose a model has a single knob w, and its loss is L(w) = (w − 3)². The best value is obviously w = 3, where the loss is 0, but the training procedure does not know that. It only knows how to compute the slope at the current spot, which for this loss is 2 × (w − 3). The update rule is:
+Suppose a model has a single knob w, and its loss is L(w) = (w − 3)². The best value is obviously w = 3, where the loss is 0, but the training procedure does not know that. It only knows how to compute the slope at the current spot, which for this loss is 2 × (w − 3). (Chapter 6 showed where this comes from, and you can check it by nudging: at w = 0 the loss is 9, at w = 0.01 it is about 8.94, a drop of about 0.06 for a nudge of 0.01, which is a slope of about −6, and 2 × (0 − 3) = −6.) The update rule is:
 
 **new w = old w − learning rate × slope**
 
@@ -556,7 +556,7 @@ You only need four local slopes to backpropagate through our ice-cream network:
 
 | Step in the network | Local rule for passing blame backward |
 |---|---|
-| Loss L = ½ × (ŷ − y)² | Slope with respect to ŷ is (ŷ − y) |
+| Loss L = ½ × (ŷ − y)² | Slope with respect to ŷ is (ŷ − y); the ½ cancels the 2 that squaring brings, just as (w − 3)² had slope 2 × (w − 3) |
 | Weighted sum, such as ŷ = v1 × h1 + ... | Blame reaching a weight = blame at the sum × that weight's input; blame reaching an input = blame at the sum × that input's weight |
 | Adding a bias | The bias receives exactly the blame at the sum |
 | ReLU | If the neuron's sum was positive, blame passes through unchanged (slope 1); if it was negative, blame stops (slope 0) |
@@ -851,7 +851,7 @@ Neural network, weight, parameter, training, inference, deep learning, vector, m
 
 6. **[Medium] Backpropagation through one neuron, by hand.** One neuron has input x = 2, weight w = 0.5, bias b = 0, a sigmoid activation, a target of 1 and the loss L = ½ × (output − 1)².
    1. Forward: z = w × x + b, output s = sigmoid(z), then the loss.
-   2. Backward, three local slopes: dL/ds = s − 1; ds/dz = s × (1 − s) (the slope of the sigmoid); dz/dw = x.
+   2. Backward, three local slopes (read dL/ds as "the slope of L with respect to s", and likewise for the others): dL/ds = s − 1; ds/dz = s × (1 − s) (the slope of the sigmoid); dz/dw = x.
    3. Multiply them (chain rule) to get the slope for w.
    4. Update with learning rate 1: new w = w − 1 × slope. Run the forward pass again.
 
@@ -860,7 +860,7 @@ Neural network, weight, parameter, training, inference, deep learning, vector, m
 7. **[Medium] Check backprop by nudging, in a spreadsheet.** Rebuild the ice-cream network in a spreadsheet and confirm the chapter's gradients.
    1. Type the nine starting parameters into B2:B10 in this order: w11 0.5, w12 0.25, b1 0, w21 −0.5, w22 0.5, b2 0, v1 0.5, v2 1, c 0. Put x1 = 1 in B12, x2 = 2 in B13 and the target 2 in B14.
    2. Hidden neuron 1 in B16: =MAX(0,B2*B12+B3*B13+B4). Hidden neuron 2 in B17: =MAX(0,B5*B12+B6*B13+B7). Prediction in B18: =B8*B16+B9*B17+B10. Loss in B19: =0.5*(B18-B14)^2. You should see 1, 0.5, 1 and 0.5.
-   3. Copy column B into column C. In column C, add 0.01 to one parameter. The slope is about (C19 − B19) ÷ 0.01. Do this for each of the nine parameters in turn and compare with the gradient table in this chapter.
+   3. Copy column B into column C. In column C, add 0.01 to one parameter. The slope is about (C19 − B19) ÷ 0.01. Do this for each of the nine parameters in turn (put the previous one back to its starting value before nudging the next) and compare with the gradient table in this chapter.
    4. Finally, type the nine updated values from the update table into column C and check that the loss is about 0.0006.
 
    **What you'll learn:** backpropagation gives exactly the slopes you would get by brute-force nudging, but all at once.

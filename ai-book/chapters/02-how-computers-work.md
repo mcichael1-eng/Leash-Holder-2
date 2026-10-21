@@ -68,7 +68,7 @@ Writing out all those zeros is tiring and error-prone, so scientists use powers 
 
 > **Definition — Scientific notation:** Writing a number as a value between 1 and 10 multiplied by a power of ten, such as 2 × 10^25 instead of 20,000,000,000,000,000,000,000,000. The exponent tells you how many places to move the decimal point.
 
-So 3.8 × 10^25 means moving the decimal point of 3.8 twenty-five places to the right. That is roughly the number of operations Meta used to train its Llama 3.1 405B model.
+So 3.8 × 10^25 means moving the decimal point of 3.8 twenty-five places to the right. That is roughly the number of operations Meta used to train its Llama 3.1 405B model (the "405B" in the name means 405 billion parameters).
 
 Powers of ten make arithmetic easy, because multiplying means adding exponents and dividing means subtracting them.
 
@@ -347,7 +347,7 @@ are both closed
 ```
 *Figure 2.5: Switches in series behave like an AND gate; switches in parallel behave like an OR gate.*
 
-Real chips use a cleverer arrangement called CMOS, in which a NOT gate takes 2 transistors and a NAND gate (AND followed by NOT) takes 4. Remarkably, every other gate, and therefore every computer, can be built from NAND gates alone (Exercise 5 lets you try).
+Real chips use a cleverer arrangement called CMOS (complementary metal-oxide-semiconductor, which pairs two opposite kinds of transistor so that almost no current flows except at the moment of switching), in which a NOT gate takes 2 transistors and a NAND gate (AND followed by NOT) takes 4. Remarkably, every other gate, and therefore every computer, can be built from NAND gates alone (Exercise 5 lets you try).
 
 > **Key idea:** A logic gate is just a few transistors wired so that their on/off states combine by a rule. Everything else in a computer, from adding two numbers to running a chatbot, is built by connecting enormous numbers of gates.
 
@@ -526,7 +526,7 @@ Since the mid-2000s, processors have contained several complete copies of this m
 
 > **Definition — Core:** One independent processing unit inside a chip, with its own control unit, ALU and registers. A CPU has a handful to a few hundred large cores; a GPU has thousands of small ones.
 
-A rough calculation shows what a CPU can do. A 16-core processor at 4 GHz has 16 × 4 × 10^9 = 64 billion core-ticks per second. With vector units doing many operations per tick, a high-end desktop CPU reaches very roughly a trillion (10^12) arithmetic operations per second. That sounds like a lot until you remember that one chatbot answer needs around 10^14 operations, and a model serves millions of people at once.
+A rough calculation shows what a CPU can do. A 16-core processor at 4 GHz has 16 × 4 × 10^9 = 64 billion core-ticks per second. With vector units (circuits that apply one instruction to several numbers at once, as described above) doing many operations per tick, a high-end desktop CPU reaches very roughly a trillion (10^12) arithmetic operations per second. That sounds like a lot until you remember that one chatbot answer needs around 10^14 operations, and a model serves millions of people at once.
 
 > **Analogy:** A CPU is the head chef of a restaurant kitchen. The chef can cook any dish, improvise, taste and change plans mid-recipe, but there is only one chef (or a few, if there are several cores). The recipe is the program, the countertop is memory, and the pantry is storage.
 
@@ -553,7 +553,7 @@ The processor can only work on numbers in its registers, and it has only a few d
 | Hard drive | terabytes | about 10 ms | about 4 months |
 | Another machine across a data center or the internet | effectively unlimited | 1 ms and up | 11.6 days and up |
 
-SRAM and DRAM in the table are the two main kinds of memory chip: SRAM is faster and pricier per byte and is used for caches, while DRAM is denser and cheaper and is used for main memory.
+SRAM and DRAM in the table are the two main kinds of memory chip: SRAM is faster and pricier per byte and is used for caches, while DRAM is denser and cheaper and is used for main memory. HBM, also in the table, is a special high-speed form of DRAM built for AI chips; it is explained later in this chapter.
 
 Look at the last column. If fetching from cache took one second, fetching from the SSD would take more than a day, and asking another computer over the network at least a million seconds, which you now know is 11.6 days. The gaps are factors of thousands, which is why so much of AI engineering is about keeping the right data close to the processor.
 
@@ -587,9 +587,9 @@ Latency is how long the drive to the store takes; bandwidth is how many lanes th
 
 Here is the single most important hardware idea for understanding modern AI: on today's chips, moving numbers around costs more time and energy than doing arithmetic on them.
 
-Start with energy. A widely cited 2014 analysis by the Stanford engineer Mark Horowitz estimated, for chips of that era, that a 32-bit floating-point multiplication cost a few picojoules (trillionths of a joule), while fetching 32 bits from off-chip memory cost hundreds of picojoules, roughly a hundred times more. The exact figures have shifted since, but the pattern has not: arithmetic is cheap, travel is expensive.
+Start with energy. A widely cited 2014 analysis by the Stanford engineer Mark Horowitz estimated, for chips of that era, that a 32-bit floating-point multiplication (multiplying two decimal numbers stored in 32 bits each; floating-point numbers are explained later in this chapter) cost a few picojoules (trillionths of a joule), while fetching 32 bits from off-chip memory cost hundreds of picojoules, roughly a hundred times more. The exact figures have shifted since, but the pattern has not: arithmetic is cheap, travel is expensive.
 
-Then speed. Processors' ability to compute has grown much faster than memory's ability to feed them. Epoch AI estimates that GPU memory bandwidth has improved only about 28% per year since 2008, while AI chips' arithmetic price-performance has improved about 49% per year. The gap keeps widening, and chips increasingly sit idle, waiting for data. Engineers call this the memory wall.
+Then speed. Processors' ability to compute has grown much faster than memory's ability to feed them. Epoch AI estimates that GPU memory bandwidth has improved only about 28% per year since 2008, while AI chips' arithmetic price-performance (how much calculation a dollar of chip buys) has improved about 49% per year. The gap keeps widening, and chips increasingly sit idle, waiting for data. Engineers call this the memory wall.
 
 > **Definition — Memory wall:** The growing gap between how fast processors can compute and how fast memory can supply them with data, which leaves chips waiting on memory. It is one of the main limits on AI speed.
 
@@ -603,7 +603,7 @@ The memory wall explains something you see every day. When a chatbot generates t
 - Put it on an NVIDIA H200 chip, whose memory can deliver 4.8 terabytes per second.
 - Each token requires reading all 70 GB, so the chip can make at most 4,800 GB/s ÷ 70 GB ≈ **69 tokens per second** for one user.
 
-Now check the arithmetic. Each token needs about 2 operations per parameter: 2 × 70 billion = 1.4 × 10^11 operations. At 69 tokens per second that is about 10^13 operations per second. The chip can do roughly 10^15. So when serving a single user, the chip's math units are about 99% idle; the speed limit is set entirely by memory bandwidth. This is why AI providers process many users' requests together in a batch (each trip to memory then serves dozens of people), why they compress models into fewer bytes, and why AI chip makers obsess over memory (Chapter 23, Chapter 33).
+Now check the arithmetic. Each token needs about 2 operations per parameter: 2 × 70 billion = 1.4 × 10^11 operations. At 69 tokens per second that is about 10^13 operations per second. The chip can do roughly 10^15 per second, and 10^13 is only 1% of 10^15. So when serving a single user, the chip's math units are about 99% idle; the speed limit is set entirely by memory bandwidth. This is why AI providers process many users' requests together in a batch (each trip to memory then serves dozens of people), why they compress models into fewer bytes, and why AI chip makers obsess over memory (Chapter 23, Chapter 33).
 
 The same arithmetic tells you whether a model will run well on your laptop. A typical laptop's memory delivers roughly 100 GB/s. An 8-billion-parameter model compressed to about half a byte per parameter is about 4 to 5 GB, so you can expect at most around 100 ÷ 4.7 ≈ 20 tokens per second (Chapter 30 shows you how to try it).
 
@@ -679,7 +679,7 @@ Power is a rate, like speed; energy is the total, like distance. Here is the lad
 
 All of that electricity becomes heat that must be carried away by air or liquid cooling (Chapter 40). The International Energy Agency estimated that data centers of all kinds used about 415 terawatt-hours in 2024, about 1.5% of the world's electricity, and projected about 945 TWh by 2030. Per prompt the energy is small; in aggregate it is reshaping electricity grids (Part VII).
 
-> **At the frontier (2026):** Power per rack is still climbing. NVIDIA's published roadmap plans racks of roughly 600 kW for its Rubin Ultra generation (planned for 2027), several times today's 120 to 140 kW, and Epoch AI lists the largest AI site, xAI's Colossus 2 in Memphis, at roughly 1.1 million H100-equivalents of compute. Liquid cooling, once exotic, is now standard for the densest AI racks.
+> **At the frontier (2026):** Power per rack is still climbing. NVIDIA's published roadmap plans racks of roughly 600 kW for its Rubin Ultra generation (planned for 2027), several times today's 120 to 140 kW, and Epoch AI lists the largest AI site, xAI's Colossus 2 in Memphis, at roughly 1.1 million H100-equivalents of compute (its total computing power expressed as the number of H100 chips that would match it, since each newer chip counts as several H100s). Liquid cooling, once exotic, is now standard for the densest AI racks.
 
 > **Key idea:** Computation is physical. Every operation costs energy and makes heat, which is why the AI boom is also a boom in power plants, transmission lines and cooling systems.
 
@@ -702,7 +702,7 @@ Note the difference: FLOP is a count (how much work), FLOP/s is a speed (how fas
 | A phone's neural processing unit | tens of trillions of (low-precision) operations per second | 10^13 |
 | One NVIDIA H100 GPU, 16-bit, dense | about 989 trillion per second | 10^15 |
 | One GB300 NVL72 rack, 4-bit, dense | about 1.08 quintillion per second | 10^18 |
-| LineShine, the top supercomputer on the June 2026 TOP500 list (64-bit) | about 2.2 quintillion per second | 10^18 |
+| LineShine, the top machine on the June 2026 TOP500 list, a twice-yearly ranking of the fastest supercomputers (64-bit) | about 2.2 quintillion per second | 10^18 |
 
 > **Definition — Peak versus achieved performance:** Peak is the theoretical maximum speed on a chip's spec sheet; achieved is what real software actually gets, often 30 to 60% of peak for large training jobs and much less when waiting on memory.
 
@@ -770,7 +770,7 @@ This turned out to be lucky for AI, whose millions of independent multiply-adds 
 
 > **Watch out:** Two opposite myths circulate. "Moore's law is a law of physics" is false: it was an industry trend, sustained by enormous investment, and it has slowed. But "Moore's law is dead, so computers have stopped improving" is also false: AI performance per chip and per dollar keeps rising quickly, through specialization, lower precision, packaging and scale rather than through faster clocks.
 
-> **At the frontier (2026):** NVIDIA's Vera Rubin GPU, with 336 billion transistors made on TSMC's 3-nanometer-class process and paired with the newer HBM4 memory, entered full production in 2026 and was ramping in customers' data centers by late summer. NVIDIA quotes 50 petaflops of 4-bit performance per GPU (a "sparse" figure that assumes skippable zeros), against 20 for Blackwell. Even the spec sheets move: launch coverage in January 2026 cited 22 terabytes per second of memory bandwidth per GPU, while NVIDIA's product page later listed 19.2. Always check which precision, dense or sparse, per chip or per rack, and which date.
+> **At the frontier (2026):** NVIDIA's Vera Rubin GPU, with 336 billion transistors made on TSMC's 3-nanometer-class process (TSMC, the Taiwan Semiconductor Manufacturing Company, is the contract factory that makes most advanced AI chips) and paired with the newer HBM4 memory, entered full production in 2026 and was ramping in customers' data centers by late summer. NVIDIA quotes 50 petaflops of 4-bit performance per GPU (a "sparse" figure that assumes skippable zeros), against 20 for Blackwell. Even the spec sheets move: launch coverage in January 2026 cited 22 terabytes per second of memory bandwidth per GPU, while NVIDIA's product page later listed 19.2. Always check which precision, dense or sparse, per chip or per rack, and which date.
 
 ## From switch to data center: the ladder of scale
 
@@ -837,11 +837,11 @@ Exponent (power), Scientific notation, Order of magnitude, Metric prefix, Fermi 
    print(f"The GPU was about {cpu/gpu:.0f} times faster")
    ```
 
-   Then change `n` to 1000 and 8000 and run it again. **What you'll learn:** the cost of matrix multiplication grows like n × n × n, GPUs do it many times faster than CPUs, and this is "AI is mostly multiplying big tables" in action.
+   Then change `n` to 1000 and 8000 (edit the second line, `n = 4000`) and run it again. The `@` sign in the code is Python's symbol for multiplying two grids of numbers. **What you'll learn:** the cost of matrix multiplication grows like n × n × n, GPUs do it many times faster than CPUs, and this is "AI is mostly multiplying big tables" in action.
 
-9. **[Challenge] FLOP accounting in a spreadsheet.** (1) Make a row for one chatbot answer: parameters 70 × 10^9, tokens 1,000, FLOP = 2 × parameters × tokens. (2) Make a row for a training run: Llama 3.1 405B with 405 × 10^9 parameters and 15.6 × 10^12 tokens, FLOP = 6 × parameters × tokens. (3) Divide each by 9.89 × 10^14 (one H100) to get seconds, and convert to sensible units. (4) Now compute how many days the training run takes on 16,384 GPUs at 40% efficiency, and on 100,000 GPUs at 40%. **What you'll learn:** the two most useful rules of thumb in AI compute, and why labs buy chips by the hundred thousand.
+9. **[Challenge] FLOP accounting in a spreadsheet.** (1) Make a row for one chatbot answer: parameters 70 × 10^9, tokens 1,000, FLOP = 2 × parameters × tokens. (In a spreadsheet, type 70 × 10^9 as 70E9 and use * for ×.) (2) Make a row for a training run: Llama 3.1 405B with 405 × 10^9 parameters and 15.6 × 10^12 tokens, FLOP = 6 × parameters × tokens. (3) Divide each by 9.89 × 10^14 (one H100) to get seconds, and convert to sensible units. (4) Now compute how many days the training run takes on 16,384 GPUs at 40% efficiency, and on 100,000 GPUs at 40%. **What you'll learn:** the two most useful rules of thumb in AI compute, and why labs buy chips by the hundred thousand.
 
-10. **[Challenge] Test Moore's law yourself.** (1) In a spreadsheet, enter years and transistor counts: 1971, 2,300 (Intel 4004); 2022, 80 billion (NVIDIA H100); 2024, 208 billion (NVIDIA B200); 2026, 336 billion (NVIDIA Rubin). (2) For each later chip, compute the number of doublings since 1971 with the formula `=LOG(count/2300, 2)`. (3) Divide the years elapsed by the doublings to get the doubling time. (4) Ask your chatbot for three more chips with their years and transistor counts, verify each against a second source, add them, and chart transistor count against year with a logarithmic vertical axis. **What you'll learn:** how logarithms reveal exponential trends as straight lines, how well Moore's law has held, and the habit of verifying AI-supplied numbers.
+10. **[Challenge] Test Moore's law yourself.** (1) In a spreadsheet, enter years and transistor counts: 1971, 2,300 (Intel 4004); 2022, 80 billion (NVIDIA H100); 2024, 208 billion (NVIDIA B200); 2026, 336 billion (NVIDIA Rubin). (2) For each later chip, compute the number of doublings since 1971 with the formula `=LOG(count/2300, 2)`, replacing count with the cell that holds that chip's transistor count (for example `=LOG(B3/2300, 2)`). (3) Divide the years elapsed by the doublings to get the doubling time. (4) Ask your chatbot for three more chips with their years and transistor counts, verify each against a second source, add them, and chart transistor count against year with a logarithmic vertical axis. **What you'll learn:** how logarithms reveal exponential trends as straight lines, how well Moore's law has held, and the habit of verifying AI-supplied numbers.
 
 ## Areas of opportunity
 

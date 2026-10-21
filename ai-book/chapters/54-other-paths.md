@@ -583,7 +583,7 @@ timeline
 
 > **Definition — Parallel corpus:** A collection of texts paired with their translations, sentence by sentence, such as parliamentary records published in two languages. It is the training data for machine translation.
 
-**Era 3: neural networks (2010s).** Word embeddings such as word2vec (2013) turned words into points in a meaning space; sequence-to-sequence networks (2014) read a whole sentence and wrote its translation; attention (2014) let the translator look back at the relevant source words (Chapter 14). In 2016 Google switched Translate to a neural system, and quality jumped.
+**Era 3: neural networks (2010s).** Word embeddings such as word2vec (2013) turned words into points in a meaning space; sequence-to-sequence networks (2014) read a whole sentence and wrote its translation; attention (2014) let the translator look back at the relevant source words (Chapter 14). In 2016 Google switched Translate to a neural system, Google Neural Machine Translation (GNMT), and quality jumped.
 
 > **Definition — Neural machine translation:** Translation done end to end by a neural network that reads the source sentence and writes the target sentence, the standard approach since about 2016.
 
@@ -702,7 +702,7 @@ flowchart LR
 |---|---|---|---|
 | Non-invasive | Cap on the scalp | Blurry | EEG headsets |
 | Minimally invasive | Threaded through a blood vessel | Medium | Synchron's stent-based electrode |
-| Invasive | Implanted in brain tissue by surgery | Sharpest | Utah arrays (BrainGate), Neuralink |
+| Invasive | Implanted in brain tissue by surgery | Sharpest | Utah arrays (BrainGate), Neuralink, Paradromics |
 
 **The decoder is ordinary machine learning.** Suppose two recorded neurons tend to fire faster when a person intends to move a cursor right (neuron A) or left (neuron B). A simple linear decoder might compute horizontal speed = 0.05 × (rate of A) − 0.05 × (rate of B), in centimeters per second.
 

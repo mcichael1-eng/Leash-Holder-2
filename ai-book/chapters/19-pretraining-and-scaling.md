@@ -238,6 +238,10 @@ How do labs pick percentages without wasting a frontier run? They train dozens o
 
 > **Definition — Ablation:** An experiment that changes or removes one ingredient while keeping everything else fixed, to measure that ingredient's effect.
 
+A mixture also does not have to stay the same from the first step to the last. Planning the order in which data is shown, or changing the recipe as training goes on, is called a **curriculum**, after the way a school teaches arithmetic before algebra. The curriculum choice that open technical reports (such as those for the Allen Institute's OLMo 2 models) document most clearly is simple: save the best data for the end. Near the finish, labs switch to a smaller, cleaner mix of math, code, reasoning traces and long documents, and at the same time lower the learning rate toward zero, a step called annealing. Because the model is settling into its final state during that stretch, what it reads then has an outsized effect on how it behaves. So a data recipe is really two decisions: how much of each source, and when.
+
+> **Definition — Curriculum (training curriculum):** A plan for the order in which training data is shown, or for how the data mixture changes during training, such as holding the highest-quality data back for the final stretch of a run.
+
 > **At the frontier (2026):** Mixtures have shifted steadily toward code, math, multilingual text and filtered synthetic data. Alibaba described generating synthetic textbooks and question-answer pairs with its own specialist models for Qwen3, and labs increasingly hold their best reasoning-style data for a final, high-quality stage called mid-training, covered at the end of this chapter.
 
 ## The pretraining run
@@ -630,7 +634,7 @@ Abilities that seem to appear suddenly are often smooth improvements seen throug
 
 ## Key terms
 
-Pretraining, Training run, Corpus, Self-supervised learning, Loss, Cross-entropy loss, Perplexity, Gradient descent, Learning rate, Batch and step, Common Crawl, Web crawler, Synthetic data, robots.txt, Data curation, Text extraction (boilerplate removal), Language identification, Deduplication, Jaccard similarity, Near-duplicate detection (MinHash), Heuristic filter, Quality classifier, PII (Personally Identifiable Information), Decontamination, Benchmark contamination, Data mixture, Upsampling, Epoch (training pass), Proxy model, Ablation, GPU-hour, Parallelism (distributed training), Learning-rate schedule, Warmup, Loss spike, Checkpoint, MFU (Model FLOPs Utilization), Goodput, FP8 and FP4, Mixed precision, Few-shot prompting, Scaling law, Power law, Log-log plot, Training compute, Compute-optimal (Chinchilla-optimal), 6ND rule, H100, Over-training, Inference-aware scaling, Emergent abilities, Exact match, Data wall, Model collapse, Mid-training, Annealing, Context extension.
+Pretraining, Training run, Corpus, Self-supervised learning, Loss, Cross-entropy loss, Perplexity, Gradient descent, Learning rate, Batch and step, Common Crawl, Web crawler, Synthetic data, robots.txt, Data curation, Text extraction (boilerplate removal), Language identification, Deduplication, Jaccard similarity, Near-duplicate detection (MinHash), Heuristic filter, Quality classifier, PII (Personally Identifiable Information), Decontamination, Benchmark contamination, Data mixture, Upsampling, Epoch (training pass), Proxy model, Ablation, Curriculum (training curriculum), GPU-hour, Parallelism (distributed training), Learning-rate schedule, Warmup, Loss spike, Checkpoint, MFU (Model FLOPs Utilization), Goodput, FP8 and FP4, Mixed precision, Few-shot prompting, Scaling law, Power law, Log-log plot, Training compute, Compute-optimal (Chinchilla-optimal), 6ND rule, H100, Over-training, Inference-aware scaling, Emergent abilities, Exact match, Data wall, Model collapse, Mid-training, Annealing, Context extension.
 
 ## Exercises
 

@@ -602,6 +602,8 @@ You do not need to invent a threat list from scratch. A few frameworks are the s
 
 LLM07 deserves a second look: determined users can usually extract a system prompt, so never put passwords, keys or anything you would hate to see published inside one.
 
+Agents raise risks beyond those of a single chat reply: tools that act in the world, memory that persists between sessions, long chains of steps that no person reads in full, and agents handing work to other agents. OWASP's generative-AI security community has therefore also begun separate work on the security of agentic applications, meaning systems that plan, call tools and act over many steps. That work is newer and still changing, so look up its current edition on OWASP's site rather than relying on a summary. When you read it, do the same exercise as with the table above: for each risk it lists, write down which of your agent's tools, memory stores and permissions it applies to, and which layer of your defense in depth covers it.
+
 > **Definition — NIST AI RMF (AI Risk Management Framework):** A voluntary US framework, released in January 2023, for managing AI risks through four functions: Govern, Map, Measure and Manage. A Generative AI Profile (NIST AI 600-1) followed in July 2024.
 
 > **Definition — MITRE ATLAS:** A public knowledge base of real attack tactics and techniques used against AI systems, organized like MITRE's ATT&CK catalog of conventional cyberattacks, used by security teams to plan defenses and red-team exercises.

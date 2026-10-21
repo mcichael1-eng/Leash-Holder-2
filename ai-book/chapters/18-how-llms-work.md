@@ -189,6 +189,8 @@ Once you know that a model sees token IDs and not letters, many puzzling behavio
 
 **Other languages cost more.** Tokenizers trained mostly on English text learn long merges for English words but fewer for, say, Hindi, Amharic or Burmese. The same meaning can take two to several times as many tokens. Since you pay per token and the context window is measured in tokens, speakers of under-served languages pay more and fit less in. That is a real fairness and business issue.
 
+**Code can cost more, too.** The same logic applies to code. Brackets, symbols, indentation and invented names such as getUserId2 are less like everyday prose, so they can break into several small pieces each, and a screen of code can use more tokens than a screen of English of the same length. How much more depends on how much code the tokenizer saw when it was built, which is one more reason the same file can cost different amounts on different models. When you paste a large codebase into a coding assistant, this is part of why it fills the context window faster than you expect.
+
 **Prices and limits.** Every API price is quoted per million tokens, and every limit (context window, maximum output) is in tokens, because tokens are what the model actually processes. Each token is one trip through the model.
 
 | Rule of thumb | Older tokenizers (English) | Notes |

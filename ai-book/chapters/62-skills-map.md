@@ -344,9 +344,9 @@ Level 6 is where the models themselves improve. It often takes two to five years
 
 > **Definition — Alignment:** The research field of making AI systems reliably pursue the goals and values their designers and users intend (see Chapters 55 and 56).
 
-**Interpretability.** *Learn:* the ARENA curriculum, Anthropic's Transformer Circuits thread, Neel Nanda's guides. *Prove:* a small replication of a published interpretability result.
+**Interpretability.** *What:* mechanistic interpretability: finding the features and circuits inside a network and probing what it represents (Chapter 57). *Why:* understanding a model's internals is central to safety and to debugging, because it can reveal problems that testing from the outside misses. *Learn:* the ARENA curriculum, Anthropic's Transformer Circuits thread, Neel Nanda's guides. *Prove:* a small replication of a published interpretability result.
 
-**Alignment and safety research.** *What:* scalable oversight, AI control, adversarial robustness, model welfare and misuse safeguards. *Why:* it is small but growing: 80,000 Hours estimated only about 300 people (a range of 76 to 536 full-time equivalents) worked on technical AI safety aimed at catastrophic risks as of 2022. *Learn:* BlueDot Impact's free courses, ARENA bootcamps, MATS, the Anthropic Fellows Program, the 80,000 Hours career guide.
+**Alignment and safety research.** *What:* scalable oversight, AI control, adversarial robustness, model welfare and misuse safeguards. *Why:* it is small but growing: 80,000 Hours estimated only about 300 people (a range of 76 to 536 full-time equivalents) worked on technical AI safety aimed at catastrophic risks as of 2022. *Learn:* BlueDot Impact's free courses, ARENA bootcamps, MATS, the Anthropic Fellows Program, the 80,000 Hours career guide. *Prove:* a small public project in one safety area, such as a replicated AI-control or evaluation experiment written up with code and honest limitations, which doubles as a fellowship application.
 
 > **Definition — Fellowship (research residency):** A paid, time-boxed program in which newcomers do research with mentorship, such as MATS or the Anthropic Fellows Program. Fellowships are the main on-ramp into safety research.
 

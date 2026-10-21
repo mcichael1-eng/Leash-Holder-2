@@ -117,7 +117,7 @@ Nearly every major open model today uses rotary position embedding, published in
 
 > **Definition — RoPE (Rotary Position Embedding):** A way of encoding position by rotating each token's query and key vectors by an angle proportional to the token's position. When two tokens are compared with a dot product, the result depends on how far apart they are, not on their absolute positions.
 
-Picture a vector as an arrow. RoPE turns the arrow by a fixed angle for every step along the text. Here is a toy version with 2-number vectors and 10 degrees per position. Suppose a query and a key both start as the arrow [1, 0].
+Picture a vector as an arrow. RoPE turns the arrow by a fixed angle for every step along the text. Here is a toy version with 2-number vectors and 10 degrees per position. Suppose a query and a key both start as the arrow [1, 0]. (Turning the arrow [1, 0] by an angle gives [cos of the angle, sin of the angle]: cos and sin are buttons on any scientific calculator that give the across and up parts of the turned arrow. In a spreadsheet, `=COS(RADIANS(50))` gives 0.643.)
 
 - The query sits at position 5, so it is turned 50 degrees: [cos 50°, sin 50°] = [0.643, 0.766].
 - The key sits at position 3, so it is turned 30 degrees: [0.866, 0.500].
@@ -243,7 +243,7 @@ The score for how much "it" should attend to each token is the dot product of it
 
 Divide every score by the square root of the query/key length. Here the length is 2, and the square root of 2 is about 1.414: 13 ÷ 1.414 = 9.19, 6 ÷ 1.414 = 4.24, 11 ÷ 1.414 = 7.78.
 
-> **Definition — Scaled dot-product attention:** The standard attention recipe: score each query against each key with a dot product, divide by the square root of the key length, apply softmax, and use the resulting weights to average the values. Written compactly: softmax(Q × K-transposed ÷ √d) × V.
+> **Definition — Scaled dot-product attention:** The standard attention recipe: score each query against each key with a dot product, divide by the square root of the key length, apply softmax, and use the resulting weights to average the values. Written compactly: softmax(Q × K-transposed ÷ √d) × V, where "transposed" means the grid of keys is flipped so its rows become columns, which lines every query up against every key.
 
 Why scale? In a real model, queries and keys have 64 or 128 numbers, so dot products can be large, say 22 versus 0. Softmax of [22, 0] gives essentially [1.0, 0.0]: all attention on one token, and the learning signal through the other options vanishes. Dividing by √128 ≈ 11.3 brings those scores back to about [2, 0], whose softmax is a healthier [0.88, 0.12].
 
@@ -371,7 +371,7 @@ flowchart LR
 
 *Table 15.4: Why attention variants matter: the memory each design needs to remember one long conversation, at 16-bit precision.*
 
-> **At the frontier (2026):** Nobody agrees on one attention design anymore. Sebastian Raschka's LLM Architecture Gallery, surveying 111 recent models in 2026, found grouped-query attention in about 65 percent, sliding-window patterns in about 31 percent, MLA-style attention in about 23 percent, linear-attention hybrids in about 14 percent, and classic full multi-head attention in only about 4 percent. (A model can use several, so the shares overlap.)
+> **At the frontier (2026):** Nobody agrees on one attention design anymore. Sebastian Raschka's LLM Architecture Gallery, surveying 111 recent models in 2026, found grouped-query attention in about 65 percent, sliding-window patterns in about 31 percent, MLA-style attention in about 23 percent, linear-attention hybrids in about 14 percent, and classic full multi-head attention in only about 4 percent. (A model can use several, so the shares overlap. Sliding windows and linear attention are explained in "Making attention cheaper" later in this chapter.)
 
 The KV cache is a big reason why long chats cost more and why providers price "cached" input differently. Chapters 23 and 33 work through the serving economics.
 
@@ -430,7 +430,7 @@ flowchart TD
 
 Stacking is where depth comes from. GPT-2 small has 12 blocks, GPT-3 has 96, Llama 3 70B has 80 and Kimi K3 has 93. Early blocks tend to handle local grammar and word pieces; middle blocks build up meaning and facts; late blocks prepare the prediction. Chapter 57 shows how interpretability researchers read the residual stream to find features such as "this is French" or "this is a bug in code."
 
-You can now count a model's size. Per block, attention has about 4 × d² weights and the 4× feed-forward block about 8 × d², so a block is about 12 × d². For GPT-3, with d = 12,288 and 96 blocks: 12 × 96 × 12,288² ≈ 174 billion. Add the embedding table (50,257 × 12,288 ≈ 0.6 billion) and you get GPT-3's famous 175 billion parameters. Exercise 7 has you check GPT-2 the same way.
+You can now count a model's size. Here d is the model dimension and d² means d × d. Per block, attention has about 4 × d² weights and the 4× feed-forward block about 8 × d², so a block is about 12 × d². For GPT-3, with d = 12,288 and 96 blocks: 12 × 96 × 12,288² ≈ 174 billion. Add the embedding table (50,257 × 12,288 ≈ 0.6 billion) and you get GPT-3's famous 175 billion parameters. Exercise 7 has you check GPT-2 the same way.
 
 > **Key idea:** A Transformer is one block, repeated. Each block lets tokens exchange information (attention), then lets each token process it (feed-forward), and both write their results onto a running stream that flows from the first layer to the last.
 
@@ -541,13 +541,13 @@ Attention's cost grows with the square of the text length. Much of the engineeri
 
 > **Definition — FlashAttention:** A way of computing exact attention in small tiles inside a GPU's fast on-chip memory, without ever storing the full score grid. It makes attention much faster and less memory-hungry with no change to the result.
 
-Since then, new versions have tracked each GPU generation. PyTorch 2.11 (March 2026) added a FlashAttention-4 backend that its developers report is 1.2 to 3.2 times faster on compute-bound workloads.
+Since then, new versions have tracked each GPU generation. PyTorch 2.11 (March 2026) added a FlashAttention-4 backend that its developers report is 1.2 to 3.2 times faster on compute-bound workloads (jobs limited by the chip's arithmetic speed rather than by memory).
 
 Other methods change what is computed, accepting some approximation:
 
 > **Definition — Sliding-window attention:** Attention in which each token looks only at the most recent N tokens instead of the whole history, capping the cost. Models often alternate sliding-window layers with full-attention layers.
 
-> **Definition — Sparse attention:** Attention in which each token attends to a selected subset of earlier tokens, such as the top-k most relevant ones, instead of all of them. DeepSeek Sparse Attention is an example.
+> **Definition — Sparse attention:** Attention in which each token attends to a selected subset of earlier tokens, such as the top-k most relevant ones (the k highest-scoring, for some fixed number k), instead of all of them. DeepSeek Sparse Attention is an example.
 
 > **Definition — Attention sink:** The tendency of trained models to dump large amounts of attention on the very first token, using it as a place to "park" attention when nothing else is relevant. Some designs add an explicit sink; others remove the need for one.
 
