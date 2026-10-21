@@ -22,8 +22,8 @@ Most AI in this book answers a question: what is in this photo, what word comes 
 
 There are two great families of tools for deciding.
 
-1. **Search and planning.** If you know the rules of the world, you can think ahead: "if I do this, then that happens, then I could do this..." and pick the path that ends best.
-2. **Reinforcement learning (RL).** If you do not know the rules, or the world is too big to think through, you can learn from experience: try things, see what earns rewards, and slowly do more of what works.
+1. **Search and planning.** If you know the rules, think ahead ("if I do this, then that happens...") and pick the path that ends best.
+2. **Reinforcement learning (RL).** If you do not know the rules, or the world is too big to think through, learn from experience: try things and do more of what earns rewards.
 
 > **Definition — Planning:** Working out a sequence of actions in advance, by reasoning about their consequences, to reach a goal.
 
@@ -100,7 +100,7 @@ From S, A* compares its neighbors:
 
 *Table 48.1: The first choice A* makes. The square heading toward the goal has the lowest f, so A* explores it first.*
 
-A* marches right while f stays at 7. At row 2, column 3, the wall blocks the way. The squares above and below now score f = 4 + 5 = 9, the same as the squares it skipped near the start, so the search widens a little, slips around the top of the wall and reaches G in 9 steps. In one run of this example, breadth-first search examined 44 squares before reaching the goal, while A* examined 19 (exact counts depend on how ties are broken). On a city-sized map the savings are millions of times larger.
+A* marches right while f stays at 7. At row 2, column 3, the wall blocks the way. The squares above and below now score f = 4 + 5 = 9, the same as the squares it skipped near the start, so the search widens a little, slips around the top of the wall and reaches G in 9 steps. In one run of this example, breadth-first search examined 44 squares before reaching the goal, while A* examined 19 (exact counts depend on how ties are broken). On a city-sized map the savings are enormous.
 
 > **Analogy:** Breadth-first search is a search party fanning out in every direction from the trailhead. A* is the same party with a compass pointing at the destination: they still check side paths when the direct way is blocked, but they do not waste hours walking away from the goal.
 
@@ -537,7 +537,7 @@ Carnegie Mellon's Noam Brown and Tuomas Sandholm built Libratus, which beat four
 
 ### CICERO (2022): games with words
 
-*Diplomacy* is a board game of alliances and betrayal for seven players, where most of the game is private negotiation in plain language. Meta's CICERO combined a language model with a planning engine that reasoned about other players' likely moves. Playing anonymously in 40 online games, it scored more than double the average human player's score and ranked in the top 10% of participants who played more than one game. It was an early sign of language models and strategic planning merging, the combination behind today's agents.
+*Diplomacy* is a seven-player board game of alliances and betrayal, played mostly through private negotiation in plain language. Meta's CICERO combined a language model with a planning engine that reasoned about other players' likely moves. In 40 anonymous online games, it scored more than double the average human player's score and ranked in the top 10% of participants who played more than one game. It was an early sign of language models and strategic planning merging, the combination behind today's agents.
 
 | Year | System | Game | Key new ingredient |
 |---|---|---|---|
@@ -624,8 +624,6 @@ Since the mid-2010s, RL has moved into real systems wherever decisions are seque
 **Chips.** A 2021 *Nature* paper from Google described RL that places the large blocks of a chip design, and Google later said the method (AlphaChip) helped lay out several generations of its TPUs. Some outside researchers disputed how much it beat conventional tools, a useful reminder to read single-company claims carefully.
 
 **Fusion and drones.** In 2022 DeepMind and the Swiss Plasma Center at EPFL reported that an RL controller trained in simulation held the superheated plasma of a real tokamak reactor in a range of shapes. In 2023 a University of Zurich drone called Swift, trained mostly in simulation, beat human champion pilots in head-to-head races. Both results appeared in *Nature*.
-
-**Robots and recommendations.** Legged robots now commonly learn to walk with RL in randomized simulations (Chapter 49), and bandit algorithms decide which headline, thumbnail or ad to show (Chapter 51).
 
 **Your chatbot.** This is the biggest application of all. Reinforcement learning from human feedback (RLHF) turned base language models into helpful assistants (Chapter 20). Since 2024, RL with verifiable rewards has trained "reasoning" models: the environment is a math problem or a code repository, the action is the next chunk of text, and the reward is whether the final answer checks out or the tests pass (Chapter 21).
 

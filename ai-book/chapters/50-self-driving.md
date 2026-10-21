@@ -40,7 +40,7 @@ So the average human driver, for all our texting and tiredness, goes thousands o
 
 > **Definition — Long tail (edge cases):** The enormous collection of rare, unusual situations that each almost never happens but that together happen all the time across millions of miles. Handling the long tail is the hardest part of self-driving.
 
-> **Key idea:** Getting a car to drive itself 99 percent of the time was achieved in research labs more than 15 years ago. The entire difficulty of self-driving lies in the last fraction of a percent: rare situations, handled safely, every time, at the scale of hundreds of millions of miles.
+> **Key idea:** Getting a car to handle ordinary driving most of the time was demonstrated by research teams more than 15 years ago. The entire difficulty of self-driving lies in the last fraction of a percent: rare situations, handled safely, every time, at the scale of hundreds of millions of miles.
 
 > **Watch out:** You may have read that "94 percent of crashes are caused by human error". That figure comes from a 2015 NHTSA summary that assigned a "critical reason" to each crash, defined as the last failure in the chain of events. NHTSA itself noted this is not the same as the cause of, or blame for, the crash. It does not mean robots could prevent 94 percent of crashes.
 
@@ -267,7 +267,7 @@ flowchart TD
 
 > **Definition — Shadow mode:** Running new driving software silently in the background on cars driven by humans or by older software, comparing what it *would* have done with what actually happened, without letting it control the car.
 
-> **At the frontier (2026):** The sharp line between the two camps has blurred. Both Waymo and Tesla now use large learned models; modular systems contain big neural networks inside each stage, and end-to-end systems add structure, safety checks and intermediate outputs engineers can inspect. As research notes for this book put it, the live debate is about sensors, validation and scale rather than "learned versus hand-coded".
+> **At the frontier (2026):** The sharp line between the two camps has blurred. Both Waymo and Tesla now use large learned models; modular systems contain big neural networks inside each stage, and end-to-end systems add structure, safety checks and intermediate outputs engineers can inspect. The live debate is about sensors, validation and scale rather than "learned versus hand-coded".
 
 ## Sensors and sensor fusion
 
@@ -311,3 +311,372 @@ This is the best-known argument in the field, and both sides have serious points
 **What would settle it.** Large amounts of published, independently checkable safety data from camera-only vehicles running without supervision, and the full cost per mile of each approach at scale. As of late 2026, the multi-sensor approach has far more driverless miles behind it, and the camera-only approach has far more cars on the road.
 
 > **Watch out:** The debate is often framed as "lidar versus AI". It is not. Both companies use large learned neural networks. The disagreement is about which sensors to feed them, whether to use HD maps, and how to prove the result is safe.
+
+## Testing a driver that never sleeps
+
+How do you test a driver before trusting it with passengers? Self-driving companies use a ladder of methods, each cheaper and broader than the one above it, and each less like the real thing.
+
+> **Definition — Scenario simulation:** Testing driving software in a virtual world, including replaying real recorded drives with changes ("what if that pedestrian had stepped out one second earlier?") and generating rare, dangerous situations that would be unethical to stage on real roads.
+
+> **Definition — Closed-course testing:** Testing on a private track where staged situations (a dummy pedestrian, a sudden cut-in) can be repeated safely.
+
+> **Definition — Safety driver (safety monitor):** An employee who rides in a test vehicle ready to intervene. A safety driver sits behind the wheel; a "safety monitor" usually sits in the passenger seat with a stop button.
+
+> **Definition — Disengagement:** A moment when the automated system hands control back to a human, or a human takes over, during testing.
+
+California has required companies testing self-driving cars on its roads to report their disengagements every year, and journalists often rank companies by "miles per disengagement". Treat that ranking with care. A company testing in quiet suburbs will have fewer disengagements than one testing in a dense downtown. Some companies tell safety drivers to take over at the first doubt; others do not. The number tells you something, but it is not a safety score.
+
+### Remote assistance: the humans behind the robotaxi
+
+Driverless does not mean humanless. When a robotaxi meets something confusing, such as a lane blocked by a fire truck or a police officer directing traffic, it can ask a human in a remote operations center for help.
+
+> **Definition — Remote assistance:** Help for an automated vehicle from a human at a remote center, who sees through the vehicle's cameras and answers its questions or suggests a route, while the vehicle itself keeps driving.
+
+> **Definition — Remote driving (teleoperation):** A remote human directly steering and braking a vehicle in real time over a wireless link. Most robotaxi companies avoid it at normal speeds, because network delays and dropouts make it risky.
+
+```mermaid
+sequenceDiagram
+    participant C as Robotaxi
+    participant R as Remote assistant
+    participant F as Field team
+    C->>C: Stops safely, lane ahead blocked by cones
+    C->>R: Request help with camera views and a proposed path
+    R->>C: Confirms lane is closed, approves path through the cones
+    C->>C: Plans and drives the new path itself
+    C-->>R: Reports it is clear and continues the trip
+    Note over C,F: If the car cannot proceed, a field team is sent to move it
+```
+*Figure 50.5: A typical remote-assistance exchange. The human gives advice; the vehicle still does the driving. The same "puppet or pilot" questions from Chapter 49 apply.*
+
+**Worked example: how many remote helpers does a fleet need?** Use illustrative assumptions, not any company's figures. A fleet of 3,500 robotaxis operates 16 hours a day: 3,500 × 16 = 56,000 vehicle-hours a day. Suppose a car asks for help once every 5 hours of driving: 56,000 ÷ 5 = 11,200 requests a day. If each takes 1 minute of a person's attention, that is 11,200 minutes, or about 187 person-hours a day, an average of about 12 people on duty across the 16 hours, before allowing for breaks and busy peaks. Halve the request rate and you halve the staff. Just as with humanoids in Chapter 49, the ratio of vehicles to remote humans is one of the most important numbers in the business, and one companies rarely publish.
+
+## A short history: from the desert to the city
+
+```mermaid
+timeline
+    title From desert races to robotaxi networks
+    2004 : DARPA Grand Challenge, no vehicle finishes
+    2005 : Stanford's Stanley wins the second Grand Challenge
+    2007 : DARPA Urban Challenge in a mock town
+    2009 : Google starts its self-driving project
+    2016 : The Google project becomes Waymo
+    2018 : An Uber test vehicle kills a pedestrian in Tempe : Waymo One service begins near Phoenix
+    2020 : Fully driverless public rides in Phoenix
+    2023 : Mercedes Drive Pilot certified as Level 3 in Nevada and California : A Cruise robotaxi drags a pedestrian in San Francisco
+    2024 : GM ends the Cruise robotaxi program
+    2025 : Tesla Robotaxi launches in Austin with safety monitors : Waymo reaches 250,000 paid rides a week
+    2026 : Waymo driverless in 10 metros, then Las Vegas : Zoox begins paid rides in Las Vegas
+```
+*Figure 50.6: Twenty-two years from a desert race nobody finished to robotaxi networks in a dozen cities.*
+
+### The desert races (2004–2007)
+
+In 2004 the US military research agency DARPA offered a $1 million prize to any driverless vehicle that could cross about 150 miles of Mojave Desert. Not one finished; the best entry managed about 7 miles before getting stuck. Eighteen months later, at the second Grand Challenge in 2005, five vehicles finished a 132-mile course. The winner was Stanley, a modified Volkswagen Touareg from Stanford University's team led by Sebastian Thrun, which took just under seven hours. Part of Stanley's edge was machine learning: it learned to recognize drivable road in its camera images farther ahead than its laser sensors could see, so it could drive faster safely.
+
+In 2007 the DARPA Urban Challenge moved the contest to a mock town with traffic, intersections and parking lots, with robots required to obey California road rules. Carnegie Mellon University's Boss won. Many of the engineers from these teams went on to found and staff the self-driving industry.
+
+### Google, Waymo and the long road to driverless
+
+Google started its self-driving project in 2009, hiring veterans of the DARPA races. It became a separate Alphabet company, Waymo, in 2016. Waymo opened its Waymo One service near Phoenix in 2018 and began offering fully driverless public rides there in 2020, more than a decade after the project began.
+
+### Two crashes that shaped the industry
+
+**Uber, Tempe, Arizona, March 2018.** An Uber test vehicle, with a safety driver behind the wheel, struck and killed a pedestrian walking her bicycle across a road at night. It was the first known pedestrian death involving a self-driving test car. The US National Transportation Safety Board (NTSB) investigation found that the system detected her more than five seconds before impact but repeatedly changed its mind about what she was (a vehicle, a bicycle, an unknown object) and did not predict her path correctly, partly because the system had not been designed to expect pedestrians crossing outside crosswalks. The car's built-in automatic emergency braking had been turned off during self-driving mode, and the safety driver was looking down at a phone streaming a TV show. Uber halted testing and in 2020 sold its self-driving unit to Aurora. The lessons: perception and prediction failures, automation complacency in safety drivers, and the need for a strong safety culture.
+
+**Cruise, San Francisco, October 2023.** A pedestrian was hit by a human-driven car and thrown into the path of a Cruise robotaxi, which braked hard but struck her. The robotaxi then tried to pull over to the side of the road, as it was designed to do after a collision, and dragged her about 6 meters (20 feet). California regulators suspended Cruise's driverless permits within weeks and said the company had not initially shown them the full footage. Cruise, owned by General Motors, never recovered: GM ended its robotaxi program in December 2024. The lessons: a "safe" fallback maneuver can be the wrong one, and trust with regulators and the public, once lost, may not come back.
+
+> **Key idea:** In the history of self-driving, the crashes that mattered most were not only technical failures. They were failures of safety culture and transparency, and they set the whole industry back.
+
+### Level 3 arrives, and Tesla's robotaxi
+
+Mercedes-Benz Drive Pilot became the first Level 3 system certified in the United States in 2023, in Nevada and then California. Tesla launched its Robotaxi service in Austin, Texas, in June 2025, with safety monitors aboard at first.
+
+## The 2026 landscape, with numbers
+
+Here is where the field stood as of October 2026. Almost all of these figures come from the companies themselves, sometimes through regulatory filings, and they are labeled that way.
+
+### Waymo (Alphabet)
+
+Waymo is the clear leader in driverless miles and rides.
+
+- **Rides:** about **500,000 paid rides per week** in spring 2026, up from 250,000 in April 2025, with a target of **1 million per week by the end of 2026** (company figures as reported by the press). More than 20 million cumulative trips.
+- **Fleet:** about 3,500 vehicles.
+- **Miles:** **271.3 million rider-only miles** through June 2026 (company safety data).
+- **Cities:** a March 2026 expansion brought driverless service to 10 metro areas: Phoenix, the San Francisco Bay Area, Los Angeles, Austin, Atlanta, Miami, Dallas, Houston, San Antonio and Orlando. Las Vegas went fully driverless on July 8, 2026, with Denver, San Diego and Tampa named as next.
+- **Abroad:** London service targeted for 2026 with testing underway; Tokyo commercial driverless service targeted for 2027. As of mid-2026 there were no paid driverless Waymo rides outside the United States.
+
+> **Definition — Rider-only miles:** Miles driven by an automated vehicle with no human driver or safety monitor on board, only passengers or nobody at all.
+
+**Worked example: what those numbers mean.**
+
+- **Rides per car:** 500,000 rides per week ÷ 3,500 vehicles = about 143 rides per vehicle per week, or about 20 per day.
+- **Miles in human terms:** 271.3 million miles ÷ about 13,500 miles per year for a typical American driver = about 20,000 years of one person's driving.
+- **Growth:** going from 250,000 to 500,000 weekly rides took about a year. Reaching 1 million by the end of 2026 would require another doubling in roughly eight months, a faster pace. Whether Waymo hit that target was not known as of October 2026.
+
+```
+Waymo paid rides per week (company figures as reported)
+
+Apr 2025     #########                          250,000
+Spring 2026  ##################                 500,000
+End 2026     ####################################  1,000,000 target
+```
+*Figure 50.7: Waymo's reported weekly paid rides and its stated end-of-2026 target. Each # is about 28,000 rides.*
+
+### Tesla
+
+- **Robotaxi:** launched in Austin in June 2025 with safety monitors aboard. By April 2026, rides with no employee on board were running in Austin, Dallas and Houston, and later reports add Miami and other Florida cities. One September 2026 report said the unsupervised fleet had passed 1 million miles with roughly 200 or more vehicles, a figure from a secondary source that had not been confirmed independently. The Bay Area service still uses safety drivers.
+- **Consumer FSD (Supervised):** a **Level 2** system; the driver must supervise. Elon Musk called unsupervised FSD for customer cars in the fourth quarter of 2026 "a guess", and Tesla has missed several earlier targets for this. Cumulative supervised FSD miles were approaching 12 billion, according to Tesla's second-quarter 2026 earnings call.
+
+**Worked example: comparing miles honestly.** Waymo's 271.3 million rider-only miles versus the roughly 1 million unsupervised Tesla Robotaxi miles in one report is a ratio of about 271. And Tesla's 12 billion supervised miles, while a vast amount of data for training, cannot by themselves show how safe the cars would be without supervision, because a human was there to catch mistakes. Every crash a human prevented is invisible in those miles.
+
+> **Key idea:** Supervised miles and unsupervised miles measure different things. Supervised miles show how much data a company has. Only unsupervised miles show how safe the system is on its own.
+
+### Zoox (Amazon)
+
+Zoox builds a purpose-built robotaxi with no steering wheel or pedals, with seats facing each other.
+
+> **Definition — Purpose-built robotaxi:** A vehicle designed from scratch to be driven only by an automated system, with no steering wheel or pedals, rather than a normal car fitted with self-driving equipment.
+
+By March 2026, Zoox had about 2 million autonomous miles and more than 350,000 riders on free rides in Las Vegas and in an early-rider program in San Francisco, with Austin and Miami coming. On July 30, 2026, it received the National Highway Traffic Safety Administration's first commercial exemption for a purpose-built robotaxi, capped at 2,500 vehicles a year. Paid rides began in Las Vegas on August 10, 2026.
+
+### China and the Middle East
+
+- **Baidu Apollo Go:** more than 20 million cumulative rides by February 2026, a weekly peak of over 300,000 in the fourth quarter of 2025, and about 3.2 million fully driverless rides in the first quarter of 2026 (company figures). That quarter works out to 3,200,000 ÷ 13 weeks = about 246,000 driverless rides a week, the same order of magnitude as Waymo. It runs driverless commercial service in Dubai and Abu Dhabi, and road tests in London in 2026 with public rides planned for 2027.
+- **Pony.ai:** a global robotaxi fleet of **1,975 vehicles as of June 30, 2026**, targeting more than 3,500 by year-end (company figures from a US securities filing).
+- **WeRide:** operates robotaxis in China and Abu Dhabi.
+
+### Trucks and delivery robots
+
+> **Definition — Hub-to-hub autonomous trucking:** A model in which driverless trucks run long highway legs between freight terminals near highways, with human drivers or local services handling the complicated city streets at each end.
+
+Highways are simpler than city streets in some ways (no pedestrians, no cyclists, clearer rules) and harder in others (high speeds, long stopping distances, heavy vehicles). The business case is strong: US rules limit a truck driver to 11 hours of driving a day, while a driverless truck could in principle run nearly around the clock. Aurora, which bought Uber's self-driving unit, is the best-known US company pursuing driverless trucks. Small sidewalk delivery robots, meanwhile, already deliver food on many university campuses and in some city neighborhoods.
+
+| Operator | Where | Key figures (as of 2026) | Source label |
+|---|---|---|---|
+| Waymo | 11 US metros driverless; London and Tokyo planned | ~500,000 paid rides/week (spring); ~3,500 vehicles; 271.3M rider-only miles (to June) | Company figures |
+| Tesla Robotaxi | Austin, Dallas, Houston, Florida cities; Bay Area with safety drivers | ~1M unsupervised miles, ~200+ vehicles (September report) | Single secondary report |
+| Tesla FSD (Supervised) | Customer cars, Level 2 | ~12B cumulative supervised miles (Q2 call) | Company figures |
+| Zoox | Las Vegas (paid from August 10), San Francisco, Austin and Miami coming | ~2M autonomous miles, 350,000+ riders on free rides (March) | Company figures |
+| Baidu Apollo Go | China, Dubai, Abu Dhabi; London tests | 20M+ cumulative rides (February); ~3.2M driverless rides in Q1 | Company figures |
+| Pony.ai | China and abroad | 1,975 vehicles (June 30), 3,500+ targeted by year-end | Company securities filing |
+| WeRide | China, Abu Dhabi | Fleet figures not broken out in sources found | Company statements |
+
+*Table 50.3: The robotaxi landscape in 2026. Nearly every number is self-reported; independent checks are rare outside safety data.*
+
+> **Watch out:** "Self-driving cars are always five years away" is out of date. Robotaxis with nobody in the driver's seat already give hundreds of thousands of paid rides every week in the US and China. What remains true is that they work in limited areas and conditions (Level 4), not everywhere (Level 5).
+
+## How to read a "% fewer crashes" claim
+
+Every self-driving company publishes safety comparisons, and headlines repeat them: "80 percent fewer injury crashes than humans." Here is how to read such a claim like a scientist. We will practice on a made-up company first, then apply the method to Waymo's real figures.
+
+> **Definition — Crash rate:** The number of crashes divided by the distance driven, usually stated per million miles, so that fleets of different sizes can be compared fairly.
+
+> **Definition — Human benchmark:** The crash rate of human drivers used for comparison, ideally measured in the same places, on the same kinds of roads and at the same times as the automated vehicles drive.
+
+### Worked example: RoboCab, a fictional robotaxi company
+
+RoboCab announces: "RoboCab had 80 percent fewer injury crashes than human drivers."
+
+**Step 1: Turn the claim into rates.** RoboCab drove 50 million miles and had 30 crashes involving an injury. Its rate is 30 ÷ 50 = 0.6 injury crashes per million miles. The human benchmark it chose is 3.0 per million miles. The reduction is 1 − (0.6 ÷ 3.0) = 1 − 0.2 = 0.8, or 80 percent fewer. The arithmetic checks out. Now the real questions.
+
+**Step 2: Check the comparison group.** Where does 3.0 come from? If it is a national average that includes rural highways, icy winters and drunk drivers at 2 a.m., while RoboCab drives only in one sunny city at moderate speeds, the comparison flatters RoboCab. The fair benchmark is human driving in the same city, on the same kinds of roads, at the same times.
+
+**Step 3: Check for underreporting.** Self-driving companies in the US must report every crash to regulators, even minor bumps. Many minor human crashes are never reported to police or insurers. A benchmark built from police reports therefore undercounts human crashes, making the robots look worse. Careful studies adjust for this, but the size of the adjustment is itself an estimate you should look for.
+
+> **Definition — Underreporting:** When many events, such as minor crashes, never make it into official records, so rates calculated from those records are too low.
+
+**Step 4: Check what is counted.** "Any contact", "police-reported", "injury", "airbag deployed" and "serious injury or worse" are different categories with very different counts. A company can choose the category that looks best. A trustworthy report shows several.
+
+**Step 5: Check the uncertainty.** Severe crashes are rare, and small counts bounce around by luck. Suppose RoboCab had 2 serious-injury crashes in its 50 million miles, a rate of 2 ÷ 50 = 0.04 per million miles, against a human benchmark of 0.25 per million miles. That looks like 1 − (0.04 ÷ 0.25) = 84 percent fewer. But with only 2 events, the true long-run count could easily have been different. Standard statistics for rare counts (the Poisson distribution, from Chapter 6) say that when you observe 2 events, the true expected number is plausibly anywhere from about 0.24 to about 7.2 (a 95 percent confidence interval).
+
+> **Definition — Confidence interval:** A range of values that, given the data and the statistical method, is likely to contain the true value. A "95 percent confidence interval" is built so that ranges made this way capture the truth about 95 percent of the time.
+
+- Low end: 0.24 ÷ 50 = 0.005 per million miles, which is 1 − (0.005 ÷ 0.25) = 98 percent fewer.
+- High end: 7.2 ÷ 50 = 0.144 per million miles, which is 1 − (0.144 ÷ 0.25) = 42 percent fewer.
+
+The honest headline is "somewhere between about 42 percent and 98 percent fewer serious-injury crashes". That is still good news, but a long way from a precise "84 percent".
+
+**Step 6: Ask how many miles it takes to prove anything.** For the rarest events, deaths, there is a handy shortcut.
+
+> **Definition — Rule of three:** A statistics rule of thumb: if something has not happened at all in n independent trials (or miles), you can be about 95 percent confident its true rate is below 3 ÷ n.
+
+Human drivers cause a little over 1 death per 100 million miles. In 2016, the RAND Corporation's report *Driving to Safety* used a benchmark of 1.09 deaths per 100 million miles and asked how far a self-driving fleet must drive with no deaths at all to be 95 percent confident it is at least that safe. Use the rule of three: n = 3 ÷ (1.09 ÷ 100,000,000) = 3 ÷ 0.0000000109 = about 275 million miles. And that only shows "no worse than humans". Showing that a fleet is, say, 20 percent *better* than humans at avoiding deaths takes billions of miles, because you have to measure a small difference between two rare events. This is why safety reports focus on more common categories, such as injury crashes, where differences show up sooner.
+
+```mermaid
+flowchart TD
+    A["Headline: X percent fewer crashes"] --> B["What are the counts and the miles?<br/>Convert to rates per million miles"]
+    B --> C["Who is the comparison group?<br/>Same city, roads, times?"]
+    C --> D["Which crashes are counted?<br/>Any contact, injury, serious injury"]
+    D --> E["How many events?<br/>Small counts mean wide ranges"]
+    E --> F["What is excluded?<br/>Weather, highways, supervised miles"]
+    F --> G["Who computed it?<br/>Company, peer review, independent"]
+    G --> H["Verdict: what the claim does<br/>and does not show"]
+```
+*Figure 50.8: A checklist for any "% fewer crashes" claim, from AI cars or anything else.*
+
+**Step 7: Check what is excluded.** Does the fleet avoid snow, heavy rain or highways? Were the miles supervised, so that a human prevented crashes that would otherwise have happened? Did remote assistants or field teams help?
+
+**Step 8: Check who computed it and who was at fault.** Company-computed figures are a starting point, not the final word. Peer review and independent analyses add confidence. And "involved in a crash" is not the same as "caused a crash": many robotaxi crashes involve the robotaxi being hit while stopped. Good analyses report both involvement and contribution.
+
+### Applying the method to Waymo
+
+Waymo's safety data hub reports, for **271.3 million rider-only miles** through June 2026, compared with human drivers in the same cities:
+
+- about **95 percent fewer crashes causing serious injury or worse** (94.82 percent precisely),
+- **82 percent fewer** injury-reported crashes,
+- **93 percent fewer** crashes injuring pedestrians,
+- **82 percent fewer** crashes in which an airbag deployed.
+
+Now run the checklist.
+
+- **Comparison group:** human drivers in the same cities, which is the right idea. The benchmark is computed by Waymo, which has an obvious interest in the result.
+- **Categories:** several are reported, including more common ones (injury) and rarer, more serious ones. That is good practice.
+- **Uncertainty:** with over 270 million miles, even the serious categories now contain enough events to give reasonably tight ranges, and the mileage is at the scale where the rule of three starts to say something about the rarest events, too.
+- **Peer review and independent checks:** a peer-reviewed paper by Waymo staff (Kusano and colleagues, in the journal *Traffic Injury Prevention*), covering about 56.7 million miles through January 2025, found large reductions. An analysis attributed to the Insurance Institute for Highway Safety reportedly estimated somewhat smaller, but still large, reductions (for example, around 81 percent fewer injury crashes).
+- **Exclusions:** Waymo avoids heavy snow and, for most of its history, most highway driving. Its miles are therefore not the same mix as typical human driving.
+
+**Verdict:** strong evidence of large reductions in crashes within the cities, roads and conditions where Waymo operates; not evidence about blizzards or long-distance highway driving; and the most extensive driverless safety record anyone has published.
+
+> **Watch out:** Some driver-assistance safety reports compare miles driven with the system switched on, mostly on highways, against national averages that include city streets, rural roads and bad weather. Highways have fewer crashes per mile anyway, and a human was supervising. That comparison mixes apples and oranges, so be wary of it whoever publishes it.
+
+> **Try it:** Paste a recent "X percent safer" headline about any AI system, a car, a medical tool or a fraud detector, into your chatbot along with this chapter's eight steps, and ask it to list which steps the article answers and which it leaves out. Then read the original source yourself to check the chatbot's summary.
+
+## Rules of the road for robots: regulation
+
+Who decides whether a car with nobody in it may drive down your street? In most countries the answer is split between national and local governments, and the rules were written for human drivers.
+
+### The United States
+
+The federal and state governments divide the job.
+
+> **Definition — NHTSA (National Highway Traffic Safety Administration):** The US federal agency that sets safety standards for vehicles and their equipment, investigates defects, orders recalls and collects crash data.
+
+> **Definition — FMVSS (Federal Motor Vehicle Safety Standards):** The US federal safety rules every new vehicle must meet. Many were written assuming a human driver with a steering wheel and pedals, so vehicles without them need exemptions.
+
+> **Definition — Vehicle safety recall:** A formal action to fix a safety defect in vehicles already sold. For self-driving and driver-assistance systems, recalls are often fixed by a software update sent wirelessly.
+
+> **Definition — Over-the-air (OTA) update:** New software sent to a vehicle wirelessly, like a phone update, without a visit to a garage.
+
+- **Federal (NHTSA):** sets vehicle safety standards, grants exemptions from them, investigates defects and orders recalls. Since 2021, a Standing General Order has required companies to report crashes involving automated driving systems and Level 2 driver-assistance systems. Zoox's July 2026 exemption, capped at 2,500 vehicles a year, was the first commercial exemption granted for a purpose-built robotaxi. Waymo, Cruise, Zoox and Tesla have all issued recalls for their automated or driver-assistance systems that were fixed with software updates.
+- **States:** control driver licensing, traffic laws, insurance requirements and permits to operate on their roads. California, for example, requires permits from its Department of Motor Vehicles to test and deploy self-driving cars and separate approval from its Public Utilities Commission to charge passengers. Some states, such as Arizona and Texas, have taken a more permissive approach, which is partly why so many services launched there.
+
+> **Definition — Standing General Order (crash reporting):** A 2021 NHTSA order requiring companies to report crashes involving vehicles equipped with automated driving systems or Level 2 driver-assistance systems, creating a public crash database.
+
+For most of the robotaxi era, the US has had no comprehensive federal law written specifically for self-driving cars; the system has relied on NHTSA's general powers plus a patchwork of state laws. Check for changes, as of October 2026, before relying on any of this for a decision.
+
+### Who is liable?
+
+At Level 2, the human driver is responsible, just as in an ordinary car. At Levels 3 and 4, while the system is driving, responsibility shifts toward the company that built or operates it. Mercedes-Benz has said it accepts responsibility for Drive Pilot's driving while the system is engaged. For a robotaxi, the operating company is in effect the driver of every car in its fleet.
+
+> **Key idea:** At Level 4, the company is the driver. Responsibility moves from millions of individual motorists to a handful of companies, which changes insurance, liability and what regulators need to see before saying yes.
+
+### Elsewhere
+
+- **United Kingdom:** the Automated Vehicles Act 2024 makes the company behind an authorized self-driving system legally responsible for how the car drives while the system is in control; the person in the seat becomes a "user-in-charge" who is not liable for the driving itself. Waymo and Baidu both planned London services.
+- **China:** robotaxis are permitted city by city, with local governments granting test and commercial licenses. Baidu Apollo Go and Pony.ai have grown under this system.
+- **United Arab Emirates:** Dubai and Abu Dhabi host driverless commercial services from Baidu Apollo Go and WeRide.
+- **Germany and Japan** have also created legal routes for Level 4 operation in defined areas.
+
+## Open problems and what to watch
+
+Self-driving has moved from "if" to "how fast and where", but several hard problems remain.
+
+- **Weather.** Heavy snow hides lane markings and coats sensors; most robotaxi services avoid it.
+- **Highways at scale.** High speeds mean long stopping distances and severe crashes, and highway driverless service is still limited.
+- **Emergency scenes and human direction.** Police hand signals, fire hoses across the road and flooded streets are rare, varied and high-stakes.
+- **Dense, chaotic traffic.** Cities in much of the developing world, with mixed traffic, few lane markings and very different driving norms, are a different challenge from Phoenix or Los Angeles.
+- **Proving safety.** Building a convincing statistical safety case, as the rule of three shows, takes hundreds of millions of miles, and every software update raises the question of whether old evidence still applies.
+- **Economics.** Vehicle and sensor costs, depots, charging, cleaning, insurance and remote assistance all have to fall below what a ride is worth.
+- **Jobs.** Ride-hailing, taxi and truck driving employ millions of people; how fast automation arrives and what happens to those workers is part of the broader debate in Chapter 60.
+
+Signals worth watching in 2027:
+
+1. Whether Waymo reaches 1 million paid rides a week, and how fast it adds cities and highways.
+2. The first paid driverless rides outside the US and China for a US company (London was the 2026 target).
+3. Whether Tesla delivers unsupervised FSD to customer cars, and what independent safety data its Robotaxi service produces.
+4. How fast Zoox scales under its 2,500-vehicle-a-year exemption.
+5. Chinese operators' expansion in the Middle East and Europe.
+6. Driverless trucks on long highway corridors.
+7. Independent, peer-reviewed safety analyses for every operator, not just the leader.
+
+## In plain English
+
+A self-driving car is a robot that has to be extraordinarily reliable, because human drivers, for all their faults, go about 77 million miles per death on US roads. The SAE levels are best read as a map of responsibility. At Level 2, which includes Tesla's consumer FSD (Supervised) and GM's Super Cruise, the car steers and brakes but you are the driver and must watch the road every second. At Level 3, the car drives in narrow conditions but may hand control back to you. At Level 4, robotaxis like Waymo, Zoox and Baidu Apollo Go need nobody, but only inside the areas and conditions they were designed for. Level 5, anywhere and any conditions, does not exist.
+
+Inside, a classic self-driving system works out exactly where it is, detects everything around it, predicts what others will do, plans a safe path, and steers and brakes, ten or more times a second. The newer "end-to-end" approach trains one big network to go from camera video to a driving path; in practice both camps now use large learned models, and the real arguments are about sensors and proof. Waymo uses lidar, radar, cameras and detailed maps; Tesla uses cameras only.
+
+After the DARPA desert races of 2004–2007, Google's project became Waymo, and two crashes, Uber's in 2018 and Cruise's in 2023, taught the industry hard lessons about safety culture and honesty. By 2026, Waymo reported about 500,000 paid rides a week in 11 US metros, and Baidu ran a similar volume in China.
+
+When you see "X percent fewer crashes", convert it to rates, check the comparison group, the crash category, the number of events, what was excluded and who did the math. Rare events need hundreds of millions of miles to judge.
+
+## Key terms
+
+Autonomous vehicle (AV), Automated driving system (ADS), Advanced driver-assistance system (ADAS), Robotaxi, Long tail (edge cases), Dynamic driving task (DDT), Fallback, Operational design domain (ODD), SAE levels of driving automation, Adaptive cruise control, Lane centering, Minimal risk condition, Driver monitoring system, Automation complacency, Geofence, Modular driving stack, GNSS (GPS), IMU (inertial measurement unit), Localization, HD map, Perception, Object tracking, Bird's-eye view (BEV), Occupancy grid, Prediction (motion forecasting), Motion planning, Cost function, Control (vehicle control), End-to-end driving, Imitation learning (behavior cloning), Shadow mode, Lidar, Point cloud, Time of flight, Radar, Ultrasonic sensor, Sensor fusion, Scenario simulation, Closed-course testing, Safety driver (safety monitor), Disengagement, Remote assistance, Remote driving (teleoperation), Rider-only miles, Purpose-built robotaxi, Hub-to-hub autonomous trucking, Crash rate, Human benchmark, Underreporting, Confidence interval, Rule of three, NHTSA (National Highway Traffic Safety Administration), FMVSS (Federal Motor Vehicle Safety Standards), Vehicle safety recall, Over-the-air (OTA) update, Standing General Order (crash reporting)
+
+## Exercises
+
+1. **[Easy] What level is your car?** (1) Pick your own car, a rental, or a car you would like to buy, and find its driver-assistance features in the manual or on the maker's website. (2) For each feature, answer the three questions from Table 50.1: who steers and controls speed, who watches the road, who is the fallback? (3) Assign an SAE level. (4) Find the sentence in the manual that says the driver must supervise, if there is one. **What you'll learn:** that SAE levels are about responsibility, and that almost every feature sold to consumers today is Level 2 or below.
+
+2. **[Easy] Sensor spotting.** (1) Search for photos of a Waymo vehicle, a Zoox vehicle and a Tesla Model Y. (2) On each, find and count the visible sensors: spinning or dome-shaped lidars, camera housings, radar panels. (3) Match each to a row of Table 50.2 and note what each covers (front, sides, rear, close range). **What you'll learn:** what a multi-sensor robotaxi physically looks like compared with a camera-only car, and why redundancy needs sensors pointing in every direction.
+
+3. **[Easy] Narrate the stack.** (1) Find a video of a full robotaxi ride; several companies and riders post them, and some show the car's own visualization of what it sees. (2) Pause at five interesting moments (a pedestrian, a merge, an unprotected left turn, a cyclist, a double-parked truck). (3) For each, write one line each for perception, prediction, planning and control, as in the cyclist example in this chapter. **What you'll learn:** to see the driving stack in action and to notice how much of driving is predicting other people.
+
+4. **[Medium] Stopping-distance spreadsheet.** (1) In a spreadsheet, list speeds from 20 to 80 miles per hour in steps of 10. (2) Convert each to meters per second (multiply by 0.447). (3) Compute reaction distance for a 1.5-second human and a 0.3-second system (speed × time). (4) Compute braking distance as speed² ÷ (2 × 7) for a car and speed² ÷ (2 × 4) for a loaded truck (illustrative values). (5) Add them up and chart total stopping distance against speed. (6) Find the speed at which a truck needs more than 150 meters to stop. **What you'll learn:** why sensor range and reaction time matter, and why highway trucking is a harder perception problem than city robotaxis.
+
+5. **[Medium] Read a safety claim like a scientist.** (1) Open Waymo's safety hub (waymo.com/safety/impact). (2) Write down the headline percentages, the total miles, the comparison group and the date range. (3) Find what conditions are excluded or underrepresented (weather, highways). (4) Search for one independent analysis or news article that critiques or confirms the numbers. (5) Apply all eight steps from this chapter and write a three-sentence verdict. **What you'll learn:** operational design domains, benchmarks, base rates and conflicts of interest, skills that transfer to every "AI is X percent better" claim.
+
+6. **[Medium] Rule of three and wide ranges.** (1) Using the rule of three, compute how many miles with zero deaths a fleet needs to show, with 95 percent confidence, that its fatality rate is below 1.2 per 100 million miles. (2) Repeat for a benchmark of 0.5 serious-injury crashes per million miles. (3) Now suppose a company reports 3 serious-injury crashes in 60 million miles against a human benchmark of 0.2 per million. Compute the headline percentage reduction. (4) Using the 95 percent range for 3 observed events, about 0.62 to 8.8, compute the low and high ends of the reduction. **What you'll learn:** why rare events need enormous mileage, and why honest safety claims come with ranges.
+
+7. **[Medium] Be the planner.** (1) Describe this scene to your chatbot: "You are a self-driving car going 25 mph on a residential street. A ball rolls into the road from between two parked cars 20 meters ahead. No person is visible." (2) Ask it to list possible futures with rough probabilities, then choose a speed and path and explain the cost trade-offs. (3) Ask what it would do differently at 45 mph, and compute the stopping distance yourself to check. (4) Discuss: why can a chatbot reason about this well but not actually drive the car? **What you'll learn:** prediction, planning under uncertainty and cost functions, and the gap between reasoning in text and real-time control.
+
+8. **[Challenge] Robotaxi unit economics.** (1) In a spreadsheet, set up illustrative inputs: vehicle and sensor cost (try $80,000, $150,000 and $250,000), years of service (try 5), rides per vehicle per day (start with 20, from this chapter's Waymo worked example), average fare (look up a typical local ride-hail fare), and yearly costs for charging, cleaning, insurance, maintenance and depots. (2) Add remote assistance: requests per vehicle-hour times minutes per request times an hourly wage. (3) Compute cost per ride and profit per vehicle per year. (4) Find the break-even rides per day for each vehicle cost. **What you'll learn:** what has to be true for robotaxis to make money, and which inputs (utilization, vehicle cost, remote staff) matter most.
+
+9. **[Challenge] Explore real crash reports.** (1) Search nhtsa.gov for "Standing General Order crash reporting" and download the latest data file for automated driving systems. (2) Open it in a spreadsheet and count crashes by company for the most recent six months. (3) Look at a sample of 20 narratives: was the automated vehicle moving or stopped, and who appeared to be at fault? (4) Explain in writing why the counts alone cannot tell you which company is safer, and what extra number you would need. **What you'll learn:** what raw crash data looks like, why counts without miles are meaningless, and the difference between involvement and fault.
+
+## Areas of opportunity
+
+- **Remote assistance operators and fleet operations managers.** Every robotaxi fleet needs people who answer vehicles' questions, coordinate field teams and manage depots. These roles are growing with each new city and suit people with dispatch, logistics or transportation backgrounds.
+- **AV safety analysts.** Companies, insurers, regulators and journalists need people who can build fair human benchmarks, analyze crash data, compute uncertainty and write safety cases. Statistics plus domain knowledge is the core skill set.
+- **Mapping and simulation specialists.** HD maps must be built and kept current, and scenario libraries of rare situations must be created for testing. 3D artists, GIS specialists and game developers have transferable skills.
+- **Depots, charging and cleaning for robotaxi fleets.** Vehicles with no driver still need charging, cleaning, inspection and minor repairs, often overnight. Local service businesses that can do this reliably will be paid by fleet operators expanding into new cities.
+- **Insurance products for automated vehicles.** As liability shifts from drivers to companies, insurers need new products for fleets, manufacturers and Level 3 owners, priced using data rather than driver age and history.
+- **Policy and regulatory roles.** Cities, states and national agencies need staff who understand ODDs, permits, crash reporting and liability. Policy fluency in this field is scarce.
+- **Autonomous trucking corridors.** Freight terminals near highways, maintenance, remote monitoring and the "first and last mile" handoff around hub-to-hub trucking are emerging businesses.
+- **Accessibility services.** Robotaxis could give independent mobility to elderly and disabled riders and people who cannot drive. Designing vehicles, apps and pickup procedures for these riders is both a business and a public good.
+- **Open problems worth working on.** Driving in snow and heavy rain; highway speeds at scale; interacting with police and emergency scenes; statistically convincing safety cases that survive software updates; mixed traffic in dense cities in the developing world; and the cost of sensors and vehicles.
+
+## Check your understanding
+
+1. At Levels 2, 3 and 4, who is the fallback when something goes wrong?
+2. Why is a hands-free system like GM Super Cruise still Level 2?
+3. Name the stages of the classic driving stack and give a one-line example of each stage's output for a scene with a cyclist.
+4. A car travels at 25 meters per second. How far does it travel during a 1.5-second human reaction and during a 0.3-second system reaction? What is its braking distance at 7 meters per second squared?
+5. Give the strongest argument for camera-only driving and the strongest argument for adding lidar and radar.
+6. A company reports 3 serious-injury crashes in 60 million miles, against a human benchmark of 0.2 per million miles. What percentage reduction is that, and why should you be cautious about it?
+7. Using the rule of three, how many miles with zero deaths would a fleet need to be 95 percent confident its death rate is below 1 per 100 million miles?
+8. Why do billions of supervised Level 2 miles not prove that a system is safe without supervision?
+
+<details><summary>Answers</summary>
+
+1. At Level 2, the human driver, instantly and at all times. At Level 3, the human, but only when the system asks them to take over (and if they do not respond, the system must reach a minimal risk condition). At Level 4, the system itself, which must bring the vehicle to a safe stop on its own.
+2. Because the human is still responsible for watching the road and taking over instantly; the system may fail without warning. Hands-free is not eyes-free, and a driver monitoring camera checks that the driver is paying attention.
+3. Localization: "we are in the right lane, 42 meters before the intersection." Perception: "cyclist 12 meters ahead at the lane edge, moving at 5 meters per second." Prediction: "70 percent continues straight, 25 percent swerves left within 2 seconds." Planning: "slow to 7 meters per second and keep 1.5 meters to her left." Control: "brake at 20 percent, steer 0.5 degrees left."
+4. Human: 25 × 1.5 = 37.5 meters. System: 25 × 0.3 = 7.5 meters. Braking: 25 × 25 ÷ (2 × 7) = 625 ÷ 14 = about 45 meters. Totals: about 82 meters for the human and 52 meters for the system.
+5. For cameras only: roads are designed for vision and humans drive with eyes; cameras are cheap enough to put on every car sold, giving vast amounts of training data from a huge fleet, and avoiding the cost and conflicts of extra sensors. For lidar and radar: they measure distance directly and work in darkness and glare, they fail in different ways from cameras so they back each other up, and that redundancy makes it easier to be much safer than humans and to prove it.
+6. 3 ÷ 60 = 0.05 per million miles; 1 − (0.05 ÷ 0.2) = 75 percent fewer. Caution: with only 3 events, the plausible range for the true count is about 0.62 to 8.8, giving rates of about 0.010 to 0.147 per million and reductions anywhere from about 27 percent to about 95 percent. You should also check the comparison group, underreporting, exclusions, fault and who computed it.
+7. n = 3 ÷ (1 ÷ 100,000,000) = 300 million miles.
+8. Because a human was supervising and stepped in whenever the system was about to make a mistake, so crashes the human prevented never appear in the data. Supervised miles show how much data a company has collected; only unsupervised miles show how the system performs on its own.
+
+</details>
+
+## Going deeper
+
+- **SAE J3016, "Taxonomy and Definitions for Terms Related to Driving Automation Systems" (sae.org)** — the standard that defines the levels; SAE's free one-page chart of the levels is the best quick reference.
+- **Waymo's Safety Impact hub (waymo.com/safety/impact)** — the largest published driverless safety dataset, with methodology notes and links to peer-reviewed papers.
+- **Nidhi Kalra and Susan Paddock, *Driving to Safety* (RAND Corporation, 2016)** — the short, clear report that showed how many miles it takes to prove a self-driving fleet is safe; free online.
+- **NTSB Highway Accident Report on the 2018 Uber crash in Tempe (ntsb.gov)** — a detailed public investigation of how perception, prediction, emergency braking and human supervision all failed together.
+- **Sebastian Thrun and colleagues, "Stanley: The Robot that Won the DARPA Grand Challenge" (Journal of Field Robotics, 2006)** — a readable account of the car that started the modern era.
+- **Alex Davies, *Driven: The Race to Create the Autonomous Car* (2021)** — a narrative history of the people and companies from the DARPA races to the robotaxi era.
+- **Sebastian Thrun, Wolfram Burgard and Dieter Fox, *Probabilistic Robotics* (2005)** — the classic textbook on localization, mapping and reasoning under uncertainty, for readers ready for the math.
+- **NHTSA's automated vehicles and crash reporting pages (nhtsa.gov)** — the primary US source for crash data under the Standing General Order, exemptions and recalls.
+- **Waymo Research (waymo.com/research)** — papers on perception, prediction, simulation and end-to-end driving, plus the Waymo Open Dataset used by researchers worldwide.

@@ -128,12 +128,12 @@ flowchart LR
   A sketch of the spectrogram of someone saying "see you"
   (brighter = louder; # very loud, + medium, . quiet)
 
-  high  |  ######                      
-  pitch |  ######   .  .               
-        |  ++++++   .  .   ......      
-        |           +  +   ++++++      
-        |           #  #   ######      
-  low   |           #  #   ######      
+  high  |  ######
+  pitch |  ######   .  .
+        |  ++++++   .  .   ......
+        |           +  +   ++++++
+        |           #  #   ######
+  low   |           #  #   ######
         +---------------------------------> time
             "s"     "ee"    "you"
           hiss at   bands   bands slide
@@ -556,7 +556,7 @@ The field's ImageNet moment was AudioSet (Google, 2017): roughly two million ten
 
 Factories use acoustic monitoring for predictive maintenance: a bearing about to fail, a pump losing pressure or a leaking valve often sounds different weeks before it breaks, and tiny models on sensors can listen around the clock (Chapter 53 covers this kind of edge AI). Researchers study cough sounds, breathing and snoring as health signals, though few such tools have proven clinical value yet.
 
-Acoustic gunshot detection shows the stakes of errors. Networks of microphones in some US cities alert police to probable gunfire. Supporters say they speed response to shootings that are never reported; critics, citing studies of false alerts and police stops in the alerted areas, say they are inaccurate and concentrated in minority neighborhoods. Chicago ended its contract with the largest provider, ShotSpotter, in 2024, while other cities kept using it.
+Acoustic gunshot detection shows the stakes of errors. Networks of microphones in some US cities alert police to probable gunfire. Supporters say they speed response to shootings that are never reported; critics, citing studies of false alerts and police stops in the alerted areas, say they are inaccurate and concentrated in minority neighborhoods. Chicago ended its contract for ShotSpotter, the most widely used system, in 2024, while other cities kept using it.
 
 ### Bioacoustics: listening to nature
 

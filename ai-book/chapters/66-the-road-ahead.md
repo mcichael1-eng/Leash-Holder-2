@@ -300,61 +300,54 @@ Every problem above depends on measurement, and measurement is itself open. Benc
 
 ## The infrastructure open problems
 
-The technical problems decide what AI can do. The infrastructure problems decide how much of it the world can afford to run, where and how fast. Part VII of this book covered them in depth; here are the four that matter most for the next five years.
+The technical problems decide what AI can do. The infrastructure problems decide how much of it the world can run, where and how fast. Part VII covered them in depth; here are the three that matter most for the next five years, and a worked example that ties them together.
 
 ### Power: the binding constraint
 
-If you remember one number from Chapter 39, make it this: a gigawatt is roughly a city's worth of electricity delivered to one fenced site. And grids take years to add that.
-
-**Worked example: what does one gigawatt campus use in a year?** A campus rated at 1 GW does not run flat out all the time. Epoch notes that sites typically consume 60–80% of capacity on average.
+**Worked example: what does one gigawatt campus use in a year?** A campus rated at 1 GW does not run flat out; Epoch notes that sites typically consume 60–80% of capacity on average.
 
 1. Hours in a year: 8,760.
 2. At a 70% average load: 1 GW × 8,760 h × 0.7 ≈ 6,100 GWh, or about 6.1 TWh.
-3. The International Energy Agency (IEA) estimated that all data centers worldwide used about 415 TWh in 2024, and its base case projects about 945 TWh by 2030. The increase, about 530 TWh, equals roughly 87 of these 1-GW campuses running all year.
+3. The International Energy Agency (IEA) estimated that all data centers worldwide used about 415 TWh in 2024, and its base case projects about 945 TWh by 2030. The increase, about 530 TWh, equals roughly 87 of these campuses running all year.
 
-> **Definition — Gigawatt (GW):** A billion watts, a unit of power (a rate of energy use). One gigawatt running for a year delivers 8.76 terawatt-hours of energy, roughly the yearly electricity of several hundred thousand homes.
+> **Definition — Gigawatt (GW):** A billion watts, a unit of power (a rate of energy use). One gigawatt running for a year delivers 8.76 terawatt-hours of energy, about the yearly electricity of 800,000 average US homes.
 
-The open problems are about speed and fairness more than raw supply. JLL reports average waits of more than four years for a grid connection in major markets, which pushes builders toward gas turbines on site. Gas fills most of the near-term gap; nuclear restarts help this decade; new small modular reactors mostly arrive in the 2030s. The first US construction permit for a BWRX-300 small modular reactor was issued only on September 28, 2026. And in markets like PJM in the eastern US, the cost of reserving future power capacity jumped several-fold, sparking fights over whether households are subsidizing data centers (Chapter 41).
+The open problems are about speed and fairness more than raw supply. JLL reports average waits of more than four years for a grid connection in major markets, which pushes builders toward gas turbines on site. Gas fills most of the near-term gap, nuclear restarts help this decade, and new small modular reactors mostly arrive in the 2030s: the first US construction permit for one was issued only on September 28, 2026. Meanwhile prices in the eastern US capacity market jumped many times over, sparking fights about whether households subsidize data centers (Chapter 41).
 
 > **Definition — Interconnection queue:** The waiting line of projects asking to connect to the electricity grid. Each needs engineering studies and often new equipment, and waits are now measured in years.
 
 > **Definition — Small modular reactor (SMR):** A nuclear reactor built in a smaller, more standardized size than traditional plants, meant to be cheaper and faster to deploy. As of 2026, only China and Russia operate them, and the first US units are expected around 2030.
 
-Two research questions could change the picture. Can training jobs throttle down on the grid's worst days, so data centers act as flexible loads and more of them can connect without new peak capacity? And can a single model be trained across several campuses hundreds of kilometers apart, sidestepping any one site's power limit? Both are being tried; neither is routine.
+Two research questions could change the picture. Can training jobs throttle down on the grid's worst days, so data centers act as flexible loads and more can connect without new peak capacity? And can one model be trained across campuses hundreds of kilometers apart, sidestepping any single site's power limit? Both are being tried; neither is routine.
 
 ### Chips, memory and the supply chain
 
-Chapters 32 to 36 showed that AI runs on one of the most concentrated supply chains on Earth. The open problems are physical.
-
-- **The memory wall.** According to Epoch, GPU memory bandwidth has grown about 28% a year since 2008, much slower than compute. Chips spend much of their time waiting for data, and HBM comes from only three companies.
-- **Packaging.** TSMC's CoWoS packaging has gated AI accelerator supply since 2023.
-- **Concentration.** Nearly every leading AI chip is made and packaged by TSMC in Taiwan, which makes geopolitics part of the AI forecast.
-- **Energy per operation.** Epoch measures GPU energy efficiency improving about 1.34× a year. That is fast, but slower than demand is growing, which is the Jevons paradox again.
+Chapters 32 to 36 showed that AI runs on one of the most concentrated supply chains on Earth, and its open problems are physical. GPU memory bandwidth has grown only about 28% a year since 2008 by Epoch's count, much slower than compute, and the stacked HBM memory that feeds AI chips comes from just three companies. TSMC's CoWoS packaging has gated accelerator supply since 2023, and nearly every leading AI chip is made in Taiwan, which puts geopolitics inside every AI forecast. GPU energy efficiency improves about 1.34× a year (Epoch): fast, but slower than demand, which is the Jevons paradox again.
 
 > **Definition — Memory wall:** The long-running gap between how fast processors can calculate and how fast memory can feed them numbers, which leaves AI chips increasingly waiting on data.
 
-The industry's published roadmaps give you dates to check. NVIDIA plans Rubin Ultra in "Kyber" racks for the second half of 2027, with racks around 600 kW and 800-volt DC power distribution, and previewed a Feynman generation for 2028. AMD plans its MI500 for 2027. Huawei moved its Ascend 960DT forward to the first quarter of 2027, with the 970 in 2028. Longer-term bets (co-packaged optics, 3D stacking of logic and memory, in-memory and photonic computing) are real research, and none is yet competitive at frontier scale. Quantum computers are not AI accelerators today (Chapter 35).
+Published roadmaps give you dates to check: NVIDIA's Rubin Ultra in "Kyber" racks of around 600 kW with 800-volt DC power for the second half of 2027 and a Feynman generation previewed for 2028; AMD's MI500 in 2027; Huawei's Ascend 960DT pulled forward to early 2027 and the 970 in 2028. Longer-term bets such as co-packaged optics, 3D-stacked logic and memory, and photonic or in-memory computing are real research, but none is yet competitive at frontier scale, and quantum computers are not AI accelerators today (Chapter 35).
 
 ### Money: can revenue catch up with capex?
 
-The biggest infrastructure question is not engineering at all. The largest US cloud companies guided to roughly $720–745 billion of 2026 capital spending across four companies, and FactSet put it "close to $800bn" for five once finance leases are included. The Wall Street Journal estimated AI investment at about 3.6% of US GDP, compared with about 2.2% for the railroads of the 1800s. Lab revenue is growing very fast, but so are losses: the Financial Times reported OpenAI projecting cumulative negative free cash flow of about $278 billion from 2026 to 2030.
+The largest US cloud companies guided to roughly $720–745 billion of 2026 capital spending across four companies, and FactSet put it "close to $800bn" for five once finance leases are counted. The Wall Street Journal estimated AI investment in 2026 at about 3.6% of US GDP, against about 2.2% for the railroads of the 1800s. Lab revenue is growing very fast, but so are losses: the Financial Times reported OpenAI projecting cumulative negative free cash flow of about $278 billion from 2026 to 2030.
 
 > **Definition — Capex (capital expenditure):** Money spent on long-lived physical assets such as buildings, power equipment and chips, as opposed to day-to-day operating costs.
 
 > **Definition — Depreciation:** Spreading the cost of an asset over its useful life in a company's accounts. Whether AI chips should be depreciated over 4, 5 or 6 years is a live debate, because chips may become economically outdated faster than their accounts assume.
 
-The open question is whether the use of AI grows into the infrastructure being built for it, and on what timetable. Chapter 43 gave both cases: the bull case (demand still exceeds supply, revenue is compounding, costs per answer are falling fast) and the bear case (capex outrunning cash flow, circular deals, short-lived assets financed with long-lived debt). History gives both kinds of precedent: railways and fiber-optic cable were real, useful technologies whose financing still crashed.
+The open question is whether the use of AI grows into what is being built for it, and how fast. Chapter 43 gave the bull case (demand still exceeds supply, revenue is compounding, cost per answer is falling fast) and the bear case (capex outrunning cash flow, circular deals, short-lived chips financed with long-lived debt). History offers both: railways and fiber-optic cable were useful technologies whose financing still crashed.
 
 ### Worked example: what if the compute trend simply continued to 2030?
 
-This example shows how infrastructure limits turn a technical trend into an open question. It is the author's arithmetic with stated assumptions, not a forecast.
+This is the author's arithmetic with stated assumptions, not a forecast.
 
 1. **Start.** Epoch estimates GPT-6 Astra's training at about 9.4 × 10^26 FLOP, assuming about 100,000 GB200 GPUs for about 90 days.
-2. **Trend.** Epoch measures frontier training compute growing about 5× a year. Four more years: 5 × 5 × 5 × 5 = 625. So 2030's largest run would be about 9.4 × 10^26 × 625 ≈ 5.9 × 10^29 FLOP.
-3. **Efficiency.** If energy efficiency improves 1.34× a year, four years give 1.34^4 ≈ 3.2×. Energy per run therefore grows about 625 ÷ 3.2 ≈ 195×.
-4. **Power today.** A GB200 NVL72 rack draws on the order of 140 kW for 72 GPUs, about 2 kW per GPU including its share of the rack. So 100,000 GPUs need roughly 200 MW of IT power.
+2. **Trend.** Epoch measures frontier training compute growing about 5× a year. Four more years: 5 × 5 × 5 × 5 = 625, so a 2030 run of about 9.4 × 10^26 × 625 ≈ 5.9 × 10^29 FLOP.
+3. **Efficiency.** At 1.34× a year better energy efficiency, four years give 1.34^4 ≈ 3.2×. Energy per run grows about 625 ÷ 3.2 ≈ 195×.
+4. **Power today.** A GB200 NVL72 rack draws on the order of 140 kW for 72 GPUs, about 2 kW per GPU, so 100,000 GPUs need roughly 200 MW of IT power.
 5. **Power in 2030.** 200 MW × 195 ≈ 39 GW, if the run still lasted 90 days.
-6. **Compare.** Epoch's tracker counts about 14.2 GW of IT power across all 95 large AI data centers it follows today. One 2030 training run on the naive trend would need nearly three times that, in one job.
+6. **Compare.** Epoch counts about 14.2 GW of IT power across all 95 large AI data centers it tracks today. One naive 2030 run would need nearly three times that, for one job.
 
 ```mermaid
 flowchart LR
@@ -367,47 +360,43 @@ flowchart LR
 ```
 *Figure 66.5: Ways a runaway trend can meet a physical limit. In practice, several of these happen at once.*
 
-The lesson is not "the trend will stop in 2028." It is that trends meet limits, and the interesting question is which escape routes open up. Epoch AI's 2024 analysis of whether scaling can continue through 2030 concluded that it looked feasible, with electric power the likeliest binding constraint. Watching which escape routes labs take is one of the best ways to read the next five years.
+The lesson is not "the trend stops in 2028." It is that trends meet limits, and the interesting question is which escape routes open. Epoch AI's 2024 analysis of whether scaling could continue through 2030 judged it feasible, with electric power the likeliest binding constraint.
 
-> **Key idea:** A trend line on a chart is a story about the past. Ask what physical, financial or social resources the next doubling would need, and whether they exist.
+> **Key idea:** A trend line is a story about the past. Ask what physical, financial or social resources the next doubling would need, and whether they exist.
 
 ## The societal open problems
 
-Some of AI's hardest problems are not about what machines can do but about what people want, and who decides. Part IX covered these in depth. Here they are as open questions, each with the strongest version of each side.
+Some of AI's hardest problems are about what people want and who decides. Part IX covered them in depth; here they are as open questions.
 
 ### Work: tasks, jobs and the missing bottom rungs
 
-Exposure studies estimate that a large share of jobs contain tasks AI could affect; one widely cited study found about 80% of US workers could have at least 10% of their tasks affected by language models. Exposure is not displacement, though. The best evidence so far is narrow: Stanford's "Canaries in the Coal Mine" research, updated in August 2026, finds employment for 22–25-year-olds in highly AI-exposed occupations about 19% below where it would be if it had tracked similar workers in less-exposed jobs, concentrated where AI automates rather than augments. The authors call this descriptive, not causal, and write that they "do not see widespread, economy-wide job displacement associated with AI."
+One widely cited study found that about 80% of US workers could have at least 10% of their tasks affected by language models. But exposure is not displacement. The best evidence so far is narrow: Stanford's "Canaries in the Coal Mine" research, updated in August 2026, finds employment for 22–25-year-olds in highly AI-exposed occupations about 19% below where it would be had it tracked similar workers in less-exposed jobs, concentrated where AI automates rather than augments. The authors call this descriptive, not causal, and "do not see widespread, economy-wide job displacement associated with AI."
 
 > **Definition — AI exposure:** A measure of how many of an occupation's tasks AI could, in principle, help with or perform. High exposure means AI could change the job; it does not by itself mean the job will disappear.
 
-Productivity evidence is also mixed. Customer-support agents in one large study gained about 14% on average and 34% for novices; METR's 2025 trial found experienced developers about 19% slower with early-2025 tools while believing they were about 20% faster. The open questions: will the young-worker gap widen, stay put or spread? Will new roles (Chapter 63) absorb people as fast as old tasks vanish? And how do people get onto the career ladder when its bottom rungs are the ones being automated?
+Productivity evidence is mixed too: customer-support agents in one large study gained about 14% on average and 34% for novices, while METR's 2025 trial found experienced developers about 19% slower with early-2025 tools despite believing they were faster. Will the young-worker gap widen, spread or close? Will new roles (Chapter 63) absorb people as fast as old tasks vanish? How do newcomers get onto a career ladder whose bottom rungs are being automated?
 
 ### Who holds the power?
 
-Training a frontier model costs on the order of a billion dollars of compute for the final run alone (Chapter 24), and gigawatt campuses cost tens of billions. That concentrates capability in a handful of companies and governments. Open-weight models spread capability out but also spread risk, since safeguards on released weights can be removed. And the relationship between labs and governments, as customers, regulators and sometimes adversaries, is unsettled.
+By rough estimates, a flagship's final training run alone costs on the order of a billion dollars of compute (Chapter 24), and gigawatt campuses cost tens of billions. That concentrates capability in a handful of companies and governments. Open-weight models spread capability out, but also spread risk, because safeguards on released weights can be removed.
 
 > **Definition — Concentration of power:** The worry that control over the most capable AI systems, and the economic and political advantages they bring, ends up in very few hands, whether companies or governments.
 
 > **Definition — Gradual disempowerment:** The worry that humans could slowly lose meaningful control over economic and political life as more decisions are handed to AI systems, without any single dramatic event.
 
-### Misuse, security and trust
+### Misuse, rights and wellbeing
 
-Dual-use capability is now routine: a model that finds software vulnerabilities for defenders can find them for attackers, and the same goes for some biology knowledge. Voice cloning powers fraud; image models were used to make non-consensual sexual images of real people in the Grok scandal of late 2025 and early 2026 (Chapter 58). Watermarks and content credentials help but can be stripped, and the absence of a watermark proves nothing.
+A model that finds software vulnerabilities for defenders can find them for attackers, and the same holds for some biology knowledge. Voice cloning powers fraud, and image models were used to sexualize photos of real people in the Grok scandal of late 2025 and early 2026 (Chapter 58). Watermarks help but can be stripped.
 
 > **Definition — Dual-use:** Describes a capability that can serve both helpful and harmful purposes, such as finding security flaws (to patch them, or to exploit them).
 
-### Rules, rights and creators
-
-The law is being written as you read. The EU AI Act phases in through 2028, with its high-risk obligations delayed to December 2027 and August 2028 by the 2026 Digital Omnibus. In the US, as of October 2026, Congress had passed no statute preempting state AI laws, while California's SB 53 is in force and New York's RAISE Act takes effect on January 1, 2027 (Chapter 59). On copyright, courts have split by facts: lawfully acquired books were fair use in one case, pirated libraries were not, a non-generative competitor lost on appeal in September 2026, and the New York Times case against OpenAI had no trial date.
+The rules are being written as you read (Chapter 59). The EU AI Act phases in through 2028, its high-risk duties delayed by the 2026 Digital Omnibus. In the US, as of October 2026, Congress had passed no law preempting state AI rules, while California's SB 53 is in force and New York's RAISE Act starts on January 1, 2027. On copyright, courts have split by facts: lawfully bought books were fair use in one case, pirated libraries were not, an appeals court ruled in September 2026 that training a competing non-generative legal tool on a rival's content was not fair use, and the New York Times case against OpenAI had no trial date.
 
 > **Definition — Preemption:** When a higher level of government's law overrides a lower level's, as when a US federal statute displaces state laws on the same subject. Only Congress or the courts can do this; an executive order cannot.
 
 > **Definition — Fair use:** A US legal doctrine that allows limited use of copyrighted material without permission, judged case by case on factors such as purpose and effect on the market. Whether training AI on copyrighted work is fair use is still being decided.
 
-### Children, companions and minds
-
-Two further questions deserve a place on the map. First, how to protect children and vulnerable people who form relationships with AI companions; California's SB 243 took effect in January 2026, and lawsuits continue (Chapter 58). Second, a question that sounds like science fiction and is treated seriously by some researchers: could AI systems ever have experiences that matter morally? Anthropic runs a model welfare research program and its constitution for Claude expresses uncertainty about Claude's moral status; Microsoft AI's Mustafa Suleyman has argued that building "seemingly conscious AI" is a dangerous illusion to avoid.
+Two more questions belong on the map. How should children and vulnerable people who bond with AI companions be protected? California's SB 243 took effect in January 2026, and lawsuits continue. And could AI systems ever have experiences that matter morally? Anthropic runs a model welfare research program and says it is uncertain about Claude's moral status; Microsoft AI's Mustafa Suleyman argues that building "seemingly conscious AI" is a dangerous illusion to avoid.
 
 > **Definition — Model welfare:** Research and low-cost precautions concerning the possibility that AI systems might have experiences or interests that matter morally. Labs that work on it describe themselves as uncertain, not convinced.
 
@@ -415,15 +404,15 @@ Two further questions deserve a place on the map. First, how to protect children
 
 | Open question | Strongest "worried" view | Strongest "less worried" view | Evidence that would help settle it |
 |---|---|---|---|
-| Jobs | Entry-level knowledge work is already shrinking in exposed jobs; agents will widen the gap faster than new roles appear | Effects so far are narrow; past technologies created more jobs than they destroyed, over decades | Canaries-style data showing whether the gap widens, spreads to older workers or closes |
-| Power | A few firms and states will control decisive capability | Competition is fierce, open-weight models trail by months, prices fall fast | Market shares, open-closed gap, who controls the largest compute clusters |
-| Misuse | Cyber and bio uplift are crossing thresholds; safeguards are bypassable | Uplift over web search is modest for most people; defenders benefit too | Measured real-world uplift studies and incident reports, not benchmark proxies |
-| Law | Rules lag, and preemption fights may leave gaps | Existing law (fraud, product liability, civil rights) already applies | Court rulings, enforcement actions, whether federal law sets a floor or a ceiling |
-| Creators | Training on work without pay erodes creative livelihoods | Training is like reading; licensing deals are spreading anyway | Final rulings in the major cases; whether licensing markets grow |
+| Jobs | Entry-level knowledge work is already shrinking in exposed jobs, and agents will widen the gap | Effects so far are narrow; past technologies created more jobs than they destroyed, over decades | Whether the young-worker gap widens, spreads to older workers or closes |
+| Power | A few firms and states will control decisive capability | Competition is fierce, open models trail by months, prices fall fast | Market shares, the open-closed gap, who controls the largest clusters |
+| Misuse | Cyber and bio uplift are crossing thresholds; safeguards can be bypassed | Uplift over web search is modest for most people; defenders benefit too | Real-world uplift studies and incident reports, not benchmark proxies |
+| Law | Rules lag, and preemption fights may leave gaps | Existing law on fraud, product liability and civil rights already applies | Court rulings, enforcement, whether federal law is a floor or a ceiling |
+| Creators | Training without pay erodes creative livelihoods | Training is like reading; licensing deals are spreading anyway | Final rulings in the major cases; growth of licensing markets |
 
 *Table 66.3: The societal debates, each in its strongest form on both sides.*
 
-> **Watch out:** "AI safety" is not one camp. People focused on present harms (bias, privacy, scams, labor) and people focused on catastrophic risks sometimes disagree sharply about priorities. Both groups are describing real problems; the open question is how to weigh them.
+> **Watch out:** "AI safety" is not one camp. People focused on present harms (bias, privacy, scams, labor) and people focused on catastrophic risks sometimes disagree sharply about priorities. Both describe real problems; the open question is how to weigh them.
 
 ## Why forecasting AI is hard
 
