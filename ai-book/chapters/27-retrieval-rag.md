@@ -635,6 +635,30 @@ flowchart LR
 
 GraphRAG has a real cost: the model must read and process the entire corpus up front, and the graph must be updated as documents change. It shines on large collections where people ask "big picture" questions, such as investigations, research reviews and complaint analysis, and it is overkill for a help desk answering specific questions.
 
+## Beyond text: tables and images
+
+Not all company knowledge lives in paragraphs. Two other kinds of retrieval come up constantly.
+
+**Tables and databases.** "Which product had the most returns last quarter?" is not answered by any chunk; it is a calculation over thousands of rows. Embedding the rows of a sales table and searching them by meaning works badly, because similarity search cannot add, count or sort. Instead, the model writes a database query, your code runs it, and the model explains the result. Given a description of Northwind's tables (Chapter 11 introduced SQL's four everyday moves), the model might write:
+
+```sql
+SELECT product, COUNT(*) AS returns       -- count the returns for each product
+FROM returns_log                          -- the table of returned items
+WHERE return_date >= '2026-07-01'         -- from the start of last quarter...
+  AND return_date < '2026-10-01'          -- ...up to the start of this one
+GROUP BY product                          -- one row per product
+ORDER BY returns DESC                     -- most returns first
+LIMIT 1;                                  -- keep only the top product
+```
+
+Text-to-SQL is powerful and easy to get subtly wrong: a query can run perfectly and still answer a different question, for example by counting orders instead of returned items or by forgetting the date filter. Give the model read-only database access so it cannot change anything, show users the query next to the answer, and put questions with known answers into your eval set (Chapter 31).
+
+> **Definition — Text-to-SQL:** Having a language model translate a plain-English question into a database query, which ordinary software then runs, so the answer comes from an exact calculation over structured data rather than from retrieved text.
+
+**Images, diagrams and scanned pages.** An exploded diagram in a repair manual or a chart in a slide deck carries information that text extraction throws away. Multimodal RAG handles it in one of two ways: describe each image in words with a vision model and index the description like any other chunk, or embed the images directly with a model trained to put pictures and text in the same space (CLIP, from Chapter 16, is the classic example), so that a text question can retrieve a matching picture. The retrieved image is then shown to a multimodal model (Chapter 22) along with the question. Some systems skip text extraction entirely and index images of whole pages, which keeps tables and layout intact.
+
+> **Definition — Multimodal RAG:** Retrieval-augmented generation over images, diagrams, scanned pages or other non-text content, either by indexing text descriptions of them or by embedding them directly in a shared image-and-text space.
+
 ## Long context or RAG?
 
 When the earliest RAG systems were built, models could read only a few thousand tokens at once, so retrieval was the only option. As of late 2026, frontier models from Anthropic, OpenAI and Google offer context windows of about one million tokens. On Anthropic's current tokenizer, one million tokens is about 555,000 English words, roughly 1,100 pages. Many document collections now fit entirely.

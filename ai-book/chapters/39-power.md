@@ -465,6 +465,28 @@ Engineers attack the problem at several levels at once:
 
 The goal of all three is the same: whatever the GPUs do inside, the grid should see a steady, predictable load. Standards for how much a data center may swing are still being written, and this is one of the open problems of 2026.
 
+## Power budgets: oversubscription and capping
+
+Every server and GPU has a rated maximum power, the number on its label. The naive way to design a building is to add up the labels and provide that much power. Operators learned long ago that this wastes money, because thousands of machines almost never draw their maximum at the same moment. Google engineers measured this in 2007 and found that large groups of servers never came close to drawing their combined rated power at once, which left room for noticeably more servers in the same building.
+
+> **Definition — Power oversubscription:** Installing more IT equipment than a facility's power capacity could support if everything ran at its rated maximum at once, betting, with safeguards, that it never will. It lets the same building and grid connection host more computers.
+
+**Worked example.** A hall has 30 MW of critical IT capacity. Its servers are rated at 1 kW each, so the naive design installs 30,000 of them. Measurements show that together they never draw more than 75% of their rating at the same moment: 0.75 kW each at the hall's peak. Planning for that real peak instead gives 30,000 kW ÷ 0.75 kW = 40,000 servers, a third more computers on the same scarce grid connection.
+
+The bet needs a safety net, because if every server did peak together, breakers would trip and a whole row could go dark. That net is power capping.
+
+> **Definition — Power capping:** Limiting how much power a server, GPU or rack may draw, enforced by firmware and management software. When a group of machines approaches its power budget, their caps are lowered so the total stays safe.
+
+Caps work by slowing chips slightly, through a technique every modern processor supports.
+
+> **Definition — DVFS (dynamic voltage and frequency scaling):** Lowering or raising a chip's clock speed and voltage while it runs. Because power rises with the voltage squared times the frequency, a small slowdown saves a lot of power.
+
+**Worked example: what a 15% slowdown buys.** Chapter 32 gave the formula power ≈ C × V² × f. Lower the clock to 85% of its maximum and, since slower switching tolerates a lower voltage, the voltage to 90%. Power falls to 0.85 × 0.9 × 0.9 = 0.85 × 0.81 ≈ 0.69 of the original: a 31% saving for at most 15% less speed, and work that is waiting on memory anyway (Chapter 33) slows even less. That is why a cap usually costs much less speed than power, and why running chips a little below their maximum can be a good trade when power, not chips, is the scarce resource.
+
+AI changes the bet. Ordinary cloud servers run unrelated jobs whose peaks average out, which is what makes oversubscription safe. A big training run is the opposite: as the previous section showed, its GPUs speed up and slow down together, so a training hall must expect its full draw at the same moment and can oversubscribe very little. Inference fleets, whose load follows millions of independent users and the daily cycle, have more room, with capping as the backstop.
+
+> **Key idea:** Power capacity is expensive and scarce, so operators plan for the power their machines really draw together, not the sum of their labels, and use power caps to make sure the bet never trips a breaker.
+
 ## New power architectures: 800 V DC and solid-state transformers
 
 Look back at the current ladder (Table 39.2). A 130 kW rack fed at 54 V DC already needs about 2,400 A. Now apply the roadmap from Chapter 38: NVIDIA's Kyber racks planned for 2027 at around 600 kW, and designs for more than 1 MW per rack.
@@ -625,7 +647,7 @@ The math is simple: IT power × PUE × utilization × hours × price. A Blackwel
 
 ## Key terms
 
-Watt (W), Kilowatt (kW), Megawatt (MW) and gigawatt (GW), Watt-hour (Wh), Kilowatt-hour (kWh), MWh, GWh and TWh, Logarithmic scale, Nameplate capacity, Capacity factor (utilization, load factor), Load, Peak demand, IT load, Critical IT capacity, Voltage (V), Current (A), Resistance (Ω), Ohm's law, Resistive loss (I²R loss), Direct current (DC), Alternating current (AC), Frequency (Hz), Transformer, Three-phase power, Rectifier, inverter and PSU, Power factor and harmonics, High, medium and low voltage (HV, MV, LV), Single-line diagram (one-line), Utility interconnection, Substation, Switchgear, Circuit breaker, Unit substation, UPS (uninterruptible power supply), PDU (power distribution unit), RPP (remote power panel), Rack power shelf, Busbar, Voltage regulator module (VRM), Conversion efficiency, PUE (power usage effectiveness), Battery energy storage system (BESS), Backup generator, Automatic transfer switch (ATS), Load oscillation (power swing), Ramp rate, Capacitor and supercapacitor, 800 V DC distribution, Solid-state transformer (SST)
+Watt (W), Kilowatt (kW), Megawatt (MW) and gigawatt (GW), Watt-hour (Wh), Kilowatt-hour (kWh), MWh, GWh and TWh, Logarithmic scale, Nameplate capacity, Capacity factor (utilization, load factor), Load, Peak demand, IT load, Critical IT capacity, Voltage (V), Current (A), Resistance (Ω), Ohm's law, Resistive loss (I²R loss), Direct current (DC), Alternating current (AC), Frequency (Hz), Transformer, Three-phase power, Rectifier, inverter and PSU, Power factor and harmonics, High, medium and low voltage (HV, MV, LV), Single-line diagram (one-line), Utility interconnection, Substation, Switchgear, Circuit breaker, Unit substation, UPS (uninterruptible power supply), PDU (power distribution unit), RPP (remote power panel), Rack power shelf, Busbar, Voltage regulator module (VRM), Conversion efficiency, PUE (power usage effectiveness), Battery energy storage system (BESS), Backup generator, Automatic transfer switch (ATS), Load oscillation (power swing), Ramp rate, Capacitor and supercapacitor, Power oversubscription, Power capping, DVFS (dynamic voltage and frequency scaling), 800 V DC distribution, Solid-state transformer (SST)
 
 ## Exercises
 
