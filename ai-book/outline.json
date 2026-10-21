@@ -423,47 +423,47 @@
   {
    "label": "Sand, silicon and chips",
    "note": "Part VI",
-   "href": "#part6"
+   "href": "p6.html#part6"
   },
   {
    "label": "Power, cooling and data centers",
    "note": "Part VII",
-   "href": "#part7"
+   "href": "p7.html#part7"
   },
   {
    "label": "Data",
    "note": "Ch 11",
-   "href": "#ch11"
+   "href": "p2.html#ch11"
   },
   {
    "label": "Learning algorithms",
    "note": "Parts II-III",
-   "href": "#part2"
+   "href": "p2.html#part2"
   },
   {
    "label": "Frontier models",
    "note": "Part IV",
-   "href": "#part4"
+   "href": "p4.html#part4"
   },
   {
    "label": "Apps, tools and agents",
    "note": "Part V",
-   "href": "#part5"
+   "href": "p5.html#part5"
   },
   {
    "label": "Every branch of AI",
    "note": "Part VIII",
-   "href": "#part8"
+   "href": "p8.html#part8"
   },
   {
    "label": "Safety, law and society",
    "note": "Part IX",
-   "href": "#part9"
+   "href": "p9.html#part9"
   },
   {
    "label": "You",
    "note": "Part X",
-   "href": "#part10"
+   "href": "p10.html#part10"
   }
  ]
 }

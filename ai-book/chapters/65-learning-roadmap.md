@@ -73,7 +73,7 @@ Is that worth it? The Stage 1 milestone is saving at least three hours a week in
 
 ```
 3 hours saved/week x 48 weeks = 144 hours saved per year
-Break-even: 65 hours invested / 3 hours saved per week = about 22 weeks
+Break-even: 65 hours / 3 hours saved per week = about 22 weeks
 ```
 
 So even a modest result repays the whole investment within about five months of using it, and then keeps paying. At five hours saved per week the yearly total is 5 × 48 = 240 hours, the equivalent of six 40-hour working weeks.
@@ -506,7 +506,7 @@ This is where you build real depth. Well-known, stable resources for this stage:
 | Stanford CS336 "Language Modeling from Scratch" (cs336.stanford.edu) | Spring 2026 course by Tatsu Hashimoto and Percy Liang with five assignments: basics, systems and Triton, scaling laws, data, and alignment and reasoning RL | Lectures free on YouTube |
 | Stanford CS224N (natural language processing), CS231n (computer vision), MIT 6.S191 (intro deep learning) | Well-known university courses with lectures online | Free |
 | fast.ai Part 2 | More than 30 hours, from foundations up to diffusion models | Free |
-| Nathan Lambert's RLHF book and his Interconnects newsletter | Post-training, RLHF and reinforcement learning for language models | Book free online; newsletter free with a paid tier |
+| Nathan Lambert's RLHF book and his Interconnects newsletter | Post-training, RLHF (reinforcement learning from human feedback) and other reinforcement learning for language models | Book free online; newsletter free with a paid tier |
 | Hugging Face "a smol course" and the TRL library | Hands-on post-training of small models | Free |
 
 **A worked example: what nanochat costs.** Karpathy reports that nanochat trains a model with roughly GPT-2-level capability in about 2 hours on one node of 8 H100 GPUs, for about $48. Unpacking that:
@@ -605,7 +605,7 @@ This lane assumes about a year of Track B or Track C first, because you need sol
 
 > **Definition — GPU kernel:** A small program that runs on a GPU, performing one operation such as a matrix multiplication across thousands of cores at once. Faster kernels make training and inference cheaper.
 
-A good first project: implement a softmax or matrix-multiply kernel in Triton, benchmark it against PyTorch's built-in version, and write up what you learned about memory bandwidth (Chapter 33). You can rent a cloud GPU for an hour for roughly $3–8, or use Colab's free GPU for small experiments. Remember to shut the rented machine down when you finish: billing continues until you do.
+A good first project: implement a softmax or matrix-multiply kernel in Triton, benchmark it against PyTorch's built-in version, and write up what you learned about memory bandwidth (Chapter 33). You can rent a high-end cloud GPU for an hour for roughly $3–8 (older and smaller GPUs cost less), or use Colab's free GPU for small experiments. Remember to shut the rented machine down when you finish: billing continues until you do.
 
 The pay at the top of this lane reflects how much money efficiency saves. Anthropic's posted base ranges for performance and inference engineers reached $850,000 in October 2026, though those are the very top of the market (Chapter 63 puts them in context).
 
@@ -613,7 +613,7 @@ The pay at the top of this lane reflects how much money efficiency saves. Anthro
 
 Most of the people building AI data centers are electricians, mechanical and HVAC technicians, pipefitters, lineworkers, low-voltage and fiber technicians, controls technicians, construction managers, commissioning agents (who test that a new building's power, cooling and controls work as designed before it goes live) and the operators who run facilities around the clock.
 
-> **Definition — Registered apprenticeship:** A formal, paid training program that combines on-the-job work under licensed professionals with classroom instruction, leading to a recognized credential. In the US, electrical apprenticeships are often run jointly by unions and contractors (the IBEW and NECA) and typically last several years.
+> **Definition — Registered apprenticeship:** A formal, paid training program that combines on-the-job work under licensed professionals with classroom instruction, leading to a recognized credential. In the US, electrical apprenticeships are often run jointly by unions and contractors (the electricians' union, IBEW, and the contractors' association, NECA) and typically last several years.
 
 > **Definition — Critical facilities technician:** A tradesperson who operates and maintains a data center's power and cooling systems around the clock, where a failure could take thousands of servers offline.
 
@@ -625,7 +625,7 @@ The numbers show why this lane matters. The US Bureau of Labor Statistics put th
 
 ### Lane 3: understanding the industry
 
-For analysts, investors, journalists, policy staff and business people, the core reading is Chris Miller's *Chip War* (paid) for the history and geopolitics of chips; Epoch AI (epoch.ai, free) for carefully sourced data on compute, costs and data-center buildouts; SemiAnalysis (mostly paid) for deep industry analysis; the IEA's "Energy and AI" report (April 2025) and Lawrence Berkeley National Laboratory's December 2024 report on US data-center energy use (both free) for electricity demand (Chapter 41); and company filings at sec.gov (free), such as NVIDIA's quarterly earnings releases, as primary sources (Chapter 43). The Acquired podcast's NVIDIA episodes and the Asianometry YouTube channel add long-form history. Appendix E lists more.
+For analysts, investors, journalists, policy staff and business people, the core reading is Chris Miller's *Chip War* (paid) for the history and geopolitics of chips; Epoch AI (epoch.ai, free) for carefully sourced data on compute, costs and data-center buildouts; SemiAnalysis (mostly paid) for deep industry analysis; the International Energy Agency's (IEA) "Energy and AI" report (April 2025) and Lawrence Berkeley National Laboratory's December 2024 report on US data-center energy use (both free) for electricity demand (Chapter 41); and company filings at sec.gov (free), such as NVIDIA's quarterly earnings releases, as primary sources (Chapter 43). The Acquired podcast's NVIDIA episodes and the Asianometry YouTube channel add long-form history. Appendix E lists more.
 
 Good projects for this lane: build a spreadsheet that tracks the big four hyperscalers' capital spending each quarter from their own filings, or use Google Earth Pro's free historical imagery to watch a megaproject such as Abilene grow over two years (Chapter 42).
 

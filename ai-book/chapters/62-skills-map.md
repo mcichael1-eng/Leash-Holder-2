@@ -21,7 +21,7 @@ You can read this chapter cold, but it draws on the whole book. Chapter 18 (How 
 
 Most people meet AI skills as a jumble: a viral prompt trick, a course advert, a job posting full of acronyms. A map turns the jumble into a route.
 
-Picture a ladder of involvement. At the bottom is the casual user, who asks a chatbot the occasional question. Above that is the power user, who uses AI expertly in daily work. Then the builder, who connects AI to other tools and makes small apps without writing much code. Then the engineer, who builds AI products with code. Then the researcher, who improves the models themselves. At the top, a few hundred people worldwide push the frontier.
+Picture a ladder of involvement. At the bottom is the casual user, who asks a chatbot the occasional question. Above that is the power user, who uses AI expertly in daily work. Then the builder, who connects AI to other tools and makes small apps without writing much code. Then the engineer, who builds AI products with code. Then the researcher, who improves the models themselves. At the top, a comparatively small group of frontier researchers push the state of the art.
 
 Two facts about this ladder matter. First, most economic value and most jobs sit in the middle rungs, not at the top: on October 21, 2026, research was only about 5–10% of open roles at Anthropic and OpenAI, whose biggest hiring categories were sales, go-to-market and applied AI (see Chapter 61). Second, you are not at the bottom. If you have used a chatbot daily for a year, you are already partway up the power-user rung, ahead of most people.
 
@@ -85,7 +85,7 @@ Level 0 is for everyone, including people who will never build anything. It take
 
 > **Definition — Knowledge cutoff:** The date after which a model's training data stops, so it knows nothing newer unless it is given search results or documents.
 
-**A map of capabilities and limitations.** *What:* knowing which tasks models do brilliantly, which they fail at, and how quickly that changes. *Why:* it prevents both over-trust and under-use. *Learn:* run your own tests in your field (Exercise 4), and read METR, Epoch AI and the Stanford AI Index. *Prove:* a written list of 15 tests from your own work with the results.
+**A map of capabilities and limitations.** *What:* knowing which tasks models do brilliantly, which they fail at, and how quickly that changes. *Why:* it prevents both over-trust and under-use. *Learn:* run your own tests in your field (Exercise 4), and read the independent evaluators METR and Epoch AI and the Stanford AI Index. *Prove:* a written list of 15 tests from your own work with the results.
 
 > **Definition — Jagged frontier:** The uneven shape of AI ability: superhuman at some tasks and surprisingly weak at nearby ones. Stanford's 2026 AI Index notes a model that wins gold at the International Mathematical Olympiad yet reads analog clocks correctly only about half the time.
 
@@ -202,7 +202,7 @@ flowchart LR
 
 > **Definition — MCP (Model Context Protocol):** An open standard for connecting AI assistants to tools and data sources. A service builds one MCP server, and any compatible assistant can use it (see Chapter 28).
 
-**Connecting tools to AI.** *What:* plugging your assistant into email, drive, calendar, CRM or databases through connectors or MCP servers. *Why:* access to context is what makes assistants useful at work. *Learn:* Anthropic's free "Introduction to Model Context Protocol." *Prove:* a task that needs three connected sources, plus a one-paragraph privacy assessment.
+**Connecting tools to AI.** *What:* plugging your assistant into email, drive, calendar, CRM (customer-relationship management software) or databases through connectors or MCP servers. *Why:* access to context is what makes assistants useful at work. *Learn:* Anthropic's free "Introduction to Model Context Protocol." *Prove:* a task that needs three connected sources, plus a one-paragraph privacy assessment.
 
 > **Definition — Eval set (golden set):** A fixed collection of test inputs with notes on what a good output looks like, re-run after every change to catch regressions (see Chapter 31).
 
@@ -282,7 +282,7 @@ Level 4 is the job of the "AI engineer," the most-hired technical AI role outsid
 
 **AI product management.** *What:* choosing problems AI can actually solve, defining quality with domain experts, designing evals, pricing for compute costs and managing unpredictable outputs. *Why:* many AI products fail at problem selection and quality definition, not at engineering. *Learn:* Lenny's Newsletter and Podcast AI episodes plus the evals course above. *Prove:* a shipped micro-product with real users and a tracked cost per user.
 
-**AI design and UX.** *What:* designing for uncertainty (showing sources and confidence, offering undo), conversational and agent interfaces, and human review screens. *Why:* good design turns a 90%-accurate model into a trusted tool. *Learn:* study the interfaces of Claude, ChatGPT, Cursor and Perplexity, and Google's "People + AI Guidebook." *Prove:* a prototype that shows its sources and lets users correct it.
+**AI design and UX (user experience).** *What:* designing for uncertainty (showing sources and confidence, offering undo), conversational and agent interfaces, and human review screens. *Why:* good design turns a 90%-accurate model into a trusted tool. *Learn:* study the interfaces of Claude, ChatGPT, Cursor and Perplexity, and Google's "People + AI Guidebook." *Prove:* a prototype that shows its sources and lets users correct it.
 
 ## Level 5: ML engineering and infrastructure
 
@@ -336,7 +336,7 @@ Level 6 is where the models themselves improve. It often takes two to five years
 
 **Pretraining and scaling science.** *What:* web-scale data curation, architectures, scaling laws and training stability (Chapters 17 and 19). *Why:* it sets the base capability of every model. *Learn:* Stanford CS336 "Language Modeling from Scratch" (Spring 2026, lectures on YouTube, five assignments covering basics, systems, scaling laws, data, and alignment and reasoning RL), Sebastian Raschka's *Build a Large Language Model (From Scratch)*, and Karpathy's nanochat, which trains a GPT-2-class model for about $48 of rented GPU time (about two hours on an 8-GPU H100 machine). *Prove:* a documented nanochat run covering tokenizer, pretraining, fine-tuning, RL and eval.
 
-**Post-training and RL.** *What:* supervised fine-tuning, RLHF, RL from verifiable rewards, reasoning models, RL environments and agent training (Chapters 20 and 21). *Why:* most capability gains of 2024–2026 (reasoning, coding, agents) came from here, and it was the most-posted research specialty on Anthropic's job board in October 2026. *Learn:* Nathan Lambert's RLHF book and Interconnects newsletter, CS336 assignment 5, Hugging Face's TRL. *Prove:* an RL fine-tune that measurably improves a small model on a verifiable task.
+**Post-training and RL.** *What:* supervised fine-tuning, RLHF (reinforcement learning from human feedback), RL (reinforcement learning, training by trial and reward) from verifiable rewards, reasoning models, RL environments and agent training (Chapters 20 and 21). *Why:* most capability gains of 2024–2026 (reasoning, coding, agents) came from here, and it was the most-posted research specialty on Anthropic's job board in October 2026. *Learn:* Nathan Lambert's RLHF book and Interconnects newsletter, CS336 assignment 5, Hugging Face's TRL. *Prove:* an RL fine-tune that measurably improves a small model on a verifiable task.
 
 **Evaluation research.** *What:* designing benchmarks, measuring dangerous capabilities and long-horizon agent performance (Chapter 57). *Why:* labs cannot improve what they cannot measure, and governments rely on evals for oversight. *Learn:* METR and Epoch AI papers, the UK AI Security Institute's Inspect framework, lab system cards. *Prove:* a new benchmark of 50–200 hard tasks in a domain you know (Exercise 10). This turns domain expertise directly into research credibility.
 
@@ -368,17 +368,17 @@ The on-ramps are unusually well funded, as of October 2026. MATS runs 12 weeks w
 
 The main ladder is not the only route. Five branches cross it, and each one multiplies whatever level you have reached.
 
-**AI policy and governance.** *What:* laws (the EU AI Act, US state laws, export controls), risk frameworks (NIST AI RMF, ISO/IEC 42001), compute governance and lab safety frameworks (Chapter 59). *Why:* every large organization now needs AI governance, and governments need technical literacy. *Learn:* the IAPP AIGP certification, BlueDot's governance courses, publications from GovAI, CSET and RAND, and lab policy job descriptions as syllabi. *Prove:* a written AI-use policy or risk assessment for a real organization.
+**AI policy and governance.** *What:* laws (the EU AI Act, US state laws, export controls), risk frameworks (NIST AI RMF, ISO/IEC 42001), compute governance and lab safety frameworks (Chapter 59). *Why:* every large organization now needs AI governance, and governments need technical literacy. *Learn:* the AIGP (AI Governance Professional) certification from the IAPP, the main professional body for privacy specialists, BlueDot's governance courses, publications from GovAI, CSET and RAND, and lab policy job descriptions as syllabi. *Prove:* a written AI-use policy or risk assessment for a real organization.
 
 > **Definition — AI governance:** The policies, processes and controls an organization uses to manage AI risk, comply with laws and decide which AI uses are allowed.
 
-**Sales, solutions and forward-deployed work.** *What:* discovery (finding the customer's real problem), demos, scoping, proofs of concept, change management and ROI cases. *Why:* sales and applied AI were the largest hiring categories at the frontier labs in October 2026 (Chapter 61). *Learn:* read lab "Applied AI Architect" and FDE postings, and do a free AI implementation for a local business. *Prove:* a case study with the time saved measured after two weeks.
+**Sales, solutions and forward-deployed work.** *What:* discovery (finding the customer's real problem), demos, scoping, proofs of concept, change management and return-on-investment (ROI) cases. Forward-deployed engineers (FDEs) are engineers embedded with a customer, often for weeks or months, to build its deployment (Chapter 63). *Why:* sales and applied AI were the largest hiring categories at the frontier labs in October 2026 (Chapter 61). *Learn:* read lab "Applied AI Architect" and FDE postings, and do a free AI implementation for a local business. *Prove:* a case study with the time saved measured after two weeks.
 
 **Technical writing, education and developer relations.** *What:* documentation, tutorials, courses and workshops. *Why:* adoption is bottlenecked by understanding; in October 2026 Anthropic was hiring a Lead Technical Instructor at a posted $270,000–$365,000 base. *Learn:* write public explainers and contribute documentation to open-source projects. *Prove:* a tutorial that strangers have used successfully.
 
 **Domain expertise plus AI.** *What:* deep knowledge of a field (medicine, law, accounting, logistics, teaching, the trades) combined with Level 1–2 AI skills. *Why:* domain experts design the evals, spot the errors and know which problems matter; expert contractors who write and grade training data reportedly average $85 or more an hour through Mercor. *Learn:* apply Levels 1 and 2 to your own field and write about it. *Prove:* an eval or a published guide for your profession.
 
-**Data-center trades and engineering.** *What:* electrical, mechanical and HVAC, controls, fiber and networking, construction management and commissioning (Chapters 38 to 41). *Why:* physical buildout is the binding constraint on AI. *Learn:* registered apprenticeships such as IBEW and NECA electrical training, community-college HVAC and controls programs, and data-center operator training. *Prove:* licenses and certifications, which in the trades are the proof that counts.
+**Data-center trades and engineering.** *What:* electrical, mechanical and HVAC, controls, fiber and networking, construction management and commissioning (Chapters 38 to 41). *Why:* physical buildout is the binding constraint on AI. *Learn:* registered apprenticeships such as the electrical training run by the electricians' union (IBEW) and the contractors' association (NECA), community-college HVAC and controls programs, and data-center operator training. *Prove:* licenses and certifications, which in the trades are the proof that counts.
 
 > **Definition — T-shaped skills:** Deep expertise in one area (the vertical bar of the T) plus broad working knowledge across many (the crossbar). A "pi-shaped" person has two deep areas joined by the same broad crossbar.
 
@@ -404,7 +404,7 @@ Pi-shaped: two deep areas joined by the same crossbar
 
 > **Key idea:** For most people the winning shape is not "AI expert" but "expert in something, fluent in AI." Judgment, verification and domain context are the parts of a job that AI complements rather than replaces.
 
-The evidence on entry-level work makes this urgent. In the Stanford "Canaries in the Coal Mine?" study, workers aged 22 to 25 in the most AI-exposed occupations saw employment fall 13–16% relative to peers, while older workers held steady (Chapter 60 covers the debate). Skills that AI complements, such as judgment, client relationships and verification, are the best protection for people early in their careers.
+The evidence on entry-level work makes this urgent. In the Stanford "Canaries in the Coal Mine?" study, workers aged 22 to 25 in the most AI-exposed occupations saw employment fall 13–16% relative to peers in the 2025 versions, and about 19% below trend in an August 2026 update, while older workers held steady (Chapter 60 covers the debate). Skills that AI complements, such as judgment, client relationships and verification, are the best protection for people early in their careers.
 
 ## Proving a skill
 
@@ -611,7 +611,7 @@ Skill tree, Portfolio, Hallucination, Knowledge cutoff, Jagged frontier, Power u
 - **Small-business AI implementer.** Clinics, law offices, trades and restaurants need intake automation, scheduling, follow-ups and document processing. A fixed-price audit followed by implementation and a monthly retainer is a proven model for Level 2 builders.
 - **AI engineer with public evals.** The broadest technical demand outside the labs. Differentiate with published error analyses, RAG accuracy measurements and agent reliability work rather than demos.
 - **Forward-deployed engineering and solutions work.** Engineers who like customers, ambiguity and travel are in demand at labs and AI startups to turn models into working deployments.
-- **Inference and performance engineering.** Every efficiency gain is money at fleet scale, and posted base ranges reached $850,000 at Anthropic in October 2026. Systems, HPC, game-engine and compiler backgrounds transfer well.
+- **Inference and performance engineering.** Every efficiency gain is money at fleet scale, and posted base ranges reached $850,000 at Anthropic in October 2026. Systems, high-performance computing (HPC), game-engine and compiler backgrounds transfer well.
 - **Safety, evals and interpretability research.** A small field with funded on-ramps (MATS, ARENA, the Anthropic Fellows Program) where public replications count heavily.
 - **AI governance and compliance.** Regulated industries need AI risk policies, vendor reviews and EU AI Act compliance; backgrounds in privacy, legal, audit and risk transfer directly.
 - **Niche AI educator.** General AI content is saturated, but "AI for nurses" or "AI for contractors" newsletters, workshops and courses serve audiences that generic content misses.

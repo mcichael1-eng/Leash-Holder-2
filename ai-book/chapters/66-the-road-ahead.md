@@ -24,11 +24,11 @@ Here is the picture as of late October 2026, using figures from earlier chapters
 
 | Layer | Where things stand (late 2026) | Source and chapter |
 |---|---|---|
-| Frontier models | Claude Opus 5.5, GPT-6 Astra and Gemini 4 Argon lead most independent indices; open-weight models from DeepSeek, Moonshot, Alibaba, Xiaomi and Z.ai trail by months, not years | Artificial Analysis, Epoch AI (Chapter 24) |
-| Biggest known training run | GPT-6 Astra, OpenAI's first pretraining run on more than 100,000 GPUs; Epoch estimates about 9.4 × 10^26 FLOP | Epoch AI estimate (Chapters 19, 37) |
+| Frontier models | Claude Opus 5.5 leads the two main independent indices, with GPT-6 Astra, Gemini 4 Argon and Meta's Muse Wonder close behind; open-weight models from DeepSeek, Moonshot, Alibaba, Xiaomi and Z.ai trail by months, not years | Artificial Analysis, Epoch AI (Chapter 24) |
+| Biggest known training run | GPT-6 Astra, OpenAI's first pretraining run on more than 100,000 GPUs; Epoch estimates about 9.4 × 10^26 FLOP (individual arithmetic operations) | Epoch AI estimate (Chapters 19, 37) |
 | Agent stamina | METR's 50% time horizon reached about 17 hours for an early Claude Mythos Preview (April 2026), with a very wide uncertainty range | METR (Chapters 24, 28) |
 | Hard tests | ARC-AGI-3 went from 0.51% for frontier AI at launch (March 2026) to 62.7% or 99.9% for GPT-6 Astra by September, depending on the software harness | ARC Prize (Chapter 24) |
-| Original math | GPT-6 Astra solved 2 of 68 previously unsolved Erdős problems in Epoch's FrontierMath Erdős set, the first model to solve any | Epoch AI (Chapter 52) |
+| Original math | GPT-6 Astra solved 2 of 68 previously unsolved Erdős problems in Epoch's FrontierMath Erdős set, the first model to solve any | Epoch AI (Chapter 24) |
 | Buildings | Epoch tracks 95 large AI data centers with about 14.2 GW of IT power; the largest single sites are near or above 1 GW | Epoch AI data hub, Oct 20, 2026 (Chapters 38, 42) |
 | Money | The largest US cloud companies guided to roughly $720–800 billion of 2026 capital spending, depending on who is counted and how | FactSet and company guidance (Chapter 43) |
 | Work | Employment of 22–25-year-olds in the most AI-exposed jobs is about 19% below the trend of similar workers in less-exposed jobs; no economy-wide displacement seen | Stanford Digital Economy Lab, Aug 2026 (Chapter 60) |
@@ -193,9 +193,9 @@ Why not keep training on each user's conversations? Training is slow and expensi
 
 1. Words per day: 300 × 60 × 8 = 144,000.
 2. Words per lifetime: 144,000 × 365 × 80 ≈ 4.2 billion words.
-3. At roughly 1.5 tokens per word, that is about 6.3 billion tokens.
-4. Llama 3 trained on about 15.6 trillion tokens: 15.6 trillion ÷ 6.3 billion ≈ 2,500 lifetimes.
-5. DeepSeek-V4-Pro trained on about 33 trillion tokens: more than 5,000 lifetimes.
+3. At about 0.75 words per token (roughly 1.33 tokens per word), that is 4.2 billion ÷ 0.75 ≈ 5.6 billion tokens.
+4. Llama 3 trained on about 15.6 trillion tokens: 15.6 trillion ÷ 5.6 billion ≈ 2,800 lifetimes.
+5. DeepSeek-V4-Pro trained on about 33 trillion tokens: nearly 6,000 lifetimes.
 
 A child learns language, and a great deal about the world, from a tiny fraction of this. That gap is the data-efficiency problem.
 
@@ -318,7 +318,7 @@ The open problems are about speed and fairness more than raw supply. JLL reports
 
 > **Definition — Interconnection queue:** The waiting line of projects asking to connect to the electricity grid. Each needs engineering studies and often new equipment, and waits are now measured in years.
 
-> **Definition — Small modular reactor (SMR):** A nuclear reactor built in a smaller, more standardized size than traditional plants, meant to be cheaper and faster to deploy. As of 2026, only China and Russia operate them, and the first US units are expected around 2030.
+> **Definition — Small modular reactor (SMR):** A nuclear reactor built in a smaller, more standardized size than traditional plants, meant to be cheaper and faster to deploy. As of 2026, only China and Russia operate them, and the first new US units are expected around 2030 at the earliest.
 
 Two research questions could change the picture. Can training jobs throttle down on the grid's worst days, so data centers act as flexible loads and more can connect without new peak capacity? And can one model be trained across campuses hundreds of kilometers apart, sidestepping any single site's power limit? Both are being tried; neither is routine.
 
@@ -485,7 +485,7 @@ In the tables below, the middle column says what has been announced, targeted or
 | Huawei Ascend 960DT and 970 | First quarter of 2027 and 2028, on Huawei's roadmap | Huawei events | China's domestic chip progress under export controls |
 | Announced campuses actually energized | Epoch projects "over 9 GW" across Stargate sites by about 2029 | Epoch AI data center hub | The gap between announced and delivered gigawatts |
 | Nuclear power for AI | Crane (Three Mile Island Unit 1) restart targeted for 2027; Oklo up to 1.2 GW for Meta as early as 2030 | NRC and utility announcements | Whether firm clean power arrives on AI's timescale |
-| Total data center electricity | IEA base case about 945 TWh by 2030; LBNL projects 6.7–12% of US electricity by 2028 | IEA, EIA, LBNL | Whether demand tracks the high or low forecasts |
+| Total data center electricity | IEA base case about 945 TWh by 2030; Lawrence Berkeley National Laboratory (LBNL) projects 6.7–12% of US electricity by 2028 | IEA, EIA, LBNL | Whether demand tracks the high or low forecasts |
 | Inference overtaking training | JLL expects around 2027 | Industry reports | Whether spending is driven by use rather than model-building |
 
 *Table 66.5: Infrastructure signposts.*
@@ -627,7 +627,7 @@ flowchart TD
 
 **1. What exactly is claimed?** Strip it to one sentence. Is it about what AI can do, what people will do, or what they should do? Pin down words like "solved," "autonomous" and "AGI," and for a model claim, which model, settings, harness and date.
 
-**2. What kind of number is it?** This book has shown you a zoo of slippery numbers. Run-rate revenue is not revenue. "Up to" is a ceiling, not a commitment. Sparse FP4 peak is not dense performance; per rack is not per chip. A 50% horizon is not an 80% one. Gigawatts of capacity are not gigawatt-hours used. Per prompt is not in aggregate.
+**2. What kind of number is it?** This book has shown you a zoo of slippery numbers. Run-rate revenue is not revenue. "Up to" is a ceiling, not a commitment. Sparse FP4 peak is not dense performance; per rack is not per chip (Chapter 32). A 50% horizon is not an 80% one. Gigawatts of capacity are not gigawatt-hours used. Per prompt is not in aggregate.
 
 > **Definition — Run-rate revenue:** A company's recent revenue scaled up to a full year, such as one month's revenue times 12. It is a speedometer reading of current pace, not money actually received over a year.
 

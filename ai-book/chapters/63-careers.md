@@ -137,7 +137,7 @@ AI pay spans four tiers that differ by factors of ten or more. Figure 63.2 puts 
 - **Tier 3, frontier-lab posted ranges (lab job boards, Oct 2026).** Base salary commonly $200K to $500K, with some research and performance roles reaching $850K, plus equity on top.
 - **Tier 4, outliers (reported, 2025).** In mid-2025 Meta reportedly offered a small number of top researchers packages worth up to $300 million over four years, and one reported offer was said to reach $1.5 billion over six or more years. Meta's chief technology officer said such sums went to only a few senior leaders and were multi-year stock, not signing bonuses.
 
-> **Key idea:** Headlines describe tier four, a few dozen people at most. Posted frontier-lab research ranges run roughly $250K to $850K base, and the national median for research scientists is $140,300 (BLS, May 2025). Calibrate your expectations to the tier you are actually aiming at.
+> **Key idea:** Headlines describe tier four, which reportedly covers only a small number of people. Posted frontier-lab research ranges run roughly $250K to $850K base, and the national median for research scientists is $140,300 (BLS, May 2025). Calibrate your expectations to the tier you are actually aiming at.
 
 ### What a pay package is made of
 
@@ -159,7 +159,7 @@ A tech job offer usually has three or four parts, and the parts carry very diffe
 
 > **Definition — Total compensation (TC):** Base salary plus bonus plus the yearly value of equity. Tech pay comparisons, including Levels.fyi figures, use total compensation, so they look higher than posted base ranges.
 
-> **Definition — Liquidity:** How easily you can turn an asset into cash. Shares of a public company are liquid; shares of a private company usually cannot be sold until a tender offer, an acquisition or an IPO.
+> **Definition — Liquidity:** How easily you can turn an asset into cash. Shares of a public company are liquid; shares of a private company usually cannot be sold until a tender offer, an acquisition or an IPO (initial public offering, when a company first lists its shares on a stock exchange).
 
 > **Definition — Tender offer:** An event at a private company in which existing shareholders, often employees, are allowed to sell some of their shares to investors. No new money goes to the company; it is how private-company staff turn paper equity into cash.
 
@@ -198,7 +198,7 @@ Why would a company pay an engineer $850,000 in base salary? Because of leverage
 
 Here is a worked example. The research firm Sacra estimates that OpenAI's inference costs, the cost of running its models for users, will be about $14.1 billion in 2026 (a secondary estimate). If a team of performance engineers made serving 1% more efficient, the saving would be about 1% × $14.1 billion = $141 million a year. A 10% improvement would be worth about $1.4 billion a year. Against numbers like that, even very high salaries for the few people who can deliver such gains are a bargain for the employer, which is why posted ranges for performance and inference engineers at Anthropic reach $850K base (Anthropic job board, Oct 2026).
 
-Research works the same way. A better post-training recipe changes the behavior of a model that, in ChatGPT's case, is reported to reach more than a billion people a week. Scarcity adds to the effect. 80,000 Hours, a career-advice nonprofit, estimated that only about 300 people (a range of 76 to 536 full-time equivalents) were working on technical AI-safety research in 2022, so the pool of experienced people in some specialties is tiny.
+Research works the same way. A better post-training recipe changes the behavior of a model that, in ChatGPT's case, reached about 900 million people a week in February 2026 and was reported above a billion later in the year. Scarcity adds to the effect. 80,000 Hours, a career-advice nonprofit, estimated that only about 300 people (a range of 76 to 536 full-time equivalents) were working on technical AI-safety research in 2022, so the pool of experienced people in some specialties is tiny.
 
 > **Analogy:** A kernel or performance engineer is like a Formula 1 mechanic. Shaving a tenth of a second off a lap sounds trivial, but over a whole season it decides the championship. Shaving a few percent off the cost of running tens of thousands of chips works the same way, and teams pay accordingly.
 
@@ -259,7 +259,7 @@ Engineering roles build the software that turns models into products, keeps them
 
 > **Definition — MLOps (machine-learning operations):** The practices and tools for deploying, monitoring and updating models in production reliably: pipelines, model registries, scheduling and monitoring. The LLM-era version is often called LLMOps.
 
-> **Definition — Kernel:** A small, highly tuned program that runs one operation, such as a matrix multiplication, on a GPU. Kernels are usually written in CUDA, Nvidia's GPU programming platform, or in Triton, a Python-like alternative, and faster kernels make every training run and every answer cheaper.
+> **Definition — Kernel:** A small, highly tuned program that runs one operation, such as a matrix multiplication, on a GPU (graphics processing unit, the parallel chip that does most AI math). Kernels are usually written in CUDA, Nvidia's GPU programming platform, or in Triton, a Python-like alternative, and faster kernels make every training run and every answer cheaper.
 
 | Role | Day to day | Core skills and backgrounds | Pay data (source, date) |
 |---|---|---|---|
@@ -324,7 +324,7 @@ Product and design roles decide what gets built and how people experience it. In
 
 Every AI system runs on data, and data roles range from analysts who answer business questions to experts who write the examples models learn from. This family includes one of the most accessible on-ramps in the whole field for domain experts.
 
-> **Definition — Data analyst:** Someone who pulls data from databases, builds dashboards and answers business questions with numbers, usually using SQL and spreadsheets.
+> **Definition — Data analyst:** Someone who pulls data from databases, builds dashboards and answers business questions with numbers, usually using SQL (the standard language for querying databases) and spreadsheets.
 
 > **Definition — Data scientist:** Someone who uses statistics, experiments and modeling to answer harder questions, such as whether a product change worked. At AI companies they analyze product usage, safety data and sales.
 
@@ -656,7 +656,7 @@ Four habits apply at every stage.
 
 Most AI jobs are not research jobs. Even at OpenAI and Anthropic, research was only about 6 to 10% of open roles in October 2026; most hiring was for selling, deploying, scaling, securing and governing AI. Outside the labs, the largest numbers of jobs are AI engineers who build products on top of models, people who help businesses adopt AI, and the electricians and technicians who build and run data centers.
 
-Pay comes in four very different tiers. National medians for software developers and research scientists are around $136,000 to $140,000. Big tech pays machine-learning engineers several hundred thousand in total compensation. Frontier labs post base ranges commonly from $200,000 to $500,000, reaching $850,000 for some research and performance roles, plus stock. A handful of record offers worth hundreds of millions made headlines, but they describe a few dozen people. Always check whether a number is base pay or total pay, and remember that private-company stock is a promise until you can sell it.
+Pay comes in four very different tiers. National medians for software developers and research scientists are around $136,000 to $140,000. Big tech pays machine-learning engineers several hundred thousand in total compensation. Frontier labs post base ranges commonly from $200,000 to $500,000, reaching $850,000 for some research and performance roles, plus stock. A handful of record offers worth hundreds of millions made headlines, but they describe only a handful of people. Always check whether a number is base pay or total pay, and remember that private-company stock is a promise until you can sell it.
 
 The roles fall into nine families: research, engineering, infrastructure and data center, product and design, data, go-to-market, safety and policy, operations and trades, and creators and educators. Many need no computer-science degree. Most people enter from a neighboring job by adding one to three bridging skills and building public proof.
 
@@ -695,7 +695,7 @@ Role family, Frontier lab, Pay-transparency law, BLS (Bureau of Labor Statistics
 - **Inference and performance engineering.** Every efficiency gain saves real money at fleet scale; systems, HPC, game-engine and compiler backgrounds transfer, and posted ranges reached $850K base at Anthropic in October 2026.
 - **Data-center trades and operations.** Electricians, HVAC and controls technicians, fiber technicians and critical-facilities operators are a binding constraint on AI buildout; apprenticeships and two-year programs are the entry route.
 - **Safety, evals and interpretability research.** A small field with funded on-ramps (MATS, ARENA, the Anthropic Fellows Program); public replications and well-built evals count heavily in applications.
-- **AI education for a specific audience.** Clear teaching is a bottleneck to adoption; niche educators (AI for nurses, AI for contractors) and technical instructors are in demand, and labs posted instructor roles from $270K to $435K base in October 2026.
+- **AI education for a specific audience.** Clear teaching is a bottleneck to adoption; niche educators (AI for nurses, AI for contractors) and technical instructors are in demand, and Anthropic posted instructor and training roles from $270K to $435K base in October 2026.
 - **Workflow redesign inside your own company.** The gap between 88% adoption and about 5% of pilots showing measurable profit impact is a gap of people who can connect AI to real work, which often becomes a formal adoption-lead role.
 
 ## Check your understanding

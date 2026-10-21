@@ -161,7 +161,7 @@ The star of this layer is NVIDIA, whose GPUs (graphics processing units, the hig
 
 > **Definition — Custom silicon (ASIC):** A chip designed for one company's own workloads, such as Google's TPU or Amazon's Trainium, rather than sold to everyone. Clouds build them to cut costs, secure supply and gain bargaining power with NVIDIA.
 
-A 75% gross margin is extraordinary for hardware. Of every dollar a customer pays NVIDIA, only about 25 cents covers the direct cost of making the product: wafers from TSMC, high-bandwidth memory (HBM, see Chapter 33) from SK hynix, Samsung or Micron, packaging and boards. The other 75 cents funds research and profit. The margin exists because there is not yet a full substitute: two decades of CUDA software and complete rack-scale systems make NVIDIA hard to replace (see Chapter 35).
+A 75% gross margin is extraordinary for hardware. Of every dollar a customer pays NVIDIA, only about 25 cents covers the direct cost of making the product: wafers from TSMC, high-bandwidth memory (HBM, see Chapter 33) from SK hynix, Samsung or Micron, packaging and boards. The other 75 cents funds research and profit. The margin exists because there is not yet a full substitute: two decades of CUDA software (NVIDIA's platform for programming its chips) and complete rack-scale systems make NVIDIA hard to replace (see Chapter 35).
 
 Alternatives are growing: AMD's 6-gigawatt deal with OpenAI (October 2025), Google's TPUs (up to one million promised to Anthropic the same month), Amazon's Trainium, and OpenAI's 10-gigawatt custom-chip plan with Broadcom. Beneath them all sit TSMC's factories, ASML's lithography machines (the only source of extreme-ultraviolet tools) and the three HBM makers.
 
@@ -203,7 +203,7 @@ CoreWeave shows the opportunity and the risk. It went public on March 28, 2025, 
 
 > **Definition — Open-weight model:** A model whose trained parameters are published so anyone can download, run and modify it. The weights are free, but running them still costs compute and engineering.
 
-Chapter 24 describes the labs' models; here we treat them as businesses. A lab spends on training compute, serving compute (inference) and people. It earns from API usage priced per million tokens (Chapter 26); consumer subscriptions ($20 plans, and $100 and $200 Max plans at Anthropic in late 2026); enterprise contracts (Anthropic reportedly had over 1,000 customers spending more than $1 million a year by April 2026); agents and coding tools (Claude Code was reported at $2.5 billion annualized in February 2026); and advertising (OpenAI's ads were reported at $1 billion annualized in August 2026).
+Chapter 24 describes the labs' models; here we treat them as businesses. A lab spends on training compute, serving compute (inference) and people. It earns from API usage priced per million tokens (Chapter 26); consumer subscriptions (entry plans around $20 a month, plus premium tiers such as Claude Max, which launched in 2025 at $100 and $200 a month); enterprise contracts (Anthropic reportedly had over 1,000 customers spending more than $1 million a year by April 2026); agents and coding tools (Claude Code was reported at $2.5 billion annualized in February 2026); and advertising (OpenAI's ads were reported at $1 billion annualized in August 2026).
 
 | Lab | Reported run-rate | Latest reported valuation | Selected facts (reported) |
 |---|---|---|---|
@@ -213,7 +213,7 @@ Chapter 24 describes the labs' models; here we treat them as businesses. A lab s
 
 *Table 61.3: The three most-reported US frontier labs as businesses, as of October 2026. Google DeepMind and Meta's labs sit inside giant companies that do not report them separately.*
 
-Their customers differ. Menlo Ventures, a venture firm invested in the sector, estimated Anthropic held 40% of enterprise language-model API spending in 2025 against OpenAI's 27%; OpenAI leads with consumers, with ChatGPT reported at around a billion weekly users.
+Their customers differ. Menlo Ventures, a venture firm invested in the sector, estimated Anthropic held 40% of enterprise language-model API spending in 2025 against OpenAI's 27%; OpenAI leads with consumers, with ChatGPT at about 900 million weekly users in February 2026 and reported above a billion later in the year.
 
 > **Watch out:** "Open-weight means free" is a myth. Serving a large open model needs GPUs, engineers and maintenance. Open-weight labs earn money through hosting, enterprise support, premium closed models or the strategic value of setting a standard.
 
@@ -338,7 +338,7 @@ flowchart LR
     AMZ -->|"50B, 35B contingent"| OA
     OA -->|"AWS compute deals"| AMZ
 ```
-*Figure 61.4: A simplified map of circular deals, 2025–2026, as reported. Arrows into a lab are investments; arrows out of a lab are purchase commitments back to the investor.*
+*Figure 61.4: A simplified map of circular deals, 2025–2026, as reported. Arrows into a lab or neocloud are investments; arrows out of it are purchases or purchase commitments back to the investor.*
 
 > **Analogy:** A circular deal is like a furniture store lending you money to buy its sofas. The sale is real and you get a sofa. But when the store reports "record sofa demand," part of that demand exists because the store financed it.
 
@@ -350,7 +350,7 @@ Circular deals are not fraud, and they can make sense: a supplier with spare cas
 
 > **Analogy:** An "up to" deal is like a gym membership advertised as "up to 365 visits a year." The headline is the maximum, not what will happen.
 
-Read the fine print and conditions appear. Of Amazon's reported $50 billion commitment to OpenAI, $35 billion was reportedly contingent on an IPO or a technical milestone. NVIDIA's 2025 letter of intent to invest "up to $100 billion" in OpenAI was later reported shelved in favor of the roughly $30 billion stake. Stargate was announced in January 2025 as "up to $500 billion" and 10 gigawatts by 2029; in April 2026 Epoch AI estimated its flagship Abilene site had about 0.3 GW running against a 1.2 GW plan, with most new capacity expected in 2027–2028. Staging is normal; adding up headline maximums still overstates what has been spent.
+Read the fine print and conditions appear. Of Amazon's reported $50 billion commitment to OpenAI, $35 billion was reportedly contingent on an IPO or a technical milestone. NVIDIA's 2025 letter of intent to invest "up to $100 billion" in OpenAI was later reported shelved in favor of the roughly $30 billion stake. Stargate was announced in January 2025 as "up to $500 billion" and 10 gigawatts by 2029; in April 2026 Epoch AI estimated its flagship Abilene site had about 0.3 GW running against a 1.2 GW plan, and expected most new Stargate capacity across all its sites to arrive in 2027–2028. Staging is normal; adding up headline maximums still overstates what has been spent.
 
 ### The capex-revenue gap
 
@@ -399,24 +399,24 @@ Job boards reveal priorities that press releases do not. On October 21, 2026, An
 Open roles by group, October 21, 2026 (each # = 10 roles)
 
 Anthropic (675)
- Applied AI, sales, marketing  ##################### 207
- Finance, legal, people, comms ##########            95
- Infrastructure and compute    ########              79
- Product                       ########              75
- Research and engineering      #######               68
- Safeguards, policy, benefit   ######                62
- Security                      #####                 53
- TPM and data science          ####                  36
+Applied AI, sales, marketing ##################### 207
+Finance, legal, HR, comms    ##########             95
+Infrastructure and compute   ########               79
+Product                      ########               75
+Research and engineering     #######                68
+Safeguards, policy, benefit  ######                 62
+Security                     #####                  53
+Program mgmt, data science   ####                   36
 
 OpenAI (809)
- GTM, Applied AI, FDE, mktg    ####################################  361
- Scaling                       ###########           106
- User ops, finance, people     ##########            101
- Smaller groups                ##########             98
- Research                      #####                  51
- Safety systems, data science  ####                   36
- Security                      ###                    29
- Consumer devices              ###                    27
+GTM, Applied AI, FDE, mktg   #################################### 361
+Scaling                      ###########                          106
+User ops, finance, people    ##########                           101
+Smaller groups               ##########                            98
+Research                     #####                                 51
+Safety systems, data science ####                                  36
+Security                     ###                                   29
+Consumer devices             ###                                   27
 ```
 *Figure 61.6: Open roles at two frontier labs on October 21, 2026, from their public job boards, grouped by the author. Open roles are not headcount, and each company labels departments differently.*
 
@@ -460,7 +460,7 @@ flowchart LR
 | Model | Example (reported, 2026) | Strength | Weakness |
 |---|---|---|---|
 | Usage-based API | Claude and GPT APIs, priced per million tokens | Grows with use | Price wars; revenue swings |
-| Consumer subscription | Claude Pro $20; Max $100 and $200 | Predictable | Heavy users can cost more than they pay |
+| Consumer subscription | Entry plans around $20 a month; premium tiers such as Claude Max (launched at $100 and $200) | Predictable | Heavy users can cost more than they pay |
 | Per-seat enterprise | Harvey, about $1,200 per lawyer a month, about 20-seat minimum | High value per customer | Shrinks if AI reduces headcount |
 | Subscription plus credits | Lovable, $25–50 a month plus usage credits | Protects margins from heavy users | More complex to buy |
 | Outcome-based | Sierra, per conversation or per resolution | Price matches value | Outcomes must be measured reliably |

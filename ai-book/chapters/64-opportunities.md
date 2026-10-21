@@ -109,7 +109,7 @@ Table 64.1 adds what each layer sells, where newcomers can win and one dated hea
 
 > **Definition — Hyperscaler:** One of the very largest cloud and computing companies, such as Amazon Web Services, Microsoft Azure and Google Cloud, plus Meta and Oracle for their own buildouts, which build data centers at enormous scale.
 
-> **Definition — Neocloud:** A newer cloud company that specializes in renting GPUs for AI, such as CoreWeave, Nebius or Lambda.
+> **Definition — Neocloud:** A newer cloud company that specializes in renting GPUs (graphics processing units, the chips that do most AI computing) for AI, such as CoreWeave, Nebius or Lambda.
 
 > **Definition — Capex (capital expenditure):** Money spent on long-lived physical assets such as data centers, chips and power equipment. Big-tech AI capex is the engine of the data-center boom.
 
@@ -173,7 +173,7 @@ You are comfortable with no-code tools and app builders, or willing to become so
 - **Internal tools inside your company.** Dashboards, trackers and assistants built with AI app builders. Being "the person who builds things" is a fast route into product or operations-engineering roles.
 - **Templates and productized setups.** Package one proven workflow for one niche, such as an intake flow for physiotherapy clinics built in n8n, and sell it many times.
 - **Evaluation for your industry.** Help companies in a field you know test whether AI tools actually work on their cases, using the golden-set method from Chapter 31.
-- **MCP servers and connectors.** Build the bridge that lets AI assistants use a niche or old piece of software that nobody else has connected (Chapter 28).
+- **MCP servers and connectors.** MCP (Model Context Protocol) is the open standard for connecting AI assistants to tools and data. Build the bridge that lets AI assistants use a niche or old piece of software that nobody else has connected (Chapter 28).
 
 **First move this month:** do a free implementation for one local business, measure the time saved after two weeks, and write it up as a one-page case study. **Trap:** vibe-coded apps that handle customer data without a security review (see the pitfalls section).
 
@@ -216,7 +216,7 @@ This subsection is educational, not investment advice. Ordinary investors can re
 
 ### Skilled trades
 
-AI's physical buildout may be the most underrated opportunity in this book. The BLS counts about 821,000 electrician jobs in the US and projects 9% growth from 2025 to 2035, citing data-center electricity demand (BLS, May 2025 data).
+AI's physical buildout may be the most underrated opportunity in this book. The US Bureau of Labor Statistics (BLS) counts about 821,000 electrician jobs in the US and projects 9% growth from 2025 to 2035, citing data-center electricity demand (BLS, May 2025 data).
 
 - **The trades in demand:** electricians (often the biggest constraint at a site), HVAC and mechanical technicians and pipefitters (liquid cooling is largely plumbing), lineworkers and substation technicians, low-voltage and fiber technicians, controls technicians, construction managers, commissioning agents and critical-facility operators.
 - **Pay upside:** lab-adjacent technician roles at OpenAI's Stargate sites were posted at $157K–$302K plus equity (OpenAI job board, Oct 2026), well above the electrician median of $63,190 (BLS, May 2025). Contractor and union pay near large builds is often high too; check locally.
@@ -228,7 +228,7 @@ AI's physical buildout may be the most underrated opportunity in this book. The 
 
 ### Educators and creators
 
-Adoption is held back by understanding, which makes clear teaching valuable. Stanford's 2026 AI Index reports that more than 80% of US high-school and college students use AI for schoolwork, while many schools are still writing their AI policies. The EU AI Act also includes a duty for organizations to ensure AI literacy among staff who use AI systems (Chapter 59).
+Adoption is held back by understanding, which makes clear teaching valuable. Stanford's 2026 AI Index reports that more than 80% of US high-school and college students use AI for schoolwork, while many schools are still writing their AI policies. The EU AI Act also asks organizations to take measures for AI literacy among staff who use AI systems, a duty the 2026 Digital Omnibus softened but did not remove (Chapter 59).
 
 - **Niche education.** "AI for nurses," "AI for contractors," "AI for small-firm lawyers." General AI content is saturated; field-specific, honest, tested advice is not.
 - **Corporate training and workshops.** Employers pay for practical, safe, role-specific training, especially in regulated industries.
@@ -378,8 +378,8 @@ Now productize. You pick one niche, say physiotherapy clinics, and build the sam
 Chapter 61 tells these companies' stories; here are the lessons for anyone looking for an opportunity, with figures as reported by secondary sources in 2026.
 
 - **Harvey (legal):** domain experts on staff and deep workflow integration justify premium per-seat prices (around $1,200 per lawyer per month). Vertical depth beats general cleverness.
-- **Sierra (customer-service agents):** charging per resolution ties price to value and escapes the shrinking-seats problem. It reported about $200 million of annual recurring revenue in May 2026.
-- **Lovable (app builder):** mixing a subscription ($25 to $50 a month) with usage credits keeps heavy users from destroying margins. It reported about $600 million annualized revenue in September 2026.
+- **Sierra (customer-service agents):** charging per resolution ties price to value and escapes the shrinking-seats problem. It was reported at about $200 million of annual recurring revenue in May 2026.
+- **Lovable (app builder):** mixing a subscription ($25 to $50 a month) with usage credits keeps heavy users from destroying margins. It was reported at about $600 million of annualized revenue in September 2026.
 - **Cursor (coding):** a product built on other companies' models reached a multi-billion-dollar run-rate and a reported $60 billion acquisition by SpaceX in June 2026. "Wrapper" is not an insult when workflow depth, speed and distribution are real.
 - **Mercor (expert data):** a marketplace's gross revenue overstates what it keeps; read the take rate.
 - **Scale AI (data labeling):** after Meta bought 49% of it for $14.3 billion in June 2025, Google, OpenAI and other customers reportedly left. Depending on a few customers who are also competitors of your investor is a structural risk.
@@ -539,7 +539,7 @@ Some of the largest opportunities are not businesses yet. They are unsolved prob
 | The data wall, licensing and creator compensation | High-quality human data is limited, and fair payment for creators is unsettled (Chapters 11 and 58) | Build or broker a rights-cleared dataset in a niche you know |
 | Low-resource languages and tokenizer fairness | Many languages need more tokens for the same meaning, so they cost more and work worse (Chapter 18) | Measure token counts and answer quality in your language and publish a comparison |
 | Measuring real productivity and helping entry-level workers | Perceived and measured gains diverge, and young workers in exposed jobs are squeezed (Chapters 60 and 63) | Run a careful before-and-after measurement of an AI rollout at your workplace |
-| The memory wall and energy efficiency | Memory bandwidth grows much more slowly than compute, and the IEA projects data-center electricity demand to more than double by 2030 (Chapters 33 and 39) | Deep engineering paths: kernels, low-precision numerics, efficient serving |
+| The memory wall and energy efficiency | Memory bandwidth grows much more slowly than compute, and the International Energy Agency (IEA) projects data-center electricity demand to more than double by 2030 (Chapters 33 and 39) | Deep engineering paths: kernels, low-precision numerics, efficient serving |
 | Grid connection speed and flexible AI loads | Connecting gigawatts takes years; training jobs that throttle on grid stress days could let more load connect (Chapter 41) | Energy, utility-regulation and grid-software careers |
 | Robot dexterity and reliability | Robots must succeed far more than 99% of the time over long shifts to be useful (Chapter 49) | Robot data collection, simulation and field-deployment roles |
 | Experimental validation in AI for science | AI proposes molecules and materials faster than labs can test them (Chapter 52) | Lab automation and "AI plus wet lab" roles |

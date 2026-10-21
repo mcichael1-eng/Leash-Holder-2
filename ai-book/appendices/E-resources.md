@@ -2,7 +2,7 @@
 
 *A curated list of well-known, stable places to keep learning, grouped by level and then by type, with what each costs.*
 
-How to use this appendix: find your level, then pick at most three resources at a time and finish them before adding more (Chapter 65 explains why, and how to fit them into a weekly plan). The levels follow the tracks in Chapter 65: beginner (everyone), builder (no-code and low-code), engineer (AI application engineering), researcher (machine learning engineering and research), compute and data centers, policy and safety, and business. Many resources are useful at more than one level; each appears once, in the level where it fits best, and later sections point back to earlier ones instead of repeating them.
+How to use this appendix: find your level, then pick at most three resources at a time and finish them before adding more (Chapter 65 explains why, and how to fit them into a weekly plan). The levels follow Stage 1 and the five tracks in Chapter 65: beginner (everyone), builder (no-code and low-code), engineer (AI application engineering), researcher (machine learning engineering and research), compute and data centers, and policy and safety, plus a final section on business. Many resources are useful at more than one level; each appears once, in the level where it fits best, and later sections point back to earlier ones instead of repeating them.
 
 What the cost labels mean, as of October 2026. Providers change their pricing often, so check the page before you enroll or subscribe.
 
