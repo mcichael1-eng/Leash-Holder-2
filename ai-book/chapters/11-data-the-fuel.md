@@ -332,7 +332,7 @@ Almost all everyday SQL is four moves:
 
 Not all data fits tables. NoSQL databases store documents, key–value pairs or networks of connections, trading some structure for flexibility and scale. A newer kind, the vector database, stores embeddings and finds the items closest in meaning to a query, which is how chatbots search your documents (Chapter 27).
 
-> **Definition — Vector database:** A database built to store embeddings (lists of numbers representing meaning) and quickly find the items most similar to a query. It is the backbone of retrieval-augmented generation.
+> **Definition — Vector database:** A database built to store embeddings (lists of numbers representing meaning) and quickly find the items most similar to a query. It is the backbone of retrieval-augmented generation, where a chatbot looks up relevant documents before it answers.
 
 ## Pipelines, warehouses, lakes and lakehouses
 

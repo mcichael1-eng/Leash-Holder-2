@@ -274,7 +274,7 @@ Level 4 is the job of the "AI engineer," the most-hired technical AI role outsid
 
 > **Definition — Prompt injection:** An attack in which malicious instructions hidden in content the AI reads (a web page, an email, a document) hijack its behavior (see Chapter 31).
 
-**AI security.** *What:* prompt injection, data exfiltration through tools, permissions and handling personal data. *Why:* agents with tool access create new attack surfaces. *Learn:* the OWASP Top 10 for LLM Applications and Simon Willison's writing on prompt injection. *Prove:* a red-team report against your own agent, with mitigations (Exercise 21 of Chapter 64's companion projects is optional; Chapter 31's exercises are enough).
+**AI security.** *What:* prompt injection, data exfiltration through tools, permissions and handling personal data. *Why:* agents with tool access create new attack surfaces. *Learn:* the OWASP Top 10 for LLM Applications and Simon Willison's writing on prompt injection. *Prove:* a red-team report of 15 injection attempts against your own agent, with the mitigations you added.
 
 > **Definition — Fine-tuning:** Further training an existing model on your own examples to change its behavior or style. Methods such as LoRA train only a small add-on, which makes it cheap (see Chapter 30).
 
@@ -578,3 +578,77 @@ What counts is proof: a tool people use, an eval you published, a replication ot
 ## Key terms
 
 Skill tree, Portfolio, Hallucination, Knowledge cutoff, Jagged frontier, Power user, Prompt, Prompt engineering, Context engineering, Verification, Agent, Custom assistant, Agent Skill, Connector, Workflow automation, Vibe coding, AI app builder, MCP (Model Context Protocol), Eval set (golden set), Python, Notebook (Jupyter, Google Colab), Command line, Git and GitHub, SQL (Structured Query Language), API (application programming interface), JSON, AI engineer (LLM application engineer), Structured output, RAG (retrieval-augmented generation), Tool calling (function calling), Error analysis, LLM-as-judge, Observability (tracing), Prompt injection, Fine-tuning, PyTorch, MLOps (and LLMOps), Data pipeline, Distributed system, Kubernetes and Slurm, GPU kernel, CUDA and Triton, Interpretability, Alignment, Fellowship (research residency), Ablation, Replication, Research taste, AI governance, T-shaped skills.
+
+## Exercises
+
+1. **[Easy] Fill in your skill map.** (1) Complete the self-assessment checklist in this chapter, scoring every row 0–3 and writing evidence where you have it. (2) Find your current level using the scoring rules. (3) Pick three skills and write one proof project and a date for each, within 90 days. (4) Put a reminder in your calendar to re-score in three months. **What you'll learn:** exactly where you stand, and a concrete plan instead of a vague intention.
+
+2. **[Easy] Audit your week for AI.** (1) For one working week, log what you do in 30-minute blocks. (2) Tag each task "AI does it," "AI assists" or "human only," and note how often it happens and how long it takes. (3) Rank the top five candidates by hours that could be saved per week. (4) Turn the result into a one-page automation map of your job. **What you'll learn:** personal workflow design, the power-user skill that compounds fastest.
+
+3. **[Easy] Verification drill.** (1) Ask a chatbot for a researched answer with citations on a topic you know well. (2) Check every citation and every number. (3) Count the claims that were correct, misattributed or invented. (4) Write five "trust rules" for yourself, such as "always open the source before quoting a statistic." **What you'll learn:** how often confident output is wrong in your area, and the habits that catch it.
+
+4. **[Medium] Map the jagged frontier in your field.** (1) Write 15 mini-tests from your own work: five easy, five hard, three tricky, and two that need local knowledge only you have. (2) Run them on one or two chatbots and record where each is excellent, adequate or confidently wrong. (3) Save the file and repeat the same tests in three months. **What you'll learn:** the real shape of AI ability where it matters to you, and how fast it changes.
+
+5. **[Medium] Build a reusable assistant with its own eval.** (1) Create a Claude Project, custom GPT or Gem for one recurring task, with instructions, two worked examples and reference documents. (2) Write 20 test inputs with a note on what a good output looks like for each. (3) Score the assistant's outputs 0–2 on each test in a spreadsheet. (4) Improve the instructions, re-run all 20 and compare totals. **What you'll learn:** context engineering and the builder's evaluation habit together.
+
+6. **[Medium] Your first automation.** (1) In Zapier, Make or n8n (all have free tiers), build: new form submission, then an AI step that summarizes and classifies it, then a new spreadsheet row, then an email notification. (2) Submit five test entries, including one that is blank or nonsense. (3) Add a step that handles the bad entry instead of failing silently. **What you'll learn:** trigger-and-action thinking and why error handling separates toys from tools.
+
+7. **[Medium] Vibe-code an internal tool.** (1) With Lovable, Replit or a coding agent, describe a small app you would really use, such as a tracker, calculator or intake form. (2) Build it, test it with real data including odd cases, and fix the worst problem first. (3) Publish it and use it for two weeks. (4) Write down what broke and how you fixed it. **What you'll learn:** the describe, build, test, iterate loop, and where vibe coding stops being safe.
+
+8. **[Medium] A structured API call.** (1) Set up the Google Colab notebook and API key secret from Chapter 26 and run its first call. (2) Change the request so the model reads a short document you paste in and returns a JSON summary with three fields: title, three key points, and one open question. (3) Use Chapter 26's structured-output example as your template, and save the result to a file. (4) Confirm your API key appears nowhere in the notebook's code. **What you'll learn:** the Level 3 bridge from chat to code: APIs, JSON and safe key handling.
+
+9. **[Challenge] Error analysis write-up.** (1) Collect 100 real outputs from a system you built (your assistant from Exercise 5 or an app). (2) Read each one and label failures by type, such as "missed a detail," "wrong format" or "invented a fact." (3) Count the types and fix the most common one. (4) Re-run on the same inputs and measure the change. (5) Publish a one-page write-up. **What you'll learn:** the core method for improving AI systems, and the portfolio piece AI-engineering hiring managers most want to see.
+
+10. **[Challenge] Design a new eval in your domain.** (1) Write 50 hard questions or tasks from your field (tax edge cases, clinical triage vignettes, building-code questions), each with an expert-written gold answer. (2) Write a scoring rubric. (3) Run three frontier models and score them. (4) Publish the results with an honest list of limitations, without publishing the answers if you want the test to stay uncontaminated. **What you'll learn:** how domain expertise turns into AI research credibility.
+
+11. **[Challenge] Replicate a result.** (1) Pick a small, recent interpretability or post-training paper with public code, or work through the first lecture of Karpathy's "Neural Networks: Zero to Hero" typing every line yourself. (2) Reproduce one key figure or result. (3) Write down every discrepancy and one extension you tried. (4) Post the code and write-up publicly. **What you'll learn:** research skills (reading, replicating, reporting honestly) and the evidence that fellowship programs look for.
+
+## Areas of opportunity
+
+- **Your team's AI workflow designer.** Organizations report near-universal AI adoption but few pilots with measurable impact, so the person who redesigns a team's workflow around AI (not just the one who prompts well) is scarce. It often becomes a formal "AI adoption lead" role.
+- **Domain expert who writes the evals.** Accountants, nurses, paralegals, teachers and recruiters know which errors matter. Companies deploying AI pay for people who can turn that knowledge into test sets, guidelines and quality checks that engineers cannot write.
+- **Expert contractor for AI labs.** Labs pay professionals to write and grade training data (Mercor reportedly averages $85 or more an hour for experts). It is a flexible income and an education in how models fail, though projects can end abruptly.
+- **Small-business AI implementer.** Clinics, law offices, trades and restaurants need intake automation, scheduling, follow-ups and document processing. A fixed-price audit followed by implementation and a monthly retainer is a proven model for Level 2 builders.
+- **AI engineer with public evals.** The broadest technical demand outside the labs. Differentiate with published error analyses, RAG accuracy measurements and agent reliability work rather than demos.
+- **Forward-deployed engineering and solutions work.** Engineers who like customers, ambiguity and travel are in demand at labs and AI startups to turn models into working deployments.
+- **Inference and performance engineering.** Every efficiency gain is money at fleet scale, and posted base ranges reached $850,000 at Anthropic in October 2026. Systems, HPC, game-engine and compiler backgrounds transfer well.
+- **Safety, evals and interpretability research.** A small field with funded on-ramps (MATS, ARENA, the Anthropic Fellows Program) where public replications count heavily.
+- **AI governance and compliance.** Regulated industries need AI risk policies, vendor reviews and EU AI Act compliance; backgrounds in privacy, legal, audit and risk transfer directly.
+- **Niche AI educator.** General AI content is saturated, but "AI for nurses" or "AI for contractors" newsletters, workshops and courses serve audiences that generic content misses.
+
+## Check your understanding
+
+1. Name the seven levels of the AI skill tree and the five cross-cutting branches.
+2. What are the four questions this chapter asks about every skill, and which one do learners most often skip?
+3. Why did prompt engineering give way to context engineering as the key power-user skill?
+4. If a model gets each claim right 95% of the time, what is the chance a 10-claim memo is entirely correct, and what does that imply?
+5. Which Level 4 skill does this chapter recommend learning first, and why?
+6. Why does each layer of the engineering stack in Figure 62.4 exist? Give two examples.
+7. What does "T-shaped" mean, and why is it a good shape for most people in the AI era?
+8. In the self-assessment, when is a level "unlocked," and what is a score of 3 without evidence worth?
+
+<details><summary>Answers</summary>
+
+1. Levels: 0 AI literacy, 1 power user, 2 builder, 3 technical foundations, 4 AI application engineering and product, 5 ML engineering and infrastructure, 6 frontier research. Branches: policy and governance; sales, solutions and FDE; writing and teaching; domain expertise; data-center trades.
+2. What it is, why it matters, how to learn it, and how to prove it. Learners most often skip the proof, which matters most in AI hiring.
+3. By 2025–2026 models understood plain requests well, so the bottleneck moved from how you word a request to what the model knows about your situation: the documents, examples, rules and memory you supply.
+4. 0.95^10 ≈ 0.60, so about 4 memos in 10 contain at least one error. Small per-claim error rates compound, so anything important must be verified.
+5. Evals, because anyone can build a demo that works on cases they tried, but proving a system works on cases nobody tried is what separates a demo from a product, and employers pay for it.
+6. Each layer lets the one above run reliably, at scale and affordably. For example, MLOps exists because a model that is not deployed and monitored creates no value; distributed systems exist because frontier training does not fit on one machine; kernels exist because faster low-level code makes every model on the hardware cheaper.
+7. Deep expertise in one area plus broad AI fluency across many. It is a good shape because AI complements judgment, verification and domain context rather than replacing them, so a deep specialist who is fluent in AI is hard to replace.
+8. When most of its rows score 2 or more and at least one row scores 3 with evidence. A 3 without evidence counts as a 2.
+
+</details>
+
+## Going deeper
+
+- **Andrej Karpathy, "Intro to Large Language Models," "Deep Dive into LLMs like ChatGPT" and "Neural Networks: Zero to Hero" (karpathy.ai, YouTube).** The best free path from literacy to building GPT from scratch.
+- **Anthropic Academy (anthropic.skilljar.com).** Free courses from AI Fluency to Claude Code, the API, MCP and agent skills.
+- **DeepLearning.AI short courses and specializations (deeplearning.ai/courses).** Structured routes from "Generative AI for Everyone" to the Machine Learning Specialization, with hours listed for each.
+- **Hugging Face Learn (huggingface.co/learn).** Twelve free courses, including LLM, Agents, Context, post-training and robotics.
+- **Chip Huyen, *AI Engineering* (O'Reilly, 2025).** The standard book on building products with foundation models.
+- **Hamel Husain's writing on evals (hamel.dev).** Practical, widely cited guidance on error analysis and evaluation for builders.
+- **fast.ai, "Practical Deep Learning for Coders" (course.fast.ai).** The classic top-down deep-learning course for people who can already code.
+- **Stanford CS336, "Language Modeling from Scratch" (cs336.stanford.edu).** University-level training of language models, with lectures online.
+- **80,000 Hours AI safety career review (80000hours.org) and BlueDot Impact (bluedot.org).** The clearest starting points for safety and governance careers.
+- **Ethan Mollick, *Co-Intelligence*.** A practical, evidence-minded guide to working alongside AI as a power user.
