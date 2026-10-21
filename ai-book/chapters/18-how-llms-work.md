@@ -206,7 +206,7 @@ Once you know that a model sees token IDs and not letters, many puzzling behavio
 | 1,000 tokens | about 750 words | Roughly 1.5 pages of a paperback |
 | 1 million tokens | about 750,000 words | Several long novels |
 
-> **Watch out:** Tokenizers change between model generations, so these rules drift. Anthropic says that on the tokenizer introduced with Claude Opus 4.7, 1 million tokens is about 555,000 English words, against about 750,000 words before; it describes the newer tokenizer as producing roughly 30% more tokens for the same text. A lower price per token does not guarantee a lower price per task. Compare models on what a whole job costs.
+> **Watch out:** Tokenizers change between model generations, so these rules drift. Anthropic says that on the tokenizer introduced with Claude Opus 4.7, 1 million tokens is about 555,000 English words, against about 750,000 words before; it says the newer tokenizer turns the same text into roughly 1.0 to 1.35 times as many tokens, depending on the kind of text. A lower price per token does not guarantee a lower price per task. Compare models on what a whole job costs.
 
 > **Try it:** Open Tiktokenizer (tiktokenizer.vercel.app) or the Hugging Face Tokenizer Playground. Type "I love strawberries.", then "STRAWBERRIES", then the same sentence in another language you know, then an emoji. Watch how the token count and the splits change. Five minutes here will change how you think about every chatbot.
 
@@ -318,7 +318,7 @@ Here is how these settings are typically used:
 | Brainstorming, fiction, slogans | Higher temperature (1 to 1.3) | More surprising options; you will filter them |
 | Reasoning models | Often fixed by the provider | The model was trained to think at a set temperature |
 
-> **At the frontier (2026):** Many reasoning models limit or fix the sampling settings developers can change, because they were trained to think at a particular temperature and behave worse at others. On Claude Opus 5.5, thinking can no longer be turned off at all; developers steer an "effort" setting instead (see Chapter 21). Sampling dials matter most today for open-weight models you run yourself and for non-reasoning API models.
+> **At the frontier (2026):** Many reasoning models limit or fix the sampling settings developers can change, because they were trained to think at a particular temperature and behave worse at others. In July 2026 Google went further and deprecated the temperature, top-p and top-k settings across its Gemini API. On Claude Opus 5.5, thinking can no longer be turned off at all; developers steer an "effort" setting instead (see Chapter 21). Sampling dials matter most today for open-weight models you run yourself and for non-reasoning API models.
 
 ### Beam search: looking a few steps ahead
 
@@ -527,7 +527,7 @@ Real examples from 2026 open-weight models, all from their published model cards
 | Qwen3.8-2.4T-A95B (Alibaba, Aug 2026) | 2.4T | 95B | The name itself says "2.4T total, A95B = 95B active" |
 | DeepSeek-V4-Pro (2026) | 1.6T | 49B | 1M-token context, MIT license |
 | DeepSeek-V4-Flash (2026) | 284B | 13B | Smaller sibling |
-| Gemma 4 26B-A4B (Google, Apr 2026) | 26B | about 4B | Small enough for a good laptop when quantized |
+| Gemma 4 26B-A4B (Google, Mar 2026) | 26B | about 4B | Small enough for a good laptop when quantized |
 
 Work out Kimi K3's two numbers. Memory: 2.8 trillion parameters at 4 bits is about 1,400 GB, so it needs many data-center GPUs. Compute: 2 × 104 billion ≈ 208 billion FLOPs per token, about what a 104B dense model would need. That combination, huge knowledge capacity at moderate cost per token, is why the frontier moved to MoE.
 

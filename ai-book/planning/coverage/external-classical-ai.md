@@ -7,10 +7,13 @@ mathematical for this reader (the reason is given in the Action column).
 
 ## Standards and how their structure was reconstructed
 
-1. **Russell and Norvig, *Artificial Intelligence: A Modern Approach*, 4th edition (2020).** Topics are listed by
-   chapter from memory of the table of contents (web search was unavailable). Chapter numbers follow the US edition:
-   1 Introduction, 2 Intelligent Agents, 3 Search, 4 Search in Complex Environments, 5 Constraint Satisfaction,
-   6 Adversarial Search and Games, 7 Logical Agents, 8 First-Order Logic, 9 Inference in First-Order Logic,
+1. **Russell and Norvig, *Artificial Intelligence: A Modern Approach*, 4th edition (2020).** Topics were first listed
+   by chapter from memory of the table of contents, because web search was unavailable during the first pass, and
+   were then verified online against the published contents on October 21, 2026 (see "Verified online (October 21,
+   2026)" at the end of this file, which lists the corrections and the topics added). Chapter numbers follow the US
+   edition: 1 Introduction, 2 Intelligent Agents, 3 Search, 4 Search in Complex Environments, 5 Adversarial Search and
+   Games, 6 Constraint Satisfaction Problems [corrected after verification: the first pass had 5 and 6 swapped, which
+   is the Global Edition order], 7 Logical Agents, 8 First-Order Logic, 9 Inference in First-Order Logic,
    10 Knowledge Representation, 11 Automated Planning, 12 Quantifying Uncertainty, 13 Probabilistic Reasoning,
    14 Probabilistic Reasoning over Time, 15 Probabilistic Programming, 16 Making Simple Decisions, 17 Making Complex
    Decisions, 18 Multiagent Decision Making, 19 Learning from Examples, 20 Learning Probabilistic Models, 21 Deep
@@ -18,12 +21,16 @@ mathematical for this reader (the reason is given in the Action column).
    26 Robotics, 27 Philosophy, Ethics, and Safety of AI, 28 The Future of AI. **Uncertainty:** the Global Edition
    numbers the later chapters differently and includes a "Knowledge in Learning" chapter (explanation-based learning,
    relevance-based learning, inductive logic programming, carried over from the 3rd edition) while placing
-   probabilistic programming online; both are listed below. Rows name topics, not exact section titles.
+   probabilistic programming online [corrected after verification: the Global Edition prints Probabilistic
+   Programming as Chapter 18; it is not online-only]; both are listed below. Rows name topics, not exact section titles.
 2. **ACM/IEEE-CS/AAAI Computer Science Curricula 2023 (CS2023), Artificial Intelligence knowledge area.** Listed by
    knowledge unit: AI-Introduction, AI-Search, AI-KRR, AI-ML and AI-SEP (CS Core), then AI-LRR, AI-Probability,
-   AI-Planning, AI-Agents, AI-NLP, AI-Robo and AI-Vision (KA Core). **Uncertainty:** the unit names are as I recall
-   them; the topic rows inside each unit summarize what the unit is known to cover rather than quoting its bullet
-   list word for word.
+   AI-Planning, AI-Agents, AI-NLP, AI-Robo and AI-Vision (KA Core) [corrected after verification: these seven units
+   are Non-core, with no CS Core or KA Core hours, and AI-Robo is named AI-Robotics]. **Uncertainty (first pass):** the
+   unit names are as I recall them; the topic rows inside each unit summarize what the unit is known to cover rather
+   than quoting its bullet list word for word. The lists were reconstructed this way and then verified online against
+   the final CS2023 report on October 21, 2026; corrected rows are marked in the table and new rows are in the
+   verification section at the end.
 
 Topics already treated at length in the dedicated chapters (deep learning, LLMs, safety, law) are kept at one row
 each, since earlier audits checked them in detail.

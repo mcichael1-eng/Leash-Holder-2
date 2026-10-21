@@ -184,6 +184,7 @@ The rules are short and worth memorizing:
 3. **Set a spending limit before you write any code.** Buy a small amount of prepaid credit (say $5) and set a monthly limit. A bug in a loop can send thousands of requests in minutes.
 4. **Use separate keys for separate projects,** so you can switch one off without breaking everything.
 5. **Rotate keys:** if you suspect a key has leaked, delete it in the provider's console and create a new one. Deleting it is instant and free.
+6. **Keep the key on a server, never inside an app's frontend** (the part that runs on the user's device). Anything that is sent to a visitor's browser or phone can be read by that visitor, so a web page that calls the model directly with your key hands the key to everyone who opens it. The standard pattern is for the page to send the user's message to your own backend (the server side of an app, Chapter 29), which adds the key and calls the API. AI app builders and coding agents sometimes get this wrong, so check it before you publish anything.
 
 > **Watch out:** "API pricing is basically free" is a dangerous belief. A single call usually costs a fraction of a cent, but costs add up fast with long documents, big models, agents that make dozens of calls per task, and loops that run longer than you meant. Set budgets and alerts first.
 
@@ -419,13 +420,13 @@ Here are standard per-million-token prices for current models, as published on t
 | Anthropic | Claude Sonnet 5.5 | 2.00 | 10.00 | |
 | Anthropic | Claude Opus 5.5 | 4.00 | 20.00 | Recommended default "for most workloads" |
 | Anthropic | Claude Fable 5.1 | 10.00 | 50.00 | For demanding reasoning and long agentic work |
-| OpenAI | gpt-6-luna | 0.10 | 0.50 | Cached input $0.01 |
-| OpenAI | gpt-6.1-sol | 2.00 | 10.00 | Cached input $0.10 |
-| OpenAI | gpt-6-astra | 10.00 | 50.00 | Cached input $1.00 |
+| OpenAI | gpt-6-luna | 0.10 | 0.50 | Cached input $0.01; $0.20 / $0.75 for prompts over 272k tokens |
+| OpenAI | gpt-6.1-sol | 2.00 | 10.00 | Cached input $0.10; $4 / $15 for prompts over 272k tokens |
+| OpenAI | gpt-6-astra | 10.00 | 50.00 | Cached input $1.00; $20 / $75 for prompts over 272k tokens |
 | Google | Gemini 3.8 Flash | 0.75 | 3.75 | Free tier available; price rises January 1, 2027 |
 | Google | Gemini 4 Argon | 2.00 | 10.00 | Rises to $4 / $20 from December 1, 2026 |
 
-Two patterns jump out. First, the three labs' tiers line up closely: a small tier around $0.10 / $0.50, a middle tier around $2 / $10, and a top tier around $10 / $50. Second, output costs five times input on most of these models. Prices for a given level of capability have generally fallen fast (Chapter 23 explains why), but not always: Google's announced increases for Gemini 4 Argon and Gemini 3.8 Flash are a reminder to re-check prices before you commit to a budget.
+Two patterns jump out. First, the three labs' tiers line up closely: a small tier around $0.10 / $0.50, a middle tier around $2 / $10, and a top tier around $10 / $50. Second, output costs five times input on most of these models. Prices for a given level of capability have generally fallen fast (Chapter 23 explains why), but not always: Google's announced increases for Gemini 4 Argon and Gemini 3.8 Flash are a reminder to re-check prices before you commit to a budget. Are today's prices propped up by investors' money, and could they jump? Chapter 61 follows the money: estimates suggest the labs take in more from selling tokens than it costs to serve them (a gross margin, the share of revenue left after the direct cost of serving, of about a third in one estimate for OpenAI), but the business as a whole, including training ever-larger models, still burns investors' cash at some labs.
 
 ### A worked cost example: 1,000 customer emails
 
@@ -561,9 +562,9 @@ Many applications send the same long beginning over and over: a 30-page manual, 
 
 > **Definition — Cache hit and cache miss:** A cache hit is a request that reuses a stored prefix and pays the low "cache read" price. A cache miss is a request whose prefix was not stored (or had expired, or changed by even one character) and pays full price, plus a small surcharge to write the cache.
 
-On Anthropic's API as of late 2026, writing a prefix to the cache for the default five minutes costs 1.25 times the normal input price (2 times for a one-hour cache), and reading it back costs a small fraction: 0.1 times the base input price on most models, including Sonnet 5.5 ($0.20 per MTok), 0.05 times on Opus 5.5 (also $0.20 per MTok) and 0.025 times on Fable 5.1 ($0.25 per MTok). Treat these read prices as of October 2026 and check the current price page before you budget. Each cache hit refreshes the five-minute timer. OpenAI's price list shows a similar idea as a separate "cached input" price, such as $0.10 instead of $2.00 per MTok for gpt-6.1-sol.
+On Anthropic's API as of late 2026, writing a prefix to the cache for the default five minutes costs 1.25 times the normal input price (2 times for a one-hour cache), and reading it back costs a small fraction: 0.1 times the base input price on most models, including Haiku 5.5 ($0.01 per MTok), 0.05 times on Sonnet 5.5 ($0.10 per MTok) and Opus 5.5 ($0.20 per MTok), and 0.025 times on Fable 5.1 ($0.25 per MTok). Treat these read prices as of October 2026 and check the current price page before you budget. Each cache hit refreshes the five-minute timer. OpenAI's price list shows a similar idea as a separate "cached input" price, such as $0.10 instead of $2.00 per MTok for gpt-6.1-sol.
 
-A worked example. You have a 50,000-token product manual and want to ask 10 questions about it, using Claude Sonnet 5.5 ($2.00 per MTok input; cache writes $2.50; cache reads 0.1 × $2.00 = $0.20, as of October 2026).
+A worked example. You have a 50,000-token product manual and want to ask 10 questions about it, using Claude Sonnet 5.5 ($2.00 per MTok input; cache writes $2.50; cache reads 0.05 × $2.00 = $0.10, as of October 2026).
 
 ```text
 Without caching:
@@ -571,11 +572,11 @@ Without caching:
 
 With caching:
   Call 1 writes the cache: 50,000 × $2.50/MTok            = $0.125
-  Calls 2-10 read it:  9 × 50,000 × $0.20/MTok            = $0.090
-  Total                                                   = $0.215
+  Calls 2-10 read it:  9 × 50,000 × $0.10/MTok            = $0.045
+  Total                                                   = $0.170
 ```
 
-That is about 79% cheaper for the manual's tokens (the short questions and the answers cost the same either way). The cached calls also start answering faster, because the model skips re-reading the manual.
+That is about 83% cheaper for the manual's tokens (the short questions and the answers cost the same either way). The cached calls also start answering faster, because the model skips re-reading the manual.
 
 ```mermaid
 flowchart LR
@@ -629,9 +630,9 @@ Run the same cell twice within five minutes. The first time, the manual's tokens
 | Tier | What you get | Price versus standard (as of late 2026) |
 |---|---|---|
 | Batch | Results within 24 hours | About 50% off at Anthropic, OpenAI and Google |
-| Flex | Slower, may be queued | Half price at OpenAI; matches batch for Gemini Flash models |
+| Flex | Slower, may be queued | Half price at OpenAI; matches batch for Gemini 3.8 Flash and Gemini 4 Argon |
 | Standard | Normal speed | 1x |
-| Priority or Fast | Faster output or guaranteed capacity | Anthropic Opus 5.5 fast mode 2x; Gemini Priority about 1.8x |
+| Priority or Fast | Faster output or guaranteed capacity | Anthropic Opus 5.5 fast mode 2x; OpenAI Fast about 2x, plus an Ultrafast tier at about 6x for gpt-6-astra and gpt-6.1-sol; Gemini Priority about 1.8x |
 | Regional processing | Data stays in a chosen region | OpenAI adds 10% for models released on or after March 5, 2026 |
 
 ```mermaid

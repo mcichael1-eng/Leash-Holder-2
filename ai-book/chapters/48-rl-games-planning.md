@@ -93,6 +93,16 @@ Utility is not the same as money. Most people prefer a sure $1,000 to a coin fli
 
 > **Definition — Risk aversion:** Preferring a certain outcome to a gamble with the same expected value, because each extra unit of money (or of anything else) adds less utility than the one before.
 
+Why should a rational agent maximize expected utility at all? Because of a few common-sense rules for preferences, set out by John von Neumann and Oskar Morgenstern in the 1940s. One is transitivity: if you prefer A to B and B to C, you prefer A to C. Anyone who breaks it can be milked. Suppose you prefer tea to coffee, coffee to juice and juice to tea, and will pay 10 cents to swap for something you prefer. Holding tea, you pay 10 cents to swap it for juice, 10 more for coffee and 10 more for tea: back where you started, 30 cents poorer, and ready to go round again. Von Neumann and Morgenstern proved that anyone whose preferences obey all of their rules behaves as if maximizing expected utility, for some choice of utility numbers.
+
+> **Definition — Money pump:** The argument that an agent with circular preferences (A over B, B over C, C over A) can be led through an endless loop of trades, paying a little each time, which is why rational preferences must be transitive.
+
+Two habits keep such calculations honest. Sensitivity analysis asks how far the inputs could move before the decision flips. The umbrella decision flips at a 20% chance of rain, so with a 30% forecast it is a fairly safe call, while with 21% a slightly wrong forecast would make it the wrong one. And beware the optimizer's curse. When you pick the best of many options by their estimated value, you tend to pick one whose estimate was too high by luck, so the winner usually disappoints. Score 20 vendors, or 20 AI models on a small benchmark, and the top scorer's true quality is probably lower than its score. The cure is to treat very high estimates with suspicion and re-test the winner on fresh data, the same lesson as the test sets of Chapter 9.
+
+> **Definition — Sensitivity analysis:** Checking how much a decision's inputs, such as probabilities or utilities, could change before the best choice changes, to see how much the decision depends on uncertain numbers.
+
+> **Definition — Optimizer's curse:** The tendency of the option that looks best on noisy estimates to disappoint in reality, because choosing the maximum also selects for estimates that happened to be too optimistic.
+
 > **Key idea:** A rational decision weighs how good each outcome would be by how likely it is. The rest of this chapter applies that one idea to long chains of decisions, where the reward of reinforcement learning plays the part of utility.
 
 ## Search: thinking before you act
@@ -111,6 +121,10 @@ Picture a maze printed on a placemat. You are at the entrance with a pencil. Eve
 
 Your map app does this every time you ask for directions. Each intersection is a state, each road segment is an action, and the goal is your destination. The app explores possible routes in its own memory before you move a meter.
 
+How a state is written down matters. The simplest way treats each state as a sealed box with a name, "junction 17", which tells the program nothing about what is inside. A factored representation instead describes a state by a list of variables: a delivery robot's state might be position = kitchen, battery = 40%, holding cup = yes. Now the program can see that two states differ only in the battery level, can state a goal as "holding cup = no and position = table" without listing every matching state, and can reason about which variables an action changes. The constraint and planning sections below rely on exactly this. Notice too that the program never needs the whole state space drawn in advance; for chess that would be impossible. It starts from the current state and generates each state's neighbors only when it reaches them.
+
+> **Definition — Factored representation:** Describing a state as a set of variables with values (position = kitchen, battery = 40%) instead of as one indivisible label, so a program can see what two states have in common and which parts an action changes.
+
 ### Blind search: breadth-first and depth-first
 
 The simplest search strategies have no sense of direction.
@@ -124,6 +138,14 @@ Two refinements fix their worst habits. Breadth-first search counts steps, but o
 > **Definition — Uniform-cost search (Dijkstra's algorithm):** A search method that always explores next the place with the lowest total cost from the start, so it finds the cheapest path when steps have different costs, such as roads of different lengths.
 
 > **Definition — Iterative deepening:** Running depth-first search again and again with a growing depth limit (1, 2, 3...), which finds the shortest path like breadth-first search while using only as much memory as depth-first search.
+
+Textbooks compare search methods on four questions. Is it complete: does it always find a solution when one exists? Is it optimal: is the solution it finds the cheapest? How much time does it take, and how much memory? Breadth-first search is complete and, with equal step costs, optimal, but hungry for memory; depth-first search is frugal with memory but neither complete on endless paths nor optimal. A second practical habit is remembering where you have been. In a city grid you can reach the same corner by many routes, and a search that forgets this explores the corner, and everything beyond it, once per route. Keeping a list of already-reached states and skipping repeats (graph search, as opposed to tree search) can shrink the work enormously, at the price of the memory for that list.
+
+> **Definition — Complete and optimal (search):** A search method is complete if it is guaranteed to find a solution whenever one exists, and optimal if the solution it finds is guaranteed to be the cheapest one.
+
+One more blind trick works when you know the goal exactly. Bidirectional search runs two searches at once, one forward from the start and one backward from the goal, and stops when they meet. Each only has to cover about half the distance. With 10 choices per step and a solution 6 steps away, one search might examine about 10^6 = 1,000,000 states, while two half-searches examine about 2 × 10^3 = 2,000.
+
+> **Definition — Bidirectional search:** Searching forward from the start and backward from the goal at the same time until the two searches meet, which can cut the work dramatically because each search covers only about half the distance.
 
 Blind search is fine for a placemat maze. It collapses on big problems because state spaces explode. A Rubik's cube has about 43 quintillion (4.3 × 10^19) arrangements. Checking a billion per second would take more than a thousand years to visit them all. Real problems need a sense of direction.
 
@@ -180,6 +202,14 @@ Drop the "distance so far" and follow the guess alone, and you get greedy best-f
 
 > **Definition — Greedy best-first search:** A search method that always explores next the place its heuristic says is closest to the goal, ignoring the cost already paid. It is often fast but can be misled and may return a longer path than necessary.
 
+Between the two sits a popular compromise. Weighted A* multiplies the guess by a factor greater than 1, scoring squares by g + 2 × h, for example. The search leans harder toward the goal and usually examines far fewer squares, and the path it returns is guaranteed to cost at most that factor times the best (here, at most twice as long), and is often much closer. Game characters and robots often accept such a "good enough, fast" answer, a style textbooks call satisficing.
+
+A* has a second weakness: it keeps every square it has seen in memory, which on huge problems runs out long before time does. Memory-bounded versions fix this. The best known, IDA* (iterative deepening A*), borrows the trick from blind search: run a depth-first search that abandons any path whose f = g + h exceeds a limit, then raise the limit to the smallest f that went over and repeat. It needs almost no memory and still finds the shortest path, which suits puzzles with enormous state spaces, like the Rubik's cube above.
+
+> **Definition — Weighted A*:** A variant of A* that multiplies the heuristic estimate by a weight above 1, trading a slightly longer path (at most the weight times the best) for a much faster search.
+
+> **Definition — IDA* (iterative deepening A*):** A memory-saving version of A* that runs repeated depth-first searches, each cut off where g + h exceeds a limit that rises from round to round. It finds shortest paths while storing only the current path.
+
 ### Local search: improving one solution at a time
 
 Sometimes the path does not matter, only the destination. A school timetable, the layout of a warehouse, eight queens placed on a chessboard so that none attacks another: you want a good final arrangement, not the route to it. For such problems AI often uses local search: start with a complete solution, however bad, and keep making small changes that improve it.
@@ -195,6 +225,10 @@ Hill climbing is the step-by-step cousin of gradient descent (Chapter 6), walkin
 There are two classic escapes. Random restarts run hill climbing many times from random starting points and keep the best result. Simulated annealing, named after metalworking (hot metal cooled slowly settles into a strong structure), sometimes accepts a worse move on purpose: often at first, while the "temperature" is high, and more and more rarely as it cools. Early on it can walk down from the 7 through the dip and find the 12; by the end it behaves like plain hill climbing.
 
 > **Definition — Simulated annealing:** A local search method that sometimes accepts worse moves, with a probability that shrinks over time as a "temperature" falls, so it can escape local maxima early and settle on a good solution late.
+
+Peaks are not the only trap in this landscape. On a plateau, a flat stretch where every neighbor scores the same, hill climbing has no direction to go; on a ridge, the way up runs diagonally between the allowed small moves, so every single step looks downhill. A third escape, tabu search, keeps a short list of recently visited solutions that it is forbidden to return to. It takes the best allowed move even when that move is worse, and the list stops it from sliding straight back up the hill it just left, so it keeps exploring.
+
+> **Definition — Tabu search:** A local search method that always moves to the best neighboring solution not on a short "tabu" list of recently visited ones, even if that move is worse, so it walks off local maxima and plateaus instead of circling back.
 
 Simulated annealing has been used to place the components of computer chips since the 1980s. Population-based relatives keep many candidates at once: genetic algorithms breed them (Chapter 54), and beam search keeps only the best few partial solutions at every step. Beam search is how many translation systems choose a high-probability sentence: keep the best few beginnings, extend each by one word, keep the best few again, and repeat. (Chatbots usually sample instead, as Chapter 18 explains.)
 
@@ -225,9 +259,17 @@ Had a choice emptied some variable's domain, the solver would undo its most rece
 
 > **Definition — Constraint propagation:** Using the constraints to delete values that can no longer be part of any solution, such as removing 9:00 from meeting B once D is fixed at 9:00. It shrinks the search before any guessing.
 
+The check used here, going through each constraint between two variables and deleting any value that has no partner value left on the other side, is called arc consistency, and it is the workhorse of constraint solvers. Stronger checks look at three or more variables at once; they delete more values but cost more time per check.
+
+> **Definition — Arc consistency:** A propagation check that looks at each constraint between two variables and removes from one variable every value for which the other variable has no compatible value left.
+
 > **Definition — Backtracking search:** Assigning values one variable at a time, checking the constraints after each choice, and undoing the most recent choice whenever a dead end is reached.
 
 A sudoku is the same kind of problem: 81 variables, domains 1 to 9, and "no repeats in any row, column or box" as the constraints. Propagation alone solves most newspaper puzzles; hard ones need some backtracking. For very large problems, solvers also use local search: start from a complete but flawed schedule and repeatedly change whichever variable is involved in the most broken rules (the "min-conflicts" heuristic). Industrial constraint solvers schedule airline crews, sports leagues, factory lines and computing jobs in data centers, and a close relative, the SAT solver, verifies computer chips (Chapter 54).
+
+Why do these solvers need clever tricks at all? Because no one knows a fast method that is guaranteed to solve every such problem. Stephen Cook proved in 1971 that the satisfiability problem behind SAT solvers is NP-complete, and Richard Karp's 1972 list of 21 NP-complete problems added classics such as job sequencing, packing a knapsack and finding a route that visits every point exactly once. Checking a proposed answer is quick, but every known general method needs, in its worst cases, time that grows exponentially with the size of the problem. Whether a fast method exists is the famous unsolved "P versus NP" question. Real solvers succeed because real problems are rarely worst cases: propagation, good ordering heuristics and learning from dead ends make most of them easy in practice.
+
+> **Definition — NP-complete:** A class of problems, including SAT and many scheduling and packing puzzles, for which a proposed answer is easy to check but no known method finds answers quickly in every case; a fast method for any one of them would give fast methods for all.
 
 ### Planning with actions: from Shakey to PDDL
 
@@ -257,6 +299,10 @@ Big tasks are planned in layers. "Make dinner" breaks into "make pasta" and "mak
 > **Definition — Hierarchical planning (HTN):** Planning by breaking high-level tasks into subtasks using known recipes, level by level, until every step is a basic action. HTN stands for hierarchical task network.
 
 Classical planners work in places you might not expect. NASA's Remote Agent planned and carried out spacecraft operations on board the Deep Space 1 probe in 1999. Logistics companies plan deliveries with them, and many video games plan the actions of their computer-controlled characters this way, for example the enemy soldiers of the 2005 game *F.E.A.R.*. Real-world planning also has to handle time, deadlines and shared resources, which turns it into scheduling, a constraint problem, and surprises, which call for watching the plan as it runs and replanning when a step fails. That plan, act, observe, replan loop is exactly what a coding agent does with its to-do list (Chapter 28). The difference is that the agent writes its "recipe cards" in plain language rather than PDDL, which makes it far more flexible but gives none of a classical planner's guarantees that every precondition has been checked.
+
+There are two other ways to cope with surprises, besides fixing things after they go wrong. A contingent (or conditional) plan builds the surprises in from the start, with branches that depend on what the agent will observe: "fill the kettle; if the kettle does not heat, boil water in a pan instead; then pour." A rover on Mars, which cannot wait for instructions from Earth, benefits from exactly this kind of plan. Continuous (or online) planning never finishes planning at all: the agent plans a little ahead, acts, looks, and plans again, the way a driver keeps adjusting a route, which is also how the robot controllers of Chapter 49 work.
+
+> **Definition — Contingent plan (conditional plan):** A plan with built-in branches of the form "if you observe this, do that", prepared in advance for situations the planner cannot predict, instead of a single fixed sequence of steps.
 
 ### Game trees: when the world fights back
 
@@ -350,6 +396,14 @@ Even with pruning, chess is far too big to search to the end. So chess programs 
 This is exactly how IBM's Deep Blue beat world champion Garry Kasparov in May 1997, winning the six-game match 3.5 to 2.5 after losing their first match in 1996. Deep Blue used hundreds of custom chess chips to examine about 200 million positions per second, with alpha-beta pruning and an evaluation function hand-crafted with help from grandmasters. It learned almost nothing. It was a triumph of search and engineering.
 
 Modern engines kept the search but changed the evaluation: since 2020 the leading open engine, Stockfish, has used a small neural network to judge positions.
+
+Three more details explain how real engines get so strong. First, move ordering: alpha-beta prunes most when it examines the best replies first, so engines try captures, and moves that proved strong elsewhere in the search, before the rest. With perfect ordering, alpha-beta can search about twice as deep as plain minimax in the same time. Second, a fixed depth cutoff creates the horizon effect. If the program would lose its queen at ply 9 but searches only 8, it may play pointless delaying moves that push the loss just past the depth it can see. Engines soften this by searching further whenever the position is still unsettled, for example in the middle of an exchange of pieces. Third, some search is replaced by lookup. An opening book stores well-studied first moves, and an endgame tablebase stores perfect play for positions with only a few pieces left. Complete tablebases for every position with seven pieces, counting both kings, were finished in 2018, and engines including Stockfish consult them during play. A game counts as solved when perfect play from the starting position is known, as for checkers in Table 48.4; chess is not solved.
+
+> **Definition — Horizon effect:** The blind spot of a search cut off at a fixed depth: a program may make pointless moves that merely postpone an unavoidable loss until just beyond the depth it can see, as if that made the loss disappear.
+
+> **Definition — Opening book:** A stored list of well-studied opening moves that a game program plays from memory instead of searching.
+
+> **Definition — Endgame tablebase:** A precomputed database giving the perfect move and the outcome for every position with only a few pieces left. In chess, complete tablebases cover every position with up to seven pieces.
 
 > **Watch out:** "Deep Blue was a learning machine." It was mostly brute-force search plus human-written knowledge. The learning revolution in games came later, starting with backgammon in 1992 and exploding with Go in 2016.
 
@@ -811,6 +865,12 @@ Reason from your side. If your partner stays silent, betraying gets you 0 years 
 
 > **Definition — Dominant strategy:** A choice that is best for a player no matter what the other players do.
 
+Economists have a precise name for what goes wrong. An outcome is Pareto optimal if no one can be made better off without making someone else worse off. Both staying silent (1 year each) is Pareto optimal; the equilibrium (5 years each) is not, because both prisoners would prefer the silent outcome. So whether an outcome is stable and whether it is good for the group, its social welfare, are separate questions, and game theory asks both. With many players the same trap is called the tragedy of the commons: each fishing boat gains the whole value of one more catch, while the cost, an emptier sea, is shared by everyone, so every boat overfishes.
+
+> **Definition — Pareto optimal:** Describes an outcome that cannot be changed to make anyone better off without making someone else worse off. A stable outcome, such as the prisoner's dilemma equilibrium, need not be Pareto optimal.
+
+> **Definition — Tragedy of the commons:** The pattern in which many individuals each gain from using a shared resource a little more while the cost is spread over everyone, so together they exhaust it, as with overfishing.
+
 Three more ideas complete the toolkit.
 
 - **Repetition changes everything.** When the same players meet again and again, cooperation can pay. In Robert Axelrod's computer tournaments around 1980, the winning strategy for the repeated prisoner's dilemma was one of the simplest entered: tit-for-tat, which cooperates first and then copies whatever the other player did last time.
@@ -870,7 +930,7 @@ In 2026 this shows up in several forms:
 - **Searching for algorithms.** AlphaTensor (2022) treated finding faster matrix-multiplication methods as a game, AlphaDev (2023) found faster sorting routines that went into a widely used C++ library, and AlphaEvolve (May 2025) paired a language model with evolutionary search over code.
 - **Planning agents.** Coding and computer-use agents (Chapter 28) plan multi-step tasks, act, observe the result and replan, the agent-environment loop of Figure 48.5 with a language model as the policy.
 
-> **At the frontier (2026):** Since 2024 the frontier labs have scaled up reinforcement learning on language models, training in large numbers of RL environments that range from code repositories to browsers, terminals and spreadsheets; building those environments became an industry of its own in 2025–26. The open problems are the classic RL problems at a new scale: rewards that cannot be gamed, credit assignment across very long tasks, safe exploration, and transfer from training environments to the messy real world.
+> **At the frontier (2026):** Since 2024 the frontier labs have scaled up reinforcement learning on language models, training in large numbers of RL environments that range from code repositories to browsers, terminals and spreadsheets; building those environments became an industry of its own in 2025–26. The open problems are the classic RL problems at a new scale: rewards that cannot be gamed, credit assignment across very long tasks, safe exploration, and transfer from training environments to the messy real world. Games remain testbeds too: in August 2026 Google DeepMind described a research partnership that uses an offline copy of the space game EVE Online, a persistent world shared by many players, to study memory, long-horizon planning and many interacting agents.
 
 Richard Sutton summed up this history in a 2019 essay, "The Bitter Lesson": methods that make the most of growing computation, above all **search** and **learning**, eventually beat methods built on hand-crafted human knowledge, as AlphaZero's self-taught evaluation beat Deep Blue's hand-tuned one. Whether that holds all the way to robots and open-ended science is one of the big questions ahead (Chapter 66).
 
@@ -887,7 +947,7 @@ The second is reinforcement learning: learn from rewards. An agent acts, the wor
 Games were the perfect lab. TD-Gammon, Deep Blue, DQN, AlphaGo, AlphaZero, MuZero, OpenAI Five, AlphaStar, Pluribus and CICERO each added an ingredient, and self-play let programs surpass every human teacher. Then RL left the arcade: cooling data centers, steering fusion plasma, racing drones, teaching robots to walk, and shaping your chatbot. When your chatbot "thinks" before answering, it is using ideas born in game-playing AI: a policy, a reward, and a search for the best path.
 
 ## Key terms
-Sequential decision-making, Planning, Rational agent, Fully and partially observable, Deterministic and stochastic, Episodic and sequential, Simple reflex agent, Model-based agent, Goal-based agent, Utility-based agent, Utility, Maximum expected utility principle, Value of information, Risk aversion, State, Action, State space, Search (AI sense), Breadth-first search (BFS), Depth-first search (DFS), Uniform-cost search (Dijkstra's algorithm), Iterative deepening, Heuristic, A* search, Manhattan distance, Admissible heuristic, Greedy best-first search, Local search, Hill climbing, Local maximum, Simulated annealing, Beam search, Constraint satisfaction problem (CSP), Constraint propagation, Backtracking search, Classical planning, Precondition and effect, PDDL (Planning Domain Definition Language), Hierarchical planning (HTN), Game tree, Branching factor, Zero-sum game, Minimax, Alpha-beta pruning, Evaluation function, Chance node (expectiminimax), Playout (rollout), Monte Carlo tree search (MCTS), UCB (upper confidence bound), Reinforcement learning (RL), Agent, Environment, Reward, Episode, Return, Discount factor (gamma), Policy, Value function, Q-value (action value), Bellman equation, Markov decision process (MDP), Markov property, Value iteration, POMDP (partially observable Markov decision process), Belief state, Exploration versus exploitation, Multi-armed bandit, Epsilon-greedy, Credit assignment problem, Sparse reward, Reward shaping, Temporal-difference (TD) learning, Q-learning, Learning rate (alpha), Deep Q-Network (DQN), Experience replay, Target network, Policy gradient method, Advantage, Actor-critic method, PPO (proximal policy optimization), Model-free RL, Model-based RL, Reward hacking (specification gaming), Imitation learning, Inverse reinforcement learning, Imperfect-information game, Nash equilibrium, Counterfactual regret minimization (CFR), Self-play, Elo rating, Game theory, Prisoner's dilemma, Dominant strategy, Mixed strategy, Mechanism design, Shapley value, RLHF (reinforcement learning from human feedback), RL environment (for language models), Test-time search
+Sequential decision-making, Planning, Rational agent, Fully and partially observable, Deterministic and stochastic, Episodic and sequential, Simple reflex agent, Model-based agent, Goal-based agent, Utility-based agent, Utility, Maximum expected utility principle, Value of information, Risk aversion, Money pump, Sensitivity analysis, Optimizer's curse, State, Action, State space, Search (AI sense), Factored representation, Breadth-first search (BFS), Depth-first search (DFS), Uniform-cost search (Dijkstra's algorithm), Iterative deepening, Complete and optimal (search), Bidirectional search, Heuristic, A* search, Manhattan distance, Admissible heuristic, Greedy best-first search, Weighted A*, IDA* (iterative deepening A*), Local search, Hill climbing, Local maximum, Simulated annealing, Tabu search, Beam search, Constraint satisfaction problem (CSP), Constraint propagation, Arc consistency, Backtracking search, NP-complete, Classical planning, Precondition and effect, PDDL (Planning Domain Definition Language), Hierarchical planning (HTN), Contingent plan (conditional plan), Game tree, Branching factor, Zero-sum game, Minimax, Alpha-beta pruning, Evaluation function, Horizon effect, Opening book, Endgame tablebase, Chance node (expectiminimax), Playout (rollout), Monte Carlo tree search (MCTS), UCB (upper confidence bound), Reinforcement learning (RL), Agent, Environment, Reward, Episode, Return, Discount factor (gamma), Policy, Value function, Q-value (action value), Bellman equation, Markov decision process (MDP), Markov property, Value iteration, POMDP (partially observable Markov decision process), Belief state, Exploration versus exploitation, Multi-armed bandit, Epsilon-greedy, Credit assignment problem, Sparse reward, Reward shaping, Temporal-difference (TD) learning, Q-learning, Learning rate (alpha), Deep Q-Network (DQN), Experience replay, Target network, Policy gradient method, Advantage, Actor-critic method, PPO (proximal policy optimization), Model-free RL, Model-based RL, Reward hacking (specification gaming), Imitation learning, Inverse reinforcement learning, Imperfect-information game, Nash equilibrium, Counterfactual regret minimization (CFR), Self-play, Elo rating, Game theory, Prisoner's dilemma, Dominant strategy, Pareto optimal, Tragedy of the commons, Mixed strategy, Mechanism design, Shapley value, RLHF (reinforcement learning from human feedback), RL environment (for language models), Test-time search
 
 ## Exercises
 

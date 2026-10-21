@@ -79,7 +79,7 @@ flowchart TD
 A company sends 100,000 support replies a month through a model. Each request carries a 2,000-token block of example replies (to set the house style), a 300-token customer email, and gets a 250-token reply. Using late-2026 API prices:
 
 - **Mid-tier model, no caching** (Claude Sonnet 5.5 at $2 per million input tokens, $10 per million output): input is 100,000 × 2,300 = 230 million tokens, costing $460. Output is 100,000 × 250 = 25 million tokens, costing $250. Total: **$710 a month**.
-- **Same model, with prompt caching.** The 2,000-token example block never changes, so it is cached. Cache reads on Sonnet 5.5 cost 0.1× the input price, or $0.20 per million, as of October 2026. Cached input: 200 million × $0.20 = $40. Uncached input: 30 million × $2 = $60. Output is unchanged at $250. Total: **about $350 a month**.
+- **Same model, with prompt caching.** The 2,000-token example block never changes, so it is cached. Cache reads on Sonnet 5.5 cost 0.05× the input price, or $0.10 per million, as of October 2026. Cached input: 200 million × $0.10 = $20. Uncached input: 30 million × $2 = $60. Output is unchanged at $250. Total: **about $330 a month**.
 - **Small model, no caching** (Claude Haiku 5.5 at $0.10 input, $0.50 output): 230 million × $0.10 = $23, plus 25 million × $0.50 = $12.50. Total: **about $36 a month**, if the small model's quality is good enough with the examples.
 
 The cheapest step on this ladder cut the bill by 95% with no training at all. A fine-tuned small model might save a little more by dropping the 2,000-token examples, but it would add training work, evaluation and maintenance every time the base model changes. Fine-tuning for cost makes sense mainly at very large scale or when you need a small model to run on your own hardware.
@@ -256,6 +256,16 @@ LoRA is the most popular member of a larger family called parameter-efficient fi
 
 > **Definition — Prompt tuning (soft prompt):** A parameter-efficient fine-tuning method that keeps the model frozen and learns a small set of extra input vectors, "virtual tokens" that correspond to no real words, which are placed in front of every input to steer the model toward a task.
 
+### Does LoRA give up quality?
+
+A fair worry: if LoRA trains well under 1% of the numbers, is the result worse than full fine-tuning? A careful 2025 study by John Schulman and colleagues at Thinking Machines Lab, titled "LoRA Without Regret", found that on small and medium-sized instruction and reasoning datasets LoRA learned as fast as full fine-tuning and ended just as good, provided three details were right:
+
+1. Put adapters on every layer, especially the big feed-forward matrices. Adapters on the attention matrices alone did worse, even when given as many trainable numbers.
+2. Use a learning rate about 10 times higher than you would for full fine-tuning of the same model.
+3. Do not overthink the rank for reinforcement learning. Even rank 1 matched full fine-tuning there, because each attempt teaches the model very little new information, roughly one bit: did it succeed or not?
+
+LoRA did fall behind when the dataset was too large for the adapter to hold, as in settings that resemble pretraining, and it coped less well with very large batches. For the dataset sizes most people have, LoRA on all layers is not a compromise.
+
 ## QLoRA: fine-tuning on one GPU
 
 LoRA shrank the trainable part, but the frozen base model still has to sit in GPU memory at 16 bits: 16 GB for an 8B model. In 2023, Tim Dettmers and colleagues combined LoRA with aggressive compression of the frozen base.
@@ -290,7 +300,7 @@ Free Colab T4 GPU: 16 GB      Typical high-end gaming GPU: 24 GB
 
 Where do those numbers come from? QLoRA's frozen base is about 8 billion × 0.5 bytes (4 bits) plus scaling numbers, so roughly 4.5 to 5 GB. The 42 million adapter parameters need about 16 bytes each while training, about 0.7 GB. The rest is working memory for the examples in each batch, which gradient checkpointing keeps to a few gigabytes. The walkthrough in Exercise 8 fine-tunes a smaller 1.7-billion-parameter model, which fits comfortably and trains in minutes.
 
-> **At the frontier (2026):** The same ideas run at the top end. Labs now train with low-precision numbers from the start: Moonshot's open Kimi K3 (July 2026) was trained with 4-bit (MXFP4) quantization-aware training, and Google ships Gemma 4 checkpoints prepared the same way, so their 4-bit versions lose very little quality. LoRA-style adapters are also used inside labs and by fine-tuning services to serve thousands of customer customizations on top of one shared base model.
+> **At the frontier (2026):** The same ideas run at the top end. Labs now build low precision into training itself: Moonshot's open Kimi K3 (July 2026) used 4-bit (MXFP4) quantization-aware training from its fine-tuning stage onward, and Google ships Gemma 4 checkpoints prepared the same way, so their 4-bit versions lose very little quality. LoRA-style adapters are also used inside labs and by fine-tuning services to serve thousands of customer customizations on top of one shared base model.
 
 ## Data: the part that decides the result
 
@@ -336,6 +346,8 @@ flowchart LR
 
 Unsloth is popular with beginners because its free Colab notebooks fine-tune common open models quickly with little memory. The walkthrough in Exercise 8 uses plain Hugging Face libraries so you can see every step.
 
+A middle route between hosted and do-it-yourself appeared in October 2025, when Thinking Machines Lab announced Tinker, a fine-tuning service aimed at researchers. You control the data and each training step from your own Python code through a few low-level calls, while Tinker runs LoRA training of open-weight models, including large mixture-of-experts ones, on its own GPUs and handles scheduling and failures. It charges for the tokens processed rather than for idle GPU time.
+
 ## The risks of fine-tuning
 
 - **Overfitting and narrowness.** The model nails your examples and stumbles on anything slightly different.
@@ -362,13 +374,13 @@ Everything so far works best with models whose files you can download. Here is w
 
 | Family (maker) | Recent open releases | Sizes | License notes |
 |---|---|---|---|
-| DeepSeek V4 (DeepSeek, China) | V4-Pro, general release August 2026; V4-Flash; V4.1-Flash | 1.6T total and 49B active; 284B total and 13B active | MIT license; 1M-token context |
+| DeepSeek V4 (DeepSeek, China) | V4-Pro, general release August 2026; V4-Flash; V4.1-Flash (multimodal, September 2026, updated October 2026) | 1.6T total and 49B active; 284B total and 13B active | MIT license; 1M-token context |
 | Qwen3.8 (Alibaba, China) | August 2026 | 27B dense; 2.4T total and 95B active | 27B under Apache 2.0; the 2.4T model needs a commercial license for providers above US$50 million in revenue |
 | Kimi K3 (Moonshot AI, China) | July 2026 | 2.8T total and 104B active | See the model card |
 | GLM-5.3 (Z.ai) and MiMo-V2.6-Pro (Xiaomi) | 2026 | Large models | Among the top open models on independent indexes |
 | gpt-oss (OpenAI) | August 2025 | 120B and 20B | Apache 2.0 |
-| Gemma 4 (Google DeepMind) | April 2026 | E2B, E4B, 12B, 31B dense, 26B-A4B mixture-of-experts | See the model card |
-| Mistral (Mistral AI, France) | Medium 3.5 (128B, April 2026); Large 3 (December 2025) | Large 3: 675B total and 41B active | Large 3 under Apache 2.0 |
+| Gemma 4 (Google DeepMind) | Late March 2026; 12B added June 2026 | E2B, E4B, 12B, 31B dense, 26B-A4B mixture-of-experts | Apache 2.0 |
+| Mistral (Mistral AI, France) | Large 4 (preview October 2026, weights promised by the end of that month); Medium 3.5 (128B, April 2026); Large 3 (December 2025) | Large 4: 1T total and 52B active; Large 3: 675B total and 41B active | Large 3 under Apache 2.0; Medium 3.5 under a modified MIT license |
 | Meta | Llama 4 (April 2025) was the last Llama; Meta's newer Muse family is mostly closed, with one open 30B model (Muse Glimmer, August 2026) according to public reports | Various | Llama community license for Llama models |
 | NVIDIA | Nemotron 3.5 | Various | See the model card |
 

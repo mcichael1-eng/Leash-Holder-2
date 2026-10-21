@@ -166,6 +166,7 @@ Code on your laptop helps nobody else. Getting it onto servers is called deployi
 
 > **Definition — Production:** The live version of an app that real users depend on. Careful teams first try changes on "staging", a private copy of production.
 
+Where does a beginner's AI project actually go to be shared? For a quick demo, such as a chat box around a model, a Hugging Face Space (Chapter 30) is built for exactly this. As of late 2026, Hugging Face's documentation says plain static pages are free, while Spaces that run code, such as apps built with Gradio (a free Python library for quick web interfaces), need a paid plan, except that free personal accounts can host up to two Gradio Spaces on shared GPUs. Spaces also have a settings page for storing secrets such as API keys. AI app builders, later in this chapter, deploy and host the app for you with one click. A real product usually runs on a cloud hosting service, with the frontend served to browsers and the backend on a server. Whichever you choose, the model's API key lives only on the server side, never in code that reaches the user's browser (Chapter 26 explains why).
 
 Modern teams automate the checks between "I changed something" and "users see it".
 
@@ -289,6 +290,8 @@ And every project can carry standing instructions for agents, as Chapter 28 desc
 
 > **Definition — Instruction file (AGENTS.md or CLAUDE.md):** A plain-text file at the top of a project that coding agents read automatically before working: how to run the tests, coding conventions, what never to touch. It is a README written for agents.
 
+> **Watch out:** Unless the model runs on your own machine, everything a coding agent reads goes to the model provider: each file it opens and the output of each command it runs become part of the next request. Before pointing an agent at work code, check what your plan's data terms say about retention and training (business and API terms are usually stricter than consumer plans, Chapter 25), keep passwords and keys out of files the agent can read, and use the permission settings to block folders it has no reason to open. A local model (Chapter 30) is the option when code must never leave the building.
+
 ### The loop, step by step
 
 ```mermaid
@@ -349,9 +352,9 @@ Agents are hungry for tokens because the loop re-sends the growing conversation 
 - Say the session takes 30 steps, and the context at each step averages 60,000 tokens (instructions, files read so far, test output). Input: 30 × 60,000 = 1.8 million tokens.
 - The agent writes about 15,000 tokens in total (plans, code, messages).
 - **Without caching:** 1.8M × $2 = $3.60 input, plus 0.015M × $10 = $0.15 output. Total about **$3.75**.
-- **With prompt caching** (Chapter 26): most of each step's context repeats the previous step. Suppose 90% of input tokens are cache reads, which on Sonnet 5.5 cost 0.1× the normal price ($0.20 per million as of October 2026). That is 1.62M × $0.20 = $0.32. The other 10% (0.18M) is new and is written to the cache at 1.25× ($2.50 per million) = $0.45. Add $0.15 output. Total about **$0.92**.
+- **With prompt caching** (Chapter 26): most of each step's context repeats the previous step. Suppose 90% of input tokens are cache reads, which on Sonnet 5.5 cost 0.05× the normal price ($0.10 per million as of October 2026). That is 1.62M × $0.10 = $0.16. The other 10% (0.18M) is new and is written to the cache at 1.25× ($2.50 per million) = $0.45. Add $0.15 output. Total about **$0.76**.
 
-Caching cuts the bill by about three quarters, which is why coding agents rely on it heavily. It also shows why research on applied AI notes that agentic tasks can use 10 to 100 times the tokens of a normal chat. If you use a coding agent through a monthly subscription (Claude's Pro plan was $20 per month and Max $100 or $200 per month in late 2026), the provider absorbs this cost within usage limits; through the API, you pay per token.
+Caching cuts the bill by about four fifths, which is why coding agents rely on it heavily. It also shows why research on applied AI notes that agentic tasks can use 10 to 100 times the tokens of a normal chat. If you use a coding agent through a monthly subscription (Claude's Pro plan was $20 per month and Max $100 or $200 per month in late 2026), the provider absorbs this cost within usage limits; through the API, you pay per token.
 
 > **Watch out:** Agents can "cheat" their way to green tests. Because they are trained and rewarded to make tests pass, they sometimes edit the test itself, hard-code the expected answer, or quietly skip a failing check. This is a form of reward hacking (Chapter 55). When you review a pull request, look first at any changes to test files, and be suspicious of a test that was weakened rather than code that was fixed.
 
@@ -364,10 +367,10 @@ Coding agents became the fastest-moving market in AI during 2025 and 2026. Produ
 | Product | Maker | Where it runs | Notable features (as of late 2026) |
 |---|---|---|---|
 | Claude Code | Anthropic | Terminal, VS Code and JetBrains, desktop app, web, mobile, Slack, GitHub Actions | CLAUDE.md (also reads AGENTS.md), skills, hooks, MCP, sub-agents, background agents, cloud scheduled tasks, an Agent SDK |
-| Codex | OpenAI | ChatGPT apps, Codex CLI, IDE extension, Codex Cloud | Runs on GPT-6.1 Sol; plugins, skills, MCP, a built-in browser, computer use, code review, sub-agents, scheduled tasks |
+| Codex | OpenAI | ChatGPT apps, Codex CLI, IDE extension, Codex Cloud | OpenAI recommends GPT-6.1 Sol for most coding (Astra and Luna also offered); plugins, skills, MCP, a built-in browser, computer use, code review, sub-agents, scheduled tasks |
 | Cursor | Anysphere | Desktop editor and CLI | Cloud agents that run in parallel for hours, Bugbot code review, its own Composer models plus models from several labs |
 | GitHub Copilot | GitHub (Microsoft) | VS Code and other editors, GitHub website, Copilot CLI | Agent mode, a cloud agent you assign issues to (Copilot, Claude or Codex), PR review; plans from Free to Enterprise |
-| Antigravity | Google | Desktop app, CLI, IDE, SDK | Manages multiple local agents, browser-in-the-loop testing, Gemini 4 Argon and 3.8 Flash; free for individual developers |
+| Antigravity | Google | Desktop app, CLI, IDE, SDK | Manages multiple local agents, browser-in-the-loop testing, Gemini 3.8 Flash, and Gemini 4 Argon for Google AI Pro and Ultra subscribers; available at no charge to individual developers |
 | Devin and Windsurf | Cognition | Web, desktop, editor | Devin pitched as an autonomous software engineer; own SWE-series models |
 | Open-source agents | Community | Terminal or editor | Cline, Aider and others let you plug in any model, including local ones (Chapter 30) |
 
@@ -481,6 +484,12 @@ The strongest case for caution:
 - Quality studies (above) show more issues in AI-assisted changes unless review is strong, so speed today can become debt tomorrow.
 
 > **Key idea:** Measure, do not assume. If you or your team adopt coding agents, time real tasks with and without them and track defects afterwards. The METR result is not "AI makes you slower"; it is "your sense of speed is not evidence".
+
+### Will leaning on agents weaken your own skills?
+
+Many developers and learners worry that handing the typing to an agent will erode their own ability. The first careful evidence suggests the worry is fair, and that how you use the assistant matters. In a randomized trial Anthropic published on January 29, 2026, 52 mostly junior software engineers learned a Python library that was new to them, about half with an AI assistant. On a quiz afterwards, the AI group averaged 50% and the group that coded by hand averaged 67%, with the biggest gap on debugging questions; the AI group finished only about two minutes faster, a difference too small to be sure of. Using AI did not doom anyone: participants who asked the assistant conceptual questions and wrote the code themselves remembered more than those who delegated the writing or the debugging.
+
+The practical habits follow. When the goal is learning, ask the agent to explain and then write the code yourself; when the goal is shipping, delegate, but read every change and be able to explain it. Every so often, solve a small problem with no assistant at all, the coding version of the "explain it back from memory" rule in Chapter 65.
 
 ## What can a non-programmer safely build?
 
@@ -612,7 +621,7 @@ The newest way to build is to describe a whole app in a chat box and get back a 
 
 You have already used the smallest version of this idea: artifacts and canvas in chat apps (Chapter 25), where the chatbot builds a small interactive page beside the conversation. App builders take the same idea to full applications. The well-known ones in late 2026:
 
-- **Lovable**, which started life as GPT Engineer in Stockholm, is a chat-driven builder for full web apps, often connected to a hosted backend for the database and logins. It grew extremely fast; it reportedly raised money at a valuation of about $13.3 billion in August 2026.
+- **Lovable**, which started life as GPT Engineer in Stockholm, is a chat-driven builder for full web apps, often connected to a hosted backend for the database and logins. It grew extremely fast; in August 2026 it announced a $400 million funding round at a $13.3 billion valuation.
 - **Bolt** (from StackBlitz) builds and runs apps entirely inside your browser.
 - **Replit Agent**, launched in September 2024, builds inside Replit's online coding environment, where you can also see and edit the code.
 - **v0** (from Vercel) focuses on polished interface components and web apps that deploy to Vercel's hosting.
@@ -763,7 +772,7 @@ Source code, frontend, backend, database, hosting, dependency, framework, versio
 1. A commit is one saved snapshot of changes with a message. A branch is a separate line of development where commits can pile up without affecting main. A pull request is a proposal to merge a branch into main, showing the diff, test results and review comments, and nothing merges until it is approved.
 2. A model cannot tell whether code works just by reading it. Running tests gives it objective pass or fail feedback and exact error messages, which it uses to fix its work. Without tests the agent is guessing.
 3. In agent mode the AI works inside your editor while you watch and approve. Background or cloud agents run on remote machines for long periods while you do other things, then report back, usually by opening a pull request, so you review results rather than steps.
-4. An agent re-sends its growing context at every step, so most input tokens are repeats of the previous step. Cached repeats are billed at a small fraction of the normal price (0.1 times on the model in the example), so the bill fell from about $3.75 to roughly $0.92.
+4. An agent re-sends its growing context at every step, so most input tokens are repeats of the previous step. Cached repeats are billed at a small fraction of the normal price (0.05 times on the model in the example), so the bill fell from about $3.75 to roughly $0.76.
 5. It is good for prototypes, personal tools and quick experiments. To make it agentic engineering, add any three of: a written spec, plan mode with approval, tests written first, small diffs, reviewing every diff, an instruction file, CI, and sandboxes or copies of data.
 6. Experienced developers working on their own mature projects took 19% longer with early-2025 AI tools, while believing they were about 20% faster. The lesson is that your sense of speed is not evidence: measure real outcomes, including quality.
 7. Any two of: handling payments, health or children's data, other regulated data, logins for the general public, needing to stay up reliably, or running at large scale.

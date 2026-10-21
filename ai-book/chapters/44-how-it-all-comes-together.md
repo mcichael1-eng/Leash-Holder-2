@@ -816,4 +816,4 @@ Full stack, System prompt, Thinking tokens, Mixture of experts (MoE), Cell tower
 - **International Energy Agency, *Energy and AI* (2025).** The reference report on how much electricity data centers use today and may use by 2030.
 - **Chris Miller, *Chip War* (2022).** A gripping history of the semiconductor industry and why chip manufacturing became concentrated in a few companies and places.
 - **Austin and colleagues at Google DeepMind, "How to Scale Your Model" (2025, free online book).** A technical but readable guide to how Transformers are split across thousands of accelerators for training and serving.
-- **Barroso, Hölzle and Ranganathan, *The Datacenter as a Computer* (Morgan & Claypool, free online).** The classic book on treating a whole building as one machine, written by Google engineers.
+- **Barroso, Hölzle and Ranganathan, *The Data Center as a Computer* (4th edition, Springer, December 2025; free open-access download).** The classic book on treating a whole building as one machine, written by Google engineers; the new edition adds AI hardware, software-defined infrastructure and sustainability.

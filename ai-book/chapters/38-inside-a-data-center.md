@@ -563,6 +563,8 @@ sequenceDiagram
 
 *Figure 38.10: The life of a GPU failure. Software routes around the broken tray in minutes; a technician swaps it later, and the bad tray goes back to the manufacturer under warranty.*
 
+Some of this physical work is starting to be done by machines. A large campus is a real warehouse as well as a computer: trucks deliver new racks every day, old ones leave, and memory sticks, drives and trays move between the loading dock and the floor. Google describes a rack-moving robot that picks up, carries and sets down fully loaded racks, which it says is about five times faster than moving them by hand, lowers the risk of injury and shakes the equipment less. Automation also scans and tracks every part it handles, which matters most for drives that hold user data and must never go missing.
+
 Before a hall goes live, it is also tested more thoroughly than almost any other building.
 
 > **Definition — Commissioning (Cx):** Systematic testing that every system works as designed before go-live, from Level 1 (factory tests of each piece of equipment) to Level 5 (integrated tests, such as cutting the utility feed while "load banks", big resistor boxes that turn electricity into heat, simulate a full hall of computers).
@@ -589,6 +591,16 @@ flowchart TD
 *Figure 38.11: Layers of physical security, from the road to the rack. Each layer logs who passed and when.*
 
 Other habits complete the picture: addresses are often not publicized, buildings carry no logo, biometric readers (fingerprint or palm scans) back up badges, failed storage drives are commonly destroyed on site, and in shared buildings each customer's racks sit inside a locked wire-mesh cage. AI adds a new reason for all this: a frontier model's weights, the file of numbers that *is* the model, are among the most valuable digital assets in the world (Chapter 56 covers weight security).
+
+Walls and guards cannot protect against everything, so the last layers of security are built into the chips themselves. The first question is whether a server is running the software it should be running: if its lowest-level startup code (the firmware) has been tampered with, everything above it can be fooled.
+
+> **Definition — Root of trust (silicon root of trust):** A small, tamper-resistant security chip on a server board that starts before everything else, checks the digital signature of each piece of startup code before letting it run, and holds the machine's secret keys. Google's version is called Titan.
+
+The second question is who can see data while it is being processed. Encryption normally protects data on disks and on networks, but not while a processor is working on it in memory.
+
+> **Definition — Confidential computing:** Hardware that keeps data encrypted even while it is being processed, in a sealed-off area of the chip called a trusted execution environment, so that not even the cloud operator's own software or a person with physical access to the server can read it. "Attestation" lets the customer check remotely that the protected area is genuine and untampered.
+
+Recent CPUs from AMD, Intel and Arm support it, and NVIDIA says its Hopper, Blackwell and Rubin GPUs can protect model weights and data while inference runs. That lets a lab put its weights, or a hospital its patient records, on hardware it does not own with less need to trust everyone who runs the building.
 
 ## Types of data centers
 
@@ -717,7 +729,7 @@ Data centers are joined by fiber, and light needs about 5 microseconds per kilom
 
 ## Key terms
 
-Data center, Campus, Megawatt (MW) and gigawatt (GW), Substation, Transformer, Backup generator, White space, Gray space, Data hall, Stranded capacity, Raised floor, Slab-on-grade, Rack, Rack unit (U), Row, pod and cluster (data center layout), Hot aisle and cold aisle, Containment, CDU (coolant distribution unit), Cable tray (ladder rack), Busway (busbar trunking), Structured cabling, Optical transceiver, Single-mode and multimode fiber, Meet-me room (MMR), Cross-connect, Carrier hotel, Internet exchange point (IXP), Rack density, PDU (power distribution unit), Rack power shelf, Manifold and quick disconnect, NIC (network interface card), Leaf-spine network (Clos network), Non-blocking network, Scale-up, scale-out and front-end networks, Out-of-band management network, Dark fiber, DCI (data center interconnect), Scale-across (AI WAN), Redundancy, N and N+1, 2N, Concurrently maintainable, Fault tolerant, Uptime Institute Tiers (I to IV), Availability ("the nines"), SLA (service-level agreement), BMS and DCIM, NOC and SOC, Remote hands, Rack and stack, Commissioning (Cx), Mantrap, Enterprise data center, Colocation (colo), Hyperscaler, AI training campus ("AI factory"), Edge data center, Neocloud, Powered land and powered shell, Build-to-suit and turnkey, GPU-as-a-service, Take-or-pay contract, Graceful degradation
+Data center, Campus, Megawatt (MW) and gigawatt (GW), Substation, Transformer, Backup generator, White space, Gray space, Data hall, Stranded capacity, Raised floor, Slab-on-grade, Rack, Rack unit (U), Row, pod and cluster (data center layout), Hot aisle and cold aisle, Containment, CDU (coolant distribution unit), Cable tray (ladder rack), Busway (busbar trunking), Structured cabling, Optical transceiver, Single-mode and multimode fiber, Meet-me room (MMR), Cross-connect, Carrier hotel, Internet exchange point (IXP), Rack density, PDU (power distribution unit), Rack power shelf, Manifold and quick disconnect, NIC (network interface card), Leaf-spine network (Clos network), Non-blocking network, Scale-up, scale-out and front-end networks, Out-of-band management network, Dark fiber, DCI (data center interconnect), Scale-across (AI WAN), Redundancy, N and N+1, 2N, Concurrently maintainable, Fault tolerant, Uptime Institute Tiers (I to IV), Availability ("the nines"), SLA (service-level agreement), BMS and DCIM, NOC and SOC, Remote hands, Rack and stack, Commissioning (Cx), Mantrap, Root of trust (silicon root of trust), Confidential computing, Enterprise data center, Colocation (colo), Hyperscaler, AI training campus ("AI factory"), Edge data center, Neocloud, Powered land and powered shell, Build-to-suit and turnkey, GPU-as-a-service, Take-or-pay contract, Graceful degradation
 
 ## Exercises
 
@@ -777,7 +789,7 @@ Data center, Campus, Megawatt (MW) and gigawatt (GW), Substation, Transformer, B
 
 ## Going deeper
 
-- **Barroso, Hölzle and Ranganathan, *The Datacenter as a Computer* (Morgan & Claypool, free online).** The classic Google engineers' book on designing a whole building as one machine, from power and cooling to reliability.
+- **Barroso, Hölzle and Ranganathan, *The Data Center as a Computer* (4th edition, Springer, December 2025; free open-access download).** The classic Google engineers' book on designing a whole building as one machine, from power and cooling to reliability and security.
 - **Microsoft, "Inside the world's most powerful AI datacenter" (September 2025).** A readable first-party tour of the Fairwater design, with construction numbers, cooling and rack layout.
 - **Epoch AI data center hub (epoch.ai/data/data-centers).** Live estimates of the largest AI sites by power and compute, with satellite-based methodology you can learn from.
 - **Uptime Institute (uptimeinstitute.com).** The source of the Tier standard, plus annual surveys on outages and industry practice.

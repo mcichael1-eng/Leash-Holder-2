@@ -285,7 +285,7 @@ Here are ridge points for real chips, using the vendor figures from Chapter 32:
 | NVIDIA B300 | 15 PFLOPS FP4 | 8 TB/s | about 1,875 |
 | NVIDIA Rubin | 4 PF BF16 / 35 PF NVFP4 | 19.2 TB/s | about 208 / 1,823 |
 | AMD MI355X | 10.1 PFLOPS MXFP4 | 8 TB/s | about 1,263 |
-| AMD MI455X | about 40 PFLOPS FP4 | 19.6 TB/s | about 2,041 |
+| AMD MI455X | about 40 PFLOPS FP4 | 19.6–23.3 TB/s (AMD has cited both) | about 1,717–2,041 |
 | Google Ironwood (TPU v7) | 4,614 TFLOPS FP8 | 7.37 TB/s | about 626 |
 | Google TPU 8t (training) | 12.6 PFLOPS FP4 | 6.5 TB/s | about 1,938 |
 | Google TPU 8i (inference) | 10.1 PFLOPS FP4 | 8.6 TB/s | about 1,174 |
@@ -375,7 +375,7 @@ A single die cannot be larger than about 858 mm², the most a lithography machin
 |---|---|---|---|---|
 | HBM2e | 1,024-bit | (lower) | | NVIDIA A100 (40/80 GB, about 2 TB/s total) |
 | HBM3 | 1,024-bit | 819 GB/s at 6.4 Gb/s per wire | | NVIDIA H100 (80 GB, 3.35 TB/s total) |
-| HBM3E | 1,024-bit | about 1–1.2 TB/s | 8, 12 or 16 high; 24–48 GB per stack | H200, B200, B300, AMD MI355X, Google Ironwood, AWS Trainium3 |
+| HBM3E | 1,024-bit | about 1–1.2 TB/s | 8, 12 or 16 high; 24–48 GB per stack | H200, B200, B300, AMD MI355X, Google Ironwood, AWS Trainium3, Microsoft Maia 200 |
 | HBM4 (JEDEC, April 2025) | 2,048-bit | up to 2 TB/s in the standard; about 2.4–2.75 TB/s as shipped in Rubin | 4 to 16 high; up to 64 GB per stack | NVIDIA Rubin (288 GB), AMD MI455X (432 GB) |
 | HBM4E | | | | Samples reported in 2026; planned for Rubin Ultra and AMD MI500 in 2027 |
 
@@ -412,7 +412,7 @@ HBM is hard to make in quantity for several reasons:
 
 The result is that HBM is far more expensive per gigabyte than ordinary DRAM, ranks among the costliest parts of an AI accelerator, and the amount a chipmaker can secure caps how many accelerators it can ship. Memory has become geopolitical too: the United States restricted HBM exports to China in December 2024, and Huawei's Ascend 950 chips use HBM that Huawei developed itself.
 
-> **At the frontier (2026):** HBM4 is the memory of 2026. NVIDIA's Rubin carries 288 GB of HBM4 per GPU at roughly 19–22 TB/s (NVIDIA's own figure moved from 22 TB/s at its CES 2026 launch to 19.2 TB/s on its current product page), and AMD's MI455X carries 432 GB at 19.6 TB/s or more. The bigger shift is in the base die: with HBM4 it can be custom logic built at TSMC, so the bottom of the memory stack becomes part of the processor's design. NVIDIA says its 2028 Feynman generation will use "custom HBM."
+> **At the frontier (2026):** HBM4 is the memory of 2026. NVIDIA's Rubin carries 288 GB of HBM4 per GPU at roughly 19–22 TB/s (NVIDIA's own figure moved from 22 TB/s at its CES 2026 launch to 19.2 TB/s on its current product page), and AMD's MI455X carries 432 GB at 19.6 TB/s or more (AMD's current product pages say up to 23.3 TB/s). The bigger shift is in the base die: with HBM4 it can be custom logic built at TSMC, so the bottom of the memory stack becomes part of the processor's design. NVIDIA says its 2028 Feynman generation will use "custom HBM."
 
 ## Why decode is memory-bound: predicting your chatbot's speed
 
@@ -604,7 +604,7 @@ Everything in AI hardware and systems software can be read as a response to this
 | Lever | What it does | Examples (late 2026) |
 |---|---|---|
 | Faster, wider HBM | More bytes per second from main memory | HBM4 in Rubin and MI455X; HBM4E planned for 2027 |
-| More on-chip SRAM | Keeps more data in the fastest memory | TPU 8i (384 MB), Maia 200 (272 MB, reported), Groq LPU, Cerebras |
+| More on-chip SRAM | Keeps more data in the fastest memory | TPU 8i (384 MB), Maia 200 (272 MB), Groq LPU, Cerebras |
 | Fewer bits per number | Fewer bytes to move for the same work | FP8 and FP4 weights; FP8 KV caches |
 | Batching | Shares each weight read across many users | Continuous batching in vLLM and SGLang (Chapter 23) |
 | Tiling and kernel fusion | Reuses data on-chip, skips round trips to HBM | FlashAttention; fused kernels from compilers |

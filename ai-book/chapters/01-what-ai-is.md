@@ -88,7 +88,7 @@ Most of the field, and most of this book, works in the bottom-right box. An AI s
 
 > **Definition — Rational agent:** A system that perceives its environment and chooses whatever action is expected to achieve the best outcome by some measure of success, given what it knows. It is the textbook's working definition of what AI tries to build.
 
-AI also borrowed from much older fields: philosophy (logic and the nature of mind), mathematics (logic, probability and algorithms), economics (how to make decisions and how players in a market interact), neuroscience and psychology (how brains and minds work), control engineering (machines that steer themselves using feedback) and linguistics (the structure of language). You will meet each of them in later chapters.
+AI also borrowed from much older fields: philosophy (logic and the nature of mind), mathematics (logic, probability and algorithms), economics (how to make decisions and how players in a market interact), neuroscience and psychology (how brains and minds work), computer engineering (ever faster and cheaper machines to run it all, the subject of Chapter 2 and Part VI), control engineering (machines that steer themselves using feedback) and linguistics (the structure of language). You will meet each of them in later chapters.
 
 ## Nested circles: AI, machine learning, deep learning, generative AI, LLMs and agents
 
@@ -388,7 +388,7 @@ Here is a one-paragraph tour of each branch, so you know what lives where.
 
 **Recommenders, search and ads** are the AI you use without noticing, as the morning table showed (Chapter 51).
 
-**AI for science and medicine** includes some of the field's most consequential results. AlphaFold predicts the 3D shape of proteins from their chemical sequence; its public database holds more than 200 million predictions, and its creators shared the 2024 Nobel Prize in Chemistry. AI weather models now run in operational forecasting (Chapter 52).
+**AI for science and medicine** includes some of the field's most consequential results. AlphaFold predicts the 3D shape of proteins from their chemical sequence; its public database holds more than 260 million predictions (as of October 2026), and its creators shared the 2024 Nobel Prize in Chemistry. AI weather models now run in operational forecasting (Chapter 52).
 
 **Industries and the edge** covers finance, law, education, customer service, manufacturing, agriculture, defense and cybersecurity, plus "edge AI" that runs on phones, cars and sensors (Chapter 53). **Other paths to intelligence** covers symbolic reasoning, evolutionary algorithms, causal inference and the relationship between artificial and biological brains (Chapter 54).
 
@@ -494,7 +494,7 @@ Third, **hype runs ahead of reality, and reality eventually arrives in a differe
 
 > **Definition — Reasoning model:** A language model trained to produce a long internal chain of "thinking" before giving its final answer, which improves results on math, coding and logic problems. OpenAI's o1, first released as o1-preview on September 12, 2024, introduced the idea to the public.
 
-> **At the frontier (2026):** By late 2026 the newest flagship models arrive roughly monthly. The pattern to recognize matters more than any single version number: each major lab ships a family of models in large, medium and small sizes (for example Anthropic's Claude Opus, Sonnet and Haiku); most offer adjustable "thinking" effort; agents that work for long stretches are the main battleground; open-weight models, many from Chinese labs such as DeepSeek and Alibaba's Qwen team, trail the closed leaders only narrowly; and some of the most capable models, such as Anthropic's Claude Mythos Preview (April 2026) and OpenAI's GPT-6 Astra (September 2026), were first made available only to selected organizations, largely because of their cybersecurity abilities. Epoch AI estimates that the computing power used to train frontier models has grown about 5 times per year since 2020. Chapter 24 surveys the landscape as of October 2026.
+> **At the frontier (2026):** By late 2026 the newest flagship models arrive roughly monthly. The pattern to recognize matters more than any single version number: each major lab ships a family of models in large, medium and small sizes (for example Anthropic's Claude Opus, Sonnet and Haiku); most offer adjustable "thinking" effort; agents that work for long stretches are the main battleground; open-weight models, many from Chinese labs such as DeepSeek and Alibaba's Qwen team, trail the closed leaders only narrowly; and some of the most capable models, such as Anthropic's Claude Mythos Preview (April 2026) and OpenAI's GPT-6 Astra (September 2026), were first made available only to selected organizations, largely because of their cybersecurity abilities (Astra reached paying customers a day later, in a version that refuses some cybersecurity requests). Epoch AI estimates that the computing power used to train frontier models has grown about 5 times per year since 2020. Chapter 24 surveys the landscape as of October 2026.
 
 > **Definition — Frontier model:** One of the most capable AI models in existence at a given time, typically built by a handful of well-funded labs.
 

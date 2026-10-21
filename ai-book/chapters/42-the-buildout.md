@@ -498,7 +498,7 @@ Epoch projects **over 9 GW** across these sites by about 2029, with most new cap
 
 Amazon built Project Rainier in St. Joseph County (New Carlisle), Indiana for Anthropic, the maker of Claude. It came online in under a year, with about 500,000 Trainium2 chips at launch in October 2025, and Anthropic was to use more than a million Trainium2 chips. Amazon quotes AWS's water efficiency at 0.15 liters per kWh against an industry average of 0.375. By October 2026, Epoch AI listed "Anthropic-Amazon New Carlisle" at about **1,037 MW of IT**, the largest tracked site by power.
 
-On April 20, 2026, Anthropic and Amazon announced a deal for **up to 5 GW**, with nearly 1 GW of Trainium2 and Trainium3 capacity online by the end of 2026; reported terms included more than $100 billion committed to AWS over ten years.
+On April 20, 2026, Anthropic and Amazon announced a deal for **up to 5 GW**, with nearly 1 GW of Trainium2 and Trainium3 capacity online by the end of 2026; Anthropic said it would commit more than $100 billion to AWS over ten years.
 
 **What it teaches.** Custom chips change the economics. Rainier runs on Amazon's own Trainium, not NVIDIA GPUs (Chapter 35), so Amazon captures more of the value chain and Anthropic gets capacity that doesn't depend on a single chip supplier.
 

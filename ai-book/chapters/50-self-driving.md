@@ -373,7 +373,7 @@ timeline
     2023 : Mercedes Drive Pilot certified as Level 3 in Nevada and California : A Cruise robotaxi drags a pedestrian in San Francisco
     2024 : GM ends the Cruise robotaxi program
     2025 : Tesla Robotaxi launches in Austin with safety monitors : Waymo reaches 250,000 paid rides a week
-    2026 : Waymo driverless in 10 metros, then Las Vegas : Zoox begins paid rides in Las Vegas
+    2026 : Waymo serves riders in 15 US metros by October : Zoox begins paid rides in Las Vegas
 ```
 *Figure 50.6: Twenty-two years from a desert race nobody finished to robotaxi networks in a dozen cities.*
 
@@ -408,16 +408,17 @@ Here is where the field stood as of October 2026. Almost all of these figures co
 Waymo is the clear leader in driverless miles and rides.
 
 - **Rides:** about **500,000 paid rides per week** in spring 2026, up from 250,000 in April 2025, with a target of **1 million per week by the end of 2026** (company figures as reported by the press). More than 20 million cumulative trips.
-- **Fleet:** about 3,500 vehicles.
+- **Fleet:** about 3,800 vehicles: a May 2026 software recall covered 3,791 of them (reported by Bloomberg).
 - **Miles:** **271.3 million rider-only miles** through June 2026 (company safety data).
-- **Cities:** a March 2026 expansion brought driverless service to 10 metro areas: Phoenix, the San Francisco Bay Area, Los Angeles, Austin, Atlanta, Miami, Dallas, Houston, San Antonio and Orlando. Las Vegas went fully driverless on July 8, 2026, with Denver, San Diego and Tampa named as next.
-- **Abroad:** London service targeted for 2026 with testing underway; Tokyo commercial driverless service targeted for 2027. As of mid-2026 there were no paid driverless Waymo rides outside the United States.
+- **Cities:** as of October 2026 Waymo listed 15 US metro areas where the public can ride: Phoenix, the San Francisco Bay Area, Los Angeles, Austin, Atlanta, Miami, Dallas, Houston, San Antonio, Orlando, Nashville, Las Vegas, Denver, San Diego and Tampa. The last four began fully driverless driving in July 2026, with employees as the first riders, and opened to the public from September.
+- **Abroad:** London and Tokyo are listed as "up next", with testing underway. In October 2026 Waymo announced Madrid, with first riders targeted for 2027, and Toronto, targeted for 2028. As of October 2026 there were no paid driverless Waymo rides outside the United States.
+- **Setbacks:** growth has not been smooth. In May 2026 Waymo recalled the software in 3,791 vehicles (a formal safety fix reported to regulators and delivered as a software update) after unoccupied robotaxis drove into flooded roads in San Antonio and Atlanta, paused service in several cities during storms, and briefly stopped freeway rides in four cities to improve driving through construction zones (reported by Bloomberg and TechCrunch).
 
 > **Definition — Rider-only miles:** Miles driven by an automated vehicle with no human driver or safety monitor on board, only passengers or nobody at all.
 
 **Worked example: what those numbers mean.**
 
-- **Rides per car:** 500,000 rides per week ÷ 3,500 vehicles = about 143 rides per vehicle per week, or about 20 per day.
+- **Rides per car:** 500,000 rides per week ÷ 3,800 vehicles = about 132 rides per vehicle per week, or about 19 per day.
 - **Miles in human terms:** 271.3 million miles ÷ about 13,500 miles per year for a typical American driver = about 20,000 years of one person's driving.
 - **Growth:** going from 250,000 to 500,000 weekly rides took about a year. Reaching 1 million by the end of 2026 would require another doubling in roughly eight months, a faster pace. Whether Waymo hit that target was not known as of October 2026.
 
@@ -461,7 +462,7 @@ Highways are simpler than city streets in some ways (no pedestrians, no cyclists
 
 | Operator | Where | Key figures (as of 2026) | Source label |
 |---|---|---|---|
-| Waymo | 11 US metros driverless; London and Tokyo planned | ~500,000 paid rides/week (spring); ~3,500 vehicles; 271.3M rider-only miles (to June) | Company figures |
+| Waymo | 15 US metros (October 2026); London and Tokyo next; Madrid and Toronto announced | ~500,000 paid rides/week (spring); ~3,800 vehicles (May recall); 271.3M rider-only miles (to June) | Company figures |
 | Tesla Robotaxi | Austin, Dallas, Houston, Florida cities; Bay Area with safety drivers | ~1M unsupervised miles, ~200+ vehicles (September report) | Single secondary report |
 | Tesla FSD (Supervised) | Customer cars, Level 2 | ~12B cumulative supervised miles (Q2 call) | Company figures |
 | Zoox | Las Vegas (paid from August 10), San Francisco, Austin and Miami coming | ~2M autonomous miles, 350,000+ riders on free rides (March) | Company figures |
@@ -617,7 +618,7 @@ A self-driving car is a robot that has to be extraordinarily reliable, because h
 
 Inside, a classic self-driving system works out exactly where it is, detects everything around it, predicts what others will do, plans a safe path, and steers and brakes, ten or more times a second. The newer "end-to-end" approach trains one big network to go from camera video to a driving path; in practice both camps now use large learned models, and the real arguments are about sensors and proof. Waymo uses lidar, radar, cameras and detailed maps; Tesla uses cameras only.
 
-After the DARPA desert races of 2004–2007, Google's project became Waymo, and two crashes, Uber's in 2018 and Cruise's in 2023, taught the industry hard lessons about safety culture and honesty. By mid-2026, Waymo was running driverless service in 11 US metro areas and had reported about 500,000 paid rides a week, and Baidu ran a similar volume in China.
+After the DARPA desert races of 2004–2007, Google's project became Waymo, and two crashes, Uber's in 2018 and Cruise's in 2023, taught the industry hard lessons about safety culture and honesty. By October 2026, Waymo was serving riders in 15 US metro areas and had reported about 500,000 paid rides a week, and Baidu ran a similar volume in China.
 
 When you see "X percent fewer crashes", convert it to rates, check the comparison group, the crash category, the number of events, what was excluded and who did the math. Rare events need hundreds of millions of miles to judge.
 
@@ -641,7 +642,7 @@ Autonomous vehicle (AV), Automated driving system (ADS), Advanced driver-assista
 
 7. **[Medium] Be the planner.** (1) Describe this scene to your chatbot: "You are a self-driving car going 25 mph on a residential street. A ball rolls into the road from between two parked cars 20 meters ahead. No person is visible." (2) Ask it to list possible futures with rough probabilities, then choose a speed and path and explain the cost trade-offs. (3) Ask what it would do differently at 45 mph, and compute the stopping distance yourself to check. (4) Discuss: why can a chatbot reason about this well but not actually drive the car? **What you'll learn:** prediction, planning under uncertainty and cost functions, and the gap between reasoning in text and real-time control.
 
-8. **[Challenge] Robotaxi unit economics.** (1) In a spreadsheet, set up illustrative inputs: vehicle and sensor cost (try $80,000, $150,000 and $250,000), years of service (try 5), rides per vehicle per day (start with 20, from this chapter's Waymo worked example), average fare (look up a typical local ride-hail fare), and yearly costs for charging, cleaning, insurance, maintenance and depots. (2) Add remote assistance: requests per vehicle-hour times minutes per request times an hourly wage. (3) Compute cost per ride and profit per vehicle per year. (4) Find the break-even rides per day for each vehicle cost. **What you'll learn:** what has to be true for robotaxis to make money, and which inputs (utilization, vehicle cost, remote staff) matter most.
+8. **[Challenge] Robotaxi unit economics.** (1) In a spreadsheet, set up illustrative inputs: vehicle and sensor cost (try $80,000, $150,000 and $250,000), years of service (try 5), rides per vehicle per day (start with 19, from this chapter's Waymo worked example), average fare (look up a typical local ride-hail fare), and yearly costs for charging, cleaning, insurance, maintenance and depots. (2) Add remote assistance: requests per vehicle-hour times minutes per request times an hourly wage. (3) Compute cost per ride and profit per vehicle per year. (4) Find the break-even rides per day for each vehicle cost. **What you'll learn:** what has to be true for robotaxis to make money, and which inputs (utilization, vehicle cost, remote staff) matter most.
 
 9. **[Challenge] Explore real crash reports.** (1) Search nhtsa.gov for "Standing General Order crash reporting" and download the latest data file for automated driving systems. (2) Open it in a spreadsheet and count crashes by company for the most recent six months. (3) Look at a sample of 20 narratives: was the automated vehicle moving or stopped, and who appeared to be at fault? (4) Explain in writing why the counts alone cannot tell you which company is safer, and what extra number you would need. **What you'll learn:** what raw crash data looks like, why counts without miles are meaningless, and the difference between involvement and fault.
 

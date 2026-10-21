@@ -722,7 +722,7 @@ quadrantChart
 
 *Figure 53.12: Placing AI features by model size needed and by the need for speed and privacy. Features near the top left run on the device; those at the right go to the cloud.*
 
-> **At the frontier (2026):** Three edge trends stand out. Robot makers are putting vision-language-action models on board so robots keep working without a connection (Chapter 49). Laptop chips now include neural accelerators inside their graphics cores, aimed at running local language models. And desktop "AI supercomputers" such as NVIDIA's DGX Spark, reportedly with 128 GB of unified memory, bring models that needed a server a few years ago onto a desk.
+> **At the frontier (2026):** Three edge trends stand out. Robot makers are putting vision-language-action models on board so robots keep working without a connection (Chapter 49). Laptop chips now include neural accelerators inside their graphics cores, aimed at running local language models. And desktop "AI supercomputers" such as NVIDIA's DGX Spark, with up to 128 GB of unified memory, bring models that needed a server a few years ago onto a desk.
 
 > **Key idea:** Edge AI is not just weaker cloud AI. It is chosen for speed, privacy, cost and offline use, and some features, such as face unlock and wake words, only make sense on the device. Its hard limit is memory, not TOPS.
 

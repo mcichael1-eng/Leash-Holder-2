@@ -80,7 +80,7 @@ timeline
   2023 : Adobe Firefly : DALL-E 3 inside ChatGPT : SDXL
   2024 : Stable Diffusion 3 : FLUX.1 from Black Forest Labs
   2025 : GPT-4o native images in March : Nano Banana in August : FLUX.2 and Nano Banana Pro in November
-  2026 : gpt-image-2 in April : Gemini Omni in May
+  2026 : gpt-image-2 in April : Gemini Omni in May : GPT Image 2.5 in September
 ```
 *Figure 47.2: Key moments in image generation. The summer of 2022 is when the general public first got access.*
 
@@ -96,7 +96,7 @@ timeline
 
 **2023: into the professional toolkit.** Adobe launched Firefly and put "Generative Fill" into Photoshop, marketing it as trained on licensed and public-domain images so businesses could use it with less legal worry (Adobe's claim). DALL·E 3 moved inside ChatGPT: you described what you wanted in conversation, and ChatGPT wrote a detailed prompt for the image model.
 
-**2024–2026: quality, control and chat.** Stable Diffusion 3 and FLUX.1 (from Black Forest Labs, a company founded by former Stable Diffusion researchers) brought flow matching and Transformer denoisers. Then the chatbots started drawing directly. GPT-4o's native image generation in March 2025 set off a viral wave of portraits redrawn in the style of animated films. Google's "Nano Banana" (Gemini 2.5 Flash Image, August 2025) became famous for editing a photo by instruction while keeping faces the same, and Nano Banana Pro (Gemini 3 Pro Image) followed in November 2025. In April 2026 OpenAI released gpt-image-2, which, according to press coverage, plans the composition before drawing and renders text much better.
+**2024–2026: quality, control and chat.** Stable Diffusion 3 and FLUX.1 (from Black Forest Labs, a company founded by former Stable Diffusion researchers) brought flow matching and Transformer denoisers. Then the chatbots started drawing directly. GPT-4o's native image generation in March 2025 set off a viral wave of portraits redrawn in the style of animated films. Google's "Nano Banana" (Gemini 2.5 Flash Image, August 2025) became famous for editing a photo by instruction while keeping faces the same, and Nano Banana Pro (Gemini 3 Pro Image) followed in November 2025. In April 2026 OpenAI released gpt-image-2, which, according to press coverage, plans the composition before drawing and renders text much better, and it followed with GPT Image 2.5 in September 2026 (reported).
 
 ### The tools you will meet
 
@@ -104,7 +104,7 @@ Rankings change every few months, so treat the table below as a map of *kinds* o
 
 | Tool | Maker | Open or closed | Known for (as of late 2026) |
 |---|---|---|---|
-| GPT image models (gpt-image-2) | OpenAI | Closed | Drawing inside ChatGPT, following long instructions, text in images |
+| GPT image models (gpt-image-2, GPT Image 2.5) | OpenAI | Closed | Drawing inside ChatGPT, following long instructions, text in images |
 | Nano Banana, Nano Banana Pro | Google | Closed | Editing by instruction while keeping people and objects consistent |
 | Midjourney (V7 and later) | Midjourney | Closed | Strong artistic style and mood; popular with designers |
 | FLUX.2 | Black Forest Labs | Open "dev" tier and closed "pro" tiers | High quality, fine-tunable, used in many other apps |
@@ -291,7 +291,7 @@ timeline
 
 Google released Veo 3 with a filmmaking tool called Flow, aimed at stringing clips into scenes, and in October 2025 shipped Veo 3.1, which DeepMind still listed as its leading video model in 2026.
 
-**September 2025 to March 2026: Sora 2 and the app that closed.** On September 30, 2025, OpenAI launched Sora 2 together with a social app, a feed of generated videos where users could put themselves and consenting friends into scenes. It was an instant hit, and an instant source of controversy, with deepfake and copyright concerns raised almost from the first day. Usage then declined. In March 2026, OpenAI announced that it would shut down the Sora app, amid falling usage and a shift of its computing resources toward coding and business products. Reports say the app closed on April 26, 2026 and that access for developers through OpenAI's paid interface was scheduled to end on September 24, 2026; OpenAI described Sora as continuing as a world-model research effort.
+**September 2025 to March 2026: Sora 2 and the app that closed.** On September 30, 2025, OpenAI launched Sora 2 together with a social app, a feed of generated videos where users could put themselves and consenting friends into scenes. It was an instant hit, and an instant source of controversy, with deepfake and copyright concerns raised almost from the first day. Usage then declined. In March 2026, OpenAI announced that it would shut down the Sora app, amid falling usage and a shift of its computing resources toward coding and business products. Reports say the app closed on April 26, 2026 and that access for developers through OpenAI's paid interface ended on September 24, 2026; Sora research was reported to continue as a world-model effort.
 
 > **Watch out:** "The best-known product is the safe bet." Sora was the most famous video model in the world in 2024, and its consumer app lasted about six months in its Sora 2 form. Anyone building a business or a workflow on generative video should expect tools to change, merge or disappear, and should keep their source files and prompts so they can move.
 
@@ -302,15 +302,15 @@ The video field in late 2026 has a handful of leading families. Comparison guide
 | Model family | Maker | Reputation as of late 2026 |
 |---|---|---|
 | Veo 3.1 | Google DeepMind | Native audio, up to 4K output, short clips that can be extended; inside Gemini and Flow |
-| Kling 3.0 | Kuaishou | Multi-shot sequences and multilingual audio (per comparison guides) |
+| Kling 3.0 and 4.0 | Kuaishou | Multi-shot sequences and multilingual audio (per comparison guides); Kling 4.0, launched globally in October 2026, adds 30-second clips and 4K output (reported) |
 | Runway Gen-4.5 | Runway | Creative control and editing tools for filmmakers (per comparison guides) |
-| Seedance 2.0 | ByteDance | Strong motion and multi-shot storytelling (per comparison guides) |
+| Seedance 2.0 and 2.5 | ByteDance | Strong motion and multi-shot storytelling (per comparison guides); Seedance 2.5 (July 2026) makes clips with sound of up to 30 seconds (reported) |
 | Wan | Alibaba | Open weights that studios can run themselves |
-| Gemini Omni | Google | Any input in, video out, with editing by conversation |
+| Gemini Omni | Google | Any input in, video out, with editing by conversation; the August 2026 Omni 1.1 Flash update extends scenes to 40 seconds and outputs up to 4K |
 
 *Table 47.2: Leading video-generation families as of late 2026. Version numbers and rankings change quickly; check current comparisons before choosing.*
 
-> **At the frontier (2026):** Three trends define the front of the field. Sound is now expected, not optional. Video is moving from "generate a clip" to "edit by conversation," as in Gemini Omni. And the biggest labs increasingly describe video generation as a step toward world models, which is how OpenAI framed Sora's future after the app closed.
+> **At the frontier (2026):** Three trends define the front of the field. Sound is now expected, not optional. Video is moving from "generate a clip" to "edit by conversation," as in Gemini Omni. And the biggest labs increasingly describe video generation as a step toward world models, which is reportedly how OpenAI framed Sora's future after the app closed.
 
 ### The limits you will hit
 
@@ -435,7 +435,7 @@ The skeptical case is also strong. Today's pixel-predicting world models still d
 
 > **Analogy:** A world model is a flight simulator that an AI builds for itself by watching millions of hours of flying. A good one lets pilots practice emergencies safely. A flawed one teaches confident habits that fail on the first real landing.
 
-> **At the frontier (2026):** World models have become a stated priority for several labs at once. Google DeepMind ships Genie 3 and Project Genie and folded Genie into Gemini Omni; NVIDIA pushes Cosmos for robots and cars; OpenAI describes Sora's future as world-model research; World Labs sells persistent 3D worlds; and LeCun's AMI Labs pursues the non-pixel JEPA path. Which approach wins is genuinely open.
+> **At the frontier (2026):** World models have become a stated priority for several labs at once. Google DeepMind ships Genie 3 and Project Genie and offers Gemini Omni alongside them for video that responds to conversation; NVIDIA pushes Cosmos for robots and cars; OpenAI reportedly describes Sora's future as world-model research; World Labs sells persistent 3D worlds; and LeCun's AMI Labs pursues the non-pixel JEPA path. Which approach wins is genuinely open.
 
 ## Provenance: telling made media from captured media
 

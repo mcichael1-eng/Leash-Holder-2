@@ -471,7 +471,7 @@ In the tables below, the middle column says what has been announced, targeted or
 | A credible 50% time horizon above one working week (40 h), on a new task suite | Last published value about 17 h (April 2026 model); METR says its suite is unreliable above about 16 h | metr.org | Whether agents keep stretching, and whether measurement keeps up |
 | An 80% time horizon above one working day (8 h) | 80% horizons run 5–10× shorter than 50% ones in METR's data | metr.org | Whether reliability, not just peak ability, is improving |
 | Labs' estimates of how much AI speeds up their own research | A preliminary Anthropic-internal estimate of about 1.5×, cited by METR in September 2026 | System cards, METR reports | Whether AI is accelerating AI development, the engine of the fastest scenarios |
-| Previously unsolved Erdős problems solved by AI | 2 of 68 (GPT-6 Astra, per Epoch, October 2026) | epoch.ai/benchmarks | Whether AI produces original mathematics |
+| Previously unsolved Erdős problems solved by AI | 2 of 68 (GPT-6 Astra, per Epoch, September 2026) | epoch.ai/benchmarks | Whether AI produces original mathematics |
 | Interpretability that "reliably detects most model problems" | A goal Anthropic's CEO set for 2027 | Lab research sites, system cards | Whether safety arguments can rest on looking inside models |
 | A drug discovered and designed with AI approved by a major regulator | None as of late 2026; some reached mid-stage trials | FDA and EMA | Whether AI for science reaches patients |
 

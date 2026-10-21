@@ -44,9 +44,9 @@ These match Stage 1 of the roadmap in Chapter 65: understanding how AI works in 
 | TensorFlow Playground | A small neural network you can train in your browser | See layers, learning rate and overfitting change in real time | Free | playground.tensorflow.org |
 | Transformer Explainer | An interactive visualization of a small GPT model | Watch attention and next-token probabilities on your own sentence | Free | poloclub.github.io/transformer-explainer |
 | LLM Visualization | A 3-D walk-through of every computation inside a small GPT | Makes "it is mostly multiplying tables of numbers" concrete | Free | bbycroft.net/llm |
-| Gandalf | A game in which you try to trick an AI into revealing a password | The fastest way to understand why prompt injection is hard to stop | Free | gandalf.lakera.ai |
+| Gandalf: Agent Breaker (Lakera) | A game in which you try to trick guarded AI apps and agents into leaking secrets or misusing their tools; the old gandalf.lakera.ai address of the original password game now forwards here | The fastest way to understand why prompt injection is hard to stop | Free | play.lakera.ai |
 | Quick, Draw! | Google's doodle-guessing game | A playful first look at how a classifier recognizes patterns | Free | quickdraw.withgoogle.com |
-| LMArena | Compare two anonymous chatbots side by side and vote | A blind taste test that shows how much style shapes your impressions | Free | lmarena.ai |
+| Arena (formerly LMArena) | Compare two anonymous chatbots side by side and vote | A blind taste test that shows how much style shapes your impressions | Free | arena.ai |
 
 ### Books
 
@@ -64,7 +64,7 @@ These match Stage 1 of the roadmap in Chapter 65: understanding how AI works in 
 
 | Name | What it is | Why it is worth it | Cost | Link |
 |---|---|---|---|---|
-| One Useful Thing (Ethan Mollick) | A newsletter on using AI at work and in education | Practical experiments with each new tool, without hype | Free | oneusefulthing.org |
+| One Useful Thing (Ethan Mollick) | A newsletter on using AI at work and in education | Practical experiments with each new tool, without hype | Free | www.oneusefulthing.org |
 | The Batch (DeepLearning.AI) | A weekly news digest with short explanations | A calm, broad weekly summary for any level | Free | deeplearning.ai/the-batch |
 | Hard Fork (The New York Times) | A weekly tech news podcast for a general audience | Entertaining and accessible way to follow the big stories | Free | — |
 | AI as Normal Technology (Narayanan and Kapoor) | Essays and a newsletter from the *AI Snake Oil* authors | A careful skeptical counterweight to hype | Free | — |
@@ -193,7 +193,7 @@ These match Track C in Chapter 65: math, classical machine learning, deep learni
 |---|---|---|---|---|
 | Simon Prince, *Understanding Deep Learning* (2023) | A modern, beautifully illustrated textbook | The clearest current deep learning textbook | Free PDF; print edition paid | udlbook.github.io/udlbook |
 | *Dive into Deep Learning* | An interactive textbook with code for every section | Learn by running and changing the code | Free | d2l.ai |
-| Ian Goodfellow, Yoshua Bengio and Aaron Courville, *Deep Learning* (2016) | The classic graduate textbook | Rigorous foundations that have aged well | Free online; print edition paid | deeplearningbook.org |
+| Ian Goodfellow, Yoshua Bengio and Aaron Courville, *Deep Learning* (2016) | The classic graduate textbook | Rigorous foundations that have aged well | Free online; print edition paid | www.deeplearningbook.org |
 | Marc Peter Deisenroth, A. Aldo Faisal and Cheng Soon Ong, *Mathematics for Machine Learning* (2020) | The math behind machine learning, from linear algebra to probability | Exactly the math you need, in one place | Free PDF; print edition paid | mml-book.github.io |
 | Kevin Murphy, *Probabilistic Machine Learning* (two volumes) | A comprehensive reference on machine learning through probability | The encyclopedia to consult when you need depth | Free drafts online; print editions paid | probml.github.io/pml-book |
 | Richard Sutton and Andrew Barto, *Reinforcement Learning: An Introduction* (2nd edition, 2018) | The standard reinforcement learning textbook | The foundation beneath RLHF and reasoning models (Chapters 21 and 48) | Free PDF; print edition paid | incompleteideas.net/book/the-book-2nd.html |
@@ -265,7 +265,7 @@ These match Track D in Chapter 65: GPU programming and performance engineering, 
 | Epoch AI | Research and data on training compute, costs, hardware and data centers | Carefully sourced numbers with clear methods; check figures here before repeating them | Free | epoch.ai |
 | International Energy Agency, "Energy and AI" (April 2025) | A global report on AI's electricity use and outlook | The reference global numbers on data-center energy demand | Free | iea.org |
 | Lawrence Berkeley National Laboratory, US data-center energy report (December 2024) | The US government-funded estimate of data-center electricity use | The reference US numbers (Chapter 41) | Free | lbl.gov |
-| EPRI, "Powering Intelligence" (May 2024) | An electric-power research institute's analysis of data-center load growth | A utility-industry view of the demand forecasts | Free | epri.com |
+| EPRI, "Powering Intelligence" (May 2024) | An electric-power research institute's analysis of data-center load growth | A utility-industry view of the demand forecasts | Free | www.epri.com |
 | SEC EDGAR | The US database of company filings | Primary sources for chip, cloud and data-center company numbers | Free | sec.gov/edgar |
 | DatacenterDynamics | A trade news site and events for the data-center industry | Daily industry news on builds, power and cooling | Free news | datacenterdynamics.com |
 | Data Center Map | A searchable map of data centers worldwide | See where facilities are, including near you | Free basic use | datacentermap.com |

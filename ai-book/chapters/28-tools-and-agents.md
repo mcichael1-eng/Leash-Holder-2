@@ -338,6 +338,8 @@ For short tasks, deciding one step at a time works. For longer ones, agents do b
 
 A coding agent asked to "add a dark mode to this website" might first write: 1. find where colors are defined; 2. add a dark color set; 3. add a toggle button; 4. test both modes; 5. summarize the changes. When step 1 reveals colors are scattered across 40 files, it re-plans: add a step to centralize them first. Reasoning models (Chapter 21) are much better at this than earlier models, and many products now show you the agent's plan, or ask you to approve it, before it starts.
 
+Self-written to-do lists were also the idea behind the first language-model agents to catch the public's eye. In spring 2023, within weeks of GPT-4's release, two open-source projects appeared: AutoGPT, which describes itself as one of the first implementations of autonomous AI agents, and BabyAGI, whose author credits it with introducing task planning as a way to build them. Both wrapped a model in a loop that wrote its own task list toward a goal you typed, worked on the top task, added new tasks based on the result and repeated, with no person in between. They were experiments, and they struggled on long tasks for the reasons explained later in this chapter. In a 2023 talk at Full Stack Deep Learning's LLM Bootcamp, LangChain's Harrison Chase named the open problems: getting agents to use tools only when appropriate, reliably reading the tool calls they write, keeping long-term memory and coherence, and evaluating them. Much of what follows in this chapter is how the industry has worked on exactly those problems since.
+
 ### Memory
 
 A model remembers nothing between calls (Chapter 25). Agents fake memory in layers.
@@ -351,6 +353,10 @@ A model remembers nothing between calls (Chapter 25). Agents fake memory in laye
 This vocabulary has a long history in AI. Cognitive architectures such as Soar (begun in the early 1980s) and ACT-R, built to model how people think, organized an artificial mind around exactly these memory stores plus a repeating decide-and-act cycle, and researchers designing language-model agents have borrowed their blueprints.
 
 > **Definition — Cognitive architecture:** A blueprint for a complete thinking system that specifies its kinds of memory, how it decides what to do and how it learns, often built to model human cognition. Soar and ACT-R are the best-known classic examples.
+
+A 2023 research paper by Joon Sung Park and colleagues showed what layered memory can do. It filled a small virtual town, inspired by the game The Sims, with 25 "generative agents", each driven by a language model. Every agent kept a memory stream of what it observed, periodically condensed those memories into higher-level reflections, and retrieved the relevant ones to plan its day. Told only that one character wanted to throw a Valentine's Day party, the agents spread invitations over two simulated days, made new acquaintances, asked each other out and arrived at the party together. When the researchers removed observation, planning or reflection, the agents behaved less believably, evidence that each layer earns its place.
+
+> **Definition — Generative agents:** Simulated characters, each driven by a language model with its own memory, reflections and plans, that live and interact in a shared virtual world. The name comes from a 2023 research paper that populated a 25-character town.
 
 | Memory layer | Where it lives | Example |
 |---|---|---|
@@ -370,6 +376,10 @@ An agent that decides its own next step also has to decide when to stop, and it 
 > **Definition — Stop condition:** A rule that ends an agent's loop: the model declares the goal met, or a limit is hit, such as a maximum number of steps, a spending cap, a time limit, or a checkpoint that requires a person's approval.
 
 > **Definition — Human-in-the-loop:** A design in which a person must review or approve certain steps before an agent continues, typically anything irreversible such as sending a message, spending money or deleting data.
+
+Approval checkpoints are one point on a wider range of autonomy. At one end the person does the work and the AI only suggests, like autocomplete. At the other the agent runs on its own and reports back. In between sits mixed-initiative interaction, where either side can take the lead at any moment: you start a task, the agent proposes a plan, you edit the plan, the agent stops to ask when it is unsure, and you can interrupt and redirect it mid-run. Most coding agents you can steer while they work are built this way, and designing who leads when is a large part of making an agent pleasant and safe to use.
+
+> **Definition — Mixed-initiative interaction:** A way of working in which a person and an AI system can each take the lead, propose steps, ask questions or hand control back at any point, rather than one side always directing the other.
 
 **Worked example: what a 30-step agent run costs.** Suppose an agent starts with 5,000 tokens of instructions and tools, and each step adds about 2,000 tokens (its own reasoning, a tool call and the result). Because the whole history is re-sent every step:
 
@@ -413,6 +423,10 @@ Orchestrators and handoffs are about splitting up work. Two other multi-agent sh
 > **Definition — Multi-agent debate:** A setup in which several AI agents argue for different answers to the same question while a judge, human or AI, weighs the exchange and decides, on the idea that opposing agents expose each other's errors.
 
 > **Watch out:** More agents do not automatically mean better results. Start with one agent, or a simple workflow, and add agents only when you can show they help on your task.
+
+Not every agent exists to finish a task. Believable agents are designed to seem like characters: consistent personalities with goals, moods and memories, for games, simulations, training rehearsals and companion apps. Language models changed what is possible for them. In a 2023 study, "Generative Agents", Joon Sung Park and colleagues filled a small virtual town, inspired by the game The Sims, with 25 agents. Each one stored a running record of its experiences in plain language, periodically summarized them into reflections, and retrieved them to plan its day. Given only the idea that one agent wanted to throw a Valentine's Day party, the agents spread invitations over the next two days, asked each other to go together, and turned up at the right time. The memory, reflection and planning design is the same toolkit as this chapter's agents, aimed at seeming human rather than at getting work done. The risks of characters that seem human, especially for lonely or young users, are covered in Chapter 58.
+
+> **Definition — Believable agent:** An AI character designed to come across as a lifelike personality, with consistent goals, moods, memories and reactions, for use in games, simulations, training or companionship rather than to complete a task.
 
 ## Harnesses: the software around the model
 
@@ -466,6 +480,16 @@ Here is the arithmetic that makes long tasks difficult. If each step of a task s
 A step that "almost always works" still sinks a long task. This is why the best agents are not just more accurate per step but also better at noticing and fixing their own mistakes (re-reading an error, re-running a test), which breaks the simple multiplication.
 
 > **Key idea:** Agent capability is improving fast, but the useful question is never "can it do this?" but "how often, at what cost, and how will I know when it failed?" Design for checking: tests, approvals and logs.
+
+### Where agents pay off today, and where they do not
+
+"Is anybody actually getting value from agents?" is one of the most common questions builders ask. As of late 2026 the clearest wins share three traits: the work can be checked, mistakes are cheap to catch, and a person reviews the result before it matters.
+
+- **Coding.** Tests show whether a change works, and the result arrives as a pull request, a proposed change that a human reviews before it is accepted (Chapter 29). The maker of the coding tool Cursor was bought for about $60 billion in stock in 2026 (Chapter 61), a sign of how much this use is valued.
+- **Research and search.** Deep research modes gather and cite sources for minutes at a time; you check the citations (Chapters 25 and 27).
+- **Narrow customer service.** Agents that answer a company's own policy questions and can hand off to a person. Sierra, which charges per resolved conversation, reported about $200 million in annual recurring revenue by May 2026 (Chapter 61).
+
+The disappointments share the opposite traits: long, open-ended tasks with no clear test of success, many steps where errors compound, and access to systems where a single wrong action is costly. The MIT NANDA report of July 2025 found that only about 5% of enterprise generative-AI pilots delivered measurable impact on profit and loss, and it blamed brittle workflows rather than weak models (Chapter 61). The practical rule: start with a task you can check, measure it with evals, systematic tests of whether the system does what you want (Chapter 31), and give the agent more rope only as the numbers earn it.
 
 ## The Model Context Protocol (MCP)
 
@@ -544,7 +568,7 @@ When you connect a service, you see a consent screen listing scopes, the specifi
 
 In chat apps, MCP mostly appears under friendlier names.
 
-> **Definition — Connector:** A chat-app add-on that links the assistant to another service, such as Gmail, Google Drive, Slack or GitHub, so it can search or act there on your behalf. Most connectors in 2026 are built on MCP; ChatGPT renamed its "apps" to "plugins" in July 2026.
+> **Definition — Connector:** A chat-app add-on that links the assistant to another service, such as Gmail, Google Drive, Slack or GitHub, so it can search or act there on your behalf. Most connectors in 2026 are built on MCP; in July 2026 ChatGPT replaced its "apps" directory with a "plugins" directory that packages them.
 
 Servers are listed in registries, directories where hosts and users can find and install MCP servers, much like an app store. And servers no longer have to return only text.
 
@@ -600,6 +624,12 @@ MCP says how to connect. It says nothing about whether a particular server is tr
 MCP's security history is a reminder. Security researchers at Invariant Labs described tool poisoning in April 2025. A critical vulnerability (CVE-2025-6514, rated 9.6 out of 10) was found in mcp-remote, a widely used connection helper, in July 2025, and another in the MCP Inspector debugging tool (CVE-2025-49596). In May 2026 a US National Security Agency report said MCP's "rapid proliferation has outpaced the development of its security model."
 
 > **Watch out:** "It uses MCP" is not a security claim. Install servers only from sources you trust, grant the narrowest scopes, prefer read-only access where possible, and remember that every connected server's descriptions and results are text the model will read and may obey.
+
+### Every connected tool costs context: MCP or the command line?
+
+Tools are not free even when nobody calls them. The name, description and input schema of every tool you connect are sent to the model with each request, so they take up room on the model's desk and add input tokens to every call (Chapter 25). Anthropic reported in November 2025 that one setup with five MCP servers had 58 tools whose definitions took about 55,000 tokens "before the conversation even starts", and that the most common failures were picking the wrong tool or passing it wrong inputs, especially when tool names are similar.
+
+That is behind a debate builders had in 2026: "MCP or the command line?" An agent that can run commands in a terminal (the text window where you type instructions to a computer), as coding agents can (Chapter 29), can often use an existing command-line program directly, such as Git, the version-tracking tool for code, or a cloud provider's own tool, and many models already know how to use popular ones from their training. That costs no tool definitions at all. MCP wins where there is no terminal (most chat apps), where you need a proper sign-in with limited permissions (OAuth, above), and where you want results in a clean, structured form. Many teams use both: a few well-designed MCP servers, loaded only when needed, plus the command line for everything else. Agent Skills, below, apply the same "load it only when needed" idea to instructions.
 
 ## Beyond MCP: A2A, Skills, instruction files and plugins
 
@@ -658,7 +688,7 @@ A hook, in this sense, is a small script that runs automatically at certain mome
 
 > **Definition — Agentic AI Foundation (AAIF):** A Linux Foundation organization launched in December 2025 to govern open agent standards. It started with three projects: MCP (from Anthropic), goose (an open-source agent from Block) and AGENTS.md (from OpenAI).
 
-A2A is a separate Linux Foundation project. Neutral governance matters because companies are reluctant to build on a standard a competitor controls; putting MCP, AGENTS.md and A2A under neutral Linux Foundation governance makes it easier for rivals such as OpenAI, Google, Microsoft and Amazon to adopt and support them (OpenAI had already adopted MCP in March 2025, before the donation).
+A2A is a separate Linux Foundation project. Neutral governance matters because companies are reluctant to build on a standard a competitor controls; putting MCP, AGENTS.md and A2A under neutral Linux Foundation governance makes it easier for rivals such as OpenAI, Google, Microsoft and Amazon to adopt and support them (OpenAI had already adopted MCP in March 2025, before the donation). The foundation grew quickly through 2026, and in September 2026 it launched a certification (MCPA) for MCP expertise. MCP's own roadmap, updated in August 2026 after the July specification, lists agent identity and enterprise-ready security among its priority areas for the next releases.
 
 ```mermaid
 flowchart TD
@@ -720,7 +750,7 @@ You can build an agent with nothing but the loop shown earlier. Frameworks exist
 |---|---|---|
 | Claude Agent SDK | Anthropic | The harness behind Claude Code as a Python and TypeScript library: built-in tools, hooks, subagents, MCP, permissions, skills |
 | OpenAI Agents SDK | OpenAI | Agents, handoffs, guardrails, sessions and tracing; described as a production-ready upgrade of its earlier Swarm project |
-| Google ADK | Google | Agent Development Kit in Python, TypeScript, Java and Go |
+| Google ADK | Google | Agent Development Kit in Python, TypeScript, Go, Java and Kotlin |
 | Hosted agents | Anthropic Managed Agents, OpenAI AgentKit and Responses API | The provider runs the loop and the sandbox for you |
 | LangGraph (with LangChain) | LangChain | Graphs of steps with saved state, so long-running agents can pause, resume and survive crashes |
 | LlamaIndex | LlamaIndex | Strong on data and RAG-centered agents |
@@ -747,7 +777,7 @@ Put that in a loop and you have an agent: the model looks at the goal, picks an 
 MCP is the standard plug that lets any AI app connect to any tool or data source: hosts create clients, clients talk to servers, and servers offer tools, resources and prompts, locally or over the internet with OAuth sign-in. Around it sit A2A for agent-to-agent work, Agent Skills for playbooks loaded only when needed, AGENTS.md files for house rules, and plugins that bundle it all. Computer-use and browser agents can operate any software by looking at screenshots, but every web page they read could contain hidden instructions, so give agents the least access they need and approve anything you cannot undo.
 
 ## Key terms
-Function, Tool, Tool use (function calling), Tool definition, JSON Schema, Tool call, Stop reason, Tool result, Tool choice, Parallel tool calls, Client-side tool, Server-side tool, Code execution (code interpreter), Sandbox, Workflow, Agent, Prompt chaining, Routing, Parallelization, Orchestrator-workers, Evaluator-optimizer, Agent loop, ReAct, Code agent (code actions), Planning (agents), Short-term memory (agents), Long-term memory (agents), Episodic, semantic and procedural memory, Cognitive architecture, Compaction, Stop condition, Human-in-the-loop, Multi-agent system, Subagent, Handoff, Critic agent, Multi-agent debate, Harness (scaffold), Background agent, Time horizon (METR), MCP (Model Context Protocol), MCP host, client and server, MCP tools, resources and prompts, JSON-RPC, Transport (stdio and Streamable HTTP), OAuth, Connector, MCP Apps, Tool poisoning, A2A (Agent2Agent protocol), Agent Card, Agent Skill, Progressive disclosure, AGENTS.md (and CLAUDE.md), Plugin (agent plugin), Agentic AI Foundation (AAIF), Computer use, Browser agent, Indirect prompt injection, Lethal trifecta, Least privilege, Agent SDK, Agent framework
+Function, Tool, Tool use (function calling), Tool definition, JSON Schema, Tool call, Stop reason, Tool result, Tool choice, Parallel tool calls, Client-side tool, Server-side tool, Code execution (code interpreter), Sandbox, Workflow, Agent, Prompt chaining, Routing, Parallelization, Orchestrator-workers, Evaluator-optimizer, Agent loop, ReAct, Code agent (code actions), Planning (agents), Short-term memory (agents), Long-term memory (agents), Episodic, semantic and procedural memory, Cognitive architecture, Generative agents, Compaction, Stop condition, Human-in-the-loop, Mixed-initiative interaction, Multi-agent system, Subagent, Handoff, Critic agent, Multi-agent debate, Believable agent, Harness (scaffold), Background agent, Time horizon (METR), MCP (Model Context Protocol), MCP host, client and server, MCP tools, resources and prompts, JSON-RPC, Transport (stdio and Streamable HTTP), OAuth, Connector, MCP Apps, Tool poisoning, A2A (Agent2Agent protocol), Agent Card, Agent Skill, Progressive disclosure, AGENTS.md (and CLAUDE.md), Plugin (agent plugin), Agentic AI Foundation (AAIF), Computer use, Browser agent, Indirect prompt injection, Lethal trifecta, Least privilege, Agent SDK, Agent framework
 
 ## Exercises
 
@@ -778,7 +808,7 @@ Function, Tool, Tool use (function calling), Tool definition, JSON Schema, Tool 
    **What you'll learn:** good names, descriptions, input schemas and permission limits are what make agents reliable.
 
 5. **[Medium] Connect an MCP server or connector to your chat app.** Give your assistant real access to one of your own services and watch the permissions at work.
-   1. **Option A (no installation).** In Claude, ChatGPT or Gemini, open Settings and find the section for connectors (it may be called Connectors, Apps, Plugins or Extensions; ChatGPT renamed its "apps" to "plugins" in July 2026). Connect one low-risk service, such as Google Drive or a calendar. On the consent screen, write down every permission (scope) requested.
+   1. **Option A (no installation).** In Claude, ChatGPT or Gemini, open Settings and find the section for connectors (it may be called Connectors, Apps, Plugins or Extensions; ChatGPT moved its "apps" into a "plugins" directory in July 2026). Connect one low-risk service, such as Google Drive or a calendar. On the consent screen, write down every permission (scope) requested.
    2. **Option B (local MCP server).** Install the Claude Desktop app and Node.js (nodejs.org). Create a folder called `ai-test` on your desktop and put two small text files in it. In Claude Desktop open Settings, then Developer, then Edit Config, and paste the following, replacing the path with your folder's real path (on Windows use double backslashes, such as `C:\\Users\\yourname\\Desktop\\ai-test`). Save the file and restart Claude Desktop. If your version offers an Extensions page with a ready-made filesystem extension, you can install that instead.
 
    ```json

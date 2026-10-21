@@ -514,7 +514,7 @@ Chatbots are excellent debugging partners if you give them what a human expert w
 3. What you expected to happen.
 4. What you have already tried.
 
-> **Watch out:** Code written by AI can look perfect and still be wrong, especially with logic errors that produce plausible but incorrect numbers. Always test it on a case where you already know the right answer. In one careful 2025 study, METR found that experienced open-source developers using early-2025 AI tools took 19% longer on their tasks, even though they expected to be faster. Tools have improved since, but the lesson stands: checking matters (Chapter 29).
+> **Watch out:** Code written by AI can look perfect and still be wrong, especially with logic errors that produce plausible but incorrect numbers. Always test it on a case where you already know the right answer. In one careful 2025 study, METR found that experienced open-source developers using early-2025 AI tools took 19% longer on their tasks, even though they expected to be faster. Tools have improved since: METR's February 2026 follow-up suggested that late-2025 tools probably sped developers up, though it called its own new data an unreliable signal. The lesson stands: checking matters (Chapter 29).
 
 ## Operating systems: the building manager
 

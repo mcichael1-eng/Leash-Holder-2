@@ -514,7 +514,7 @@ timeline
 
 > **Definition — Adaptive thinking:** A mode in which the model itself decides how much to reason for each request, guided by an effort setting rather than a fixed token budget.
 
-**Google DeepMind.** Google's Gemini API introduced thinking budgets in 2025, letting developers cap how many tokens a model may spend thinking. Google's premium Deep Think mode runs many reasoning paths in parallel; Google said an advanced version of Gemini Deep Think reached gold-medal level at the 2025 International Mathematical Olympiad.
+**Google DeepMind.** Google's Gemini API introduced thinking budgets in 2025, letting developers cap how many tokens a model may spend thinking. Its Gemini 3 and 4 models replaced the budget with a simpler thinking level: low, medium or high on Gemini 4 Argon, with medium as the default. Google's premium Deep Think mode runs many reasoning paths in parallel; Google said an advanced version of Gemini Deep Think reached gold-medal level at the 2025 International Mathematical Olympiad.
 
 > **Definition — Thinking budget:** A developer-set limit on the number of tokens a model may spend reasoning before it must answer.
 
@@ -524,7 +524,7 @@ timeline
 |---|---|---|
 | OpenAI | Router in ChatGPT; reasoning-effort levels in the API | Pro tier with more compute per answer |
 | Anthropic | Adaptive thinking with an effort setting; always on for Opus 5.5 | Higher effort levels |
-| Google DeepMind | Thinking budgets for developers | Deep Think, parallel reasoning |
+| Google DeepMind | Thinking levels (low, medium, high) for developers; budgets on older models | Deep Think, parallel reasoning |
 | DeepSeek, Qwen, Kimi | Thinking and non-thinking modes | Varies; Kimi offers agent swarms |
 
 ### What you see versus what happens
@@ -566,11 +566,11 @@ The newest form of wide thinking splits a big task among many workers.
 
 > **Definition — Agent swarm:** A setup in which a main agent breaks a large task into parts and hands them to many sub-agents working in parallel, then combines their results.
 
-Moonshot says its open Kimi K3 model (July 2026) can coordinate up to 300 sub-agents. Reports describe OpenAI's GPT-6 Pro as also using parallel agents, though OpenAI had not confirmed details at the time of the research for this book.
+Moonshot says its Agent Swarm mode, which now runs on its open Kimi K3 model (July 2026), can coordinate up to 300 sub-agents. Reports describe OpenAI's GPT-6 Pro as also using parallel agents, though OpenAI had not confirmed details at the time of the research for this book.
 
 ### A case study in compute and harness: ARC-AGI-3
 
-The ARC-AGI-3 benchmark (launched March 2026) consists of interactive puzzle games with no instructions. At launch, humans scored 100% and frontier AI about 0.5%. By September 2026, GPT-6 Astra at maximum effort scored 62.7% using the standard testing setup, at a cost of about $26,000 for the run, and 99.9% using a different harness that let it keep its reasoning state between steps and compact its context. ARC Prize explicitly declined to call this AGI.
+The ARC-AGI-3 benchmark (launched March 2026) consists of interactive puzzle games with no instructions. At launch, humans scored 100% and frontier AI about 0.5%. By September 2026, GPT-6 Astra at maximum effort scored 62.7% using the standard testing setup, at a cost of about $26,000 for the run, and 98.6% at the same effort (99.9% at high effort) using a different harness that let it keep its reasoning state between steps and compact its context. ARC Prize explicitly declined to call this AGI.
 
 > **Definition — Harness:** The software wrapped around a model during a task (its prompts, tools, memory handling and retry rules). Changing the harness can change results dramatically, as ARC-AGI-3 showed.
 

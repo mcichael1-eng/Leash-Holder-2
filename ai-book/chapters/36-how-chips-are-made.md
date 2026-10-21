@@ -205,7 +205,7 @@ G = gate   c = channel   === = thin silicon sheet
 
 > **Definition — Gate-all-around (GAA) / nanosheet transistor:** A transistor in which the channel is a stack of thin horizontal silicon sheets and the gate completely surrounds each one. Samsung shipped it first at its 3 nm node in 2022; TSMC's N2 and Intel's 18A ("RibbonFET") use it too.
 
-TSMC's N2 node, its first gate-all-around process, entered volume production in the fourth quarter of 2025. Rubin is built on TSMC N3, which still uses FinFETs. AMD's MI455X mixes 2 nm- and 3 nm-class chiplets, so AI accelerators are now crossing over to the new shape.
+TSMC's N2 node, its first gate-all-around process, entered volume production in the fourth quarter of 2025. Rubin is reportedly built on TSMC N3, which still uses FinFETs (NVIDIA's own spec pages do not name the node). AMD's MI455X mixes 2 nm- and 3 nm-class chiplets, so AI accelerators are now crossing over to the new shape.
 
 The next big change moves the power wires. In a traditional chip, the wires that deliver power and the wires that carry signals all sit in the stack of layers above the transistors, competing for space like power lines and phone lines strung along the same poles. **Backside power delivery** flips the wafer and builds the power network underneath the transistors instead. That frees room on top for signal wiring and cuts the voltage lost on the way to each transistor. Intel calls its version PowerVia (part of its 18A process); TSMC's A16 node adds a "Super Power Rail."
 
@@ -224,10 +224,10 @@ A better way to compare nodes is **transistor density**: how many transistors fi
 | AI chip | Foundry and process | Transistors | Transistor shape |
 |---|---|---|---|
 | NVIDIA H100 (2022) | TSMC 4N | 80 billion | FinFET |
-| NVIDIA Vera Rubin GPU (2026) | TSMC N3 | 336 billion (two dies) | FinFET |
+| NVIDIA Vera Rubin GPU (2026) | TSMC N3, per reports | 336 billion (two dies) | FinFET |
 | AMD MI455X (2026) | TSMC 2 nm and 3 nm chiplets | not given here | mixed |
 | AWS Trainium3 (2025) | 3 nm-class (AWS's first) | not disclosed | not disclosed |
-| Microsoft Maia 200 (2026) | TSMC 3 nm | not disclosed | FinFET |
+| Microsoft Maia 200 (2026) | TSMC 3 nm | more than 140 billion | FinFET |
 | NVIDIA Feynman (2028) | reportedly TSMC A16 | not disclosed | GAA with backside power |
 | Huawei Ascend (2025–26) | SMIC 7 nm-class, per reports | not disclosed | FinFET |
 
@@ -674,7 +674,7 @@ timeline
     2023 : Netherlands and Japan add their own equipment controls : Oct - rules tightened with TPP and performance-density tests, NVIDIA answers with the H20
     2024 : Dec - HBM exports to China restricted and more tool controls added
     2025 : Jan - AI Diffusion rule sets three country tiers : Apr - H20 sales halted : May - Diffusion rule rescinded before taking effect : Jul to Aug - H20 sales allowed for a 15 percent revenue share : Sep - Chinese regulators discourage buying NVIDIA China chips : Dec 8 - H200 sales to approved Chinese buyers announced
-    2026 : Jan - H200 and MI325X class moved to case-by-case review with a 25 percent charge : Mar - licenses granted but China reportedly limits imports : Oct 16 - China proposes its own export controls on 40 technologies
+    2026 : Jan - H200 and MI325X class moved to case-by-case review with a 25 percent charge : Feb - first H200 licenses granted, but China restricts the purchases : Jul - UAE government and approved firms may receive advanced chips without a license : Oct - China reportedly proposes its own export controls on 40 technologies
 ```
 
 *Figure 36.10: Export controls on AI chips, 2022 to October 2026.*
@@ -684,8 +684,8 @@ A few details show how policy is written in hardware terms:
 - **October 7, 2022.** The first rules blocked the most advanced AI chips and restricted equipment for Chinese fabs making logic at 16/14 nm or below, DRAM at 18 nm or below, or NAND flash with 128 or more layers.
 - **October 2023.** The rules were rewritten around TPP and "performance density" (TPP divided by die area), closing the loophole NVIDIA had used with its China-specific A800 and H800; NVIDIA answered with the cut-down H20.
 - **2025.** The "AI Diffusion" rule would have sorted the world into three tiers of access but was rescinded before taking effect. H20 sales were halted, then allowed again for a 15 percent revenue share. In September, Chinese regulators discouraged purchases of NVIDIA's China-specific chips, and China's market regulator reportedly found NVIDIA had violated anti-monopoly law.
-- **January 13–15, 2026.** A BIS rule moved the H200, AMD's MI325X and equivalent chips (a TPP below 21,000 or memory bandwidth below 6,500 GB/s) from "presumed denial" to case-by-case review for China and Macau. The conditions: exports of each model capped at 50 percent of its US sales; certification that US supply is unaffected; know-your-customer checks, physical security and no remote access for restricted parties; and a 25 percent charge collected through mandatory US lab testing plus a Section 232 tariff. Blackwell and newer chips were not covered.
-- **The 2026 outcome.** NVIDIA said in March 2026 that it had received licenses, but China reportedly restricted imports. In NVIDIA's quarter ending July 2026, H200 sales to China were under 1 percent of data-center revenue, and its guidance assumes zero data-center compute revenue from China. A draft *global* licensing framework for AI chips was reported in March 2026; as of mid-October 2026, no replacement rule had been announced. On October 16, 2026, China proposed export controls of its own on 40 technologies, including AI.
+- **January 13–15, 2026.** A BIS rule moved the H200, AMD's MI325X and equivalent chips (defined by a TPP below 21,000 and memory bandwidth below 6,500 GB/s; published summaries differ on whether a chip must meet one limit or both) from "presumed denial" to case-by-case review for China. The conditions: exports of each model capped at 50 percent of its US sales; certification that US supply is unaffected; know-your-customer checks, physical security and no remote access for restricted parties; and a 25 percent charge collected through mandatory US lab testing plus a Section 232 tariff. Blackwell and newer chips were not covered.
+- **The 2026 outcome.** According to NVIDIA's filings, the US began granting licenses in February 2026 for small amounts of H200s to specific Chinese customers, but the Chinese government restricted those sales. In NVIDIA's quarter ending July 2026, H200 sales to China were under 1 percent of data-center revenue, and its guidance assumes zero data-center compute revenue from China. A draft *global* licensing framework for AI chips was reported in March 2026; as of mid-October 2026, no replacement rule had been announced. Controls loosened for close partners instead: on July 10, 2026, BIS moved the United Arab Emirates into a more trusted country group and allowed its government and certain approved companies to receive advanced computing items, including chips and servers, without a license. On October 16, 2026, China reportedly proposed export controls of its own on 40 technologies, including AI.
 
 ### Worked example: reading a TPP threshold
 
@@ -736,7 +736,7 @@ Huawei's roadmap, as it presented it at Huawei Connect 2025 and 2026:
 
 Huawei's strategy is to bind together many individually weaker chips with lots of optics and power. You can see it in the numbers. The Atlas 960E SuperPoD offers 8 exaFLOPS (8,000 PFLOPS) of FP8 from 4,096 NPUs, about 8,000 ÷ 4,096 ≈ 2 PFLOPS per chip by Huawei's figures. A Vera Rubin GPU offers 17.5 PFLOPS of dense FP8, and a Vera Rubin NVL72 rack 1,260 PFLOPS. Matching 8,000 PFLOPS takes about 8,000 ÷ 1,260 ≈ 6.3 NVL72 racks, roughly 450 Rubin GPUs, against 4,096 Huawei chips. Vendors count differently (dense versus sparse, peak versus achieved), so treat this as rough, but the shape is clear: Huawei needs many times more chips for the same paper compute. More chips mean more networking, more power and more failures, but they are chips China can actually build.
 
-> **At the frontier (2026):** The chip race has become a contest of systems, not single chips. Huawei answers NVIDIA's NVL72 with SuperPoDs of thousands of NPUs and claims SuperClusters of hundreds of thousands. China's government has reportedly discouraged purchases of NVIDIA's China-market chips to support domestic suppliers, and in October 2026 it proposed export controls of its own. Meanwhile Chinese labs keep showing that efficient algorithms and low-precision training can stretch limited compute further.
+> **At the frontier (2026):** The chip race has become a contest of systems, not single chips. Huawei answers NVIDIA's NVL72 with SuperPoDs of thousands of NPUs and claims SuperClusters of hundreds of thousands. China's government has reportedly discouraged purchases of NVIDIA's China-market chips to support domestic suppliers, and in October 2026 it reportedly proposed export controls of its own. Meanwhile Chinese labs keep showing that efficient algorithms and low-precision training can stretch limited compute further.
 
 ## Geopolitics, part 3: Taiwan, the CHIPS Act and reshoring
 

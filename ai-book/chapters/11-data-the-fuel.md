@@ -418,6 +418,7 @@ Models learn whatever patterns their data contains, including unfair ones. Bias 
 - **Measurement and label bias:** what is recorded is a poor stand-in for what matters. Using "was arrested" as a label for "committed a crime" bakes in patterns of policing.
 - **Proxies:** removing a sensitive column does not remove its signal if another column stands in for it.
 - **Feedback loops:** a model's decisions shape the next round of data.
+- **Evaluation bias:** the test set or benchmark used to judge the model does not represent the people it will serve, so its failures for some groups never show up in the score. The Gender Shades study described below found that two widely used face benchmarks were 79.6 and 86.2 percent lighter-skinned faces.
 
 > **Definition — Sampling bias:** When collected data does not represent the population a model will be used on, so the model works worse for under-represented groups.
 
@@ -426,6 +427,14 @@ Models learn whatever patterns their data contains, including unfair ones. Bias 
 > **Definition — Proxy variable:** A feature that indirectly stands in for a sensitive attribute, such as a zip code standing in for race or a hobby standing in for gender.
 
 > **Definition — Feedback loop:** When a model's predictions influence the future data it is trained on, for example predictive policing that sends more patrols to an area, which records more incidents there.
+
+> **Definition — Evaluation bias:** When the data used to test a model does not represent the people or situations it will be used on, so a high score hides poor performance for groups the test barely includes.
+
+Sampling bias usually creeps in through the way data was gathered. Statisticians separate probability sampling, where every member of the population has a known chance of being picked (a random or stratified sample, Chapter 9), from nonprobability sampling, where something else decides who ends up in the data. The commonest kind is convenience sampling: using whatever is easiest to get. A clinic builds a skin-condition model from its own patients' photos, an app trains on the users who opted in, a survey counts whoever clicked the link. Two other kinds are snowball sampling, where each participant recruits the next so the data stays inside one social circle, and quota sampling, which fills a fixed number of places per group but picks people within each group however is convenient. Much of the data behind machine learning, including the web text that trains chatbots, is a convenience sample in this sense: it over-represents people who write online, in a handful of widely used languages (Chapter 19). Such data is not useless, but before trusting a model, ask who could never have ended up in its data.
+
+> **Definition — Nonprobability sampling:** Any way of collecting data in which people or items are not picked by chance with known odds, but by convenience, referral, quotas or someone's judgment. It is cheap and common, and it is where most sampling bias comes from.
+
+> **Definition — Convenience sampling:** Collecting data from whatever sources are easiest to reach, such as existing customers, volunteers or one hospital's records, instead of drawing a random sample from the population the model will serve.
 
 A worked example: a company's past records show 200 men and 200 women applying, with 60 men hired (30 percent) and 30 women hired (15 percent). A model trained to imitate past hiring will learn to favor men. Deleting the gender column does not fix it if a column like "captain of the women's chess club" or the name of a women's college remains. In 2018 Reuters reported that Amazon scrapped an experimental recruiting model after it learned to downgrade résumés containing the word "women's."
 
@@ -505,9 +514,9 @@ The legal picture as of October 2026 is mixed and unsettled:
 
 | Case or event | What happened | Status, late 2026 |
 |---|---|---|
-| Bartz v. Anthropic (US) | Judge ruled in June 2025 that training on lawfully bought books was fair use, but building a library from pirated copies was not | Settled for $1.5 billion, about $3,100 per work for roughly 482,000 works; final approval July 2026 |
+| Bartz v. Anthropic (US) | Judge ruled in June 2025 that training on lawfully bought books was fair use, but building a library from pirated copies was not | Settled for $1.5 billion, roughly $3,000 per covered book; final approval July 20, 2026 |
 | Kadrey v. Meta (US) | Judge granted Meta summary judgment (a ruling without a full trial) on training (June 2025), stressing the ruling was narrow and that market harm could win a better-argued case | Other claims continued into 2026 |
-| Thomson Reuters v. Ross (US) | Copying Westlaw legal summaries to train a competing, non-generative search tool | First appeals-court ruling on AI training, September 29, 2026: not fair use |
+| Thomson Reuters v. Ross (US) | Copying Westlaw legal summaries to train a competing, non-generative search tool | First appeals-court ruling on AI training (Third Circuit, made public at the end of September 2026): not fair use |
 | New York Times v. OpenAI and Microsoft (US) | Newspapers allege copying of millions of articles | Still pending; no trial date |
 | Getty Images v. Stability AI (UK) | Court found model weights that never stored copies are not "infringing copies" (November 2025) | Getty largely lost; appeal permitted |
 | Music labels v. Suno and Udio | Universal and Warner settled (late 2025) and moved to licensed models | Partly settled |
@@ -588,7 +597,7 @@ When real data runs short, synthetic data can help, especially where answers can
 
 ## Key terms
 
-Data, dataset, structured data, semi-structured data, unstructured data, categorical feature, token, data exhaust, Common Crawl, web crawler, web scraping, robots.txt, annotation (labeling), bounding box, segmentation mask, preference data, RL environment, gold standard, inter-annotator agreement, natural label, programmatic labeling, expert data, data cleaning, deduplication, feature engineering, one-hot encoding, standardization, TF-IDF, bucketing (binning), feature selection, database, relational database, SQL, primary key, join, vector database, data pipeline, ETL, ELT, batch and streaming processing, orchestration, data warehouse, data lake, lakehouse, data quality, datasheet (data card), sampling bias, historical bias, proxy variable, feedback loop, algorithmic fairness, PII, re-identification, GDPR, CCPA, differential privacy, federated learning, memorization, synthetic data, model collapse, copyright, fair use, TDM exception, data wall.
+Data, dataset, structured data, semi-structured data, unstructured data, categorical feature, token, data exhaust, Common Crawl, web crawler, web scraping, robots.txt, annotation (labeling), bounding box, segmentation mask, preference data, RL environment, gold standard, inter-annotator agreement, natural label, programmatic labeling, expert data, data cleaning, deduplication, feature engineering, one-hot encoding, standardization, TF-IDF, bucketing (binning), feature selection, database, relational database, SQL, primary key, join, vector database, data pipeline, ETL, ELT, batch and streaming processing, orchestration, data warehouse, data lake, lakehouse, data quality, datasheet (data card), sampling bias, nonprobability sampling, convenience sampling, historical bias, proxy variable, feedback loop, evaluation bias, algorithmic fairness, PII, re-identification, GDPR, CCPA, differential privacy, federated learning, memorization, synthetic data, model collapse, copyright, fair use, TDM exception, data wall.
 
 ## Exercises
 

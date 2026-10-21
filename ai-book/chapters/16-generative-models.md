@@ -59,6 +59,10 @@ Working directly with 786,432 numbers is clumsy. Most generative models therefor
 
 > **Analogy:** Latent space is like the character creator in a video game. Instead of painting every pixel of a face, you set sliders for jaw width, eye color and age. Every slider setting gives a plausible face, and sliding slowly morphs one face into another.
 
+Real latent spaces are rarely that tidy. When each direction controls one separate factor, so that one slider changes only the age and another only the lighting, researchers call the representation disentangled. Learned latent spaces are usually only partly disentangled: push along one direction and the face may get older and change expression at the same time.
+
+> **Definition — Disentangled representation:** An internal representation in which separate directions or numbers correspond to separate underlying factors of the data, such as pose, lighting and identity, so each can be changed without disturbing the others.
+
 ## Learning without labels: self-supervised and contrastive learning
 
 Where does the training signal come from? Nobody has labeled billions of images with the "correct" picture to generate. The trick that unlocked modern AI is to make the data label itself.
@@ -70,6 +74,10 @@ In self-supervised learning, the model hides part of an example from itself and 
 > **Definition — Self-supervised learning:** Training where the labels come from the data itself, for example by hiding the next word or a patch of an image and predicting it. No human has to annotate anything, which is why the whole internet can serve as training material.
 
 This produces the strong representations (embeddings) that generators build on, and, as you will see later, "fill in the blanks" can itself become a way to generate text.
+
+These made-up exercises are called pretext tasks. Nobody needs a model that can repaint hidden patches; the point is that solving the puzzle forces it to learn what the world looks like, and that knowledge is what gets reused. Before masking took over, vision researchers tried many such puzzles, for example cutting a photo into shuffled tiles and asking the network to solve the jigsaw (2016), or rotating a photo and asking which way up it was (2018). You can only tell that a picture is upside down if you know what a right-way-up cat looks like.
+
+> **Definition — Pretext task:** A made-up training exercise, such as filling in hidden words or guessing how far an image was rotated, that a model solves not for its own sake but because solving it teaches representations that are useful for other tasks.
 
 ### Contrastive learning and CLIP
 
@@ -647,7 +655,7 @@ The winner for images and video was diffusion. During training you bury real ima
 The same ideas power editing (inpainting, ControlNet, LoRA, instruction editing), video (denoising spacetime patches together so frames agree), and even an experimental way to write text by unmasking many words at once. In 2026 these generators are merging with chat models, so the assistant you talk to can plan an image, draw it and edit it in conversation.
 
 ## Key terms
-Discriminative model, Generative model, Probability distribution, Sampling, Manifold hypothesis, Latent space, Self-supervised learning, Contrastive learning, CLIP (Contrastive Language–Image Pretraining), Zero-shot, SigLIP, Autoencoder, Encoder, Decoder, Reconstruction loss, VAE (variational autoencoder), Reparameterization trick, GAN (generative adversarial network), Generator, Discriminator, Mode collapse, Autoregressive model, Image tokenizer (VQ-VAE), Diffusion model, Gaussian noise, Forward process (noising), Timestep, Noise schedule, Denoiser (noise-prediction network), Reverse process (denoising), Seed, Sampler (scheduler), DDIM (denoising diffusion implicit model), U-Net, Text encoder, Cross-attention, Classifier-free guidance (CFG), Guidance scale, Negative prompt, Latent diffusion, Stable Diffusion, DiT (Diffusion Transformer), Flow matching, Rectified flow, Step distillation, Inpainting and outpainting, Image-to-image (img2img), ControlNet, LoRA (low-rank adaptation), Instruction-based editing, Spacetime patch, Video VAE (3D VAE), Temporal consistency, Diffusion language model (dLLM), Masked diffusion, Multimodal model, Late fusion, Early fusion, World model, JEPA (joint-embedding predictive architecture), Energy-based model, Partition function, Boltzmann machine, Deep belief network (DBN), Greedy layer-wise pretraining, Normalizing flow, Score-based model, FID (Fréchet Inception Distance), CLIP score
+Discriminative model, Generative model, Probability distribution, Sampling, Manifold hypothesis, Latent space, Disentangled representation, Self-supervised learning, Pretext task, Contrastive learning, CLIP (Contrastive Language–Image Pretraining), Zero-shot, SigLIP, Autoencoder, Encoder, Decoder, Reconstruction loss, VAE (variational autoencoder), Reparameterization trick, GAN (generative adversarial network), Generator, Discriminator, Mode collapse, Autoregressive model, Image tokenizer (VQ-VAE), Diffusion model, Gaussian noise, Forward process (noising), Timestep, Noise schedule, Denoiser (noise-prediction network), Reverse process (denoising), Seed, Sampler (scheduler), DDIM (denoising diffusion implicit model), U-Net, Text encoder, Cross-attention, Classifier-free guidance (CFG), Guidance scale, Negative prompt, Latent diffusion, Stable Diffusion, DiT (Diffusion Transformer), Flow matching, Rectified flow, Step distillation, Inpainting and outpainting, Image-to-image (img2img), ControlNet, LoRA (low-rank adaptation), Instruction-based editing, Spacetime patch, Video VAE (3D VAE), Temporal consistency, Diffusion language model (dLLM), Masked diffusion, Multimodal model, Late fusion, Early fusion, World model, JEPA (joint-embedding predictive architecture), Energy-based model, Partition function, Boltzmann machine, Deep belief network (DBN), Greedy layer-wise pretraining, Normalizing flow, Score-based model, FID (Fréchet Inception Distance), CLIP score
 
 ## Exercises
 

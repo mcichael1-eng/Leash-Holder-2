@@ -100,7 +100,7 @@ A FLOP is one floating-point operation (one multiply or one add): a count of wor
 
 | Training run | Estimated total compute | Source |
 |---|---|---|
-| GPT-3 (2020) | about `3.2 × 10^23` | 6ND from published size and tokens |
+| GPT-3 (2020) | about `3.1 × 10^23` | 6ND from published size and tokens (6 × 175 billion × 300 billion); Epoch AI lists `3.14 × 10^23` |
 | DeepSeek-V4-Pro (2026) | about `9.7 × 10^24` | 6ND with 49 billion active parameters and about 33 trillion tokens |
 | GPT-4 (2023) | about `2.1 × 10^25` | Epoch AI estimate |
 | Llama 3.1 405B (2024) | about `3.8 × 10^25` | Meta |
@@ -176,7 +176,7 @@ Vendor peak figures as of October 2026, from the research behind Chapters 32 to 
 | NVIDIA H200 (2024) | 141 GB HBM3E | 4.8 TB/s | same as H100 | More and faster memory |
 | NVIDIA B200 (2024–25) | 192 GB HBM3E | 8 TB/s | | Two dies, 208 billion transistors; about 1 kW or more |
 | NVIDIA B300 (late 2025) | 288 GB HBM3E | 8 TB/s | about 15 PFLOPS dense FP4 | Blackwell Ultra |
-| NVIDIA Rubin (2026) | 288 GB HBM4 | about 19–22 TB/s | 35 PFLOPS dense NVFP4; 17.5 PFLOPS FP8; 4 PFLOPS BF16 | 336 billion transistors, TSMC N3 |
+| NVIDIA Rubin (2026) | 288 GB HBM4 | about 19–22 TB/s | 35 PFLOPS dense NVFP4; 17.5 PFLOPS FP8; 4 PFLOPS BF16 | 336 billion transistors, TSMC N3 (reported) |
 | AMD MI300X (2023) | 192 GB HBM3 | 5.3 TB/s | | Chiplet design |
 | AMD MI355X (2025) | 288 GB HBM3E | 8 TB/s | 10.1 PFLOPS dense MXFP4 | 1,400 W, liquid-cooled |
 | AMD MI455X (2026) | 432 GB HBM4 | about 19.6 TB/s (up to 23.3 cited) | about 40 PFLOPS dense FP4; about 20 PFLOPS FP8 | In the Helios rack |
@@ -185,7 +185,7 @@ Vendor peak figures as of October 2026, from the research behind Chapters 32 to 
 | Google TPU 8t (2026) | 216 GB HBM | 6.5 TB/s | 12.6 PFLOPS FP4 | Training chip; 128 MB on-chip SRAM |
 | Google TPU 8i (2026) | 288 GB HBM | 8.6 TB/s | 10.1 PFLOPS FP4 | Inference chip; 384 MB on-chip SRAM |
 | AWS Trainium3 (2025) | 144 GB HBM3E | 4.9 TB/s | about 2.5 PFLOPS FP8 | 3 nm |
-| Microsoft Maia 200 (2026, reported) | 216 GB HBM3E | about 7 TB/s | about 10 PFLOPS FP4 | 272 MB on-die SRAM |
+| Microsoft Maia 200 (2026) | 216 GB HBM3E | about 7 TB/s | more than 10 PFLOPS FP4 | 272 MB on-die SRAM |
 | Groq 3 LPU (2026) | about 500 MB SRAM, no HBM | about 150 TB/s (SRAM) | about 1.2 PFLOPS FP8 | 256 per LPX rack |
 | Cerebras WSE-3 | 44 GB on-chip SRAM | | | One wafer: 46,225 mm², 4 trillion transistors |
 

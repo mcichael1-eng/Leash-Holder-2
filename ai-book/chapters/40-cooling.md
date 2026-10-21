@@ -552,7 +552,9 @@ pie title Modern hyperscale AI site, PUE about 1.1, illustrative
 
 *Figure 40.8: At PUE 1.1, about 91% of energy reaches the IT equipment (1 ÷ 1.1 ≈ 0.91).*
 
-What are typical values? Industry surveys have put the average PUE at roughly 1.5–1.6 for years, while leading hyperscale sites run around 1.1. Google, for example, reports a fleet-wide PUE of about 1.09, against an industry average it puts at about 1.56 (as reported). The progress since PUE 2.0 came from containment, warmer supply temperatures, economizers, efficient UPS systems and, now, liquid cooling.
+What are typical values? Industry surveys have put the average PUE at roughly 1.5–1.6 for years, while leading hyperscale sites run around 1.1. Google, for example, reports a fleet-wide PUE of 1.09 for 2025 in its 2026 environmental report, against an industry average of about 1.54 from the Uptime Institute's 2025 survey. The progress since PUE 2.0 came from containment, warmer supply temperatures, economizers, efficient UPS systems and, now, liquid cooling.
+
+A newer lever is letting AI run the cooling plant itself. A plant has many knobs, and the best setting is hard to guess: with ten cooling towers and the building at 40% load, should all ten run at 40% speed, or four flat out and six off? The answer depends on the weather, the load and which machines are where, and all of those change daily. In 2016 DeepMind reported a system trained on data from thousands of sensors in a Google data center (temperatures, power, pump speeds, settings), with neural networks that predicted PUE and, as a safety check, temperatures and pressures over the next hour. In tests it cut the energy used for cooling by 40%, which shrank the total PUE overhead by about 15%. On a site at PUE 1.12, a 15% smaller overhead is 0.12 × 0.85 ≈ 0.10, a PUE of about 1.10. The 2025 edition of *The Data Center as a Computer* notes that AI-controlled cooling is still not common, despite those early results.
 
 ### What PUE hides
 
@@ -580,6 +582,8 @@ In 2007, Google's Luiz André Barroso and Urs Hölzle pointed out two facts abou
 **Worked example.** A server draws 1,000 W at full load and 500 W when idle, rising in a straight line in between. At 30% load it draws 500 + 0.3 × 500 = 650 W. It does 30% of its maximum work for 65% of its maximum power, so each unit of work costs 0.65 ÷ 0.3 ≈ 2.2 times as much energy as at full load. A perfectly proportional server would draw 300 W.
 
 Hardware has narrowed the gap since 2007, but the idea still shapes AI operations. Training clusters run near full load, so idle power matters little there, except in the moments when every GPU waits on the network (Chapter 37). Inference fleets are sized for peak demand and follow the daily rhythm of their users, so in the small hours many chips are partly idle yet still drawing power. That is one more reason providers fill quiet hours with discounted batch work (Chapter 43): much of the power is being drawn anyway.
+
+Why not simply switch idle machines off? Hennessy and Patterson's architecture textbook lists "turning off hardware during periods of low activity improves the cost-performance of a WSC" as a fallacy. A machine in deep sleep takes time and energy to wake, so a fleet that powers down cannot absorb a sudden rush of users, and most of a server's lifetime cost is its purchase price (Chapter 43), paid whether it is on or off. Modes that keep a chip working, only slower (DVFS, Chapter 39), suit data centers better than deep sleep, and so does filling the quiet hours with useful work.
 
 > **Watch out:** "Low utilization only wastes money, not energy." Because of idle power, a half-busy fleet uses far more energy per answer than a busy one. Keeping chips busy is an energy decision as well as a financial one.
 
@@ -737,9 +741,9 @@ Put it all together and the 2026 frontier AI site looks like this: direct-to-chi
 | Site or company | Cooling approach | Notable figures (with source) |
 |---|---|---|
 | Microsoft Fairwater, Wisconsin | Closed-loop liquid cooling for more than 90% of capacity, filled once at construction | "Second-largest water-cooled chiller plant on the planet"; 172 twenty-foot fans; 72.6 miles of mechanical piping (Microsoft, September 2025) |
-| Microsoft Fairwater, Atlanta | Liquid-cooled GB200 NVL72 racks | about 140 kW per rack (reported) |
+| Microsoft Fairwater, Atlanta | Liquid-cooled GB200 and GB300 NVL72 racks | about 140 kW per rack (Microsoft, November 2025) |
 | AWS, including Project Rainier, Indiana | Mix of designs tuned for water efficiency | water efficiency 0.15 L per kWh versus a quoted 0.375 industry average (Amazon, 2025) |
-| Google | Fleet tuned for low PUE; air-cooled designs at water-scarce sites | fleet PUE about 1.09 (reported); air-cooled sites at Mesa, Arizona and Canelones, Uruguay (reported) |
+| Google | Fleet tuned for low PUE; air-cooled designs at water-scarce sites | fleet PUE 1.09 in 2025 (Google, 2026); air-cooled sites at Mesa, Arizona and Canelones, Uruguay (reported) |
 | NVIDIA reference designs | Direct-to-chip liquid, moving toward 600 kW and 1 MW racks | Kyber racks around 600 kW planned for 2027; designs for more than 1 MW per rack (NVIDIA) |
 
 *Table 40.4: Cooling at frontier AI sites, as of late 2026. "Reported" figures come from secondary sources rather than the companies' own documents.*
@@ -826,7 +830,7 @@ Heat, BTU (British thermal unit), Ton of cooling (refrigeration ton), Junction t
 
 - **ASHRAE TC 9.9, *Thermal Guidelines for Data Processing Environments*.** The industry reference for allowable air temperatures and liquid-cooling water classes; summaries are widely available online.
 - **The Green Grid's white papers on PUE, WUE, CUE and ERE (thegreengrid.org).** The original definitions of the metrics, including the fine print on boundaries and measurement.
-- **Barroso, Hölzle and Ranganathan, *The Datacenter as a Computer* (free online).** Google engineers' classic book; its chapters on power and cooling explain the economics behind PUE.
+- **Barroso, Hölzle and Ranganathan, *The Data Center as a Computer* (4th edition, Springer, December 2025; free open-access download).** Google engineers' classic book; its chapters on power, cooling and sustainability explain the economics behind PUE.
 - **Microsoft, "Inside the world's most powerful AI datacenter" (September 2025).** A readable tour of the Fairwater site's closed-loop liquid cooling and chiller plant.
 - **Google Cloud blog, "Measuring the environmental impact of AI inference" (August 2025).** How Google measured energy, water and carbon per Gemini prompt, with its methodology and caveats.
 - **Epoch AI, "How much energy does ChatGPT use?" (February 2025).** A transparent, back-of-the-envelope estimate that shows how assumptions drive per-query numbers.

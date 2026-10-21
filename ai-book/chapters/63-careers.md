@@ -89,7 +89,7 @@ Work through the arithmetic. The department called AI Research and Engineering h
 
 > **Try it:** Open the careers page of an AI company whose product you use (Anthropic's and OpenAI's job boards are both public). Spend five minutes counting the open roles in three departments of your choice and divide each by the total. Compare your shares with Figure 63.1 and Table 63.1, and note which departments have grown or shrunk since October 2026.
 
-> **At the frontier (2026):** The labs' biggest hiring categories in late 2026 are selling and deploying, not inventing. OpenAI runs a dedicated Forward Deployed Engineering department, Anthropic's Applied AI department had 61 open roles, and both labs list jobs for data-center technicians, electrical engineers and community-relations managers, work that hardly appeared on AI-lab job boards a few years ago.
+> **At the frontier (2026):** The labs' biggest hiring categories in late 2026 are selling and deploying, not inventing. OpenAI runs a dedicated Forward Deployed Engineering department, Anthropic's Applied AI department had 61 open roles, and the two boards between them list data-center electrical engineers (both labs), site and networking technicians (OpenAI) and community-engagement managers (Anthropic), work that hardly appeared on AI-lab job boards a few years ago.
 
 ## How to read AI pay without being fooled
 
@@ -198,7 +198,7 @@ Why would a company pay an engineer $850,000 in base salary? Because of leverage
 
 Here is a worked example. The research firm Sacra estimates that OpenAI's inference costs, the cost of running its models for users, will be about $14.1 billion in 2026 (a secondary estimate). If a team of performance engineers made serving 1% more efficient, the saving would be about 1% × $14.1 billion = $141 million a year. A 10% improvement would be worth about $1.4 billion a year. Against numbers like that, even very high salaries for the few people who can deliver such gains are a bargain for the employer, which is why posted ranges for performance and inference engineers at Anthropic reach $850K base (Anthropic job board, Oct 2026).
 
-Research works the same way. A better post-training recipe changes the behavior of a model that, in ChatGPT's case, reached about 900 million people a week in February 2026 and was reported above a billion later in the year. Scarcity adds to the effect. 80,000 Hours, a career-advice nonprofit, estimated that only about 300 people (a range of 76 to 536 full-time equivalents) were working on technical AI-safety research in 2022, so the pool of experienced people in some specialties is tiny.
+Research works the same way. A better post-training recipe changes the behavior of a model that, in ChatGPT's case, reached about 900 million people a week in February 2026 and was reported in July to be close to a billion. Scarcity adds to the effect. 80,000 Hours, a career-advice nonprofit, estimated that only about 300 people (a range of 76 to 536 full-time equivalents) were working on technical AI-safety research in 2022, so the pool of experienced people in some specialties is tiny.
 
 > **Analogy:** A kernel or performance engineer is like a Formula 1 mechanic. Shaving a tenth of a second off a lap sounds trivial, but over a whole season it decides the championship. Shaving a few percent off the cost of running tens of thousands of chips works the same way, and teams pay accordingly.
 
@@ -247,7 +247,7 @@ Because research is so competitive, funded on-ramps matter. MATS, a research-men
 
 > **Analogy:** A research engineer and a research scientist are like a chef and a recipe inventor in a test kitchen. The inventor imagines a new dish; the chef works out how to cook it for a thousand people without burning anything. At frontier labs most people do some of both.
 
-> **At the frontier (2026):** Post-training and reinforcement learning, the stages that produced most of the 2024 to 2026 gains in reasoning, coding and agents (Chapter 21), were the most-posted research specialty on Anthropic's job board in October 2026, and some of those roles carried the highest posted ranges in the whole market.
+> **At the frontier (2026):** Post-training and reinforcement learning, the stages that produced most of the 2024 to 2026 gains in reasoning, coding and agents (Chapter 21), were the most-posted research specialty on Anthropic's job board in October 2026, and many of those roles carried the board's highest posted range, $500K–$850K base.
 
 ### Family 2: Engineering
 
@@ -387,7 +387,7 @@ How fast is forward-deployed engineering growing? Solid public numbers are scarc
 
 ### Family 7: Safety, policy and trust
 
-Every powerful technology needs people who decide the rules, enforce them and check that they are working. In AI this family spans company policy teams, investigators who catch misuse, auditors, and government bodies that test models. Their reference points include voluntary frameworks such as the US NIST AI Risk Management Framework and laws such as the European Union's risk-based AI Act, whose obligations phase in from 2025 onward (Chapter 59 covers both, including proposed delays). Most roles here value law, policy, investigation and domain expertise more than programming, although technical literacy is increasingly expected.
+Every powerful technology needs people who decide the rules, enforce them and check that they are working. In AI this family spans company policy teams, investigators who catch misuse, auditors, and government bodies that test models. Their reference points include voluntary frameworks such as the US NIST AI Risk Management Framework and laws such as the European Union's risk-based AI Act, whose obligations phase in from 2025 onward (Chapter 59 covers both, including the delays the EU adopted in 2026). Most roles here value law, policy, investigation and domain expertise more than programming, although technical literacy is increasingly expected.
 
 > **Definition — AI governance:** The policies, processes and controls an organization uses to manage the risks of AI and comply with the law, from an inventory of AI systems to approval rules and audits.
 

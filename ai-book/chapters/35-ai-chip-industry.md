@@ -107,7 +107,7 @@ timeline
     2022 : Hopper H100 : FP8 and the Transformer Engine
     2024 : Blackwell B200 and GB200 : two dies as one GPU, FP4, NVL72 rack
     2025 : Blackwell Ultra B300 and GB300 : 288 GB HBM3E
-    2026 : Vera Rubin : HBM4, TSMC N3, six new chips
+    2026 : Vera Rubin : HBM4, six new chips, reportedly TSMC N3
     2027 : Rubin Ultra : Kyber rack, about 600 kW
     2028 : Feynman : previewed, details reported only
 ```
@@ -122,8 +122,8 @@ timeline
 | Hopper refresh (2024) | H200 | 141 GB HBM3E, 4.8 TB/s | Same compute, more and faster memory |
 | Blackwell (2024–25) | B200 / GB200 | 192 GB HBM3E, 8 TB/s | Two reticle-size dies acting as one GPU; 208 billion transistors; FP4; NVLink 5 at 1.8 TB/s; the GB200 NVL72 rack |
 | Blackwell Ultra (2H 2025) | B300 / GB300 | 288 GB HBM3E (12-high), 8 TB/s | About 15 PF dense FP4 per GPU; GB300 NVL72 rack |
-| Vera Rubin (2026) | Rubin GPU + Vera CPU | 288 GB HBM4 | 336 billion transistors on TSMC N3; per GPU: 35 PF NVFP4 dense (training), 50 PF NVFP4 sparse (inference), 17.5 PF FP8 dense, 4 PF BF16 dense |
-| Rubin Ultra (2H 2027) | Kyber rack | HBM4E | Plan from GTC 2025: 15 EF FP4 inference and 5 EF FP8 per rack, about 600 kW |
+| Vera Rubin (2026) | Rubin GPU + Vera CPU | 288 GB HBM4 | 336 billion transistors on TSMC N3 (reported); per GPU: 35 PF NVFP4 dense (training), 50 PF NVFP4 sparse (inference), 17.5 PF FP8 dense, 4 PF BF16 dense |
+| Rubin Ultra (2H 2027) | Kyber rack | HBM4E | Plan from GTC 2025: 15 EF FP4 inference and 5 EF FP8 per rack, about 600 kW. GTC 2026 update, as reported: 144 GPU packages per rack ("NVL144"), each with four compute dies and about 1 TB of HBM4E |
 | Feynman (2028) | — | "Custom HBM" | Previewed at GTC 2026; reported to use 3D die stacking, TSMC's A16 process, a new "Rosa" CPU and a new LPU |
 
 *Table 35.1: NVIDIA's data-center generations, using vendor peak figures. Rubin Ultra and Feynman are plans, and the Feynman details are press reports.*
@@ -258,23 +258,23 @@ AMD is the only other company selling high-end AI GPUs to all comers at large sc
 |---|---|---|---|---|
 | MI300X (Dec 2023) | 192 GB HBM3 | 5.3 TB/s | — | 153 billion transistors in a chiplet design |
 | MI325X (late 2024) | 256 GB HBM3E | 6 TB/s | — | Memory upgrade |
-| MI355X (2H 2025, CDNA 4) | 288 GB HBM3E | 8 TB/s | 10.1 PF dense MXFP4 (20.1 sparse) | 1,400 W, liquid-cooled |
+| MI355X (2H 2025, CDNA 4) | 288 GB HBM3E | 8 TB/s | 10.1 PF dense MXFP4 (AMD lists no sparse FP4 figure) | 1,400 W, liquid-cooled; 185 billion transistors |
 | MI455X (2026, CDNA 5) | 432 GB HBM4 | 19.6 TB/s (a later AMD briefing cited up to 23.3) | about 40 PF dense FP4; about 20 PF FP8 | 3.6 TB/s scale-up; TSMC 2 nm and 3 nm chiplets |
-| MI430X (2026) | — | — | — | Aimed at mixed scientific (FP64) and AI work |
+| MI430X (AMD expects 2027) | 432 GB HBM4 | — | 288 TFLOPS FP64 | Aimed at mixed scientific (FP64) and AI work |
 | MI440X (2026) | — | — | — | Sold in an 8-GPU server |
 | MI500 (2027, CDNA 6) | HBM4E | — | — | TSMC 2 nm |
 
 *Table 35.3: AMD Instinct accelerators, vendor figures. Dashes mean the figure is not in this book's sources.*
 
-AMD's 2026 flagship is not a chip but a rack. **Helios** combines 72 MI455X GPUs with AMD's EPYC "Venice" CPUs (2 nm, up to 256 Zen 6 cores) and Pensando "Vulcano" network cards, in Meta's Open Rack Wide format, with the GPUs joined by UALink carried over Ethernet (Chapter 34). Rack totals: 2.9 EF dense FP4, 1.4 EF FP8, 31 TB of HBM4 and about 1.4 PB/s of memory bandwidth. Shipments begin in the second half of 2026 and ramp through 2027. AMD claims up to 30% more tokens per dollar than a Vera Rubin NVL72; that is AMD's own claim, not an independent test.
+AMD's 2026 flagship is not a chip but a rack. **Helios** combines 72 MI455X GPUs with AMD's EPYC "Venice" CPUs (2 nm, up to 256 Zen 6 cores) and Pensando "Vulcano" network cards, in Meta's Open Rack Wide format, with the GPUs joined by UALink carried over Ethernet (Chapter 34). Rack totals: 2.9 EF dense FP4, 1.4 EF FP8, 31 TB of HBM4 and about 1.4–1.7 PB/s of memory bandwidth (AMD's pages give both 19.6 and up to 23.3 TB/s per GPU). Shipments begin in the second half of 2026 and ramp through 2027. AMD claims up to 30% more tokens per dollar than a Vera Rubin NVL72; that is AMD's own claim, not an independent test.
 
 **Worked example: Helios versus Vera Rubin NVL72.**
 
 | Rack | HBM | Dense FP4 | FP8 | HBM bandwidth |
 |---|---|---|---|---|
-| AMD Helios | 31 TB | 2.9 EF | 1.4 EF | about 1.4 PB/s |
+| AMD Helios | 31 TB | 2.9 EF | 1.4 EF | about 1.4–1.7 PB/s |
 | NVIDIA Vera Rubin NVL72 | 20.7 TB | 2.52 EF (NVFP4) | 1.26 EF | about 1.4 PB/s |
-| Ratio | about 1.5× | about 1.15× | about 1.1× | about equal |
+| Ratio | about 1.5× | about 1.15× | about 1.1× | about equal to 1.2× |
 
 *Table 35.4: Two 72-GPU racks of 2026 compared using vendor figures. Formats differ slightly (AMD's FP4 versus NVIDIA's NVFP4).*
 
@@ -329,16 +329,16 @@ Amazon's chips come from Annapurna Labs, a chip company it bought in 2015.
 > **Definition — Trainium and Inferentia:** Amazon Web Services' in-house AI chips. Trainium is built mainly for training (and increasingly for inference); Inferentia is built for inference. Both are programmed through AWS's Neuron software kit.
 
 - **Trainium2** comes in "UltraServers" of 64 chips. **Project Rainier**, a cluster in Indiana built for Anthropic, was switched on in October 2025 with about half a million Trainium2 chips, according to Amazon.
-- **Trainium3**, generally available in December 2025, is AWS's first 3 nm AI chip: 144 GB of HBM3E at 4.9 TB/s per chip. A Trn3 UltraServer joins **144 chips** for **362 PF of MXFP8**, 20.7 TB of HBM3E and 706 TB/s of aggregate bandwidth, through AWS's NeuronSwitch fabric. AWS claims up to 4.4 times the compute and 4 times the energy efficiency of Trn2 UltraServers, and has cited "UltraClusters" of up to a million chips.
+- **Trainium3**, generally available in December 2025, is AWS's first 3 nm AI chip: 144 GB of HBM3E at 4.9 TB/s per chip. A Trn3 UltraServer joins **144 chips** for **362 PF of MXFP8**, 20.7 TB of HBM3E and 706 TB/s of aggregate bandwidth, through AWS's NeuronSwitch fabric. AWS claims up to 4.4 times the compute and 4 times the energy efficiency of Trn2 UltraServers, and has said thousands of UltraServers can be linked into clusters of up to a million Trainium3 chips.
 - **Trainium4** will support NVIDIA's NVLink Fusion, a notable sign that even rivals want to plug into NVIDIA's fabric.
 
 Check the per-chip numbers yourself: 362 PF ÷ 144 ≈ 2.5 PF of FP8 per chip, and 20.7 TB ÷ 144 ≈ 144 GB per chip. They match.
 
-In April 2026, Anthropic and Amazon announced an agreement for **up to 5 GW**, with nearly 1 GW of Trainium2 and Trainium3 capacity online by the end of 2026; reports put Anthropic's commitment at more than $100 billion over ten years.
+In April 2026, Anthropic and Amazon announced an agreement for **up to 5 GW**, with nearly 1 GW of Trainium2 and Trainium3 capacity online by the end of 2026; Anthropic said it would commit more than $100 billion to AWS over ten years.
 
 ## Microsoft, Meta, OpenAI and Intel
 
-**Microsoft Maia 200** (January 2026) is made on TSMC's 3 nm process. Reported specs: 216 GB of HBM3E at 7 TB/s, 272 MB of on-die SRAM, about 10 PF of FP4 and about 5 PF of FP8, with an Ethernet-based scale-up network reaching up to 6,144 accelerators. Microsoft deployed it first in Iowa, then Arizona, to run Microsoft 365 Copilot and OpenAI models, and claims 30% better performance per dollar than its existing fleet. A successor has been reported but not confirmed.
+**Microsoft Maia 200** (January 2026) is made on TSMC's 3 nm process. Microsoft's published specs: more than 140 billion transistors, 216 GB of HBM3E at 7 TB/s, 272 MB of on-die SRAM, more than 10 PF of FP4 and more than 5 PF of FP8 within 750 W, with an Ethernet-based scale-up network reaching up to 6,144 accelerators. Microsoft deployed it first in Iowa, with Arizona next, to run Microsoft 365 Copilot and OpenAI models, and claims 30% better performance per dollar than its existing fleet. A successor has been reported but not confirmed.
 
 **Meta's MTIA** chips are RISC-V-based inference accelerators, built first for the recommendation and ranking models behind Facebook and Instagram feeds (Chapter 51). A 2025 paper at ISCA, a top computer-architecture conference, reported 44% lower total cost of ownership than GPUs on specific inference tasks. In fall 2025 Meta announced it was acquiring Rivos, a RISC-V chip startup reportedly valued around $2 billion, to speed up MTIA, including a push toward training.
 
@@ -387,14 +387,14 @@ Here are the flagship accelerators of 2026 in one table. Read it with the warnin
 |---|---|---|---|---|---|
 | Rubin | NVIDIA | 288 GB HBM4 | 19.2 TB/s | 35 PF NVFP4 dense; 17.5 PF FP8 | 72 per NVL72 |
 | B300 | NVIDIA | 288 GB HBM3E | 8 TB/s | about 15 PF FP4 dense | 72 per NVL72 |
-| MI455X | AMD | 432 GB HBM4 | 19.6 TB/s | about 40 PF FP4 dense; about 20 PF FP8 | 72 per Helios |
+| MI455X | AMD | 432 GB HBM4 | 19.6–23.3 TB/s | about 40 PF FP4 dense; about 20 PF FP8 | 72 per Helios |
 | MI355X | AMD | 288 GB HBM3E | 8 TB/s | 10.1 PF MXFP4 dense | 8-GPU servers |
 | TPU 8t | Google | 216 GB HBM | 6.5 TB/s | 12.6 PF FP4 | 9,600 per superpod |
 | TPU 8i | Google | 288 GB HBM | 8.6 TB/s | 10.1 PF FP4 | 1,152 |
 | Ironwood | Google | 192 GB HBM3E | 7.37 TB/s | 4.6 PF FP8 | 9,216 per pod |
 | Trainium3 | AWS | 144 GB HBM3E | 4.9 TB/s | about 2.5 PF MXFP8 | 144 per UltraServer |
-| Maia 200 (reported) | Microsoft | 216 GB HBM3E | 7 TB/s | about 10 PF FP4; about 5 PF FP8 | up to 6,144 |
-| Groq 3 LPU | NVIDIA (Groq license) | about 0.5 GB SRAM | about 150 TB/s | about 1.2 PF FP8 | 256 per LPX rack |
+| Maia 200 | Microsoft | 216 GB HBM3E | 7 TB/s | more than 10 PF FP4; more than 5 PF FP8 | up to 6,144 |
+| Groq 3 LPU | NVIDIA (Groq license) | about 0.5 GB SRAM | about 150 TB/s | about 1.2 PF FP8 (reported) | 256 per LPX rack |
 | WSE-3 | Cerebras | 44 GB SRAM | (on-wafer) | about 125 PF peak (sparse FP16, vendor) | one wafer per system |
 
 *Table 35.7: 2026 flagship accelerators, using vendor peak figures. The precisions, sparsity assumptions and domain types differ, so this table is a map, not a ranking.*
@@ -446,7 +446,7 @@ This is the whole trade-off in one picture. SRAM designs can deliver thousands o
 
 | Company | Core bet | Where it shines | What it gives up | Status, late 2026 |
 |---|---|---|---|---|
-| Cerebras | Wafer-scale chip: 46,225 mm², 4 trillion transistors, 900,000 cores, 44 GB SRAM (WSE-3) | Very fast single-user inference, thousands of tokens per second | Capacity per wafer is small for the largest models; specialized systems and a smaller software ecosystem | Vendor lists newer WSE-3T and CS-4 systems; OpenAI reportedly signed for 750 MW of Cerebras capacity in January 2026 |
+| Cerebras | Wafer-scale chip: 46,225 mm², 4 trillion transistors, 900,000 cores, 44 GB SRAM (WSE-3) | Very fast single-user inference, thousands of tokens per second | Capacity per wafer is small for the largest models; specialized systems and a smaller software ecosystem | In August 2026 Cerebras announced the CS-4, a rack of three WSE-3T wafers that it rates at 750 PF in total (a vendor figure); OpenAI reportedly signed for 750 MW of Cerebras capacity in January 2026 |
 | Groq | SRAM-only, compiler-scheduled LPU | Low, predictable latency for decode | Hundreds of chips per large model; little memory for long contexts | Technology licensed to NVIDIA (about $20B reported) and sold as Groq 3 LPX; GroqCloud still runs |
 | SambaNova | Reconfigurable dataflow (SN40L) with three memory tiers: SRAM, HBM and DDR | Hosting many models at once and switching between them quickly | Competes with GPUs on general workloads with a far smaller ecosystem | Intel invested in 2026 |
 | Etched | Sohu, an ASIC hard-wired for transformer inference | Potentially high efficiency if transformers stay dominant | Useless for architectures that are not transformers (state-space models, new hybrids; see Chapter 17) | Little independent public performance data in this book's sources |
@@ -543,10 +543,12 @@ From September 2025 onward, AI labs signed chip deals measured not in chips but 
 | Nov 2025 | Anthropic–Microsoft–NVIDIA | About $30B of Azure compute, up to 1 GW of NVIDIA systems; NVIDIA and Microsoft to invest up to $10B and $5B | Figures reported |
 | Dec 2025 | NVIDIA–Groq | Non-exclusive license of Groq's inference technology and hiring of its leaders | Price (about $20B) reported |
 | Jan 2026 | OpenAI–Cerebras | 750 MW plus an option on 1.25 GW, 2026–2028 | Reported |
+| Feb 2026 | Meta–AMD | Up to 6 GW of AMD Instinct GPUs over several generations; the first gigawatt, a custom MI450-based GPU in Helios racks, ships from 2H 2026 | Announced |
 | Apr 2026 | Anthropic–Google–Broadcom | "Multiple gigawatts" of next-generation TPUs from 2027 | Announced; about 3.5 GW implied by a filing (reported) |
-| Apr 2026 | Anthropic–Amazon | Up to 5 GW; nearly 1 GW of Trainium online by end of 2026 | Announced; dollar figure reported |
+| Apr 2026 | Anthropic–Amazon | Up to 5 GW; nearly 1 GW of Trainium online by end of 2026 | Announced; Anthropic says more than $100B to AWS over ten years |
+| Jul 2026 | Anthropic–AMD | Up to 2 GW of MI450-series GPUs in Helios racks, first gigawatt from 1H 2027; AMD to invest up to $5B in Anthropic | Announced |
 
-*Table 35.10: Major AI chip and compute deals, September 2025 to April 2026, with how firm each detail is.*
+*Table 35.10: Major AI chip and compute deals, September 2025 to July 2026, with how firm each detail is.*
 
 > **Definition — Letter of intent:** A document stating that two parties plan to make a deal on certain terms, which is not yet a binding contract. Several headline AI compute "deals" began as letters of intent.
 
@@ -579,7 +581,7 @@ flowchart LR
 
 ### China and export controls, briefly
 
-US export controls bar NVIDIA's most advanced chips from China. A January 2026 rule allowed case-by-case licenses for H200-class chips, but China reportedly restricted imports; in NVIDIA's quarter ending July 2026, H200 sales to China were under 1% of data-center revenue, and its outlook assumes none. Chinese labs therefore rely increasingly on Huawei's Ascend chips (the 950 series in 2026, with the 960DT pulled forward to early 2027) and other domestic suppliers. Chapter 36 tells the full story.
+US export controls bar NVIDIA's most advanced chips from China. A January 2026 rule allowed case-by-case licenses for H200-class chips, but, according to NVIDIA's filings, the Chinese government restricted those sales; in NVIDIA's quarter ending July 2026, H200 sales to China were under 1% of data-center revenue, and its outlook assumes none. Chinese labs therefore rely increasingly on Huawei's Ascend chips (the 950 series in 2026, with the 960DT pulled forward to early 2027) and other domestic suppliers. Chapter 36 tells the full story.
 
 ## Roadmaps 2026–2028
 

@@ -261,6 +261,10 @@ Random forests are the safe default of tabular machine learning: they need littl
 
 The price is interpretability: you can read one tree, not 500.
 
+Feature importance describes the model as a whole. To explain one particular prediction ("why was this loan refused?"), two model-agnostic tools are standard. SHAP splits the prediction among the features using Shapley values from game theory (Chapter 48). LIME, introduced by Marco Tulio Ribeiro, Sameer Singh and Carlos Guestrin in 2016, takes the case being explained, makes many slightly altered copies of it (change the income a little, drop a word from the email), asks the black-box model for its prediction on each, and fits a small linear model to those nearby answers. The weights of that little model are the explanation: they say which features pushed this one prediction up or down. Both are approximations of the model's behavior, not a view of its insides, and they can disagree.
+
+> **Definition — LIME (local interpretable model-agnostic explanations):** A method that explains one prediction of any model by testing slightly altered versions of the input and fitting a simple linear model to how the predictions change, whose weights show which features mattered for that case.
+
 ## Gradient boosting: a relay of tutors
 
 Random forests build trees side by side. Boosting builds them one after another, each new tree focused on the mistakes left by those before it.
@@ -305,6 +309,10 @@ flowchart LR
 *Figure 10.5: Bagging builds independent trees and lets them vote; boosting builds trees in sequence, each correcting the last.*
 
 > **Analogy:** Boosting is a relay of tutors. The first teaches the whole syllabus. The second looks only at the questions the student still gets wrong. The third handles whatever is still wrong after that.
+
+A third way to combine models mixes different kinds. In stacking, you train several unlike models, say a random forest, a boosted model and a logistic regression, and then train one more small model whose inputs are their predictions and whose job is to learn how much to trust each one, and when. To keep it honest, the combiner must learn from predictions the first models made on data they were not trained on, or it simply learns to trust whichever model memorized the training set best.
+
+> **Definition — Stacking:** Combining several different models by training a final "combiner" model on their predictions, so it learns how much weight to give each one.
 
 ### The 2025–26 twist: foundation models for spreadsheets
 
@@ -745,6 +753,12 @@ Drift comes in three flavors that call for different responses. Picture a model 
 
 Concept drift, defined above, is the third: the same kind of applicant now behaves differently, perhaps because a new law changed how debts are collected. Covariate shift may do no harm if the model already handled young applicants well. Label shift leaves the model's ranking of applicants roughly right but makes its probabilities too optimistic or too pessimistic. Concept drift breaks the model outright and calls for retraining on recent data.
 
+Two more distinctions help in practice. First, drift has a shape in time. It can be sudden (the pandemic changed shopping almost overnight), gradual (tastes shift over months), periodic (holiday shopping every December, or people in different time zones using an app at different hours) or temporary (a one-day promotion, or an attacker probing the model). Periodic drift fools people most often: compare this December with last December, not with November, or every holiday season will look like a crisis. Temporary drift usually needs no retraining at all, only a check that it really has ended. Second, sometimes the world stays put but the definitions move. A feature change happens when an input is added, removed or redefined, such as age suddenly reported in months instead of years. A label schema change happens when the set of possible answers changes: the support team splits the old "billing" category into "refund" and "payment failed", or "cancelled" is redefined to include paused accounts. Retraining on the old labels cannot fix a schema change; the training data has to be relabeled for the new categories first.
+
+> **Definition — Periodic drift (seasonal drift):** A shift in a model's inputs or outcomes that repeats on a cycle, such as holiday shopping each December or weekend traffic each week. It should be judged against the same point in the previous cycle, not against last week.
+
+> **Definition — Label schema change:** A change in the set or meaning of the answers a model must give, such as one category being split in two or "cancelled" being redefined. The old labels no longer match, so training data must be relabeled before retraining.
+
 What to watch, from cheapest to most valuable:
 
 | Layer | Examples | Catches |
@@ -784,6 +798,10 @@ When monitoring shows the model slipping, or simply on a schedule, you retrain. 
 
 Most teams start with a calendar, retraining monthly from scratch, then automate the whole chain (pull the data, train, evaluate, and if the new model wins, start a staged rollout) so it runs without anyone remembering to do it. Mature teams add triggers that retrain when drift or a drop in accuracy is detected, and some move to frequent stateful updates: ad-click and fraud models at large companies may update daily or even hourly, which is the online learning of Chapter 8.
 
+Retraining needs the right data, and that starts with logging. Every live prediction should be stored with the exact inputs the model saw, the model version and, once it is known, the true outcome, so the next training set is built from production as it really was (which also guards against the training-serving skew described earlier). Then comes curation, because labeling everything is usually too expensive. Teams typically label a random sample, to keep an honest picture of overall accuracy; add extra examples from slices that matter or perform badly (Chapter 9); and add the cases where the model was least confident or a person overruled it, the active-learning idea from Chapter 8. Finally they choose the training window, all history or only the last 12 months, so stale patterns age out. The Full Stack Deep Learning course calls this repeating cycle of logging, curating, retraining and testing the continual improvement workflow.
+
+> **Definition — Prediction logging:** Recording every live prediction together with the exact inputs the model saw, the model version and, once known, the true outcome, so performance can be measured and future training data can be drawn from real use.
+
 How often is often enough? Measure it. Train a model on January to June data and test it separately on July, August, September and October. If accuracy goes 0.85, 0.84, 0.82, 0.79, the model loses six points in a quarter and needs at least monthly updates. If it holds steady for a year, monthly retraining is wasted effort. This "value of freshness" experiment turns a guess into a schedule.
 
 > **Key idea:** A model in production is never finished. Serving, rollout, monitoring and retraining form a loop, and the teams that do well automate that loop so a fresh model can ship safely every week rather than every year.
@@ -801,6 +819,10 @@ Ordinary software has unit tests (Chapter 29). A machine-learning system needs t
 > **Definition — Overfitting a single batch:** A sanity check in which a model is trained on a handful of examples to confirm it can learn them almost perfectly. Failure points to a bug in the code or data rather than a shortage of data.
 
 > **Definition — Evaluation gate:** An automatic rule that blocks a new model from release unless it beats the current model on agreed tests, both overall and on key subgroups.
+
+A handy self-check comes from Google. A 2017 paper by Eric Breck and colleagues, "The ML Test Score", turned lessons from many production systems into a rubric of 28 tests in four areas of seven each: features and data, model development, the infrastructure that trains and serves models, and monitoring. Each test earns half a point if someone runs it by hand and documents the result, and a full point if it runs automatically and repeatedly. The final score is the lowest of the four area totals, not their sum, because a superb set of model tests cannot make up for having no monitoring at all. The authors tried it on 36 teams across Google; on their scale 0 means "more of a research project than a productionized system" and above 5 means exceptional automated testing and monitoring. You do not need Google's scale to use it: reading the 28 questions is a quick way to find the holes in your own project.
+
+> **Definition — ML Test Score:** A rubric of 28 tests for production machine-learning systems, published by Google engineers in 2017, covering data, model development, infrastructure and monitoring, with the final score set by the weakest of the four areas.
 
 ### The ML platform: tracking, registries and feature stores
 
@@ -848,7 +870,7 @@ The perceptron, a weighted sum with a yes/no cutoff, is the seed of the neural n
 
 ## Key terms
 
-Classical machine learning, inductive bias, tabular data, churn, k-nearest neighbors (kNN), Euclidean distance, feature scaling, linear regression, logistic regression, interpretability, generalized linear model (GLM), softmax regression (multinomial logistic regression), naive Bayes, bag of words, decision tree, node, leaf, depth, Gini impurity, ensemble, bagging, random forest, feature importance, boosting, residual, gradient boosting, XGBoost, LightGBM, CatBoost, in-context learning, tabular foundation model, support vector machine (SVM), margin, support vectors, kernel trick, Gaussian process, clustering, k-means, hierarchical clustering, DBSCAN, Gaussian mixture model (GMM), expectation–maximization (EM), dimensionality reduction, principal component analysis (PCA), eigenvector, singular value decomposition (SVD), independent component analysis (ICA), t-SNE, UMAP, embedding, anomaly detection, z-score, isolation forest, recommender system, content-based filtering, collaborative filtering, matrix factorization, cold-start problem, time series, trend, seasonality, naive forecast, exponential smoothing, ARIMA, lag feature, backtesting, time-series foundation model, perceptron, neural network, exploratory data analysis (EDA), proof of concept, pandas, scikit-learn, MLOps, data drift, concept drift, batch prediction, online prediction, container, training-serving skew, shadow deployment, canary release, rollback, covariate shift, label shift, feedback delay, population stability index (PSI), stateless retraining, stateful training (incremental training), data validation, overfitting a single batch, evaluation gate, ML platform, experiment tracking, data versioning, model registry, feature store.
+Classical machine learning, inductive bias, tabular data, churn, k-nearest neighbors (kNN), Euclidean distance, feature scaling, linear regression, logistic regression, interpretability, generalized linear model (GLM), softmax regression (multinomial logistic regression), naive Bayes, bag of words, decision tree, node, leaf, depth, Gini impurity, ensemble, bagging, random forest, feature importance, LIME (local interpretable model-agnostic explanations), boosting, residual, gradient boosting, XGBoost, LightGBM, CatBoost, stacking, in-context learning, tabular foundation model, support vector machine (SVM), margin, support vectors, kernel trick, Gaussian process, clustering, k-means, hierarchical clustering, DBSCAN, Gaussian mixture model (GMM), expectation–maximization (EM), dimensionality reduction, principal component analysis (PCA), eigenvector, singular value decomposition (SVD), independent component analysis (ICA), t-SNE, UMAP, embedding, anomaly detection, z-score, isolation forest, recommender system, content-based filtering, collaborative filtering, matrix factorization, cold-start problem, time series, trend, seasonality, naive forecast, exponential smoothing, ARIMA, lag feature, backtesting, time-series foundation model, perceptron, neural network, exploratory data analysis (EDA), proof of concept, pandas, scikit-learn, MLOps, data drift, concept drift, batch prediction, online prediction, container, training-serving skew, shadow deployment, canary release, rollback, covariate shift, label shift, feedback delay, population stability index (PSI), stateless retraining, stateful training (incremental training), data validation, overfitting a single batch, evaluation gate, ML platform, experiment tracking, data versioning, model registry, feature store, periodic drift (seasonal drift), label schema change, prediction logging, ML Test Score.
 
 ## Exercises
 

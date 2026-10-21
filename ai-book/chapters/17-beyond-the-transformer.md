@@ -413,7 +413,7 @@ flowchart TD
 | Jamba, AI21 (Mar 2024) | not covered here | Transformer and Mamba layers, with MoE |
 | Qwen3-Next (Sep 2025) | 80B / 3B | 48 layers: 12 × (3 Gated DeltaNet + 1 gated attention) |
 | Kimi Linear (Oct 2025) | 48B / 3B | Kimi Delta Attention to MLA at about 3 : 1 |
-| Nemotron 3 Nano, NVIDIA (Dec 2025) | 30B / 3B | 52 layers: 23 Mamba-2, 23 MoE, 6 attention |
+| Nemotron 3 Nano, NVIDIA (Dec 2025) | 30B / 3.5B | 52 layers: 23 Mamba-2, 23 MoE, 6 attention |
 | Qwen3.5 flagship (Feb 2026) | 397B / 17B | 60 layers: 15 × (3 Gated DeltaNet + 1 gated attention), each with MoE |
 | Nemotron 3 Super, NVIDIA (Mar 2026) | 120B / 12B | Mamba-2, LatentMoE and a few attention layers; pretrained in 4-bit NVFP4 |
 | Kimi K3, Moonshot (Jul 2026) | 2.8T / 104B | 93 layers: 69 Kimi Delta Attention + 24 gated MLA, with MoE |

@@ -439,7 +439,7 @@ Follow the money from your subscription back to the silicon. Each layer takes it
 
 **Layer 2: servers and racks.** Contract manufacturers such as Foxconn, Quanta, Wistron and Wiwynn, and brands such as Supermicro and Dell, assemble racks. They handle enormous volumes but keep a much thinner slice of each dollar, because most of a rack's value is the chips they buy.
 
-**Layer 3: clouds and neoclouds.** They earn rental income on huge capital bases, as the 100 MW model showed. CoreWeave, the largest neocloud, reported 2025 revenue of about $5.1 billion and guided to $12 to 13 billion for 2026, with a backlog of $99.4 billion as of March 31, 2026, but with about two-thirds of 2025 revenue from Microsoft (customer concentration) and debt of about $35 billion by mid-2026, according to public reports. Among hyperscalers, Amazon reported an AWS backlog of about $496 billion in mid-2026 (reported).
+**Layer 3: clouds and neoclouds.** They earn rental income on huge capital bases, as the 100 MW model showed. CoreWeave, the largest neocloud, reported 2025 revenue of about $5.1 billion and in August raised its 2026 guidance to $12.4 to 13.2 billion, with a backlog of about $104 billion as of June 30, 2026, but with about two-thirds of 2025 revenue from Microsoft (customer concentration) and debt of about $35 billion by mid-2026, according to public reports. Among hyperscalers, Amazon reported an AWS backlog of about $496 billion in mid-2026 (reported).
 
 **Layer 4: AI labs.** Revenue is growing at historic speed, alongside very large costs. Reported figures, all from outside sources and best treated as estimates:
 

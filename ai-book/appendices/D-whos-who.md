@@ -12,7 +12,7 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | Anthropic | San Francisco lab founded in 2021 by former OpenAI researchers, including Dario and Daniela Amodei; a public benefit corporation with a safety focus. | Claude Fable 5.1 and Mythos 5.1, Opus 5.5, Sonnet 5.5, Haiku 5.5; Claude Code; created the Model Context Protocol (MCP) | Chapter 24 |
 | Google DeepMind | Google's AI lab, formed in 2023 by merging DeepMind (founded in London in 2010, bought by Google in 2014) with Google Brain. | Gemini 4 Argon, Gemini 3.8 Flash; open-weight Gemma 4; Genie 3 world model; AlphaFold | Chapter 24 |
 | Meta Superintelligence Labs (MSL) | Meta's AI organization, formed in mid-2025; includes the FAIR research lab and TBD Lab. | Muse Wonder and Wonder Full, Muse Spark, open-weight Muse Glimmer; the earlier Llama family (last: Llama 4, 2025) | Chapter 24 |
-| SpaceXSI (formerly xAI) | Founded by Elon Musk in 2023; acquired by SpaceX on February 2, 2026, and renamed SpaceXSI in October 2026. | Grok 4.7; the Colossus supercomputers in Memphis | Chapter 24 |
+| SpaceXSI (formerly xAI) | Founded by Elon Musk in 2023; acquired by SpaceX on February 2, 2026, rebranded SpaceXAI in July 2026, and reported in October 2026 to be renaming itself SpaceX Super Intelligence (SpaceXSI). | Grok 4.7; the Colossus supercomputers in Memphis | Chapter 24 |
 | Microsoft AI | Microsoft's in-house AI group; Microsoft was OpenAI's earliest large backer and is also an Anthropic compute partner. | Copilot assistants in Windows and Office; in-house models | Chapter 61 |
 | Amazon | Builds its own Nova models and the Bedrock platform that serves many labs' models; Anthropic's main cloud and training partner. | Nova models; Bedrock; Alexa | Chapter 61 |
 | DeepSeek | Hangzhou lab founded in 2023 by Liang Wenfeng and funded by the quantitative hedge fund High-Flyer; known for efficient open-weight models. | DeepSeek V4-Pro, V4-Flash, V4.1-Flash (MIT license); the R1 reasoning model (2025) | Chapter 24 |
@@ -21,7 +21,7 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | Z.ai (formerly Zhipu AI) | Beijing lab that grew out of Tsinghua University research. | GLM-5.3 (open weights) | Chapter 24 |
 | MiniMax | Shanghai company making language, speech and video models. | MiniMax models; Hailuo video app | Chapter 17 |
 | Xiaomi | Chinese phone and electronics maker that also trains large models. | MiMo-V2.6-Pro, the top open-weight model on the Artificial Analysis index in October 2026 | Chapter 24 |
-| StepFun | Shanghai model startup. | Step 5 | Chapter 24 |
+| StepFun | Shanghai model startup. | Step 5 (preview, September 2026) | Chapter 24 |
 | Mistral AI | Paris lab founded in 2023 by Arthur Mensch, Guillaume Lample and Timothée Lacroix; Europe's leading model maker. | Mistral Large 4 (preview), Medium 3.5, Large 3 (Apache-2.0); Le Chat assistant | Chapter 24 |
 | Cohere | Toronto company founded in 2019, co-founded by Transformer co-author Aidan Gomez; builds models for business use. | Command model family | Chapter 61 |
 | Thinking Machines Lab | Founded in 2025 by former OpenAI chief technology officer Mira Murati; publishes research on post-training. | Inkling model; Tinker fine-tuning service | Chapter 20 |
@@ -154,7 +154,7 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 
 | Company | Who they are and why they matter | More in |
 |---|---|---|
-| Cursor (Anysphere) | AI-first code editor; acquired by SpaceX in an all-stock deal announced in June 2026 and reported at about $60 billion. | Chapter 29 |
+| Cursor (Anysphere) | AI-first code editor; acquired by SpaceX in an all-stock deal announced in June 2026, reported at about $60 billion and closed in August 2026. | Chapter 29 |
 | Cognition | Maker of Devin, an autonomous coding agent; bought the Windsurf code editor in 2025. | Chapter 29 |
 | GitHub (Microsoft) | Copilot (2021) was the first mass-market AI coding assistant; now includes cloud coding agents. | Chapter 29 |
 | Replit | Browser-based coding platform with Replit Agent for building apps from descriptions. | Chapter 29 |
@@ -195,7 +195,7 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | ARC Prize Foundation | Runs the ARC-AGI benchmarks and prizes, co-founded by François Chollet and Mike Knoop. | Chapter 24 |
 | Epoch AI | Research group tracking AI compute, costs, data centers and capabilities; runs FrontierMath and the Epoch Capabilities Index. | Chapter 24 |
 | Artificial Analysis | Independent company benchmarking models on intelligence, price and speed. | Chapter 24 |
-| LMArena | Crowdsourced blind comparisons of chatbots; began as Chatbot Arena at UC Berkeley. | Chapter 24 |
+| Arena (formerly LMArena) | Crowdsourced blind comparisons of chatbots; began as Chatbot Arena at UC Berkeley, became LMArena and was renamed Arena (arena.ai) in January 2026. | Chapter 24 |
 | Center for AI Safety (CAIS) | Nonprofit led by Dan Hendrycks; co-created Humanity's Last Exam and organized the 2023 statement on extinction risk. | Chapter 60 |
 | MIRI (Machine Intelligence Research Institute) | One of the oldest AI-risk organizations, co-founded by Eliezer Yudkowsky; now focused on warning about catastrophic risk. | Chapter 60 |
 | FAR.AI, Palisade Research | Research nonprofits studying robustness, misuse and behaviors such as shutdown resistance. | Chapter 55 |
@@ -266,7 +266,7 @@ Roles are as of October 2026; leadership changes are frequent.
 | Demis Hassabis | Co-founder of DeepMind and CEO of Google DeepMind. | Chapter 24 |
 | Sundar Pichai | CEO of Google and its parent company Alphabet. | Chapter 61 |
 | Mark Zuckerberg | Founder and CEO of Meta. | Chapter 61 |
-| Alexandr Wang | Founder of Scale AI; leads TBD Lab, the language-model group inside Meta Superintelligence Labs. | Chapter 24 |
+| Alexandr Wang | Founder of Scale AI; Meta's chief AI officer since 2025, leading Meta Superintelligence Labs and its TBD Lab, the language-model group. | Chapter 24 |
 | Elon Musk | Founded xAI in 2023 and runs SpaceX and Tesla; an OpenAI co-founder who left its board in 2018. | Chapter 24 |
 | Satya Nadella | CEO of Microsoft. | Chapter 61 |
 | Mustafa Suleyman | DeepMind co-founder who has led Microsoft AI since 2024. | Chapter 61 |
@@ -317,7 +317,7 @@ Roles are as of October 2026; leadership changes are frequent.
 | Eliezer Yudkowsky and Nate Soares | MIRI's leading voices on existential risk; co-wrote *If Anyone Builds It, Everyone Dies* (2025). | Chapter 60 |
 | Daniel Kokotajlo | Former OpenAI researcher who leads the AI Futures Project and its "AI 2027" scenario. | Chapter 60 |
 | Max Tegmark | MIT physicist and president of the Future of Life Institute. | Chapter 60 |
-| Helen Toner | Policy researcher at Georgetown's CSET; former OpenAI board member. | Chapter 59 |
+| Helen Toner | Interim executive director of Georgetown's CSET; former OpenAI board member. | Chapter 59 |
 | Timnit Gebru | Founder of DAIR; co-author of the Gender Shades and "Stochastic Parrots" papers. | Chapter 58 |
 | Joy Buolamwini | Led the Gender Shades study (2018) showing face-analysis systems erred far more on darker-skinned women; founded the Algorithmic Justice League. | Chapter 58 |
 | Emily M. Bender | Linguist and co-author of "On the Dangers of Stochastic Parrots" (2021). | Chapter 58 |
@@ -328,7 +328,7 @@ Roles are as of October 2026; leadership changes are frequent.
 | Rumman Chowdhury | Pioneer of algorithmic auditing and public red-teaming events. | Chapter 58 |
 | Alondra Nelson | Led the White House's 2022 Blueprint for an AI Bill of Rights. | Chapter 59 |
 | Marc Andreessen | Venture capitalist (a16z) and prominent opponent of most AI regulation. | Chapter 59 |
-| David Sacks | White House AI and crypto adviser from 2025. | Chapter 59 |
+| David Sacks | White House AI and crypto adviser from January 2025; stepped down from that post in March 2026 but remains co-chair of the President's Council of Advisors on Science and Technology. | Chapter 59 |
 | Michael Kratsios | Director of the White House Office of Science and Technology Policy. | Chapter 59 |
 | Scott Wiener | California state senator behind SB 1047 (vetoed in 2024) and SB 53 (signed in 2025). | Chapter 59 |
 | Alex Bores | New York assemblymember who sponsored the RAISE Act. | Chapter 59 |

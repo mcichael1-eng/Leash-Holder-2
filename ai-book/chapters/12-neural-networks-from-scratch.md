@@ -977,7 +977,7 @@ Neural network, weight, parameter, training, inference, deep learning, vector, m
 - **Andrej Karpathy, "Neural Networks: Zero to Hero" (YouTube).** The first video builds a tiny automatic-differentiation engine ("micrograd") line by line; ideal after Exercise 10.
 - **TensorFlow Playground (playground.tensorflow.org).** A live neural network in your browser; return to it whenever an idea in this chapter or the next feels abstract.
 - **Simon J. D. Prince, *Understanding Deep Learning* (MIT Press, 2023; free PDF at udlbook.github.io).** A modern, carefully illustrated textbook covering everything in this chapter and Chapter 13 in more mathematical depth.
-- **Ian Goodfellow, Yoshua Bengio and Aaron Courville, *Deep Learning* (MIT Press, 2016; free at deeplearningbook.org).** The classic reference textbook, especially its chapters on feed-forward networks and backpropagation.
+- **Ian Goodfellow, Yoshua Bengio and Aaron Courville, *Deep Learning* (MIT Press, 2016; free at www.deeplearningbook.org).** The classic reference textbook, especially its chapters on feed-forward networks and backpropagation.
 - **fast.ai, "Practical Deep Learning for Coders" (course.fast.ai).** A free, code-first course that gets you training real models quickly, with theory added as you go.
 - **Rumelhart, Hinton and Williams, "Learning representations by back-propagating errors" (*Nature*, 1986).** The short paper that made backpropagation famous; readable once you have worked this chapter's example.
 - **Dive into Deep Learning (d2l.ai).** A free interactive book in which every concept comes with runnable code in PyTorch and other frameworks.

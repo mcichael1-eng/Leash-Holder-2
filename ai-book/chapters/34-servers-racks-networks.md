@@ -318,8 +318,8 @@ Here are the published rack-level specs for NVIDIA's two current designs, straig
 |---|---|---|
 | GPUs + CPUs | 72 B300 + 36 Grace | 72 Rubin + 36 Vera |
 | FP4 compute | 1,080 PF dense (1,440 PF sparse) | 2,520 PF NVFP4 dense for training; 3,600 PF NVFP4 sparse for inference |
-| FP8 compute | 720 PF (as listed) | 1,260 PF dense |
-| BF16 compute | 360 PF (as listed) | 288 PF dense |
+| FP8 compute | 720 PF (sparse, per the page's footnote) | 1,260 PF dense |
+| BF16 compute | 360 PF (sparse, per the page's footnote) | 288 PF dense |
 | HBM | 20 TB HBM3E, up to 576 TB/s | 20.7 TB HBM4, about 1,400 TB/s |
 | NVLink | 130 TB/s total (1.8 TB/s per GPU) | 216 TB/s total (3 TB/s per GPU) on the current page; 260 TB/s (3.6 TB/s per GPU) at launch |
 | CPU cores | 2,592 Grace Arm cores | 36 × 88 custom Arm "Olympus" cores |
@@ -327,7 +327,7 @@ Here are the published rack-level specs for NVIDIA's two current designs, straig
 
 *Table 34.3: NVIDIA's two NVL72 rack generations. Note the different precisions, the dense/sparse labels and the changed Rubin numbers.*
 
-Two traps hide in this table. The Rubin numbers changed after launch: CES 2026 coverage quoted 22 TB/s of HBM and 3.6 TB/s of NVLink per GPU, while the current page lists 19.2 TB/s and 3 TB/s. And the GB300's FP8 and BF16 lines are not labeled dense: 360 PF ÷ 72 = 5 PF of BF16 per GPU, about double the roughly 2.5 PF dense usually assumed for a Blackwell GPU, which suggests sparse figures (Exercise 1 asks you to check the footnotes).
+Two traps hide in this table. The Rubin numbers changed after launch: CES 2026 coverage quoted 22 TB/s of HBM and 3.6 TB/s of NVLink per GPU, while the current page lists 19.2 TB/s and 3 TB/s. And the GB300's FP8 and BF16 lines are not labeled dense: 360 PF ÷ 72 = 5 PF of BF16 per GPU, about double the roughly 2.5 PF dense usually assumed for a Blackwell GPU, which suggests sparse figures. The footnote confirms it: all of the page's tensor figures include sparsity unless marked otherwise, and NVIDIA's own Blackwell Ultra description lists 5 PF of dense FP8 per GPU, so the dense rack figures are about 360 PF of FP8 and 180 PF of BF16 (Exercise 1 asks you to check the footnotes yourself).
 
 Now the payoff. Why does it matter that 72 GPUs act as one?
 
@@ -359,7 +359,7 @@ The 2025 Ironwood TPU comes in pods of 256 or 9,216 chips. The TPU 8t training c
 
 > **Definition — UALink (Ultra Accelerator Link):** An open scale-up interconnect standard (version 1.0 in April 2025) backed by AMD, Intel, Google, Meta, Microsoft and others as an alternative to NVLink. It supports up to 1,024 accelerators in one domain using 200 Gb/s lanes.
 
-**Microsoft's Maia 200** (January 2026) reportedly uses an Ethernet-based scale-up design that can link up to 6,144 accelerators.
+**Microsoft's Maia 200** (January 2026) uses, according to Microsoft, a two-tier Ethernet-based scale-up design that can link up to 6,144 accelerators.
 
 And NVIDIA, seeing customers build their own chips, opened its fabric a little.
 
@@ -374,7 +374,7 @@ And NVIDIA, seeing customers build their own chips, opened its fabric a little.
 | Google TPU 8i (2026) | 1,152 TPUs | "Boardfly" topology |
 | AWS Trainium3 UltraServer | 144 chips | NeuronLink and NeuronSwitch |
 | AMD Helios (2H 2026) | 72 GPUs | UALink tunneled over Ethernet |
-| Microsoft Maia 200 (reported) | up to 6,144 | Ethernet-based |
+| Microsoft Maia 200 | up to 6,144 | Ethernet-based |
 
 *Table 34.4: Scale-up domains compared, as of late 2026. Bigger domains are not automatically better: per-chip bandwidth and latency inside the domain matter as much as the count.*
 
@@ -604,6 +604,12 @@ NVIDIA's Spectrum-6 Ethernet switches with co-packaged optics began arriving at 
 
 Google uses optical circuit switches to reconfigure TPU pods: carving them into slices for different jobs and routing around failed chips without anyone touching a cable.
 
+Google also uses them at the top of Jupiter, the network that ties the ordinary servers of a data center together. A classic fat tree needs a uniform top layer of spine switches, so making any part of the building faster means upgrading the whole spine. Jupiter replaced that spine with a layer of optical circuit switches that link blocks of switches directly. Because the mirrors only steer light, they do not care how fast the equipment at either end is. Adding a block of newer, faster gear means re-aiming mirrors instead of re-plugging thousands of fibers by hand, and a big training job that spans two blocks can be given extra links between them.
+
+> **Definition — Software-defined networking (SDN):** Running a network's decisions (which path each flow of traffic takes) in a central controller program that sees the whole network, instead of inside each switch separately. The switches simply forward traffic the way the controller tells them to.
+
+Re-aiming mirrors on demand only works because one program makes those decisions with a view of the whole building. Google's first production SDN was B4 (described in 2013), the private network linking its data centers to each other. Inside a data center, SDN is a natural partner for the cluster scheduler described later in this chapter, which already manages every job from one place.
+
 ```mermaid
 flowchart LR
     A["Copper cable<br/>cheap, near-zero power<br/>reach about 1 to 2 m"] --> B["Pluggable optics<br/>800G to 1.6T modules<br/>roughly a dozen watts each"]
@@ -709,9 +715,21 @@ Three layers of software do most of that job.
 
 > **Definition — Gang scheduling:** Starting all the pieces of a parallel job at the same time, or not at all. Large training runs need it, because no GPU can make progress until all the others it exchanges data with are running.
 
+The scheduler raises a puzzle of its own. If the one machine that knows where every job runs crashes, the whole cluster is lost. So that critical bookkeeping is kept by a small group of machines, and they have to agree on who is in charge.
+
+> **Definition — Consensus (distributed consensus):** A way for a group of machines to agree on one fact, such as which server is currently in charge, even when some of them crash or lose contact. A decision counts once a majority agrees.
+
+Google's Chubby lock service (described in 2006) provides this, and open-source equivalents such as Apache ZooKeeper and etcd (which stores Kubernetes' state) do the same job across much of the cloud. Choosing a leader can be as simple as a race to lock one file: the winner writes its name in it, everyone else sees who won, and if the leader stops checking in, the lock lapses and another machine takes over. Majorities explain why clouds like groups of three. With three copies, any two can outvote a third that has been cut off. With two, neither side can tell whether it is the one that should keep going.
+
 **A distributed storage system** holds files too big or too important for one machine. It cuts each file into chunks and spreads them, with copies, across many servers, so reads and writes happen in parallel and a dead disk loses nothing. Google's GFS (described in 2003), its successor Colossus, and cloud object stores such as Amazon S3 work this way. Training data streams out of such systems, and checkpoints stream back in.
 
 > **Definition — Distributed storage (distributed file system, object storage):** A storage system that splits data into chunks kept, with copies, on many machines, so it can hold petabytes, serve thousands of readers at once and survive failed disks.
+
+**Worked example: why copies work, and what replaces them.** Suppose a disk has a 2% chance of failing in a year. Keep one copy of a chunk and you have a 2% chance of losing it. Keep three copies on three independent disks and all three must fail: 0.02 × 0.02 × 0.02 = 0.000008, or 0.0008%, even before counting the repairs that re-copy a chunk within hours of a failure. But three copies triple the cost of storage, so for data that is rarely read, most large systems use a cleverer trick.
+
+> **Definition — Erasure coding:** Protecting data by splitting it into k pieces and computing m extra "parity" pieces from them, so that any k of the k + m pieces are enough to rebuild the whole. With 6 data pieces and 3 parity pieces, any 3 can be lost, at a storage cost of 1.5 times the data instead of 3 times.
+
+Disks, memory and networks all carry their own error-checking codes, but at a scale of millions of devices even rare undetected errors happen, so storage systems also keep their own checksums (short fingerprints computed from each block's contents, which change if even one bit flips) and periodically sweep through every block, rereading it to catch slow decay in data nobody has touched for months.
 
 **Batch-processing frameworks** let engineers run one job over thousands of machines without writing the plumbing themselves. They are how data teams filter and deduplicate web-scale text before pretraining (Chapter 19).
 
@@ -750,7 +768,7 @@ Along the way, three physical limits keep showing up: power (racks heading from 
 
 ## Key terms
 
-Die, Reticle limit, Chiplet, UCIe (Universal Chiplet Interconnect Express), HBM (High Bandwidth Memory), Interposer, CoWoS (Chip-on-Wafer-on-Substrate), Package substrate, Package, Voltage regulator (VRM), Form factor (SXM, OAM, PCIe card), PCIe (PCI Express), HGX and DGX, NIC (Network Interface Card), DPU (Data Processing Unit) and SuperNIC, Superchip, NVLink-C2C, Compute tray, Cold plate (direct-to-chip liquid cooling), Busbar, Rack, Scale-up vs. scale-out, NVLink, NVSwitch, NVLink domain (scale-up domain), ICI (Inter-Chip Interconnect), UALink (Ultra Accelerator Link), NVLink Fusion, 800 V DC distribution, Back-end vs. front-end network, InfiniBand, Ethernet, RDMA and RoCE, Ultra Ethernet (UEC), Network switch and radix, Topology, Fat tree (Clos or leaf-spine network), Non-blocking network, Bisection bandwidth, Rail-optimized network, Torus, Dragonfly, Collective communication, SerDes (serializer/deserializer), Lane, Optical fiber, Optical transceiver, Co-packaged optics (CPO), Optical circuit switch (OCS), Pod (SuperPOD), Cluster, H100-equivalent (H100e), Campus, AI factory, Scale-across (multi-site training), Warehouse-scale computer (WSC), Cluster scheduler (resource manager), Gang scheduling, Distributed storage (distributed file system, object storage), MapReduce (Hadoop, Spark)
+Die, Reticle limit, Chiplet, UCIe (Universal Chiplet Interconnect Express), HBM (High Bandwidth Memory), Interposer, CoWoS (Chip-on-Wafer-on-Substrate), Package substrate, Package, Voltage regulator (VRM), Form factor (SXM, OAM, PCIe card), PCIe (PCI Express), HGX and DGX, NIC (Network Interface Card), DPU (Data Processing Unit) and SuperNIC, Superchip, NVLink-C2C, Compute tray, Cold plate (direct-to-chip liquid cooling), Busbar, Rack, Scale-up vs. scale-out, NVLink, NVSwitch, NVLink domain (scale-up domain), ICI (Inter-Chip Interconnect), UALink (Ultra Accelerator Link), NVLink Fusion, 800 V DC distribution, Back-end vs. front-end network, InfiniBand, Ethernet, RDMA and RoCE, Ultra Ethernet (UEC), Network switch and radix, Topology, Fat tree (Clos or leaf-spine network), Non-blocking network, Bisection bandwidth, Rail-optimized network, Torus, Dragonfly, Collective communication, SerDes (serializer/deserializer), Lane, Optical fiber, Optical transceiver, Co-packaged optics (CPO), Optical circuit switch (OCS), Software-defined networking (SDN), Pod (SuperPOD), Cluster, H100-equivalent (H100e), Campus, AI factory, Scale-across (multi-site training), Warehouse-scale computer (WSC), Cluster scheduler (resource manager), Gang scheduling, Consensus (distributed consensus), Distributed storage (distributed file system, object storage), Erasure coding, MapReduce (Hadoop, Spark)
 
 ## Exercises
 
@@ -812,7 +830,7 @@ Die, Reticle limit, Chiplet, UCIe (Universal Chiplet Interconnect Express), HBM 
 - **NVIDIA GB300 NVL72 and Vera Rubin NVL72 product pages (nvidia.com).** The primary source for rack-scale specs; read the footnotes to practice the detective questions from this chapter.
 - **Google Cloud blog, "TPU 8t and TPU 8i technical deep dive" (2026).** A clear first-party description of superpods, the Virgo fabric, Boardfly and the training/inference split.
 - **Meta, "The Llama 3 Herd of Models" (2024, arXiv 2407.21783), infrastructure sections.** The best public account of running a 16,384-GPU training job: network design, parallelism, failures and power swings.
-- **Barroso, Hölzle and Ranganathan, *The Datacenter as a Computer* (Morgan & Claypool, free online).** The classic book on treating a whole building as one machine, written by Google engineers.
+- **Barroso, Hölzle and Ranganathan, *The Data Center as a Computer* (4th edition, Springer, December 2025; free open-access download).** The classic book on treating a whole building as one machine, written by Google engineers; the new edition adds AI hardware, optical networking and software-defined infrastructure.
 - **Jouppi et al., "TPU v4: An Optically Reconfigurable Supercomputer for Machine Learning" (ISCA 2023).** How Google uses tori and optical circuit switches to build pods of thousands of chips.
 - **Al-Fares, Loukissas and Vahdat, "A Scalable, Commodity Data Center Network Architecture" (SIGCOMM 2008).** The paper that popularized fat-tree networks built from identical switches, including the k³ ÷ 4 formula.
 - **NVIDIA developer blog posts on the 800 V HVDC architecture (2025).** Where the copper, current and efficiency numbers for megawatt racks come from.

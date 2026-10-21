@@ -60,7 +60,7 @@ OpenAI shows the same pattern: a reported run-rate of about $20 billion at the e
 
 > **Watch out:** Even recognized revenue is not always comparable. Anthropic reportedly books sales made through cloud resellers "gross," counting the full price the customer pays even when a cloud partner takes a share, while some peers book similar sales "net." That inflates its top line relative to peers. Compare like with like.
 
-> **Definition — Bookings, backlog and RPO (remaining performance obligations):** Contracts that have been signed but not yet delivered or paid for. CoreWeave's reported $99.4 billion backlog (March 31, 2026) is future work it has agreed to do, not money in its bank account.
+> **Definition — Bookings, backlog and RPO (remaining performance obligations):** Contracts that have been signed but not yet delivered or paid for. CoreWeave's reported backlog of about $104 billion (June 30, 2026) is future work it has agreed to do, not money in its bank account.
 
 ### Margins, cash and spending
 
@@ -94,7 +94,7 @@ Worked example. In late May 2026 Anthropic reportedly raised $65 billion at a $9
 
 > **Definition — Revenue multiple:** A company's valuation divided by its revenue or run-rate. It shows how many dollars investors pay for each dollar of sales, which reflects how fast they expect it to grow.
 
-The 2026 IPO wave put these words on front pages (all reported). SpaceX, which had absorbed xAI in February, listed on June 12, 2026 at $135 a share, raised about $75 billion and closed its first day near a $2.1 trillion value. OpenAI filed confidentially with the SEC (the US Securities and Exchange Commission, which regulates stock markets) on June 8 and was said to target a listing "by 2027." Anthropic filed confidentially on June 1 and, as of October 20, was reported to be aiming for mid-November, with valuation talk of about $1.5 trillion.
+The 2026 IPO wave put these words on front pages (all reported). SpaceX, which had absorbed xAI in February, listed on June 12, 2026 at $135 a share, raised about $75 billion and closed its first day near a $2.1 trillion value. OpenAI filed confidentially with the SEC (the US Securities and Exchange Commission, which regulates stock markets) on June 8 and was said to target a listing "by 2027." Anthropic filed confidentially on June 1 and, in mid-October, was reported to be aiming for a mid-November listing, with reported valuation talk ranging from about $1.5 trillion to $2 trillion.
 
 > **Definition — Public benefit corporation (PBC):** A for-profit company legally required to weigh a stated public mission alongside profit. Anthropic is a PBC, and in October 2025 OpenAI's for-profit arm became OpenAI Group PBC, controlled by the nonprofit OpenAI Foundation (reported).
 
@@ -102,7 +102,7 @@ The 2026 IPO wave put these words on front pages (all reported). SpaceX, which h
 |---|---|---|---|
 | Recognized revenue | Money earned for services delivered | OpenAI $13.1B for 2025 (reported) | Lags fast growth; gross vs net differs |
 | Run-rate or ARR | Current pace, annualized | Anthropic over $65B, end of July 2026 (reported) | Method varies; one hot month can inflate it |
-| Backlog or RPO | Signed, undelivered contracts | CoreWeave $99.4B, March 2026 (reported) | Not cash; can be delayed or cancelled |
+| Backlog or RPO | Signed, undelivered contracts | CoreWeave about $104B, June 2026 (reported) | Not cash; can be delayed or cancelled |
 | "Up to" commitment | A maximum, often conditional | Stargate "up to $500B" | A ceiling, not a forecast |
 | Valuation | Price of a slice, scaled to the whole | Anthropic $965B post-money, May 2026 (reported) | Not cash the company holds |
 | Capex | Spending on long-lived assets | Big-four hyperscalers about $720–745B, 2026 (reported) | Spent once, depreciated over years |
@@ -149,7 +149,7 @@ Every AI answer starts as electricity. Data centers worldwide used about 415 ter
 
 This layer includes utilities, turbine and transformer makers, nuclear companies, builders, land developers and the skilled trades. The real-estate firm JLL put the average cost of a data-center shell and core at about $10.7 million per megawatt in 2025, and said AI tenant fit-out can add up to about $25 million per megawatt on top. Including chips, industry statements put a gigawatt of AI capacity at tens of billions of dollars; NVIDIA's chief executive has cited roughly $50–60 billion.
 
-Power has become the bottleneck: chips can be ordered in months, but a grid connection or power plant can take years. That is why Meta announced nuclear agreements for up to 6.6 GW by 2035 in January 2026, why some sites burn gas in on-site turbines, and why lab job boards now list electricians and community-engagement managers. Chapters 39 to 42 cover this layer in depth.
+Power has become the bottleneck: chips can be ordered in months, but a grid connection or power plant can take years. That is why Meta announced nuclear agreements for up to 6.6 GW by 2035 in January 2026, why some sites burn gas in on-site turbines, and why lab job boards now list data-center electrical engineers, technicians and community-engagement managers. Chapters 39 to 42 cover this layer in depth.
 
 > **Key idea:** In AI, electricity is scarce rather than expensive. As you will see when we follow a subscription dollar, power is only a few cents of each dollar, but without it no amount of money can turn the chips on.
 
@@ -193,7 +193,7 @@ Most labs rent their computing from clouds, often under enormous multi-year cont
 
 Clouds make money by renting capacity for more than it costs them. The risk is timing: the cloud pays for chips and buildings up front and earns the money back over years. If prices fall faster than expected or customers leave, it is left holding expensive, aging hardware.
 
-CoreWeave shows the opportunity and the risk. It went public on March 28, 2025, reportedly earned about $5.1 billion in 2025, guided to $12–13 billion for 2026, and reported a $99.4 billion backlog. But Microsoft was reportedly about 67% of its 2025 revenue.
+CoreWeave shows the opportunity and the risk. It went public on March 28, 2025, reportedly earned about $5.1 billion in 2025, raised its 2026 revenue guidance in August to $12.4–13.2 billion, and reported a backlog of about $104 billion at June 30, 2026. But Microsoft was reportedly about 67% of its 2025 revenue.
 
 > **Definition — Customer concentration:** When a large share of a company's revenue comes from one or a few customers. Losing one relationship can cripple the business.
 
@@ -209,11 +209,11 @@ Chapter 24 describes the labs' models; here we treat them as businesses. A lab s
 |---|---|---|---|
 | OpenAI | about $50B (September 2026); expects at least $70B by end of 2026 | $852B post-money (March 2026) | 2025 recognized revenue $13.1B; over 50M consumer subscribers and 9M paying business users (February 2026); gross margin estimated at 33% (Sacra) |
 | Anthropic | over $65B (end of July 2026) | $965B post-money (May 2026) | Recognized revenue $4.8B, $11.5B, $16.8B in Q1–Q3 2026; 11% adjusted operating margin in Q3 |
-| SpaceX AI unit (formerly xAI) | not reported separately | Inside SpaceX, about $2.1T at its June 2026 debut | SpaceX agreed to buy Cursor's maker for about $60B in stock (June 2026) |
+| SpaceX AI unit (formerly xAI) | not reported separately | Inside SpaceX, about $2.1T at its June 2026 debut | SpaceX agreed to buy Cursor's maker for about $60B in stock (June 2026) and completed the deal in August 2026 |
 
 *Table 61.3: The three most-reported US frontier labs as businesses, as of October 2026. Google DeepMind and Meta's labs sit inside giant companies that do not report them separately.*
 
-Their customers differ. Menlo Ventures, a venture firm invested in the sector, estimated Anthropic held 40% of enterprise language-model API spending in 2025 against OpenAI's 27%; OpenAI leads with consumers, with ChatGPT at about 900 million weekly users in February 2026 and reported above a billion later in the year.
+Their customers differ. Menlo Ventures, a venture firm invested in the sector, estimated Anthropic held 40% of enterprise language-model API spending in 2025 against OpenAI's 27%; OpenAI leads with consumers, with ChatGPT at about 900 million weekly users in February 2026 and reported in July to be close to a billion.
 
 > **Watch out:** "Open-weight means free" is a myth. Serving a large open model needs GPUs, engineers and maintenance. Open-weight labs earn money through hosting, enterprise support, premium closed models or the strategic value of setting a standard.
 
@@ -273,7 +273,7 @@ That gap is the services opportunity: turning a model into a changed workflow. O
 
 Let us follow one dollar of your subscription down the chain. This is a teaching model, not anyone's accounts. Each step uses a reported figure where one exists and a labeled assumption where it does not.
 
-**Step 1: the lab.** How much of your dollar goes to computing? Two reported figures bracket the answer. Anthropic reportedly generated about $1.70 of revenue per $1 of compute in the third quarter of 2026, so 1 ÷ 1.70 ≈ 59 cents of each revenue dollar went to compute (not a gross margin, since that compute may include training). For OpenAI, Sacra estimated a gross margin of about 33%, so roughly 67 cents of each dollar went to delivering the service, mostly compute. Call it **about 60 cents to compute and 40 cents left at the lab** for researchers, engineers, sales and everything else. That is not enough: the Financial Times reported OpenAI's projected cumulative negative free cash flow at $278 billion over 2026–2030. Investors fill the gap.
+**Step 1: the lab.** How much of your dollar goes to computing? Two reported figures bracket the answer. Anthropic reportedly generated about $1.70 of revenue per $1 of compute in the third quarter of 2026, so 1 ÷ 1.70 ≈ 59 cents of each revenue dollar went to compute (not a gross margin, since that compute may include training). For OpenAI, Sacra estimated a gross margin of about 33%, so roughly 67 cents of each dollar went to delivering the service, mostly compute. Call it **about 60 cents to compute and 40 cents left at the lab** for researchers, engineers, sales and everything else. That is not enough: the Financial Times reported OpenAI's projected cumulative negative free cash flow at $278 billion over 2026–2030. Investors fill the gap. Anthropic's picture improved during 2026: Bloomberg reported in October that it had told prospective investors it was profitable on an adjusted basis in the third quarter and generating positive free cash flow.
 
 **Step 2: the compute provider.** To see how a provider spends its 60 cents, build the yearly cost of one AI chip in a data center:
 
@@ -569,14 +569,14 @@ All figures below are reported (mostly from Sacra company pages and news coverag
 
 | Company | What it does | Reported figures | Lesson | Revenue multiple |
 |---|---|---|---|---|
-| Cursor (Anysphere) | AI code editor on other labs' models | $2.6B to $4B+ annualized (mid-2026); SpaceX deal at about $60B in stock (June 2026) | A wrapper can win by owning a demanding user's daily workflow; its model suppliers sell rival coding agents | about 15–23× |
+| Cursor (Anysphere) | AI code editor on other labs' models | $2.6B to $4B+ annualized (mid-2026); SpaceX deal at about $60B in stock (agreed June, completed August 2026) | A wrapper can win by owning a demanding user's daily workflow; its model suppliers sell rival coding agents | about 15–23× |
 | Harvey | Vertical AI for law firms | ARR over $400M (Aug 2026); $15.5B valuation (Sep 2026); about 10% of staff are ex-lawyers | Domain depth and trust justify premium seats in a conservative profession | about 39× |
 | Lovable | Builds apps from plain-language descriptions | About $400M run-rate (Mar 2026) to about $600M (Sep 2026); $13.3B (Aug 2026) | AI can create new customers (non-engineers who build); credits protect margins | about 22× |
 | Sierra | Customer-service agents for large brands | About $200M ARR and $15.8B valuation (May 2026) | Outcome pricing survives seat compression, and investors pay heavily for it | about 79× |
 | Mercor | Marketplace for expert training data | Gross run-rate from about $760M to about $2B in six months (to June 2026); $10B (Oct 2025) | Gross is not net: at a 30–40% take rate, $2B gross is $600–800M net | not computed |
 | Scale AI | Data labeling for labs | About $2B revenue (2025 est.); Meta bought 49% for $14.3B (Jun 2025), then customers reportedly left | For a supplier to rival labs, neutrality is itself a moat | not computed |
 | Perplexity | AI answer engine | About $750M annualized (Aug 2026 est.); $20B (Sep 2025) | The purest test of distribution against "the model eats your feature" | not computed (dates differ) |
-| CoreWeave | Neocloud renting NVIDIA GPUs | About $5.1B revenue (2025); $99.4B backlog; about $35.1B debt (June 2026); about 67% of 2025 revenue from Microsoft | Debt-funded infrastructure grows fast but is fragile to concentration | public company |
+| CoreWeave | Neocloud renting NVIDIA GPUs | About $5.1B revenue (2025); about $104B backlog and about $35.1B debt (June 2026); about 67% of 2025 revenue from Microsoft | Debt-funded infrastructure grows fast but is fragile to concentration | public company |
 
 *Table 61.5: Eight AI businesses, 2025–2026. For comparison, the labs: Anthropic's $965B post-money (May 2026) against an over-$47B run-rate (early May) is about 20×; OpenAI's $852B (March 2026) against $25B (February) is about 34×.*
 

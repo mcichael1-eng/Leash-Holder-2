@@ -251,7 +251,7 @@ A mixture also does not have to stay the same from the first step to the last. P
 A frontier pretraining run uses thousands to more than 100,000 GPUs or TPUs working as one machine for weeks to months. Two public reference points:
 
 - **Llama 3 405B (Meta, 2024):** 16,384 NVIDIA H100 GPUs, about 15.6 trillion tokens, with a carefully documented 54-day stretch of training.
-- **GPT-6 Astra (OpenAI, September 2026):** described as OpenAI's largest training run "by far" and the first pretraining run on more than 100,000 GPUs, at the Stargate site in Abilene, Texas. Epoch AI estimates about 9.4 × 10^26 FLOP (with a wide uncertainty range of roughly 5 × 10^26 to 2 × 10^27), assuming about 100,000 GB200 GPUs for about 90 days at 25% utilization in 8-bit precision.
+- **GPT-6 Astra (OpenAI, September 2026):** described as OpenAI's largest training run "by far" and OpenAI's first pretraining run on more than 100,000 GPUs, at the Stargate site in Abilene, Texas. Epoch AI estimates about 9.4 × 10^26 FLOP (with a wide uncertainty range of roughly 5 × 10^26 to 2 × 10^27), assuming about 100,000 GB200 GPUs for about 90 days at 25% utilization in 8-bit precision.
 
 > **Definition — GPU-hour:** One GPU running for one hour. Training jobs and cloud rental prices are measured in GPU-hours.
 
@@ -336,7 +336,7 @@ Two numbers describe how well a run uses its machine. **MFU** is the share of th
 
 ### Fewer bits, more speed
 
-Training math does not need every decimal place. BF16, a 16-bit format, became the standard for large models. **FP8** (8-bit) training followed on NVIDIA's Hopper chips; DeepSeek-V3, trained on 2,048 H800 GPUs, was a prominent public example in late 2024. In 2026, 4-bit formats have arrived: Moonshot's Kimi K3 used MXFP4 weights with quantization-aware training, and DeepSeek-V4-Pro stores its expert weights in FP4 with FP8 elsewhere. Each halving of bits roughly doubles the math a chip can do and halves memory traffic, if the training stays stable.
+Training math does not need every decimal place. BF16, a 16-bit format, became the standard for large models. **FP8** (8-bit) training followed on NVIDIA's Hopper chips; DeepSeek-V3, trained on 2,048 H800 GPUs, was a prominent public example in late 2024. In 2026, 4-bit formats have arrived: Moonshot's Kimi K3 used MXFP4 weights with quantization-aware training, and DeepSeek-V4-Pro stores its expert weights in FP4 with FP8 elsewhere. NVIDIA went furthest with its open Nemotron 3 Super (March 2026), pretrained on 25 trillion tokens in its 4-bit NVFP4 format. Each halving of bits roughly doubles the math a chip can do and halves memory traffic, if the training stays stable.
 
 > **Definition — FP8 and FP4:** 8-bit and 4-bit number formats. Newer AI chips do math in them much faster than in 16-bit, at the cost of more rounding, which careful scaling tricks keep under control.
 
@@ -575,7 +575,7 @@ timeline
 
 The hardware behind this is growing just as fast. Epoch lists xAI's Colossus 2 site in Memphis as the largest known AI data center, at about 1.1 million H100-equivalents, and estimates that a gigawatt-scale site costs about $38 billion up front per gigawatt. Part VII of this book covers the buildings and the power, and Chapter 43 the economics.
 
-> **At the frontier (2026):** GPT-6 Astra, released in September 2026, is the first publicly described pretraining run on more than 100,000 GPUs. Labs rarely disclose compute any more, so outside estimates like Epoch's are the main public window. Pretraining is now one of several large compute sinks: reinforcement learning keeps growing (Chapter 21), and in aggregate, serving models to users now rivals or exceeds training spending at major labs (Chapter 23).
+> **At the frontier (2026):** GPT-6 Astra, released in September 2026, was OpenAI's first pretraining run on more than 100,000 GPUs (xAI had already trained Grok 3 on a cluster of that size in 2025). Labs rarely disclose compute any more, so outside estimates like Epoch's are the main public window. Pretraining is now one of several large compute sinks: reinforcement learning keeps growing (Chapter 21), and serving models to users is a large share of the bill (Epoch estimates that about 30% of OpenAI's 2024 compute spending went to inference; see Chapter 23).
 
 ## The data wall and how labs climb it
 

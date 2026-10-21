@@ -65,13 +65,17 @@ That is 12 times worse than the 5 in 1,000 the independent estimate gives at the
 
 > **Key idea:** Defense in depth works by multiplying small failure rates, but only to the extent the layers fail for different reasons. Diversity of defenses matters more than the strength of any one.
 
+Security teams turn the same idea around with a kill chain: write down, step by step, everything an attacker must achieve to cause the harm, then ask which defense stands at each step. The defense company Lockheed Martin popularized the approach for computer networks as the "Cyber Kill Chain", and BlueDot Impact's technical AI safety course has students build one for an AI threat. Take someone trying to use a chatbot to help make a dangerous pathogen. They must get access to a capable model, get past its refusals and classifiers, extract usable step-by-step help without account monitoring noticing, and then obtain materials and lab skills in the physical world. Every link must hold for the attack to succeed, so breaking any one stops it. Writing the chain out shows where defenses are missing and where two of them share a blind spot.
+
+> **Definition — Kill chain:** A step-by-step breakdown of what an attacker must accomplish to reach a harmful goal. Because every step has to succeed, defenders can stop the attack by breaking any single link.
+
 ### What other safety-critical industries learned
 
 Aviation, nuclear power, chemical plants and hospitals have spent decades learning how to keep complicated, dangerous systems safe. The Swiss cheese model comes from that body of knowledge, and AI safety borrows several more of its ideas.
 
 > **Definition — Safety engineering:** The discipline of designing, building and operating systems such as aircraft, power plants and hospitals so that accidents are rare and their damage is limited, using methods that assume parts will fail.
 
-**Break risk into factors you can act on.** Disaster planners often describe risk as the product of three things: risk ≈ hazard × exposure × vulnerability. Because the factors multiply, shrinking any one of them shrinks the whole.
+**Break risk into factors you can act on.** The classic formula is risk = probability × severity: a 1-in-1,000 chance of a $1 million loss counts as an expected loss of $1,000, the same as a 1-in-10 chance of losing $10,000. Disaster planners often go further and describe risk as the product of three things: risk ≈ hazard × exposure × vulnerability. Because the factors multiply, shrinking any one of them shrinks the whole.
 
 > **Definition — Hazard:** A source of possible harm, such as a flood, a toxic chemical or an AI capability that could help an attacker.
 
@@ -91,12 +95,17 @@ Aviation, nuclear power, chemical plants and hospitals have spent decades learni
 | Fail-safe default | When something breaks, the system falls into a safe state | If the safety monitor goes offline, the agent pauses instead of carrying on unwatched |
 | Negative feedback | Automatic checks push back when activity drifts | Spending caps and rate limits halt an agent with unusual activity |
 | Transparency | The system's state is visible to its overseers | Every tool call an agent makes is logged and reviewable |
+| Antifragility | Each shock or near miss leaves the system stronger | Every new jailbreak found in the wild is added to the classifier's training data |
 
 > **Definition — Separation of duties:** A rule that no single person or system can complete a high-risk action alone, such as one employee requesting a payment and another approving it.
 
 > **Definition — Fail-safe:** A design in which a failure leaves the system in a safe state, the way a train's air brakes clamp on automatically if the air line breaks.
 
 > **Definition — Negative feedback:** A mechanism that automatically counteracts a change, the way a thermostat switches the heating off as a room warms up. In safety design it stops small deviations from growing into large ones.
+
+Antifragility, the idea at the center of Nassim Nicholas Taleb's 2012 book *Antifragile*, comes with a warning attached. Hendrycks's textbook points out that the most direct way to make an AI system antifragile is to let it keep learning after release, and that a system which keeps changing is harder to control. Microsoft's 2016 Twitter chatbot Tay was built to learn from its conversations; within its first day online, a coordinated group of users taught it to post offensive messages, and Microsoft took it offline. The safer pattern is the one in the table: the people and processes around the model learn from each failure, and the model changes only through tested updates.
+
+> **Definition — Antifragility:** The property of getting stronger from shocks, stress and mistakes, as muscles do after exercise or an organization does when it studies every near miss, rather than merely surviving them.
 
 **Count the nines.** Reliability engineers describe performance in "nines": 99% is two nines, 99.9% three, 99.99% four (Chapter 38 uses the same language for data-center uptime). Each extra nine means ten times fewer failures, and each is usually much harder to earn than the last. An agent that takes 1 million actions a day at two nines fails 10,000 times a day; at four nines, 100 times. A headline benchmark score of 90% is only one nine, while commercial aviation has well under one fatal accident per million flights, six nines and more. That gap is one reason AI agents are still kept away from many high-stakes jobs.
 
@@ -109,6 +118,10 @@ The Swiss cheese model pictures an accident as a row of failed parts. Some of th
 **Some accidents are normal.** The sociologist Charles Perrow, studying the 1979 Three Mile Island nuclear accident, argued in his book *Normal Accidents* (1984) that in systems that are both complex (parts interact in unexpected ways) and tightly coupled (one event triggers the next faster than people can step in), occasional accidents are practically inevitable, however good each component is. The 2010 Flash Crash, when automated trading programs reacting to one another briefly wiped nearly 1,000 points off the Dow Jones index (Chapter 53), is the classic example from automated software. AI agents wired to email, code repositories, payment systems and to each other are moving toward exactly this kind of system.
 
 > **Definition — Normal accident:** Charles Perrow's term for an accident that is practically inevitable in a system whose parts interact in complex, unexpected ways and are so tightly linked that one failure cascades before anyone can intervene.
+
+Interacting agents also bring failure modes of their own. When AI agents deal mostly with other AI agents, negotiating, trading or monitoring one another, some failures exist only in the group. A February 2025 report led by Lewis Hammond of the Cooperative AI Foundation, with 44 authors, sorted them into three kinds. Miscoordination: agents that share a goal still fail to work together, like two delivery robots that each swerve the same way. Conflict: agents serving different people fight when compromise would leave everyone better off. Collusion: agents cooperate when we do not want them to, for example pricing agents for rival shops learning to keep prices high together. Testing one agent at a time, as most evaluations do, cannot reveal any of these.
+
+> **Definition — Multi-agent risk:** Harm that arises from how several AI agents interact, through miscoordination, conflict or collusion, even when each agent behaves acceptably when tested on its own.
 
 **Organizations drift.** The Space Shuttle Challenger was destroyed in 1986 when a seal called an O-ring failed. Engineers had seen the seals erode on earlier flights. The sociologist Diane Vaughan showed how each erosion that did not cause disaster came to be treated as acceptable, step by reasonable-looking step, under schedule pressure. The AI version is easy to picture: a model that showed a worrying behavior in testing ships anyway, because the previous model had a similar quirk and nothing bad happened, and the launch date is fixed.
 
@@ -125,6 +138,10 @@ The Swiss cheese model pictures an accident as a row of failed parts. Some of th
 > **Definition — Complex system:** A system of many interacting parts, such as an ecosystem, a market or a large neural network, whose overall behavior emerges from the interactions and cannot be predicted by studying the parts one at a time.
 
 > **Definition — Emergence:** Behavior or properties of a whole system that none of its parts has alone, such as a traffic jam that forms although no driver chose to cause it.
+
+Problems that live inside complex systems tend to be what the planners Horst Rittel and Melvin Webber, in a 1973 paper, called wicked problems. A puzzle such as a crossword has one right answer and you know when you have found it. A wicked problem, such as climate change or misinformation, has no single cause and no single solution; every fix is only better or worse, never simply right; each attempt changes the problem and can have side effects; a fix that worked in one place may fail in another; and there is no moment when you can declare it solved. Hendrycks's textbook argues that AI safety is a wicked problem in this sense. The practical consequence is a mindset: expect trial and error, watch for side effects, keep several approaches running, and treat safety as ongoing maintenance rather than a box to tick once.
+
+> **Definition — Wicked problem:** A problem with no clear definition, no single right answer and no point at which it is finished, typically because it sits inside a complex social system where every attempted fix changes the problem. Climate change and AI safety are often given as examples.
 
 Complex systems also produce rare, extreme events. Floods, market crashes and pandemics follow heavy-tailed patterns in which the single worst event can dwarf all the ordinary ones put together. The writer Nassim Nicholas Taleb popularized the name "black swan" for such events when nobody saw them coming. The lesson for AI is uncomfortable: a clean track record says little about the tail, so good safety plans include defenses that work against whole classes of failure, such as the ability to pause a deployment or shut a system down, and not only defenses tuned to past incidents.
 
@@ -288,19 +305,24 @@ Three tempting shortcuts each fail on their own.
 
 > **Definition — Wellbeing:** How well a person's life is going for them. Philosophers disagree about whether it consists in pleasure, in getting what one wants, or in objectively good things such as health, knowledge and relationships.
 
-**"Just pick the correct moral theory."** Moral philosophy offers three main families of theory, and after more than two thousand years none has won.
+**"Just pick the correct moral theory."** Moral philosophy offers four main families of theory, and after more than two thousand years none has won.
 
 | Family | Core question | Strength | Classic worry |
 |---|---|---|---|
 | Consequentialism (for example, utilitarianism) | Which action leads to the best overall outcome? | Counts everyone's welfare, and counts numbers | Can justify terrible acts when the sums come out right, such as sacrificing one person to benefit five |
 | Deontology | Which duties and rights apply, whatever the outcome? | Protects individuals: no lying, no using people as tools | Rigid: it seems to forbid lying even to a murderer asking where your friend is hiding |
 | Virtue ethics | What would a person of good character do? | Flexible and close to how people actually reason | Vague: people disagree about what good character requires in hard cases |
+| Social contract theory | Which rules would people agree to if they did not know which position in society they would end up in? | Grounds morality in fairness and mutual benefit | The same starting point yields different rules: John Rawls concluded people would protect the worst-off, John Harsanyi that they would maximize average wellbeing |
 
 > **Definition — Consequentialism:** The family of moral theories holding that the right action is the one with the best overall consequences. Utilitarianism, which aims to maximize total wellbeing, is the best-known version.
 
 > **Definition — Deontology:** The family of moral theories holding that some actions are required or forbidden by duties and rights regardless of consequences, such as the duty not to lie or not to harm the innocent.
 
 > **Definition — Virtue ethics:** The family of moral theories that focuses on character, asking what an honest, kind and wise person would do, rather than on rules or outcomes alone.
+
+> **Definition — Social contract theory:** The family of moral theories holding that right rules are the ones people would agree to for mutual benefit, such as "do not steal", judged by whether reasonable people would accept them.
+
+> **Definition — Veil of ignorance:** A thought experiment from the philosopher John Rawls: choose the rules for a society without knowing whether you will be rich or poor, healthy or sick, or which group you will belong to, so that self-interest pushes you toward fair rules.
 
 Hard-coding any single theory into a powerful optimizer is risky for the same reason any proxy is (Chapter 55): pushed to its extremes, every theory produces conclusions almost everyone finds monstrous.
 
@@ -376,6 +398,8 @@ The logic is that some capabilities, such as finding software vulnerabilities, a
 > **Definition — Abuse monitoring:** Watching patterns of use across accounts (not just single messages) to detect misuse such as coordinated attacks, fraud or mass extraction, and responding with warnings, rate limits or bans.
 
 Some misuse is invisible one message at a time. In November 2025 Anthropic reported detecting and disrupting a campaign in which a Chinese state-sponsored group used Claude Code to automate much of an espionage operation against about 30 organizations, with AI performing an estimated 80–90% of the tactical work (Chapter 58 covers the case). In February 2026 Anthropic reported finding about 24,000 fraudulent accounts that had generated over 16 million exchanges in attempts to copy its models through distillation, and named three Chinese labs it held responsible. Both were caught by looking across accounts, not by any single refusal.
+
+Much of this work is anomaly detection, the same technique banks use to flag a card payment that does not look like you (Chapter 10), pointed at AI use: an account whose traffic suddenly changes shape, a burst of near-identical requests, or an agent that starts doing something it has never done before. Hendrycks's textbook argues the idea should also be turned on the models themselves, flagging sudden shifts in a model's own behavior that could signal a planted backdoor or a model pursuing a hidden goal. Its strength is that it can catch attacks nobody has seen before, because it looks for "unusual" rather than for a known pattern. Its weakness is false alarms: most unusual activity is innocent, so flagged cases usually go to a human reviewer or trigger a cautious fallback, such as pausing an agent, rather than an automatic ban.
 
 > **Key idea:** Training shapes what the model wants to do, safeguards check what it actually does, access tiers decide who can ask, and monitoring watches patterns no single conversation reveals. Each catches failures the others miss.
 
@@ -454,7 +478,11 @@ flowchart LR
 
 ## Other research bets you will hear about
 
-Scalable oversight is one research program among several. Four more names come up again and again in alignment courses and papers. Each is an open research area, not a finished safeguard.
+Scalable oversight is one research program among several. Five more names come up again and again in alignment courses and papers. Each is an open research area, not a finished safeguard.
+
+**Filtering the training data.** The simplest way to keep dangerous knowledge out of a model is never to teach it. Pretraining data filtering scores documents before training and removes those on topics such as bioweapons. Two 2025 studies tested it. Anthropic filtered chemical, biological, radiological and nuclear weapons content and reported that a filtered model's accuracy on a weapons-knowledge quiz fell from 33.7% to 30.8%, where random guessing on the four-choice questions scores 25%: a third of its above-chance knowledge removed, with no significant loss on science, coding or general-knowledge tests. In the "Deep Ignorance" study, EleutherAI and the UK AI Security Institute filtered biothreat-related text from the training data of 6.9-billion-parameter open-weight models. The filtered models stayed well below unfiltered ones even after attackers fine-tuned them on 300 million tokens of biology-risk text, far more resistance than refusal training gives, at a cost of under 1% extra training compute. This matters most for open-weight models, whose safety training anyone can strip away with a little fine-tuning (Chapter 60). The limits: much biology is dual-use, so filters cannot remove everything dangerous without hurting useful science, and a filtered model can still use harmful information if a user pastes it into the conversation.
+
+> **Definition — Pretraining data filtering:** Removing documents on dangerous topics, such as weapons of mass destruction, from a model's training data before training, so the model never learns that knowledge rather than learning it and being trained to refuse.
 
 **Machine unlearning.** Instead of training a model to refuse dangerous requests, remove the dangerous knowledge itself. In 2024 the Center for AI Safety and collaborators released WMDP (the Weapons of Mass Destruction Proxy benchmark), thousands of multiple-choice questions that measure hazardous knowledge in biosecurity, cybersecurity and chemistry without themselves giving it away, together with an unlearning method that lowered scores on it while mostly preserving general ability. The catch is proof: it is hard to show that knowledge is gone rather than merely hidden, and modest fine-tuning can sometimes bring it back. The same tools interest privacy lawyers, who would like to delete one person's data from a trained model (Chapter 11).
 
@@ -783,7 +811,7 @@ Finally, labs plan for failure. AI control watches a possibly untrustworthy mode
 
 ## Key terms
 
-Alignment technique, Safeguards (mitigations), Defense in depth, Safety engineering, Hazard, Exposure (in risk analysis), Vulnerability, Separation of duties, Fail-safe, Negative feedback, Nines (of reliability), Normal accident, Normalization of deviance, Safety culture, High-reliability organization (HRO), Complex system, Emergence, Tail risk, Black swan, RLHF (Reinforcement Learning from Human Feedback), Scalable oversight, RLAIF (Reinforcement Learning from AI Feedback), Constitutional AI, Model spec, Constitution (for an AI), Chain of command (principal hierarchy), Operator, System prompt, Default behavior, Hard constraint, Deliberative alignment, Character training, Machine ethics, Stated preference, Revealed preference, Idealized preference, Wellbeing, Consequentialism, Deontology, Virtue ethics, Social welfare function, Moral uncertainty, Moral parliament, Safety classifier, Jailbreak, Constitutional classifiers, Bug bounty, Trusted access (access tier), KYC (know your customer), Abuse monitoring, Debate (AI safety via debate), Iterated amplification, Recursive reward modeling, Critique model, Weak-to-strong generalization, Performance gap recovered (PGR), Machine unlearning, Inverse reinforcement learning (IRL), Assistance game (cooperative inverse reinforcement learning), Eliciting latent knowledge (ELK), Agent foundations, If-then commitment, Capability threshold, Uplift, CBRN, Frontier safety framework, Frontier model, Responsible Scaling Policy (RSP), AI Safety Level (ASL), Preparedness Framework, Frontier Safety Framework (FSF), Critical Capability Level (CCL), Tracked Capability Level (TCL), Safety-washing, Safety case, Inability argument, AI control, Trusted monitoring, Untrusted monitoring, Resampling (defer to trusted), Audit budget, Model weights, Exfiltration, Insider threat, RAND security levels (SL1–SL5), Distillation attack, Incident reporting, Whistleblower protection
+Alignment technique, Safeguards (mitigations), Defense in depth, Kill chain, Safety engineering, Hazard, Exposure (in risk analysis), Vulnerability, Separation of duties, Fail-safe, Negative feedback, Antifragility, Nines (of reliability), Normal accident, Multi-agent risk, Normalization of deviance, Safety culture, High-reliability organization (HRO), Complex system, Emergence, Wicked problem, Tail risk, Black swan, RLHF (Reinforcement Learning from Human Feedback), Scalable oversight, RLAIF (Reinforcement Learning from AI Feedback), Constitutional AI, Model spec, Constitution (for an AI), Chain of command (principal hierarchy), Operator, System prompt, Default behavior, Hard constraint, Deliberative alignment, Character training, Machine ethics, Stated preference, Revealed preference, Idealized preference, Wellbeing, Consequentialism, Deontology, Virtue ethics, Social contract theory, Veil of ignorance, Social welfare function, Moral uncertainty, Moral parliament, Safety classifier, Jailbreak, Constitutional classifiers, Bug bounty, Trusted access (access tier), KYC (know your customer), Abuse monitoring, Debate (AI safety via debate), Iterated amplification, Recursive reward modeling, Critique model, Weak-to-strong generalization, Performance gap recovered (PGR), Pretraining data filtering, Machine unlearning, Inverse reinforcement learning (IRL), Assistance game (cooperative inverse reinforcement learning), Eliciting latent knowledge (ELK), Agent foundations, If-then commitment, Capability threshold, Uplift, CBRN, Frontier safety framework, Frontier model, Responsible Scaling Policy (RSP), AI Safety Level (ASL), Preparedness Framework, Frontier Safety Framework (FSF), Critical Capability Level (CCL), Tracked Capability Level (TCL), Safety-washing, Safety case, Inability argument, AI control, Trusted monitoring, Untrusted monitoring, Resampling (defer to trusted), Audit budget, Model weights, Exfiltration, Insider threat, RAND security levels (SL1–SL5), Distillation attack, Incident reporting, Whistleblower protection
 
 ## Exercises
 

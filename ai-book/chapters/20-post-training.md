@@ -593,7 +593,7 @@ flowchart LR
 
 *Figure 20.6: Defense in depth. Safety training inside the model is backed by classifiers on the way in and on the way out, plus monitoring.*
 
-> **At the frontier (2026):** Tiered releases have become a pattern across labs: one model, several sets of safeguards depending on who is using it. Examples include Anthropic's Fable and Mythos, OpenAI's GPT-5.5-Cyber and Google's Gemini 3.5 Flash Cyber, the latter two aimed at vetted cybersecurity defenders. Chapter 56 covers safety frameworks and Chapter 58 covers misuse.
+> **At the frontier (2026):** Tiered releases have become a pattern across labs: one model, several sets of safeguards depending on who is using it. Examples include Anthropic's Fable and Mythos; OpenAI's GPT-5.5-Cyber (May 2026) and GPT-5.6-Cyber (August 2026), offered to vetted security teams; and Google's Fairwind program, which gives vetted cybersecurity defenders Gemini 4 Argon without its cyber guardrails. Chapter 56 covers safety frameworks and Chapter 58 covers misuse.
 
 ## When feedback training goes wrong
 
@@ -690,7 +690,7 @@ A powerful 2025 refinement, described publicly by Thinking Machines Lab, is on-p
 
 > **Definition — On-policy distillation:** A distillation method in which the student writes its own answers and the teacher grades every token of them, combining the realism of reinforcement learning (the student learns from its own mistakes) with the dense, token-by-token feedback of distillation.
 
-Distillation is how many of the small, fast models you use are made. Alibaba says its open Qwen3.8-27B model is distilled from its larger Qwen3.8-Max, and DeepSeek released small "distilled" versions of its R1 reasoning model (Chapter 21). Labs rarely say exactly how their own small tiers are built, but distilling from the flagship is a standard way to do it.
+Distillation is how many of the small, fast models you use are made. Alibaba's small open Qwen3.8-27B is reported to be distilled from a larger Qwen model (its model card does not say), and DeepSeek released small "distilled" versions of its R1 reasoning model (Chapter 21). Labs rarely say exactly how their own small tiers are built, but distilling from the flagship is a standard way to do it.
 
 > **Analogy:** Distillation is a master chef teaching an apprentice by letting them taste every dish and explaining which near-misses were close. The apprentice never gets the chef's decades of experience, but learns far faster than by reading recipes alone.
 
@@ -706,7 +706,7 @@ On February 23, 2026, Anthropic published a report saying it had detected about 
 
 - **Account and pattern detection**, closing networks of accounts that behave like extraction pipelines.
 - **Classifiers** that flag distillation attempts, as in Anthropic's Fable release.
-- **Hiding raw reasoning.** Many products show only a summary of a reasoning model's thinking, partly so the full reasoning traces cannot be harvested as training data. Anthropic applies a "preserved thinking" anti-distillation safeguard to new API accounts using Claude Opus 5.5.
+- **Hiding raw reasoning.** Many products show only a summary of a reasoning model's thinking, partly so the full reasoning traces cannot be harvested as training data. Anthropic's "preserved thinking" safeguard, introduced with Fable 5.1, stops API users from editing Claude's earlier context to pull out its reasoning; it applies to Fable 5.1 and Opus 5.5 for API accounts created from August 31, 2026.
 
 There is a real debate here. The labs' case is that distillation attacks free-ride on billions of dollars of research and can strip out safety training. Critics reply that the same labs trained on enormous amounts of other people's text without asking, and that copying is part of how technology spreads. Both points can be true at once. The legal side of training-data disputes is covered in Chapters 58 and 59.
 
@@ -898,7 +898,7 @@ Base model, Post-training, Alignment, Fine-tuning, SFT (Supervised Fine-Tuning),
    **What you'll learn:** the difference between a text continuer and an assistant, with your own eyes.
 
 8. **[Medium] Blind taste test for style bias.** Measure how much formatting sways you.
-   1. Go to LMArena (https://lmarena.ai) and use battle mode with five prompts from your real life.
+   1. Go to Arena (https://arena.ai; called LMArena until January 2026) and use battle mode with five prompts from your real life.
    2. Vote before the model names are revealed, and note for each vote whether the winner was longer or more formatted.
    3. Count how often the longer answer won, and ask yourself whether it was actually better.
    **What you'll learn:** verbosity and style bias, and why leaderboards try to correct for them.

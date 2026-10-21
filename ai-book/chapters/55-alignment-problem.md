@@ -70,7 +70,7 @@ You will meet other maps of the same territory. An influential 2023 overview by 
 
 | Source of risk (Hendrycks and colleagues) | What it means | Closest family above | Where this book covers it |
 |---|---|---|---|
-| Malicious use | A person aims AI at harm: bioweapons, mass propaganda, grabs for power | Misuse | Chapter 58 |
+| Malicious use | A person aims AI at harm: bioweapons, mass propaganda, grabs for power, or an autonomous agent released with a destructive goal (in 2023 a hobby project called ChaosGPT told an agent to "destroy humanity"; it lacked the skill to do any damage) | Misuse | Chapter 58 |
 | AI race | Competition pushes companies and countries to move fast, cut corners and hand ever more decisions, including military ones, to machines | Structural | Chapters 59 and 60 |
 | Organizational risks | How labs are run: rushed testing, leaked weights, warnings ignored, safety teams overruled | Accidents with structural causes | Chapter 56 |
 | Rogue AIs | Systems pursue goals their makers did not intend, through proxy gaming, goal drift, power-seeking or deception | Accidents | This chapter, Chapters 56 and 57 |
@@ -420,6 +420,14 @@ It largely did not. The backdoors survived ordinary fine-tuning and reinforcemen
 
 The key limitation: the bad behavior was planted on purpose. The study does not show that models develop hidden triggers on their own. It shows that if a model ever did have one, whether from deliberate tampering or some unknown training quirk, the standard tools might fail to remove it and could give false confidence.
 
+Building a misbehaving model on purpose, so that it can be studied safely, has a name. In 2023 Evan Hubinger and colleagues at Anthropic argued that alignment research needs "model organisms of misalignment", borrowing the biologists' term for a fruit fly or lab mouse studied in place of the harder real case. The sleeper agents were the first major example, and the alignment-faking and scheming studies below follow the same logic.
+
+> **Definition — Model organism (of misalignment):** An AI model deliberately built or trained to show a failure researchers worry about, such as a hidden backdoor or deceptive behavior, so the failure and the tools meant to catch it can be studied in a controlled setting.
+
+How could a real backdoor get in? One route is data poisoning: an outsider plants documents in data that will later be scraped for training. In October 2025 Anthropic, the UK AI Security Institute and the Alan Turing Institute reported that as few as 250 poisoned documents were enough to plant a simple backdoor in models from 600 million to 13 billion parameters, roughly the same number for every size, even though the largest model saw far more clean data in total. The backdoor was deliberately harmless (a trigger word made the model output gibberish), the authors said it is unclear whether the result holds for bigger models or more dangerous behaviors, and an attacker must still get the documents into a training set. But it suggests that poisoning does not get harder simply because models and datasets get bigger.
+
+> **Definition — Data poisoning:** Deliberately planting malicious content in data an AI system will learn from, so that the trained model behaves badly, for example when it sees a secret trigger phrase.
+
 ### Alignment faking (December 2024)
 
 > **Definition — Alignment faking:** Behavior in which a model strategically complies with training it disagrees with, in order to avoid having its existing preferences changed.
@@ -677,7 +685,7 @@ Finally, there is a long-standing argument that almost any goal gives a capable 
 
 ## Key terms
 
-AI safety, Accident (in AI safety), Misuse, Structural harm, AI race, Organizational risk, Rogue AI, Goal drift, Alignment, Misalignment, Base rate, Pretraining, Fine-tuning, Reinforcement learning (RL), Reward model, Distribution shift, Hallucination, Reliability, Agent, Jagged frontier, Sycophancy, Objective (reward function), Proxy, Goodhart's law, Specification gaming, Reward hacking, Outer alignment, Inner alignment, Mesa-optimizer, Goal misgeneralization, Capability generalization, Situational awareness, Evaluation awareness, Sandbagging, Deceptive alignment, Backdoor, Sleeper agent (AI), Alignment faking, Scheming, Covert action, Stress test (AI), Instrumental convergence, Power-seeking, Shutdown resistance, Corrigibility, Emergent misalignment, Persona, Inoculation prompting, System card, Chain of thought (CoT), CoT monitoring
+AI safety, Accident (in AI safety), Misuse, Structural harm, AI race, Organizational risk, Rogue AI, Goal drift, Alignment, Misalignment, Base rate, Pretraining, Fine-tuning, Reinforcement learning (RL), Reward model, Distribution shift, Hallucination, Reliability, Agent, Jagged frontier, Sycophancy, Objective (reward function), Proxy, Goodhart's law, Specification gaming, Reward hacking, Outer alignment, Inner alignment, Mesa-optimizer, Goal misgeneralization, Capability generalization, Situational awareness, Evaluation awareness, Sandbagging, Deceptive alignment, Backdoor, Sleeper agent (AI), Model organism (of misalignment), Data poisoning, Alignment faking, Scheming, Covert action, Stress test (AI), Instrumental convergence, Power-seeking, Shutdown resistance, Corrigibility, Emergent misalignment, Persona, Inoculation prompting, System card, Chain of thought (CoT), CoT monitoring
 
 ## Exercises
 

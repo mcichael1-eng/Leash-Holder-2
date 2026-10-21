@@ -154,23 +154,23 @@ ARC-AGI-3 launched on March 25, 2026. Each task is a small interactive game with
 By September 2026, ARC Prize reported these results for OpenAI's GPT-6 Astra:
 
 - **62.7%** at maximum reasoning effort under the standard harness, at a cost of about $26,000 for the run.
-- **99.9%** under a "Provider Adapter" harness that let the model keep its reasoning state between steps and use compaction.
-- On 96% of levels, Astra used fewer actions than the median human.
+- **98.6%** at the same maximum effort under a "Provider Adapter" harness that let the model keep its reasoning state between steps and use compaction. Its best adapter score, **99.9%**, came at high effort.
+- With the adapter harness at maximum effort, Astra used fewer actions than the median human on 96% of levels.
 
 > **Definition — Compaction:** Summarizing older parts of a long task so it fits in the model's context window and the model can keep working without losing the thread.
 
-Same model, same test, a 37-point difference caused entirely by the software around the model. ARC Prize also explicitly declined to call the result AGI.
+Same model, same effort, same test: a 36-point difference (62.7% versus 98.6%) caused entirely by the software around the model. ARC Prize also explicitly declined to call the result AGI.
 
 ```mermaid
 flowchart TD
     M["GPT-6 Astra<br/>max reasoning effort"] --> H1["Standard harness<br/>reasoning reset between steps"]
     M --> H2["Provider Adapter harness<br/>keeps reasoning state, uses compaction"]
     H1 --> R1["ARC-AGI-3 score 62.7%"]
-    H2 --> R2["ARC-AGI-3 score 99.9%"]
+    H2 --> R2["ARC-AGI-3 score 98.6%"]
     R1 --> L["Lesson: report the harness<br/>with every score"]
     R2 --> L
 ```
-*Figure 24.3: The same model scored 62.7% or 99.9% on ARC-AGI-3 depending on the harness, as reported by ARC Prize in September 2026.*
+*Figure 24.3: At the same maximum effort, the same model scored 62.7% or 98.6% on ARC-AGI-3 depending on the harness (99.9% at high effort with the adapter), as reported by ARC Prize in September 2026.*
 
 ARC-AGI-3 teaches three lessons at once. First, saturation can be fast: from 0.51% to 99.9% in about six months. Second, the harness is part of the result. Third, cost matters: a score that took $26,000 of compute is a different achievement from one that took $26.
 
@@ -233,7 +233,7 @@ GPQA's lesson: "hard for humans" does not mean "hard for models for long." Three
 
 > **Definition — Humanity's Last Exam (HLE):** A public benchmark of 2,500 expert-level questions across many fields, released in January 2025 by the Center for AI Safety and Scale AI. Questions were crowdsourced from experts and kept only if frontier models of the time failed them.
 
-Because only questions that early-2025 models failed were kept, low starting scores were guaranteed, and the test was tuned against those older models. Here is the text-only leaderboard as Artificial Analysis measured it in October 2026:
+Because only questions that early-2025 models failed were kept, low starting scores were guaranteed, and the test was tuned against those older models. Here is the best-scoring model from each of the top five labs on the text-only questions (2,158 of the 2,500), as Artificial Analysis measured them in October 2026. Anthropic's second model, Fable 5.1, also scored 59.1%, above every other lab's best:
 
 | Model (maker) | HLE text-only score |
 |---|---|
@@ -243,7 +243,7 @@ Because only questions that early-2025 models failed were kept, low starting sco
 | Muse Wonder (Meta) | 50.1% |
 | MiMo-V2.6-Pro (Xiaomi, open weights) | 49.4% |
 
-*Table 24.3: Humanity's Last Exam, text-only questions, as measured by Artificial Analysis on October 20, 2026.*
+*Table 24.3: Humanity's Last Exam, text-only questions, best model per lab, as measured by Artificial Analysis on October 20, 2026.*
 
 Notice the last row: an open-weight model trails the leader by only 12 points.
 
@@ -325,11 +325,11 @@ METR's fitted doubling time since 2023 is about 129 days (roughly 4.2 months); a
 
 The early Mythos Preview measurement in April 2026 was about 17.4 hours, close to the trend.
 
-> **Watch out:** METR itself warns that measurements above about 16 hours are unreliable with its current task suite, because it has too few tasks that long. Its time-horizon page stopped being updated as of September 8, 2026. Also, horizons at 80% reliability are 5 to 10 times shorter than at 50%. "Succeeds half the time on a 17-hour task" is very different from "can be trusted with a 17-hour task."
+> **Watch out:** METR itself warns that measurements above about 16 hours are unreliable with its current task suite, because it has too few tasks that long. Its time-horizon page stopped being updated as of September 8, 2026. Also, horizons at 80% reliability are about 4 to 10 times shorter than at 50%. "Succeeds half the time on a 17-hour task" is very different from "can be trusted with a 17-hour task."
 
 ### The crowd: LMArena
 
-> **Definition — LMArena:** A public website where people chat with two anonymous models side by side and vote for the better answer; the votes are turned into Elo-style ratings. It measures what ordinary users prefer, not what is correct.
+> **Definition — LMArena:** A public website where people chat with two anonymous models side by side and vote for the better answer; the votes are turned into Elo-style ratings. It measures what ordinary users prefer, not what is correct. It was renamed Arena in January 2026 and now lives at arena.ai.
 
 Its fresh prompts make it hard to contaminate, but voters reward style: longer, confident, well-formatted answers tend to win even when a shorter one is more accurate, so a lab can raise its rating without making the model smarter.
 
@@ -397,7 +397,7 @@ How would a skeptic read this?
 
 1. **Which numbers are independent?** The HLE score of 67.7% is "with tools." Artificial Analysis's independent text-only figure is 61.4%. Both can be true, because they are different setups.
 2. **What does "Fable-level on most work" mean?** It is a summary judgment by the maker. Check it against independent indices (Table 24.5 puts Opus 5.5 above Fable 5.1 on the AA index) and against your own tasks.
-3. **What did outsiders find?** METR evaluated Opus 5.5 with a focus on AI research tasks. It called the model an incremental improvement over Fable 5.1 and "unlikely to be able to fully automate AI R&D," and cited a preliminary internal Anthropic estimate of about 1.5× overall acceleration of research and development work.
+3. **What did outsiders find?** METR evaluated Opus 5.5 with a focus on AI research tasks. It called the model an incremental improvement over Fable 5.1 and "unlikely to be able to fully automate AI R&D," and cited its own preliminary estimate that AI was speeding up progress inside Anthropic by about 1.5× overall (1.5 years of progress in one year), with perhaps a 30% chance of 2×.
 4. **What is missing?** Launch tables rarely show the benchmarks a model does poorly on. Look for independent leaderboards that test everything with the same settings.
 
 OpenAI's October 2026 deployment note for GPT-6 Sol and Luna is similar reading. It treats them as High capability in cybersecurity and in biological and chemical risk, but not in AI self-improvement, which tells you which safeguards its Preparedness Framework triggered. No benchmark table gives you that.
@@ -428,9 +428,9 @@ Downloading weights does not mean you can do anything with them. A license sets 
 
 Licenses in late 2026 fall into three rough groups:
 
-- **Permissive.** DeepSeek V4 uses the MIT license. Qwen3.8-27B, Mistral Large 3 and OpenAI's gpt-oss models use Apache-2.0.
+- **Permissive.** DeepSeek V4 uses the MIT license. Qwen3.8-27B, Google's Gemma 4, Meta's Muse Glimmer, Mistral Large 3 and OpenAI's gpt-oss models use Apache-2.0.
 - **Permissive with a size limit.** Alibaba's largest open model, Qwen3.8-2.4T-A95B, requires a separate commercial license for providers with more than US$50 million in revenue. Small companies can use it freely; giant competitors must negotiate.
-- **Custom terms.** Some labs publish their own licenses with use restrictions. Always read the model card's license section before building a product.
+- **Custom terms.** Some labs publish their own licenses with use restrictions; Meta's Muse Spark Open, for example, comes under a Muse Model License with limited commercial terms. Always read the model card's license section before building a product.
 
 | Open-weight model | Maker | Size (total / active parameters) | License | Released |
 |---|---|---|---|---|
@@ -441,8 +441,9 @@ Licenses in late 2026 fall into three rough groups:
 | Qwen3.8-27B | Alibaba | 27B | Apache-2.0 | August 2026 |
 | Mistral Large 3 | Mistral AI | 675B / 41B | Apache-2.0 | December 2025 |
 | Mistral Medium 3.5 | Mistral AI | 128B | Open weights | April 2026 |
-| Gemma 4 | Google DeepMind | Several sizes, from small on-device models to 31B | See model card | April 2, 2026 |
-| Muse Glimmer | Meta | 30B | See model card | August 10, 2026 |
+| Gemma 4 | Google DeepMind | Several sizes, from small on-device models to 31B | Apache-2.0 | March 31, 2026 |
+| Muse Glimmer | Meta | 30B | Apache-2.0 | August 10, 2026 |
+| Muse Spark Open | Meta | 816B / 42B | Muse Model License | October 15, 2026 |
 | gpt-oss-120b and gpt-oss-20b | OpenAI | 120B and 20B class | Apache-2.0 | August 2025 |
 
 *Table 24.7: Notable open-weight models as of October 2026.*
@@ -504,10 +505,10 @@ Model names change every few weeks, so treat this section as a dated snapshot an
 | Anthropic (US) | Claude Opus 5.5, Sonnet 5.5, Haiku 5.5; Fable 5.1 and Mythos 5.1 | Closed | All four API models: 1M-token context, 128K output, June 2026 knowledge cutoff |
 | OpenAI (US) | GPT-6 Astra; GPT-6 Sol and Luna; GPT-6.1 Sol | Closed (plus gpt-oss open models) | Astra: 1,050,000-token context; GPT-6 reached all ChatGPT users, including free, October 7–8 |
 | Google DeepMind (UK and US) | Gemini 4 Argon; Gemini 3.8 Flash | Closed (plus Gemma 4 open models) | Argon generally available in the API from October 13, 2026 |
-| Meta Superintelligence Labs (US) | Muse Wonder and Wonder Full; Muse Spark; Muse Glimmer | Mixed (Glimmer is open, 30B) | The Muse family replaced Llama |
+| Meta Superintelligence Labs (US) | Muse Wonder and Wonder Full; Muse Spark; Muse Glimmer | Mixed (Glimmer and Muse Spark Open are open) | No new Llama since Llama 4 (2025); Muse is its new family |
 | SpaceXSI, formerly xAI (US) | Grok 4.7 | Closed | SpaceX acquired xAI on February 2, 2026 |
 | DeepSeek (China) | DeepSeek V4-Pro, V4-Flash, V4.1-Flash | Open (MIT) | 1M context; compressed sparse attention |
-| Alibaba Qwen (China) | Qwen3.8-Max; Qwen3.8-2.4T-A95B; Qwen3.8-27B | Mixed (Max is closed) | Largest Qwen open model, August 2026 |
+| Alibaba Qwen (China) | Qwen3.8-Max; Qwen3.8-2.4T-A95B; Qwen3.8-27B | Mixed (Max is the hosted version of the open 2.4T-A95B) | Largest Qwen open model, August 2026 |
 | Moonshot AI (China) | Kimi K3 | Open | 2.8T total parameters; agent swarms of up to 300 sub-agents |
 | Mistral AI (France) | Mistral Large 4 (preview); Medium 3.5 | Mostly open | Large 4 open weights promised for the end of October |
 | Others | Xiaomi MiMo-V2.6-Pro; Z.ai GLM-5.3; StepFun Step 5; NVIDIA Nemotron 3.5; Thinking Machines Inkling; Reflection Beam 1.0 | Mixed | MiMo-V2.6-Pro and GLM-5.3 are among the top open-weight models |
@@ -524,17 +525,17 @@ Its 2026 pace shows how fast the frontier moves: Opus 4.6 (February 5), Mythos P
 
 ### OpenAI
 
-OpenAI reached GPT-6 through the reasoning models of Chapter 21: o1 (2024), o3 and GPT-5 with its router (2025), then GPT-5.1 to GPT-5.6 (November 2025 to June 2026). **GPT-6 Astra** arrived on September 3, 2026: OpenAI's largest training run "by far," and the first pretraining run on more than 100,000 GPUs, at the Stargate site in Abilene, Texas (see Chapter 42). Astra offers a 1,050,000-token context, 128K output and an April 30, 2026 knowledge cutoff, at $10/$50. **GPT-6 Sol and Luna** (September 22) are cheaper tiers priced 50% below GPT-5.6, and **GPT-6.1 Sol** (September 29) offers near-Astra intelligence at about one-fifth of Astra's price, per OpenAI's summaries. ChatGPT had 900 million weekly active users in February 2026.
+OpenAI reached GPT-6 through the reasoning models of Chapter 21: o1 (2024), o3 and GPT-5 with its router (2025), then GPT-5.1 to GPT-5.6 (November 2025 to July 2026; GPT-5.6 had a limited preview on June 26 and a public release on July 9). **GPT-6 Astra** arrived on September 3, 2026: OpenAI's largest training run "by far," and OpenAI's first pretraining run on more than 100,000 GPUs, at the Stargate site in Abilene, Texas (see Chapter 42). Astra offers a 1,050,000-token context, 128K output and an April 30, 2026 knowledge cutoff, at $10/$50. **GPT-6 Sol and Luna** (September 22) are cheaper tiers priced 50% below GPT-5.6's promotional API prices, and **GPT-6.1 Sol** (September 29) offers near-Astra intelligence at about one-fifth of Astra's price, per OpenAI's summaries. ChatGPT had 900 million weekly active users in February 2026.
 
-Two Astra claims need care. Several secondary sources report it was the first model rated "Critical" in cybersecurity under OpenAI's Preparedness Framework, with access gated; this book's research found no primary OpenAI page confirming it. And an anonymous insider's claim that Astra uses a "recurrent depth" technique, making its reasoning harder to monitor, is unconfirmed. OpenAI's newest open-weight models are still gpt-oss-120b and gpt-oss-20b (August 2025).
+Two Astra claims need care. The first is now confirmed: OpenAI's own deployment-safety page calls Astra its first model to reach the "Critical" level of cybersecurity capability under its Preparedness Framework, and the version paid users received refuses some cybersecurity requests. The second is not: an anonymous insider's claim that Astra uses a "recurrent depth" technique, making its reasoning harder to monitor, is unconfirmed. OpenAI's newest open-weight models are still gpt-oss-120b and gpt-oss-20b (August 2025).
 
 ### Google DeepMind
 
-Google runs two lines on separate schedules. The Flash line shipped five releases between May and September 2026 (Gemini 3.5 Flash through 3.8 Flash, plus 3.5 Flash-Lite), along with Omni Flash for video (June 30) and 3.8 Live for real-time voice (September 15). The Pro line stalled: Gemini 3.5 Pro never got a general release, and Bloomberg reported it struggled to hit performance goals. **Gemini 4 Argon** became generally available in the API on October 13, 2026 (Epoch dates its announcement to September 30), with a 1M-token combined limit and an introductory price of $2/$10 through November 30, 2026, then $4/$20. The open **Gemma 4** family (April 2) runs from on-device sizes to 31B, and the **Genie 3** world model generates interactive 720p worlds (see Chapter 47).
+Google runs two lines on separate schedules. The Flash line shipped five releases between May and September 2026 (Gemini 3.5 Flash through 3.8 Flash, plus 3.5 Flash-Lite), along with Omni Flash for video (June 30) and 3.8 Live for real-time voice (September 15). The Pro line stalled: Gemini 3.5 Pro never got a general release, and Bloomberg reported it struggled to hit performance goals. **Gemini 4 Argon** became generally available in the API on October 13, 2026 (Epoch dates its announcement to September 30), with a 1M-token combined limit and an introductory price of $2/$10 through November 30, 2026, then $4/$20. The open **Gemma 4** family (March 31, under Apache-2.0) runs from on-device sizes to 31B, and the **Genie 3** world model generates interactive 720p worlds (see Chapter 47).
 
 ### Meta
 
-Meta reorganized its AI work into Meta Superintelligence Labs (MSL) in mid-2025 and replaced Llama (the last was Llama 4, April 2025) with the **Muse** family: Muse Spark (April 8, 2026), the open 30B Muse Glimmer (August 10), and Muse Wonder and Wonder Full (October 13), its first push into the frontier. One report puts Wonder's price at $4/$20 through a Meta Model API; that figure comes from a single source.
+Meta reorganized its AI work into Meta Superintelligence Labs (MSL) in mid-2025. It has released no new Llama model since Llama 4 (April 2025); its new models form the **Muse** family: Muse Spark (April 8, 2026), the open 30B Muse Glimmer (August 10), and Muse Wonder and Wonder Full (October 13), its first push into the frontier. On October 15 Meta also released Muse Spark Open, open weights for an 816-billion-parameter Muse Spark model (42 billion active) under a license with limited commercial terms. One report puts Wonder's price at $4/$20 through a Meta Model API; that figure comes from a single source.
 
 ### SpaceXSI (formerly xAI)
 
@@ -544,9 +545,9 @@ SpaceX acquired xAI on February 2, 2026, renamed the AI unit SpaceXAI in July an
 
 **DeepSeek** previewed V4 on April 24, 2026, made V4-Pro generally available on August 13, and followed with V4.1-Flash (September 10) and an updated V4.1 Flash 1017 (October 17). V4-Pro has 1.6 trillion total and 49 billion active parameters, a 1M-token context and an MIT license. Its compressed attention needs, at 1M tokens, only 27% of the per-token computation and 10% of the KV cache memory of its predecessor V3.2 (see Chapter 23).
 
-**Alibaba's Qwen** team released the Qwen3.8 family in August 2026: the closed Qwen3.8-Max, the open Qwen3.8-2.4T-A95B, and the small Qwen3.8-27B under Apache-2.0, distilled from Max.
+**Alibaba's Qwen** team released the Qwen3.8 family in August 2026: the open-weight Qwen3.8-2.4T-A95B (August 12); Qwen3.8-Max, the hosted version of that model with image input and other extras (August 3); the cheaper Qwen3.8-Flash (August 26); and the small Qwen3.8-27B under Apache-2.0 (August 14).
 
-**Moonshot AI** released **Kimi K3** on July 16, 2026: 2.8 trillion parameters (104 billion active), a 1M-token context, a hybrid of linear and full attention layers, 4-bit (MXFP4) weights from quantization-aware training, and an "agent swarm" mode that splits work across up to 300 sub-agents.
+**Moonshot AI** released **Kimi K3** on July 16, 2026: 2.8 trillion parameters (104 billion active), a 1M-token context, a hybrid of linear and full attention layers, 4-bit (MXFP4) weights from quantization-aware training, and, in Moonshot's apps, an Agent Swarm mode that Moonshot says can split work across up to 300 sub-agents.
 
 Other notable labs include **Z.ai** (GLM-5.3), **Xiaomi** (MiMo-V2.6-Pro, the top open-weight model on the Artificial Analysis index at 46), **StepFun** (Step 5) and **MiniMax**.
 
@@ -559,13 +560,14 @@ timeline
     title Selected frontier releases in 2026
     section First half
         February : Claude Opus 4.6 : GPT-5.3-Codex
-        April : Claude Mythos Preview : Gemma 4 : DeepSeek V4 preview : GPT-5.5 : Muse Spark
-        June : Claude Fable 5 and Mythos 5 : GPT-5.6
+        March : Gemma 4
+        April : Claude Mythos Preview : DeepSeek V4 preview : GPT-5.5 : Muse Spark
+        June : Claude Fable 5 and Mythos 5 : Claude Sonnet 5
     section Second half
-        July : Kimi K3 : Claude Opus 5
+        July : Kimi K3 : Claude Opus 5 : GPT-5.6
         August : Qwen3.8 : DeepSeek V4-Pro release : Muse Glimmer
         September : GPT-6 Astra, Sol, Luna : Claude Fable 5.1 and Opus 5.5 : Grok 4.7
-        October : Claude Haiku 5.5 : Gemini 4 Argon : Muse Wonder
+        October : Claude Haiku 5.5 : Gemini 4 Argon : Muse Wonder and Muse Spark Open
 ```
 *Figure 24.6: Selected model releases in 2026. Several labs shipped something significant nearly every month.*
 
@@ -580,9 +582,9 @@ timeline
 | Anthropic | Fable 5.1 (Mythos 5.1 is the same model with fewer restrictions) | Opus 5.5, Sonnet 5.5 | Haiku 5.5 | Version numbers are shared across tiers but released on different days |
 | OpenAI | GPT-6 Astra | Sol | Luna | ".1" marks an update; "Pro" variants spend more compute; "Codex" variants are tuned for coding |
 | Google | Gemini 4 Argon (Pro line) | Flash | Flash-Lite | "Live" means real-time voice; "Omni" generates video; "Gemma" means open weights |
-| Meta | Muse Wonder Full, Wonder | Muse Spark | Muse Glimmer (open) | Muse replaced Llama in 2026 |
+| Meta | Muse Wonder Full, Wonder | Muse Spark (open weights as Muse Spark Open) | Muse Glimmer (open) | Muse is Meta's model family from 2026 |
 | DeepSeek | V4-Pro | | V4-Flash | Suffixes like "1017" are date stamps (October 17) |
-| Alibaba Qwen | Qwen3.8-Max (closed) | Qwen3.8-2.4T-A95B (open) | Qwen3.8-27B | "2.4T-A95B" means 2.4 trillion total, 95 billion active |
+| Alibaba Qwen | Qwen3.8-Max (hosted) and its open weights, Qwen3.8-2.4T-A95B | Qwen3.8-Flash | Qwen3.8-27B | "2.4T-A95B" means 2.4 trillion total, 95 billion active |
 
 *Table 24.9: How to decode model names in late 2026.*
 
@@ -614,7 +616,7 @@ flowchart TD
 
 A bit of arithmetic makes the trade-off concrete. If over 95% of Fable sessions see no fallback, then out of 1,000,000 sessions, fewer than 50,000 are routed to the older model at least once. Some of those are real misuse attempts. Some are innocent security researchers or chemistry students caught by an imperfect filter. Every classifier trades missed attacks against frustrated legitimate users.
 
-Other labs do the same: OpenAI offers GPT-5.5-Cyber, and Google offers Gemini 3.5 Flash Cyber and a trusted program called "Fairwind" for Argon.
+Other labs do the same: OpenAI offers GPT-5.5-Cyber and GPT-5.6-Cyber to vetted security teams, and Google's trusted "Fairwind" program gives cybersecurity defenders Gemini 4 Argon without its cyber guardrails (Argon itself was first released through Fairwind on September 30, before its general release).
 
 > **Key idea:** In 2026 "which model?" often has two answers: the public version and the trusted version. The capability you can buy depends on who you are, not only on what you pay.
 
@@ -708,7 +710,7 @@ The landscape keeps changing because several hard problems remain open. These ar
 > **Definition — Continual learning:** A model's ability to keep learning from experience after deployment, updating what it knows instead of being frozen at its training cutoff. Today's models mostly learn only within their context window.
 
 - **Continual learning and memory.** Your chatbot's weights do not change when you talk to it; "memory" features just add notes to the context. A model that safely learned on the job would change how AI is built and sold.
-- **Reliability over very long tasks.** METR's horizons double roughly every four months, but horizons at 80% reliability are 5 to 10 times shorter than at 50%, and measurement itself breaks down above about 16 hours.
+- **Reliability over very long tasks.** METR's horizons double roughly every four months, but horizons at 80% reliability are about 4 to 10 times shorter than at 50%, and measurement itself breaks down above about 16 hours.
 - **AI-accelerated AI research.** If models speed up the research that produces the next models, progress could compound.
 
 > **Definition — AI R&D automation:** AI systems doing the work of AI researchers and engineers, which could speed up AI progress itself. Labs and evaluators now measure it directly.
@@ -784,7 +786,7 @@ Now a harder job: a coding agent that fixes one bug, using about 2 million input
 
 The model that costs twice as much per attempt is cheaper per bug once human time is counted. This is why "cheapest per token" and "cheapest per result" are different questions.
 
-> **Watch out:** Per-token prices are not directly comparable across labs, because tokenizers differ. On the tokenizer Anthropic introduced with Claude Opus 4.7, 1 million tokens is about 555,000 English words, compared with about 750,000 words before. Anthropic says the same text produces roughly 30% more tokens. Compare cost per task, measured on your own examples, not price per token.
+> **Watch out:** Per-token prices are not directly comparable across labs, because tokenizers differ. On the tokenizer Anthropic introduced with Claude Opus 4.7, 1 million tokens is about 555,000 English words, compared with about 750,000 words before. Anthropic says the same text produces roughly 1.0 to 1.35 times as many tokens, depending on the content. Compare cost per task, measured on your own examples, not price per token.
 
 > **Try it:** Pick a real task you do every week. Give the identical prompt to three chatbots, or to three tiers from one lab (for example a fast mode and a thinking mode). Score each answer from 1 to 5 before you look at which model wrote it. You have just run a tiny blind evaluation.
 
@@ -792,7 +794,7 @@ The model that costs twice as much per attempt is cheaper per bug once human tim
 
 A benchmark is a standardized test for AI. It is useful because every model takes the same test, but a single score hides a lot: which version of the test, how hard the model was allowed to think, what software was wrapped around it, who graded it, and who ran it. Scores also wobble by chance, so a two-point win on a few hundred questions may mean nothing.
 
-Benchmarks die. Models get so good that everyone scores near the top (saturation), questions leak into training data (contamination), answer keys turn out to be wrong, or labs tune toward the tests everyone watches. In 2026, the same model scored 62.7% or 99.9% on the ARC-AGI-3 puzzle test depending only on the software around it.
+Benchmarks die. Models get so good that everyone scores near the top (saturation), questions leak into training data (contamination), answer keys turn out to be wrong, or labs tune toward the tests everyone watches. In 2026, the same model at the same effort scored 62.7% or 98.6% on the ARC-AGI-3 puzzle test depending only on the software around it.
 
 So read launch tables with care: every lab picks the tests that flatter it. Independent groups such as Artificial Analysis, Epoch AI, METR and ARC Prize compare more fairly, and your own small test on your own tasks is better still.
 
@@ -806,7 +808,7 @@ Benchmark, Evaluation (eval), Leaderboard, Frontier model, Harness (scaffold), R
 
 ## Exercises
 
-1. **[Easy] Blind taste test.** Compare models the way LMArena does. (1) Go to lmarena.ai and open the battle mode, where two anonymous models answer the same prompt. (2) Enter five prompts from your real life: an email you need to write, a question from your work, a recipe adaptation, a tricky fact and a short explanation for a child. (3) Vote for the better answer each time before the names are revealed. (4) Afterwards, note whether you tended to prefer the longer or more formatted answer. **What you'll learn:** how human-preference leaderboards work, and how style sways votes even when accuracy does not differ.
+1. **[Easy] Blind taste test.** Compare models the way LMArena does. (1) Go to arena.ai (LMArena's new name and address since January 2026) and open the battle mode, where two anonymous models answer the same prompt. (2) Enter five prompts from your real life: an email you need to write, a question from your work, a recipe adaptation, a tricky fact and a short explanation for a child. (3) Vote for the better answer each time before the names are revealed. (4) Afterwards, note whether you tended to prefer the longer or more formatted answer. **What you'll learn:** how human-preference leaderboards work, and how style sways votes even when accuracy does not differ.
 
 2. **[Easy] Error bars in a spreadsheet.** (1) Build the sheet from the Try it box: accuracy in column A, number of questions in column B, and in column C the formula =1.96*SQRT(A2*(1-A2)/B2). (2) Fill five rows: 0.80 with 100, 500 and 2,500 questions; 0.95 with 200 questions; 0.50 with 500 questions. (3) For two models scoring 0.82 and 0.80 on 500 questions, write down both intervals and decide whether the difference is meaningful. **What you'll learn:** why small benchmarks and small score gaps deserve skepticism.
 
@@ -842,7 +844,7 @@ Benchmark, Evaluation (eval), Leaderboard, Frontier model, Harness (scaffold), R
 
 1. A launch post says Model A scored 82% and Model B 80% on a 500-question benchmark. Can you conclude Model A is better? Why or why not?
 2. Name four ways a benchmark can stop being useful, with one real example for at least two of them.
-3. Why did GPT-6 Astra score 62.7% and 99.9% on ARC-AGI-3, and what does that teach about reading scores?
+3. Why did GPT-6 Astra, at the same maximum effort, score 62.7% and 98.6% on ARC-AGI-3, and what does that teach about reading scores?
 4. GPT-5.5 scored 82.7% on Terminal-Bench 2.0 and Opus 5.5 scored 66.4% on Terminal-Bench 4.0. A friend says GPT-5.5 is clearly better at coding. What is wrong with the comparison?
 5. What is the difference between an open-weight model and an open-source model, and why does the license matter?
 6. Claude Fable 5.1 and Claude Mythos 5.1 share the same underlying model. What differs between them, and why do labs ship models this way?
@@ -868,7 +870,7 @@ Benchmark, Evaluation (eval), Leaderboard, Frontier model, Harness (scaffold), R
 - **Epoch AI (epoch.ai): Benchmarks, Trends and the AI Models database.** Training-compute and cost estimates, the Epoch Capabilities Index, FrontierMath, and long-run trend charts, all with stated methods and uncertainty.
 - **METR, "Time Horizons" (metr.org/time-horizons) and its model evaluation reports.** The clearest public measure of how long a task AI agents can handle, with honest discussion of its limits.
 - **ARC Prize (arcprize.org).** Play ARC-AGI-3 yourself and read the analysis of the GPT-6 Astra results and harness dependence.
-- **LMArena (lmarena.ai).** Try blind head-to-head comparisons and see how human-preference ratings are built.
+- **Arena, formerly LMArena (arena.ai).** Try blind head-to-head comparisons and see how human-preference ratings are built.
 - **Hugging Face model cards for DeepSeek-V4-Pro and Kimi K3.** Real examples of what open-weight labs disclose about size, architecture, licenses and benchmarks.
 - **"Why Language Models Hallucinate" by Kalai and colleagues (2025, arXiv 2509.04664).** Shows how benchmarks that reward guessing over admitting uncertainty shape model behavior; a deep lesson about what we measure.
 - **The original benchmark papers: MMLU (arXiv 2009.03300), GPQA (arXiv 2311.12022) and SWE-bench (arXiv 2310.06770).** Short, readable introductions that show how benchmark designers think about difficulty and contamination.

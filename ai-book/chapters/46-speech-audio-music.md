@@ -248,6 +248,8 @@ WER = (1 + 1 + 1) ÷ 9 = 3 ÷ 9 ≈ 33%. Because insertions count, WER can even 
 
 To get a feel for the numbers, a one-hour meeting at a typical 150 words per minute contains about 9,000 words. At 5% WER that is about 450 wrong words; at 15%, about 1,350.
 
+For a sense of the late-2026 state of the art: Google says its Gemini 3.5 Transcribe model (August 2026), which detects more than 85 languages automatically, averaged about 4.0% WER on live audio and 2.6% on recordings in tests by the benchmarking firm Artificial Analysis. At 2.6%, the one-hour meeting above would still contain about 230 wrong words, and averages over benchmark audio say little about your accent or your noisy room.
+
 > **Definition — Character error rate (CER):** The same idea as WER, counted in characters instead of words. It is used for languages such as Chinese and Japanese that do not put spaces between words.
 
 > **Watch out:** WER treats every error the same. "I can come" heard as "I can't come" is a single substitution, a small WER, and the opposite meaning. A drug name, a dollar amount or a "not" matters far more than an "um." For high-stakes uses, measure the errors that matter (names, numbers, negations), not just the average.
@@ -533,12 +535,12 @@ timeline
     2025 : Universal settles with Udio in October
          : Warner settles with Udio and Suno in November
     2026 : Udio signs Merlin and Kobalt licensing deals
-         : Licensed music models promised
+         : Suno launches licensed v6 models in September
 ```
 
 *Figure 46.12: From research demos to lawsuits to licensing, 2020–2026.*
 
-In June 2024 the three major record companies, Universal, Sony and Warner, sued Suno and Udio, alleging that they had trained on copyrighted recordings without permission. The companies argued that training was fair use. Rather than ending in court rulings, much of the fight turned into deals. Universal settled with Udio in October 2025 and struck a deal for a licensed AI music platform; Warner settled with Udio in November 2025 and also settled with Suno, which is to launch licensed models in 2026. Udio went on to sign licensing deals with Merlin, which represents independent labels (January 2026), and the publisher Kobalt (April 2026). In the reports available as of mid-2026, Sony was still litigating. The likely shape of the industry is licensed training with payments to rights holders, but terms, prices and the treatment of artists who never opted in remain contested.
+In June 2024 the three major record companies, Universal, Sony and Warner, sued Suno and Udio, alleging that they had trained on copyrighted recordings without permission. The companies argued that training was fair use. Rather than ending in court rulings, much of the fight turned into deals. Universal settled with Udio in October 2025 and struck a deal for a licensed AI music platform; Warner settled with Udio in November 2025 and also settled with Suno, which is to launch licensed models in 2026. Udio went on to sign licensing deals with Merlin, which represents independent labels (January 2026), and the publisher Kobalt (April 2026). Suno launched its v6 models in September 2026, built with licensed partners including Warner and BMG, but Universal and Sony were still suing it: in September 2026 they filed a second lawsuit covering about 60,000 recordings (reported). The likely shape of the industry is licensed training with payments to rights holders, but terms, prices and the treatment of artists who never opted in remain contested.
 
 Two further questions are unsettled. **Who owns AI music?** The US Copyright Office's position, restated in a January 2025 report, is that copyright requires human authorship: purely AI-generated material is not protected, though human contributions such as lyrics, arrangement and the selection and editing of outputs can be. **What happens to streaming?** Services reported fast-growing uploads of fully AI-generated tracks in 2025, raising fears of royalty pools diluted by spam. Deezer began labeling fully AI-generated albums, and Spotify announced policies against AI impersonation and spam the same year.
 
@@ -709,7 +711,7 @@ Audio AI, Waveform, Sampling rate, Bit depth, Frequency, Nyquist limit, Fourier 
 4. Why can a Whisper-style speech recognizer invent sentences that were never spoken, and what are two ways to reduce the harm?
 5. Why is a voiceprint no longer a safe password, and what two habits defeat a voice-clone "family emergency" call?
 6. Name three stages in a cascade voice agent's latency budget and one way to shrink each.
-7. What changed between the June 2024 label lawsuits against Suno and Udio and mid-2026?
+7. What changed between the June 2024 label lawsuits against Suno and Udio and late 2026?
 8. What is the cocktail party problem, and why is solving it inside a hearing aid especially hard?
 
 <details><summary>Answers</summary>
@@ -720,7 +722,7 @@ Audio AI, Waveform, Sampling rate, Bit depth, Frequency, Nyquist limit, Fourier 
 4. Its decoder works like a language model, predicting likely text, so during silence, music or unclear speech it can generate fluent words that were never said. Mitigations include removing silences before transcription, flagging low-confidence passages, keeping the audio for checking, and requiring human review for medical or legal records.
 5. Cloning tools can imitate a voice from a few seconds of audio well enough to pass voice-ID checks. Agree on a family safe word in advance, and hang up and call back on a number you already know.
 6. Any three of: endpointing (smarter turn detectors), speech recognition (streaming transcription while the caller talks), the language model's first words (smaller or faster models, short first sentences), TTS (streaming synthesis from the first phrase), and network delay (servers close to the phone carrier).
-7. Much of the dispute turned into licensing. Universal settled with Udio (October 2025), Warner settled with Udio and with Suno (November 2025, with Suno to launch licensed models in 2026), and Udio signed deals with Merlin and Kobalt in 2026. Sony was reported to be still litigating as of mid-2026.
+7. Much of the dispute turned into licensing. Universal settled with Udio (October 2025), Warner settled with Udio and with Suno (November 2025, with Suno to launch licensed models in 2026), and Udio signed deals with Merlin and Kobalt in 2026. Suno launched licensed v6 models in September 2026, while Universal and Sony were reported to be still suing Suno as of October 2026.
 8. It is the difficulty of picking out one voice from many voices and background noise. A hearing aid must separate speech from noise with a tiny battery and a processing delay of only around ten milliseconds, or the wearer hears an echo between the direct and processed sound.
 
 </details>

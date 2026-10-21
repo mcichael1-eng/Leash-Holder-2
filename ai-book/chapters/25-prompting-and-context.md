@@ -79,6 +79,10 @@ flowchart TD
 
 A million tokens sounds endless. On the newer Claude tokenizer it is about 555,000 words, or five to six long novels of 100,000 words each. But a chat app may not hand you the model's full window on every plan, the space must also hold the model's answer (current Claude models can write up to 128,000 tokens in one reply), and as you will see later in this chapter, a model's attention gets worse well before the window is full.
 
+Why is there a limit at all? Two costs grow with every token on the desk. In attention, the step where the model weighs how much each token matters to every other one, every token is compared with every other token, so doubling the length roughly quadruples that work (Chapter 15). And the model keeps working notes for every token it has read, the KV cache, which must sit in scarce GPU memory for the whole conversation (Chapters 23 and 30). A bigger window is possible, but each extra token makes every request slower and more expensive to serve.
+
+> **Definition — KV cache:** The stored intermediate results (keys and values) a model keeps for every token it has already read, so it does not have to recompute them for each new token. It grows with the length of the conversation and takes up GPU memory.
+
 > **Analogy:** The context window is a desk. Only what is on the desk right now can be used. The desk has a fixed size; when it is cluttered, things get overlooked; and when it is full, something has to be cleared off before anything new can go on.
 
 > **Key idea:** If something is not in the context window, the model either does not know it or is guessing from its training. Almost every prompting technique in this chapter is a way of putting the right things on the desk, in the right order, and keeping the wrong things off it.
@@ -142,7 +146,7 @@ The fixes follow from the cause. Put the facts on the desk (paste the document, 
 
 ## Prompting: how to brief a brilliant new hire
 
-Anthropic's own documentation describes the right mental model: treat the model as "a brilliant but new employee who lacks context on your norms". It is extremely capable, it has read more than any human, and it knows nothing about you, your audience, your company, your standards or what you tried yesterday. And, because it is stateless, it forgets everything between meetings.
+Anthropic's own documentation describes the right mental model: treat the model as "a brilliant but new employee who lacks context on your norms and workflows". It is extremely capable, it has read more than any human, and it knows nothing about you, your audience, your company, your standards or what you tried yesterday. And, because it is stateless, it forgets everything between meetings.
 
 > **Definition — Prompt:** Everything you send to the model to get a response: instructions, background, data, examples and questions. In a chat app, the prompt you write is only one part of what the model sees.
 
@@ -635,7 +639,7 @@ Here is how the names line up across the three biggest apps, as of late 2026. Ex
 | Side-panel building | Canvas | Artifacts | Canvas |
 | Long research reports | Deep Research | Research | Deep Research |
 | Real-time voice | Voice mode | Voice mode | Gemini Live |
-| Links to other services | Plugins (called "apps" until July 2026) | Connectors | Apps (formerly Extensions) |
+| Links to other services | Plugins (the "apps" directory until July 2026) | Connectors | Apps (formerly Extensions) |
 | Acting for you | ChatGPT agent, ChatGPT Work, Atlas browser | Cowork, Claude in Chrome | Gemini Agent, Gemini in Chrome |
 
 ### Custom instructions: your standing brief
@@ -670,7 +674,7 @@ Projects are ideal for anything you return to repeatedly: a course you are takin
 
 > **Definition — Custom GPT or Gem:** A personalized assistant (OpenAI's and Google's names) with its own instructions, knowledge files and tools, which you can reuse and share with others. Claude offers similar packaging through Projects and Skills.
 
-A custom assistant is a frozen, shareable version of a great prompt plus reference material. A teacher might build a "Lab Report Coach" that always asks students for their hypothesis before giving feedback; a small business might build a "Returns Policy Helper" loaded with its actual policy. Building one is the no-code version of what Chapter 27 does with code: retrieval from your own documents, wrapped in a system prompt.
+A custom assistant is a frozen, shareable version of a great prompt plus reference material. A teacher might build a "Lab Report Coach" that always asks students for their hypothesis before giving feedback; a small business might build a "Returns Policy Helper" loaded with its actual policy. Building one is the no-code version of what Chapter 27 does with code: retrieval from your own documents, wrapped in a system prompt. Nothing inside the model changes and no training happens, which is the difference between a custom assistant and a fine-tuned model (Chapter 30).
 
 > **Definition — Agent Skill:** A folder containing a `SKILL.md` instruction file (with a name, description and instructions) plus optional scripts and reference files, which an AI loads only when a task needs it. It began at Anthropic and was released as an open standard (Chapter 28).
 
@@ -726,7 +730,7 @@ The hard engineering problem in voice is speed: a conversation feels natural onl
 
 Connectors turn a chatbot into an assistant that can answer "What did the landlord say about the deposit?" by searching your email. The important part is the permission screen. Read what you are granting: read-only access to one folder is very different from permission to send email as you. Grant the least access that does the job, and remove connectors you no longer use.
 
-> **At the frontier (2026):** Chat apps are turning into platforms. ChatGPT, which reached 900 million weekly active users in February 2026, renamed its "apps" to "plugins" in July 2026; a plugin can bundle skills, MCP connectors and an optional interface of its own. The MCP standard added an extension called MCP Apps that lets a connected service show interactive forms, charts and widgets inside the conversation. The line between a chatbot and a workspace for all your tools is blurring.
+> **At the frontier (2026):** Chat apps are turning into platforms. ChatGPT, which reached 900 million weekly active users in February 2026, replaced its "apps" directory with a "plugins" directory in July 2026, packaging every existing app as a plugin; a plugin can bundle skills, MCP connectors and an optional interface of its own. The MCP standard added an extension called MCP Apps that lets a connected service show interactive forms, charts and widgets inside the conversation. The line between a chatbot and a workspace for all your tools is blurring.
 
 ### Agent modes: letting the AI act
 
@@ -891,7 +895,7 @@ For long work, the question becomes what is on the desk at each step. Long chats
 
 ## Key terms
 
-Large language model (LLM), Model, Chat app, Token, Tokenizer, Context window, Stateless, Inference, Hallucination, Knowledge cutoff, Grounding, Prompt, Prompt engineering, Zero-shot, one-shot and few-shot prompting, Delimiter, XML tags, Markdown, Prompt injection, System prompt, Role prompting, Chain-of-thought (CoT), Reasoning model, Effort, Adaptive thinking, Prompt chaining, Lost in the middle, Prefill, Meta-prompting, Automatic prompt optimization, Sycophancy, Leading question, Silent truncation, Custom instructions, Memory (in chat apps), Incognito or temporary chat, Project, Custom GPT or Gem, Agent Skill, Artifact or Canvas, Multimodal, Code execution, Citation, Deep research, Voice mode, Connector, MCP (Model Context Protocol), OAuth, Agent, Agent mode, Data retention, Training opt-out, PII (personally identifiable information), Context engineering, Context rot, Compaction, Structured note-taking, Just-in-time retrieval, Sub-agent, Progressive disclosure
+Large language model (LLM), Model, Chat app, Token, Tokenizer, Context window, KV cache, Stateless, Inference, Hallucination, Knowledge cutoff, Grounding, Prompt, Prompt engineering, Zero-shot, one-shot and few-shot prompting, Delimiter, XML tags, Markdown, Prompt injection, System prompt, Role prompting, Chain-of-thought (CoT), Reasoning model, Effort, Adaptive thinking, Prompt chaining, Lost in the middle, Prefill, Meta-prompting, Automatic prompt optimization, Sycophancy, Leading question, Silent truncation, Custom instructions, Memory (in chat apps), Incognito or temporary chat, Project, Custom GPT or Gem, Agent Skill, Artifact or Canvas, Multimodal, Code execution, Citation, Deep research, Voice mode, Connector, MCP (Model Context Protocol), OAuth, Agent, Agent mode, Data retention, Training opt-out, PII (personally identifiable information), Context engineering, Context rot, Compaction, Structured note-taking, Just-in-time retrieval, Sub-agent, Progressive disclosure
 
 ## Exercises
 

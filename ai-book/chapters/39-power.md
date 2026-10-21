@@ -122,7 +122,7 @@ An average US home uses about 10,500 kWh per year (about 1.2 kW on average). So:
 
 Real sites do not run flat out. Epoch AI notes that large AI sites typically consume 60–80% of their capacity on average. At 70%, the same campus uses about 6.1 TWh a year, the annual electricity of about 580,000 homes.
 
-For perspective on the totals: the International Energy Agency estimated that all the world's data centers (AI and non-AI) used about 415 TWh in 2024, roughly 1.5% of global electricity, and projected about 945 TWh by 2030 in its base case. Lawrence Berkeley National Laboratory estimated US data centers used about 176 TWh in 2023, about 4.4% of US electricity. The concern is less the global share than local concentration: in Ireland, data centres used 22% of all metered electricity in 2024, up from 5% in 2015. Chapter 41 covers these forecasts and why they disagree.
+For perspective on the totals: the International Energy Agency estimated that all the world's data centers (AI and non-AI) used about 415 TWh in 2024, roughly 1.5% of global electricity, and projected about 945 TWh by 2030 in its base case. Lawrence Berkeley National Laboratory estimated US data centers used about 176 TWh in 2023, about 4.4% of US electricity. The concern is less the global share than local concentration: in Ireland, data centres used 23% of all metered electricity in 2025, up from 5% in 2015, according to the Irish Central Statistics Office. Chapter 41 covers these forecasts and why they disagree.
 
 > **Watch out:** "A 1 GW data center uses 1 GW all the time" is wrong. Gigawatts are a capacity, a rate ceiling. Energy per year is capacity × hours × load factor. When you see a claim that compares a data center's gigawatts with a country's terawatt-hours, check that the units match before you believe the comparison.
 
@@ -354,7 +354,7 @@ The power chain is only part of the overhead. The cooling system uses a lot of e
 
 > **Definition — PUE (power usage effectiveness):** Total facility energy divided by the energy delivered to IT equipment. A PUE of 1.0 would mean zero overhead; 1.2 means 20% extra for cooling, power losses and lighting. The industry average has hovered around 1.5–1.6, and leading hyperscale sites run about 1.1.
 
-Google reports a fleet-wide PUE of about 1.09 against an industry average around 1.56. Chapter 40 explains how cooling choices drive PUE and what it hides; for this chapter you need only the multiplication: **facility power = IT power × PUE.**
+Google reports a fleet-wide PUE of 1.09 for 2025, against an industry average of about 1.54 in the Uptime Institute's 2025 survey. Chapter 40 explains how cooling choices drive PUE and what it hides; for this chapter you need only the multiplication: **facility power = IT power × PUE.**
 
 Here is where 100 kWh drawn from the grid goes in an illustrative AI site with a PUE of 1.2, combining the PUE with the losses inside the servers.
 

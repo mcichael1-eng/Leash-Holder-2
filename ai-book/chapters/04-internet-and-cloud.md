@@ -297,6 +297,12 @@ Cloud providers organize their data centers into regions, such as "US East" or "
 
 > **Definition — Region (cloud):** A geographic area where a cloud provider runs a group of data centers, such as US East or Europe West. Choosing a region affects speed, price and which country's laws apply to your data.
 
+Inside a region, the buildings are grouped into zones. Google describes its regions as campuses no more than about 50 km apart, and AWS says its zones can be up to about 100 km apart: far enough that one flood, fire or local power cut is unlikely to hit two of them, close enough for fiber to link them with only a few milliseconds of delay. Google's engineers write that Google and AWS build three zones per region.
+
+> **Definition — Availability zone:** One part of a cloud region (one or more data center buildings) with its own power, cooling and network, chosen so that a failure in one zone is unlikely to take down the others. Machines in the same zone talk fastest and most cheaply, but can fail together.
+
+Why three? Suppose an app needs 100 servers' worth of capacity and must survive losing a whole zone. With two zones, each must hold all 100 in case the other fails: 200 servers in total. With three zones of 50 each, any two survivors still hold 100: 150 servers, half as much spare. Three is also the smallest group in which a majority (two) can outvote one cut-off zone (Chapter 34).
+
 Clouds sell at three levels. You can rent bare machines (often virtual machines, software slices of a physical server) and manage everything yourself; rent a platform where the provider handles the servers; or simply use finished software through a browser or app.
 
 > **Definition — Virtual machine:** A software imitation of a whole computer, running alongside others on one physical server. Clouds rent them so many customers can share a machine safely.
@@ -564,7 +570,7 @@ Latency is how long the trip takes; bandwidth is how much fits through the pipe.
 
 ## Key terms
 
-Network, Router, ISP (Internet service provider), Internet, Internet exchange point (IXP), Backbone, Protocol, Packet, TCP (Transmission Control Protocol), Fiber-optic cable, Undersea (subsea) cable, IP address, Domain name, DNS (Domain Name System), HTTP (Hypertext Transfer Protocol), URL (Uniform Resource Locator), Request and response, Status code, Encryption, HTTPS, Public-key cryptography, TLS (Transport Layer Security), Certificate (digital), End-to-end encryption, Client, Server, Data center, Rack, Cloud computing, Hyperscaler, Neocloud, Region (cloud), Virtual machine, CDN (content delivery network) and edge, API (Application Programming Interface), Endpoint, API key, Rate limit, Latency, Bandwidth, Round-trip time (RTT), Time to first token (TTFT), Tokens per second, Streaming, Server-sent events (SSE), Load balancer, API gateway, Inference, Batching, Prefill, KV cache, Decode
+Network, Router, ISP (Internet service provider), Internet, Internet exchange point (IXP), Backbone, Protocol, Packet, TCP (Transmission Control Protocol), Fiber-optic cable, Undersea (subsea) cable, IP address, Domain name, DNS (Domain Name System), HTTP (Hypertext Transfer Protocol), URL (Uniform Resource Locator), Request and response, Status code, Encryption, HTTPS, Public-key cryptography, TLS (Transport Layer Security), Certificate (digital), End-to-end encryption, Client, Server, Data center, Rack, Cloud computing, Hyperscaler, Neocloud, Region (cloud), Availability zone, Virtual machine, CDN (content delivery network) and edge, API (Application Programming Interface), Endpoint, API key, Rate limit, Latency, Bandwidth, Round-trip time (RTT), Time to first token (TTFT), Tokens per second, Streaming, Server-sent events (SSE), Load balancer, API gateway, Inference, Batching, Prefill, KV cache, Decode
 
 ## Exercises
 

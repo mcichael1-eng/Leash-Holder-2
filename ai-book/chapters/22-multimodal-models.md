@@ -157,16 +157,16 @@ Let's price a photo two ways: from the architecture, and from a provider's publi
 3. After merging 2 × 2 groups: 5,184 ÷ 4 = 1,296 visual tokens.
 4. Each visual token therefore covers a 28 × 28 block of pixels, which is 784 pixels.
 
-**From a published rule of thumb.** Anthropic's documentation for its 2024–2025 Claude models gave a simple estimate: tokens ≈ (width in pixels × height in pixels) ÷ 750. For a 1,000 × 1,000 photo that is 1,000,000 ÷ 750 ≈ 1,333 tokens. Notice how close this is to our architecture estimate of one token per 784 pixels. Closed labs do not publish their architectures, so we cannot say the designs match, but the arithmetic shows why the costs land in the same range.
+**From a published rule of thumb.** Anthropic's documentation for its 2024–2025 Claude models gave a simple estimate: tokens ≈ (width in pixels × height in pixels) ÷ 750. For a 1,000 × 1,000 photo that is 1,000,000 ÷ 750 ≈ 1,333 tokens. Notice how close this is to our architecture estimate of one token per 784 pixels. Anthropic's current documentation (October 2026) makes the match exact: Claude now counts one visual token for each 28 × 28-pixel patch, so the same photo costs 36 × 36 = 1,296 tokens (1,000 ÷ 28 rounds up to 36). Claude 4.7 and later models take images up to 2,576 pixels on the long side, at most 4,784 tokens, before shrinking them.
 
 **Now the money.** At Claude Sonnet 5.5's input price of $2 per million tokens (as of October 2026):
 
-- One 1,000 × 1,000 photo: 1,333 × $2 ÷ 1,000,000 ≈ $0.0027, about a quarter of a cent.
-- A shop with 1,000 product photos to describe: 1,000 × $0.0027 ≈ $2.67.
-- The same job on Claude Opus 5.5 ($4 per million input tokens): about $5.33.
+- One 1,000 × 1,000 photo: 1,296 × $2 ÷ 1,000,000 ≈ $0.0026, about a quarter of a cent.
+- A shop with 1,000 product photos to describe: 1,000 × $0.0026 ≈ $2.59.
+- The same job on Claude Opus 5.5 ($4 per million input tokens): about $5.18.
 - On Claude Haiku 5.5 ($0.10 per million for prompts up to 100,000 tokens): about $0.13.
 
-And the old saying turns out to be almost literally true. On older tokenizers, 1,333 text tokens is roughly 1,000 English words. A picture really does cost about a thousand words.
+And the old saying turns out to be almost literally true. On older tokenizers, about 1,300 text tokens is roughly 1,000 English words. A picture really does cost about a thousand words.
 
 Different providers count differently. The table shows three documented schemes from 2024–2025; they change between model generations, so treat them as illustrations and check the current pricing page before you budget.
 
@@ -430,13 +430,13 @@ Putting image generation inside the language model has practical benefits you ha
 - **Conversational editing.** "Make it night, keep everything else the same" works because the model can see the image it just made, as part of the conversation.
 - **Your uploads become references.** You can upload a photo of your living room and ask for it repainted, or a product photo and ask for a new background.
 
-Google followed with "Nano Banana" (Gemini 2.5 Flash Image, August 2025), which became famous for instruction-based editing that keeps faces and objects consistent across edits, and Nano Banana Pro (Gemini 3 Pro Image, November 2025). In April 2026 OpenAI released gpt-image-2, which, according to press coverage, plans the composition before drawing, a kind of "thinking" for images, with improved text rendering.
+Google followed with "Nano Banana" (Gemini 2.5 Flash Image, August 2025), which became famous for instruction-based editing that keeps faces and objects consistent across edits, and Nano Banana Pro (Gemini 3 Pro Image, November 2025). In April 2026 OpenAI released gpt-image-2, which, according to press coverage, plans the composition before drawing, a kind of "thinking" for images, with improved text rendering. Both lines kept moving: OpenAI followed with GPT Image 2.5 on September 8, 2026, and Google's Nano Banana 2.1 became generally available in the Gemini API on October 6, 2026.
 
 The top systems are often hybrids. An autoregressive model may plan the image as a coarse sequence of tokens, and a diffusion-style decoder may render the fine pixels. Because the exact designs of closed models are not published, the safest statement is that 2026's best image systems combine the strengths of both families.
 
 > **Definition — Any-to-any model:** A model that can accept many kinds of input (text, images, audio, video) and produce many kinds of output, choosing the output modality to suit the request.
 
-Video is the newest output. At Google I/O on May 19, 2026, Google announced Gemini Omni, a family combining Gemini with its Veo video, Nano Banana image and Genie world-model work: any input in, video out, with editing by conversation. The first model, Gemini Omni Flash, appeared in the Gemini API changelog at the end of June 2026 for video generation and editing. Chapter 47 covers the video-generation landscape, the products, and the provenance tools (such as watermarks and Content Credentials) used to label AI-made media.
+Video is the newest output. At Google I/O on May 19, 2026, Google announced Gemini Omni, a model that combines Gemini with Google's generative-media models: any input in, starting with video out, with editing by conversation. Gemini Omni Flash rolled out in the Gemini app that day, entered the Gemini API in preview on June 30, 2026 and became generally available there on August 27. Chapter 47 covers the video-generation landscape, the products, and the provenance tools (such as watermarks and Content Credentials) used to label AI-made media.
 
 > **Key idea:** The shift is from "a chatbot that calls an artist" to "a single model that can draw." The single model brings its knowledge of language and the world into the picture, and it can see and revise its own work.
 
@@ -604,7 +604,7 @@ Modality, Multimodal model, Pixel, Patch, Vision Transformer (ViT), Vision encod
 
 ## Exercises
 
-1. **[Easy] Price your own photos.** (1) Find the pixel dimensions of three images on your phone or computer (on most phones, swipe up or tap "info" on a photo). (2) For each, estimate tokens with the rule (width × height) ÷ 750. (3) If the long side is above about 1,500 pixels, assume it is shrunk to roughly 1,600 tokens. (4) Compute the cost at $2 per million input tokens and at $0.10 per million. (5) Work out how many photos you could analyze for $1 on each. **What you'll learn:** images are priced as tokens, and model choice changes the bill by more than ten times.
+1. **[Easy] Price your own photos.** (1) Find the pixel dimensions of three images on your phone or computer (on most phones, swipe up or tap "info" on a photo). (2) For each, estimate tokens with the rule (width × height) ÷ 750, which lands close to Anthropic's current patch count. (3) If the long side is above about 2,576 pixels, assume it is shrunk to roughly 4,800 tokens (the cap on current Claude models; older models capped near 1,600). (4) Compute the cost at $2 per million input tokens and at $0.10 per million. (5) Work out how many photos you could analyze for $1 on each. **What you'll learn:** images are priced as tokens, and model choice changes the bill by more than ten times.
 
 2. **[Easy] The counting test.** (1) Photograph a cluttered surface with 12–25 similar small objects (coins, pens, pasta shapes). (2) Ask a chatbot "How many coins are in this photo?" and note the answer. (3) In a new chat, ask "List every coin you can see one by one with its approximate position, then give the total." (4) Count them yourself. (5) Try once more with the photo cropped in half. **What you'll learn:** counting is a known weakness, and making the model enumerate (and giving it a closer view) helps.
 

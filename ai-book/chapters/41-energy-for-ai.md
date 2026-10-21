@@ -46,7 +46,7 @@ The numbers below come from the most widely cited sources. Several are forecasts
 
 - **The world.** The International Energy Agency (IEA) estimated in April 2025 that data centers used about **415 TWh in 2024, around 1.5% of global electricity**, and projected about **945 TWh by 2030** in its base case, slightly more than Japan uses today. The US accounted for about 45% of 2024 consumption, China about 25% and Europe about 15%.
 - **The United States.** Lawrence Berkeley National Laboratory (LBNL) estimated in December 2024 that US data centers used **176 TWh in 2023, about 4.4% of US electricity**, up from 76 TWh in 2018, and projected **325–580 TWh by 2028, or 6.7–12%**.
-- **Hot spots.** In Ireland, data centres used **22% of all metered electricity in 2024**, up from 5% in 2015 (Irish Central Statistics Office). In Virginia, data centers were already about a quarter of the state's electricity use in 2023 (EPRI).
+- **Hot spots.** In Ireland, data centres used **23% of all metered electricity in 2025**, up from 22% in 2024 and 5% in 2015 (Irish Central Statistics Office, July 2026). In Virginia, data centers were already about a quarter of the state's electricity use in 2023 (EPRI).
 - **AI specifically.** Epoch AI's tracker (data updated October 20, 2026) lists **95 large AI data centers with about 14.2 GW of IT power, about 18.5 GW including cooling and overhead**. Epoch estimates these cover about 44% of the world's AI compute.
 - **Capacity growth.** The property firm JLL (January 2026) expects global data center capacity to roughly **double from about 103 GW to about 200 GW between 2025 and 2030**.
 
@@ -258,7 +258,7 @@ PJM's auctions became the clearest example of data center demand reaching househ
 | 2026/27 | about $329 (the auction's price cap) |
 | 2027/28 | about $333 (at the cap) |
 
-*Table 41.2: PJM capacity auction clearing prices. The 2027/28 auction reportedly fell short of PJM's reliability target for the first time, at a total cost of about $16 billion or more. Data center load growth is the main driver of PJM's forecast demand growth.*
+*Table 41.2: PJM capacity auction clearing prices. PJM's own report on the 2027/28 auction says it cleared about 6.6 GW short of the region's reliability requirement, at a total cost of about $16.4 billion. Data center load growth is the main driver of PJM's forecast demand growth.*
 
 **Worked example: from auction to household bill.** Prices are quoted per megawatt per day. Convert to per kilowatt per year:
 
@@ -335,7 +335,7 @@ Natural gas is the largest single source of US electricity, a bit over 40% in 20
 What the AI industry did with gas, as of October 2026:
 
 - **xAI's Colossus in Memphis** started with an initial grid supply of only about 8 MW in 2024 and filled the gap with temporary gas turbines and Tesla Megapack batteries (reported). For Colossus 2 next door, Mississippi approved a permanent **plant of about 1.2 GW with 41 turbines in Southaven (March 2026)**, and the NAACP, represented by the Southern Environmental Law Center and Earthjustice, sued in April 2026 under the Clean Air Act (reported).
-- **Stargate's Shackelford County, Texas, site** plans an on-site gas microgrid, including **700 MW of VoltaGrid gas engines behind the meter**, and the **Doña Ana County, New Mexico** site plans two gas microgrids (Epoch AI, April 2026).
+- **Stargate's Shackelford County, Texas, site** plans an on-site gas microgrid, and the **Doña Ana County, New Mexico** site plans two gas microgrids (Epoch AI, April 2026). Reports put the Shackelford microgrid at about **700 MW of VoltaGrid gas engines behind the meter**.
 - **Meta's Hyperion** in Louisiana is served by new combined-cycle gas plants that the utility Entergy is building, and Meta's Prometheus campus in Ohio uses on-site gas plants to supplement the grid (reported).
 - **Turbine makers** (GE Vernova, Siemens Energy, Mitsubishi Power) report multi-year backlogs. Large turbines ordered in 2025–26 are often reported to arrive around 2029–2030, an estimate the makers' late-October 2026 results may update.
 
@@ -366,7 +366,8 @@ Nuclear power is firm, nearly carbon-free and runs about 90% or more of the hour
 
 > **Definition — Advanced reactor:** A reactor using a non-traditional design, such as sodium cooling (TerraPower's Natrium, Oklo's Aurora), molten-salt cooling (Kairos) or high-temperature gas (X-energy), aiming for better safety, efficiency or cost.
 
-- **On September 28, 2026, the US Nuclear Regulatory Commission issued the first US construction permit for a BWRX-300 SMR**, at the Tennessee Valley Authority's Clinch River site.
+- **In late September 2026, the US Nuclear Regulatory Commission approved the first US construction permit for a BWRX-300 SMR** (a 300 MW GE Vernova Hitachi design), at the Tennessee Valley Authority's Clinch River site in Oak Ridge, Tennessee; the NRC announced it on September 29.
+- **Earlier, on March 4, 2026,** the NRC approved construction of TerraPower's first Natrium plant in Wyoming, its first approval to build a commercial reactor in about ten years.
 - As of 2026, only China and Russia operate SMRs (reported).
 - **Google–Kairos:** 500 MW of SMRs for 2030–35 (reported). **Amazon–X-energy:** an SMR partnership.
 - **Meta (January 9, 2026):** up to 6.6 GW of nuclear by 2035, including up to 1.2 GW from Oklo in Pike County, Ohio, as early as 2030, and two TerraPower Natrium units (690 MW) as early as 2032, with rights to six more.
@@ -383,7 +384,7 @@ Large conventional reactors are a cautionary tale. The two new reactors at Plant
 
 > **Definition — Battery energy storage system (BESS):** Large banks of batteries, usually lithium-ion, that store electricity and release it later. Grid batteries commonly hold about four hours of their rated output, enough to shift solar power into the evening but not through a long night or a cloudy week.
 
-Solar plus batteries and wind remain the largest sources of new US generating capacity. The EIA expects US solar capacity to grow from **152 GW in 2025 to 182 GW in 2026 and 223 GW in 2027** (October 2026 outlook). Developers pair them with data centers: Stargate's Milam County, Texas, site has co-located solar; the Port Washington, Wisconsin, site claims about 70% renewables; and Entergy has proposed 1.5 GW of new solar and solar-plus-storage for Meta's Hyperion on top of 3 GW previously approved. Google reportedly signed a record 12 GW of clean-energy contracts in 2025.
+Solar plus batteries and wind remain the largest sources of new US generating capacity. The EIA expects US solar capacity to grow from **152 GW in 2025 to 182 GW in 2026 and 223 GW in 2027** (October 2026 outlook). Developers pair them with data centers: at Stargate's Milam County, Texas, site, SB Energy (a solar and storage developer) plans to build new generation and storage for most of the campus's power; the Port Washington, Wisconsin, site claims about 70% of its power from solar, wind and batteries; and Entergy has proposed 1.5 GW of new solar and solar-plus-storage for Meta's Hyperion on top of 3 GW previously approved. Google says in its 2026 environmental report that it signed contracts for over 12 GW of new clean energy in 2025, a record.
 
 Wind complements solar because it often blows at night and in winter. Onshore wind farms produce on average about a third of their maximum output and spread over large areas, though farming continues between the turbines. In 2025, Congress voted to phase out federal tax credits for new wind and solar over the following few years, and the federal government halted several offshore wind projects, which raised costs and uncertainty for developers.
 
@@ -428,9 +429,9 @@ Here is every option on one page. Cost tiers are relative. As a rough guide, wid
 | Nuclear uprate | Medium | a few years | about 12 | Firm | None extra | Vistra–Meta 433 MW (January 2026) |
 | Nuclear restart | Medium | about 3–4 years | about 12 | Firm | None extra | Crane/TMI-1 for Microsoft, reportedly 2027 (date may move) |
 | New large nuclear | Very high | 10+ years | about 12 | Firm | Small | Vogtle 3 and 4 (2023–24), the cautionary tale |
-| SMR / advanced reactor | Unknown, hoped to fall | first US units around 2030 at the earliest | about 12 (expected) | Firm | Small | First US BWRX-300 permit, September 28, 2026; Kairos, Oklo, TerraPower, X-energy deals |
+| SMR / advanced reactor | Unknown, hoped to fall | first US units around 2030 at the earliest | about 12 (expected) | Firm | Small | First US BWRX-300 permit, late September 2026; TerraPower Natrium approval, March 2026; Kairos, Oklo, X-energy deals |
 | Fusion | Unknown | unproven; no grid power yet | very low (expected) | Firm (expected) | Small | Microsoft–Helion (2023) |
-| Utility solar | Low | about 1–2 years to build, plus queue time | about 48 | Variable, about 25% average output | Large, about 5–7 acres per MW | Stargate Milam County co-located solar |
+| Utility solar | Low | about 1–2 years to build, plus queue time | about 48 | Variable, about 25% average output | Large, about 5–7 acres per MW | Port Washington Stargate site, about 70% solar, wind and batteries (planned) |
 | Solar plus 4-hour batteries | Low-medium | about 1–2 years, plus queue time | low | Covers evenings, not nights or cloudy weeks | Large | Hyperion solar-plus-storage proposals (2026) |
 | Onshore wind | Low | about 1–3 years, plus permits | about 11 | Variable, about a third average output | Very large spread, small footprint | Corporate PPAs, often in Texas and the Plains |
 | Geothermal (conventional and enhanced) | Medium | several years | about 38 | Firm | Small | Google–Fervo |
@@ -543,6 +544,12 @@ Additionality is the other test. When a company signs a contract for an existing
 
 > **Watch out:** "100% renewable means it runs on renewables every hour." Most such claims use annual matching with certificates. Hourly, same-grid matching (24/7 CFE) is much harder and much rarer.
 
+Company climate reports sort their emissions into three buckets, defined by the GHG Protocol, and you need them to read any tech company's sustainability report.
+
+> **Definition — Emission scopes (Scope 1 to Scope 3):** Scope 1 is greenhouse gas from sources a company owns or controls, such as its backup diesel generators, boilers and vehicles. Scope 2 comes from making the electricity it buys. Scope 3 is everything else in its value chain, such as the emissions from making the chips, servers, steel and concrete it buys.
+
+For a data center operator, Scope 1 is tiny (about 1% of Google's total in 2023, according to Google's engineers), Scope 2 is where clean-power purchases count, and Scope 3 is where embodied carbon (Chapter 40) shows up. The buckets are also counted on different clocks. A server's electricity is counted year by year as it runs, but all the emissions from making it are counted in the year it is installed. So a big building year makes Scope 3 look huge: Google's Scope 3 was about three times its Scope 2 in 2023, yet Google's own lifecycle study of its TPUs found that electricity made up about 70% of a TPU's lifetime emissions on a grid of average carbon intensity.
+
 ## Data centers as flexible loads
 
 Grids are built for the few hours of the year when demand peaks. If a data center can reduce its demand during just those hours, it needs far less new capacity.
@@ -559,6 +566,12 @@ Which AI work can bend?
 - **Batch jobs** (evaluations, data processing, batch API requests) can shift by hours.
 - **Live inference**, answering your chat right now, is the least flexible, but traffic can sometimes be routed to data centers in other regions.
 - **On-site batteries and generators** can carry the load during a grid emergency, within air-permit limits on how many hours generators may run.
+
+The same flexibility can chase clean power as well as relieve a stressed grid.
+
+> **Definition — Carbon-aware computing (carbon-intelligent scheduling):** Moving flexible computing work in time or between locations so that more of it runs when and where the grid has the most carbon-free electricity, without missing its deadlines.
+
+A batch job that only has to "run after midnight and finish by 9 a.m." can wait for the windiest hours; one that can run in any of several regions can go to the one whose grid is forecast to be cleanest tomorrow. Google describes schedulers that use day-ahead forecasts of each grid's energy mix to do both, as one of the tools toward its 24/7 carbon-free goal. Live chat traffic has little room to move, but evaluations, data processing and batch API requests have plenty.
 
 There is also a flip side. When thousands of GPUs in a training run compute, pause to exchange data and compute again in lockstep, the whole site's power draw can swing by tens of megawatts within seconds (Chapter 39). Grid operators have also seen data centers drop off the grid all at once: in one widely reported 2024 incident in Northern Virginia, dozens of data centers switched to backup power simultaneously after a line fault, abruptly removing roughly 1,500 MW of demand. Standards for how large loads must behave during grid disturbances are being written now.
 
@@ -597,7 +610,7 @@ timeline
          : December, FERC order on co-location in PJM
     2026 : January, Meta signs for up to 6.6 GW of nuclear
          : March, Mississippi approves 1.2 GW turbine plant for xAI
-         : July, Meta scales Hyperion to 5 GW
+         : July, Meta confirms 5 GW Hyperion, over 50 billion dollars
          : September, first US BWRX-300 SMR construction permit
 ```
 
@@ -608,8 +621,8 @@ timeline
 Pulling the threads together, here is what the evidence shows as of late 2026.
 
 - **Prices.** Household electricity prices are rising (17.3¢ per kWh in 2025, 18.2¢ in 2026, a forecast 18.7¢ in 2027, per the EIA). Data centers are a major driver in PJM through capacity prices and a smaller one elsewhere.
-- **Reliability.** PJM's 2027/28 capacity auction reportedly fell short of its reliability target for the first time. Grid operators warn that peak demand is rising faster than new firm supply in several regions, and the behavior of large loads during disturbances is a new reliability concern.
-- **Emissions.** Gas buildouts and delayed coal retirements raise emissions even as companies buy clean power. The IEA estimates global data center emissions at about 220 million tonnes of CO₂ in 2024, projected to reach 300–320 million tonnes by 2035 (as reported).
+- **Reliability.** PJM's 2027/28 capacity auction fell about 6.6 GW short of its reliability requirement, according to PJM's auction report. Grid operators warn that peak demand is rising faster than new firm supply in several regions, and the behavior of large loads during disturbances is a new reliability concern.
+- **Emissions.** Gas buildouts and delayed coal retirements raise emissions even as companies buy clean power. Widely cited estimates put global data center emissions at roughly 200 million tonnes of CO₂ in 2024 (figures range from under 200 to about 220 million tonnes), rising to roughly 300 million tonnes by 2035 in central scenarios such as the IEA's (as reported; sources differ).
 - **Air quality.** Unpermitted turbines at xAI's Memphis site and large diesel generator fleets in Northern Virginia are the flagship local-pollution stories. Air pollution from on-site generation falls on neighbors, often in lower-income communities, which is why environmental-justice groups have gone to court.
 
 ## Communities: water, noise, land, jobs and taxes
@@ -666,7 +679,7 @@ Every energy source is a trade-off. Gas is firm and fast-ish but emits carbon. N
 
 ## Key terms
 
-Speed to power, Gigawatt (GW), Nameplate capacity, Capacity factor, Large load, Peak demand, Grid, Transmission and distribution, Grid frequency, Balancing authority, Firm power, Variable (intermittent) power, Utility, ISO / RTO (independent system operator / regional transmission organization), FERC (Federal Energy Regulatory Commission), PUC (public utility commission), Wholesale electricity market, Merit order, Interconnection, Interconnection queue, System impact study, Network upgrade, Phantom load (speculative load), Rate case, Tariff, Stranded cost, Large-load tariff, Capacity market, Base Residual Auction (BRA), LCOE (levelized cost of energy), Lifecycle emissions, Combined-cycle gas turbine (CCGT), Simple-cycle (peaker) turbine, Aeroderivative turbine, Reciprocating engine, Uprate, Nuclear restart, SMR (small modular reactor), Advanced reactor, Fusion power, Solar photovoltaics (PV), Battery energy storage system (BESS), Enhanced geothermal system (EGS), Fuel cell, Front-of-meter, Behind-the-meter (BTM), Co-location (power), Bridge power, Microgrid, PPA (power purchase agreement), REC (renewable energy certificate), Annual matching, 24/7 carbon-free energy (CFE), Additionality, Demand response (curtailment), Jevons paradox
+Speed to power, Gigawatt (GW), Nameplate capacity, Capacity factor, Large load, Peak demand, Grid, Transmission and distribution, Grid frequency, Balancing authority, Firm power, Variable (intermittent) power, Utility, ISO / RTO (independent system operator / regional transmission organization), FERC (Federal Energy Regulatory Commission), PUC (public utility commission), Wholesale electricity market, Merit order, Interconnection, Interconnection queue, System impact study, Network upgrade, Phantom load (speculative load), Rate case, Tariff, Stranded cost, Large-load tariff, Capacity market, Base Residual Auction (BRA), LCOE (levelized cost of energy), Lifecycle emissions, Combined-cycle gas turbine (CCGT), Simple-cycle (peaker) turbine, Aeroderivative turbine, Reciprocating engine, Uprate, Nuclear restart, SMR (small modular reactor), Advanced reactor, Fusion power, Solar photovoltaics (PV), Battery energy storage system (BESS), Enhanced geothermal system (EGS), Fuel cell, Front-of-meter, Behind-the-meter (BTM), Co-location (power), Bridge power, Microgrid, PPA (power purchase agreement), REC (renewable energy certificate), Annual matching, 24/7 carbon-free energy (CFE), Additionality, Emission scopes (Scope 1 to Scope 3), Demand response (curtailment), Carbon-aware computing (carbon-intelligent scheduling), Jevons paradox
 
 ## Exercises
 

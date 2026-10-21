@@ -178,6 +178,18 @@ There is a biological echo. Around 1959 to 1962, the neuroscientists David Hubel
 
 > **Watch out:** "CNNs see the way the brain sees." The inspiration is real, but the resemblance is loose. Artificial neurons are simple multiply-add-squish units trained with backpropagation, which is not how the brain is known to learn. CNNs also fail in very un-human ways, such as being fooled by tiny, carefully chosen changes to pixels.
 
+### Beyond flat pictures: convolution in one and three dimensions
+
+Nothing about the sliding flashlight requires a flat picture. It only needs data in which neighbors belong together.
+
+In one dimension, a sound recording is a single long row of numbers (Chapter 3), and a 1-D convolution slides a short filter along it, firing on a click or a rising pitch wherever it occurs. Because the same filter is simply applied more or fewer times, one network can read a two-second clip or a two-minute one, something a fixed table of weights cannot do. Text works the same way once each word becomes a list of numbers (the embeddings at the end of this chapter): a filter three words wide slides along a sentence and can learn to fire on phrases such as "not very good". In 2014 Yoon Kim showed that a simple CNN of this kind, built on pretrained word vectors, beat the best previous results on 4 of 7 sentence-classification tasks, including sentiment analysis.
+
+In three dimensions, video adds time to height and width. A 3-D convolution uses a small cube instead of a square, for example 3 × 3 pixels across 3 frames, the size used throughout the C3D video network released in late 2014. A single filter can then respond to motion, such as an edge that shifts between frames, as well as to shape. Stacks of medical scan slices, such as CT scans, are handled the same way, with depth in place of time. Chapter 45 shows how video recognition uses this.
+
+> **Definition — 1-D convolution:** A convolution whose filter slides along a single direction, such as time in an audio recording or word position in a sentence, to find short patterns wherever they occur.
+
+> **Definition — 3-D convolution:** A convolution whose filter is a small cube that slides across height, width and a third direction, such as time in a video or depth in a stack of scan slices, so it can detect motion or 3-D shape.
+
 ## A whole CNN, start to finish
 
 > **Definition — CNN (Convolutional Neural Network):** A neural network built mainly from convolutional layers, which slide small learned filters across an image (or a sound, or any grid-like data) and reuse the same weights everywhere. CNNs dominated computer vision from 2012 until about 2020 and are still widely used.
@@ -694,7 +706,7 @@ Language comes in order, so researchers built recurrent networks that read one w
 Meanwhile, embeddings turned words into points on a map where similar meanings sit close together, first with one fixed point per word (word2vec), then with context-dependent points (BERT). That is how semantic search works today. In 2017, researchers kept the attention, threw away the slow step-by-step reading, and created the Transformer.
 
 ## Key terms
-Pixel, Channel, MNIST, MLP (Multilayer Perceptron), Inductive bias, Convolution, Filter (kernel), Feature map, Weight sharing, Translation invariance, Stride, Padding, ReLU (Rectified Linear Unit), Pooling (max pooling, average pooling), Receptive field, CNN (Convolutional Neural Network), Softmax, Feature visualization, Saliency map, DeepDream, Neural style transfer, ImageNet, Top-5 error, AlexNet, GPU (Graphics Processing Unit), Data augmentation, Dropout, Residual connection (skip connection), ResNet, Image segmentation, U-Net, 1 × 1 convolution (pointwise convolution), Depthwise separable convolution, Transfer learning, Pretrained model, Fine-tuning, Sequence, RNN (Recurrent Neural Network), Hidden state, Tanh, Unrolling, Backpropagation through time (BPTT), Vanishing gradient, Exploding gradient, LSTM (Long Short-Term Memory), Cell state, Gate, GRU (Gated Recurrent Unit), Stacked (deep) RNN, Bidirectional RNN, Seq2seq (sequence-to-sequence), Encoder, Decoder, Context vector, Bottleneck (information bottleneck), Attention, Alignment, Vocabulary, One-hot encoding, Embedding, Embedding space (vector space), Cosine similarity, Embedding table (embedding matrix), Distributional hypothesis, word2vec, Contextual embedding, Sentence embedding, Semantic search
+Pixel, Channel, MNIST, MLP (Multilayer Perceptron), Inductive bias, Convolution, Filter (kernel), Feature map, Weight sharing, Translation invariance, Stride, Padding, ReLU (Rectified Linear Unit), Pooling (max pooling, average pooling), Receptive field, 1-D convolution, 3-D convolution, CNN (Convolutional Neural Network), Softmax, Feature visualization, Saliency map, DeepDream, Neural style transfer, ImageNet, Top-5 error, AlexNet, GPU (Graphics Processing Unit), Data augmentation, Dropout, Residual connection (skip connection), ResNet, Image segmentation, U-Net, 1 × 1 convolution (pointwise convolution), Depthwise separable convolution, Transfer learning, Pretrained model, Fine-tuning, Sequence, RNN (Recurrent Neural Network), Hidden state, Tanh, Unrolling, Backpropagation through time (BPTT), Vanishing gradient, Exploding gradient, LSTM (Long Short-Term Memory), Cell state, Gate, GRU (Gated Recurrent Unit), Stacked (deep) RNN, Bidirectional RNN, Seq2seq (sequence-to-sequence), Encoder, Decoder, Context vector, Bottleneck (information bottleneck), Attention, Alignment, Vocabulary, One-hot encoding, Embedding, Embedding space (vector space), Cosine similarity, Embedding table (embedding matrix), Distributional hypothesis, word2vec, Contextual embedding, Sentence embedding, Semantic search
 
 ## Exercises
 
@@ -847,5 +859,5 @@ Pixel, Channel, MNIST, MLP (Multilayer Perceptron), Inductive bias, Convolution,
 - **Bahdanau, Cho and Bengio, "Neural Machine Translation by Jointly Learning to Align and Translate"** (2014): the paper that introduced attention; the introduction and alignment figures are readable without the math.
 - **Krizhevsky, Sutskever and Hinton, "ImageNet Classification with Deep Convolutional Neural Networks"** (2012): the AlexNet paper that started the boom; short and historically important.
 - **Dive into Deep Learning** (d2l.ai): a free interactive textbook with runnable code for CNNs, RNNs, LSTMs, attention and embeddings.
-- **Goodfellow, Bengio and Courville, "Deep Learning"** (MIT Press, 2016; free at deeplearningbook.org): the standard reference text for the classic architectures in this chapter.
+- **Goodfellow, Bengio and Courville, "Deep Learning"** (MIT Press, 2016; free at www.deeplearningbook.org): the standard reference text for the classic architectures in this chapter.
 - **Olah, Mordvintsev and Schubert, "Feature Visualization"** (Distill, 2017): beautiful images of what individual neurons in a vision network respond to, layer by layer.

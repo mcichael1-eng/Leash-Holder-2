@@ -354,6 +354,7 @@ The family moved quickly:
 - **SAM 2 (July 2024):** video. You click an object in one frame and the model follows its mask through the whole clip, using a memory of earlier frames to recover after the object is briefly hidden.
 - **SAM 3 (November 19, 2025):** concept prompts. You type a short phrase such as "red baseball cap" or "yellow school bus," and the model finds, segments and tracks *every* instance in an image or video.
 - **SAM 3D (November 19, 2025):** reconstructs 3D objects and human bodies from a single photo (more in the 3D section).
+- **SAM 3.1 (March 27, 2026):** a drop-in update that follows up to 16 objects in one pass of the network instead of one at a time; Meta says that roughly doubles speed on videos with a moderate number of objects, from 16 to 32 frames per second on a single data-center GPU.
 
 Meta released all of them openly, so they spread into photo editors, video tools and research labs within months.
 
@@ -381,7 +382,11 @@ Beyond "who is where," video models also ask "what is happening?"
 
 > **Definition — Action recognition:** Identifying what is happening in a video clip, such as "person falling," "goal scored" or "worker skipping a safety step."
 
-Action recognition needs time. A single frame of someone with an arm raised could be a wave, a throw or a stretch; only the motion tells you which. Video models handle this with networks that look across several frames at once, or Transformers that attend across space and time.
+Action recognition needs time. A single frame of someone with an arm raised could be a wave, a throw or a stretch; only the motion tells you which. Deep video models have taken three main routes to it. 3-D CNNs use filters that span a few frames as well as a patch of pixels (Chapter 14), so a single filter can respond to movement; the C3D network of late 2014 used small 3 × 3 × 3 cubes throughout. Two-stream networks, introduced by Karen Simonyan and Andrew Zisserman in 2014, run two CNNs side by side, one on ordinary frames for what things look like and one on optical flow for how they move, and combine their answers. Since 2021, video Transformers such as ViViT and TimeSformer cut a clip into small patches across both space and time and let attention relate any patch to any other, the same spacetime-patch idea that video generators use (Chapter 16).
+
+> **Definition — 3-D CNN:** A convolutional network whose filters are small cubes spanning height, width and a few video frames, so it learns motion and appearance together.
+
+> **Definition — Two-stream network:** A video model that runs two networks in parallel, one on the raw frames (appearance) and one on optical flow (motion), and merges their predictions.
 
 Since 2024, multimodal chatbots have added long-video question answering: you upload a recording and ask "when does the speaker first show the sales chart?" Chapter 22 explained how they do it by sampling frames, which is also their weak spot: a moment that falls between sampled frames can be missed entirely.
 
@@ -713,7 +718,7 @@ Vision models fail when the world differs from their training data, when they le
 
 ## Key terms
 
-Computer vision, Pixel, RGB, Resolution, Backbone, Transfer learning, Fine-tuning, Vision foundation model, Image classification, Top-1 and top-5 accuracy, Zero-shot classification, Object detection, Bounding box, Confidence score, YOLO (You Only Look Once), Non-maximum suppression (NMS), Open-vocabulary detection, IoU (Intersection over Union), mAP (mean average precision), Frames per second (FPS), Edge deployment, Segmentation, Mask, Semantic segmentation, Instance segmentation, Panoptic segmentation, Promptable segmentation, Segment Anything Model (SAM), Data engine, Object tracking, Optical flow, Re-identification (re-ID), Action recognition, Pose estimation, Keypoint, OCR (optical character recognition), License plate recognition (ANPR), Document AI, Key-value extraction, Face detection, Face verification, Face identification, Biometrics, Face embedding, False match rate and false non-match rate, Emotion recognition, Depth estimation, Point cloud, SLAM (simultaneous localization and mapping), Photogrammetry, NeRF (neural radiance field), Gaussian splatting, Vision-language model (VLM), Visual grounding, Distribution shift, Shortcut learning, Adversarial example, Long tail, Automation bias, Data annotation
+Computer vision, Pixel, RGB, Resolution, Backbone, Transfer learning, Fine-tuning, Vision foundation model, Image classification, Top-1 and top-5 accuracy, Zero-shot classification, Object detection, Bounding box, Confidence score, YOLO (You Only Look Once), Non-maximum suppression (NMS), Open-vocabulary detection, IoU (Intersection over Union), mAP (mean average precision), Frames per second (FPS), Edge deployment, Segmentation, Mask, Semantic segmentation, Instance segmentation, Panoptic segmentation, Promptable segmentation, Segment Anything Model (SAM), Data engine, Object tracking, Optical flow, Re-identification (re-ID), Action recognition, 3-D CNN, Two-stream network, Pose estimation, Keypoint, OCR (optical character recognition), License plate recognition (ANPR), Document AI, Key-value extraction, Face detection, Face verification, Face identification, Biometrics, Face embedding, False match rate and false non-match rate, Emotion recognition, Depth estimation, Point cloud, SLAM (simultaneous localization and mapping), Photogrammetry, NeRF (neural radiance field), Gaussian splatting, Vision-language model (VLM), Visual grounding, Distribution shift, Shortcut learning, Adversarial example, Long tail, Automation bias, Data annotation
 
 ## Exercises
 

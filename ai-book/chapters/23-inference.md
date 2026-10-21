@@ -345,7 +345,7 @@ Drafts come in several forms: a small model from the same family; extra predicti
 
 > **Definition — Multi-token prediction (MTP):** Training a model to predict several future tokens at each position, not just the next one. It can improve learning, and the extra predictions make a built-in draft for speculative decoding. DeepSeek-V3 (2024) and NVIDIA's Nemotron 3 Super use it.
 
-A more radical route to speed is to stop writing left to right at all. Diffusion language models refine many tokens in parallel over a few passes (see Chapter 16); Inception reports about 1,000 tokens per second for its Mercury 2 model (February 2026, company-reported).
+A more radical route to speed is to stop writing left to right at all. Diffusion language models refine many tokens in parallel over a few passes (see Chapter 16); Inception reports about 1,000 tokens per second for its Mercury diffusion models, including 1,068 tokens per second for Mercury 3 (October 2026), which it claims matches GPT-6 Luna and Claude Haiku 5.5 on a range of benchmarks (company-reported).
 
 > **Key idea:** Speculative decoding exploits idle math: the GPU is waiting for memory anyway, so it might as well check several guesses at once. Done properly, it changes speed, not answers.
 

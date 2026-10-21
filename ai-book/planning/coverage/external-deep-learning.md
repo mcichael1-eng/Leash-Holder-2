@@ -8,12 +8,12 @@ Standards:
 2. *Dive into Deep Learning* (d2l.ai), its chapter list.
 3. Stanford course syllabi: CS229 (machine learning), CS231n (CNNs for visual recognition), CS224n (NLP with deep learning) and CS336 (language modeling from scratch).
 
-All structures come from memory; web search was unavailable. Topics are grouped by chapter or unit. The words in the Topic column describe content and are not quoted section titles.
+All structures were first reconstructed from memory, because web search was unavailable during the original audit, and were then verified online on October 21, 2026 against the published contents and the latest syllabi (see "Verified online (October 21, 2026)" at the end, which lists the corrections and the new rows). Topics are grouped by chapter or unit. The words in the Topic column describe content and are not quoted section titles.
 
 - **Goodfellow:** confident about the 20-chapter structure. The section topics within each chapter are grouped.
 - **d2l:** follows the 1.0 edition's chapter order (Preliminaries through the Tools appendix). Sections are grouped, and their exact titles may differ.
-- **CS229, CS231n and CS224n:** syllabi change every year. These rows list the units these courses are known to cover across their 2017–2025 offerings: CS229's main lecture notes; CS231n's lectures from classification to 3D, robot learning and human-centered AI; CS224n's lectures from word vectors to post-training, agents and reasoning.
-- **CS336:** taught by Percy Liang and Tatsunori Hashimoto (offered in 2024 and 2025). The rows list the lecture and assignment topics as best known. The exact lecture order is uncertain.
+- **CS229, CS231n and CS224n:** syllabi change every year. These rows list the units these courses are known to cover across their 2017–2025 offerings: CS229's main lecture notes; CS231n's lectures from classification to 3D, robot learning and human-centered AI; CS224n's lectures from word vectors to post-training, agents and reasoning. *[Verified Oct 21, 2026: rows that are not in the latest offering are marked in the tables below.]*
+- **CS336:** taught by Percy Liang and Tatsunori Hashimoto (offered in 2024 and 2025; *[corrected Oct 21, 2026: also offered in Spring 2026, the offering verified at the end]*). The rows list the lecture and assignment topics as best known. The exact lecture order is uncertain.
 
 Some gaps were filled while this audit was running by parallel external audits working on the same chapters. They are marked "parallel audit" below and are counted as THIN or MISSING before and COVERED after, with no action by this audit.
 
@@ -90,7 +90,7 @@ Some gaps were filled while this audit was running by parallel external audits w
 | Ch 19: approximate inference (variational inference, EM, wake–sleep) | OUT OF SCOPE | Ch 16 VAE | Named variational inference (Ch 54); EM fully explained for CS229 (Ch 10) |
 | Ch 20: Boltzmann machines, RBMs, deep belief networks | MISSING | Appendix C timeline and one Ch 7 line only | Added Ch 16 "Energy-based models and Boltzmann machines" (Nobel link, the 2006 DBN) |
 | Ch 20: VAEs, GANs, reparameterization | COVERED | Ch 16 | None |
-| Ch 20: autoregressive networks (PixelCNN, WaveNet) | COVERED | Ch 16; Ch 46 | None |
+| Ch 20: autoregressive networks *[corrected Oct 21, 2026: the book's sections are linear and neural auto-regressive networks and NADE; PixelCNN and WaveNet do not appear in it]* | COVERED | Ch 16; Ch 46 | None |
 | Ch 20: evaluating generative models | MISSING | None | Added Ch 16 "How do you grade a generator?" (likelihood, FID, CLIP score, human preference) |
 | Ch 20: generative stochastic networks, moment matching | OUT OF SCOPE | None | Obsolete |
 
@@ -169,26 +169,26 @@ Some gaps were filled while this audit was running by parallel external audits w
 | SVMs, margins, kernels | COVERED | Ch 10 (duality and SMO are out of scope) | None |
 | Neural networks and backpropagation | COVERED | Ch 12 | None |
 | Bias–variance tradeoff, double descent | COVERED | Ch 9; Ch 13 | None |
-| Learning theory: sample complexity, VC dimension | MISSING | None | Added statistical learning theory, VC dimension and PAC learning (Ch 9) |
+| Learning theory: sample complexity, VC dimension *[corrected Oct 21, 2026: not a Fall 2025 lecture title; not verified this round]* | MISSING | None | Added statistical learning theory, VC dimension and PAC learning (Ch 9) |
 | Regularization, model selection, cross-validation | COVERED | Ch 9; Ch 13 | None |
 | Bayesian statistics and regularization | COVERED | Ch 6; Ch 54 | None |
 | Decision trees, bagging, boosting | COVERED | Ch 10 | None |
 | k-means | COVERED | Ch 10 (worked by hand) | None |
 | Mixture of Gaussians and the EM algorithm | MISSING | None | Added Ch 10 GMM (worked 67% / 33% membership) and EM |
-| Factor analysis | OUT OF SCOPE | None | Statistical machinery |
+| Factor analysis *[corrected Oct 21, 2026: not a Fall 2025 lecture title; not verified this round]* | OUT OF SCOPE | None | Statistical machinery |
 | PCA | COVERED | Ch 10 | Added eigenvectors and SVD |
-| ICA | OUT OF SCOPE | None | Named in one line (Ch 10) |
-| Self-supervised learning, foundation models, in-context learning | COVERED | Ch 8; Ch 16; Ch 18; Ch 19 | None |
+| ICA *[corrected Oct 21, 2026: not a Fall 2025 lecture title; not verified this round]* | OUT OF SCOPE | None | Named in one line (Ch 10) |
+| Self-supervised learning, foundation models, in-context learning *[corrected Oct 21, 2026: 2026 notes chapters 15 to 17; Fall 2025 lectures 17 and 18 cover LLMs]* | COVERED | Ch 8; Ch 16; Ch 18; Ch 19 | None |
 | MDPs, value and policy iteration | THIN | Ch 48 Bellman equation and Q-learning; MDP and value iteration (parallel audit) | None (parallel audit) |
 | Continuous-state MDPs, fitted value iteration | COVERED | Ch 48 DQN (value function approximation) | None |
-| LQR, DDP, LQG | OUT OF SCOPE | Ch 49 and Ch 50 cover control at product level | Control theory |
-| Policy gradient (REINFORCE) | COVERED | Ch 48; Ch 20–21 | None |
+| LQR, DDP, LQG *[corrected Oct 21, 2026: LQR is in the 2026 lecture notes; not a Fall 2025 lecture title]* | OUT OF SCOPE | Ch 49 and Ch 50 cover control at product level | Control theory |
+| Policy gradient (REINFORCE) *[corrected Oct 21, 2026: a chapter of the August 2026 notes; not a Fall 2025 lecture title]* | COVERED | Ch 48; Ch 20–21 | None |
 | ML advice: debugging, error analysis, ablative analysis | THIN | Ch 62 and Ch 65 mention error analysis; Ch 19 ablation | Added Ch 13 debugging checklist |
 | Evaluation metrics | COVERED | Ch 9 | None |
 
 **Counts (26 topics).** Before: 15 COVERED, 2 THIN, 4 MISSING, 5 OUT OF SCOPE. After: 21 COVERED, 5 OUT OF SCOPE.
 
-## 3b. Stanford CS231n (CNNs for Visual Recognition)
+## 3b. Stanford CS231n (CNNs for Visual Recognition) *[corrected Oct 21, 2026: the course is now titled "Deep Learning for Computer Vision"]*
 
 | Topic | Status before | Where in the book | Action |
 |---|---|---|---|
@@ -198,12 +198,12 @@ Some gaps were filled while this audit was running by parallel external audits w
 | Backpropagation and computational graphs | THIN | Ch 12 (graph unnamed) | Added computational graph (Ch 12) |
 | Neural networks, activation functions | COVERED | Ch 12 | None |
 | Convolutional layers, pooling, receptive fields | COVERED | Ch 14 | None |
-| Data preprocessing, initialization, batch normalization | COVERED | Ch 11 feature scaling; Ch 13 | None |
-| Babysitting training, hyperparameter search | THIN | Ch 9 search; Ch 13 curves | Added Ch 13 debugging checklist |
+| Data preprocessing, initialization, batch normalization *[corrected Oct 21, 2026: batch norm is in Spring 2026 lecture 6; preprocessing and initialization come from the Spring 2019 "Training Neural Networks" lectures]* | COVERED | Ch 11 feature scaling; Ch 13 | None |
+| Babysitting training, hyperparameter search *[corrected Oct 21, 2026: from the earlier "Training Neural Networks" lectures (Spring 2019); not in Spring 2026]* | THIN | Ch 9 search; Ch 13 curves | Added Ch 13 debugging checklist |
 | Transfer learning, augmentation, dropout | COVERED | Ch 13; Ch 14 | None |
 | CNN architectures: AlexNet, VGG, GoogLeNet, ResNet | COVERED | Ch 14 | None |
-| Efficient architectures (MobileNet, EfficientNet, DenseNet) | MISSING | None | Added Ch 14 "After ResNet: smaller, faster CNNs" |
-| Hardware and software (GPUs, PyTorch, TensorFlow) | COVERED | Ch 13; Ch 32 | None |
+| Efficient architectures (MobileNet, EfficientNet, DenseNet) *[corrected Oct 21, 2026: not a lecture title in the 2019, 2024, 2025 or 2026 syllabi; at most a sub-topic of "CNN Architectures"]* | MISSING | None | Added Ch 14 "After ResNet: smaller, faster CNNs" |
+| Hardware and software (GPUs, PyTorch, TensorFlow) *[corrected Oct 21, 2026: a Spring 2019 lecture; Spring 2026 has a PyTorch review session instead]* | COVERED | Ch 13; Ch 32 | None |
 | RNNs, LSTM, image captioning | COVERED | Ch 14; Ch 22 vision-language models | None |
 | Attention and Transformers | COVERED | Ch 14; Ch 15 | None |
 | Detection and segmentation (R-CNN, YOLO, semantic and instance) | COVERED | Ch 45 | None |
@@ -213,7 +213,7 @@ Some gaps were filled while this audit was running by parallel external audits w
 | Generative models (PixelCNN, VAE, GAN, diffusion) | COVERED | Ch 16 | Added grading generators and other families (Ch 16) |
 | Video understanding, 3D vision | COVERED | Ch 45 | None |
 | Vision and language, CLIP | COVERED | Ch 16; Ch 22 | None |
-| Robot learning | COVERED | Ch 49 | None |
+| Robot learning *[corrected Oct 21, 2026: Spring 2024 and 2025 only; Spring 2026 replaced it with "World Modeling"]* | COVERED | Ch 49 | None |
 | Large-scale distributed training | COVERED | Ch 37 | None |
 | Human-centered AI, fairness | COVERED | Ch 58 | None |
 
@@ -225,28 +225,28 @@ Some gaps were filled while this audit was running by parallel external audits w
 |---|---|---|---|
 | Word vectors (word2vec, GloVe, analogies) | COVERED | Ch 14; Ch 5 | None |
 | Neural classifiers, backpropagation | COVERED | Ch 12 | None |
-| Syntactic structure and dependency parsing | MISSING | Ch 54 "Grammar, parsing and ambiguity" (parallel audit) | None (parallel audit) |
+| Syntactic structure and dependency parsing *[corrected Oct 21, 2026: a lecture through Winter 2025; not in Winter 2026]* | MISSING | Ch 54 "Grammar, parsing and ambiguity" (parallel audit) | None (parallel audit) |
 | Language modeling: n-grams, perplexity | COVERED | Ch 6 | None |
 | RNNs, vanishing gradients, LSTMs | COVERED | Ch 14 | None |
-| Bidirectional and multi-layer RNNs | MISSING | None | Added (Ch 14) |
-| Machine translation, seq2seq, attention | COVERED | Ch 14; Ch 54 | None |
-| BLEU | COVERED | Ch 54 | None |
-| Beam search | MISSING | None | Added (Ch 18) |
+| Bidirectional and multi-layer RNNs *[corrected Oct 21, 2026: earlier offerings (Winter 2021 "Vanishing Gradients, Fancy RNNs, Seq2Seq"); not a Winter 2026 lecture]* | MISSING | None | Added (Ch 14) |
+| Machine translation, seq2seq, attention *[corrected Oct 21, 2026: lectures in Winter 2021, 2024 and 2025; no separate lecture in Winter 2026]* | COVERED | Ch 14; Ch 54 | None |
+| BLEU *[corrected Oct 21, 2026: a sub-topic of the earlier machine-translation lectures]* | COVERED | Ch 54 | None |
+| Beam search *[corrected Oct 21, 2026: a sub-topic of the earlier translation and generation lectures]* | MISSING | None | Added (Ch 18) |
 | Self-attention and Transformers | COVERED | Ch 15 | None |
-| Subword models (BPE) | COVERED | Ch 15; Ch 18 | None |
+| Subword models (BPE) *[corrected Oct 21, 2026: Winter 2021 lecture; Winter 2026 guest lecture on tokenization]* | COVERED | Ch 15; Ch 18 | None |
 | Pretraining: ELMo, BERT, GPT, T5 | COVERED | Ch 14; Ch 15 | None |
-| NLG decoding (greedy, sampling, top-k, top-p) | COVERED | Ch 18 | Added beam search |
+| NLG decoding (greedy, sampling, top-k, top-p) *[corrected Oct 21, 2026: Winter 2021 "Natural Language Generation" lecture]* | COVERED | Ch 18 | Added beam search |
 | Post-training: instruction tuning, RLHF, DPO | COVERED | Ch 20 | None |
 | Prompting, in-context learning, chain of thought | COVERED | Ch 18; Ch 21; Ch 25 | None |
-| Question answering | COVERED | Ch 54; Ch 27 | None |
-| Coreference resolution | MISSING | None | Added row and definition (Ch 54) |
-| Natural language inference | MISSING | None | Added row and definition (Ch 54) |
-| POS tagging, named entity recognition | THIN | NER in Ch 54; POS tagging (parallel audit) | None (parallel audit) |
+| Question answering *[corrected Oct 21, 2026: lectures in Winter 2021, 2024 and 2025; not in Winter 2026]* | COVERED | Ch 54; Ch 27 | None |
+| Coreference resolution *[corrected Oct 21, 2026: Winter 2021 lecture; not in later offerings checked]* | MISSING | None | Added row and definition (Ch 54) |
+| Natural language inference *[corrected Oct 21, 2026: not a lecture title in the offerings checked; a sub-topic]* | MISSING | None | Added row and definition (Ch 54) |
+| POS tagging, named entity recognition *[corrected Oct 21, 2026: not lecture titles in the offerings checked; sub-topics]* | THIN | NER in Ch 54; POS tagging (parallel audit) | None (parallel audit) |
 | Parameter-efficient fine-tuning (adapters, prefix and prompt tuning) | THIN | Ch 30 LoRA; prompt tuning (parallel audit) | None (parallel audit) |
 | Benchmarks and evaluation | COVERED | Ch 24; Ch 31 | None |
 | Interpretability and probing | COVERED | Ch 57 | None |
 | Multimodal models | COVERED | Ch 22 | None |
-| Code generation | COVERED | Ch 29 | None |
+| Code generation *[corrected Oct 21, 2026: Winter 2024 guest lecture]* | COVERED | Ch 29 | None |
 | Retrieval augmentation and agents | COVERED | Ch 27; Ch 28 | None |
 | Ethics, bias, social impact | COVERED | Ch 58 | None |
 | Word senses, polysemy | COVERED | Ch 14 ("bank"); Ch 57 | None |
@@ -355,3 +355,310 @@ The rest are not named, because a reader of this book is unlikely to meet them o
 ### Checks
 
 `validate.py` reports every diagram valid in all edited chapters. `check.py` reports [OK] for chapters 6, 7, 9, 10, 12, 13, 14, 16, 17, 18, 19 and 54.
+
+## Verified online (October 21, 2026)
+
+The reconstructed topic lists above were checked against the published tables of contents and the most recent syllabus page of each course. For each standard this section gives the pages fetched, what differed, and the topics the reconstruction missed. Each missed topic was audited the same way as before: a search of `chapters/` and `appendices/` for its key terms, then a reading of the passages found. THIN and MISSING in-scope topics were filled in the chapter that owns them in OUTLINE.md. Rows above that were misnamed, or that come only from older offerings, are marked "corrected Oct 21, 2026" in place. Nothing above was deleted.
+
+### Goodfellow, Bengio and Courville, *Deep Learning*
+
+**Fetched:** https://www.deeplearningbook.org/ (contents menu), https://www.deeplearningbook.org/contents/TOC.html (full table of contents, down to sections), https://www.deeplearningbook.org/contents/convnets.html (section 9.7) and https://www.deeplearningbook.org/contents/generative_models.html (chapter 20 subsections).
+
+**What differed:**
+
+- The 20 chapters, their titles and their order match the reconstruction. The website menu calls Part II "Modern Practical Deep Networks", while the book's table of contents calls it "Deep Networks: Modern Practices". The audit table does not use part titles.
+- **Misnamed row:** the Ch 20 autoregressive row cited PixelCNN and WaveNet. Sections 20.10.7 to 20.10.10 cover linear auto-regressive networks, neural auto-regressive networks and NADE, and the chapter text does not mention PixelCNN or WaveNet. The row is corrected in place; its status does not change.
+- **Merged into existing rows, with no new row needed:**
+  - 2.4 (linear dependence and span) and 2.6 (special kinds of matrices), into the out-of-scope matrix row
+  - 4.2 (poor conditioning) and 4.5 (linear least squares), into the optimization row and Ch 8's least squares
+  - 6.2 (cost functions and output units), into the feedforward row
+  - 8.7 (continuation methods and designing models to aid optimization), into the curriculum and residual-connection rows
+  - 18.3 (pseudolikelihood), into the out-of-scope partition-function row
+  - 20.9 (back-propagation through random operations), into the reparameterization row
+- **Missed entirely:** Chapter 1 and 23 sections, listed below.
+
+| Topic (book section) | Status before | Where in the book | Action |
+|---|---|---|---|
+| Ch 1: who should read the book; historical trends (many names, growing datasets, growing models, rising accuracy) | COVERED | Ch 7 (eras; hardware and data jumps); Ch 19 (scale trends) | None |
+| 3.2 and 3.4: random variables, marginal probability | MISSING | None | Added Ch 6 "Random variables, joint tables and marginals", worked spam-and-"free" table (P(spam) = 0.30, P("free") = 0.25, P(spam given "free") = 0.8). Random variable, joint probability and marginal probability are defined |
+| 3.12: continuous variables and densities | MISSING | Ch 6 bell curve, without densities | Added Ch 6 "Smooth quantities: densities and areas" (probability density and integral defined; tied to Figure 6.5 and AUC). Change of variables and measure theory are out of scope |
+| 5.10: building a machine learning algorithm (data, cost, optimizer, model) | COVERED | Ch 8 Key idea "Data, a model with knobs, a loss and gradient descent" | None |
+| 5.11.2: local constancy and smoothness | COVERED | Ch 13 "Inductive biases: built-in assumptions"; Ch 10 kNN | None |
+| 7.2 and 7.3: norm penalties as constrained optimization; under-constrained problems | OUT OF SCOPE | None | Optimization math |
+| 8.1: how learning differs from pure optimization (empirical risk, surrogate loss, minibatches) | THIN | Minibatches in Ch 6, 12 and 13; test sets in Ch 6 and 9; surrogate loss and empirical risk absent | Added Ch 6 "Why not train on accuracy directly?". Worked case: a spam email moves from 0.48 to 0.49, accuracy stays flat, and the loss falls from 0.734 to 0.713. Surrogate loss and empirical risk are defined |
+| 9.4: convolution and pooling as an infinitely strong prior | COVERED | Ch 13 inductive biases (the CNN's assumptions) | None |
+| 9.7: data types (1-D, 2-D, 3-D and variable-size inputs) | MISSING | Ch 14 covered only flat images | Added Ch 14 "Beyond flat pictures: convolution in one and three dimensions". 1-D and 3-D convolution are defined, with variable-length inputs, Kim's 2014 text CNN, the C3D video network and CT stacks |
+| 9.9: random or unsupervised features | OUT OF SCOPE | None | Historical |
+| 10.2.1: teacher forcing | COVERED | Ch 15 (defined) | None |
+| 11.6: worked example, multi-digit number recognition | OUT OF SCOPE | Ch 13 debugging checklist carries the method | A single case study |
+| 14.4, 14.8 and 14.9: stochastic encoders, predictive sparse decomposition, uses of autoencoders | OUT OF SCOPE | Ch 16 autoencoders | Specialized |
+| 15.2: zero-shot and one-shot learning | COVERED | Ch 8; Ch 16; Ch 25 | None |
+| 15.3 and 15.6: disentangling the causal factors | THIN | Ch 16's latent-space "sliders" analogy, without the name | Added disentangled representation (Ch 16, "Latent space") |
+| 16.5: latent variables | COVERED | Ch 16 latent space; Ch 10 GMM's hidden cluster membership | None |
+| 16.2 and 16.3: d-separation, factor graphs, ancestral sampling | OUT OF SCOPE | Ch 54 Bayesian networks | Graphical-model machinery |
+| 17.2: importance sampling | OUT OF SCOPE | None | Sampling math |
+| 18.5: denoising score matching | COVERED | Ch 16 "Score-based models: diffusion's twin" (predicting the score and predicting the noise are the same thing) | None |
+| 19.1 and 19.3: inference as optimization (ELBO), MAP inference | OUT OF SCOPE | Ch 16 VAE | Math |
+| 20.4 to 20.8: deep Boltzmann machines and other Boltzmann variants | OUT OF SCOPE | Ch 16 Boltzmann machines and RBMs | Historical |
+| 20.10.1 and 20.10.10: sigmoid belief networks, NADE | OUT OF SCOPE | Ch 16 autoregressive generation | Historical model names |
+| 20.11: drawing samples from autoencoders | OUT OF SCOPE | None | Specialized |
+| 20.13: other generation schemes: diffusion inversion (Sohl-Dickstein et al., 2015) | COVERED | Ch 16 (diffusion "proposed in 2015") | None |
+
+New rows: 24. Before: 9 COVERED, 2 THIN, 3 MISSING, 10 OUT OF SCOPE. After: 14 COVERED, 10 OUT OF SCOPE.
+
+### *Dive into Deep Learning* (d2l.ai)
+
+**Fetched:** https://d2l.ai/ (the full navigation tree, version 1.0.3) and https://d2l.ai/chapter_linear-classification/image-classification-dataset.html.
+
+**What differed:**
+
+- The 23 numbered chapters (21 chapters and two appendices) are in the order the reconstruction assumed.
+- Numbering details:
+  - Batch normalization is section 8.5, inside "Modern Convolutional Neural Networks".
+  - ResNeXt shares section 8.6 with ResNet.
+  - The design-spaces row is 8.8, "Designing Convolution Network Architectures".
+  - Section 4.2 uses Fashion-MNIST and presents MNIST as history, so that row stands.
+- The 14.13 and 14.14 Kaggle image projects and the 23.2, 23.3 and 23.5 cloud and GPU sections fall under the existing Kaggle and Tools rows.
+- No row was invented or misnamed.
+- **Missed entirely:**
+
+| Topic (d2l section) | Status before | Where in the book | Action |
+|---|---|---|---|
+| 2.7, 3.2 and 6.4: documentation, object-oriented design, lazy initialization | OUT OF SCOPE | Ch 13 frameworks | Library and coding details |
+| 4.6: generalization in classification (reusing the test set) | COVERED | Ch 6 and Ch 9 (the test set is used once; leakage); Ch 9 VC dimension | None |
+| 9.1: working with sequences (autoregressive and Markov models) | COVERED | Ch 6 n-gram model; Ch 16 autoregressive generation; Ch 46 and Ch 54 Markov models | None |
+| 16.3: sentiment analysis with CNNs (text CNN) | MISSING | None | Added to Ch 14 (1-D convolution over word vectors; Kim 2014 beat the previous best on 4 of 7 sentence tasks) |
+| 19.3 and 19.5: asynchronous random search, asynchronous successive halving | OUT OF SCOPE | Ch 9 successive halving and Hyperband | Scheduling detail |
+| 21.8: feature-rich recommenders (click-through prediction) | COVERED | Ch 51 CTR prediction | None |
+| 22.5: integral calculus | MISSING | Ch 9 AUC only | Added integral (Ch 6, densities subsection) |
+| 22.6: random variables (discrete and continuous) | MISSING | None | Added random variable, marginal probability and probability density (Ch 6) |
+| 22.10: statistics (estimators, hypothesis tests, confidence intervals) | THIN | Margin of error in Ch 9 and Ch 31; confidence intervals in Ch 24 and Ch 50; "p-value" and "statistical significance" absent | Added a Ch 9 significance-test paragraph, with p-value and statistical significance defined. Worked case: 91.0% vs 91.8% on 1,500 emails, where a gap of about 2 points is needed |
+
+New rows: 9. Before: 3 COVERED, 1 THIN, 3 MISSING, 2 OUT OF SCOPE. After: 7 COVERED, 2 OUT OF SCOPE.
+
+### Stanford CS229 (Machine Learning)
+
+**Fetched:** https://cs229.stanford.edu/ could not be read from this session. The site's certificate chain ends at an emSign root that the session's proxy does not trust, and WebFetch returned HTTP 503. TLS verification was not bypassed. Instead, the search engine's index of the site was used for:
+
+- https://cs229.stanford.edu/index.html-fall25 (the Fall 2025 page with its tentative schedule, September 22 to December 10, 2025)
+- https://cs229.stanford.edu/index.html-spr26 (the Spring 2026 page, whose schedule was not visible)
+- https://cs229.stanford.edu/main_notes.pdf (Ma and Ng lecture notes, dated August 23, 2026)
+- https://cs229.stanford.edu/notes2026spring/main_notes.pdf (dated May 19, 2026)
+
+**Term used:** Fall 2025, the most recent complete lecture-by-lecture schedule that could be seen.
+
+**What differed:**
+
+- **Fall 2025 lectures:**
+  - Supervised learning setup and LMS
+  - Weighted least squares, logistic regression and Newton's method
+  - Exponential families and GLMs
+  - Bias–variance and regularization
+  - GDA, naive Bayes and Laplace smoothing
+  - Kernels and SVMs
+  - k-means, GMM and EM
+  - Decision trees
+  - Boosting
+  - Neural networks and backpropagation (two lectures)
+  - ML advice
+  - RL basics, value and policy iteration
+  - Model-based RL and value-function approximation
+  - PCA
+  - Large language models (lecture 17: language modeling, embeddings, Transformers; lecture 18: RAG, fine-tuning, prompt optimization, safety)
+  - Fairness, algorithmic bias, explainability and privacy (lectures 19 and 20)
+- **Lecture notes:** the 2026 notes add chapters on foundation models, representation learning (including RAG) and large language models. They keep a reinforcement learning and control part that includes LQR, and the August version lists a policy gradient chapter.
+- **Not seen in the Fall 2025 lecture titles:** learning theory, factor analysis, ICA, LQR and policy gradient. These are marked in the table above. They were not removed, because they belong to the notes or to earlier offerings.
+- **Missed entirely:**
+
+| Topic (Fall 2025 lecture) | Status before | Where in the book | Action |
+|---|---|---|---|
+| Large language models: language modeling, embeddings, Transformers, RAG, fine-tuning, prompt optimization, safety (lectures 17 and 18) | COVERED | Ch 15, 18, 25 (prompt optimization), 27, 30, 56 | None |
+| Fairness, algorithmic bias, explainability, privacy (lectures 19 and 20) | COVERED | Ch 58 (fairness, privacy); Ch 57 explainable AI; Ch 10 feature importance; Ch 48 Shapley value and SHAP; Ch 11 differential privacy | None |
+| Model-based RL (lecture 15) | COVERED | Ch 48 (model-based agents, MuZero) | None |
+
+New rows: 3, all COVERED.
+
+### Stanford CS231n (Deep Learning for Computer Vision)
+
+**Fetched:** https://cs231n.stanford.edu/ and https://cs231n.stanford.edu/schedule.html. To see where older rows came from, also https://cs231n.stanford.edu/2025/schedule.html, https://cs231n.stanford.edu/2024/schedule.html and https://cs231n.stanford.edu/2019/syllabus.html.
+
+**Term used:** Spring 2026 (Fei-Fei Li, Ehsan Adeli, Justin Johnson, Zane Durante, Tiange Xiang). The course's title is now "Deep Learning for Computer Vision".
+
+**What differed:**
+
+- **The 18 Spring 2026 lectures:**
+  1. Introduction
+  2. Image classification with linear classifiers
+  3. Regularization and optimization
+  4. Neural networks and backpropagation
+  5. Image classification with CNNs
+  6. CNN architectures (batch norm, transfer learning)
+  7. RNNs
+  8. Attention and Transformers
+  9. Detection, segmentation, visualizing and understanding (including DETR, panoptic segmentation, adversarial examples, DeepDream and style transfer)
+  10. Video understanding (3D CNNs, two-stream networks)
+  11. Large-scale distributed training (including activation checkpointing)
+  12. Self-supervised learning (pretext tasks, contrastive learning)
+  13. Generative models: VAEs, GANs, autoregressive models
+  14. Generative models: diffusion
+  15. 3D vision (neural implicit representations)
+  16. Vision and language
+  17. World modeling
+  18. Human-centered AI
+- **Changes to existing rows:**
+  - "Robot learning" was a lecture in 2024 and 2025 and is replaced by "World Modeling" in 2026.
+  - "Hardware and software" and "Training Neural Networks" (babysitting training, preprocessing, initialization) are 2019-era lectures.
+  - "Efficient architectures" was never a lecture title.
+  - All four rows are marked in place. None was invented.
+- **Missed entirely:**
+
+| Topic (Spring 2026 lecture) | Status before | Where in the book | Action |
+|---|---|---|---|
+| Video: 3D CNNs and two-stream networks (lecture 10) | THIN | Ch 45 said only "networks that look across several frames" | Added to Ch 45: 3-D CNN (C3D, 3 × 3 × 3 cubes), two-stream network (Simonyan and Zisserman, 2014) and video Transformers (ViViT and TimeSformer, 2021), with two definitions. Also Ch 14's 3-D convolution |
+| Self-supervised pretext tasks (lecture 12) | THIN | Ch 16 had masking examples but not the term | Added pretext task to Ch 16, with jigsaw puzzles (2016) and rotation prediction (2018) |
+| World modeling (lecture 17) | COVERED | Ch 16; Ch 22; Ch 47; Ch 49 | None |
+| Detection extras: DETR, panoptic segmentation (lecture 9) | COVERED | Ch 45 | None |
+
+New rows: 4. Before: 2 COVERED, 2 THIN. After: 4 COVERED.
+
+### Stanford CS224n (NLP with Deep Learning)
+
+**Fetched:** https://web.stanford.edu/class/cs224n/. To see where older rows came from, also the archived Winter 2025 (https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1254/), Winter 2024 (.../cs224n.1244/) and Winter 2021 (.../cs224n.1214/) schedules.
+
+**Term used:** Winter 2026 (Diyi Yang, Yejin Choi).
+
+**What differed:**
+
+- **The Winter 2026 lectures:**
+  1. History of NLP
+  2. Word vectors
+  3. Backpropagation and neural network basics
+  4. Language models and RNNs
+  5. Transformers
+  6. Final projects and practical tips
+  7. Pretraining (scaling, systems, data)
+  8. Post-training (RLHF, SFT, DPO)
+  9. Efficient adaptation (prompting and PEFT)
+  10. Agents, tool use and RAG
+  11. Benchmarking and evaluation
+  12. Reasoning 1 (chain of thought, self-consistency, DeepSeek-R1, DAPO)
+  13. Reasoning 2 (step-level verification, speculative decoding, test-time compute)
+  14. Guest lecture: tokenization and multilinguality
+  15. Guest lecture: interpretability (Been Kim)
+  16. Social and broader impacts of NLP
+  17. Guest lecture: multimodality (Luke Zettlemoyer)
+  18. Guest lecture: "Tinker and LoRA Without Regret" (John Schulman)
+  19. Open questions in NLP 2026
+- **Older rows:** dependency parsing, machine translation, coreference, question answering, natural language generation and code generation are lectures from earlier offerings (Winter 2021, 2024 or 2025). NLI and POS tagging were never lecture titles in the offerings checked. These rows are marked in place. None was invented.
+- **Missed entirely:**
+
+| Topic (Winter 2026 lecture) | Status before | Where in the book | Action |
+|---|---|---|---|
+| History of NLP (lecture 1) | COVERED | Ch 54 four eras of language AI; Ch 7 | None |
+| Reasoning: chain of thought, self-consistency, RL with verifiable rewards (DeepSeek-R1, DAPO), step-level verification, test-time compute (lectures 12 and 13) | COVERED | Ch 21; Ch 23 speculative decoding | None |
+| Tokenization and multilinguality (lecture 14) | COVERED | Ch 18 "Other languages cost more"; Ch 15; Ch 19 multilingual data | None |
+| LoRA compared with full fine-tuning ("LoRA Without Regret") and the Tinker fine-tuning service (lecture 18) | THIN | Ch 30 covered LoRA in depth but not how close it gets to full fine-tuning; Tinker appeared only in Appendix D | Added Ch 30 "Does LoRA give up quality?" (all layers, a learning rate about 10 times higher, rank 1 enough for RL, limits). Added a Tinker paragraph to "Where to fine-tune" |
+| Open questions in NLP 2026 (lecture 19) | COVERED | Ch 66 | None |
+
+New rows: 5. Before: 4 COVERED, 1 THIN. After: 5 COVERED.
+
+### Stanford CS336 (Language Modeling from Scratch)
+
+**Fetched:** https://stanford-cs336.github.io/ (redirects to http://cs336.stanford.edu/) and https://cs336.stanford.edu/.
+
+**Term used:** Spring 2026 (Tatsunori Hashimoto, Percy Liang), with 19 lectures and five assignments. Earlier offerings were Spring 2024 and Spring 2025.
+
+**What differed:**
+
+- **The lecture order is now known:**
+  1. Overview and tokenization
+  2. PyTorch (einops) and resource accounting (FLOPs, memory, arithmetic intensity)
+  3. Architectures and hyperparameters
+  4. Attention alternatives and mixture of experts
+  5. GPUs and TPUs
+  6. Kernels and Triton
+  7–8. Parallelism (two lectures)
+  9. Scaling laws
+  10. Inference
+  11. Scaling laws
+  12. Evaluation
+  13. Data (sources, datasets)
+  14. Data (filtering, deduplication, mixing, synthetic data)
+  15. Mid- and post-training (SFT and RLHF)
+  16. Post-training with RLVR
+  17. Alignment and multimodality
+  18–19. Guest lectures
+- **Assignments:**
+  1. Basics: tokenizer, model, optimizer
+  2. Systems: profiling, a Triton FlashAttention2, distributed training
+  3. Scaling: fitting a scaling law through a training API
+  4. Data: Common Crawl filtering and deduplication
+  5. Alignment and reasoning RL: SFT and RL for math, with optional DPO
+- Every reconstructed row appears. "Stability tricks" and "Mixed-precision training" are sub-topics, not lecture titles.
+- **Missed entirely:**
+
+| Topic (Spring 2026 lecture) | Status before | Where in the book | Action |
+|---|---|---|---|
+| Attention alternatives (lecture 4) | COVERED | Ch 17 (state-space models, linear attention, hybrids) | None |
+| TPUs (lecture 5) | COVERED | Ch 32; Ch 35 | None |
+| Data mixing and synthetic data (lecture 14) | COVERED | Ch 19 (data mixtures, synthetic data) | None |
+| Mid-training (lecture 15) | COVERED | Ch 19 | None |
+| Multimodal alignment (lecture 17) | COVERED | Ch 22 (LLaVA visual instruction tuning, fusion) | None |
+
+New rows: 5, all COVERED.
+
+### Sources for the book additions
+
+- Kim, "Convolutional Neural Networks for Sentence Classification" (EMNLP 2014): https://arxiv.org/abs/1408.5882
+- Simonyan and Zisserman, "Two-Stream Convolutional Networks for Action Recognition in Videos" (2014): https://arxiv.org/abs/1406.2199
+- Tran et al., C3D (December 2014; 3 × 3 × 3 kernels): https://arxiv.org/abs/1412.0767
+- TimeSformer (2021): https://arxiv.org/abs/2102.05095
+- ViViT (2021): https://arxiv.org/abs/2103.15691
+- Rotation prediction (2018): https://arxiv.org/abs/1803.07728
+- Jigsaw puzzles (2016): https://arxiv.org/abs/1603.09246
+- Thinking Machines Lab, "LoRA Without Regret" (September 29, 2025): https://thinkingmachines.ai/blog/lora/
+- Tinker announcement (October 1, 2025): https://thinkingmachines.ai/blog/announcing-tinker/
+- Tinker page: https://thinkingmachines.ai/tinker/ (per-token pricing)
+- Goodfellow section 9.7 (table of data types, including CT volumes) and section 20.13 (diffusion inversion), from the deeplearningbook.org pages listed above
+
+The significance, density and surrogate-loss passages are standard definitions with worked arithmetic. They state no new facts that would need a source.
+
+### Updated counts
+
+| Standard | Rows (original + new) | Before: COVERED / THIN / MISSING / OUT OF SCOPE | After: COVERED / OUT OF SCOPE | Share of in-scope topics covered after |
+|---|---|---|---|---|
+| Goodfellow et al. | 96 (72 + 24) | 53 / 11 / 10 / 22 | 74 / 22 | 100% (74 of 74) |
+| d2l.ai | 61 (52 + 9) | 39 / 7 / 11 / 4 | 57 / 4 | 100% (57 of 57) |
+| CS229 (Fall 2025) | 29 (26 + 3) | 18 / 2 / 4 / 5 | 24 / 5 | 100% (24 of 24) |
+| CS231n (Spring 2026) | 28 (24 + 4) | 22 / 5 / 1 / 0 | 28 / 0 | 100% (28 of 28) |
+| CS224n (Winter 2026) | 32 (27 + 5) | 24 / 3 / 5 / 0 | 32 / 0 | 100% (32 of 32) |
+| CS336 (Spring 2026) | 22 (17 + 5) | 20 / 0 / 1 / 1 | 21 / 1 | 100% (21 of 21) |
+| **All** | **268 (218 + 50)** | **176 / 28 / 32 / 32** | **236 / 32** | **100% of in-scope (88% of all rows)** |
+
+Before both rounds, 176 of the 236 in-scope topics (75%) were covered. The 50 new rows break down as 26 COVERED, 6 THIN, 6 MISSING and 12 OUT OF SCOPE.
+
+### What this round added to the book
+
+Every addition has its definitions in STYLE.md format, and each new term is in its chapter's Key terms list. No figures were added, so figure numbering is unchanged.
+
+- **Ch 6:**
+  - "Random variables, joint tables and marginals": random variable, joint probability, marginal probability
+  - "Smooth quantities: densities and areas": probability density, integral
+  - "Why not train on accuracy directly?": surrogate loss, empirical risk
+  - One sentence now points to "the Softmax and Sampling sections below" instead of "the next two sections".
+- **Ch 9:** a significance-test paragraph defining p-value and statistical significance.
+- **Ch 14:** "Beyond flat pictures: convolution in one and three dimensions", defining 1-D convolution and 3-D convolution.
+- **Ch 16:** disentangled representation (in "Latent space") and pretext task (in "Self-supervised learning").
+- **Ch 30:**
+  - "Does LoRA give up quality?"
+  - a paragraph on Tinker in "Where to fine-tune"
+- **Ch 45:** video recognition by 3-D CNN, two-stream network and video Transformer, with two definitions.
+
+### Checks
+
+`validate.py` reports every diagram valid in chapters 6, 9, 14, 16, 30 and 45. `check.py` reports [OK] for the same chapters.
+
+### Unresolved
+
+- **CS229:** its rows were verified only indirectly, through search-index entries, because the course site could not be fetched from this session. Rows marked "not verified this round" stand as reconstructed. If the site becomes reachable, re-check them against the Spring 2026 or Autumn 2026 syllabus page.
+- **Tinker:** whether it is generally available as of October 2026 was not confirmed (the web-search budget for this session ran out). The book makes no availability claim.

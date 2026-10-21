@@ -377,7 +377,7 @@ In 2006–07, NVIDIA released a way to program its GPUs directly.
 
 > **Definition — Kernel (GPU kernel):** A small program that runs on the GPU to perform one operation, such as a matrix multiply or the attention step of a Transformer. Thousands of copies run at once, one per thread. Writing fast kernels is one of the most prized skills in AI.
 
-For years, CUDA was used mainly for physics simulations, oil exploration and finance. Then in 2012 a neural network called AlexNet, trained by Alex Krizhevsky, Ilya Sutskever and Geoffrey Hinton on two NVIDIA GTX 580 gaming cards, won the ImageNet image-recognition competition by a wide margin (Chapter 14 tells that story). Deep learning and GPUs have been inseparable ever since. NVIDIA reshaped itself around AI: Volta (2017) added tensor cores, Ampere's A100 (2020) added new number formats and sparsity, Hopper's H100 (2022) added 8-bit floating point, Blackwell (2024–25) joined two dies into one GPU with 4-bit support, and Vera Rubin (2026) moved to HBM4 memory with 336 billion transistors on TSMC's 3-nanometer-class process. Chapter 35 covers the industry side of that story.
+For years, CUDA was used mainly for physics simulations, oil exploration and finance. Then in 2012 a neural network called AlexNet, trained by Alex Krizhevsky, Ilya Sutskever and Geoffrey Hinton on two NVIDIA GTX 580 gaming cards, won the ImageNet image-recognition competition by a wide margin (Chapter 14 tells that story). Deep learning and GPUs have been inseparable ever since. NVIDIA reshaped itself around AI: Volta (2017) added tensor cores, Ampere's A100 (2020) added new number formats and sparsity, Hopper's H100 (2022) added 8-bit floating point, Blackwell (2024–25) joined two dies into one GPU with 4-bit support, and Vera Rubin (2026) moved to HBM4 memory with 336 billion transistors, reportedly on TSMC's 3-nanometer-class process. Chapter 35 covers the industry side of that story.
 
 > **Definition — HBM (High Bandwidth Memory):** Memory chips stacked vertically and placed right beside an AI processor in the same package, joined to it by thousands of short wires so they can deliver terabytes of data per second. HBM3, HBM3E and HBM4 are successive generations; Chapter 33 covers HBM in depth.
 
@@ -412,7 +412,7 @@ Let us open up an H100, the workhorse of 2023–2025 AI, using numbers from NVID
 
 Count the workers: 132 SMs × 128 CUDA cores = 16,896 ordinary cores, plus 132 × 4 = 528 tensor cores. The tensor cores do almost all the AI math. The ordinary cores handle everything else: the squashing functions, the softmax in attention, small bookkeeping. The memory around them (registers, shared memory, L2, HBM) is the subject of Chapter 33.
 
-> **At the frontier (2026):** NVIDIA's Rubin platform is six new chips designed together: the Vera CPU, the Rubin GPU, an NVLink 6 switch, a ConnectX-9 network card, a BlueField-4 data processor and a Spectrum-6 Ethernet switch. In its results for the quarter ending July 26, 2026, NVIDIA said Vera Rubin was "ramping into full production," with racks running at CoreWeave, Google Cloud, Microsoft Azure, Oracle Cloud Infrastructure and Nebius. NVIDIA has previewed Feynman for 2028, reportedly with 3D-stacked dies on TSMC's A16 process. The unit of design is no longer the chip but the whole rack (Chapter 34).
+> **At the frontier (2026):** NVIDIA's Rubin platform is six new chips designed together: the Vera CPU, the Rubin GPU, an NVLink 6 switch, a ConnectX-9 network card, a BlueField-4 data processor and a Spectrum-6 Ethernet switch. In its results for the quarter ending July 26, 2026, NVIDIA said Vera Rubin was "ramping into full production," with racks running at CoreWeave, Google Cloud, Microsoft Azure, Oracle Cloud Infrastructure and Nebius; its quarterly filing adds that Vera Rubin production shipments began in the quarter that started on July 27, 2026. NVIDIA has previewed Feynman for 2028, reportedly with 3D-stacked dies on TSMC's A16 process. The unit of design is no longer the chip but the whole rack (Chapter 34).
 
 > **Watch out:** "A GPU is just a faster CPU" is wrong. It is a different design with different strengths: thousands of simple workers doing the same thing to lots of data, rather than a few clever workers doing varied things. A GPU would be terrible at running your web browser.
 
@@ -658,7 +658,7 @@ flowchart TD
 ```
 *Figure 32.10: Where each precision lives in a typical 2026 training and serving pipeline. Low precision for bulk math, high precision for the few numbers that must not drift.*
 
-> **At the frontier (2026):** BF16 mixed precision became the training standard in the late 2010s. FP8 training arrived with Hopper; DeepSeek-V3 (December 2024) was a prominent public example, trained in FP8 on 2,048 H800 GPUs for about 2.8 million GPU-hours. FP4 is the 2026 frontier: Blackwell and Rubin support NVFP4 training, Moonshot's Kimi K3 was trained with MXFP4 quantization-aware training, and DeepSeek-V4 ships its expert weights in FP4 with FP8 elsewhere. Making FP4 pre-training robust at frontier scale is an active research problem.
+> **At the frontier (2026):** BF16 mixed precision became the training standard in the late 2010s. FP8 training arrived with Hopper; DeepSeek-V3 (December 2024) was a prominent public example, trained in FP8 on 2,048 H800 GPUs for about 2.8 million GPU-hours. FP4 is the 2026 frontier: Blackwell and Rubin support NVFP4 training, Moonshot's Kimi K3 ships MXFP4 weights after quantization-aware training that starts at its fine-tuning stage, and DeepSeek-V4 ships its expert weights in FP4 with FP8 elsewhere. Making FP4 pre-training robust at frontier scale is an active research problem.
 
 > **Watch out:** "Lower precision means worse AI" is mostly wrong. With careful scaling, models train and run at nearly the same quality in BF16, FP8 and block-scaled FP4. Precision is a tool. The real risk is careless quantization of a model that was never designed for it, which can quietly hurt accuracy on hard tasks.
 
@@ -720,20 +720,20 @@ Now the real numbers. These are vendor peak figures as of late 2026, which you s
 | NVIDIA H100 SXM (2022) | GPU | ~989 TFLOPS BF16; ~1,979 TFLOPS FP8 | 80 GB HBM3 | 3.35 TB/s | 700 W; 80B transistors |
 | NVIDIA H200 (2024) | GPU | same as H100 | 141 GB HBM3E | 4.8 TB/s | More and faster memory |
 | NVIDIA B300 (2H 2025) | GPU | ~15 PFLOPS FP4 | 288 GB HBM3E | 8 TB/s | Blackwell Ultra; two dies |
-| NVIDIA Rubin (2026) | GPU | 4 PF BF16; 17.5 PF FP8; 35 PF NVFP4 | 288 GB HBM4 | 19.2–22 TB/s (see note) | 336B transistors, TSMC N3 |
+| NVIDIA Rubin (2026) | GPU | 4 PF BF16; 17.5 PF FP8; 35 PF NVFP4 | 288 GB HBM4 | 19.2–22 TB/s (see note) | 336B transistors, TSMC N3 (reported) |
 | AMD MI355X (2H 2025) | GPU | 10.1 PFLOPS MXFP4 | 288 GB HBM3E | 8 TB/s | 1,400 W, liquid-cooled |
 | AMD MI455X (2026) | GPU | ~40 PF FP4; ~20 PF FP8 | 432 GB HBM4 | 19.6 TB/s (later briefing: up to 23.3) | Ships in AMD's Helios rack |
 | Google Ironwood TPU v7 (2025) | TPU | 4,614 TFLOPS FP8 | 192 GB HBM3E | 7.37 TB/s | Pods of 9,216 chips |
 | Google TPU 8t (2026) | TPU | 12.6 PFLOPS FP4 | 216 GB HBM | 6.5 TB/s | Training; 128 MB on-chip SRAM |
 | Google TPU 8i (2026) | TPU | 10.1 PFLOPS FP4 | 288 GB HBM | 8.6 TB/s | Inference; 384 MB on-chip SRAM |
 | AWS Trainium3 (2025) | ASIC | ~2.5 PFLOPS FP8 (MXFP8) | 144 GB HBM3E | 4.9 TB/s | AWS's first 3 nm chip |
-| Microsoft Maia 200 (2026) | ASIC | ~10 PF FP4; ~5 PF FP8 (reported) | 216 GB HBM3E (reported) | 7 TB/s (reported) | 272 MB on-die SRAM (reported) |
-| Groq 3 LPU (2026) | LPU | ~1.2 PFLOPS FP8 | ~500 MB SRAM, no HBM | ~150 TB/s (SRAM) | 256 per LPX rack |
+| Microsoft Maia 200 (2026) | ASIC | over 10 PF FP4; over 5 PF FP8 | 216 GB HBM3E | 7 TB/s | 272 MB on-die SRAM; 750 W |
+| Groq 3 LPU (2026) | LPU | ~1.2 PFLOPS FP8 (reported) | ~500 MB SRAM, no HBM | ~150 TB/s (SRAM) | 256 per LPX rack |
 | Cerebras WSE-3 | Wafer-scale | ~125 PF sparse FP16 (vendor) | 44 GB on-wafer SRAM | very high (on-wafer) | 4 trillion transistors, 900,000 cores |
 | NVIDIA Vera (2026) | CPU | not quoted in FLOPS | LPDDR5X, up to 54 TB per 36-CPU rack | (CPU-class) | 88 Arm cores; Rubin's host |
 | Copilot+ PC NPU | NPU | 40+ TOPS (usually INT8) | Shares the laptop's memory | Typical laptop: about 60–120 GB/s | Runs on a few watts |
 
-*Table 32.7: Real accelerator specifications (vendor peak figures, late 2026). Rubin's bandwidth is an example of spec drift: launch coverage at CES 2026 cited 22 TB/s per GPU, while NVIDIA's current product page lists 19.2 TB/s. Maia 200 figures come from press reports rather than a full vendor spec sheet.*
+*Table 32.7: Real accelerator specifications (vendor peak figures, late 2026). Rubin's bandwidth is an example of spec drift: launch coverage at CES 2026 cited 22 TB/s per GPU, while NVIDIA's current product page lists 19.2 TB/s. Maia 200 figures come from Microsoft's January 2026 announcement. NVIDIA's LPX page gives the Groq 3 LPU's SRAM figures but not its FP8 rate, which comes from press reports.*
 
 Three lessons jump out of this table. First, compute numbers differ by precision so much that you must compare like with like. Second, memory capacity and bandwidth vary as much as compute does, and Chapter 33 shows they often matter more. Third, the inference-oriented chips (TPU 8i, Maia 200, Groq) carry unusually large amounts of on-chip SRAM. That is a bet about memory, which is the next chapter's subject.
 
@@ -788,6 +788,12 @@ The textbook's other examples show how far the recipe stretches. Microsoft's **P
 
 > **Definition — Image signal processor (ISP):** A specialized circuit in every camera phone that turns the raw readings from the camera sensor into a finished photo (adjusting color, removing noise, combining exposures) far more efficiently than the main processor could.
 
+The recipe is not only for AI. After the TPU, Google applied it to video, the largest source of internet traffic. Every video uploaded to YouTube is re-encoded into many formats and resolutions so it plays well on every phone, TV and connection.
+
+> **Definition — Transcoding:** Converting a video from one compressed format, resolution or quality level into another, for example turning one uploaded 4K file into a dozen versions for different screens and network speeds. It is one of the heaviest computing jobs in a video service.
+
+Google's answer was the VCU (Video Coding Unit), a chip full of video encoder and decoder cores, with two chips per board and ten boards per server. Google reports that VCUs gave about 8 to 20 times the throughput of software encoding on CPUs for its main video formats, an order-of-magnitude gain in efficiency, and that they have been used for years by YouTube, Google Meet and Google Photos. The fourth edition of Barroso, Hölzle and Ranganathan's *The Data Center as a Computer* (December 2025) presents video and networking chips as the next wave of accelerators beyond machine learning.
+
 > **Key idea:** A domain-specific chip wins by doing less: it drops general-purpose machinery, keeps data close, uses small numbers and lets a compiler plan the work. The price is flexibility, so the bet pays only when the domain, like neural networks, is huge and stable.
 
 > **Watch out:** "Chip A does more inferences per second than chip B, so it is faster" can mislead. Hennessy and Patterson list "inferences per second is a fair summary metric" as a fallacy: a chip can post a huge number with batches so large that real users would wait too long. Always ask what response time the number was measured at (Chapter 37 draws this trade-off as a curve).
@@ -840,7 +846,7 @@ Finally, the chips have become so fast at math that they spend most of their tim
 
 ## Key terms
 
-Accelerator, Transistor, Logic gate, Multiply-accumulate (MAC), Clock speed (GHz), Die, CPU (Central Processing Unit), Core, Thread, Cache, Instruction set architecture (ISA), x86, Arm, RISC-V, SIMD (Single Instruction, Multiple Data), Moore's law, Dennard scaling, Power wall, Multicore processor, Matrix multiplication (GEMM), Tensor, FLOP (floating-point operation), FLOPS (FLOP/s), Peak performance, MFU (Model FLOPs Utilization), Structured sparsity (2:4), TOPS (Tera Operations Per Second), Parallelism, SIMT (Single Instruction, Multiple Threads), Warp, Latency, Throughput, Amdahl's law, GPU (Graphics Processing Unit), CUDA, Kernel (GPU kernel), HBM (High Bandwidth Memory), Streaming multiprocessor (SM), CUDA core, Tensor core, Systolic array, Floating point, Precision, FP32, TF32 (TensorFloat-32), FP16 (half precision), BF16 (bfloat16), FP8, FP4, INT8 / INT4, Microscaling (MX) formats, NVFP4, Mixed precision, Quantization, ASIC (Application-Specific Integrated Circuit), TPU (Tensor Processing Unit), LPU (Language Processing Unit), Wafer-scale engine, NPU (Neural Processing Unit), FPGA (Field-Programmable Gate Array), Superchip, Domain-specific architecture (DSA), Dark silicon, Image signal processor (ISP)
+Accelerator, Transistor, Logic gate, Multiply-accumulate (MAC), Clock speed (GHz), Die, CPU (Central Processing Unit), Core, Thread, Cache, Instruction set architecture (ISA), x86, Arm, RISC-V, SIMD (Single Instruction, Multiple Data), Moore's law, Dennard scaling, Power wall, Multicore processor, Matrix multiplication (GEMM), Tensor, FLOP (floating-point operation), FLOPS (FLOP/s), Peak performance, MFU (Model FLOPs Utilization), Structured sparsity (2:4), TOPS (Tera Operations Per Second), Parallelism, SIMT (Single Instruction, Multiple Threads), Warp, Latency, Throughput, Amdahl's law, GPU (Graphics Processing Unit), CUDA, Kernel (GPU kernel), HBM (High Bandwidth Memory), Streaming multiprocessor (SM), CUDA core, Tensor core, Systolic array, Floating point, Precision, FP32, TF32 (TensorFloat-32), FP16 (half precision), BF16 (bfloat16), FP8, FP4, INT8 / INT4, Microscaling (MX) formats, NVFP4, Mixed precision, Quantization, ASIC (Application-Specific Integrated Circuit), TPU (Tensor Processing Unit), LPU (Language Processing Unit), Wafer-scale engine, NPU (Neural Processing Unit), FPGA (Field-Programmable Gate Array), Superchip, Domain-specific architecture (DSA), Dark silicon, Image signal processor (ISP), Transcoding
 
 ## Exercises
 

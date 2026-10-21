@@ -213,7 +213,27 @@ pie title Next-token probabilities after The capital of France is
 
 *Figure 6.2: A language model's output is a probability distribution over its vocabulary. The numbers here are illustrative.*
 
-Two things in that picture are worth noticing. First, "Paris" is not certain, even though it is correct: the model leaves a little probability for sentences like "The capital of France is located on the Seine". Second, tens of thousands of other tokens share the last 2%. Most of them have tiny probabilities, but tiny is not zero. How the app chooses from this distribution is the subject of the next two sections.
+Two things in that picture are worth noticing. First, "Paris" is not certain, even though it is correct: the model leaves a little probability for sentences like "The capital of France is located on the Seine". Second, tens of thousands of other tokens share the last 2%. Most of them have tiny probabilities, but tiny is not zero. How the app chooses from this distribution is the subject of the Softmax and Sampling sections below.
+
+### Random variables, joint tables and marginals
+
+Statisticians have a name for a quantity whose value is settled by chance: a random variable. The roll of a die is one (its possible values are 1 to 6), the next token your chatbot writes is another, and tomorrow's high temperature is a third. A probability distribution describes a random variable completely.
+
+> **Definition — Random variable:** A quantity whose value is set by chance, such as a die roll or the next token a chatbot will write. Its probability distribution says how likely each possible value is.
+
+Often you track two random variables at once. Suppose 100 emails are sorted two ways: spam or not, and whether they contain the word "free".
+
+| | Contains "free" | No "free" | Row total |
+|---|---|---|---|
+| Spam | 20 | 10 | 30 |
+| Not spam | 5 | 65 | 70 |
+| Column total | 25 | 75 | 100 |
+
+Each inner cell gives a joint probability, the chance of two things together: P(spam and "free") = 20 ÷ 100 = 0.20. Add across a row or down a column and you get a marginal probability, the chance of one variable on its own with the other added away: P(spam) = 0.20 + 0.10 = 0.30, and P("free") = 0.20 + 0.05 = 0.25. The odd name comes from writing those totals in the margins of the table. Dividing one by the other previews the conditional probability you will meet later in this chapter: of the 25 emails containing "free", 20 are spam, so 20 ÷ 25 = 0.8.
+
+> **Definition — Joint probability:** The probability that two (or more) things are true together, such as an email being spam and containing "free". It is written P(A and B).
+
+> **Definition — Marginal probability:** The probability of one variable on its own, found by adding the joint probabilities over every value of the other variables, like the row and column totals in the margins of a table.
 
 ## Softmax: turning scores into probabilities
 
@@ -316,7 +336,7 @@ flowchart LR
 
 > **Watch out:** Turning temperature up does not make a model more creative in any deep sense, and turning it down does not make it more truthful. Temperature only changes how adventurously the app draws from the same distribution. Chapter 18 adds two more twists: other sampling methods such as top-k and min-p, and why even temperature 0 is not perfectly repeatable on shared servers.
 
-> **At the frontier (2026):** Sampling is now used deliberately to make models *smarter*, not just more varied. Reasoning systems often sample many independent attempts at a hard problem and then pick the best one or take a majority vote, an idea first popularized in 2022 as "self-consistency". Premium "deep thinking" modes from several labs spend extra compute on related ideas, such as exploring several lines of reasoning in parallel before answering. Chapter 21 explains how.
+> **At the frontier (2026):** Sampling is now used deliberately to make models *smarter*, not just more varied. Reasoning systems often sample many independent attempts at a hard problem and then pick the best one or take a majority vote, an idea first popularized in 2022 as "self-consistency". Premium "deep thinking" modes from several labs spend extra compute on related ideas, such as exploring several lines of reasoning in parallel before answering. Meanwhile some providers have taken the temperature dial away from developers: Anthropic's Claude models from version 4.7 on accept only the default sampling settings, and its API version dated October 21, 2026 rejects the temperature, top-p and top-k settings altogether. Chapter 21 explains how reasoning systems use sampling.
 
 ## Conditional probability: the heart of every chatbot
 
@@ -378,6 +398,10 @@ This kind of model, which looks only at the previous word or few words, is calle
 Counting has an obvious weak spot: zeros. Our tiny model has never seen "drink coffee", so it says P(coffee given drink) = 0 and calls any sentence containing that pair impossible. The classic patch is smoothing: pretend you saw every possible next word a little. With add-one smoothing over our five-word vocabulary (I, like, drink, tea, coffee), P(coffee given drink) becomes (0 + 1) ÷ (1 + 5) = 1/6, and P(tea given drink) drops from 1 to (1 + 1) ÷ (1 + 5) = 1/3. Chapter 10's spam filter uses the same trick.
 
 > **Definition — Smoothing:** Adjusting probability estimates so that events never seen in the training data get a small, non-zero probability instead of zero, for example by adding one to every count before dividing.
+
+Practical n-gram systems also used a second patch, backoff: when a longer context has never been seen, fall back to a shorter one. A three-word model that has never seen "I drink coffee" asks the two-word model how often "coffee" follows "drink"; if that pair is unseen too, it falls back to how common "coffee" is on its own. Long contexts give sharper predictions when there is data for them, and short ones give a sensible answer when there is not.
+
+> **Definition — Backoff:** In an n-gram model, falling back to a shorter context (fewer previous words) when the longer one never appeared in the training text, so the model can still make a reasonable prediction.
 
 Why aren't chatbots built this way? Because counting breaks down. Your prompt today, together with everything before it in your conversation, has almost certainly never appeared anywhere in history, so there is nothing to count. A large language model instead *learns a function* (Chapter 5) that computes `P(next token | everything so far)` for contexts it has never seen, by generalizing from patterns. It conditions on your entire conversation, up to its context window (the maximum amount of text it can take in at once), not just the last word.
 
@@ -534,6 +558,14 @@ That "68, 95, 99.7" pattern is worth memorizing. Imagine a group whose heights h
 > **Definition — Normal distribution:** The symmetrical bell-shaped pattern where most values cluster near the mean and extremes are rare. About 68% of values lie within one standard deviation of the mean and about 95% within two.
 
 Why is it so common? A deep result of probability says that when many small, independent random effects add together, the total tends to follow a bell curve, whatever the individual effects look like. Height comes from many genes and environmental factors added together, so it is roughly normal. Measurement errors usually are too.
+
+### Smooth quantities: densities and areas
+
+A die has six separate outcomes, but height can be any number at all: 170 cm, 170.2 cm, 170.21 cm. With endlessly many possible values, the chance of hitting one exact value is zero, so a smooth random variable is described differently. The height of the bell curve at each point is a probability density, and probabilities are areas under the curve. The 68% in Figure 6.5 is the share of the total area lying within one standard deviation of the mean (163 to 177 cm in the height example above), and the whole area under any density curve is exactly 1, just as a distribution's probabilities add up to 1. Adding up the area under a curve is what mathematicians call integration, and the result is an integral, written with a tall S (∫) for "sum". You will not need to compute one in this book, but when you meet the word, read it as "the area under this curve". The AUC score in Chapter 9 is an example: it is literally the area under the ROC curve.
+
+> **Definition — Probability density:** For a quantity that can take any value in a range, like height, the height of its distribution curve at each point. Probabilities are not read off the curve directly but as areas under it: the area between two values is the chance of landing between them.
+
+> **Definition — Integral:** The total area under a curve between two points, found by adding up very many very thin slices. In probability, the integral of a density between two values is the chance of landing between them.
 
 ### Noise
 
@@ -739,6 +771,16 @@ Two more quantities from information theory complete the picture. **Entropy** is
 
 > **Key idea:** A chatbot's pretraining is nothing more than adjusting billions of knobs to make the average surprise at the real next token as small as possible, across trillions of tokens of text.
 
+### Why not train on accuracy directly?
+
+What you usually care about is accuracy: how often the model's top answer is right. So why train on cross-entropy instead? Because accuracy gives the downhill walk of the next section nothing to grip. Suppose a spam filter gives a spam email a 0.48 chance of being spam. Nudge a knob so that the chance rises to 0.49, and accuracy does not move: the email is still called "not spam". Accuracy changes only when a probability crosses the 0.5 line, so its slope is zero almost everywhere and then it jumps. Cross-entropy improves with every small nudge: −ln 0.48 = 0.734 falls to −ln 0.49 = 0.713. So training minimizes a smooth stand-in, called a surrogate loss, and people check the score they really care about separately.
+
+A second gap sits underneath. Training can only shrink the average loss on the examples it has (the empirical risk), while the real goal is a low loss on future data nobody has seen yet. That is why the held-out test set from earlier in this chapter matters, and why learning is not quite the same thing as pure optimization.
+
+> **Definition — Surrogate loss:** A smooth loss that training minimizes in place of the measure people actually care about, such as cross-entropy in place of accuracy, because the real measure gives gradient descent no useful slope.
+
+> **Definition — Empirical risk:** The average loss of a model on its training examples. Training minimizes it as a stand-in for the true goal, low loss on new data, which can only be estimated with held-out examples.
+
 ## Gradient descent: walking downhill in fog
 
 ### The algorithm
@@ -940,7 +982,7 @@ Learning works by slopes. A loss function gives one number for how wrong the mod
 
 ## Key terms
 
-Exponent, Exponential growth, Doubling time, Compound interest, Exponential decay, Euler's number (e), Logarithm, Natural logarithm (ln), Log scale, Power law, Scaling laws, Probability, Complement, Independence, Expected value, Law of large numbers, Probability distribution, Logit, Softmax, Greedy decoding, Sampling, Temperature, Top-p sampling, Conditional probability, Language model, Log-probability, N-gram model, Smoothing, Base rate, False positive, Bayes' rule, Prior and posterior, Calibration, Mean, Median, Outlier, Range (statistics), Variance, Standard deviation, Percentile, Normal distribution, Noise, Random initialization, Correlation, Confounder, Sampling bias, Training, validation and test sets, Overfitting, Generalization, Derivative, Partial derivative, Gradient, Loss landscape, Chain rule, Backpropagation, Automatic differentiation, Loss function, Cross-entropy, Perplexity, Maximum likelihood estimation (MLE), Entropy, KL divergence (Kullback–Leibler divergence), Gradient descent, Learning rate, Local minimum, Convex function, Stochastic gradient descent (SGD), Mini-batch, Optimizer, Training loop, Epoch
+Exponent, Exponential growth, Doubling time, Compound interest, Exponential decay, Euler's number (e), Logarithm, Natural logarithm (ln), Log scale, Power law, Scaling laws, Probability, Complement, Independence, Expected value, Law of large numbers, Probability distribution, Random variable, Joint probability, Marginal probability, Logit, Softmax, Greedy decoding, Sampling, Temperature, Top-p sampling, Conditional probability, Language model, Log-probability, N-gram model, Smoothing, Backoff, Base rate, False positive, Bayes' rule, Prior and posterior, Calibration, Mean, Median, Outlier, Range (statistics), Variance, Standard deviation, Percentile, Normal distribution, Probability density, Integral, Noise, Random initialization, Correlation, Confounder, Sampling bias, Training, validation and test sets, Overfitting, Generalization, Derivative, Partial derivative, Gradient, Loss landscape, Chain rule, Backpropagation, Automatic differentiation, Loss function, Cross-entropy, Perplexity, Maximum likelihood estimation (MLE), Entropy, KL divergence (Kullback–Leibler divergence), Surrogate loss, Empirical risk, Gradient descent, Learning rate, Local minimum, Convex function, Stochastic gradient descent (SGD), Mini-batch, Optimizer, Training loop, Epoch
 
 ## Exercises
 

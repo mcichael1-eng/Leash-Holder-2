@@ -719,7 +719,7 @@ Chapter 32 introduced number formats as rulers with fewer tick marks. Fewer bits
 
 Why does this matter so much? Look at one Vera Rubin GPU's dense peaks: about 4 PFLOPS in BF16, 17.5 PFLOPS in FP8 and 35 PFLOPS in NVFP4 for training. Moving a run from BF16 to NVFP4 offers, on paper, almost 9 times more math per second from the same chip and the same power. Even partial adoption changes the 6ND arithmetic: the same `10^27` FLOP run needs far fewer GPU-days.
 
-In 2026 practice, frontier labs mix precisions. Moonshot trained Kimi K3 with MXFP4 quantization-aware training, and DeepSeek-V4-Pro stores its expert weights in FP4 and uses FP8 elsewhere. The risk is numerical instability: low precision can let errors build up until the loss suddenly jumps, a **loss spike**, which may force a rollback to an earlier checkpoint. Making FP4 pretraining robust at frontier scale is an active research problem.
+In 2026 practice, frontier labs mix precisions. Moonshot's Kimi K3 ships MXFP4 weights after quantization-aware training applied from its fine-tuning stage onward, and DeepSeek-V4-Pro stores its expert weights in FP4 and uses FP8 elsewhere. The risk is numerical instability: low precision can let errors build up until the loss suddenly jumps, a **loss spike**, which may force a rollback to an earlier checkpoint. Making FP4 pretraining robust at frontier scale is an active research problem.
 
 > **Definition — Loss spike:** A sudden jump in training loss during a run, often caused by numerical instability. Labs respond by skipping data, lowering the learning rate or rolling back to a checkpoint.
 
@@ -822,9 +822,9 @@ That split is now shaping chip design. As of late 2026:
 
 | Chip | Built for | Key published figures |
 |---|---|---|
-| Groq 3 LPU, in NVIDIA's LPX rack | Fast decode | 256 LPUs per rack; per chip about 500 MB SRAM at about 150 TB/s and about 1.2 PFLOPS FP8. NVIDIA claims up to 35× throughput per megawatt at high interactivity (vendor claim) |
+| Groq 3 LPU, in NVIDIA's LPX rack | Fast decode | 256 LPUs per rack; per chip about 500 MB SRAM at about 150 TB/s and, as reported, about 1.2 PFLOPS FP8. NVIDIA claims up to 35× throughput per megawatt at high interactivity (vendor claim) |
 | Google TPU 8i | Inference | 10.1 PFLOPS FP4, 288 GB HBM at 8.6 TB/s, 384 MB on-chip SRAM; Google claims up to 80% better inference price-performance |
-| Microsoft Maia 200 | Inference for Copilot and OpenAI models | Reportedly about 10 PFLOPS FP4, 216 GB HBM3E at 7 TB/s, 272 MB SRAM |
+| Microsoft Maia 200 | Inference for Copilot and OpenAI models | More than 10 PFLOPS FP4, 216 GB HBM3E at 7 TB/s, 272 MB SRAM (Microsoft's figures) |
 | NVIDIA Rubin CPX | Long-context prefill | GDDR7-based GPU announced in 2025; its 2026 deployment status was not confirmed |
 | Cerebras WSE-3 | Very fast inference | Weights stream from on-chip SRAM across a whole wafer, giving thousands of tokens per second per user |
 | AWS Inferentia | Inference on AWS | Amazon's inference line alongside Trainium |
@@ -915,7 +915,7 @@ There is a fair counter-argument. Demand for any particular use eventually satur
 
 > **Key idea:** Efficiency improves fast, but demand for compute has grown faster. Cheaper tokens lead to more tokens, so power and capital needs keep rising even as each operation gets cheaper.
 
-> **At the frontier (2026):** The scale is still climbing. Anthropic agreed in October 2025 to access up to a million Google TPUs, bringing well over a gigawatt online in 2026, alongside AWS's Project Rainier (reportedly about half a million Trainium2 chips). Epoch projects Meta's Hyperion site at about 3.7 million H100-equivalents by January 2028, and estimates a gigawatt-scale site at about $38 billion of up-front capital per gigawatt. The math in this chapter is how planners turn those gigawatts into training runs and token prices.
+> **At the frontier (2026):** The scale is still climbing. Anthropic agreed in October 2025 to access up to a million Google TPUs, bringing well over a gigawatt online in 2026, alongside AWS's Project Rainier (nearly half a million Trainium2 chips at launch, according to Amazon). Epoch projects Meta's Hyperion site at about 3.7 million H100-equivalents by January 2028, and estimates a gigawatt-scale site at about $38 billion of up-front capital per gigawatt. The math in this chapter is how planners turn those gigawatts into training runs and token prices.
 
 ## In plain English
 

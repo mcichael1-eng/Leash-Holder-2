@@ -242,7 +242,7 @@ MYCIN, built at Stanford in the 1970s, used several hundred rules to diagnose bl
 
 ### Why the boom collapsed (1987–1993)
 
-Expert systems had three fatal problems. They were brittle, failing badly just outside their narrow domain because they had no common sense to fall back on. They were costly to maintain, since every new product or exception needed new rules and rules interacted in surprising ways. And in 1987 the market for Lisp machines collapsed, because cheaper desktop workstations could run the same software. The Fifth Generation project ended in 1992 without reaching its goals. In the second AI winter, from the late 1980s into the early 1990s, many researchers stopped saying "artificial intelligence" at all.
+Expert systems had three fatal problems. They were brittle, failing badly just outside their narrow domain because they had no common sense to fall back on. They were costly to maintain, since every new product or exception needed new rules and rules interacted in surprising ways. And in 1987 the market for Lisp machines collapsed, because cheaper desktop workstations could run the same software. The Fifth Generation project wound down in the early 1990s without reaching its goals. In the second AI winter, from the late 1980s into the early 1990s, many researchers stopped saying "artificial intelligence" at all.
 
 > **Definition — Brittleness:** The tendency of a rule-based system to fail suddenly and badly on cases its designers did not anticipate, instead of degrading gracefully.
 
@@ -642,7 +642,7 @@ By 2026 the big labs were releasing new models roughly every month. Rather than 
 
 On April 7, 2026 Anthropic announced Claude Mythos Preview and Project Glasswing. Anthropic said the unreleased model, given only to defenders such as AWS, Apple, Google, Microsoft, NVIDIA and the Linux Foundation, had found thousands of high-severity security flaws across every major operating system and web browser, including a 27-year-old bug in OpenBSD. In June Anthropic released Fable 5 and Mythos 5, the same underlying model with different safeguards: Fable for the public, with classifiers that redirect risky requests, and Mythos for vetted partners.
 
-On September 3, 2026 OpenAI unveiled GPT-6 Astra. OpenAI described it as its largest training run by far and its first pretraining run on more than 100,000 GPUs, at the Stargate site in Abilene. Epoch AI estimates about 9.4 × 10^26 FLOP. It rolled out first to organizations in OpenAI's cybersecurity program, because of its cyber capabilities. Press reports said it was the first OpenAI model rated at the company's internal "Critical" cybersecurity level, though no OpenAI page confirming that rating had been found as of October 2026. Some commentary called it AGI; treat that as marketing or speculation, not a finding.
+On September 3, 2026 OpenAI unveiled GPT-6 Astra. OpenAI described it as its largest training run by far and its first pretraining run on more than 100,000 GPUs, at the Stargate site in Abilene. Epoch AI estimates about 9.4 × 10^26 FLOP. It rolled out first to vetted organizations in OpenAI's trusted-access program, because of its cyber capabilities, and a day later to paid ChatGPT and API customers in a version that refuses some cybersecurity requests. OpenAI's safety card for Astra calls it "our first model to reach the Critical level of cybersecurity capability under our Preparedness Framework," the company's internal risk scale. Some commentary called it AGI; treat that as marketing or speculation, not a finding.
 
 > **Definition — Restricted (trusted-access) model:** A model released only to vetted organizations, or in a safer public version with extra safeguards, because its full capabilities in areas like cyberattacks are judged too risky for open release.
 
@@ -650,7 +650,7 @@ On September 3, 2026 OpenAI unveiled GPT-6 Astra. OpenAI described it as its lar
 
 ### Open weights and new players
 
-DeepSeek-V4-Pro has 1.6 trillion total parameters (49 billion active per token), a 1-million-token context window and a permissive MIT license. Moonshot's Kimi K3 (July 16) has 2.8 trillion parameters. Stanford's 2026 AI Index found the top US model led the top Chinese model by only 2.7% on Arena scores (ratings from a public website where people vote between two anonymous models' answers) as of March 2026. Meta replaced its Llama line with a new "Muse" family, releasing Muse Wonder on October 13, 2026 according to press reports. SpaceX acquired xAI in February 2026 (an all-stock deal, per reports), and the combined company released Grok 4.7 in September. Not every plan shipped: Google's Gemini 3.5 Pro reportedly never got a general release, and OpenAI announced in March 2026 that it would shut down its Sora video app.
+DeepSeek-V4-Pro has 1.6 trillion total parameters (49 billion active per token), a 1-million-token context window and a permissive MIT license. Moonshot's Kimi K3 (July 16) has 2.8 trillion parameters. Stanford's 2026 AI Index found the top US model led the top Chinese model by only 2.7% on Arena scores (ratings from a public website where people vote between two anonymous models' answers) as of March 2026. Meta moved on from its Llama line (last release: Llama 4, April 2025) to a new "Muse" family, which now powers its Meta AI assistant, and released Muse Wonder on October 13, 2026, according to press reports. SpaceX acquired xAI in February 2026 (an all-stock deal, per reports), and the combined company released Grok 4.7 in September. Not every plan shipped: Google's Gemini 3.5 Pro reportedly never got a general release, and OpenAI announced in March 2026 that it would shut down its Sora video app.
 
 ### Measuring a moving target
 
@@ -666,7 +666,7 @@ A worked example with METR's numbers: GPT-4 (March 2023) had a time horizon of a
 
 ### Chips and gigawatt campuses
 
-NVIDIA launched its Vera Rubin platform at CES in January 2026 (336 billion transistors per GPU, HBM4 memory) and said in May it had entered full production; by August, racks were running at several clouds. Google announced its eighth-generation TPUs, split into a training chip and an inference chip, on April 22. For the quarter ending July 2026, NVIDIA reported revenue of $96.2 billion, more than double a year earlier.
+NVIDIA launched its Vera Rubin platform at CES in January 2026 (336 billion transistors per GPU, HBM4 memory), saying it was already in full production with partner systems due in the second half of the year; by August, racks were running at several clouds. Google announced its eighth-generation TPUs, split into a training chip and an inference chip, on April 22. For the quarter ending July 2026, NVIDIA reported revenue of $96.2 billion, more than double a year earlier.
 
 The buildings grew to match. Epoch AI lists xAI's Colossus 2 in Memphis as the largest AI data center by compute, at about 1.1 million H100-equivalents. Anthropic and Amazon agreed on April 20 to up to 5 GW. On July 13 Meta said its Hyperion campus in Louisiana would scale to 5 GW. As of October 20, 2026 Epoch tracked 95 large AI data centers totaling about 14.2 GW of IT power. Power became a story in its own right: in January Meta signed nuclear deals for up to 6.6 GW by 2035, and on September 28 US regulators issued the first construction permit for a small modular reactor of its type, at a Tennessee Valley Authority site.
 
@@ -686,7 +686,7 @@ timeline
     Mar : ARC-AGI-3 launches with AI at 0.51 percent
     Apr : Claude Mythos Preview and Project Glasswing
         : GPT-5.5, DeepSeek-V4 preview, TPU 8
-    May : Gemini 3.5 family, Rubin in full production
+    May : Gemini 3.5 family and Gemini Omni
     Jun : Claude Fable 5 and Mythos 5
     Jul : Meta Hyperion to 5 gigawatts
         : Kimi K3 and Claude Opus 5
