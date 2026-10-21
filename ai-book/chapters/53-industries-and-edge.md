@@ -105,8 +105,6 @@ mindmap
 
 > **Definition — Algorithmic trading:** Buying and selling securities automatically by computer program. High-frequency trading is the extreme version, where programs trade in tiny fractions of a second, sometimes thousands of times per second.
 
-> **Definition — Robo-advisor:** An online service that builds and rebalances an investment portfolio automatically from a customer's answers about goals and risk, with little or no human advisor involved.
-
 **Data.** Finance has two data advantages that most industries envy. First, volume: billions of card payments a year, each with an amount, merchant, time, location and device. Second, fast labels. When you see a charge you did not make and dispute it, you have just labeled that payment as fraud, usually within weeks. Fast, plentiful, mostly correct labels are exactly what supervised learning needs (Chapter 8). Credit models also use credit-bureau files and account histories, and trading systems use market prices that change many times a second.
 
 ### How a fraud check works
@@ -152,15 +150,11 @@ The decision also depends on money at stake. Say the model gives a $400 payment 
 - **Fairness and the law.** In the United States, the Equal Credit Opportunity Act (1974) bans lending discrimination by race, sex, religion and other traits, and requires lenders to tell a rejected applicant the specific reasons. Regulators have said that a complex algorithm is no excuse for vague reasons. A model that never sees race can still discriminate through proxies such as postcode (Chapter 11).
 - **Runaway code.** On May 6, 2010, the "Flash Crash" briefly wiped nearly 1,000 points off the Dow Jones index within minutes before prices largely recovered, a reminder that automated traders reacting to each other can spiral.
 
-> **Definition — Adverse action notice:** A notice a US lender must give an applicant it rejects or offers worse terms, stating the main reasons. It forces credit models to be explainable enough to produce honest reasons.
-
 > **Definition — Explainability:** How well people can understand why a model produced a particular output. In regulated decisions such as credit, some explainability is a legal requirement, not a nice extra.
-
-> **Definition — Model risk management:** A bank's formal process for testing, documenting, approving and monitoring every model it relies on, including independent validation by people who did not build it. In the US it follows Federal Reserve guidance known as SR 11-7 (2011).
 
 **A real example: Knight Capital, August 1, 2012.** Knight Capital was one of the largest trading firms on US stock exchanges. A software deployment went wrong: old, unused code was accidentally reactivated on one of its servers, and it began firing off orders it was never meant to send. In about 45 minutes the firm lost roughly $440 million and needed a rescue. No machine learning was involved; it was plain automation with no working off switch. That is the lesson. Every automated decision system needs limits, kill switches and people watching who are empowered to pull the plug.
 
-**Opportunities.** Real-time fraud detection that resists deepfaked voices and synthetic identities; automation of the paperwork side of AML (gathering account history and drafting case narratives for investigators); credit models that are both accurate and explainable; and model validation, a steady, well-paid career that combines statistics with regulation. Open problems include fraudsters armed with AI and proving fairness to regulators.
+**Opportunities.** Real-time fraud detection that resists deepfaked voices and synthetic identities; automation of the paperwork side of AML (gathering account history and drafting case narratives for investigators); credit models that are both accurate and explainable; and model validation, a steady, well-paid career that combines statistics with regulation (US banks must have every model they rely on independently tested, under Federal Reserve guidance known as SR 11-7). Open problems include fraudsters armed with AI and proving fairness to regulators.
 
 > **At the frontier (2026):** The newest pattern in large banks is moving from scores to agents. Instead of handing an investigator a number, an LLM-based agent gathers the account history, checks related accounts, drafts the case write-up and hands a person a ready-to-review file. The person still makes and signs the decision, because the bank, not the software, is legally accountable.
 
@@ -172,15 +166,9 @@ The decision also depends on money at stake. Say the model gives a $400 payment 
 
 > **Definition — Technology-assisted review (TAR):** Using a machine-learning classifier, trained on lawyers' decisions about a sample of documents, to rank or sort the rest by likely relevance. US courts first approved it in a 2012 case, Da Silva Moore v. Publicis Groupe.
 
-> **Definition — Contract analysis:** Using AI to extract clauses, dates, obligations and risks from contracts, often comparing each one against a standard template and flagging deviations.
-
 **Data.** Case law and statutes are public in principle, but much of the organized, searchable version sits in paid databases. The most valuable data, a firm's own past contracts, briefs and client emails, is confidential. Lawyers owe their clients secrecy, and sharing a client's documents with the wrong service can waive legal protections. This is why law firms use AI tools with strict contractual promises not to train on or retain their data (Chapter 31).
 
-> **Definition — Attorney–client privilege:** The legal rule that confidential communications between a lawyer and client are protected from disclosure. Careless handling, including pasting documents into the wrong service, can put that protection at risk.
-
-> **Definition — Unauthorized practice of law:** Giving legal advice without a license, which is illegal in most places. It limits how far an AI tool can go in telling a member of the public what to do about their legal problem.
-
-**Risks.** The famous one is invented citations. A language model writes the most plausible next words (Chapter 18), and a plausible case name with a plausible citation number is exactly what a legal brief looks like. Retrieval (Chapter 27) helps a lot but does not remove the problem: a 2024 Stanford study found that commercial legal-research tools built on retrieval still gave incorrect or poorly supported answers to a substantial share of test questions, roughly one in six or worse. Other risks are confidentiality, over-reliance by junior lawyers who stop learning to check sources, and bias when AI is used for decisions such as bail (Chapter 58 covers risk scores in criminal justice).
+**Risks.** The famous one is invented citations. A language model writes the most plausible next words (Chapter 18), and a plausible case name with a plausible citation number is exactly what a legal brief looks like. Retrieval (Chapter 27) helps a lot but does not remove the problem: a 2024 Stanford study found that commercial legal-research tools built on retrieval still gave incorrect or poorly supported answers to a substantial share of test questions, roughly one in six or worse. Other risks are confidentiality, rules against practicing law without a license (which limit how far a tool may advise the public directly), over-reliance by junior lawyers who stop learning to check sources, and bias when AI is used for decisions such as bail (Chapter 58 covers risk scores in criminal justice).
 
 **A real example: Mata v. Avianca (2023).** Lawyers suing the airline Avianca in a federal court in New York filed a brief citing court decisions that did not exist. ChatGPT had invented them and, when one lawyer asked it whether the cases were real, it said yes. The judge fined the lawyers and their firm $5,000 and ordered them to write to the real judges who had been falsely named as authors of the fake opinions. Since then, courts have seen a steady stream of similar cases, and some judges now require lawyers to certify that they checked any AI-assisted filing.
 
@@ -227,13 +215,9 @@ Use is already near universal. The Stanford AI Index 2026 reports that more than
 
 **Tasks.** Chat and voice bots that answer questions and take simple actions such as a refund or an address change; agent assist, where AI listens to a human agent's call, suggests answers and fills in the notes; routing each contact to the right place; translation; and quality assurance that scores every conversation instead of a small sample.
 
-> **Definition — Contact center:** The team and systems a company uses to handle customer calls, chats, emails and messages. It is one of the largest employers of entry-level workers in many countries.
-
 > **Definition — Containment rate:** The share of customer contacts an automated system resolves without handing over to a human, also called deflection rate. A high containment rate saves money only if customers are actually helped.
 
 > **Definition — Agent assist:** AI that supports a human service agent during a conversation, by suggesting replies, surfacing policies and writing the summary afterward, rather than replacing the agent.
-
-> **Definition — Escalation:** Handing a conversation from an AI system (or a junior agent) to a human or a more senior person, ideally with a summary so the customer does not have to repeat themselves.
 
 **Data.** Past tickets and call transcripts, the help center, the company's policies, and live access to order and account systems through tools (Chapter 28). The knowledge base matters more than the model: a bot reading an out-of-date refund policy will confidently quote the wrong one.
 
@@ -278,15 +262,11 @@ The containment rate looked like 60%. The real resolution rate was 54%. Measurin
 
 **Tasks.** Personalizing emails, offers and product suggestions (the recommender machinery of Chapter 51); automated ad campaigns, where you give a platform a budget and a goal and its models choose audiences and placements; generating ad creative (copy, images, short videos) in many variations; testing which variations work; social listening, where sentiment analysis reads what people say about a brand (Chapter 54); and, newest, making sure AI assistants mention your brand when people ask them for recommendations.
 
-> **Definition — Personalization:** Tailoring content, offers or products to each person based on their data, such as past purchases or browsing.
-
 > **Definition — First-party data:** Data a company collects directly from its own customers, such as purchases, site visits and email clicks. It became more valuable after privacy changes limited tracking across other companies' apps and sites.
 
 > **Definition — Creative testing:** Running many versions of an ad or message to see which performs best. Generative AI made it cheap to produce hundreds of variants instead of three.
 
 > **Definition — Generative engine optimization (GEO):** Shaping content so that AI answer engines and chatbots find, trust and cite it, the successor to search engine optimization. Chapter 51 explains how answer engines choose sources.
-
-> **Definition — Brand safety:** Making sure a company's ads and content do not appear next to, or themselves contain, material that would embarrass or harm the brand.
 
 **Data.** First-party data, the platforms' own data about their users, brand guidelines and past campaign results. The data landscape shifted when Apple introduced its App Tracking Transparency prompt in 2021, which asks iPhone users whether apps may track them across other companies' apps. Many said no, which pushed advertisers toward the platforms' own automated tools, since those platforms still see what happens on their own services.
 
@@ -350,8 +330,6 @@ flowchart LR
 **Tasks.** Spraying individual weeds instead of whole fields, predicting yields, monitoring crops from drones and satellites, watching livestock with cameras and sensors for signs of illness or lameness, scheduling irrigation, and robotic harvesting (still hard for delicate crops).
 
 > **Definition — Precision agriculture:** Using sensors, cameras, GPS and AI to treat each plant or patch of a field according to its needs, instead of treating the whole field the same way.
-
-> **Definition — Remote sensing:** Measuring something from a distance, usually with cameras or sensors on satellites, planes or drones. In farming it shows crop health across thousands of hectares at once.
 
 > **Definition — NDVI (Normalized Difference Vegetation Index):** A simple number computed from how much red and near-infrared light a patch of ground reflects. Healthy leaves reflect lots of near-infrared and absorb red, so high NDVI means vigorous plants.
 
@@ -475,15 +453,9 @@ The same template works everywhere. Here are seven more industries in one table,
 | Journalism | Transcription, translation, data analysis, automated short reports, research help | The Associated Press has generated routine company-earnings stories automatically since 2014. In 2023 the tech site CNET had to correct many AI-written finance explainers after readers found errors. |
 | Sports | Player tracking with cameras, performance and injury-risk analytics, officiating, broadcast highlights | Semi-automated offside technology, which tracks players' limbs with stadium cameras, was used at the 2022 FIFA World Cup to help referees make offside calls. |
 
-> **Definition — Load forecasting:** Predicting how much electricity people and businesses will use, hour by hour, so grid operators can schedule power plants and storage. Errors cost money in either direction.
-
-> **Definition — Underwriting:** Deciding whether to insure (or lend to) someone and at what price, based on the estimated risk. AI-based underwriting is regulated because it can encode discrimination.
-
 > **Definition — Automated valuation model (AVM):** A model that estimates a property's market value from data such as location, size, features and recent sales. It works well in stable markets and badly when prices turn quickly.
 
 > **Definition — Bias audit:** An independent check of whether an automated system's outcomes differ unfairly across groups such as sex or race. Some laws, such as New York City's rule on hiring tools, require one.
-
-> **Definition — Automated decision-making (ADM):** Decisions about people, such as benefits, loans or job applications, made wholly or mainly by algorithms. Laws such as the EU's data-protection rules give people rights when decisions are fully automated.
 
 > **Watch out:** "The computer said so" has never been a legal defense. In Robodebt, the Dutch benefits scandal, Mata v. Avianca and the Air Canada chatbot case, an organization used automation to save effort and was still held fully responsible for its outputs. Accountability does not transfer to software.
 
@@ -525,8 +497,6 @@ quadrantChart
 Put your phone in airplane mode and unlock it with your face. It still works. Search your photos for "dog" with no signal; it still finds the dogs. Say "Hey Siri" or "Hey Google" with the radio off; the phone still wakes up. All of that AI ran on the phone itself. Most of what your chatbot does happens in a data center hundreds or thousands of kilometers away (Chapter 44), but a surprising amount of everyday AI never leaves your pocket.
 
 > **Definition — Edge AI:** Running AI models directly on local devices, such as phones, cars, cameras, watches and factory sensors, instead of in a remote data center. The "edge" is the edge of the network, where it meets the physical world.
-
-> **Definition — Edge device:** Any device at the edge of the network that collects data or acts in the world: a phone, a laptop, a security camera, a car, a drone, a smart thermostat or an industrial sensor.
 
 > **Definition — Internet of Things (IoT):** Everyday physical objects, such as thermostats, meters, cameras, doorbells and machines, that are connected to the internet and exchange data. Many now carry small AI models.
 
@@ -622,6 +592,8 @@ weight   ÷0.171   rounded   stored as   back to   error
 Storage before: 8 × 16 bits = 128 bits. After: 8 × 4 bits plus one 16-bit scale = 48 bits, about 2.7 times smaller. Real systems use a shared scale for each block of 16 to 64 weights, and with careful methods the quality loss at 4 bits is often small.
 
 > **Definition — Quantization:** Storing a model's numbers with fewer bits, for example 4 instead of 16, so it takes less memory and runs faster, at a small cost in accuracy.
+
+> **Analogy:** Quantization is like saving a high-resolution photo as a smaller JPEG. Zoom in and you can find the lost detail, but at normal viewing size it looks almost the same, and it loads far faster.
 
 **2. Pruning: remove what matters least.** Many weights are close to zero and contribute little. Pruning removes them. In our eight weights, cutting the four smallest by magnitude (0.07, 0.33, −0.41, 0.55) leaves 0.82, −1.20, −0.96 and 1.10: half the weights gone. In practice the pruned model is briefly retrained to recover accuracy, and the savings are real only if the chip can skip the zeros efficiently.
 
@@ -762,7 +734,7 @@ Some AI runs on your own device instead of in a data center: face unlock, wake w
 
 ## Key terms
 
-Use case, Decision support, Automation, Fraud detection, Anti-money laundering (AML), Know your customer (KYC), Credit scoring, Algorithmic trading, Robo-advisor, Adverse action notice, Explainability, Model risk management, E-discovery, Technology-assisted review (TAR), Contract analysis, Attorney–client privilege, Unauthorized practice of law, Intelligent tutoring system, Effect size, AI-text detector, Contact center, Containment rate, Agent assist, Escalation, Outcome-based pricing, Personalization, First-party data, Creative testing, Generative engine optimization (GEO), Brand safety, Machine vision inspection, Predictive maintenance, Digital twin, Operations research, Vehicle routing problem, Operational technology (OT), Precision agriculture, Remote sensing, NDVI (Normalized Difference Vegetation Index), Lethal autonomous weapon system (LAWS), Human in the loop, Terminal guidance, Automation bias, Meaningful human control, Dual-use, Vulnerability, Exploit, Zero-day, Fuzzing, Phishing, Security operations center (SOC), Load forecasting, Underwriting, Automated valuation model (AVM), Bias audit, Automated decision-making (ADM), Edge AI, Edge device, Internet of Things (IoT), Latency, NPU (Neural Processing Unit), TOPS (Tera Operations Per Second), System on a chip (SoC), Memory bandwidth, Unified memory, Small language model (SLM), Quantization, Pruning, Distillation, Microcontroller, TinyML, Wake word, Federated learning, Secure aggregation, Over-the-air (OTA) update
+Use case, Decision support, Automation, Fraud detection, Anti-money laundering (AML), Know your customer (KYC), Credit scoring, Algorithmic trading, Explainability, E-discovery, Technology-assisted review (TAR), Intelligent tutoring system, Effect size, AI-text detector, Containment rate, Agent assist, Outcome-based pricing, First-party data, Creative testing, Generative engine optimization (GEO), Machine vision inspection, Predictive maintenance, Digital twin, Operations research, Vehicle routing problem, Operational technology (OT), Precision agriculture, NDVI (Normalized Difference Vegetation Index), Lethal autonomous weapon system (LAWS), Human in the loop, Terminal guidance, Automation bias, Meaningful human control, Dual-use, Vulnerability, Exploit, Zero-day, Fuzzing, Phishing, Security operations center (SOC), Automated valuation model (AVM), Bias audit, Edge AI, Internet of Things (IoT), Latency, NPU (Neural Processing Unit), TOPS (Tera Operations Per Second), System on a chip (SoC), Memory bandwidth, Unified memory, Small language model (SLM), Quantization, Pruning, Distillation, Microcontroller, TinyML, Wake word, Federated learning, Secure aggregation, Over-the-air (OTA) update
 
 ## Exercises
 

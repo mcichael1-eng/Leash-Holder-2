@@ -727,7 +727,7 @@ Alongside Stage 1:
 | Resource | What it is | Cost |
 |---|---|---|
 | NIST AI Risk Management Framework (nist.gov) | The most widely used voluntary AI risk framework | Free |
-| The EU AI Act (official text, plus explainer sites such as artificialintelligenceact.eu) | The European Union's risk-based AI law; check the current timeline, since some deadlines were proposed for delay in 2026 | Free |
+| The EU AI Act (official text, plus explainer sites such as artificialintelligenceact.eu) | The European Union's risk-based AI law; check the current timeline, since a 2026 amendment (the Digital Omnibus) delayed several high-risk deadlines | Free |
 | ISO/IEC 42001 | The international standard for AI management systems | Paid standard and training |
 | IAPP AIGP (iapp.org) | The AI Governance Professional certification from the International Association of Privacy Professionals | Paid |
 | BlueDot Impact governance courses | Cohort-based courses on AI governance | Free, with competitive admission |
@@ -744,7 +744,7 @@ Do the first year of Track C, then add safety-specific material: the ARENA curri
 
 - **Fellowships and bootcamps.** MATS runs 12-week research programs; as of October 2026 it had 631 alumni since 2021, 75% of whom now work in alignment, transparency or security. ARENA runs 4–5 week in-person bootcamps in London with costs covered. The Anthropic Fellows Program runs for four months with a $3,850 weekly stipend.
 - **Career guidance.** 80,000 Hours' AI safety career review and podcast (80000hours.org, free) are the most detailed public guides to this field.
-- **Job postings as syllabi.** Lab policy and safety postings list exactly what employers want. In October 2026 Anthropic posted a Policy Design Manager role at $245,000–$295,000 base and a Technical AI Governance role at $265,000–$295,000; government institutes and think tanks pay much less.
+- **Job postings as syllabi.** Lab policy and safety postings list exactly what employers want. In October 2026 Anthropic posted a Policy Design Manager role at $245,000–$285,000 base and a Technical AI Governance role at $265,000–$295,000; government institutes and think tanks pay much less.
 - **Government and nonprofits.** AI safety institutes (the UK AI Security Institute and the US Center for AI Standards and Innovation), evaluation nonprofits such as METR and Apollo Research, and think tanks all hire technical and policy staff.
 
 The field is small, which means individual contributions are visible. 80,000 Hours estimated that only about 300 people (a range of 76 to 536 full-time equivalents) worked on technical AI safety aimed at the most extreme risks as of 2022. It has grown since, but it remains a field where one good replication or one sharp policy brief can get you noticed.

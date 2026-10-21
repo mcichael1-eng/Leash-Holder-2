@@ -641,3 +641,339 @@ The arguments on each side are strong.
 
 > **Analogy:** Think of traffic rules. Interstate highways follow federal standards so a truck can cross the country under one set of rules. City streets have local speed limits because a school zone in one town is not a rural road in another. The preemption debate is about whether AI is more like the interstate or the city street, and the honest answer is that different parts of it resemble each.
 
+## The United Kingdom
+
+The UK chose a "pro-innovation" path. Instead of one horizontal AI law, a 2023 government white paper asked existing sector regulators (for finance, health, competition, data protection and so on) to apply shared principles such as safety, transparency and fairness within their own domains. A comprehensive UK AI bill has been repeatedly discussed and delayed; as of the research for this chapter, none had passed.
+
+The UK's most distinctive contribution is its testing institute. Created as the AI Safety Institute around the 2023 Bletchley summit, it was renamed the AI Security Institute in February 2025 to focus on national-security risks. It tests frontier models with the labs before release and runs large research programs on AI control, cyber and chemical and biological risks (Chapter 57).
+
+> **Definition — AI Security Institute (UK AISI):** The UK government's AI testing and research body, renamed from the AI Safety Institute in February 2025. It evaluates frontier models before and after release, with a focus on national-security risks.
+
+> **Definition — Pre-deployment testing:** Evaluating an AI model for dangerous capabilities and behaviors before it is released to the public, often by government institutes or independent evaluators given early access.
+
+Copyright is the UK's hottest AI issue. A 2024 to 2025 government consultation proposed a text-and-data-mining exception with an opt-out for rights holders, similar to the EU's. Writers, musicians and other creators fought it hard, and the policy remained contested in 2026. Meanwhile, in November 2025 the UK High Court largely sided with Stability AI against Getty Images, finding that the model's weights do not store copies of the training images; Getty was given permission to appeal on one issue.
+
+## China
+
+China regulates AI quickly, specifically and with a strong focus on content control and social stability. Instead of one big law, it has issued a series of targeted rules, mostly through the Cyberspace Administration of China (CAC).
+
+> **Definition — CAC (Cyberspace Administration of China):** China's central internet regulator, which writes and enforces most of China's AI rules, including the algorithm filing system and the generative AI measures.
+
+Key steps, with some 2025 details reported from secondary summaries rather than the official texts:
+
+- **2022:** rules on algorithmic recommendation (the feeds inside apps).
+- **January 2023:** "deep synthesis" rules covering deepfakes and synthetic media.
+- **August 15, 2023:** Interim Measures for Generative AI Services, among the world's first rules written specifically for public-facing chatbots. Providers must keep content in line with the state's "core socialist values" and avoid prohibited content.
+- **An algorithm filing system,** in which providers register their algorithms and models with regulators before public launch.
+- **September 1, 2025:** labeling measures for AI-generated content, requiring visible labels plus hidden metadata.
+- **September 2025:** an updated AI Safety Governance Framework (version 2.0).
+- **November 2025:** reported rules on training data and testing, including sampling checks against 31 categories of unsafe content and monthly testing.
+- **December 2025:** draft rules on "anthropomorphic" AI interaction services, addressing addiction and minors in human-like companion apps.
+- **January 1, 2026:** an amended Cybersecurity Law with AI provisions took effect.
+
+> **Definition — Algorithm filing (registry):** China's system requiring companies to register details of their recommendation and generative algorithms with regulators before offering them to the public.
+
+> **Definition — Deep synthesis:** China's legal term for technologies that generate or alter text, images, audio or video, including deepfakes.
+
+```mermaid
+timeline
+    title China's layered AI rules, status October 2026
+    2022 : Algorithmic recommendation rules
+    2023 : Jan - Deep synthesis rules
+         : Aug 15 - Generative AI interim measures
+    2025 : Jul - Global AI Governance Action Plan
+         : Sep 1 - AI content labeling rules
+         : Sep - AI Safety Governance Framework 2.0
+         : Nov - Training data and testing rules reported
+         : Dec - Draft rules on anthropomorphic AI
+    2026 : Jan 1 - Amended Cybersecurity Law with AI provisions
+         : Jul - World AI Cooperation Organization announced
+```
+*Figure 59.8: China's AI rules arrived as a series of targeted measures from the internet regulator rather than one comprehensive law.*
+
+Internationally, China proposed a Global AI Governance Action Plan in July 2025 and announced a World AI Cooperation Organization at the World AI Conference in Shanghai in July 2026, positioning itself as a convener for countries outside the US-led camp.
+
+> **Watch out:** It is tempting to call China's approach "strict" and the US approach "loose." Both labels mislead. China moves fast and requires registration and content control, but its rules also aim to grow a domestic industry. The US has no federal AI statute but uses powerful tools such as export controls, and its states have binding laws. Compare specific rules, not national stereotypes.
+
+## Other countries
+
+- **South Korea's AI Basic Act** reportedly took effect in January 2026, making South Korea one of the first countries after the EU with a comprehensive AI framework law, including duties for "high-impact" AI and labeling of generative AI output.
+- **Japan's AI Promotion Act** (2025) is reportedly a light-touch law focused on promoting AI research and adoption under a national strategy, relying on guidance rather than penalties.
+- **The Council of Europe's Framework Convention on AI**, opened for signature in September 2024, is described as the first legally binding international treaty on AI, centered on human rights, democracy and the rule of law. Like any treaty, it binds only the countries that ratify it.
+
+> **Definition — Treaty (convention):** A binding written agreement between countries. It creates legal duties only for the countries that sign and ratify it.
+
+Figure 59.9 places the main approaches on two axes: how binding they are, and whether they cover AI broadly or target specific uses.
+
+```mermaid
+quadrantChart
+    title Approaches to AI governance as of October 2026
+    x-axis Targeted rules --> Broad horizontal law
+    y-axis Mostly voluntary --> Binding
+    quadrant-1 Broad and binding
+    quadrant-2 Targeted and binding
+    quadrant-3 Targeted and soft
+    quadrant-4 Broad but soft
+    EU AI Act: [0.85, 0.85]
+    China CAC rules: [0.35, 0.9]
+    US states: [0.25, 0.7]
+    South Korea: [0.75, 0.6]
+    UK sector approach: [0.3, 0.3]
+    US federal: [0.2, 0.2]
+    Japan: [0.7, 0.2]
+```
+*Figure 59.9: A rough map of national approaches. Positions are a teaching judgment, not a measurement: the EU has a broad binding law, China and the US states use binding but targeted rules, the UK and the US federal government lean on existing regulators and voluntary measures, and Japan's broad law is mostly promotional.*
+
+| Jurisdiction | Main instrument | Style | Distinctive feature |
+|---|---|---|---|
+| European Union | AI Act (a regulation) | Broad, risk-based, binding | Risk tiers, GPAI duties, fines up to 7% of turnover |
+| United States, federal | Executive orders, existing laws, export controls | Promotional, deregulatory | Push to preempt state laws; CAISI voluntary testing |
+| United States, states | State statutes | Targeted, binding | Frontier transparency (CA, NY), chatbot safety, ADMT notices |
+| United Kingdom | Sector regulators plus AISI | Principles-based | Strong government testing institute |
+| China | CAC measures | Targeted, fast, content-focused | Algorithm filing, mandatory labeling |
+| South Korea | AI Basic Act | Broad framework (reported) | Duties for high-impact AI |
+| Japan | AI Promotion Act | Promotion first (reported) | Guidance over penalties |
+
+*Table 59.5: How major jurisdictions govern AI, as of October 2026.*
+
+## International coordination: summits, reports and the UN
+
+No single body governs AI worldwide. Instead there is a patchwork of summits, scientific reports and UN processes.
+
+```mermaid
+timeline
+    title The international AI summit series
+    2023 : Bletchley Park, UK
+         : Declaration by 28 countries and the EU, safety focus
+    2024 : Seoul, South Korea
+         : 16 companies sign Frontier AI Safety Commitments
+    2025 : Paris, France
+         : AI Action Summit, focus on opportunity, US and UK do not sign
+    2026 : New Delhi, India
+         : AI Impact Summit, about 86 to 89 countries endorse, US included
+```
+*Figure 59.10: The summit series moved from safety (Bletchley) to company commitments (Seoul) to action and opportunity (Paris) to impact and inclusion (New Delhi).*
+
+- **Bletchley Park (November 2023).** Twenty-eight countries plus the EU, including both the US and China, signed a declaration recognizing risks from frontier AI. The summit launched the International AI Safety Report.
+- **Seoul (May 2024).** Sixteen companies signed Frontier AI Safety Commitments, promising to publish safety frameworks, which most then did (Chapter 56).
+- **Paris AI Action Summit (February 2025).** The focus shifted to "action" and economic opportunity. The US and UK did not sign the final statement.
+- **India AI Impact Summit, New Delhi (February 2026).** The New Delhi Declaration, a voluntary statement on cooperation, was endorsed by about 86 to 89 countries including the US, and frontier companies announced Frontier AI Impact Commitments on February 19. A US official was reported as saying, "We totally reject global governance of AI."
+
+> **Definition — Declaration (international):** A non-binding statement of shared principles or intentions signed by governments, such as the Bletchley Declaration. It signals agreement but creates no legal duties.
+
+The **International AI Safety Report**, loosely modeled on the climate-science reports of the IPCC, gathers the evidence on AI capabilities and risks. Its 2026 edition was published on February 3, 2026, chaired by Yoshua Bengio, with more than 100 experts and backing from more than 30 countries. Shorter "Key Updates" appear between editions; the one in November 2025 found that the number of companies publishing frontier safety frameworks had more than doubled since early 2025, but that sophisticated attackers can often bypass safeguards.
+
+> **Definition — International AI Safety Report:** An independent scientific report on the capabilities and risks of general-purpose AI, backed by more than 30 countries, chaired by Yoshua Bengio and first commissioned at the 2023 Bletchley summit.
+
+At the **United Nations**, the General Assembly reportedly established an Independent International Scientific Panel on AI and a Global Dialogue on AI Governance in August 2025. The UN cannot impose binding AI rules on countries by itself; its influence comes from convening, reporting and setting norms. Older soft-law anchors also matter, such as the OECD's AI Principles (2019), which many national strategies cite.
+
+> **Key idea:** International AI governance in 2026 is mostly soft law: declarations, scientific reports and voluntary company commitments. The binding rules are national or regional, and major countries openly disagree about whether global governance of AI is even desirable.
+
+## Export controls: governing AI through chips
+
+The most powerful AI policy tool the US has used is not an AI law at all. It is control over chips. Frontier training needs tens of thousands of advanced accelerators (Chapter 35 and Chapter 37), and nearly all of them depend on US designs and software, Dutch lithography machines and Taiwanese factories (Chapter 36). Limiting who can buy them limits who can build frontier models.
+
+> **Definition — Export controls:** Government rules restricting the sale or transfer of certain goods, software or technology to certain countries or companies for national-security reasons. Advanced AI chips and chipmaking tools are major targets.
+
+The policy has swung several times:
+
+- **October 2022:** sweeping US controls on advanced AI chips and chipmaking equipment for China, tightened in 2023 and again in December 2024.
+- **January 2025:** the outgoing administration's "AI Diffusion" rule sorted countries worldwide into tiers with different access to advanced chips. It was **rescinded in May 2025**.
+- **April 2025:** sales of Nvidia's H20, a chip designed to fit earlier rules for China, were halted. In **August 2025** they were licensed in exchange for 15% of the revenue going to the US government.
+- **September 2025:** Chinese regulators told Chinese firms not to buy some Nvidia chips made for the Chinese market.
+- **December 2025:** the administration announced sales of the more powerful H200 to approved Chinese customers, with 25% going to the US government. How this was implemented in 2026, and how China responded, could not be confirmed for this chapter.
+
+By August 2026, Nvidia's own quarterly outlook assumed no data-center compute revenue from China, a sign of how unsettled that market had become.
+
+> **Definition — AI Diffusion rule:** A January 2025 US rule that would have sorted countries into tiers with different limits on importing advanced AI chips. It was rescinded in May 2025 before taking full effect.
+
+**The strongest case for strict controls.** Compute is the scarcest input to frontier AI. Denying rivals the best chips slows their military and intelligence uses of AI, buys time for safety work, and preserves a lead that may matter enormously if AI becomes strategically decisive. Smuggling and loopholes argue for tighter enforcement, not for giving up.
+
+**The strongest case for looser controls.** Controls push China to build its own chip industry (Chapter 36 covers Huawei's Ascend chips and SMIC), possibly creating a durable competitor sooner. They cost US companies billions in sales that would fund their research. Chinese labs kept producing near-frontier open-weight models anyway, using efficient algorithms, stockpiled chips and smuggling. And selling chips abroad, some argue, spreads the American technology stack and keeps other countries building on it.
+
+## Standards: the quiet rulebook
+
+Standards rarely make headlines, but much of the practical work of AI governance happens inside them. When a law says "manage risks appropriately," a standard tells an engineer what that means on a Tuesday afternoon.
+
+- **NIST AI Risk Management Framework (AI RMF 1.0, January 2023):** a voluntary US framework organized around four functions, Govern, Map, Measure and Manage. A Generative AI Profile (NIST AI 600-1, July 2024) adapts it to chatbots and image generators.
+- **ISO/IEC 42001:2023:** an international, certifiable standard for an AI management system, similar in spirit to ISO 27001 for information security. Organizations can be audited and certified against it.
+- **EU harmonised standards:** being written by the European standards committee CEN-CENELEC JTC 21. They will give companies a presumption of conformity with the AI Act, and their delay was one reason for the Omnibus postponement.
+- **C2PA:** the Content Credentials standard, tamper-evident metadata describing how a piece of media was made (Chapter 47 and Chapter 58). It helps companies meet labeling laws in the EU and China.
+
+> **Definition — NIST AI RMF (AI Risk Management Framework):** A voluntary US framework, published in January 2023, that helps organizations manage AI risks through four functions: Govern, Map, Measure and Manage.
+
+> **Definition — ISO/IEC 42001:** An international standard, published in 2023, for setting up and running an AI management system. Organizations can be independently audited and certified against it.
+
+> **Definition — Management system:** An organization's set of policies, roles, processes and records for consistently achieving a goal, such as quality, security or responsible AI, and for improving over time.
+
+> **Definition — C2PA (Coalition for Content Provenance and Authenticity):** An industry standard for attaching tamper-evident "Content Credentials" to images, video and audio, describing their origin and edits, including whether AI was used.
+
+**Worked example: a one-page risk register.** A small dental clinic wants AI to draft replies to patient messages. Using the NIST AI RMF's four functions:
+
+| Function | Question | The clinic's answer |
+|---|---|---|
+| Govern | Who is accountable? | The practice manager owns the tool; the dentist approves any message with clinical content |
+| Map | Who could be affected, and how? | Patients could receive wrong advice; private health data goes to a vendor |
+| Measure | How will we test it? | Before launch, the dentist scores AI drafts for 50 past messages; afterwards, a monthly spot-check of 20 messages and a tracked error rate |
+| Manage | What do we do about the risks? | Human approval before sending; a vendor contract with no training on patient data; a way to report errors and pause the tool |
+
+*Table 59.6: A minimal AI risk register for a small clinic, built on the NIST AI RMF's four functions.*
+
+No law required this. Standards are how good practice spreads, and how compliance professionals show regulators and customers that they took care.
+
+> **Try it:** Pick an AI tool you use at work. Ask a chatbot: "Help me write a one-page AI risk register for [tool] used for [task], using the NIST AI RMF's Govern, Map, Measure and Manage functions. Ask me questions first." Answering its questions is a quick lesson in how governance professionals think.
+
+## Courts as policymakers
+
+When legislatures are slow, courts make policy one case at a time. Three kinds of lawsuits are shaping AI as of October 2026; Chapter 58 covers the cases in detail.
+
+- **Copyright.** Courts have split according to the facts. In *Bartz v. Anthropic*, Judge Alsup ruled in June 2025 that training on lawfully acquired books was fair use but that downloading pirated books was not; a $1.5 billion settlement received final approval on July 20, 2026. In *Kadrey v. Meta*, Judge Chhabria ruled for Meta because the authors failed to prove market harm, while warning that a "market dilution" argument could win in a better-argued case. On September 29, 2026, the Third Circuit affirmed in *Thomson Reuters v. Ross* that copying legal headnotes to train a competing, non-generative search tool was not fair use. *New York Times v. Microsoft and OpenAI* awaits rulings on fair-use motions filed in September 2026.
+- **Product safety.** Families have sued chatbot makers over teen suicides, for example *Raine v. OpenAI*, filed in August 2025. In January 2026, Character.AI and Google agreed to settle several such suits without admitting liability.
+- **Constitutional limits.** In March 2026 a federal judge reportedly issued a temporary injunction blocking the government's designation of Anthropic as a "supply chain risk" after a dispute over limits on military uses (Chapter 60 discusses it as a case of government power over labs), and xAI's challenge to Colorado showed that companies will test state laws in court.
+
+> **Definition — Fair use:** A US copyright doctrine that allows some unlicensed use of copyrighted works, judged on four factors including the purpose of the use and its effect on the market for the original.
+
+> **Definition — Injunction:** A court order requiring a party to do or stop doing something, sometimes issued temporarily while a case proceeds.
+
+## Voluntary commitments, and how soft law hardens
+
+The last instrument is the softest. In July 2023, seven leading US AI companies made voluntary commitments to the White House to test models before release and share safety information. At Seoul in May 2024, sixteen companies committed to publish frontier safety frameworks, and most did: Anthropic's Responsible Scaling Policy, OpenAI's Preparedness Framework and Google DeepMind's Frontier Safety Framework (Chapter 56). In February 2026, frontier firms added Frontier AI Impact Commitments at New Delhi.
+
+Critics point out that companies can rewrite their own commitments, and several loosened or restructured them in 2025 and 2026. Supporters reply that voluntary frameworks let rules evolve as fast as the technology, and that they became the template for law. That is the most important pattern in this chapter: soft law hardening into hard law.
+
+```mermaid
+flowchart LR
+    A["Voluntary pledges<br/>White House 2023, Seoul 2024"] --> B["Companies publish<br/>safety frameworks"]
+    B --> C["Codes of practice<br/>EU GPAI code, 2025"]
+    C --> D["Statutes require publishing<br/>and following a framework<br/>CA SB 53, NY RAISE"]
+    D --> E["Enforcement<br/>fines, incident reports,<br/>whistleblower cases"]
+```
+*Figure 59.11: How soft law hardens. A practice that starts as a voluntary promise becomes a code, then a statutory duty, then something regulators can enforce.*
+
+> **Analogy:** Seatbelts started as an option some carmakers offered. Then some made them standard to win customers. Then governments required them in new cars, and later required people to wear them. AI safety frameworks sit somewhere between the second and third steps.
+
+## How to read an AI policy headline
+
+Most confusion about AI law comes from headlines that blur proposals, laws and lawsuits. Use this five-question checklist.
+
+1. **What kind of instrument is it?** A bill, a signed statute, an agency rule, an executive order, a court ruling, a standard or a pledge?
+2. **Is it final?** A bill that "passed the Senate" may still die in the House. An order may be challenged in court. A ruling may be appealed.
+3. **When does it apply?** Many AI laws take effect a year or more after signing, and some deadlines, like the EU's, move.
+4. **Who must comply?** Look for thresholds: compute, revenue, number of users, type of use.
+5. **Who enforces it, and with what?** The attorney general only, or also private lawsuits? Fines per violation, or a share of turnover?
+
+```mermaid
+flowchart TD
+    H["Headline about an AI rule"] --> Q1{"Bill, law, order,<br/>ruling or pledge?"}
+    Q1 -- "Bill" --> B1["Not law yet<br/>track its stage"]
+    Q1 -- "Order" --> B2["Binds agencies only<br/>cannot cancel statutes"]
+    Q1 -- "Ruling" --> B3["Check court level<br/>and appeals"]
+    Q1 -- "Pledge or standard" --> B4["Voluntary unless<br/>a law adopts it"]
+    Q1 -- "Law" --> Q2{"In effect yet?"}
+    Q2 -- "No" --> B5["Note the effective date<br/>and any delays"]
+    Q2 -- "Yes" --> Q3["Who is covered and<br/>who enforces it?"]
+```
+*Figure 59.12: A decision path for reading AI policy news. Most misleading headlines fail at the first question.*
+
+> **Try it:** Find one AI policy headline from this week. Run it through the five questions, then ask your chatbot, with web search on, to find the primary source: the bill text, the order or the court opinion. Compare what the primary source says with the headline.
+
+## Open questions at the frontier of AI governance
+
+As of October 2026, these questions are unsettled everywhere:
+
+- **What should trigger frontier rules?** Compute thresholds are crude and aging. Alternatives include capability evaluations (does the model show dangerous skills?), revenue or user counts, or a mix.
+- **Who is liable when an agent acts?** If an AI agent leaks data after a prompt injection (Chapter 31) or breaks a law on a user's behalf, is the developer, the deployer or the user responsible? Most liability law was written for people and simple products.
+- **How do you govern open-weight models?** Published weights cannot be recalled, and their safeguards can be removed (Chapter 60 presents the open-versus-closed debate). Rules that assume a company controls its model fit awkwardly.
+- **Floor or ceiling?** In the US, whether federal law should set a minimum or a maximum for the states.
+- **Interoperability.** Can one safety process satisfy the EU, California, New York, China and South Korea at once, or will the rules fragment?
+- **Who checks the checkers?** Laws increasingly rely on companies' own frameworks and on outside auditors. A trustworthy, independent AI audit profession is still being built.
+- **Government power over labs.** As governments become both AI's biggest customers and its regulators, how do you protect national security and also labs' freedom to refuse certain uses?
+
+> **At the frontier (2026):** The items to watch in 2027 are whether Congress passes a preemption statute such as the FRONTIER Act; the EU AI Office's first enforcement actions against general-purpose model providers; New York's RAISE Act and Colorado's ADMT law taking effect on January 1, 2027; the first fair-use rulings in the New York Times case; and whether the summit series continues after New Delhi with anything binding.
+
+## In plain English
+
+Nobody passed "the AI law." AI is governed by a mix of tools. Legislatures pass statutes, agencies write detailed rules, presidents issue orders that bind only their own agencies, judges decide cases that set precedents, standards bodies write technical how-to guides, and companies make voluntary promises that sometimes become law.
+
+The European Union went furthest with its AI Act. It bans a few uses outright (social scoring, emotion recognition in schools and workplaces), puts heavy duties on high-stakes uses like hiring and credit (now delayed to December 2027), requires chatbots to say they are AI and AI images to be marked (from August 2026), and gives the makers of general-purpose models like ChatGPT, Claude and Gemini documentation, copyright and safety duties. The biggest models, those trained with more than 10^25 FLOPs, owe the most.
+
+The United States has no comprehensive federal AI law. The federal government promotes AI and, since December 2025, has been pressuring states to drop their own rules, but an executive order cannot cancel a state law; only Congress or a court can. Meanwhile California and New York require the biggest labs to publish safety frameworks and report serious incidents, California regulates companion chatbots, and Colorado swapped its broad anti-discrimination law for a narrower notice-and-explanation law.
+
+The UK relies on existing regulators and a strong testing institute. China issues fast, targeted rules with registration and mandatory labels. Internationally, there are summits and scientific reports but almost nothing binding. Export controls on chips and voluntary standards such as the NIST framework and ISO 42001 do a lot of quiet work.
+
+When you read an AI policy headline, ask: is it a bill or a law, is it in effect, who must comply, and who enforces it?
+
+## Key terms
+AI governance, AI policy, Pacing problem, Collingridge dilemma, Dual-use, Jurisdiction, Statute, Bill, Regulation (agency rule), Executive order, Court ruling, Precedent, Standard (technical), Voluntary commitment, Hard law, Soft law, Preemption, Federalism, Moratorium, EU directive, Enforcement, Attorney general (AG), Private right of action, Liability, Provider (developer), Deployer, FLOP (floating-point operation), Compute threshold, Frontier model, EU AI Act, Risk-based approach, Extraterritorial reach, Risk tiers (EU), Prohibited practice (EU), High-risk AI system (EU), Annex III, Conformity assessment, CE marking, Fundamental rights impact assessment (FRIA), Harmonised standard, Transparency obligation (Article 50), General-purpose AI model (GPAI), Systemic risk (EU GPAI), Text and data mining (TDM) exception, Code of practice (GPAI), AI Office, Market surveillance authority, Global turnover, Digital Omnibus (on AI), AI literacy, Brussels effect, GDPR (General Data Protection Regulation), FTC (Federal Trade Commission), TAKE IT DOWN Act, NIST (National Institute of Standards and Technology), CAISI (Center for AI Standards and Innovation), Regulatory sandbox, Age assurance, Intervention (in a lawsuit), Duty of care, Statement of interest, Frontier AI framework, Transparency report, Critical safety incident, Whistleblower protection, Companion chatbot, Algorithmic discrimination, ADMT (automated decision-making technology), Consequential decision, AI Security Institute (UK AISI), Pre-deployment testing, CAC (Cyberspace Administration of China), Algorithm filing (registry), Deep synthesis, Treaty (convention), Declaration (international), International AI Safety Report, Export controls, AI Diffusion rule, NIST AI RMF (AI Risk Management Framework), ISO/IEC 42001, Management system, C2PA (Coalition for Content Provenance and Authenticity), Fair use, Injunction
+
+## Exercises
+
+1. **[Easy] Name that instrument.** (1) Make a two-column list of these eight items: EO 14365, California SB 53, the Bartz v. Anthropic ruling, ISO/IEC 42001, the Seoul Frontier AI Safety Commitments, the EU GPAI Code of Practice, the Digital Omnibus, and the NIST AI RMF. (2) For each, write which of the six instruments it is and whether it is binding, using Table 59.1. (3) Find one AI policy item in this week's news and classify it the same way. **What you'll learn:** to tell hard law from soft law at a glance, the first step in reading any policy story.
+
+2. **[Easy] Spot the law in your apps.** (1) Open three AI apps you use. (2) Look for signs of regulation: a notice that you are talking to an AI, labels on generated images, age checks or age questions, data-use and training opt-outs, and the "governing law" line in the terms of service. (3) Generate an image in one app, download it, and upload it to the Content Credentials verifier at contentcredentials.org/verify to see whether it carries C2PA data. **What you'll learn:** how laws like Article 50, SB 243 and labeling rules show up in the products you already use, and what provenance data does and does not prove.
+
+3. **[Medium] Classify five products under the EU AI Act.** (1) Open the EU AI Act Compliance Checker at artificialintelligenceact.eu/assessment/eu-ai-act-compliance-checker/. (2) Run it for a résumé-screening tool, an airline customer-service chatbot, an exam-proctoring tool that detects emotions, a bank's credit-scoring model and a selfie-to-painting filter. (3) For each, record the tier, two key obligations, whether you are the "provider" or "deployer" in your scenario, and the post-Omnibus date. (4) Compare your results with Table 59.3. **What you'll learn:** how the risk tiers and Annex III work in practice, and how the Omnibus moved the dates.
+
+4. **[Medium] Build a compute-threshold calculator.** (1) In a spreadsheet, create columns: Model, Active parameters, Training tokens, FLOPs, Over 10^25?, Over 10^26?, Rough cost. (2) Enter rows for GPT-3 (175e9 and 300e9), Llama 3.1 405B (405e9 and 15.6e12), a 70B model on 15e12 tokens, and an imaginary model with 300e9 active parameters on 60e12 tokens. (3) In the FLOPs column type =6*B2*C2; in the next two type =D2>1E25 and =D2>1E26. (4) For cost, assume 4E14 useful FLOP per second per chip at $2 per chip-hour: =D2/4E14/3600*2. **What you'll learn:** how compute thresholds sort models into legal categories and roughly what crossing them costs.
+
+5. **[Medium] Track a live bill.** (1) Go to congress.gov (for the federal FRONTIER Act) or LegiScan (legiscan.com) for a state chatbot or deepfake bill. (2) Record the sponsor, current stage, key provisions, and any preemption language. (3) Find one organization supporting it and one opposing it, and their main argument. (4) Write a 200-word neutral summary and set an alert for changes. **What you'll learn:** how bills move, how to read primary sources instead of headlines, and how preemption clauses are written.
+
+6. **[Medium] One app, three rulebooks.** (1) Imagine you are launching a companion chatbot for teenagers in three places: the EU, California and China. (2) Using this chapter, list in a table which rules would apply in each place: disclosure, labeling, age protections, registration or filing, incident reporting. (3) Mark which rules overlap and which conflict. (4) Ask a chatbot to critique your table and check its claims against the chapter. **What you'll learn:** why global AI companies face fragmented rules, and how the same product meets very different legal expectations.
+
+7. **[Medium] Write a mini risk register.** (1) Choose a realistic AI use: a school using AI to draft report-card comments, a landlord screening tenant applications, or your own team's use of a chatbot. (2) Fill a four-row table using the NIST AI RMF functions (Govern, Map, Measure, Manage), as in Table 59.6. (3) Decide whether the use would count as high-risk under the EU AI Act or as a consequential decision under Colorado's new law. **What you'll learn:** how compliance professionals structure AI risk work, and the vocabulary used in governance jobs.
+
+8. **[Challenge] Write an incident report.** (1) Pick a documented incident, such as OpenAI's April 2025 rollback of an overly flattering GPT-4o update (Chapter 55) or a reward-hacking case described in a lab's system card. (2) Write it up as if for California's Office of Emergency Services: what happened, the harm or risk, how it was detected, a timeline, mitigations and lessons. (3) Then argue in one paragraph whether it would actually meet the definition of a "critical safety incident." **What you'll learn:** what incident reporting asks of companies, and how much hinges on legal definitions.
+
+9. **[Challenge] Preemption design memo.** (1) Write 300 words making the strongest case for a federal ceiling on state AI laws. (2) Write 300 words making the strongest case for a federal floor instead. (3) Propose a compromise: which topics (frontier-model safety, child safety, hiring and credit, deepfakes, data centers) should be national, and which should stay with states, with one reason each. **What you'll learn:** to steelman both sides of the central US AI policy fight and think like a legislative drafter.
+
+10. **[Challenge] Does the framework meet the law?** (1) Read one published lab framework: Anthropic's Responsible Scaling Policy, OpenAI's Preparedness Framework or Google DeepMind's Frontier Safety Framework. (2) List what SB 53 requires a frontier AI framework to cover, from the law's text or a law-firm summary. (3) Check off which requirements the company document addresses and where it is vague. **What you'll learn:** how soft-law frameworks meet hard-law requirements, and where the gaps are.
+
+## Areas of opportunity
+
+- **AI governance and compliance roles.** Every company selling into the EU needs people who can map AI systems to risk tiers, and general-purpose model duties already apply; Annex III high-risk duties arrive in December 2027. Titles include AI governance lead, AI risk manager and responsible-AI program manager, and the IAPP's AI Governance Professional (AIGP) credential is one recognized entry point.
+- **Auditing and conformity assessment.** EU notified bodies, ISO/IEC 42001 certification auditors and third-party evaluators will be in demand as laws lean on outside checks. Accounting firms and specialist AI-assurance companies already compete here.
+- **Governance software.** Companies need AI inventories, risk registers, documentation templates for the EU AI Act, SB 53 and RAISE frameworks, and Colorado ADMT notices from 2027. Startups that automate this sell to legal and compliance teams.
+- **Policy careers in government.** The EU AI Office, national market surveillance authorities, the UK AI Security Institute, US CAISI, state attorneys general and New York's new oversight office in the Department of Financial Services all need people who understand both technology and law.
+- **Think tanks and civil society.** Organizations such as GovAI, CSET, RAND and the Ada Lovelace Institute hire researchers who can read primary documents accurately and translate between engineers and lawmakers.
+- **Trust and safety and age assurance.** The TAKE IT DOWN Act's 48-hour removal rule, SB 243's chatbot duties and the push for age assurance create demand for takedown operations, child-safety specialists and age-estimation tools.
+- **Content provenance.** Article 50's marking duty and China's labeling rules create a market for C2PA integration, watermarking and detection services sold to every generative-AI provider.
+- **AI law practice.** Copyright litigation and licensing, chatbot product-liability suits, employment-AI compliance and export-control advice are growing legal specialties.
+- **Policy intelligence.** Lawyers and companies pay for trackers that monitor hundreds of AI bills across states and countries and explain what changed.
+- **Open problems worth working on.** Better triggers than compute thresholds, liability rules for agents, governance of open-weight models, and international interoperability are unsolved and need researchers, lawyers and engineers together.
+
+## Check your understanding
+
+1. Why can an executive order not cancel a state AI law, and what two routes could actually displace one?
+2. Name the four EU AI Act risk tiers, give one example of each, and say when the Annex III high-risk duties now apply.
+3. Estimate the training compute of a model with 200 billion active parameters trained on 20 trillion tokens. Does it cross the EU threshold? The California threshold?
+4. What does California's SB 53 require of large frontier developers, and how does New York's RAISE Act differ on incident reporting?
+5. What happened to Colorado's 2024 AI Act, and what does the replacement law require?
+6. Give the strongest argument for and the strongest argument against federal preemption of state AI laws.
+7. Why are export controls on chips described as AI policy, and what is the main argument against strict controls?
+8. Describe how a voluntary commitment can harden into hard law, with a real example.
+
+<details><summary>Answers</summary>
+
+1. An executive order directs only the federal government's own agencies; it is not a law that can override state statutes. A state law can be displaced by a statute from Congress that preempts it, or by a court ruling that it is invalid (for example because it conflicts with federal law or the Constitution).
+2. Unacceptable risk (banned, such as social scoring or emotion recognition in schools), high risk (such as résumé screening or credit scoring), limited risk (such as a customer-service chatbot that must disclose it is AI) and minimal risk (such as a spam filter). After the Digital Omnibus, Annex III high-risk duties apply from December 2, 2027.
+3. 6 × 2 × 10^11 × 2 × 10^13 = 24 × 10^24 = 2.4 × 10^25 FLOPs. That is above the EU's 10^25 presumption of systemic risk but below California's 10^26 line.
+4. SB 53 requires large frontier developers (above 10^26 FLOPs and over $500 million revenue) to publish a frontier AI framework and transparency reports, report critical safety incidents to the Office of Emergency Services within 15 days (24 hours if life is in imminent danger), and protect whistleblowers, with penalties up to $1 million per violation. New York's RAISE Act requires incident reports within 72 hours and takes effect on January 1, 2027.
+5. It was delayed to June 30, 2026, challenged in court by xAI with federal intervention, paused, and then repealed and replaced on May 14, 2026 by SB26-189. The new law, effective January 1, 2027 if rulemaking is done, requires notice before AI is used in consequential decisions, an explanation within 30 days of an adverse outcome, data access and correction, and human review where commercially reasonable, enforced only by the attorney general.
+6. For: AI is built once and sold nationwide, so fifty rulebooks raise costs (hardest for startups), interstate commerce is Congress's domain, and national security argues for one coherent approach. Against: Congress has not passed real AI rules, so preemption would create a vacuum; states test ideas that can spread; and states traditionally protect consumers, workers and children, as the 99-to-1 Senate vote reflected.
+7. Frontier models need huge numbers of advanced chips, so controlling who can buy chips controls who can build frontier AI. The main argument against strict controls is that they push China to build its own chip industry, cost US firms revenue, and have not stopped Chinese labs from releasing strong models.
+8. Labs pledged voluntarily (to the White House in 2023 and at Seoul in 2024) to publish safety frameworks; they did; then California's SB 53 and New York's RAISE Act made publishing and following such a framework a legal duty with penalties, and the EU's Code of Practice gave a semi-voluntary route to meeting binding GPAI rules.
+
+</details>
+
+## Going deeper
+
+- **EU AI Act Explorer (artificialintelligenceact.eu).** The full text searchable by article, a compliance checker, and plain-language explainers of the Digital Omnibus.
+- **European Commission pages on the AI Act and the GPAI Code of Practice (digital-strategy.ec.europa.eu).** The official source for guidelines, templates and the code itself.
+- **NIST AI Risk Management Framework (nist.gov/itl/ai-risk-management-framework).** The framework, its Generative AI Profile, and a playbook of suggested actions.
+- **International AI Safety Report (internationalaisafetyreport.org).** The best single summary of the scientific evidence that governments are working from.
+- **OECD.AI Policy Observatory (oecd.ai).** A database of national AI strategies and policies from dozens of countries, useful for comparing approaches.
+- **IAPP (iapp.org).** The privacy and AI governance profession's association, with legislation trackers, explainers and the AIGP certification.
+- **Anu Bradford, *The Brussels Effect* (2020) and *Digital Empires* (2023).** Readable books on how the EU, US and China compete to set the rules for technology.
+- **Stanford AI Index (hai.stanford.edu/ai-index).** An annual report with a policy and governance chapter that counts laws and bills worldwide.
+- **Congress.gov and LegiScan.** Free tools for following federal and state bills at the source.
+- **GovAI (governance.ai).** Research and analysis on AI governance, including detailed comparisons of company safety frameworks.
