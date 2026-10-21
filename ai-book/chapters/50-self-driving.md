@@ -586,7 +586,7 @@ At Level 2, the human driver is responsible, just as in an ordinary car. At Leve
 
 - **United Kingdom:** the Automated Vehicles Act 2024 makes the company behind an authorized self-driving system legally responsible for how the car drives while the system is in control; the person in the seat becomes a "user-in-charge" who is not liable for the driving itself. Waymo and Baidu both planned London services.
 - **China:** robotaxis are permitted city by city, with local governments granting test and commercial licenses. Baidu Apollo Go and Pony.ai have grown under this system.
-- **United Arab Emirates:** Dubai and Abu Dhabi host driverless commercial services from Baidu Apollo Go and WeRide.
+- **United Arab Emirates:** Dubai and Abu Dhabi host driverless commercial service from Baidu Apollo Go, and WeRide operates robotaxis in Abu Dhabi.
 - **Germany and Japan** have also created legal routes for Level 4 operation in defined areas.
 
 ## Open problems and what to watch
@@ -617,7 +617,7 @@ A self-driving car is a robot that has to be extraordinarily reliable, because h
 
 Inside, a classic self-driving system works out exactly where it is, detects everything around it, predicts what others will do, plans a safe path, and steers and brakes, ten or more times a second. The newer "end-to-end" approach trains one big network to go from camera video to a driving path; in practice both camps now use large learned models, and the real arguments are about sensors and proof. Waymo uses lidar, radar, cameras and detailed maps; Tesla uses cameras only.
 
-After the DARPA desert races of 2004–2007, Google's project became Waymo, and two crashes, Uber's in 2018 and Cruise's in 2023, taught the industry hard lessons about safety culture and honesty. By 2026, Waymo reported about 500,000 paid rides a week in 11 US metros, and Baidu ran a similar volume in China.
+After the DARPA desert races of 2004–2007, Google's project became Waymo, and two crashes, Uber's in 2018 and Cruise's in 2023, taught the industry hard lessons about safety culture and honesty. By mid-2026, Waymo was running driverless service in 11 US metro areas and had reported about 500,000 paid rides a week, and Baidu ran a similar volume in China.
 
 When you see "X percent fewer crashes", convert it to rates, check the comparison group, the crash category, the number of events, what was excluded and who did the math. Rare events need hundreds of millions of miles to judge.
 

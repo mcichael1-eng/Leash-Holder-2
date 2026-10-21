@@ -458,22 +458,20 @@ You cannot know the future, but you can decide in advance what evidence would ch
 
 > **Definition — Signpost:** An observable, checkable event or measurement, chosen in advance, that would tell you which way the future is heading if it happens (or fails to happen) by a given date. Also called a leading indicator.
 
-A good signpost has four properties: it is specific enough that two people would agree whether it happened, it has a date, it has a public place to check it, and it would actually change your view. "AI will get better" fails all four. "METR, or another independent evaluator, publishes an 80% time horizon above eight hours before the end of 2027" passes all four.
+A good signpost is specific enough that two people would agree whether it happened, has a date, has a public place to check it, and would actually change your view. "AI will get better" fails all four. "An independent evaluator publishes an 80% time horizon above eight hours before the end of 2027" passes all four.
 
-The tables below give you signposts in four areas. The middle column says what has been announced, targeted or forecast, and by whom; none of these dates is a promise, and several earlier targets in this book have slipped.
+In the tables below, the middle column says what has been announced, targeted or forecast, and by whom. None of these dates is a promise; several earlier targets in this book have slipped.
 
 ### Capability signposts
 
 | Signpost | Status, or expected date and who says so | Where to check | What it would tell you |
 |---|---|---|---|
-| A credible 50% time horizon above one working week (40 h), on a new task suite | METR's last published value was about 17 h (April 2026 model); METR says its current suite is unreliable above about 16 h | metr.org | Whether agents keep stretching, and whether measurement keeps up |
+| A credible 50% time horizon above one working week (40 h), on a new task suite | Last published value about 17 h (April 2026 model); METR says its suite is unreliable above about 16 h | metr.org | Whether agents keep stretching, and whether measurement keeps up |
 | An 80% time horizon above one working day (8 h) | 80% horizons run 5–10× shorter than 50% ones in METR's data | metr.org | Whether reliability, not just peak ability, is improving |
-| Labs' estimates of how much AI speeds up their own research | A preliminary Anthropic-internal estimate of about 1.5× overall, cited by METR in September 2026 | System cards, METR reports | Whether AI is accelerating AI development, the engine of the fastest scenarios |
-| Previously unsolved Erdős problems solved by AI | 2 of 68 by GPT-6 Astra (Epoch, October 2026) | epoch.ai/benchmarks | Whether AI produces original mathematics, not just exam answers |
-| Frontier AI score on the next ARC benchmark at launch | ARC-AGI-3 at launch: humans 100%, AI 0.51% | arcprize.org | How quickly adaptation to truly new tasks is improving |
+| Labs' estimates of how much AI speeds up their own research | A preliminary Anthropic-internal estimate of about 1.5×, cited by METR in September 2026 | System cards, METR reports | Whether AI is accelerating AI development, the engine of the fastest scenarios |
+| Previously unsolved Erdős problems solved by AI | 2 of 68 (GPT-6 Astra, per Epoch, October 2026) | epoch.ai/benchmarks | Whether AI produces original mathematics |
 | Interpretability that "reliably detects most model problems" | A goal Anthropic's CEO set for 2027 | Lab research sites, system cards | Whether safety arguments can rest on looking inside models |
-| A drug discovered and designed with AI approved by a major regulator | None approved as of late 2026; AI-designed drugs had reached mid-stage trials | FDA and EMA announcements | Whether AI for science turns into outcomes for patients |
-| Robots doing unassisted paid work, counted in hours | Omdia estimated 13,318 humanoids shipped in 2025, many in pilots | Company filings, industry trackers | Whether physical AI is crossing from pilot to product |
+| A drug discovered and designed with AI approved by a major regulator | None as of late 2026; some reached mid-stage trials | FDA and EMA | Whether AI for science reaches patients |
 
 *Table 66.4: Capability signposts.*
 
@@ -481,40 +479,27 @@ The tables below give you signposts in four areas. The middle column says what h
 
 | Signpost | Status, or expected date and who says so | Where to check | What it would tell you |
 |---|---|---|---|
-| NVIDIA Rubin Ultra in Kyber racks (about 600 kW) with 800 V DC power | Second half of 2027 on NVIDIA's roadmap | NVIDIA earnings and GTC keynotes | Whether megawatt-class racks arrive on time |
-| Next chip generations: NVIDIA Feynman, AMD MI500, Huawei Ascend 960DT and 970 | 2028 (previewed); 2027; first quarter of 2027 and 2028, per company roadmaps | Company events and filings | Pace of chip progress, and China's domestic stack under export controls |
-| Custom chips at scale: OpenAI and Broadcom | 10 GW planned from late 2026 through 2029 | Company announcements | Whether custom silicon dents NVIDIA's dominance |
+| NVIDIA Rubin Ultra in Kyber racks (about 600 kW) with 800 V DC power | Second half of 2027, on NVIDIA's roadmap | NVIDIA earnings and keynotes | Whether megawatt-class racks arrive on time |
+| Huawei Ascend 960DT and 970 | First quarter of 2027 and 2028, on Huawei's roadmap | Huawei events | China's domestic chip progress under export controls |
 | Announced campuses actually energized | Epoch projects "over 9 GW" across Stargate sites by about 2029 | Epoch AI data center hub | The gap between announced and delivered gigawatts |
 | Nuclear power for AI | Crane (Three Mile Island Unit 1) restart targeted for 2027; Oklo up to 1.2 GW for Meta as early as 2030 | NRC and utility announcements | Whether firm clean power arrives on AI's timescale |
-| Total data center electricity | IEA base case about 945 TWh worldwide by 2030; LBNL projects 6.7–12% of US electricity by 2028 | IEA, EIA, LBNL reports | Whether demand tracks the high or low forecasts |
-| Inference overtaking training in AI compute | JLL expects around 2027 | Industry reports, company disclosures | Whether spending is driven by use rather than model-building |
-| Orbital compute prototypes | Google's Project Suncatcher: two prototype satellites due by early 2027 | Google Research blog | Whether space data centers move beyond design studies |
+| Total data center electricity | IEA base case about 945 TWh by 2030; LBNL projects 6.7–12% of US electricity by 2028 | IEA, EIA, LBNL | Whether demand tracks the high or low forecasts |
+| Inference overtaking training | JLL expects around 2027 | Industry reports | Whether spending is driven by use rather than model-building |
 
 *Table 66.5: Infrastructure signposts.*
 
-### Policy and law signposts
+### Policy, economy and society signposts
 
 | Signpost | Status, or expected date and who says so | Where to check | What it would tell you |
 |---|---|---|---|
-| EU bans on AI-generated non-consensual intimate images and child sexual abuse material | Apply from December 2, 2026 | EU AI Office | Whether the new prohibitions are enforced |
-| EU duties for older general-purpose models; high-risk (Annex III) duties | August 2, 2027; December 2, 2027 | EU AI Office | Whether the broadest AI law in the world bites on schedule or slips again |
-| New York RAISE Act; Colorado's automated-decision transparency law | Both effective January 1, 2027 (Colorado's if rulemaking is complete) | State government sites | Whether state frontier-model and decision rules take hold |
-| A US federal law that preempts state AI rules | None as of October 2026; bills such as the bipartisan FRONTIER Act pending | congress.gov | Whether the US gets one national rulebook, and whether it is a floor or a ceiling |
-| Fair-use rulings on generative AI training | New York Times v. OpenAI: cross-motions for summary judgment filed September 2026, no trial date | Court dockets, AI lawsuit trackers | Whether training needs licenses, which would reshape data costs |
+| EU duties for older general-purpose models; then high-risk (Annex III) duties | August 2, 2027; December 2, 2027 | EU AI Office | Whether the broadest AI law bites on schedule or slips again |
+| A US federal law that preempts state AI rules | None as of October 2026; bills such as the FRONTIER Act pending | congress.gov | One national rulebook or many, and whether it is a floor or a ceiling |
+| Fair-use rulings on generative AI training | New York Times v. OpenAI: summary-judgment motions filed September 2026, no trial date | Court dockets, lawsuit trackers | Whether training needs licenses, reshaping data costs |
+| Hyperscaler capex against AI revenue | Next quarterly reports the week of October 27–30, 2026, then every quarter | Earnings releases and 10-Q filings | The bubble debate's best live data |
+| AI lab stock listings | Anthropic reportedly targeting a listing as soon as November 2026; OpenAI's finance chief reportedly targets "by 2027" | SEC filings (S-1 prospectuses) | Audited revenue, costs and margins replace press estimates |
+| The young-worker gap in AI-exposed jobs | About 19% in the August 2026 Canaries update | Stanford Digital Economy Lab | Whether labor effects widen, spread or fade |
 
-*Table 66.6: Policy and law signposts.*
-
-### Economy and society signposts
-
-| Signpost | Status, or expected date and who says so | Where to check | What it would tell you |
-|---|---|---|---|
-| Hyperscaler capex against AI revenue | Next quarterly reports due the week of October 27–30, 2026, then every quarter | Company earnings releases and 10-Q filings | Whether spending keeps rising, plateaus or is cut: the bubble debate's best live data |
-| AI lab stock listings | Anthropic was reportedly targeting a listing as soon as November 2026; OpenAI's finance chief reportedly targets "by 2027" | SEC filings (S-1 prospectuses) | Audited revenue, costs and margins replace press estimates |
-| The young-worker gap in AI-exposed jobs | About 19% in the August 2026 Canaries update | Stanford Digital Economy Lab | Whether labor effects widen, spread to older workers or fade |
-| The price of a fixed level of capability | Falling roughly 10× or more per year on Epoch's measures, depending on the task | Epoch AI, Artificial Analysis | Whether intelligence keeps getting cheaper, which drives adoption |
-| Robotaxis at scale | Waymo targets 1 million paid rides a week by the end of 2026, up from about 500,000 in spring 2026 | Waymo announcements | Whether autonomy scales beyond a handful of cities |
-
-*Table 66.7: Economy and society signposts.*
+*Table 66.6: Policy, economy and society signposts.*
 
 ```mermaid
 timeline
@@ -534,19 +519,19 @@ timeline
     2030 : IEA base case of about 945 TWh for data centers
          : Earliest new US small modular reactors expected
 ```
-*Figure 66.6: Dated signposts from 2026 to 2030, as announced, targeted or forecast by the organizations named in Tables 66.4 to 66.7. Expect some to slip.*
+*Figure 66.6: Dated signposts from late 2026 to 2030, as announced, targeted or forecast by the organizations named in this section. Expect some to slip.*
 
-> **Try it:** Pick three signposts from the tables that matter most to your work or life. Put each one in your calendar on its date with a link to where you will check it. When the reminder fires, spend five minutes finding out what happened. This one habit will keep you better informed than most commentary.
+> **Try it:** Pick three signposts that matter to your work or life. Put each in your calendar on its date with a link to where you will check it. When the reminder fires, spend five minutes finding out what happened. That one habit will keep you better informed than most commentary.
 
 ## Four futures for 2030, presented fairly
 
-Signposts tell you what to watch. Scenarios give you stories to hang the evidence on. The point is not to pick the "right" one now; it is to know in advance what each would look like, so that you notice early which way things are breaking.
+Signposts tell you what to watch; scenarios give you stories to hang the evidence on. The point is not to pick the right one now, but to know in advance what each would look like, so you notice early which way things are breaking.
 
 > **Definition — Scenario:** A coherent, plausible story about how the future might unfold, built to explore possibilities rather than to predict. Several contrasting scenarios together cover more of the range of outcomes than any single forecast.
 
 > **Definition — Scenario planning:** A method, made famous by the oil company Shell in the 1970s, of choosing the two biggest uncertainties, crossing them to make four scenarios, and preparing for all four instead of betting on one.
 
-For AI the two biggest uncertainties are fairly clear from this book. First: does capability keep compounding at something like its recent pace, or does it slow? Second: do our institutions (companies, governments, courts, schools, labor markets) adapt well, or poorly? Cross them and you get four futures.
+For AI, the two biggest uncertainties are clear from this book. Does capability keep compounding at something like its recent pace, or slow down? And do our institutions (companies, governments, courts, schools, labor markets) adapt well or poorly?
 
 ```mermaid
 quadrantChart
@@ -560,66 +545,64 @@ quadrantChart
 ```
 *Figure 66.7: A scenario-planning grid for AI to 2030. Real outcomes may mix quadrants, and different countries or industries may land in different ones.*
 
-### Scenario 1: Normal technology
+### Normal technology
 
-**The story.** AI keeps improving, but more slowly than the 2023–2026 curves suggested, and its effects spread the way electricity and the internet did: over decades, through millions of unglamorous workflow changes. By 2030 most office software has AI built in, coding has changed a great deal, a few industries are transformed, and the labor market has shifted at the edges without a shock. This is roughly the view argued by Arvind Narayanan and Sayash Kapoor in their 2025 essay "AI as Normal Technology."
+**The story.** AI keeps improving, more slowly than the 2023–2026 curves suggested, and spreads the way electricity and the internet did: over decades, through millions of unglamorous workflow changes. By 2030 most office software has AI built in and a few industries are transformed, but the labor market has shifted only at the edges. Arvind Narayanan and Sayash Kapoor argue a version of this in their 2025 essay "AI as Normal Technology."
 
-**Strongest case for it.** Adoption is not impact: the 2026 Stanford AI Index found 88% of organizations using AI, while MIT's 2025 study found only about 5% of enterprise pilots showing measurable profit-and-loss effects. Organizations, regulation and the need for reliability in high-stakes settings slow everything down. The job effects measured so far are real but narrow, and METR's 2025 developer study showed perceived speed-ups can be illusions.
+**For.** Adoption is not impact: the 2026 Stanford AI Index found 88% of organizations using AI, while a 2025 MIT study found only about 5% of enterprise pilots with measurable profit-and-loss effects. Organizations, regulation and the need for reliability slow everything, and measured job effects are narrow.
 
-**Strongest case against it.** Capability is not moving at a "normal" pace: time horizons doubled every few months, ARC-AGI-3 fell from 0.51% to 62.7% in six months, and AI is starting to contribute original mathematics. Software diffuses faster than power lines, because the phones and networks already exist; ChatGPT alone reported 900 million weekly users in February 2026.
+**Against.** Capability is not moving at a normal pace: ARC-AGI-3 went from 0.51% to 62.7% in six months, and AI has started contributing original mathematics. Software spreads faster than power lines because the phones and networks already exist; ChatGPT reported 900 million weekly users in February 2026.
 
-**Early signs by 2028.** Capability gains on hard real-world tasks slow noticeably; productivity statistics rise gradually; the young-worker gap stays narrow; capex levels off without a crash.
+**Early signs by 2028.** Slowing gains on hard real-world tasks; gradual productivity growth; a young-worker gap that stays narrow; capex that levels off without a crash.
 
-### Scenario 2: Bust and backlash
+### Bust and backlash
 
-**The story.** Capability progress slows just as the bills come due. Revenue grows but not fast enough to justify the buildout, financing tightens, some data center projects are cancelled, and chip and cloud valuations fall sharply. Meanwhile rising electricity prices, water fights and job worries fuel a political backlash. The technology survives and stays useful, as fiber-optic cable did after the 2000 crash, but many investors lose a great deal and public trust sours.
+**The story.** Progress slows just as the bills come due. Revenue grows, but not fast enough; financing tightens, projects are cancelled and valuations fall hard. Rising power prices, water fights and job worries fuel a political backlash. The technology survives and stays useful, as fiber-optic cable did after 2000, but many investors lose heavily and public trust sours.
 
-**Strongest case for it.** The numbers in Chapter 43: hyperscaler capex near $800 billion a year, OpenAI's reported projection of about $278 billion of cumulative negative free cash flow through 2030, circular deals in which suppliers fund their own customers, short-lived chips financed with long-lived debt, and Oracle's credit rating cut to the lowest investment grade in July 2026. Data Center Watch counted about $64 billion of US projects blocked or delayed by local opposition between May 2024 and March 2025, and hundreds of jurisdictions reportedly passed moratoriums in 2026.
+**For.** Capex near $800 billion a year; OpenAI's reported projection of about $278 billion of negative free cash flow through 2030; circular deals; short-lived chips financed with long-lived debt; Oracle's credit rating cut to the lowest investment grade in July 2026. Data Center Watch counted about $64 billion of US projects blocked or delayed by local opposition between May 2024 and March 2025.
 
-**Strongest case against it.** Demand still exceeded supply in mid-2026 by the cloud companies' own accounts, lab revenue run-rates were compounding at rates rarely seen in business history, and the cost of each answer keeps falling, which widens the market. Unlike many bubbles, the product is already used by hundreds of millions of people every week.
+**Against.** In mid-2026 the cloud companies said demand still exceeded supply, lab revenue run-rates were compounding at rates rarely seen in business, and the falling cost per answer keeps widening the market. Unlike most bubbles, the product is already used by hundreds of millions of people every week.
 
-**Early signs by 2028.** Capex guidance cut rather than raised; GPU rental prices collapsing; down-round fundraising or troubled stock listings; announced campuses quietly cancelled (some already have been, such as a planned expansion at Abilene and, reportedly, Stargate UK); ratepayer-protection laws spreading.
+**Early signs by 2028.** Capex guidance cut rather than raised; collapsing GPU rental prices; down-round fundraising or troubled listings; cancelled campuses (a planned Abilene expansion already was); spreading laws to shield households from data-center power costs.
 
-### Scenario 3: Managed acceleration
+### Managed acceleration
 
-**The story.** Capability keeps compounding: agents handle multi-day projects reliably, AI speeds up AI research and science, and breakthroughs arrive in medicine, materials and mathematics. Institutions keep pace well enough: labs publish safety cases that independent evaluators can check, interpretability becomes a real safety tool, governments coordinate on the highest risks, and the gains are spread widely through cheaper services and new kinds of work. Dario Amodei's 2024 essay "Machines of Loving Grace" sketches a version of this upside.
+**The story.** Capability keeps compounding: agents handle multi-day projects reliably, AI speeds up research and science, and breakthroughs arrive in medicine and materials. Institutions keep pace: labs publish safety cases that independent evaluators can check, interpretability becomes a real safety tool, governments coordinate on the gravest risks, and gains spread widely. Dario Amodei's 2024 essay "Machines of Loving Grace" sketches this upside.
 
-**Strongest case for it.** Every long-running trend in this book points up: training compute about 5× a year, the price of fixed capability falling 10× or more a year, time horizons doubling every few months, and concrete scientific wins from AlphaFold to AI weather forecasting. Safety frameworks, third-party evaluators and laws like SB 53 already exist and are maturing.
+**For.** Every long-running trend in this book points up: training compute about 5× a year, the price of fixed capability falling 10× or more a year, time horizons doubling every few months, and real scientific wins from AlphaFold to AI weather forecasting. Safety frameworks, independent evaluators and laws like SB 53 already exist.
 
-**Strongest case against it.** It needs two things at once: fast technical progress and unusually competent, coordinated governance, a combination history rarely delivers. Alignment, scalable oversight and prompt injection are unsolved, and the international summits have moved away from binding commitments; at the 2026 New Delhi summit a US official said, "We totally reject global governance of AI."
+**Against.** It needs fast technical progress and unusually competent, coordinated governance at the same time, a pairing history rarely delivers. Alignment, oversight and prompt injection are unsolved, and summits have moved away from binding commitments; at the 2026 New Delhi summit a US official said, "We totally reject global governance of AI."
 
-**Early signs by 2028.** High-reliability (80%) horizons measured in days; rising, independently checked estimates of AI research speed-up; the first approved AI-designed drug; interpretability cited as evidence in published safety cases; verification provisions in international agreements.
+**Early signs by 2028.** 80%-reliability horizons measured in days; independently checked estimates of AI research speed-up rising; a first approved AI-designed drug; interpretability cited as evidence in published safety cases.
 
-### Scenario 4: Turbulent acceleration
+### Turbulent acceleration
 
-**The story.** Capability races ahead and institutions do not keep up. Entry-level work shrinks faster than new roles appear. Power concentrates in a few firms and states. Cyber and bio misuse rise. In the most serious versions, AI systems that automate AI research outrun our ability to oversee them, and humans lose meaningful control. The 2025 "AI 2027" scenario by Daniel Kokotajlo and colleagues explores a fast version; Eliezer Yudkowsky and Nate Soares's 2025 book *If Anyone Builds It, Everyone Dies* argues the most extreme case. In May 2023 hundreds of researchers and executives signed a one-sentence statement that "mitigating the risk of extinction from AI should be a global priority alongside other societal-scale risks such as pandemics and nuclear war."
+**The story.** Capability races ahead and institutions lag. Entry-level work shrinks faster than new roles appear, power concentrates, and cyber and bio misuse rise. In the most serious versions, AI that automates AI research outruns human oversight and people lose meaningful control. The 2025 "AI 2027" scenario by Daniel Kokotajlo and colleagues explores a fast version, and Eliezer Yudkowsky and Nate Soares's 2025 book *If Anyone Builds It, Everyone Dies* argues the most extreme case.
 
-**Strongest case for it.** Capability thresholds are being crossed in the open (Mythos-class cyber skills, OpenAI's reported "cannot rule out Critical" notice); controlled experiments have shown reward hacking, alignment faking and scheming-like behavior; models increasingly recognize tests; labs compete hard and governments are split. In a 2023 survey of 2,778 AI researchers, the median respondent put about a 5% chance on extremely bad outcomes such as human extinction, which is not small for a risk that large.
+**For.** Capability thresholds are being crossed in the open (Mythos-class cyber skills, OpenAI's reported "cannot rule out Critical" notice); controlled experiments have shown reward hacking, alignment faking and scheming-like behavior; models increasingly recognize tests; and competition is fierce. In a 2023 survey of 2,778 AI researchers, the median respondent put about a 5% chance on extremely bad outcomes such as human extinction.
 
-**Strongest case against it.** The scheming and blackmail experiments were contrived stress tests, and labs report not seeing them in real deployments. Critics argue the argument leans on assumptions about AI agency and fast takeoff that the evidence does not yet support, that focus on speculative catastrophe can distract from present harms, and that some calls for strict rules could entrench the largest firms. The "normal technology" view holds that diffusion bottlenecks will slow everything, including the dangers.
+**Against.** The scheming and blackmail experiments were contrived stress tests, and labs report not seeing such behavior in real deployments. Critics argue the case leans on unproven assumptions about AI agency and fast takeoff, that it can distract from present harms, and that some calls for strict rules would entrench the biggest firms.
 
-**Early signs by 2028.** Sharply rising AI research speed-up estimates; labs deploying past their own "Critical" thresholds; serious real-world incidents traced to autonomous AI behavior; the young-worker gap spreading to older workers; stolen model weights; federal preemption without replacement rules.
-
-### Wild cards
-
-Some events would jolt any scenario. A disruption to chipmaking in Taiwan would hit every lab at once. A major AI-enabled cyberattack or biological incident would change politics overnight. An efficiency breakthrough, like DeepSeek's in January 2025 that shook markets, could make frontier capability far cheaper. A sweeping copyright ruling could change the cost of data. And a recession unrelated to AI could cut investment regardless of the technology.
+**Early signs by 2028.** Sharply rising AI research speed-up estimates; labs deploying past their own "Critical" thresholds; serious incidents traced to autonomous AI behavior; the young-worker gap spreading to older workers; stolen model weights.
 
 > **Definition — Recursive self-improvement:** The hypothetical process in which AI systems substantially speed up AI research itself, so that each generation helps build the next faster. Whether, when and how strongly this happens is central to the fastest scenarios.
 
-### What the forecasters say, and how much to trust it
+### Wild cards and the forecasters
 
-Forecasts of "transformative" or "general" AI have swung. According to one tally of public updates, forecasters' timelines, including those of the "AI 2027" authors, moved later during 2025 and then earlier again in early 2026. Lab leaders tend to give short timelines, many economists long ones; Daron Acemoglu estimated modest productivity gains of roughly 0.7% over a decade, while Goldman Sachs estimated about a 7% rise in global GDP over ten years. That is a tenfold gap between serious, published estimates. The useful response is not to pick the forecaster you like, but to ask what each one is assuming and which signposts would separate them.
+Some events would jolt any scenario: a disruption to chipmaking in Taiwan, a major AI-enabled cyberattack or biological incident, an efficiency breakthrough like DeepSeek's in January 2025 that shook markets, a sweeping copyright ruling, or a recession unrelated to AI.
 
-| Scenario | Capability by 2030 | Adaptation | One-line strongest case | One-line strongest objection |
+Published forecasts swing too. According to one tally of public updates, forecasters' timelines, including those of the "AI 2027" authors, moved later during 2025 and earlier again in early 2026. Economists disagree just as widely: Daron Acemoglu estimated productivity gains of roughly 0.7% over a decade, while Goldman Sachs estimated about a 7% rise in global GDP over ten years. The useful response is not to pick the forecaster you like but to ask what each assumes, and which signposts would separate them.
+
+| Scenario | Capability by 2030 | Adaptation | Strongest case for | Strongest objection |
 |---|---|---|---|---|
 | Normal technology | Steady gains | Good | Diffusion is slow; adoption is not impact | Capability is not moving at a normal pace |
-| Bust and backlash | Slowing | Poor | Capex far ahead of cash flow, plus local backlash | Demand still exceeds supply; costs per answer keep falling |
+| Bust and backlash | Slowing | Poor | Capex far ahead of cash flow, plus local backlash | Demand still exceeds supply; cost per answer keeps falling |
 | Managed acceleration | Fast | Good | Every trend points up; safety institutions are maturing | Needs fast progress and rare governance competence at once |
-| Turbulent acceleration | Fast | Poor | Thresholds crossed, alignment unsolved, races on | Experiments are contrived; assumptions about agency are unproven |
+| Turbulent acceleration | Fast | Poor | Thresholds crossed, alignment unsolved, races on | Experiments are contrived; assumptions about agency unproven |
 
-*Table 66.8: The four scenarios side by side.*
+*Table 66.7: The four scenarios side by side.*
 
-> **Watch out:** A scenario is not a prediction, and nobody gets to pick just one. By 2030 the world will probably look like a mix: perhaps "managed" in some countries and "turbulent" in others, or "bust" for some investors while the technology itself keeps accelerating. Use the grid to organize evidence, not to choose a team.
+> **Watch out:** A scenario is not a prediction, and nobody gets to pick just one. By 2030 the world will probably be a mix: "managed" in some countries and "turbulent" in others, or "bust" for some investors while the technology keeps accelerating. Use the grid to organize evidence, not to choose a team.
 
 ## Thinking for yourself: a method for AI claims
 

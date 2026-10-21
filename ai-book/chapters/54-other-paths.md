@@ -286,17 +286,19 @@ Probability handles uncertainty about crisp facts: either it rained or it did no
 - **Hot:** 0 at 24°C, rising to 1 at 30°C and staying at 1 above that.
 
 ```
-degree
- 1.0 |            /\                  _________
-     |           /  \                /  hot
- 0.5 |          /    \     warm     /
-     |         /      \   /\       /
- 0.0 |________/________\_/__\_____/____________
-     16      18   20   23  24 26 28  30   32 C
-           warm rises  falls   hot rises
+temp    warm (# = 0.1)     degree    hot (# = 0.1)      degree
+18 C    .                  0.0       .                  0.0
+20 C    ####               0.4       .                  0.0
+22 C    ########           0.8       .                  0.0
+23 C    ##########         1.0       .                  0.0
+24 C    ########           0.8       .                  0.0
+26 C    ####               0.4       ###                0.33
+27 C    ##                 0.2       #####              0.5
+28 C    .                  0.0       #######            0.67
+30 C    .                  0.0       ##########         1.0
 ```
 
-*Figure 54.5: Membership functions for "warm" and "hot" (simplified sketch). At 26°C a temperature is partly warm and partly hot at the same time.*
+*Figure 54.5: Membership in "warm" and "hot" at different temperatures. Between 24°C and 28°C a temperature is partly warm and partly hot at the same time.*
 
 At 26°C: warm = (28 − 26) ÷ (28 − 23) = 2 ÷ 5 = 0.4, and hot = (26 − 24) ÷ (30 − 24) = 2 ÷ 6 ≈ 0.33.
 

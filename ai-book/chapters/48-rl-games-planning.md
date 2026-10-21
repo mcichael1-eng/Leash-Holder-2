@@ -114,13 +114,9 @@ A maze sits still. In a game, an opponent moves too, and they are trying to beat
 
 > **Definition — Branching factor:** The typical number of moves available from a position. Tic-tac-toe starts at 9; chess averages about 35; Go averages about 250.
 
-> **Definition — Ply:** One move by one player. A full "move" in chess notation (White then Black) is two plies.
-
 > **Definition — Zero-sum game:** A game where one player's gain is exactly the other's loss, so the players' interests are perfectly opposed. Chess, Go and two-player poker are zero-sum.
 
-> **Definition — Perfect-information game:** A game where both players can see everything about the current position, as in chess and Go. Poker, with hidden cards, is an imperfect-information game.
-
-Game trees grow at frightening speed, because the branching factor multiplies at every ply:
+Chess and Go are also games of perfect information: both players see the whole board. Game trees grow at frightening speed, because the branching factor multiplies at every ply (one move by one player):
 
 | Game | Typical branching factor | Size of the problem |
 |---|---|---|
@@ -150,9 +146,7 @@ Score the end of the game from X's point of view: **+1** if X wins, **0** for a 
 
 > **Definition — Minimax:** A way of choosing moves in a two-player game by assuming the opponent always replies with the move that is worst for you. You pick the move whose worst case is best.
 
-> **Definition — Terminal state:** A position where the game is over (a win, loss or draw), so its score is known without looking further.
-
-Minimax works from the bottom of the tree up. At positions where X moves, X takes the **maximum** score. At positions where O moves, O takes the **minimum** (best for O, worst for X). Let us go through all three candidate moves.
+Minimax works from the bottom of the tree up, starting at finished games, whose scores are known. At positions where X moves, X takes the **maximum** score. At positions where O moves, O takes the **minimum** (best for O, worst for X). Let us go through all three candidate moves.
 
 **Option A: X plays square 3.** This blocks O's diagonal (3-5-7) and also gives X two in the right-hand column (3 and 9, with 6 empty). Now O moves, with squares 4 and 6 left.
 - If O plays 4, X plays the last square, 6, completing 3-6-9. X wins: **+1**.
@@ -211,9 +205,7 @@ Modern engines kept the search but changed the evaluation: since 2020 the leadin
 
 Go defeated the Deep Blue recipe for two reasons. Its branching factor of about 250 makes deep search hopeless, and nobody could write a good evaluation function: strong Go players judge positions by intuition they cannot fully put into words.
 
-The breakthrough idea was to estimate positions by playing them out at random.
-
-> **Definition — Monte Carlo method:** Estimating something by running many random trials and averaging the results, named after the casino. To estimate a position's win chance, play many random games from it and count the wins.
+The breakthrough was a Monte Carlo idea, named after the casino: estimate something by running many random trials and averaging. To judge a position, play many random games from it and count the wins.
 
 > **Definition — Playout (rollout):** One simulated continuation of a game from a given position to the end (or for a fixed number of moves), used to estimate how good the position is.
 
@@ -341,7 +333,7 @@ In 1988 Richard Sutton described temporal-difference learning, and in 1989 Chris
 
 > **Definition — Learning rate (alpha):** A number between 0 and 1, often written α (alpha), that sets how far each update moves an estimate toward its new target. With α = 0.5 the estimate moves halfway.
 
-> **Definition — Q-table:** A table with one row per state and one column per action, holding the agent's current Q-value estimates. Q-learning fills it in through experience.
+For small problems the estimates live in a Q-table, with one row per state and one column per action.
 
 The Q-learning update, in plain text:
 
@@ -666,4 +658,175 @@ The second is reinforcement learning: learn from rewards. An agent acts, the wor
 Games were the perfect lab. TD-Gammon, Deep Blue, DQN, AlphaGo, AlphaZero, MuZero, OpenAI Five, AlphaStar, Pluribus and CICERO each added an ingredient, and self-play let programs surpass every human teacher. Then RL left the arcade: cooling data centers, steering fusion plasma, racing drones, teaching robots to walk, and shaping your chatbot. When your chatbot "thinks" before answering, it is using ideas born in game-playing AI: a policy, a reward, and a search for the best path.
 
 ## Key terms
-Sequential decision-making, Planning, State, Action, State space, Search (AI sense), Breadth-first search (BFS), Depth-first search (DFS), Heuristic, A* search, Manhattan distance, Admissible heuristic, Game tree, Branching factor, Ply, Zero-sum game, Perfect-information game, Minimax, Terminal state, Alpha-beta pruning, Evaluation function, Monte Carlo method, Playout (rollout), Monte Carlo tree search (MCTS), UCB (upper confidence bound), Reinforcement learning (RL), Agent, Environment, Reward, Episode, Return, Discount factor (gamma), Policy, Value function, Q-value (action value), Bellman equation, Exploration versus exploitation, Multi-armed bandit, Epsilon-greedy, Credit assignment problem, Sparse reward, Reward shaping, Temporal-difference (TD) learning, Q-learning, Learning rate (alpha), Q-table, Deep Q-Network (DQN), Experience replay, Target network, Policy gradient method, Advantage, Actor-critic method, PPO (proximal policy optimization), Model-free RL, Model-based RL, Reward hacking (specification gaming), Imperfect-information game, Nash equilibrium, Counterfactual regret minimization (CFR), Self-play, Elo rating, RLHF (reinforcement learning from human feedback), RL environment (for language models), Test-time search
+Sequential decision-making, Planning, State, Action, State space, Search (AI sense), Breadth-first search (BFS), Depth-first search (DFS), Heuristic, A* search, Manhattan distance, Admissible heuristic, Game tree, Branching factor, Zero-sum game, Minimax, Alpha-beta pruning, Evaluation function, Playout (rollout), Monte Carlo tree search (MCTS), UCB (upper confidence bound), Reinforcement learning (RL), Agent, Environment, Reward, Episode, Return, Discount factor (gamma), Policy, Value function, Q-value (action value), Bellman equation, Exploration versus exploitation, Multi-armed bandit, Epsilon-greedy, Credit assignment problem, Sparse reward, Reward shaping, Temporal-difference (TD) learning, Q-learning, Learning rate (alpha), Deep Q-Network (DQN), Experience replay, Target network, Policy gradient method, Advantage, Actor-critic method, PPO (proximal policy optimization), Model-free RL, Model-based RL, Reward hacking (specification gaming), Imperfect-information game, Nash equilibrium, Counterfactual regret minimization (CFR), Self-play, Elo rating, RLHF (reinforcement learning from human feedback), RL environment (for language models), Test-time search
+
+## Exercises
+
+1. **[Easy] Minimax on paper.** Solve a new position the way Figure 48.3 does.
+   1. Draw this board, X to move. Row 1: X, X, O. Row 2: empty, O, X. Row 3: empty, O, empty. (So X is on squares 1, 2 and 6; O is on 3, 5 and 8; squares 4, 7 and 9 are empty.)
+   2. For each of X's three possible moves, list O's possible replies and then X's forced last move, and score each ending +1, 0 or −1.
+   3. Take the minimum at O's level and the maximum at X's level.
+   4. Check: you should find that only one move avoids losing, and that the best X can force is a draw.
+   **What you'll learn:** How minimax passes scores up a tree, and why you must assume the opponent picks their best reply.
+
+2. **[Easy] The two-cup bandit.** Feel the exploration-exploitation trade-off with coins and a die.
+   1. A friend secretly labels one of two cups "good." The good cup scores a die roll plus 1; the other cup scores a plain die roll. You do not know which is which.
+   2. Play 30 "nights." Each night, flip two coins. If both land heads (a 25% chance), explore: flip a third coin to pick a cup at random. Otherwise exploit: pick the cup with the higher average score so far (on night 1, pick either).
+   3. Roll for the chosen cup and record the score.
+   4. At the end, ask your friend which cup was good. Did you find it? On how many nights did you pick the worse cup?
+   5. Play again exploring only when you roll a 6 on the die instead of two heads, and compare.
+   **What you'll learn:** Why a little exploration is needed to find the best option, and what it costs.
+
+3. **[Medium] Q-learning in a spreadsheet.** Reproduce Table 48.3 and watch value flow backward.
+   1. Put α = 0.5 in cell B1 and γ = 0.9 in cell B2.
+   2. In row 5, write headers: Episode, Q(A), Q(B), Q(C). In row 6, put 0, 0, 0, 0.
+   3. In row 7: A7 = A6+1. Use these formulas: D7 = D6 + $B$1*(10 - D6). C7 = C6 + $B$1*($B$2*D6 - C6). B7 = B6 + $B$1*($B$2*C6 - B6).
+   4. Copy row 7 down for 30 rows. Check that row 9 (episode 3) shows 1.0125, 4.5 and 8.75, and that the values approach 8.1, 9 and 10.
+   5. Change γ to 0.5 and predict the new final values before looking (they should approach 2.5, 5 and 10). Then set α to 0.1 and watch learning slow down.
+   **What you'll learn:** How the Q-learning update works with real numbers, and what the discount factor and learning rate each control.
+
+4. **[Medium] A* on graph paper.** Find a shortest path the way a map app's ancestor does.
+   1. Draw a 6 × 6 grid. Mark a start in one corner and a goal in the opposite corner. Draw a wall of 4 squares between them.
+   2. Starting from S, write g (steps so far), h (Manhattan distance to the goal) and f = g + h in each square you consider. Always expand the square with the lowest f next.
+   3. Count how many squares you examined. Then count how many squares are within the same number of steps of the start as the goal, which is roughly what breadth-first search would examine.
+   **What you'll learn:** How a heuristic focuses search, and why A* examines far fewer squares than blind search.
+
+5. **[Easy] Play against superhuman search.** See search plus learned evaluation in action.
+   1. On https://lichess.org, play a game against a friend or the computer at a low level.
+   2. Open the finished game on the "Analysis board" and turn on the engine.
+   3. Watch the evaluation bar and the engine's top suggested lines. Find your biggest mistake, the move where the evaluation dropped most.
+   **What you'll learn:** What an evaluation function looks like in practice, and how engines look many moves ahead.
+
+6. **[Medium] Train a Q-learning agent in Google Colab.** Watch an agent learn to find treasure and avoid traps.
+   1. Go to https://colab.research.google.com, create a new notebook, paste the code below into a cell and press the play button.
+   2. Read the printed grid: arrows show the learned best move in each square; T is a trap (−10) and G is the treasure (+10). Each ordinary step costs 1.
+   3. Check the printed value of the start square (about 1.81) by hand: the best route takes 6 steps, so it is −1 − 0.9 − 0.81 − 0.729 − 0.6561 + 0.9^5 × 10 ≈ 1.81.
+
+   ```python
+   import random
+
+   # The world: a 4 x 4 grid. S = start, T = trap, G = goal (treasure).
+   world = ["S...",
+            ".T..",
+            "...T",
+            "T..G"]
+   moves = {"up": (-1, 0), "down": (1, 0), "left": (0, -1), "right": (0, 1)}
+
+   def step(row, col, action):
+       """Move one square. Edges keep you in place. Returns new square, reward, done."""
+       dr, dc = moves[action]
+       r, c = min(max(row + dr, 0), 3), min(max(col + dc, 0), 3)
+       cell = world[r][c]
+       if cell == "G":
+           return r, c, 10, True     # treasure: +10, episode ends
+       if cell == "T":
+           return r, c, -10, True    # trap: -10, episode ends
+       return r, c, -1, False        # every ordinary step costs 1
+
+   # The Q-table: one number per (square, action), all starting at 0.
+   Q = {(r, c, a): 0.0 for r in range(4) for c in range(4) for a in moves}
+
+   alpha, gamma, epsilon = 0.5, 0.9, 0.2   # learning rate, discount, exploration
+
+   for episode in range(500):
+       r, c, done = 0, 0, False
+       while not done:
+           # Explore with probability epsilon, otherwise pick the best-known action.
+           if random.random() < epsilon:
+               a = random.choice(list(moves))
+           else:
+               a = max(moves, key=lambda m: Q[(r, c, m)])
+           r2, c2, reward, done = step(r, c, a)
+           best_next = 0 if done else max(Q[(r2, c2, m)] for m in moves)
+           # The Q-learning update: nudge the old guess toward reward + discounted future.
+           Q[(r, c, a)] += alpha * (reward + gamma * best_next - Q[(r, c, a)])
+           r, c = r2, c2
+
+   # Show the learned policy: the best action in each square.
+   arrow = {"up": "^", "down": "v", "left": "<", "right": ">"}
+   for r in range(4):
+       row = ""
+       for c in range(4):
+           if world[r][c] in "GT":
+               row += world[r][c] + " "
+           else:
+               row += arrow[max(moves, key=lambda m: Q[(r, c, m)])] + " "
+       print(row)
+   print("Value of the start square:", round(max(Q[(0, 0, m)] for m in moves), 2))
+   ```
+
+   In plain words: `world` is the map; `step` is the environment, returning the new square, the reward and whether the episode ended; `Q` is the Q-table; the loop plays 500 episodes, choosing actions epsilon-greedily and applying the Q-learning update after every step; the last part prints the best action in each square as an arrow.
+   **What you'll learn:** That the agent, environment, reward, policy and Q-learning update from this chapter fit in about 40 lines of code, and that the learned values match hand calculation.
+
+7. **[Medium] Reward-hacking workshop.** Learn why writing rewards is hard.
+   1. Write a reward for a robot vacuum in one sentence, for example "+1 for every gram of dirt collected."
+   2. Ask your chatbot: "You are a mischievous AI that wants to maximize this reward without doing what the designer intended. List five loopholes." (A classic one: dump the dirt and collect it again.)
+   3. Rewrite the reward to close the loopholes, and ask for five new loopholes. Repeat twice.
+   4. Write two sentences on what this suggests about rewarding chatbots with "user approval."
+   **What you'll learn:** Specification gaming is natural for optimizers, and every reward is an incomplete description of what you want.
+
+8. **[Challenge] Monte Carlo by hand.** Compare random playouts with minimax.
+   1. Use the position from Exercise 1. For each of X's three moves, play out 10 games where every remaining move (for both players) is chosen at random with a die (re-roll if the number does not match an empty square).
+   2. Record each move's win rate for X (count a draw as half a win).
+   3. Compare the ranking with your minimax answer. Did random playouts pick the right move? Why might random opponents make a bad move look good?
+   **What you'll learn:** Why plain random playouts are noisy and can be fooled, and why AlphaGo replaced them with a learned value network and a smart policy.
+
+9. **[Easy] Watch the match.** Learn the AlphaGo story from the people involved.
+   1. Watch the documentary "AlphaGo - The Movie" (2017), which Google DeepMind has made free on YouTube.
+   2. Note the moment commentators react to Move 37 and the moment Lee Sedol plays Move 78.
+   3. Write three sentences: what AlphaGo's team expected, what surprised them, and how Lee Sedol's attitude changed during the match.
+   **What you'll learn:** The human side of a landmark in AI, and how experts reacted when a machine found something new.
+
+10. **[Challenge] Experiment with the agent.** Change the Colab agent from Exercise 6 and explain what happens.
+    1. Set `epsilon = 0` (no exploration) and run it several times. Does the agent still find the treasure?
+    2. Set `gamma = 0.5`. Does the policy change? Why might a "short-sighted" agent prefer different routes?
+    3. Change the ordinary step reward from −1 to 0 and run again. What changes, and why?
+    4. Move the treasure to a different square in `world` and confirm the arrows adapt.
+    **What you'll learn:** How exploration, discounting and reward design shape what an agent learns.
+
+## Areas of opportunity
+
+- **RL environment builder.** Labs and startups pay for realistic training environments (code repositories with tests, simulated businesses, browsers, spreadsheets) with graders that cannot be gamed. Domain experts in finance, law, medicine and science are hired to write tasks and rubrics, so this is open to non-engineers with deep subject knowledge.
+- **Reward and evaluation design.** Every company fine-tuning models with RL needs people who can turn fuzzy goals into rewards and rubrics, and who can spot reward hacking before it ships. It combines product judgment, statistics and a red-teamer's mindset.
+- **Optimization and operations research.** Scheduling, routing, inventory and staffing problems are search and planning problems. Specialists who combine classic optimization with learned models sell into airlines, logistics firms, hospitals and manufacturers.
+- **Energy and building control.** Heating, cooling and battery systems make sequential decisions all day. Controllers that safely trim energy use, as in data-center cooling, are valuable to building owners, utilities and data-center operators (Part VII).
+- **Simulation engineering for robots.** Robots learn to walk and grasp in simulation first. Engineers who build accurate simulators and close the sim-to-real gap are in demand at robotics companies (Chapter 49).
+- **Game AI and automated testing.** Game studios use agents to play-test levels, find bugs and balance difficulty, and want non-player characters that behave believably. Small studios are an underserved market.
+- **Pricing and recommendation experiments.** Bandit algorithms help retailers, media sites and apps choose prices, headlines and offers while still learning. Analysts who can run them responsibly, with clear guardrails, are useful to any business with lots of users.
+- **Open problems worth working on:** sample efficiency (learning from few trials), reward design without loopholes, safe exploration in the real world, credit assignment over very long agent tasks, and transferring game-style success to messy domains such as science and healthcare.
+
+## Check your understanding
+
+1. In minimax, why do levels where the opponent moves take the minimum score?
+2. What does A* add to breadth-first search? Compute f for a square with g = 3 and h = 4.
+3. With a discount factor of 0.9, what is a reward of 100 arriving two steps from now worth today?
+4. In Q-learning with α = 0.5 and γ = 0.9, an old Q-value is 4, the reward is 0 and the best Q-value of the next state is 10. What is the new Q-value?
+5. Why could Deep Blue's approach not conquer Go, and what did AlphaGo use instead?
+6. What did AlphaGo Zero remove compared with AlphaGo, and what did MuZero remove compared with AlphaZero?
+7. Why is self-play so powerful, and what is one of its pitfalls?
+8. Give two ways in which training a reasoning chatbot with reinforcement learning resembles training a game-playing agent.
+
+<details><summary>Answers</summary>
+
+1. Because the opponent is assumed to choose the reply that is worst for you (best for them). Scores are written from your point of view, so the opponent picks the smallest.
+2. A* adds a heuristic estimate of the remaining distance, so it explores squares that look closest to the goal first instead of spreading evenly in all directions. f = g + h = 3 + 4 = 7.
+3. 100 × 0.9 × 0.9 = 81.
+4. Target = 0 + 0.9 × 10 = 9. Error = 9 − 4 = 5. New Q = 4 + 0.5 × 5 = 6.5.
+5. Go's branching factor (about 250) makes deep search impossible, and nobody could hand-write a good evaluation function. AlphaGo used a policy network to suggest moves, a value network to judge positions, and Monte Carlo tree search guided by both, with networks improved by self-play.
+6. AlphaGo Zero removed the human game records, learning purely from self-play. MuZero removed the need to be given the rules, learning its own model of how moves change the game.
+7. The agent always faces an opponent at its own level and generates fresh, harder challenges as it improves, so it is not limited by human teachers. A pitfall is cycling, where strategies beat each other in circles like rock-paper-scissors (fixed with leagues of diverse opponents).
+8. Any two of: the language model is the policy and the task is the environment; a checker or judge supplies the reward, often only at the end (sparse reward and credit assignment); policy gradient methods with baselines (PPO, GRPO) are used; reward hacking appears (editing tests to pass, like the circling boat); and extra thinking at answer time works like search.
+
+</details>
+
+## Going deeper
+
+- **Richard Sutton and Andrew Barto, *Reinforcement Learning: An Introduction* (2nd edition, 2018):** the field's standard textbook by its founders, free online at http://incompleteideas.net/book/the-book-2nd.html.
+- **Stuart Russell and Peter Norvig, *Artificial Intelligence: A Modern Approach*:** the classic textbook for search, A*, game trees, minimax and alpha-beta, with clear chapters on each.
+- **Red Blob Games, "Introduction to the A* Algorithm"** (https://www.redblobgames.com/pathfinding/a-star/introduction.html): beautiful interactive diagrams that let you watch breadth-first search, Dijkstra and A* side by side.
+- **"AlphaGo - The Movie" (2017):** the documentary of the Lee Sedol match, free on YouTube from Google DeepMind.
+- **Hugging Face Deep Reinforcement Learning Course** (https://huggingface.co/learn/deep-rl-course): a free, hands-on course from Q-learning to PPO with runnable notebooks.
+- **OpenAI Spinning Up in Deep RL** (https://spinningup.openai.com): a clear introduction to policy gradients and actor-critic methods for people with some coding background.
+- **David Silver's reinforcement learning lectures** (search YouTube for "David Silver RL course"): the lecture series by AlphaGo's lead researcher, still one of the best explanations of the fundamentals.
+- **Rich Sutton, "The Bitter Lesson" (2019)** (http://www.incompleteideas.net/IncIdeas/BitterLesson.html): a one-page essay on why search and learning keep beating hand-built knowledge.
+- **Chapter 20 and Chapter 21 of this book:** how the ideas in this chapter were applied to turn language models into assistants and then into reasoning models.

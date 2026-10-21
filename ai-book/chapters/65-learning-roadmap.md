@@ -76,7 +76,7 @@ Is that worth it? The Stage 1 milestone is saving at least three hours a week in
 Break-even: 65 hours invested / 3 hours saved per week = about 22 weeks
 ```
 
-So even a modest result repays the whole investment within about five months of using it, and then keeps paying. At five hours saved per week the yearly total is about 250 hours, the equivalent of six working weeks.
+So even a modest result repays the whole investment within about five months of using it, and then keeps paying. At five hours saved per week the yearly total is 5 × 48 = 240 hours, the equivalent of six 40-hour working weeks.
 
 Course providers publish rough lengths for their courses. Here are the well-known ones used in this chapter, with lengths as listed by DeepLearning.AI and fast.ai as of October 2026:
 
@@ -343,7 +343,7 @@ If building it took 6 hours: payback = 6 hours / 1.25 hours per week
 
 Sixty hours a year from one automation is a week and a half of working time. Three or four of these, documented with before-and-after numbers, are a convincing portfolio for an internal "AI lead" role.
 
-The best single project in this stage, according to people who hire for consulting and forward-deployed roles, is a free implementation for a real small business. Find a local business (a dental office, a contractor, a nonprofit), interview the owner, map one painful workflow such as intake, quotes, scheduling or review responses, implement an AI-assisted fix, measure the time saved after two weeks, and write it up as a case study.
+One of the strongest projects in this stage, especially if you are heading toward consulting or forward-deployed work, is a free implementation for a real small business. Find a local business (a dental office, a contractor, a nonprofit), interview the owner, map one painful workflow such as intake, quotes, scheduling or review responses, implement an AI-assisted fix, measure the time saved after two weeks, and write it up as a case study.
 
 ### 1–3 years: becoming the person who redesigns the work
 
@@ -635,7 +635,7 @@ Track E is for people who want to shape how AI is governed and made safe. It has
 
 > **Definition — AI governance:** The policies, processes and controls an organization uses to manage AI risks and comply with laws, such as approving use cases, reviewing vendors, testing systems and keeping records.
 
-> **Definition — Risk management framework:** A structured method for identifying, measuring and reducing risks. The NIST AI Risk Management Framework, free from the US National Institute of Standards and Technology, is the most widely used for AI.
+> **Definition — Risk management framework:** A structured method for identifying, measuring and reducing risks. The NIST AI Risk Management Framework, free from the US National Institute of Standards and Technology, is a widely used example for AI.
 
 > **Definition — Interpretability:** Research into what is happening inside a neural network: which internal features it represents and how they combine to produce behavior (Chapter 57).
 
@@ -677,11 +677,11 @@ Alongside Stage 1:
 
 | Resource | What it is | Cost |
 |---|---|---|
-| NIST AI Risk Management Framework (nist.gov) | The most widely used voluntary AI risk framework | Free |
+| NIST AI Risk Management Framework (nist.gov) | A widely used voluntary framework for managing AI risk | Free |
 | The EU AI Act (official text, plus explainer sites such as artificialintelligenceact.eu) | The European Union's risk-based AI law; check the current timeline, since a 2026 amendment (the Digital Omnibus) delayed several high-risk deadlines | Free |
 | ISO/IEC 42001 | The international standard for AI management systems | Paid standard and training |
 | IAPP AIGP (iapp.org) | The AI Governance Professional certification from the International Association of Privacy Professionals | Paid |
-| BlueDot Impact governance courses | Cohort-based courses on AI governance | Free, with competitive admission |
+| BlueDot Impact governance courses | Cohort-based courses on AI governance | Free; cohorts take applications |
 | GovAI, CSET (Georgetown), RAND and IAPS publications | Research from leading AI policy think tanks | Free |
 | AI Incident Database (incidentdatabase.ai) | A public record of real AI failures and harms | Free |
 
@@ -694,7 +694,7 @@ Do the first year of Track C, then add safety-specific material: the ARENA curri
 ### 1–3 years: going professional
 
 - **Fellowships and bootcamps.** MATS runs 12-week research programs; as of October 2026 it had 631 alumni since 2021, 75% of whom now work in alignment, transparency or security. ARENA runs 4–5 week in-person bootcamps in London with costs covered. The Anthropic Fellows Program runs for four months with a $3,850 weekly stipend.
-- **Career guidance.** 80,000 Hours' AI safety career review and podcast (80000hours.org, free) are the most detailed public guides to this field.
+- **Career guidance.** 80,000 Hours' AI safety career review and podcast (80000hours.org, free) are among the most detailed public guides to this field.
 - **Job postings as syllabi.** Lab policy and safety postings list exactly what employers want. In October 2026 Anthropic posted a Policy Design Manager role at $245,000–$285,000 base and a Technical AI Governance role at $265,000–$295,000; government institutes and think tanks pay much less.
 - **Government and nonprofits.** AI safety institutes (the UK AI Security Institute and the US Center for AI Standards and Innovation), evaluation nonprofits such as METR and Apollo Research, and think tanks all hire technical and policy staff.
 
@@ -742,7 +742,7 @@ The time is about the same. But Option 2 gives a hiring manager three concrete t
 
 > **Definition — Case study:** A short write-up of one real project: the problem, who had it, what you built, how you measured it, the results, and what you would do next. It is the standard portfolio format for consultants, forward-deployed engineers and product people.
 
-What makes a portfolio project convincing? Hiring managers in AI repeatedly describe the same features. It solves a real problem for a real person, not a toy. It has an evaluation with numbers. It shows an error analysis: what went wrong, how often, and what you did about it. It reports cost per use. It is honest about limitations. And it is written up clearly enough that a busy person can understand it in three minutes.
+What makes a portfolio project convincing? Six features come up again and again. It solves a real problem for a real person, not a toy. It has an evaluation with numbers. It shows an error analysis: what went wrong, how often, and what you did about it. It reports cost per use. It is honest about limitations. And it is written up clearly enough that a busy person can understand it in three minutes.
 
 ```mermaid
 flowchart LR
@@ -787,7 +787,7 @@ Here are portfolio ideas for every track, roughly in order of difficulty:
 |---|---|---|---|
 | Automation map of your own job, with hours saved measured over a month | A | 5–10 hours | You can find where AI pays off |
 | A three-step automation (form, AI summary, spreadsheet, email) with error handling | A | 10–15 hours | You can build systems, not just chats |
-| Free AI implementation for a local small business, written up as a case study | A, B | 20–40 hours | Discovery, delivery and measurement; the best item for consultants and FDEs |
+| Free AI implementation for a local small business, written up as a case study | A, B | 20–40 hours | Discovery, delivery and measurement; a top item for aspiring consultants and FDEs |
 | A RAG app with citations and a 30-question eval, comparing two chunking strategies | B | 30–50 hours | Retrieval and evaluation skills |
 | An agent with two or three tools and an MCP server you wrote, with a failure log | B | 40–60 hours | Agent engineering |
 | A prompt-injection red-team of your own agent: 15 attacks and the mitigations | B, E | 15–25 hours | Security thinking |
@@ -819,7 +819,7 @@ NEXT: what you would do with another month
 
 > **Definition — Building in public:** Sharing your work and what you are learning as you go, through posts, code and write-ups, rather than only showing finished results. It builds visibility, invites feedback and creates a record of steady progress.
 
-Building in public does three things for you. It makes you finish things, because you told people you would. It brings feedback from people who know more than you. And it creates a visible trail that employers, clients and collaborators can follow, which matters more than any single polished project. A hiring manager who can see twelve weeks of steady, honest progress learns more about you than from a résumé line.
+Building in public does three things for you. It makes you finish things, because you told people you would. It brings feedback from people who know more than you. And it creates a visible trail that employers, clients and collaborators can follow, which often matters more than any single polished project. A hiring manager who can see twelve weeks of steady, honest progress learns more about you than from a résumé line.
 
 Where to share: GitHub for code (with a good README, the front-page explanation of the project); a personal blog or newsletter for write-ups; LinkedIn, X or Bluesky for short updates; Hugging Face Spaces for live demos; YouTube for walkthroughs; and the communities listed later in this chapter for questions and feedback. Local meetups and company "AI guilds" are excellent places to give your first five-minute talk.
 
@@ -863,7 +863,7 @@ AI news never stops. Several major model releases can land in a single month, al
 
 A routine that works for most people has four rhythms:
 
-- **Daily, 20 minutes:** one newsletter, plus one hands-on try of something new (a feature, a model, a tool).
+- **Daily (weekdays), 20 minutes:** one newsletter, plus one hands-on try of something new (a feature, a model, a tool).
 - **Weekly, 1 hour:** one long-form podcast episode or one paper, read with the three-pass method.
 - **Monthly, 1 hour:** re-run your personal jagged-frontier test from Stage 1 and note what changed.
 - **Quarterly, 2 hours:** update your skills map, your portfolio and your plan for the next quarter.
@@ -965,7 +965,7 @@ Following individuals often gives better signal than following outlets. A balanc
 - **Economics and work:** Ethan Mollick, Erik Brynjolfsson.
 - **Industry and compute:** Dylan Patel, Ben Thompson.
 - **Interviews:** Dwarkesh Patel.
-- **Skeptics and critics:** Arvind Narayanan and Sayash Kapoor, Gary Marcus, François Chollet (creator of the ARC Prize benchmarks).
+- **Skeptics and critics:** Arvind Narayanan and Sayash Kapoor, Gary Marcus, François Chollet (creator of the ARC-AGI benchmark and co-founder of the ARC Prize).
 
 Follow at least one skeptic, even if you are enthusiastic, and at least one enthusiast, even if you are skeptical. Your errors will mostly come from the side you do not read.
 
@@ -1062,7 +1062,7 @@ flowchart TD
   I --> J["Log your judgment<br/>and check back later"]
 ```
 
-*Figure 65.13: The hype check as a flow. Most misleading claims fail at the first, fourth or sixth question.*
+*Figure 65.13: The hype check as a flow. Run it on any claim that would change what you do, buy, believe or repeat.*
 
 **A worked dissection.** Here is an invented headline of the kind you will see every week: "AI startup Nimbus hits $1 billion ARR, raises $2 billion at a $40 billion valuation, signs up-to-$10 billion compute deal with its chip investor, and beats GPT on a top benchmark." Running the checklist:
 
@@ -1182,6 +1182,6 @@ Learning roadmap, track, milestone, top-down learning, retrieval practice (activ
 - **Chip Huyen, *AI Engineering* (O'Reilly, 2025).** The best single book for Track B, covering evaluation, retrieval, agents, fine-tuning and production trade-offs.
 - **Arvind Narayanan and Sayash Kapoor, *AI Snake Oil* (2024), and their "AI as Normal Technology" writing.** The most useful toolkit for telling AI that works from AI that cannot, written by two Princeton computer scientists.
 - **Epoch AI (epoch.ai).** Free, carefully sourced data on compute, training costs, hardware and data centers; the place to check a number before you repeat it.
-- **80,000 Hours, AI safety career review and podcast (80000hours.org).** The most detailed public guide to careers in AI safety and policy, with honest discussion of fit and trade-offs.
+- **80,000 Hours, AI safety career review and podcast (80000hours.org).** One of the most detailed public guides to careers in AI safety and policy, with honest discussion of fit and trade-offs.
 - **S. Keshav, "How to Read a Paper" (2007).** A two-page note describing the three-pass method; it will save you hundreds of hours over a career of reading research.
 - **Appendix E of this book.** The full list of courses, books, newsletters, podcasts and communities, grouped by level and type, with costs and links.

@@ -387,13 +387,13 @@ Train a neural network on decades of ERA5 to answer one question: given the stat
 
 > **Definition — Autoregressive rollout:** Producing a long forecast by predicting one short step ahead, then feeding that prediction back in to predict the next step, again and again. Errors can accumulate along the way.
 
-Google DeepMind's GraphCast, published in *Science* in 2023, made the case. It works on a grid with one point every 0.25 degrees of latitude and longitude: 1,440 points around each circle of latitude and 721 from pole to pole, so 1,440 × 721 = 1,038,240 locations. At each one it tracks 5 surface quantities plus 6 atmospheric quantities at 37 heights, 5 + 6 × 37 = 227 numbers per point. The whole state of the planet's weather is about 1,038,240 × 227 ≈ 236 million numbers. A 10-day forecast in 6-hour steps is 10 × 4 = 40 steps. GraphCast produced it in under a minute on a single Google TPU chip and was more accurate than ECMWF's flagship physics forecast on 90 percent of the 1,380 test targets its authors measured.
+Google DeepMind's GraphCast, published in *Science* in 2023, made the case. It works on a grid with one point every 0.25 degrees of latitude and longitude: 1,440 points around each circle of latitude and 721 from pole to pole, so 1,440 × 721 = 1,038,240 locations. At each one it tracks 5 surface quantities plus 6 atmospheric quantities at 37 heights, 5 + 6 × 37 = 227 numbers per point. The whole state of the planet's weather is about 1,038,240 × 227 ≈ 236 million numbers. A 10-day forecast in 6-hour steps is 10 × 4 = 40 steps. GraphCast produced it in under a minute on a single Google TPU machine and was more accurate than ECMWF's flagship physics forecast on 90 percent of the 1,380 test targets its authors measured.
 
 ```mermaid
 flowchart TD
   O["Observations: satellites, balloons,<br/>aircraft, ships, stations"] --> DA["Data assimilation<br/>best estimate of now"]
   DA --> P["Physics model<br/>equations on a supercomputer<br/>hours per forecast"]
-  DA --> M["AI model trained on<br/>decades of ERA5 reanalysis<br/>about a minute on one chip"]
+  DA --> M["AI model trained on<br/>decades of ERA5 reanalysis<br/>minutes on one machine"]
   P --> F1["Forecast and ensemble"]
   M --> F2["Forecast and ensemble"]
   R["ERA5 reanalysis<br/>made by the physics system"] --> M
