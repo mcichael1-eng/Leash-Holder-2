@@ -429,17 +429,6 @@ This is the heart of Track B. Work through it as a series of projects, using cou
 
 That adds up to 1 + 1 + 0.5 + 1.5 + 0.5 + 3 + 0.5 = 8 hours, and more than half of it is building.
 
-**A worked example: what learning projects cost.** Students often worry about API bills. Suppose your RAG project's eval set has 30 questions, and each question sends about 4,000 tokens (the question plus retrieved passages) and gets back about 400. Using an illustrative price of $3 per million input tokens and $15 per million output tokens (real prices vary by model; Chapter 26 shows how to check current ones):
-
-```
-Input:  30 x 4,000 = 120,000 tokens x $3 / 1,000,000  = $0.36
-Output: 30 x   400 =  12,000 tokens x $15 / 1,000,000 = $0.18
-One full eval run                                      = $0.54
-Fifty eval runs over a whole project                   = about $27
-```
-
-A small, cheap model would cost a fraction of that. For most learners the real cost of Track B is time, not money.
-
 ### 1–3 years: production depth
 
 The third stage turns a capable builder into someone companies trust with production systems:
@@ -636,15 +625,7 @@ The numbers show why this lane matters. The US Bureau of Labor Statistics put th
 
 ### Lane 3: understanding the industry
 
-For analysts, investors, journalists, policy staff and business people:
-
-- **Chris Miller, *Chip War* (paid book):** the history and geopolitics of semiconductors.
-- **Epoch AI (epoch.ai, free):** data on training compute, costs, hardware and data-center buildouts, with clear charts and methods.
-- **SemiAnalysis (mostly paid):** deep industry analysis of chips, data centers and compute economics; some articles are free.
-- **The IEA's "Energy and AI" report (April 2025) and Lawrence Berkeley National Laboratory's December 2024 report on US data-center energy use (both free):** the reference numbers on AI's electricity demand (Chapter 41).
-- **Uptime Institute (uptimeinstitute.com):** the data-center industry's reliability standards body; some research is free, training and certification are paid.
-- **The Acquired podcast's episodes on NVIDIA, and the Asianometry YouTube channel (free):** long-form histories of the companies and technologies.
-- **Company filings (sec.gov, free):** NVIDIA's quarterly earnings releases and the hyperscalers' capital-spending guidance are primary sources (Chapter 43).
+For analysts, investors, journalists, policy staff and business people, the core reading is Chris Miller's *Chip War* (paid) for the history and geopolitics of chips; Epoch AI (epoch.ai, free) for carefully sourced data on compute, costs and data-center buildouts; SemiAnalysis (mostly paid) for deep industry analysis; the IEA's "Energy and AI" report (April 2025) and Lawrence Berkeley National Laboratory's December 2024 report on US data-center energy use (both free) for electricity demand (Chapter 41); and company filings at sec.gov (free), such as NVIDIA's quarterly earnings releases, as primary sources (Chapter 43). The Acquired podcast's NVIDIA episodes and the Asianometry YouTube channel add long-form history. Appendix E lists more.
 
 Good projects for this lane: build a spreadsheet that tracks the big four hyperscalers' capital spending each quarter from their own filings, or use Google Earth Pro's free historical imagery to watch a megaproject such as Abilene grow over two years (Chapter 42).
 
@@ -805,10 +786,8 @@ Here are portfolio ideas for every track, roughly in order of difficulty:
 | Project | Track | Rough time | What it proves |
 |---|---|---|---|
 | Automation map of your own job, with hours saved measured over a month | A | 5–10 hours | You can find where AI pays off |
-| A reusable assistant for a colleague, improved through feedback on 10 real uses | A | 10 hours | User research for AI |
 | A three-step automation (form, AI summary, spreadsheet, email) with error handling | A | 10–15 hours | You can build systems, not just chats |
 | Free AI implementation for a local small business, written up as a case study | A, B | 20–40 hours | Discovery, delivery and measurement; the best item for consultants and FDEs |
-| A small app built with an AI app builder that real people use | A, B | 10–30 hours | Shipping |
 | A RAG app with citations and a 30-question eval, comparing two chunking strategies | B | 30–50 hours | Retrieval and evaluation skills |
 | An agent with two or three tools and an MCP server you wrote, with a failure log | B | 40–60 hours | Agent engineering |
 | A prompt-injection red-team of your own agent: 15 attacks and the mitigations | B, E | 15–25 hours | Security thinking |
@@ -941,8 +920,6 @@ All free. Pick one for your commute or walk.
 | No Priors | Interviews with founders and researchers | Business and products |
 | Hard Fork (The New York Times) | Weekly tech news for a general audience | Everyone |
 | Lenny's Podcast | Product management, including many AI episodes | AI product work |
-| Training Data (Sequoia) | Founders and builders of AI companies | Business |
-| The Cognitive Revolution | Interviews on AI capabilities and impacts | Broad coverage |
 | Acquired | Long company histories, including NVIDIA | Track D, business |
 | 80,000 Hours Podcast | AI safety, policy and careers | Track E |
 | Machine Learning Street Talk | Technical and philosophical conversations with researchers | Track C |

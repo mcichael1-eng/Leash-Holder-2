@@ -416,7 +416,7 @@ Two more questions belong on the map. How should children and vulnerable people 
 
 ## Why forecasting AI is hard
 
-Before the signposts and scenarios, it is worth being honest about why smart, well-informed people disagree so much about where AI is going. There are four main reasons, and once you can name them you can spot them in any argument.
+Smart, well-informed people disagree wildly about where AI is going. There are four main reasons, and once you can name them you can spot them in any argument.
 
 > **Definition — Forecast:** A statement about the future that comes with a probability or a range and a date by which it can be checked, such as "70% chance that X happens by December 2028." A forecast that cannot be checked is an opinion.
 
@@ -426,11 +426,11 @@ Chapter 6 showed that exponential growth looks like a straight line on a log sca
 
 > **Definition — S-curve:** The shape of growth that starts slowly, speeds up, then levels off as it approaches a limit, like the adoption of a new product or the score on a benchmark that approaches 100%.
 
-From inside the steep middle of an S-curve, you cannot easily tell it from an exponential. The history of computing is full of this. Chip clock speeds rose exponentially for decades and then stalled around 2005 because chips got too hot (Chapter 2), yet total computing power kept growing, because the industry switched to parallelism. One sub-trend bent; the bigger trend found a new route. Benchmarks are S-curves too: Humanity's Last Exam launched in January 2025 with frontier models under 10%, and by October 2026 Claude Opus 5.5 scored 61.4% on its text-only questions, according to Artificial Analysis. The test is bending toward its ceiling; that tells you about the test, not about the end of progress.
+From inside the steep middle of an S-curve, you cannot easily tell it from an exponential. Chip clock speeds rose exponentially for decades and then stalled around 2005 because chips got too hot (Chapter 2), yet total computing power kept growing, because the industry switched to parallelism. One sub-trend bent; the bigger trend found a new route. Benchmarks are S-curves too: Humanity's Last Exam launched in January 2025 with frontier models under 10%, and by October 2026 Claude Opus 5.5 scored 61.4% on its text-only questions, according to Artificial Analysis. The test is bending toward its ceiling; that tells you about the test, not about the end of progress.
 
 ### The jagged frontier
 
-AI does not improve evenly. A model can earn an olympiad gold medal and still misread an analog clock. That makes headlines like "AI can now do X" almost useless for forecasting, because "X" is one point on a jagged coastline. Two people can look at the same model and honestly reach opposite conclusions, depending on which bays and headlands they test.
+AI does not improve evenly. A model can earn an olympiad gold medal and still misread an analog clock, so "AI can now do X" says little about the next task over. Two people can test the same model and honestly reach opposite conclusions, depending on which bays and headlands of the coastline they pick.
 
 ### "AGI by what definition, measured how?"
 
@@ -446,7 +446,7 @@ Google DeepMind's 2023 "Levels of AGI" paper suggested rating systems on two axe
 
 ### Incentives and track records
 
-Everyone who forecasts AI has a stake. Lab leaders raise money and recruit on ambitious timelines; critics win attention by puncturing them; investors talk their book; journalists need headlines. A source with an incentive can still be right, but it is a reason to look for independent confirmation.
+Everyone who forecasts AI has a stake: lab leaders raise money on ambitious timelines, critics win attention by puncturing them, investors talk their book. A source with an incentive can still be right, but look for independent confirmation.
 
 Track records cut both ways. Some targets have slipped repeatedly: Elon Musk called unsupervised Full Self-Driving for customers' cars in late 2026 "a guess" after earlier missed dates, Google's Gemini 3.5 Pro never got a general release, and an AI drug company's first human trials reportedly slipped by a year. Other things arrived faster than almost anyone said: ARC-AGI-3 went from 0.51% to 62.7% for a frontier model in six months. The lesson from Chapter 7's history holds: experts have been wrong in both directions, often at the same time.
 

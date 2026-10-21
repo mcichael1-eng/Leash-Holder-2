@@ -39,6 +39,8 @@ There are three reasons for the paradox, and they organize the rest of this chap
 
 **Reason 3: the physical world has no undo button.** When your chatbot gives a bad answer, you click "regenerate". When a robot drops a glass, the glass is broken. When a 60-kilogram robot falls over next to a child, someone could be hurt. Physical mistakes are expensive, sometimes dangerous, and they compound: one slip can wreck every step that follows.
 
+> **Try it:** Ask your chatbot to write step-by-step instructions a robot could follow to tie a pair of shoelaces. Then go through its list and mark every step where you, doing it yourself, rely on touch, on feeling tension in the lace, or on seeing around your own fingers. Notice how little of that the instructions capture.
+
 > **Key idea:** Robots are hard mostly because of data and generalization, not because of the metal. Motors and gears are a mature technology. What is missing is the experience that tells the motors what to do in situations nobody prepared the robot for.
 
 > **Analogy:** Think of a toddler and a chess computer. The chess computer crushes every grandmaster but could not pick up a sock if you gave it a hand. The toddler cannot play chess but picks up socks, stacks blocks and walks across a cluttered room without thinking. What is easy for us is hard for machines, and the reverse.
@@ -202,6 +204,8 @@ This recipe has a strong track record. In 2019 OpenAI trained a robot hand calle
 > **Key idea:** Walking and acrobatics have become a largely solved engineering problem, thanks to RL in randomized simulation. A backflip looks harder than folding a towel, but it is easier for a robot: the body interacts with simple ground, while the towel is a different shape every time.
 
 > **Watch out:** An acrobatics video tells you about the legs and the simulator. It tells you almost nothing about whether the robot can do useful work with its hands in a messy room, which is where the real difficulty lies.
+
+> **At the frontier (2026):** The newest models control the whole body at once instead of treating legs and arms separately. Gemini Robotics 2 (July 30, 2026) was shown walking, crouching and manipulating objects together, and Figure says its Helix 02 model coordinates hands, arms, torso and feet for Figure 03's work at BMW.
 
 Reward design has its own traps, the "reward hacking" of Chapter 48 and Chapter 55: simulated robots often learn odd gaits or exploit glitches in the simulated physics, because the reward never said "and walk like a sensible robot". Extra penalties rule these out.
 

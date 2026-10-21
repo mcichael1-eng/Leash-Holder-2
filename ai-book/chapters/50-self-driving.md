@@ -89,6 +89,8 @@ Level 2 creates a well-known human-factors trap. The better the system gets, the
 
 At Level 3, while the system is engaged inside its operational design domain, the system is the driver. You may look away from the road. But the system can ask you to take over, and you must do so within a short time. Mercedes-Benz Drive Pilot became the first SAE Level 3 system certified in the United States, in Nevada and California in 2023. Its initial US version worked only on approved highways, in dense traffic, at speeds up to about 40 miles per hour, in good weather and daylight.
 
+> **Try it:** Ask your chatbot: "My car's manual says its highway assist lets me take my hands off the wheel. Is it Level 2 or Level 3, and who is responsible if it crashes?" Then ask it which question in the SAE table decides the answer. A good answer will point to whether you must keep watching the road.
+
 ```mermaid
 stateDiagram-v2
     state "Human driving" as H
@@ -172,6 +174,8 @@ Your phone's GPS is accurate to several meters. A car needs to know which lane i
 > **Definition — HD map:** A high-definition map, accurate to centimeters, that records every lane, curb, crosswalk, sign and traffic light. It gives a self-driving car prior knowledge of the road before it arrives.
 
 An HD map is like reading the exam questions in advance: the car already knows where the lanes and traffic lights should be, so its sensors only need to find what has changed, such as cars, people and roadworks. The price is that the map must be built and kept current for every street in the service area, which is one reason robotaxis expand city by city. Waymo uses HD maps. Tesla's approach avoids them and tries to read the road from cameras each time.
+
+> **Try it:** Open Google Maps or Apple Maps in satellite or 3D view at the most complicated intersection near you. List everything an HD map would need to record there: each lane and turn arrow, crosswalks, stop lines, every traffic signal and which lane it controls, curbs and bus stops. Then imagine keeping that list correct through a month of roadworks.
 
 ### Perception: what is around me?
 
@@ -281,6 +285,8 @@ A self-driving car has to see in every direction, at long range, day and night, 
 
 **Worked example: timing a laser.** Light travels about 300,000 kilometers per second, which is 0.3 meters per nanosecond (billionth of a second). For an object 150 meters away, the pulse travels 300 meters there and back, which takes 300 ÷ 0.3 = 1,000 nanoseconds, or one microsecond. A lidar measures that time and converts it back into distance, for hundreds of thousands to millions of pulses per second, sweeping the scene to build a point cloud.
 
+> **Try it:** If you have a recent iPhone Pro or iPad Pro, open the built-in Measure app, which uses a small lidar sensor on the back. Measure a doorway, then try a window or a mirror. Glass and shiny surfaces confuse it, for the same reasons they can confuse a car's lidar.
+
 > **Definition — Radar:** A sensor that sends out radio waves and measures their echoes to find the distance and speed of objects. It works in rain, fog and darkness but gives a much blurrier picture than lidar or cameras.
 
 > **Definition — Ultrasonic sensor:** A short-range sensor that uses sound pulses, like a bat, to detect obstacles within a few meters. Used mainly for parking.
@@ -349,6 +355,8 @@ sequenceDiagram
 *Figure 50.5: A typical remote-assistance exchange. The human gives advice; the vehicle still does the driving. The same "puppet or pilot" questions from Chapter 49 apply.*
 
 **Worked example: how many remote helpers does a fleet need?** Use illustrative assumptions, not any company's figures. A fleet of 3,500 robotaxis operates 16 hours a day: 3,500 × 16 = 56,000 vehicle-hours a day. Suppose a car asks for help once every 5 hours of driving: 56,000 ÷ 5 = 11,200 requests a day. If each takes 1 minute of a person's attention, that is 11,200 minutes, or about 187 person-hours a day, an average of about 12 people on duty across the 16 hours, before allowing for breaks and busy peaks. Halve the request rate and you halve the staff. Just as with humanoids in Chapter 49, the ratio of vehicles to remote humans is one of the most important numbers in the business, and one companies rarely publish.
+
+> **Analogy:** Remote assistance is less like flying a drone by remote control and more like a delivery driver phoning the office: "The street is blocked, can I go round the back?" The office answers the question; the driver still drives.
 
 ## A short history: from the desert to the city
 
@@ -463,6 +471,8 @@ Highways are simpler than city streets in some ways (no pedestrians, no cyclists
 
 *Table 50.3: The robotaxi landscape in 2026. Nearly every number is self-reported; independent checks are rare outside safety data.*
 
+> **At the frontier (2026):** The race has shifted from "can it work?" to "how fast can it scale?" The leading questions in late 2026 are whether Waymo reaches its target of 1 million weekly rides, whether purpose-built vehicles like Zoox's can grow under exemption caps, whether camera-only robotaxis can match multi-sensor safety records with published data, and which company first runs paid driverless rides in Europe.
+
 > **Watch out:** "Self-driving cars are always five years away" is out of date. Robotaxis with nobody in the driver's seat already give hundreds of thousands of paid rides every week in the US and China. What remains true is that they work in limited areas and conditions (Level 4), not everywhere (Level 5).
 
 ## How to read a "% fewer crashes" claim
@@ -495,6 +505,8 @@ RoboCab announces: "RoboCab had 80 percent fewer injury crashes than human drive
 - High end: 7.2 ÷ 50 = 0.144 per million miles, which is 1 − (0.144 ÷ 0.25) = 42 percent fewer.
 
 The honest headline is "somewhere between about 42 percent and 98 percent fewer serious-injury crashes". That is still good news, but a long way from a precise "84 percent".
+
+> **Analogy:** Judging a fleet's safety from two serious crashes is like judging a basketball player's free-throw percentage from two shots. If both went in, you would not announce "100 percent shooter". You need many more attempts before the number settles down.
 
 **Step 6: Ask how many miles it takes to prove anything.** For the rarest events, deaths, there is a handy shortcut.
 
