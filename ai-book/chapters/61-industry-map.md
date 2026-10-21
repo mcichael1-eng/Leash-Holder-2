@@ -16,13 +16,13 @@
 
 This chapter looks at the whole book from the money side. Chapter 4 (The Internet and the Cloud) explains what a cloud is. Chapter 24 (The 2026 Model Landscape and How to Read Benchmarks) introduces the labs and their models. Chapter 31 (Shipping AI: Evals, Reliability, Security and Product Design) works through the unit economics of a single AI product. Chapters 35 (The AI Chip Industry), 42 (The Great Buildout) and 43 (The Economics of AI Compute) cover the chip and data-center layers in depth. You can read this chapter without them: every term is defined here, and every number carries a date.
 
-> **Watch out:** AI money figures go stale within weeks. Every number here is a snapshot dated to a month in 2025 or 2026. Figures from company filings and official job boards are stated plainly; figures from news reports, analysts and data providers such as Sacra are marked "reported." Learn the method more than the numbers.
+> **Watch out:** AI money figures go stale within weeks. Figures from company filings and official job boards are stated plainly; figures from news reports and data providers such as Sacra are marked "reported." Learn the method more than the numbers.
 
 ## Your $20 and the machine behind it
 
 You pay about $20 a month for a chatbot plan (Claude Pro was $20 a month as of late 2026, and other labs have similar entry plans). You type a question, press Enter, and an answer streams back.
 
-Who got your $20? The simple answer is "the AI company." The real answer is a chain of companies. Part of your money pays for a chip designed in California, manufactured in Taiwan, fitted with memory made in South Korea, bolted into a rack by a contract manufacturer, installed in a building in Texas or Indiana, cooled by water and fans, and powered by a gas turbine or a nuclear plant.
+Who got your $20? Not just "the AI company," but a chain of them. Part of your money pays for a chip designed in California, made in Taiwan, fitted with Korean memory, installed in a building in Texas or Indiana, and powered by a gas turbine or a nuclear plant.
 
 That chain is the AI industry. In 2023 it looked like a few research labs and a chip company. By 2026 it had become one of the largest investment programs in history: the four biggest US cloud companies alone guided to roughly $720–745 billion of capital spending for 2026, as reported in mid-2026, most of it for AI data centers.
 
@@ -56,7 +56,7 @@ A worked example with reported 2026 figures for Anthropic. Its run-rate was repo
 
 The run-rate was about double what the company had booked in nine months, yet close to its latest quarter times four. Both numbers are honest; they answer different questions.
 
-OpenAI shows the same pattern. Its run-rate was reported at about $20 billion at the end of 2025, while its recognized revenue for 2025 was reported at $13.1 billion. Its 2026 run-rate was reported at $25 billion (February), $40 billion (July) and about $50 billion (September, per the Financial Times), and Bloomberg reported on October 9, 2026 that OpenAI expected at least $70 billion annualized by year-end. The FT noted that an earlier $70 billion figure had come from a different calculation method, which is why you always ask how a run-rate was computed.
+OpenAI shows the same pattern: a reported run-rate of about $20 billion at the end of 2025 against reported 2025 revenue of $13.1 billion. Its run-rate was reported at about $50 billion in September 2026 (Financial Times), and Bloomberg reported on October 9 that it expected at least $70 billion by year-end. The FT noted that an earlier "$70 billion" figure had used a different method, which is why you always ask how a run-rate was computed.
 
 > **Watch out:** Even recognized revenue is not always comparable. Anthropic reportedly books sales made through cloud resellers "gross," counting the full price the customer pays even when a cloud partner takes a share, while some peers book similar sales "net." That inflates its top line relative to peers. Compare like with like.
 
@@ -94,7 +94,7 @@ Worked example. In late May 2026 Anthropic reportedly raised $65 billion at a $9
 
 > **Definition — Revenue multiple:** A company's valuation divided by its revenue or run-rate. It shows how many dollars investors pay for each dollar of sales, which reflects how fast they expect it to grow.
 
-The 2026 IPO wave put these words on front pages. SpaceX, which absorbed xAI in an all-stock deal that closed in early February 2026, listed on Nasdaq on June 12, 2026, pricing at $135 a share, raising about $75 billion and closing its first day at roughly a $2.1 trillion value (all reported). OpenAI filed IPO paperwork confidentially with the SEC on June 8, 2026, and its finance chief was reported to be targeting a listing "by 2027." Anthropic filed confidentially on June 1, 2026, and as of October 20, 2026 was reported to be targeting a mid-November listing, with valuation talk reported to have moved from about $2 trillion to about $1.5 trillion.
+The 2026 IPO wave put these words on front pages (all reported). SpaceX, which had absorbed xAI in February, listed on June 12, 2026 at $135 a share, raised about $75 billion and closed its first day near a $2.1 trillion value. OpenAI filed confidentially with the SEC on June 8 and was said to target a listing "by 2027." Anthropic filed confidentially on June 1 and, as of October 20, was reported to be aiming for mid-November, with valuation talk of about $1.5 trillion.
 
 > **Definition — Public benefit corporation (PBC):** A for-profit company legally required to weigh a stated public mission alongside profit. Anthropic is a PBC, and in October 2025 OpenAI's for-profit arm became OpenAI Group PBC, controlled by the nonprofit OpenAI Foundation (reported).
 
@@ -147,7 +147,7 @@ Every AI answer starts as electricity. Data centers worldwide used about 415 ter
 
 > **Definition — Powered land:** A site that already has a confirmed connection to enough electricity for a data center. Because new grid connections can take years, powered land became one of the scarcest assets in AI.
 
-This layer's businesses are utilities, power-plant developers, makers of turbines and transformers, nuclear companies, construction firms, land developers and the skilled trades who build and run the sites. JLL put the average cost of a data-center shell and core at about $10.7 million per megawatt in 2025, with AI fit-out pushing toward about $25 million per megawatt. Including chips, industry statements put a gigawatt of AI capacity at tens of billions of dollars; NVIDIA's chief executive has cited roughly $50–60 billion.
+This layer includes utilities, turbine and transformer makers, nuclear companies, builders, land developers and the skilled trades. JLL put the average cost of a data-center shell and core at about $10.7 million per megawatt in 2025, with AI fit-out pushing toward about $25 million per megawatt. Including chips, industry statements put a gigawatt of AI capacity at tens of billions of dollars; NVIDIA's chief executive has cited roughly $50–60 billion.
 
 Power has become the bottleneck: chips can be ordered in months, but a grid connection or power plant can take years. That is why Meta announced nuclear agreements for up to 6.6 GW by 2035 in January 2026, why some sites burn gas in on-site turbines, and why lab job boards now list electricians and community-engagement managers. Chapters 39 to 42 cover this layer in depth.
 
@@ -163,7 +163,7 @@ The star of this layer is NVIDIA. In its fiscal quarter ending July 26, 2026, NV
 
 A 75% gross margin is extraordinary for hardware. Of every dollar a customer pays NVIDIA, only about 25 cents covers the direct cost of making the product: wafers from TSMC, high-bandwidth memory (HBM, see Chapter 33) from SK hynix, Samsung or Micron, packaging and boards. The other 75 cents funds research and profit. The margin exists because there is not yet a full substitute: two decades of CUDA software and complete rack-scale systems make NVIDIA hard to replace (see Chapter 35).
 
-The alternatives are growing. AMD signed a multi-generation 6-gigawatt agreement with OpenAI in October 2025. Google designs TPUs with Broadcom and agreed that month to give Anthropic access to up to one million of them. Amazon designs Trainium. OpenAI and Broadcom announced custom accelerators for 10 gigawatts from late 2026 through 2029. Beneath them all sit TSMC's factories, ASML's lithography machines (the only source of extreme-ultraviolet tools for leading-edge chips) and the three HBM makers.
+Alternatives are growing: AMD's 6-gigawatt deal with OpenAI (October 2025), Google's TPUs (up to one million promised to Anthropic the same month), Amazon's Trainium, and OpenAI's 10-gigawatt custom-chip plan with Broadcom. Beneath them all sit TSMC's factories, ASML's lithography machines (the only source of extreme-ultraviolet tools) and the three HBM makers.
 
 > **Analogy:** In a gold rush, the sellers of picks and shovels often did better than most miners, because they sold to everyone and never had to strike gold. NVIDIA sells the shovels of the AI rush. Selling to every miner beats betting on one mine, until the rush ends.
 
@@ -203,13 +203,7 @@ CoreWeave shows the opportunity and the risk. It went public on March 28, 2025, 
 
 > **Definition — Open-weight model:** A model whose trained parameters are published so anyone can download, run and modify it. The weights are free, but running them still costs compute and engineering.
 
-Chapter 24 describes the labs' models; here we look at them as businesses. A lab spends on three big things: compute for training, compute for serving users (inference), and people. It earns money in five main ways:
-
-1. **API usage.** Developers pay per million tokens (see Chapter 26).
-2. **Consumer subscriptions.** The $20-a-month plans and higher tiers ($100 and $200 a month for Claude's Max plans as of late 2026).
-3. **Enterprise seats and contracts.** Anthropic reportedly had over 300,000 business customers in October 2025 and over 1,000 spending more than $1 million a year by April 2026.
-4. **Agents and coding tools.** Claude Code was reported at $1 billion annualized in November 2025 and $2.5 billion in February 2026.
-5. **Advertising.** OpenAI's ads were reported at $1 billion annualized in August 2026.
+Chapter 24 describes the labs' models; here we treat them as businesses. A lab spends on training compute, serving compute (inference) and people. It earns from API usage priced per million tokens (Chapter 26); consumer subscriptions ($20 plans, and $100 and $200 Max plans at Anthropic in late 2026); enterprise contracts (Anthropic reportedly had over 1,000 customers spending more than $1 million a year by April 2026); agents and coding tools (Claude Code was reported at $2.5 billion annualized in February 2026); and advertising (OpenAI's ads were reported at $1 billion annualized in August 2026).
 
 | Lab | Reported run-rate | Latest reported valuation | Selected facts (reported) |
 |---|---|---|---|
@@ -219,7 +213,7 @@ Chapter 24 describes the labs' models; here we look at them as businesses. A lab
 
 *Table 61.3: The three most-reported US frontier labs as businesses, as of October 2026. Google DeepMind and Meta's labs sit inside giant companies that do not report them separately.*
 
-The labs differ in their customers. Menlo Ventures, a venture firm with investments in the sector, estimated that Anthropic held 40% of enterprise spending on language-model APIs in 2025 against 27% for OpenAI. OpenAI's strength is consumers: ChatGPT is reported to have around a billion weekly users. Google and Meta can spread model costs across products that already reach billions of people.
+Their customers differ. Menlo Ventures, a venture firm invested in the sector, estimated Anthropic held 40% of enterprise language-model API spending in 2025 against OpenAI's 27%; OpenAI leads with consumers, with ChatGPT reported at around a billion weekly users.
 
 > **Watch out:** "Open-weight means free" is a myth. Serving a large open model needs GPUs, engineers and maintenance. Open-weight labs earn money through hosting, enterprise support, premium closed models or the strategic value of setting a standard.
 
@@ -245,7 +239,7 @@ Menlo Ventures estimated that enterprises spent $37 billion on generative AI in 
 
 > **Definition — Wrapper:** A product built on top of someone else's AI model, adding an interface, a workflow or data. A "thin wrapper" adds little and is easy to copy; a "thick wrapper" becomes a deep product.
 
-Applications have the easiest entry and the fiercest competition: anyone can call a model's API this afternoon. What keeps a customer when a rival, or the model's own maker, offers the same thing is the subject of the section on moats.
+Applications have the easiest entry and the fiercest competition; the section on moats asks what keeps their customers.
 
 ### Layer 6: services
 
@@ -257,7 +251,7 @@ The top layer sells expertise and time rather than software.
 
 > **Definition — Pilot (proof of concept):** A small trial that tests whether AI works for one use case before a full rollout.
 
-Why would services grow alongside software that is supposed to replace work? Because buying AI is easy and getting value from it is hard. Stanford's 2026 AI Index reported that 88% of organizations say they use AI. But the MIT NANDA "GenAI Divide" report (July 2025) found that only about 5% of enterprise generative-AI pilots delivered rapid revenue acceleration or measurable impact on profit and loss (P&L). Media turned that into "95% of AI projects fail"; the report itself blamed brittle workflows and poor fit with daily operations, not weak models.
+Services grow because buying AI is easy and getting value from it is hard. Stanford's 2026 AI Index reported that 88% of organizations say they use AI. But the MIT NANDA "GenAI Divide" report (July 2025) found that only about 5% of enterprise generative-AI pilots delivered rapid revenue acceleration or measurable impact on profit and loss (P&L). Media turned that into "95% of AI projects fail"; the report itself blamed brittle workflows and poor fit with daily operations, not weak models.
 
 ```
 Pilot-to-impact funnel (shape, not to scale)
@@ -270,19 +264,8 @@ Pilot-to-impact funnel (shape, not to scale)
 ```
 *Figure 61.2: The pilot-to-impact funnel. Only the top and bottom figures come from studies, and they measure different things (organizations versus pilots); the middle bars show the shape the reports describe.*
 
-That gap is the services opportunity: consultancies, agencies serving small businesses, the labs' own forward-deployed teams and corporate trainers all sell the work of turning a model into a changed workflow. OpenAI had a dedicated Forward Deployed Engineering department with 31 open roles on October 21, 2026, according to its job board.
+That gap is the services opportunity: turning a model into a changed workflow. OpenAI had a dedicated Forward Deployed Engineering department with 31 open roles on October 21, 2026, according to its job board.
 
-| Layer | What it sells | Headline number (date) |
-|---|---|---|
-| 0. Energy and construction | Power, land, buildings, trades | About 14.2 GW of large AI sites tracked (Epoch, Oct 2026) |
-| 1. Chips and hardware | Accelerators, memory, manufacturing, racks | NVIDIA data-center revenue $89.0B in one quarter, 75% gross margin (filing, July 2026 quarter) |
-| 2. Cloud and compute | Rented compute, capacity contracts | About $720–745B big-four 2026 capex (reported) |
-| 3. Model labs | Tokens, subscriptions, enterprise deals | Run-rates of about $50B and over $65B at the top two US labs (reported) |
-| 4. Data and tooling | Training data, evals, developer tools | Mercor about $2B gross run-rate (reported, June 2026) |
-| 5. Applications | Software for end users | About $19B of 2025 enterprise app spend (Menlo, reported) |
-| 6. Services | Implementation, training, consulting | About 5% of pilots reached measurable P&L impact (MIT, 2025) |
-
-*Table 61.4: The value chain at a glance, with one dated number per layer.*
 
 ## Where the money flows
 
@@ -321,11 +304,11 @@ flowchart LR
 ```
 *Figure 61.3: Following one subscription dollar down the value chain. An illustrative model built from reported ratios and labeled assumptions, not any company's accounts.*
 
-Four lessons fall out of this model:
+Four lessons fall out:
 
-1. **The chip maker captures a large share,** roughly a quarter of your dollar as gross profit. That is why NVIDIA became one of the world's most valuable companies, and why every cloud designs its own chips: on Google TPUs or Amazon Trainium, part of that slice stays in-house.
-2. **Electricity is small,** about 5 cents. Power is the bottleneck because it is slow to get, not because it is costly per hour.
-3. **Timing is everything.** The hardware was bought before your dollar arrived, and your subscription repays it over five years. If the chip is obsolete in three, the provider loses money even if every customer pays.
+1. **The chip maker captures a large share,** about a quarter of your dollar as gross profit, which is why every cloud now designs its own chips.
+2. **Electricity is small,** about 5 cents: power is scarce, not costly.
+3. **Timing is everything.** The hardware was bought before your dollar arrived. If it is obsolete in three years instead of five, the provider loses money even if every customer pays.
 4. **The lab is squeezed.** Its 40 cents must fund the next, more expensive model.
 
 The model also gives a cost per GPU-hour. At 70% utilization a GPU sells 8,760 × 0.7 ≈ 6,130 hours a year, so its cost per sold hour is 15,200 ÷ 6,130 ≈ **$2.48**. The gap to the October 2026 list price of about $6.69–6.99 for a B200 pays for idle hardware, big-customer discounts, risk and profit. Chapter 43 builds this into a full payback model.
@@ -367,7 +350,7 @@ Circular deals are not fraud, and they can make sense: a supplier with spare cas
 
 > **Analogy:** An "up to" deal is like a gym membership advertised as "up to 365 visits a year." The headline is the maximum, not what will happen.
 
-Read the fine print and the conditions appear. Of Amazon's reported $50 billion commitment to OpenAI, $35 billion was reportedly contingent on an IPO or a technical milestone. NVIDIA's September 2025 letter of intent to invest "up to $100 billion" in OpenAI was later reported to have been shelved in favor of the roughly $30 billion equity stake. Stargate was announced in January 2025 as "up to $500 billion" and 10 gigawatts by 2029; in April 2026 Epoch AI estimated its flagship Abilene site had about 0.3 GW of facility power running against a 1.2 GW plan (Oracle reportedly said in September 2026 that six of eight buildings had been delivered), with most new Stargate capacity expected in 2027–2028. Large projects are staged for good reasons; the point is that adding up headline maximums overstates what has been committed and spent.
+Read the fine print and conditions appear. Of Amazon's reported $50 billion commitment to OpenAI, $35 billion was reportedly contingent on an IPO or a technical milestone. NVIDIA's 2025 letter of intent to invest "up to $100 billion" in OpenAI was later reported shelved in favor of the roughly $30 billion stake. Stargate was announced in January 2025 as "up to $500 billion" and 10 gigawatts by 2029; in April 2026 Epoch AI estimated its flagship Abilene site had about 0.3 GW running against a 1.2 GW plan, with most new capacity expected in 2027–2028. Staging is normal; adding up headline maximums still overstates what has been spent.
 
 ### The capex-revenue gap
 
@@ -379,7 +362,7 @@ Hyperscalers are spending about $720–745 billion in 2026 (reported). How much 
 
 Two cautions. Not all capex is for AI (Amazon's includes robotics and satellites). And much of the labs' revenue is paid straight back to clouds for compute, so adding cloud and lab revenue double-counts the same dollars.
 
-Bulls point to how fast lab revenue has grown (Anthropic's reported run-rate rose about sevenfold in seven months), to clouds saying demand still exceeds supply, and to AWS's reported $496 billion backlog. Bears point to projected cash losses, circular financing, Oracle's credit rating being cut to BBB-, the lowest investment grade, in July 2026, and to railroads and 1990s fiber-optic networks, real technologies that attracted more investment than they could repay in time. Chapter 43 covers financing and Chapter 60 presents both sides of the bubble debate.
+Bulls point to lab revenue growth (Anthropic's reported run-rate rose about sevenfold in seven months), demand still exceeding supply, and AWS's reported $496 billion backlog. Bears point to projected cash losses, circular financing, Oracle's July 2026 downgrade to BBB- (the lowest investment grade), and to railroads and 1990s fiber, real technologies that attracted more investment than they could repay in time. Chapter 43 covers financing and Chapter 60 presents both sides of the bubble debate.
 
 > **Key idea:** The AI industry in 2026 is a bet that application revenue will grow into the infrastructure being built for it. The richest companies in the world are making that bet, but it is still a bet, and so far the layer capturing the most profit is the one selling the shovels.
 
@@ -406,7 +389,7 @@ flowchart TD
 
 > **Definition — Applied AI:** The teams at a lab that help customers put models to work: solutions architects who design deployments and run proofs of concept, and forward-deployed engineers who build them.
 
-Research trains the models (Chapters 19 to 21). Scaling and compute keeps hundreds of thousands of accelerators busy and increasingly delivers the data centers themselves. Product builds the apps, the developer platform and new devices. Applied AI and go-to-market sells to businesses and governments. Safeguards and policy decides what the model should and should not do and enforces usage rules (Chapter 56). Security protects the lab's most valuable asset, its model weights.
+Research trains the models (Chapters 19 to 21); scaling and compute keeps the accelerators busy and increasingly builds data centers; safeguards and policy sets and enforces usage rules (Chapter 56); security guards the model weights.
 
 ### Who labs actually hire
 
@@ -485,7 +468,7 @@ flowchart LR
 | Marketplace | Mercor keeps about 30–40% of gross; contractors get 60–70% | Scales with its network | Few, powerful customers |
 | Infrastructure rental | CoreWeave GPU-hours and capacity contracts | Long contracts, big backlogs | Capital-heavy and debt-funded |
 
-*Table 61.5: Business models in the AI industry, with examples and trade-offs.*
+*Table 61.4: Business models in the AI industry, with examples and trade-offs.*
 
 ```mermaid
 quadrantChart
@@ -545,9 +528,9 @@ Now the compute cost, with made-up usage: a lawyer runs 40 document reviews a da
 
 Same customer, same price, same work: the model choice moves the margin from 82% to 8%. That is why AI companies route easy tasks to cheap models, cache repeated text (Chapter 23) and cap heavy users.
 
-Add acquisition. Suppose (another made-up number) winning a law firm costs $50,000 of sales effort. At 80% margin the minimum contract yields about $230,400 of gross profit a year, so the firm repays its CAC in about 50,000 ÷ 230,400 × 12 ≈ **2.6 months**. Keep the customer five years and LTV dwarfs CAC; lose it after six months and the picture darkens, which is why retention matters so much.
+Add acquisition. If winning a law firm costs (say) $50,000 of sales effort, the contract's gross profit of about $230,400 a year at 80% margin repays that CAC in about 50,000 ÷ 230,400 × 12 ≈ **2.6 months**. Keep the customer five years and LTV dwarfs CAC; lose it in six months and the picture darkens.
 
-Falling token prices help. Epoch AI found in March 2025 that the price of reaching a fixed benchmark score fell between 9× and 900× per year, depending on the benchmark. But customers want the newest model, priced at the top, and cheaper tokens invite heavier use: reasoning models think longer and agents run for hours. Cost per token falls while tokens per task rise (the Jevons paradox of Chapter 37).
+Falling token prices help: Epoch AI found in March 2025 that the price of reaching a fixed benchmark score fell 9× to 900× per year. But customers want the newest model, priced at the top, and agents and reasoning models use far more tokens per task (the Jevons paradox of Chapter 37).
 
 > **Key idea:** In AI, gross margin is a design decision. The same product can earn 80% or lose money depending on which model it calls, how much context it sends and how it prices heavy users.
 
@@ -595,7 +578,7 @@ All figures below are reported (mostly from Sacra company pages and news coverag
 | Perplexity | AI answer engine | About $750M annualized (Aug 2026 est.); $20B (Sep 2025) | The purest test of distribution against "the model eats your feature" | not computed (dates differ) |
 | CoreWeave | Neocloud renting NVIDIA GPUs | About $5.1B revenue (2025); $99.4B backlog; about $35.1B debt (June 2026); about 67% of 2025 revenue from Microsoft | Debt-funded infrastructure grows fast but is fragile to concentration | public company |
 
-*Table 61.6: Eight AI businesses, 2025–2026. For comparison, the labs: Anthropic's $965B post-money (May 2026) against an over-$47B run-rate (early May) is about 20×; OpenAI's $852B (March 2026) against $25B (February) is about 34×.*
+*Table 61.5: Eight AI businesses, 2025–2026. For comparison, the labs: Anthropic's $965B post-money (May 2026) against an over-$47B run-rate (early May) is about 20×; OpenAI's $852B (March 2026) against $25B (February) is about 34×.*
 
 Read the multiples as a record of expectations. Twenty times revenue says investors expect very fast growth for years; 79× says they expect even more. Few companies sustain that, which is why most venture bets fail and a few pay for the rest.
 
@@ -635,7 +618,7 @@ Value chain, Revenue, Recognized revenue (GAAP revenue), ARR (Annual Recurring R
 
 9. **[Challenge] Moat audit.** (1) Pick an AI startup you use or have read about. (2) Score it from 0 to 3 on each of the six moats in this chapter: data loop, workflow integration, distribution, trust and compliance, switching costs, speed. (3) Answer the key question: will the next frontier model make it stronger or obsolete? (4) Ask a chatbot to argue the opposite of your conclusion, then decide who made the better case. **What you'll learn:** to judge defensibility the way investors and founders do.
 
-10. **[Challenge] What would you have to believe?** (1) Take one company from Table 61.7. (2) Assume a mature company of its type might be valued at about 10 times revenue. (3) Compute the revenue it would need for today's valuation to equal 10× revenue. (4) Compute how many years of 50% annual growth that would take from its reported figure, using a spreadsheet column that multiplies by 1.5 each year. (5) Write two sentences on whether that seems plausible and what could go wrong. **What you'll learn:** how valuations encode growth expectations, and how to test them with arithmetic.
+10. **[Challenge] What would you have to believe?** (1) Take one company from Table 61.5. (2) Assume a mature company of its type might be valued at about 10 times revenue. (3) Compute the revenue it would need for today's valuation to equal 10× revenue. (4) Compute how many years of 50% annual growth that would take from its reported figure, using a spreadsheet column that multiplies by 1.5 each year. (5) Write two sentences on whether that seems plausible and what could go wrong. **What you'll learn:** how valuations encode growth expectations, and how to test them with arithmetic.
 
 ## Areas of opportunity
 

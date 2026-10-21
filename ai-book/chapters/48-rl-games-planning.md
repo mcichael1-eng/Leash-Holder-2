@@ -16,7 +16,7 @@ Chapter 8 (Learning From Examples) introduced reinforcement learning's basic voc
 
 ## Deciding, not just predicting
 
-Most AI in this book answers a question: what is in this photo, what word comes next, will this card payment turn out to be fraud? This chapter is about a different verb: **decide**. A decision is special because it changes what happens next. If you move your knight, the board is different. If a robot steps left, it sees a different room. If your chatbot chooses to call a search tool instead of answering, the rest of the conversation changes.
+Most AI in this book answers a question: what is in this photo, what word comes next, is this payment fraud? This chapter is about a different verb: **decide**. A decision changes what happens next. Move your knight and the board is different; if your chatbot chooses to call a search tool instead of answering, the rest of the conversation changes.
 
 > **Definition — Sequential decision-making:** Making a series of choices where each choice changes the situation in which the next choice is made, as in games, driving, robot control or a multi-step task.
 
@@ -27,7 +27,7 @@ There are two great families of tools for deciding.
 
 > **Definition — Planning:** Working out a sequence of actions in advance, by reasoning about their consequences, to reach a goal.
 
-The most famous systems combine the two. AlphaGo used learned intuition to suggest promising moves and search to check them. Your chatbot's reasoning mode does something similar with words (Chapter 21). So we start with search, then build up reinforcement learning, then watch them meet.
+The most famous systems combine the two: AlphaGo used learned intuition to suggest moves and search to check them, and your chatbot's reasoning mode does something similar with words (Chapter 21).
 
 > **Key idea:** Search means thinking ahead with a model of the world. Reinforcement learning means learning from trial and error. The strongest decision-making systems use learning to guide search and search to improve learning.
 
@@ -104,7 +104,7 @@ A* marches right while f stays at 7. At row 2, column 3, the wall blocks the way
 
 > **Analogy:** Breadth-first search is a search party fanning out in every direction from the trailhead. A* is the same party with a compass pointing at the destination: they still check side paths when the direct way is blocked, but they do not waste hours walking away from the goal.
 
-Real navigation apps use souped-up relatives of A*, plus heavy precomputation and live traffic predictions, but the core idea is the same: combine what you know (the distance so far) with a good guess (the distance left).
+Real navigation apps add heavy precomputation and live traffic to relatives of A*, but the core idea is the same: combine what you know (distance so far) with a good guess (distance left).
 
 ### Game trees: when the world fights back
 
@@ -185,7 +185,9 @@ flowchart TD
 ```
 *Figure 48.3: The complete minimax tree for the position. Scores flow upward: O takes the minimum of its children, X takes the maximum.*
 
-Notice the trap in Option C. A greedy player who only looks at their own chances sees "C creates a threat and can win." Minimax sees that a sensible opponent will never let that branch happen. Assuming the opponent is smart is the whole point.
+Notice the trap in Option C. A greedy player sees "C creates a threat and can win." Minimax sees that a sensible opponent will never let that branch happen. Assuming the opponent is smart is the whole point.
+
+> **Try it:** Play tic-tac-toe against your chatbot in text, numbering the squares 1 to 9. After each of its moves, ask it to list the minimax value (+1, 0 or −1) of every move it considered. Check one of its claims yourself with a small tree on paper.
 
 > **Key idea:** Minimax judges each move by its worst case, assuming a perfect opponent. Scores are known only at the end of the game, so they are passed up the tree: the opponent's levels take the minimum, your levels take the maximum.
 
@@ -201,7 +203,7 @@ Even with pruning, chess is far too big to search to the end. So chess programs 
 
 This is exactly how IBM's Deep Blue beat world champion Garry Kasparov in May 1997, winning the six-game match 3.5 to 2.5 after losing their first match in 1996. Deep Blue used hundreds of custom chess chips to examine about 200 million positions per second, with alpha-beta pruning and an evaluation function hand-crafted with help from grandmasters. It learned almost nothing. It was a triumph of search and engineering.
 
-Modern chess engines kept the search but changed the evaluation. Since 2020 the leading open engine, Stockfish, has used a small neural network to evaluate positions, and engines far stronger than any human now run on a phone.
+Modern engines kept the search but changed the evaluation: since 2020 the leading open engine, Stockfish, has used a small neural network to judge positions.
 
 > **Watch out:** "Deep Blue was a learning machine." It was mostly brute-force search plus human-written knowledge. The learning revolution in games came later, starting with backgammon in 1992 and exploding with Go in 2016.
 
@@ -215,7 +217,7 @@ The breakthrough idea was to estimate positions by playing them out at random.
 
 > **Definition — Playout (rollout):** One simulated continuation of a game from a given position to the end (or for a fixed number of moves), used to estimate how good the position is.
 
-Random play is a terrible player, but averaged over thousands of playouts it gives a surprisingly useful signal. Monte Carlo tree search, developed around 2006, adds a clever way of deciding *which* moves deserve more playouts.
+Random play is terrible, but averaged over thousands of playouts it gives a useful signal. Monte Carlo tree search, developed around 2006, adds a clever way of deciding *which* moves deserve more playouts.
 
 > **Definition — Monte Carlo tree search (MCTS):** A search method that builds a game tree gradually, running many simulated playouts and focusing its effort on the moves that look most promising so far, while still occasionally checking less-explored moves. It was central to AlphaGo.
 
@@ -242,7 +244,7 @@ Worked example. After 12 playouts, move A has won 6 of 10 (win rate 0.6) and mov
 - Move A: 0.6 + 1.4 × √(2.48 ÷ 10) = 0.6 + 1.4 × 0.50 ≈ 0.6 + 0.70 = **1.30**
 - Move B: 0.5 + 1.4 × √(2.48 ÷ 2) = 0.5 + 1.4 × 1.11 ≈ 0.5 + 1.56 = **2.06**
 
-Move B gets the next playout even though its win rate is lower, because two games are too few to judge it. As B accumulates playouts, its bonus shrinks and its true quality shows. By 2012, Go programs built on MCTS had reached strong amateur level, but still lost badly to professionals. The missing piece was intuition, and that would come from neural networks trained by reinforcement learning.
+Move B gets the next playout even though its win rate is lower, because two games are too few to judge it. As B accumulates playouts, its bonus shrinks. MCTS lifted Go programs to strong amateur level by the early 2010s, but they still lost badly to professionals. The missing piece was intuition, which would come from neural networks trained by reinforcement learning.
 
 > **Analogy:** MCTS is a chess player imagining several futures before moving, spending most of their imagination on the lines that look best, but now and then taking a second look at a line they dismissed too quickly.
 
@@ -250,7 +252,7 @@ Move B gets the next playout even though its win rate is lower, because two game
 
 ### The loop
 
-Search needs a model of the world: you must know what each move does. Often you do not. A robot does not know the exact physics of a towel. A game-playing program might only see the screen. Reinforcement learning learns what to do from experience instead.
+Search needs a model of the world: you must know what each move does. Often you do not. A robot does not know the exact physics of a towel; a game program might only see the screen. Reinforcement learning learns from experience instead.
 
 > **Definition — Reinforcement learning (RL):** Learning by trial and error: an agent takes actions, receives rewards or penalties, and gradually learns which behavior earns the most reward over time.
 
@@ -316,8 +318,6 @@ The simplest working strategy is almost embarrassingly simple.
 > **Definition — Epsilon-greedy:** An exploration strategy that picks the best-known action most of the time and a random action a small fraction of the time (epsilon, written ε, such as 10%).
 
 Worked example. With ε = 0.1 and two restaurants, you pick your favorite 90% of the time. The other 10% you pick at random, which lands on the new place half the time. So you visit the new place on about 0.1 × 0.5 = **5%** of nights, about 18 nights a year. That is enough to discover if it is really a 9, while keeping 95% of your dinners safe. The UCB formula from the MCTS section is a smarter cousin: it explores options in proportion to how uncertain you still are about them.
-
-> **Analogy:** Exploration versus exploitation is the restaurant choice you make every week. If you only ever exploit, you may eat at a merely good place for twenty years and never find the great one around the corner.
 
 ### Credit assignment
 
@@ -396,9 +396,7 @@ The final values make sense. From C, one step earns 10. From B, the 10 is one st
 
 ### From tables to neural networks: Deep Q-Networks
 
-A Q-table works for a corridor. It fails for a video game. An Atari screen is 210 × 160 pixels, each with many possible colors, so the number of possible screens is beyond astronomical. You cannot have a row for each.
-
-The fix is to replace the table with a neural network that takes in the screen and outputs a Q-value for each joystick action. The network generalizes: screens that look alike get similar values, even ones it has never seen.
+A Q-table works for a corridor but not for a video game: an Atari screen is 210 × 160 pixels, so the number of possible screens is beyond astronomical. The fix is to replace the table with a neural network that takes in the screen and outputs a Q-value for each joystick action. Screens that look alike get similar values, even ones it has never seen.
 
 > **Definition — Deep Q-Network (DQN):** DeepMind's system (first shown in 2013, published in *Nature* in 2015) that used a convolutional neural network to estimate Q-values directly from raw game-screen pixels, learning dozens of Atari games from the pixels and the score alone.
 
@@ -447,7 +445,7 @@ There is one more big fork in the road.
 
 > **Definition — Model-based RL:** Reinforcement learning that also learns or is given a model of the environment (what happens after each action), so the agent can plan by imagining outcomes before acting.
 
-Model-free methods are simpler and robust but need enormous amounts of experience. Model-based methods can be far more efficient, because imagined experience is free, but their plans are only as good as their model. The world models of Chapter 47 are, in one sense, an attempt to give agents a learned model of the real world to plan in.
+Model-free methods are simpler but need enormous amounts of experience. Model-based methods can be far more efficient, because imagined experience is free, but their plans are only as good as their model. The world models of Chapter 47 aim to give agents a learned model of the real world to plan in.
 
 ### When rewards go wrong
 
@@ -481,21 +479,15 @@ timeline
 
 ### Early learners: checkers and backgammon
 
-In the 1950s Arthur Samuel at IBM wrote a checkers program that improved partly by playing against itself, and his 1959 paper popularized the phrase "machine learning." Decades later, a program called Chinook became checkers' first computer world champion (1994), and in 2007 its team proved that perfect play from both sides leads to a draw: checkers was solved.
+In the 1950s Arthur Samuel at IBM wrote a checkers program that improved partly by playing against itself, and his 1959 paper popularized the phrase "machine learning." In 2007 the team behind the program Chinook proved that perfect checkers play leads to a draw: the game was solved.
 
-In 1992 Gerald Tesauro at IBM built **TD-Gammon**, a neural network that learned backgammon through temporal-difference learning while playing hundreds of thousands of games against itself. It reached the level of top human players, and its unusual choices changed how experts played some opening moves. Backgammon's dice helped: randomness forced the program to see a wide variety of positions, which made learning work.
+In 1992 Gerald Tesauro at IBM built **TD-Gammon**, a neural network that learned backgammon through temporal-difference learning while playing hundreds of thousands of games against itself. It reached the level of top human players, and its unusual choices changed how experts played some opening moves. The dice helped: randomness forced the program to see a wide variety of positions.
 
-### Deep Blue (1997) and Watson (2011)
-
-Deep Blue's victory over Kasparov was the moment the public learned that computers could beat the best humans at a "thinking" game, though, as we saw, it won by search, not learning. IBM's Watson, which beat *Jeopardy!* champions Ken Jennings and Brad Rutter in 2011, was a question-answering system rather than an RL agent, but it showed machines handling puns, clues and general knowledge in real time.
-
-### DQN (2013–2015)
-
-DeepMind's Atari results were a turning point for a different reason: one general method, no game-specific knowledge, learning from pixels. Google bought DeepMind in 2014 largely on the strength of this direction.
+Deep Blue (1997) and DQN (2013–2015) appeared earlier in this chapter. IBM's Watson, which beat *Jeopardy!* champions in 2011, was a question-answering system rather than an RL agent.
 
 ### AlphaGo and Move 37 (2016)
 
-Go was the "grand challenge" game. As late as 2014 many experts expected a computer champion to be a decade away. DeepMind's AlphaGo combined three ingredients:
+Go was the "grand challenge" game; as late as 2014 many experts expected a computer champion to be a decade away. DeepMind's AlphaGo combined three ingredients:
 
 1. A **policy network**, first trained to predict expert moves from about 30 million positions of human games, giving the program intuition about which moves to consider.
 2. A **value network**, trained to predict the winner from a position, replacing the hand-written evaluation function Go never had.
@@ -503,7 +495,7 @@ Go was the "grand challenge" game. As late as 2014 many experts expected a compu
 
 Self-play reinforcement learning then sharpened the networks beyond the human games. In October 2015 AlphaGo beat the European champion Fan Hui 5–0. In March 2016 in Seoul it played Lee Sedol, one of the strongest players of the era, and won 4–1.
 
-In game 2, AlphaGo played **Move 37**, a shoulder hit on the fifth line that commentators first thought was a mistake. Its own policy network had estimated that a human would play it only about 1 time in 10,000. It turned out to be brilliant, and it became a symbol of a machine finding something new rather than copying people. In game 4, Lee Sedol answered with his own celebrated Move 78, which confused AlphaGo and won him the game. In 2019, Lee retired from professional Go, saying AI had become an opponent that could not be defeated.
+In game 2, AlphaGo played **Move 37**, a move on the fifth line that commentators first took for a mistake. Its own policy network had estimated that a human would play it only about 1 time in 10,000. It proved brilliant, and became a symbol of a machine finding something new rather than copying people. In game 4, Lee answered with his own celebrated Move 78 and won. In 2019 he retired from professional Go, saying AI had become an opponent that could not be defeated.
 
 > **Try it:** Ask your chatbot: "Explain why AlphaGo's Move 37 against Lee Sedol surprised professional Go players, in terms a non-Go-player can follow. Then tell me which parts of your explanation you are least sure about." Compare its answer with a written account of the match.
 
@@ -511,7 +503,7 @@ In game 2, AlphaGo played **Move 37**, a shoulder hit on the fifth line that com
 
 The next step removed the human data entirely. AlphaGo Zero (October 2017) started from random play, knowing only the rules, and learned purely by playing itself. After three days of training it beat the version that had defeated Lee Sedol, 100 games to 0.
 
-AlphaZero (announced December 2017, published in *Science* in 2018) used one algorithm for three games: Go, chess and shogi (Japanese chess). Within hours of self-play training it was beating the strongest existing programs in each, including Stockfish at chess, with a style grandmasters described as unusually dynamic and willing to sacrifice material.
+AlphaZero (announced December 2017, published in *Science* in 2018) used one algorithm for Go, chess and shogi (Japanese chess). Within hours of self-play training it was beating the strongest existing programs in each, including Stockfish at chess, in a dynamic style that grandmasters admired.
 
 ### MuZero (2020): not even told the rules
 
@@ -529,11 +521,11 @@ flowchart LR
 
 ### Real-time team games: OpenAI Five and AlphaStar (2019)
 
-Board games are turn-based and fully visible. Video games such as *Dota 2* and *StarCraft II* are neither: they run in real time, involve thousands of possible actions every second or so, and hide parts of the map. OpenAI Five learned *Dota 2*, a five-against-five team game, through massive self-play; OpenAI said it accumulated the equivalent of about 45,000 years of play over ten months, and in April 2019 it beat the reigning world champion team, OG. DeepMind's AlphaStar reached Grandmaster level at *StarCraft II* on the public ladder, ranking above 99.8% of officially ranked human players (published in *Nature*, October 2019). To avoid getting stuck in one strategy, AlphaStar trained a whole "league" of agents that specialized in exploiting each other's weaknesses.
+Video games such as *Dota 2* and *StarCraft II* run in real time, offer a huge number of possible actions, and hide parts of the map. OpenAI Five learned *Dota 2*, a five-against-five team game, through massive self-play; OpenAI said it accumulated the equivalent of about 45,000 years of play over ten months, and in April 2019 it beat the reigning world champion team, OG. DeepMind's AlphaStar reached Grandmaster level at *StarCraft II* on the public ladder, ranking above 99.8% of officially ranked human players (published in *Nature*, October 2019). To avoid getting stuck in one strategy, AlphaStar trained a whole "league" of agents that specialized in exploiting each other's weaknesses.
 
 ### Poker: Libratus and Pluribus (2017, 2019)
 
-Poker adds hidden information and bluffing. You cannot search a tree of positions you cannot see, and the right play depends on what your opponent might be holding and what they think you are holding.
+Poker adds hidden information and bluffing: the right play depends on what your opponent might hold and what they think you hold.
 
 > **Definition — Imperfect-information game:** A game where players cannot see everything, such as poker's hidden cards, so good play requires reasoning about probabilities and about what opponents believe, including bluffing.
 
@@ -563,14 +555,7 @@ Carnegie Mellon's Noam Brown and Tuomas Sandholm built Libratus, which beat four
 
 ## Why games matter, and the power of self-play
 
-Why did so much AI progress happen in games? Because games are perfect laboratories:
-
-- **Cheap and fast.** A computer can play millions of games in the time a human plays a few.
-- **Safe.** Losing a game hurts nobody, unlike crashing a car.
-- **Scorable.** Winning and losing is a clear, honest reward signal.
-- **Hard.** The best humans have spent lifetimes mastering them, so there is a clear bar to clear.
-
-The most powerful trick that games enabled is self-play.
+Why did so much AI progress happen in games? Because games are perfect laboratories: cheap and fast (millions of games in the time a human plays a few), safe (losing hurts nobody), scorable (a win is an honest reward signal) and hard (the best humans give the bar to clear). And they enable the most powerful trick of all, self-play.
 
 > **Definition — Self-play:** Training an agent by having it play against copies of itself, so that it always faces an opponent at exactly its own level and keeps generating fresh, harder challenges as it improves.
 
@@ -584,13 +569,11 @@ flowchart TD
 ```
 *Figure 48.9: The self-play loop. Each generation produces the training data for a slightly stronger next generation.*
 
-Self-play solves the teacher problem. A program that learns only from human games can at best approach human play. A program that learns from itself has no ceiling except the game itself. It also builds a natural curriculum: early games are between two beginners, later games between two experts.
+Self-play solves the teacher problem. A program that learns only from human games can at best approach human play; one that learns from itself has no ceiling except the game. It also builds a natural curriculum: early games are between beginners, later ones between experts.
 
 > **Analogy:** Self-play is practicing tennis against a perfect clone of yourself who improves exactly as fast as you do. You never face an opponent so strong you learn nothing, or so weak you learn nothing.
 
-Self-play has pitfalls too. Agents can chase each other in circles, like rock-paper-scissors, where each new strategy beats the last but not the one before. AlphaStar's league of diverse opponents was a fix.
-
-Progress in games is measured with a rating system borrowed from chess.
+Self-play has pitfalls: agents can chase each other in circles, like rock-paper-scissors, which is why AlphaStar trained against a league of diverse opponents. Progress is measured with a rating system borrowed from chess.
 
 > **Definition — Elo rating:** A rating system in which the difference between two players' ratings predicts their expected score against each other. A 400-point gap predicts that the stronger player scores about 91% of the points.
 
@@ -623,7 +606,7 @@ quadrantChart
 
 ## Reinforcement learning leaves the arcade
 
-Games were the training ground. Since the mid-2010s, RL has moved into real systems, wherever decisions are sequential, outcomes can be measured, and a simulator or safe testing ground exists.
+Since the mid-2010s, RL has moved into real systems wherever decisions are sequential, outcomes can be measured, and a simulator or safe testing ground exists.
 
 | Domain | Environment | Actions | Reward |
 |---|---|---|---|
@@ -636,17 +619,13 @@ Games were the training ground. Since the mid-2010s, RL has moved into real syst
 
 *Table 48.6: The same agent-environment-reward loop applied far from games.*
 
-**Cooling.** In 2016 DeepMind reported that a learning system recommending settings for Google's data-center cooling cut the energy used for cooling by up to 40% in tests (a company figure), and it later ran parts of the cooling autonomously. Chapter 40 explains why cooling is such a large share of a data center's energy.
+**Cooling.** In 2016 DeepMind reported that a learning system cut the energy Google's data centers used for cooling by up to 40% in tests (a company figure); Chapter 40 explains why cooling matters so much.
 
-**Chips.** In 2021 Google researchers published a *Nature* paper describing RL that places the large blocks of a chip design, and Google later said the method (named AlphaChip) helped lay out several generations of its TPU chips. Some outside researchers disputed how much it beat conventional tools, and the debate has not fully settled, a useful reminder to read single-company claims carefully.
+**Chips.** A 2021 *Nature* paper from Google described RL that places the large blocks of a chip design, and Google later said the method (AlphaChip) helped lay out several generations of its TPUs. Some outside researchers disputed how much it beat conventional tools, a useful reminder to read single-company claims carefully.
 
-**Fusion.** In 2022 DeepMind and the Swiss Plasma Center at EPFL reported in *Nature* that an RL controller, trained in simulation, steered the magnetic coils of a real tokamak reactor to hold superheated plasma in a range of shapes.
+**Fusion and drones.** In 2022 DeepMind and the Swiss Plasma Center at EPFL reported that an RL controller trained in simulation held the superheated plasma of a real tokamak reactor in a range of shapes. In 2023 a University of Zurich drone called Swift, trained mostly in simulation, beat human champion pilots in head-to-head races. Both results appeared in *Nature*.
 
-**Drones.** In 2023 a University of Zurich drone called Swift, trained mostly in simulation with RL, beat human champion pilots in head-to-head races, published in *Nature*.
-
-**Robots.** Legged robots now commonly learn to walk with RL in simulation, using domain randomization (varying friction, weights and terrain) so that the real world feels like just one more variation. Chapter 49 tells this story.
-
-**Recommendations and ads.** Bandit algorithms decide which headline, thumbnail or ad to show, balancing exploration of new options against exploiting known winners (Chapter 51).
+**Robots and recommendations.** Legged robots now commonly learn to walk with RL in randomized simulations (Chapter 49), and bandit algorithms decide which headline, thumbnail or ad to show (Chapter 51).
 
 **Your chatbot.** This is the biggest application of all. Reinforcement learning from human feedback (RLHF) turned base language models into helpful assistants (Chapter 20). Since 2024, RL with verifiable rewards has trained "reasoning" models: the environment is a math problem or a code repository, the action is the next chunk of text, and the reward is whether the final answer checks out or the tests pass (Chapter 21).
 
@@ -654,13 +633,13 @@ Games were the training ground. Since the mid-2010s, RL has moved into real syst
 
 > **Definition — RL environment (for language models):** A sandbox with tasks, tools and an automatic grader, such as a code repository with tests or a web browser with a goal, used to train models by trial and error. Building them became an industry in 2025–26.
 
-Look at how directly the game ideas carried over. DeepSeek's R1-Zero (January 2025) learned to reason through pure RL on problems with checkable answers, treating each problem a little like a game with a win condition, and reportedly showed an "aha moment" when it began spontaneously re-checking its work. Credit assignment is the same problem as in chess: thousands of tokens of reasoning, one reward at the end. Reward hacking is the same danger as the circling boat: a coding model that edits tests to pass is optimizing the letter of the reward. Even the people overlap: Noam Brown, co-creator of Libratus and Pluribus, later joined OpenAI and worked on its first reasoning models.
+The game ideas carried over directly. DeepSeek's R1-Zero (January 2025) learned to reason through pure RL on problems with checkable answers, each a little like a game with a win condition, and showed an "aha moment" when it began spontaneously re-checking its work. Credit assignment is the same problem as in chess: thousands of tokens of reasoning, one reward at the end. Reward hacking is the same danger as the circling boat: a coding model that edits tests to pass is optimizing the letter of the reward. Even the people overlap: Noam Brown, co-creator of Libratus and Pluribus, later joined OpenAI and worked on its first reasoning models.
 
 > **Key idea:** Your chatbot's "thinking" mode is a descendant of game-playing AI. The policy is the language model, the environment is the task, the reward is a checker or a judge, and the training methods (policy gradients with baselines, PPO, GRPO) are the ones this chapter introduced.
 
 ## Planning and search today
 
-The deepest lesson of the game era is that learning and search work best together. AlphaGo's networks supplied fast intuition; its tree search supplied slow, careful checking. Psychologists sometimes describe human thinking the same way, as fast instinct and slow deliberation, and the analogy, though loose, captures why the combination is powerful.
+The deepest lesson of the game era is that learning and search work best together: AlphaGo's networks supplied fast intuition, and its tree search supplied slow, careful checking.
 
 > **Definition — Test-time search:** Spending extra computation when answering, by exploring and checking several possible solutions or reasoning paths, rather than committing to the first one. It is the modern language-model version of looking ahead in a game tree.
 
@@ -668,21 +647,21 @@ In 2026 this shows up in several forms:
 
 - **Thinking longer.** Reasoning models write out long chains of reasoning before answering, effectively searching through ideas in words. More thinking generally means better answers on hard problems (Chapter 21).
 - **Thinking wider.** Systems sample many answers and pick the best with a verifier or a vote (best-of-N), or explore branching reasoning paths in a tree, borrowing directly from MCTS.
-- **Searching for proofs.** AlphaProof (2024) combined a language model with RL and the Lean proof checker, treating theorem proving as a game in which the win condition is a proof the checker accepts. With AlphaGeometry 2, it reached silver-medal standard at the 2024 International Mathematical Olympiad (28 of 42 points), though it needed days of computation for some problems. By 2025, an advanced Gemini Deep Think reached gold-medal standard (35 of 42) working in natural language within the time limit.
-- **Searching for algorithms.** AlphaTensor (2022) treated finding faster matrix-multiplication methods as a game, and AlphaDev (2023) found faster sorting routines that were added to a widely used C++ library. AlphaEvolve (May 2025) paired a language model with an evolutionary search over code and found a way to multiply 4 × 4 complex matrices with 48 multiplications, the first improvement in that setting since Strassen's 1969 method.
+- **Searching for proofs.** AlphaProof (2024) treated theorem proving as a game whose win condition is a proof accepted by the Lean proof checker. With AlphaGeometry 2 it reached silver-medal standard at the 2024 International Mathematical Olympiad (28 of 42 points), though some problems took days of computation (Chapter 52).
+- **Searching for algorithms.** AlphaTensor (2022) treated finding faster matrix-multiplication methods as a game, AlphaDev (2023) found faster sorting routines that went into a widely used C++ library, and AlphaEvolve (May 2025) paired a language model with evolutionary search over code.
 - **Planning agents.** Coding and computer-use agents (Chapter 28) plan multi-step tasks, act, observe the result and replan, the agent-environment loop of Figure 48.5 with a language model as the policy.
 
-> **At the frontier (2026):** The frontier labs now spend a large and growing share of their training compute on reinforcement learning, in thousands of RL environments that range from code repositories to spreadsheets to simulated businesses. The open problems are the classic RL problems at a new scale: designing rewards that cannot be gamed, assigning credit across very long tasks, exploring safely, and getting learning to transfer from training environments to the messy real world.
+> **At the frontier (2026):** Since 2024 the frontier labs have scaled up reinforcement learning on language models, training in large numbers of RL environments that range from code repositories to browsers, terminals and spreadsheets; building those environments became an industry of its own in 2025–26. The open problems are the classic RL problems at a new scale: rewards that cannot be gamed, credit assignment across very long tasks, safe exploration, and transfer from training environments to the messy real world.
 
-Richard Sutton summed up seventy years of this history in a short 2019 essay, "The Bitter Lesson": methods that make the most of growing computation, above all **search** and **learning**, eventually beat methods built on hand-crafted human knowledge. Deep Blue's hand-tuned evaluation lost to AlphaZero's self-taught one; hand-written rules for chatbots lost to RL on human feedback. Whether that lesson holds all the way to robots and open-ended science is one of the big questions of the next decade (Chapter 66).
+Richard Sutton summed up this history in a 2019 essay, "The Bitter Lesson": methods that make the most of growing computation, above all **search** and **learning**, eventually beat methods built on hand-crafted human knowledge, as AlphaZero's self-taught evaluation beat Deep Blue's hand-tuned one. Whether that holds all the way to robots and open-ended science is one of the big questions ahead (Chapter 66).
 
 > **Key idea:** Every decision-making system in this chapter, from A* to AlphaZero to your chatbot's reasoning mode, answers one question: how do you look ahead efficiently? Use a good guess (a heuristic or a learned value) to decide where to look, check the most promising options carefully, and learn from the results.
 
 ## In plain English
 
-Some AI does not just answer questions; it makes decisions, and each decision changes what happens next. There are two main ways to make good decisions.
+Some AI makes decisions, and each decision changes what happens next. There are two main ways to decide well.
 
-The first is search: think ahead. A* finds routes by combining the distance already traveled with a smart guess of the distance left. In games, minimax looks at every move and every reply, assumes the opponent plays well, and picks the move whose worst case is best. When games get too big, programs prune hopeless branches, estimate positions with evaluation functions, or use Monte Carlo tree search, which plays out many random futures and focuses on the promising ones.
+The first is search: think ahead. A* finds routes by adding the distance traveled to a smart guess of the distance left. In games, minimax assumes the opponent plays well and picks the move whose worst case is best. When games get too big, programs prune hopeless branches, estimate positions with evaluation functions, or use Monte Carlo tree search, which plays out many random futures and focuses on the promising ones.
 
 The second is reinforcement learning: learn from rewards. An agent acts, the world responds with a new situation and a reward, and over many tries the agent learns a policy (what to do) and values (how good things are). It must balance exploring new options with exploiting known good ones, and figure out which early moves deserve credit for a late reward. Q-learning does this by passing value backward one step at a time; policy gradients make better-than-average actions more likely.
 

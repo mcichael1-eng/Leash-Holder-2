@@ -460,6 +460,8 @@ Fast face detection arrived in consumer cameras after the Viola–Jones method (
 
 > **Definition — Face embedding:** A short list of numbers (FaceNet used 128) that a network computes from a face photo, trained so that photos of the same person land close together and photos of different people land far apart.
 
+> **Analogy:** A face embedding works like GPS coordinates for faces. Every photo of you lands in roughly the same spot on a map with hundreds of dimensions, a stranger lands somewhere else, and recognition is just measuring the distance between two points.
+
 ```mermaid
 flowchart TD
     A["Camera image"] --> B["Face detection<br/>find each face"]
@@ -544,6 +546,8 @@ There are several ways to get depth. **Stereo vision** uses two cameras a known 
 > **Definition — SLAM (simultaneous localization and mapping):** Building a map of an unknown space while tracking your own position within it at the same time. Robot vacuums, drones and AR headsets rely on it.
 
 A robot vacuum running SLAM starts with no map. As it moves, it spots landmarks with its lidar or camera, estimates how far it has traveled, and stitches the observations into a floor plan, constantly correcting both the map and its own position.
+
+> **Analogy:** SLAM is like exploring a dark house with a flashlight while drawing a floor plan. You sketch each room as you see it and mark where you are standing, and when you recognize a doorway you passed earlier, you fix both the drawing and your idea of where you are.
 
 To capture a whole object or scene in 3D, you take many photos from different angles.
 

@@ -293,6 +293,8 @@ flowchart LR
 
 *Figure 46.8: A diarization pipeline. Clustering groups segments that sound like the same person.*
 
+> **Analogy:** Diarization is like a note-taker at a meeting full of strangers. They do not know anyone's name, but they can write "the deep voice by the window" or "the fast talker" each time that person speaks, and a name can be attached later.
+
 > **Definition — Diarization error rate (DER):** The share of time in a recording that is attributed to the wrong speaker, to no speaker when someone was talking, or to a speaker when no one was talking.
 
 The hardest part is overlapping speech: when two people talk at once, older systems assigned the stretch to only one of them. Short interjections ("yes," "right") and similar-sounding voices also cause errors. Newer systems are trained end to end on overlapping speech and handle it better.
@@ -361,6 +363,8 @@ From 2023, TTS began to look like language modeling. Microsoft's VALL-E (January
 
 Technically, cloning is TTS conditioned on a voice. The model has heard tens of thousands of speakers in training, so it has learned a "space of voices." A few seconds of a new voice locate a point in that space (much like a speaker embedding), and the model speaks from there.
 
+> **Analogy:** A cloning model is like a gifted impressionist who has listened to tens of thousands of voices. Because they already know how voices vary, a single sentence from someone new is enough for a convincing impression.
+
 ### The good uses
 
 Cloning gives voices back. Apple's Personal Voice (2023) lets people at risk of losing their speech, for example from ALS, record about 15 minutes of phrases on their iPhone and then type to speak in a synthetic version of their own voice, generated on the device. Voice banking services do the same for patients before throat surgery. Creators dub their videos into other languages in their own voice. Publishers produce audiobooks for titles that would never get a human narrator. Game studios and advertisers license voices from actors who agree and are paid.
@@ -406,6 +410,8 @@ No single defense is enough, so people and organizations layer several:
 > **Definition — Audio watermark:** A hidden signal embedded in generated audio, inaudible to people but detectable by software, so the audio can later be identified as AI-made. Google's SynthID and Meta's AudioSeal (2024) are examples.
 
 Watermarks only help when the generator adds them, and they can sometimes be weakened by editing. Deepfake detectors that analyze audio for telltale artifacts help but are in an arms race with generators. That is why habits and processes, which do not depend on spotting the fake, are the most reliable protection (Chapter 58 covers misuse more broadly).
+
+> **Key idea:** Defend against cloned voices with procedures, not with your ears. A safe word, a call-back to a known number and a second approver for payments work no matter how perfect the fake sounds.
 
 > **Watch out:** "I would recognize my own child's voice" is exactly the instinct scammers exploit. Modern clones fool family members. Verify through a separate channel, not by listening harder.
 
@@ -465,6 +471,10 @@ People expect a reply within roughly a second; beyond that, they start repeating
 
 When an action takes longer (looking up an order), good agents say a short filler ("let me check that for you") so the silence does not feel like a dropped call.
 
+> **Key idea:** In voice, speed is part of correctness. A right answer that arrives after two seconds of silence feels broken, so voice systems are designed around the latency budget first and the model choice second.
+
+> **Analogy:** A slow voice agent feels like an old long-distance call with a satellite delay: both people start talking at once, stop, apologize and start again. Every few hundred milliseconds of extra delay makes the conversation more awkward.
+
 ### Guardrails for agents that talk and act
 
 Voice agents are language models with a phone line, so they inherit every reliability issue of Chapter 18, plus a few of their own:
@@ -492,13 +502,15 @@ There are two ways to represent music for a model.
 
 > **Definition — Symbolic music (MIDI):** Music stored as notes and instructions (which note, when, how long, how loud, which instrument) rather than as sound. MIDI is the standard format. It is compact and easy to edit but carries no actual timbre or voice.
 
-Early AI music worked symbolically: models wrote notes, and software instruments played them. Generating actual audio, with singing and real-sounding instruments, is much harder because a three-minute song at CD quality is about 16 million samples per channel. OpenAI's Jukebox (2020) generated raw-audio songs with vocals, but OpenAI said it took roughly nine hours to render one minute. Google's MusicLM (January 2023) and Meta's open MusicGen (June 2023) generated short instrumental pieces from text descriptions using audio codec tokens (Chapter 22). Then, in 2024, Suno and Udio made full songs, with lyrics, vocals, verses and choruses, from a one-line prompt, in under a minute.
+Early AI music worked symbolically: models wrote notes, and software instruments played them. Generating actual audio, with singing and real-sounding instruments, is much harder because a three-minute song at CD quality is 180 × 44,100 ≈ 7.9 million samples per channel, about 16 million for stereo. OpenAI's Jukebox (2020) generated raw-audio songs with vocals, but OpenAI said it took roughly nine hours to render one minute. Google's MusicLM (January 2023) and Meta's open MusicGen (June 2023) generated short instrumental pieces from text descriptions using audio codec tokens (Chapter 22). Then, in 2024, Suno and Udio made full songs, with lyrics, vocals, verses and choruses, from a one-line prompt, in under a minute.
 
 Under the hood these systems use the same machinery as the rest of the book. Audio is compressed into codec tokens or a compact latent representation; a Transformer predicts the tokens, or a diffusion model (Chapter 16) denoises a latent, conditioned on the text prompt and lyrics; and a decoder turns the result back into sound. What makes them good is training on very large collections of recorded music, which is exactly where the legal fight began.
 
 ### Tools musicians actually use
 
 > **Definition — Stem separation:** Splitting a finished song into its separate parts ("stems"), such as vocals, drums, bass and other instruments, so each can be edited, remixed or removed.
+
+> **Analogy:** Separating a mixed recording used to be compared to unbaking a cake: once the eggs, flour and sugar are combined, you cannot get them back. Neural networks trained on thousands of songs with known stems learned to do a surprisingly good job of unbaking.
 
 Open separation tools such as Deezer's Spleeter (2019) and Meta's Demucs made this widely available. Its most famous use came in November 2023, when the Beatles released "Now and Then." Machine-learning audio separation, developed by Peter Jackson's film team, pulled John Lennon's voice cleanly away from the piano on an old cassette demo, letting the surviving Beatles finish the song. It won a Grammy in 2025.
 
@@ -531,6 +543,8 @@ In June 2024 the three major record companies, Universal, Sony and Warner, sued 
 Two further questions are unsettled. **Who owns AI music?** The US Copyright Office's position, restated in a January 2025 report, is that copyright requires human authorship: purely AI-generated material is not protected, though human contributions such as lyrics, arrangement and the selection and editing of outputs can be. **What happens to streaming?** Services reported fast-growing uploads of fully AI-generated tracks in 2025, raising fears of royalty pools diluted by spam. Deezer began labeling fully AI-generated albums, and Spotify announced policies against AI impersonation and spam the same year.
 
 The debate is real on both sides. Supporters say AI music tools democratize creation, letting people with no training make songs for a birthday, a video or a small business, and that musicians themselves use them as instruments. Critics say the tools were built from musicians' work without consent or payment and now compete with those musicians, especially in production music for ads, games and videos, where "good enough and free" wins. Licensing deals address the first complaint more than the second.
+
+> **Key idea:** The AI music fight is about inputs as much as outputs. The 2024 lawsuits targeted what the models were trained on, and the 2025–26 settlements answered with licensed training and payments; whether that fairly compensates individual musicians, and how to compete with free generated music, are still open questions.
 
 ## Listening to the world: audio understanding
 
@@ -569,6 +583,8 @@ The best-known example sits in many birdwatchers' pockets. Cornell Lab of Ornith
 
 > **Watch out:** A popular belief holds that phones secretly listen to your conversations to target ads. There is no credible evidence of mass covert eavesdropping for advertising; it would be expensive and easy to detect in battery use and network traffic. Behavioral data, location, purchases, contacts and "people like you" modeling explain the eerie accuracy (Chapter 51). Wake-word devices do occasionally mis-trigger and record snippets, which is a real, smaller privacy issue worth checking in your device settings.
 
+> **Try it:** Open the privacy or activity settings of any voice assistant you use (Alexa, Google Assistant or Siri) and look for its history of recordings or requests. Check whether any were triggered by mistake, and set an automatic deletion period if the option exists.
+
 ## Hearing aids, captions and accessibility
 
 The World Health Organization estimates that more than 1.5 billion people live with some degree of hearing loss, about 430 million of them to a disabling degree. The hardest situation for them is a noisy room.
@@ -580,6 +596,8 @@ Traditional hearing aids amplify sound, including the noise. AI-based noise redu
 Access has widened too. In 2022 a US Food and Drug Administration rule created a category of over-the-counter hearing aids for adults with mild to moderate loss, sold without a prescription. In September 2024 the FDA authorized hearing-aid software for Apple's AirPods Pro 2, turning popular earbuds into an over-the-counter hearing aid after a built-in hearing test.
 
 > **Definition — Live captions:** Real-time, on-device speech recognition that captions any audio playing on a phone or computer (videos, calls, podcasts), built into Android since 2019 and iPhones since 2022.
+
+> **Try it:** Turn on Live Caption (Android) or Live Captions (iPhone, in Accessibility settings) and play a podcast or video with several speakers. Watch for errors on names, numbers and technical words, and notice that the captions keep working in airplane mode, because recognition runs on the phone.
 
 > **Definition — Speech-to-speech translation:** Translating spoken words in one language directly into spoken words in another, ideally in the speaker's own voice and with little delay. Meta's SeamlessM4T (2023) handled speech and text translation across nearly 100 languages.
 
@@ -621,3 +639,100 @@ Voice agents chain or merge listening, thinking and speaking, and must manage tu
 
 Audio AI, Waveform, Sampling rate, Bit depth, Frequency, Nyquist limit, Fourier transform, Spectrogram, Mel scale, Log-mel spectrogram, ASR (automatic speech recognition), Phoneme, Acoustic model, Hidden Markov model (HMM), Language model (in speech recognition), End-to-end speech recognition, Weak supervision, Word error rate (WER), Character error rate (CER), Low-resource language, Hallucination (in speech recognition), Speaker diarization, Speaker embedding, Diarization error rate (DER), Speaker verification (voice biometrics), TTS (text-to-speech), Formant synthesis, Concatenative synthesis, Vocoder, Text normalization, Mean opinion score (MOS), Voice cloning, Zero-shot voice cloning, Audio deepfake, Audio watermark, Voice agent, Turn-taking, Barge-in, Echo cancellation, Backchannel, Containment rate, Music generation, Symbolic music (MIDI), Stem separation, Voice conversion, Sound event detection, Bioacoustics, Wake word, Cocktail party problem, Live captions, Speech-to-speech translation
 
+## Exercises
+
+1. **[Easy] See your own voice.** (1) Open Chrome Music Lab's Spectrogram (musiclab.chromeexperiments.com/Spectrogram) and allow microphone access. (2) Say a long "sssss," then "shhhh," then the vowels "ee," "ah" and "oo." (3) Whistle a rising note, clap once, and play a few seconds of music from another device. (4) Sketch what each looks like. (5) Say "Sam" and "fan" and see whether you can tell them apart in the picture. **What you'll learn:** what a spectrogram is, why hissy sounds live at high frequencies, and why sound can be treated as an image.
+
+2. **[Easy] Word error rate by hand.** (1) The reference is "take two tablets twice a day after meals" (8 words). The transcript is "take ten tablets twice day after the meals." (2) Line the two up word by word and mark each substitution, deletion and insertion. (3) Compute WER = (S + D + I) ÷ 8. (4) Circle the single error that could hurt someone, and write one sentence on why WER alone would not reveal how serious it is. **What you'll learn:** how WER is calculated and why the errors that matter must be checked separately.
+
+3. **[Medium] Whisper stress test.** (1) Go to huggingface.co/spaces and search "whisper" to find a free Whisper demo (or use your chatbot's voice input). (2) Write a 60-word paragraph with a name, a number and a technical word. (3) Record yourself reading it four ways: quiet room, with music or a TV in the background, speaking fast, and (if you can) in a second language or with a friend who has a different accent. (4) Compute the WER for each. (5) Note any words the system invented. **What you'll learn:** speech recognition is good but not equally good in every situation, and how to measure it yourself.
+
+4. **[Medium] Train a sound classifier.** (1) At teachablemachine.withgoogle.com, start an Audio Project. (2) Record the required background-noise samples, then classes for "clap," "snap" and "knock" (about 8 samples each; the site shows each as a small spectrogram). (3) Train and test. (4) Move to a different room, or turn on a fan, and test again. (5) Add more varied samples and retrain. **What you'll learn:** sound becomes a picture, the same "learn from examples" recipe works for audio, and models fail when the acoustic setting changes.
+
+5. **[Medium] TTS listening test, and a safe word.** (1) Choose one paragraph containing a date, a price, an abbreviation and an unusual name. (2) Listen to it read by an older built-in voice (your phone's accessibility "speak" feature), a neural voice (Microsoft Edge's free "Read aloud"), and a free TTS demo on Hugging Face Spaces (search "TTS"). (3) With a friend or family member, rate each from 1 to 5 for naturalness, giving a tiny mean opinion score. (4) Note how each handled the date, price and abbreviation. (5) Do not clone anyone's voice. Instead, agree on a family safe word for emergency calls and write down the call-back numbers you would use. **What you'll learn:** how natural TTS has become, what text normalization does, and the single best habit against voice-clone scams.
+
+6. **[Medium] Design and test a voice receptionist on paper.** (1) Invent a small bakery with opening hours, five products and a pickup-order process. (2) Write a one-page script for a voice agent: the greeting (including that it is an AI), the three most common requests, what it must read back for confirmation, and three situations in which it must hand off to a person. (3) Paste the script into your chatbot, turn on voice mode, and ask it to play the receptionist. (4) Test it by interrupting, mumbling, going silent, changing your order midway and asking something off-script. (5) Time the replies with a stopwatch. **What you'll learn:** turn-taking, barge-in, read-backs and hand-offs are design decisions, and you can prototype a voice product without code.
+
+7. **[Medium] Identify birds by ear.** (1) Install Cornell Lab's free Merlin Bird ID app. (2) Go outside (a park or garden works best in the morning) and run Sound ID for 10 minutes. (3) Note each species it suggests and when it highlights them. (4) Try to see or photograph at least one bird to confirm. (5) Think about which suggestions might be false positives and why (similar calls, distant sounds, human imitations). **What you'll learn:** sound event detection and bioacoustics in practice, including confidence and the need for expert checking.
+
+8. **[Challenge] Transcribe your own audio with Whisper in Google Colab.** (1) Open colab.research.google.com and create a new notebook. For speed, choose Runtime, then Change runtime type, then a GPU. (2) Paste the code below into a cell and press play. Step 1 installs OpenAI's open-source Whisper package; step 2 opens a file picker so you can upload a short recording (a voice memo works); step 3 loads a model; step 4 prints the transcript; step 5 prints each segment with its start and end time in seconds.
+
+   ```python
+   # 1. Install OpenAI's open-source Whisper package
+   !pip -q install openai-whisper
+   import whisper
+   from google.colab import files
+
+   # 2. Upload an audio file from your computer (mp3, m4a or wav)
+   uploaded = files.upload()
+   filename = list(uploaded.keys())[0]
+
+   # 3. Load a model: "tiny" and "base" are fast, "small" is
+   #    slower but more accurate
+   model = whisper.load_model("base")
+
+   # 4. Transcribe the file and print the full text
+   result = model.transcribe(filename)
+   print(result["text"])
+
+   # 5. Print each segment with its start and end time in seconds
+   for seg in result["segments"]:
+       print(round(seg["start"], 1), round(seg["end"], 1), seg["text"])
+   ```
+
+   (3) Write out by hand what was actually said in the first 100 words and compute the WER. (4) Change "base" to "tiny" and then "small," rerun, and compare WER and running time. **What you'll learn:** how an open speech model is used in practice, and the trade-off between model size, speed and accuracy.
+
+9. **[Challenge] Test diarization on a real conversation.** (1) With the other person's permission, record a three-minute conversation between two people, including a few moments where you talk over each other. (2) Upload it to a meeting-transcription tool with speaker labels, or to a chatbot that accepts audio, and ask for a transcript labeled by speaker. (3) Count how many lines are attributed to the wrong person, and note what happened during overlaps and one-word replies. (4) Write down how a 2% versus a 10% speaker error would matter in a medical visit or a legal deposition. **What you'll learn:** how "who spoke when" works, where it breaks, and why it matters for meeting notes and medical scribes.
+
+10. **[Challenge] An AI music rights audit.** (1) Using the free tier of an AI music generator, create a 30-second instrumental track for an imaginary local coffee shop advert. (2) Find and read the service's terms on who owns the output and whether commercial use is allowed on the free tier. (3) Note whether the service says its models are licensed. (4) Write 200 words advising the coffee shop whether it can use the track, mentioning the US Copyright Office's position that purely AI-generated material is not protected by copyright, and the 2024 label lawsuits and 2025–26 settlements. **What you'll learn:** the practical legal questions behind AI music, and how to read terms of service before using generated media commercially.
+
+## Areas of opportunity
+
+- **Voice receptionists for local businesses.** Clinics, restaurants, salons and trades miss calls every day. People who can set up reliable AI receptionists, with good turn-taking, read-backs, booking-system integration and clean hand-off to staff, can sell monthly subscriptions.
+- **Conversation design and voice QA.** Companies deploying voice agents need "conversation designers" to write flows and testers who call them with noise, accents and interruptions. These roles reward communication skills more than coding.
+- **Clinical documentation.** Ambient scribes are spreading quickly in healthcare. Hospitals need specialists who configure them, check note quality, train clinicians and monitor for hallucinations and diarization errors.
+- **Dubbing and localization for creators.** YouTubers, course creators and small publishers want their content in other languages, in their own voices, with consent and quality control. Producers who combine AI dubbing with human review for each language can serve many clients.
+- **Low-resource languages.** Speech recognition and TTS lag badly for most of the world's languages. Collecting consented recordings, building evaluation sets and fine-tuning open models for a language community is both a business (governments, telecoms, NGOs) and a research opportunity.
+- **Fraud defense and audio forensics.** Banks, insurers and families need protection from voice-clone scams. Opportunities include call-verification workflows for finance teams, deepfake-detection services, staff training and forensic analysis of disputed recordings.
+- **Call analytics for compliance.** Regulated industries must check that calls followed rules (disclosures, complaints handling). Transcription plus language-model review lets one analyst cover thousands of calls.
+- **Accessibility products.** Better captions for live events, hearing-aid fitting and coaching, voice banking for people with ALS, and recognition for atypical speech are high-impact niches funded by health systems, charities and governments.
+- **Licensed music and sound for creators.** After the label settlements, there is room for services that provide licensed, royalty-clear generated music and sound effects for ads, games and videos, and for musicians who use AI tools to produce faster.
+- **Bioacoustics and environmental monitoring.** Wind and solar developers, forestry companies and conservation groups pay for acoustic surveys of birds, bats and other wildlife; AI turns months of recordings into reports.
+- **Industrial acoustic monitoring.** Retrofitting factories, pumps and HVAC systems with microphones and small on-device models that hear faults early is a practical predictive-maintenance business.
+- **Open problems for researchers.** Natural full-duplex turn-taking and emotion, equal accuracy across accents and languages, hallucination-free transcription, reliable clone detection, consent and payment frameworks for voices, and real-time speech separation in hearing aids.
+
+## Check your understanding
+
+1. Why do most audio models convert a waveform into a spectrogram before learning from it?
+2. A call is recorded at 8,000 samples per second. What is the highest frequency it can capture, and why does that make "s" and "f" hard to tell apart?
+3. A 10-word reference sentence is transcribed with one substitution, two deletions and one insertion. What is the WER?
+4. Why can a Whisper-style speech recognizer invent sentences that were never spoken, and what are two ways to reduce the harm?
+5. Why is a voiceprint no longer a safe password, and what two habits defeat a voice-clone "family emergency" call?
+6. Name three stages in a cascade voice agent's latency budget and one way to shrink each.
+7. What changed between the June 2024 label lawsuits against Suno and Udio and mid-2026?
+8. What is the cocktail party problem, and why is solving it inside a hearing aid especially hard?
+
+<details><summary>Answers</summary>
+
+1. A spectrogram shows which frequencies are loud at each moment, much as the ear separates sound into pitches. It is more compact (about 8,000 numbers per second instead of 16,000 for speech) and more meaningful than raw samples, and it lets audio models reuse image techniques such as CNNs and Vision Transformers.
+2. Half the sampling rate: 4,000 Hz (in practice phone lines carry up to about 3,400 Hz). Much of the distinguishing energy of "s" and "f" lies above that, so it is simply missing from the recording.
+3. WER = (1 + 2 + 1) ÷ 10 = 4 ÷ 10 = 40%.
+4. Its decoder works like a language model, predicting likely text, so during silence, music or unclear speech it can generate fluent words that were never said. Mitigations include removing silences before transcription, flagging low-confidence passages, keeping the audio for checking, and requiring human review for medical or legal records.
+5. Cloning tools can imitate a voice from a few seconds of audio well enough to pass voice-ID checks. Agree on a family safe word in advance, and hang up and call back on a number you already know.
+6. Any three of: endpointing (smarter turn detectors), speech recognition (streaming transcription while the caller talks), the language model's first words (smaller or faster models, short first sentences), TTS (streaming synthesis from the first phrase), and network delay (servers close to the phone carrier).
+7. Much of the dispute turned into licensing. Universal settled with Udio (October 2025), Warner settled with Udio and with Suno (November 2025, with Suno to launch licensed models in 2026), and Udio signed deals with Merlin and Kobalt in 2026. Sony was reported to be still litigating as of mid-2026.
+8. It is the difficulty of picking out one voice from many voices and background noise. A hearing aid must separate speech from noise with a tiny battery and a processing delay of only around ten milliseconds, or the wearer hears an echo between the direct and processed sound.
+
+</details>
+
+## Going deeper
+
+- **Radford et al., "Robust Speech Recognition via Large-Scale Weak Supervision" (2022)** — the Whisper paper; clear on why large, messy training data generalizes better.
+- **Daniel Jurafsky and James H. Martin, *Speech and Language Processing* (3rd edition draft, free online)** — the standard textbook, with readable chapters on speech recognition, TTS and their history.
+- **van den Oord et al., "WaveNet: A Generative Model for Raw Audio" (2016), and DeepMind's WaveNet blog post** — the turning point for natural synthetic voices, with audio samples.
+- **Koenecke et al., "Racial disparities in automated speech recognition," *PNAS* (2020)** — the key study on uneven ASR accuracy, and a model for how to audit a system by group.
+- **3Blue1Brown, "But what is the Fourier Transform? A visual introduction" (YouTube)** — the clearest visual explanation of how sound is split into frequencies.
+- **Hugging Face Audio Course (huggingface.co/learn)** — a free, hands-on course on audio data, ASR, TTS and audio classification with open models and Colab notebooks.
+- **US Federal Trade Commission consumer advice on voice-cloning and family-emergency scams (consumer.ftc.gov)** — practical, regularly updated guidance to share with relatives.
+- **Cornell Lab of Ornithology's Merlin Bird ID and BirdNET (birdnet.cornell.edu)** — the most accessible window into AI bioacoustics, with background on how the models were built.
+- **Music Business Worldwide (musicbusinessworldwide.com)** — the trade publication that covered the Suno and Udio lawsuits and licensing deals in detail; useful for following the music-rights story as it develops.

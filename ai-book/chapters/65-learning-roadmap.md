@@ -43,8 +43,6 @@ Where does the ladder lead? Not mostly to research. On October 21, 2026, researc
 
 > **Definition — Top-down learning:** Starting with a working whole, such as running a model or building a small app, and then digging into how each part works, instead of mastering every foundation first. The fast.ai deep learning course is built this way.
 
-> **Definition — Bottom-up learning:** Learning foundations first (math, then programming, then theory) and only later building complete things. It produces deep understanding but loses many learners before they ever build anything.
-
 **Rule 2: learn actively, not passively.** Watching a video feels like learning, but most of it fades within days. Psychologists have studied forgetting since Hermann Ebbinghaus measured his own memory of nonsense syllables in 1885, and the most reliable finding since then is simple: you remember what you practice pulling out of your head, spread over time.
 
 > **Definition — Retrieval practice (active recall):** Strengthening memory by trying to recall something without looking, for example by answering quiz questions or explaining an idea from memory, instead of rereading it. Struggling to remember is part of what makes it work.
@@ -310,11 +308,7 @@ flowchart LR
 
 The big shift in this stage is from AI you talk to toward AI that runs while you sleep.
 
-> **Definition — Workflow automation:** Connecting apps so that work flows between them automatically, using triggers and actions, for example "when a form is submitted, summarize it with AI, add a row to a spreadsheet and email the team." Zapier, Make, n8n and Microsoft Power Automate are popular tools.
-
-> **Definition — Trigger:** The event that starts an automation, such as a new email, a submitted form, a new file in a folder or a set time each morning.
-
-> **Definition — No-code tool:** Software that lets you build apps or automations by clicking, dragging and describing what you want in plain language, without writing program code yourself.
+> **Definition — Workflow automation:** Connecting apps so that work flows between them automatically: a trigger (an event such as a submitted form or a new email) starts a chain of actions, for example "when a form is submitted, summarize it with AI, add a row to a spreadsheet and email the team." Zapier, Make, n8n and Microsoft Power Automate are popular tools.
 
 > **Definition — Vibe coding:** Building software by describing what you want in plain language to an AI tool (such as Lovable, Replit, Bolt or Claude Code) and iterating on what it produces, often without reading the code it writes. Chapter 29 explains when this is safe and when to call a professional.
 
@@ -395,17 +389,13 @@ flowchart LR
 
 ### 0–3 months: Stage 1 plus first code
 
-Finish Stage 1, and in the last month start DeepLearning.AI's "AI Python for Beginners" (about 11.5 hours). Run your code in Google Colab so you install nothing. Chapter 3 introduced Colab and Chapter 26 walks through a complete first API call.
+Finish Stage 1, and in the last month start DeepLearning.AI's "AI Python for Beginners" (about 11.5 hours). Run your code in Google Colab, a free Google website that runs Python in your browser (Chapter 3), so you install nothing. Learn the basics of Git, the tool that records every version of your code, and GitHub, the website where most people store and share it; a GitHub profile is the standard place to show your code to employers. Chapter 26 walks through a complete first API call.
 
 > **Definition — Python:** The most widely used programming language in AI, known for readable code and a huge collection of ready-made libraries. Almost every AI course, tool and research codebase uses it.
 
-> **Definition — Google Colab:** A free Google website where you can write and run Python in your browser, in a "notebook" that mixes code, results and notes, with optional access to a GPU. Nothing needs to be installed on your computer.
-
-> **Definition — Git and GitHub:** Git is a tool that records every version of your code so you can undo mistakes and collaborate; GitHub is the website where most people store and share Git projects. A GitHub profile is the standard place to show your code to employers.
-
 ### 3–12 months: the core stack
 
-This is the heart of Track B. Work through it as a series of projects, using courses as references rather than as the main event.
+This is the heart of Track B. Work through it as a series of projects, using courses as references rather than as the main event. Three terms from earlier chapters appear in the table: SQL is the standard language for asking questions of databases (Chapter 11); an API is the doorway through which a program sends text to a model and gets an answer back, paying per token (Chapter 26); and prompt injection is the attack in which instructions hidden in content an AI reads hijack its behavior (Chapter 31).
 
 | Skill | Well-known resources | Cost |
 |---|---|---|
@@ -419,17 +409,11 @@ This is the heart of Track B. Work through it as a series of projects, using cou
 | AI security | OWASP Top 10 for LLM Applications; Simon Willison's writing on prompt injection (simonwillison.net) | Free |
 | The one book | Chip Huyen, *AI Engineering* (O'Reilly, 2025) | Paid |
 
-> **Definition — SQL (Structured Query Language):** The standard language for asking questions of databases, such as "total sales by region last month." Most business data lives in databases, so SQL remains one of the most requested data skills.
-
-> **Definition — API (application programming interface):** A way for one program to talk to another. When an app uses Claude or GPT behind the scenes, it sends text to the model's API and gets a response back, paying per token.
-
 > **Definition — RAG (retrieval-augmented generation):** Looking up relevant passages from your own documents and handing them to the model along with the question, so that answers draw on your data and can cite it. Chapter 27 builds one.
 
 > **Definition — Evals (evaluations):** Systematic tests of whether an AI system does what you want, the "unit tests" and "report cards" of AI products. Building good evals is widely named one of the most valuable AI engineering skills of 2025–2026.
 
 > **Definition — Error analysis:** Collecting many real outputs from your system, reading them, labeling what went wrong, counting each kind of failure, fixing the most common one, and measuring again. It is the core habit of strong AI engineers.
-
-> **Definition — Prompt injection:** An attack in which instructions hidden in content the AI reads (a web page, an email, a document) hijack its behavior, for example telling an agent to send private data somewhere. Chapter 31 covers defenses.
 
 **A week in Track B.** At eight hours a week, a balanced week looks like this:
 
@@ -480,7 +464,7 @@ Track C is for people who want to train models, not just use them: ML engineers 
 
 > **Definition — Research engineer:** An engineer at an AI lab who implements and runs large experiments, builds research tools and debugs training at scale. At frontier labs the line between research engineers and research scientists is blurry, and many job postings cover both.
 
-> **Definition — Research scientist:** A researcher who sets research direction, forms hypotheses, designs experiments and interprets results. A PhD is typical but not universal.
+Research scientists, by contrast, set research directions, form hypotheses, design experiments and interpret results; for them a PhD is typical but not universal.
 
 ```mermaid
 flowchart LR
@@ -509,19 +493,13 @@ Alongside Stage 1, start Python (as in Track B) and refresh the math. Chapters 5
 - **3Blue1Brown, "Essence of Linear Algebra" and "Essence of Calculus" (free on YouTube).** Visual, intuitive series that make vectors, matrices and derivatives feel obvious.
 - **Khan Academy (free).** Patient, exercise-based lessons in algebra, calculus, probability and statistics.
 
-> **Definition — Linear algebra:** The math of vectors and matrices, lists and tables of numbers and the operations on them. A neural network is mostly matrix multiplication, so linear algebra is its native language (Chapter 5).
-
-> **Definition — Gradient:** The direction and steepness of the slope of a function with many inputs. Training a model means repeatedly nudging its parameters a small step downhill along the gradient of its error (Chapter 6).
-
 ### 3–12 months: classical ML and your first deep learning
 
 - **DeepLearning.AI "Mathematics for Machine Learning and Data Science" (about 94 hours)**, if you want a structured math course.
 - **Andrew Ng's Machine Learning Specialization (about 95 hours)**, the standard first course in classical machine learning: regression, classification, trees, overfitting and evaluation.
 - **Aurélien Géron, *Hands-On Machine Learning* (O'Reilly, paid)**, the classic practical book with runnable code.
-- **fast.ai "Practical Deep Learning for Coders", Part 1 (free, course.fast.ai)**: nine lessons of about 90 minutes, built top-down. It assumes about a year of coding experience, so do Python first.
+- **fast.ai "Practical Deep Learning for Coders", Part 1 (free, course.fast.ai)**: nine lessons of about 90 minutes, built top-down on PyTorch, the most widely used library for building and training neural networks (Chapter 13). It assumes about a year of coding experience, so do Python first.
 - **Kaggle (free)**: practice datasets, short courses and competitions where you can compare your models with thousands of others.
-
-> **Definition — PyTorch:** The most widely used software library for building and training neural networks, originally developed at Meta. Most research code and most modern courses use it.
 
 > **Definition — Kaggle competition:** A public contest on the Kaggle website in which people build models for the same dataset and are ranked on a hidden test set. Competitions are a free way to practice and to compare your skills honestly.
 
@@ -584,8 +562,6 @@ Anthropic Fellows: about 4 months, or roughly 17 weeks
 
 > **Definition — Fellowship:** A time-boxed, paid program in which newcomers do research with mentorship, such as MATS or the Anthropic Fellows Program. Fellowships are a common bridge into research roles.
 
-> **Definition — Stipend:** A fixed payment to support someone during a fellowship or training program, usually lower than a salary and without the same benefits.
-
 **Do you need a PhD?** For research scientist roles, a PhD remains typical. For research engineering it often is not required: frontier-lab postings commonly ask for "a Bachelor's degree or an equivalent combination of education, training, and/or experience." A strong public record of replications, open-source contributions and write-ups can substitute for credentials. Stanford's 2026 AI Index reports that new AI PhDs in the US and Canada rose 22% between 2022 and 2024, with most going into academia, so a PhD is far from the only path into industry research.
 
 ## Track D: compute, chips and data centers
@@ -634,15 +610,11 @@ This lane assumes about a year of Track B or Track C first, because you need sol
 | Hugging Face "The Ultra-Scale Playbook" | How training is split across many GPUs, with measurements | Free |
 | Google DeepMind "How to Scale Your Model" (jax-ml.github.io/scaling-book) | The math of scaling models across TPUs and GPUs | Free |
 | Stanford CS336, systems assignment | Writing FlashAttention-2 in Triton | Free |
-| Kleppmann, *Designing Data-Intensive Applications* | Distributed systems foundations | Paid |
+| Kleppmann, *Designing Data-Intensive Applications* | How software that runs across many coordinating machines is built and kept reliable | Paid |
 
 > **Definition — CUDA:** NVIDIA's programming platform for its GPUs. Much of the AI software world is built on it, which is a large part of NVIDIA's competitive advantage (Chapter 35).
 
 > **Definition — GPU kernel:** A small program that runs on a GPU, performing one operation such as a matrix multiplication across thousands of cores at once. Faster kernels make training and inference cheaper.
-
-> **Definition — Triton:** An open-source language and compiler for writing GPU kernels in Python-like code, widely used for custom AI operations.
-
-> **Definition — Distributed systems:** Software that runs across many machines that must coordinate, cope with failures and stay consistent. Frontier training runs are distributed systems spanning tens of thousands of chips.
 
 A good first project: implement a softmax or matrix-multiply kernel in Triton, benchmark it against PyTorch's built-in version, and write up what you learned about memory bandwidth (Chapter 33). You can rent a cloud GPU for an hour for roughly $3–8, or use Colab's free GPU for small experiments. Remember to shut the rented machine down when you finish: billing continues until you do.
 
@@ -650,13 +622,11 @@ The pay at the top of this lane reflects how much money efficiency saves. Anthro
 
 ### Lane 2: the physical buildout
 
-Most of the people building AI data centers are electricians, mechanical and HVAC technicians, pipefitters, lineworkers, low-voltage and fiber technicians, controls technicians, construction managers, commissioning agents and the operators who run facilities around the clock.
+Most of the people building AI data centers are electricians, mechanical and HVAC technicians, pipefitters, lineworkers, low-voltage and fiber technicians, controls technicians, construction managers, commissioning agents (who test that a new building's power, cooling and controls work as designed before it goes live) and the operators who run facilities around the clock.
 
 > **Definition — Registered apprenticeship:** A formal, paid training program that combines on-the-job work under licensed professionals with classroom instruction, leading to a recognized credential. In the US, electrical apprenticeships are often run jointly by unions and contractors (the IBEW and NECA) and typically last several years.
 
 > **Definition — Critical facilities technician:** A tradesperson who operates and maintains a data center's power and cooling systems around the clock, where a failure could take thousands of servers offline.
-
-> **Definition — Commissioning:** The systematic testing of a new building's systems (power, cooling, fire protection, controls) to prove they work as designed before the facility goes live.
 
 Pathways include registered apprenticeships (in the US, the electrical training programs run by the IBEW and NECA), community-college HVAC and building-controls programs, military technical experience, and the operator training programs that data-center companies run. For engineers, the route is an electrical or mechanical engineering degree, critical-facility experience, and in many places a professional engineering license.
 
@@ -791,8 +761,6 @@ The time is about the same. But Option 2 gives a hiring manager three concrete t
 
 > **Definition — Case study:** A short write-up of one real project: the problem, who had it, what you built, how you measured it, the results, and what you would do next. It is the standard portfolio format for consultants, forward-deployed engineers and product people.
 
-> **Definition — README:** The front-page document of a code repository, explaining what the project does, how to run it and what results it achieved. For many reviewers it is the only part of your project they will read.
-
 What makes a portfolio project convincing? Hiring managers in AI repeatedly describe the same features. It solves a real problem for a real person, not a toy. It has an evaluation with numbers. It shows an error analysis: what went wrong, how often, and what you did about it. It reports cost per use. It is honest about limitations. And it is written up clearly enough that a busy person can understand it in three minutes.
 
 ```mermaid
@@ -874,9 +842,7 @@ NEXT: what you would do with another month
 
 Building in public does three things for you. It makes you finish things, because you told people you would. It brings feedback from people who know more than you. And it creates a visible trail that employers, clients and collaborators can follow, which matters more than any single polished project. A hiring manager who can see twelve weeks of steady, honest progress learns more about you than from a résumé line.
 
-Where to share: GitHub for code (with a good README); a personal blog or newsletter for write-ups; LinkedIn, X or Bluesky for short updates; Hugging Face Spaces for live demos; YouTube for walkthroughs; and the communities listed later in this chapter for questions and feedback. Local meetups and company "AI guilds" are excellent places to give your first five-minute talk.
-
-> **Definition — Hugging Face Space:** A free hosted web page on the Hugging Face platform where you can publish a working demo of an AI app that anyone can try in their browser.
+Where to share: GitHub for code (with a good README, the front-page explanation of the project); a personal blog or newsletter for write-ups; LinkedIn, X or Bluesky for short updates; Hugging Face Spaces for live demos; YouTube for walkthroughs; and the communities listed later in this chapter for questions and feedback. Local meetups and company "AI guilds" are excellent places to give your first five-minute talk.
 
 What to post: weekly progress notes; short "today I learned" posts; full project write-ups using the template above; honest accounts of what failed and why; and summaries of papers you read, in your own words.
 
@@ -911,8 +877,6 @@ A few rules keep building in public safe:
 AI news never stops. Several major model releases can land in a single month, alongside new papers, products, funding rounds, lawsuits and policy changes. Trying to follow all of it is a recipe for anxiety and shallow knowledge. The goal is not to know everything; it is to notice the few changes that matter for your work, and to keep building durable skills while the surface churns.
 
 > **Definition — Information diet:** A deliberate, limited set of sources and times for consuming news, chosen for quality and relevance, so that staying informed takes a fixed, small amount of time instead of an endless scroll.
-
-> **Definition — Newsletter:** A regular email publication, often written by one expert, that summarizes and analyzes news in a field. Many are free; some charge for full access.
 
 > **Definition — RSS feed:** A standard format that websites use to publish their latest posts, which a feed-reader app collects in one place in the order they appear, with no algorithm deciding what you see.
 
@@ -1044,17 +1008,13 @@ AI news is full of enormous numbers, bold claims and impressive demos. Some are 
 
 > **Definition — Hype cycle:** The pattern new technologies often follow: inflated expectations, then disillusionment, then steady productive use. Being able to tell which phase a claim belongs to is a valuable skill.
 
-> **Definition — Primary source:** The original document behind a claim: a company's official filing, a research paper, a system card, a court document or an official announcement. Primary sources can still be biased, but they are where the facts start.
-
-> **Definition — Secondary source:** A report about a primary source, such as a news article, an analyst's estimate or a social-media thread. Useful, but each retelling can add errors, drop caveats or exaggerate.
+> **Definition — Primary source:** The original document behind a claim: a company's official filing, a research paper, a system card, a court document or an official announcement. A secondary source, such as a news article, reports on it and can add errors or drop caveats.
 
 **1. What kind of number is it?** Revenue, run-rate, recurring revenue, bookings, valuation and "up to" commitments are different things, and headlines often blur them.
 
 > **Definition — Recognized revenue:** Money counted under formal accounting rules, only once the service has actually been delivered. It is the most conservative and comparable revenue figure.
 
-> **Definition — Run-rate (annualized revenue):** Recent revenue, often a single month, multiplied up to a full year. One $5 billion month gives a "$60 billion run-rate". It flatters fast-growing companies, and different firms calculate it differently.
-
-> **Definition — ARR (annual recurring revenue):** The yearly value of a company's ongoing subscriptions or contracts. Like run-rate, it is a reading of current pace, not money already collected.
+> **Definition — Run-rate (annualized revenue):** Recent revenue, often a single month, multiplied up to a full year. One $5 billion month gives a "$60 billion run-rate". It flatters fast-growing companies, and different firms calculate it differently. ARR (annual recurring revenue) is a similar pace reading based on subscriptions and contracts.
 
 > **Analogy:** Run-rate is a speedometer: how fast the car is going this minute. Recognized revenue is the odometer: how far it actually went. Both are true, but they answer different questions.
 
@@ -1078,8 +1038,6 @@ Both figures can be true at once, because a fast-growing company's current pace 
 **5. Benchmarks: independent, uncontaminated, unsaturated?** A lab's own chart of its own model is a starting point, not proof. Prefer third-party evaluations from organizations such as METR, Epoch AI and government AI institutes. Ask whether the test questions could have leaked into training data, and whether top models all score near 100% already, in which case the benchmark no longer separates them. And remember the jagged frontier: a gold medal at the International Mathematical Olympiad tells you little about reading an analog clock.
 
 > **Definition — Benchmark contamination:** When a benchmark's test questions, or close copies, end up in a model's training data, so a high score reflects memory rather than ability (Chapter 24).
-
-> **Definition — Benchmark saturation:** When the best models all score near the maximum on a benchmark, so it can no longer tell them apart and a new, harder test is needed.
 
 **6. Demo or deployment?** A demo shows that something can work at least once, under chosen conditions. Deployment shows it works for real users at scale. Ask: has it shipped, to how many people, and what do they report? Stanford's 2026 AI Index found 88% of organizations saying they had adopted AI; adoption is not the same as impact. For robots in particular, check whether a demo was teleoperated by a hidden human (Chapter 49).
 

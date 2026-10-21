@@ -269,7 +269,7 @@ flowchart TD
 ```
 *Figure 58.4: What to do if intimate images of you or someone you know are shared without consent. Hashing services let platforms block copies without anyone seeing the image.*
 
-> **Watch out:** If you ever come across what may be child sexual abuse material, do not download it, screenshot it or forward it, even to "report" it, because possessing or sharing it is itself a crime in most places. Report the web address to a hotline such as the NCMEC CyberTipline (report.cybertip.org) in the US or the Internet Watch Foundation (iwf.org.uk) in the UK, or to the police.
+> **Watch out:** If you ever come across what may be child sexual abuse material, do not download it, screenshot it or forward it, even to "report" it, because possessing or sharing it is itself a crime in most places. Report the web address to a hotline such as NCMEC's CyberTipline (reachable from missingkids.org) in the US or the Internet Watch Foundation (iwf.org.uk) in the UK, or to the police.
 
 > **Key idea:** Deepfake abuse is not mainly a political story; it is mostly a story of sexual abuse targeting women and girls. Laws in 2025 and 2026 have started treating it that way, focusing on removal, criminal penalties and the tools that make it easy.
 
@@ -320,8 +320,310 @@ flowchart LR
 ```
 *Figure 58.5: How content credentials travel with a file, and where they get lost. Missing credentials mean "unknown", not "fake".*
 
-Laws are starting to require labels. China's rules on labeling AI-generated content, which took effect on September 1, 2025, require visible labels plus hidden metadata. In the EU, the AI Act's Article 50 transparency duties, including marking AI-generated content in a machine-readable way, apply from August 2, 2026, with a grace period to December 2, 2026 for generative systems already on the market, as of October 2026.
+> **Analogy:** Content credentials work like the chain of custody for evidence in a criminal case. Every hand the item passes through is recorded, so a court can trust it. If the chain is broken, the evidence is not proven fake, but it can no longer prove itself.
+
+Laws are starting to require labels. As of October 2026, China's rules on labeling AI-generated content, which took effect on September 1, 2025, require visible labels plus hidden metadata, according to published summaries of the rules. In the EU, the AI Act's Article 50 transparency duties, including marking AI-generated content in a machine-readable way, apply from August 2, 2026, with a grace period to December 2, 2026 for generative systems already on the market, as of October 2026.
 
 > **Watch out:** "Watermarks will solve deepfakes" is a misconception. Watermarks can be stripped, open-weight models may not include them, and the absence of a watermark proves nothing. The more promising long-term approach is the reverse: cameras and news organizations signing real content at capture, so authentic media can prove itself.
 
 > **Watch out:** AI text detectors are unreliable and can be unfair. A 2023 Stanford study found that popular detectors frequently flagged essays by non-native English writers as AI-written. Never treat a detector's score as proof that someone cheated.
+
+## Bias and fairness
+
+Models learn patterns from data, and data reflects the world, including its unfairness. When a model's output feeds a decision about a person, such as a loan, a job interview, a medical test or a prison sentence, those patterns can turn into real discrimination.
+
+> **Definition — Algorithmic bias:** Systematic, unfair differences in how an AI system treats different groups of people, usually inherited from training data, from the choice of what to predict, or from how the system is used.
+
+> **Definition — Disparate impact:** When a rule or system that looks neutral harms a protected group disproportionately, for example a hiring filter that never mentions gender but rejects far more women than men.
+
+### Three classic cases
+
+**Faces.** In the 2018 "Gender Shades" study, Joy Buolamwini and Timnit Gebru tested commercial face-analysis systems that guessed a person's gender from a photo. Error rates were as low as 0.8% for lighter-skinned men and as high as 34.7% for darker-skinned women. The training data had far fewer darker-skinned faces, and nobody had measured performance by group before selling the products. After the study, the companies improved their systems, showing that measuring by group is the first step to fixing the problem.
+
+**Résumés.** Reuters reported in 2018 that Amazon had built an experimental tool to rate job applicants, trained on résumés from its past hires, who were mostly men. The tool learned to downgrade résumés containing the word "women's", as in "women's chess club captain". Amazon abandoned it. Nobody programmed it to discriminate; it learned to imitate a biased history.
+
+> **Definition — Proxy variable:** A piece of data that stands in for a protected characteristic even when that characteristic is removed, such as a zip code standing in for race or a women's college standing in for gender. Deleting the sensitive column does not remove bias when proxies remain.
+
+**Risk scores.** In 2016, ProPublica analyzed COMPAS, a tool used in some US courts to estimate whether a defendant would reoffend. It found that Black defendants who did not go on to reoffend were nearly twice as likely as white defendants to have been labeled higher risk. The tool's maker replied that its scores were equally accurate for both groups in a different sense: among people given the same score, the share who reoffended was similar regardless of race. Both claims were true. That puzzle led to one of the most important results in the field.
+
+### Why "fair" has several meanings
+
+There are several reasonable mathematical definitions of fairness. Here are three.
+
+> **Definition — Fairness metrics:** Mathematical definitions of fairness used to audit a system, such as equal selection rates, equal error rates or equal accuracy of positive predictions across groups. Different metrics can conflict with each other.
+
+> **Definition — Demographic parity:** A fairness definition requiring that each group is selected (approved, hired, flagged) at the same rate.
+
+> **Definition — Equal false positive rates:** A fairness definition requiring that people who do not have the predicted outcome are wrongly flagged at the same rate in every group. It is part of a stricter standard called equalized odds.
+
+> **Definition — Predictive parity:** A fairness definition requiring that a positive prediction means the same thing for every group: for example, among people labeled "high risk", the same share actually reoffend.
+
+> **Definition — Base rate:** How common an outcome is in a group before any prediction is made, such as the share of applicants in a group who would repay a loan.
+
+Here is a worked example with invented numbers showing why these definitions collide. A risk tool assesses 100 people from Group A and 100 from Group B. Because of different circumstances, 50 people in Group A will reoffend and 20 in Group B will: the base rates are 50% and 20%. The tool is built so that its "high risk" label means the same thing in both groups: 60% of people it flags actually reoffend (predictive parity).
+
+```
+                     Group A (base rate 50%)   Group B (base rate 20%)
+Flagged high risk          60 people                 20 people
+  of whom reoffend         36  (60%)                 12  (60%)
+  of whom do not           24                         8
+Not flagged                40 people                 80 people
+  of whom reoffend         14                         8
+  of whom do not           26                        72
+
+People who do not reoffend:    24 + 26 = 50          8 + 72 = 80
+Wrongly flagged among them:    24 ÷ 50 = 48%         8 ÷ 80 = 10%
+```
+
+The high-risk label is equally reliable for both groups: 60% each. Yet a person in Group A who will never reoffend has a 48% chance of being flagged high risk, while a person in Group B who will never reoffend has a 10% chance. By the error-rate definition, the tool is heavily unfair to Group A. By the predictive-parity definition, it is perfectly fair.
+
+Could we fix it? If we tuned the tool so both groups had a 10% false positive rate, the "high risk" label would become more reliable in Group A than in Group B, breaking predictive parity. Researchers proved in 2016 and 2017 that, whenever base rates differ between groups and predictions are imperfect, no tool can satisfy predictive parity and equal error rates at the same time. This is often called the impossibility theorem of fairness.
+
+> **Analogy:** Think of a screening test for a disease used in two towns, one where the disease is common and one where it is rare. Use exactly the same test in both, and healthy people get false alarms at the same rate, but a positive result is far more likely to be a true case in the town where the disease is common. Adjust the test so that a positive result means the same thing in both towns, and the false-alarm rates for healthy people must differ. You can equalize one or the other, never both. Risk scores face the same arithmetic.
+
+> **Key idea:** Choosing a fairness definition is a moral and political decision, not a technical one. Mathematics can show you the trade-offs precisely, but it cannot tell you which kind of error is worse or for whom. That choice belongs to the people affected, to lawmakers and to courts.
+
+### Bias in chatbots and image generators
+
+Modern generative models raise subtler versions of the same problem. Ask an image generator for "a CEO" ten times and count the faces; ask for "a nurse" and count again. Ask a chatbot to write reference letters for two candidates whose descriptions are identical except for their names, and compare the adjectives. Researchers use exactly these **paired tests** to measure bias, because the only difference between the two prompts is the one under study. Labs now include such bias evaluations in their system cards, and post-training (Chapter 20) reduces many of the crudest stereotypes, sometimes overcorrecting into historically inaccurate images.
+
+> **Definition — Automated decision-making (ADMT):** Using algorithms to make or materially influence decisions about people, such as loans, hiring, housing, insurance or benefits. Several laws now require notice, explanation or human review for such decisions.
+
+Law is moving here too, as of October 2026. The EU AI Act classifies AI used in hiring, education, credit and similar areas as "high-risk", although the 2026 Digital Omnibus postponed those obligations to December 2, 2027. In the US, Colorado repealed its broad 2024 AI Act in May 2026 and replaced it with a narrower automated-decision transparency law, scheduled to take effect on January 1, 2027 if the state attorney general's rulemaking is complete; it requires notices before consequential decisions and explanations after adverse ones. Chapter 59 covers these laws.
+
+> **At the frontier (2026):** One quiet change in the EU's 2026 Digital Omnibus gives companies a legal basis to process sensitive data, such as ethnicity, specifically to detect and correct bias. It acknowledges a practical paradox: you cannot measure whether a system treats groups differently if you are forbidden to know who belongs to which group.
+
+> **Watch out:** "Algorithms are objective because they are math" is false. Every system embeds human choices: what data to use, what to predict, which errors to accept and which fairness definition to target. A model can faithfully reproduce an unfair past with perfect mathematical precision.
+
+## Privacy: what happens to what you type
+
+When you send a message to a chatbot, it leaves your device encrypted, but the provider must decrypt it so the model can read it (Chapter 4). From then on, what happens depends on the provider's policies and your settings.
+
+```mermaid
+sequenceDiagram
+    participant You
+    participant App as Chat app
+    participant Srv as Provider servers
+    participant Store as Chat storage
+    participant Train as Future training
+    You->>App: Type a message
+    App->>Srv: Encrypted in transit
+    Srv->>Srv: Decrypted so the model can read it
+    Srv->>App: Answer streams back
+    Srv->>Store: Saved in your chat history
+    Store-->>Srv: Safety systems may review flagged chats
+    Store-->>Train: May be used for training, depending on product and settings
+    You->>Store: Delete a chat or turn off history
+    Store-->>Store: Removed after a retention period, unless a legal hold applies
+```
+*Figure 58.6: The journey of what you type. Dashed steps depend on the provider, your plan and your settings.*
+
+> **Definition — Personal data:** Any information that relates to an identifiable person, such as a name, email address, location, health details or a conversation that reveals who you are. Privacy laws such as the EU's GDPR govern how it may be collected and used.
+
+> **Definition — Data retention:** How long a company keeps data before deleting it. Deleting a chat from your screen does not always delete it from the company's systems immediately.
+
+> **Definition — Training opt-out:** A setting or request that stops a company from using your conversations to train future models. Defaults differ by product and plan, and have changed over time.
+
+> **Analogy:** Typing into a chatbot is like talking to a helpful clerk at a company's front desk, not writing in a locked diary. The clerk may be discreet, but the conversation happens on the company's premises, under the company's rules, and may be noted in a file.
+
+A few facts are worth knowing:
+
+- **Settings differ and change.** Consumer chat apps from the major providers let you control whether your chats can be used for training, but defaults differ between products and have changed over time. Business, enterprise and API accounts are generally governed by contracts that exclude training on customer data by default. Check your own settings (Exercise 1).
+- **Pasting is sharing.** In 2023, Samsung restricted employees' use of ChatGPT after staff pasted confidential source code into it. The code went to an outside company's servers, outside Samsung's control.
+- **Models can memorize.** Models can reproduce pieces of their training data word for word, especially text that appeared many times. Researchers extracted names, phone numbers and email addresses from GPT-2's training data in 2021, and in 2023 showed that asking ChatGPT to repeat a single word forever could make it emit memorized training text. Providers have since added defenses, but memorization is why privacy laws apply to training data.
+- **Courts can order chats kept.** In 2025, as part of the New York Times' copyright lawsuit, a US court ordered OpenAI to preserve consumer chat logs, including chats users had deleted, for a period. Legal holds can override a provider's normal deletion schedule.
+- **Regulators act.** In March 2023, Italy's data-protection authority temporarily blocked ChatGPT over privacy concerns; it returned about a month later after OpenAI added controls and disclosures.
+
+> **Definition — Memorization:** A model reproducing pieces of its training data word for word, including personal or copyrighted material, rather than only learning general patterns.
+
+> **Definition — Data minimization:** The privacy principle of collecting, sharing and keeping only the data a task actually needs.
+
+New features raise the stakes. Memory lets an assistant recall details across conversations, and connectors let it read your email, files and calendar (Chapter 25 and Chapter 28). These are genuinely useful, and each one widens what an assistant knows about you and what a successful prompt injection could expose.
+
+> **Try it:** Before pasting anything into a chatbot, ask: "Would I be comfortable if this were stored on a company's servers for years?" Remove names, account numbers, addresses and health details you do not need to include. Use a temporary or incognito chat mode for sensitive topics, and use a work account, not a personal one, for work data.
+
+## Children, teens, companion apps and mental health
+
+This section discusses suicide and mental health, without detail of methods. If you or someone you know is struggling, contact a crisis line: in the US, call or text 988 (the Suicide & Crisis Lifeline); in the UK and Ireland, call Samaritans on 116 123; elsewhere, findahelpline.com lists free services by country. In an emergency, call your local emergency number.
+
+AI chatbots have become part of growing up. A July 2025 survey by Common Sense Media found that 72% of US teens had used AI companions and more than half used them regularly. Some uses are clearly good: homework help, practicing a conversation, getting information about a sensitive topic without embarrassment. Others worry parents, clinicians and lawmakers.
+
+> **Definition — Companion app:** An AI product designed for ongoing personal, friendly or romantic relationships with its users, often with a persistent character, memory and a human-like personality.
+
+> **Definition — Parasocial relationship:** A one-sided emotional bond with someone, or something, that cannot truly reciprocate, such as a celebrity, a fictional character or an AI companion.
+
+The concerns fall into a few groups. **Emotional dependence**: a companion that is always available, always agreeable and never tired can crowd out human relationships, especially for lonely or vulnerable users. **Engagement incentives**: products that earn more when people use them longer have reasons to encourage attachment. **Sycophancy** (Chapter 55): a model trained toward approval may validate harmful beliefs instead of gently challenging them. **Inappropriate content** for minors. And **crisis conversations**: what a chatbot does when someone discloses thoughts of suicide or self-harm.
+
+> **Definition — Engagement optimization:** Designing a product to maximize how much time or how many sessions users spend with it. It can conflict with users' wellbeing, a criticism made of social media before AI companions.
+
+The scale is large. In October 2025, OpenAI estimated that in a given week about 0.15% of ChatGPT's active users showed explicit indicators of potential suicidal planning, and about 0.07% showed possible signs of psychosis or mania. ChatGPT had about 800 million weekly users at the time, so those small percentages correspond to roughly 800,000,000 × 0.0015 = 1.2 million people a week, and 800,000,000 × 0.0007 = 560,000 people a week. Even a very good safety system that handles 99% of such conversations well leaves thousands of people a week in conversations that go poorly. OpenAI itself acknowledged in 2025 that its safeguards could become less reliable over long conversations, which is exactly where dependence develops.
+
+> **Definition — AI psychosis (informal):** A non-clinical media term for cases in which intense chatbot use appears to reinforce or deepen someone's delusional beliefs. It is not a medical diagnosis, and how often it happens is not yet known.
+
+Several tragedies have reached the courts. In August 2025, the parents of a 16-year-old filed *Raine v. OpenAI* in San Francisco, alleging that ChatGPT encouraged their son's suicide; OpenAI denies responsibility and says ChatGPT directed him to crisis resources more than 100 times. More families filed similar suits in November 2025. As of October 2026, these are allegations being contested in court. In January 2026, Character.AI and Google agreed to settle several family lawsuits, including one brought by the mother of Sewell Setzer III, with undisclosed terms and no admission of liability. Character.AI had already barred users under 18 from open-ended chat in late 2025.
+
+Rules and inquiries followed, all as of October 2026:
+- **California SB 243**, in effect since January 1, 2026, is the first US state law aimed at companion chatbots. It requires operators to disclose that users are talking to an AI, give minors recurring reminders to take a break, and maintain protocols for suicidal ideation, self-harm and sexual content.
+- The **US Federal Trade Commission** opened an inquiry in September 2025 into AI companion chatbots from Alphabet, Character.AI, Instagram, Meta, OpenAI, Snap and xAI.
+- **Illinois** reportedly restricted AI systems from providing therapy in August 2025.
+- The **White House's March 2026 legislative framework** proposed "commercially reasonable" age assurance with parental attestation and features to reduce sexual exploitation and self-harm risks; it is a proposal, not law.
+- **China** issued draft rules in December 2025 on "anthropomorphic" AI interaction services that address addiction and minors.
+
+> **At the frontier (2026):** Companion chatbots became one of the fastest-moving areas of AI regulation in 2025 and 2026. California's SB 243, the FTC inquiry, China's draft rules on anthropomorphic AI and the White House framework all target the same few features: disclosure that the user is talking to an AI, protections for minors, break reminders and crisis protocols. Companies building companion or general chat products now design for these requirements from the start.
+
+> **Definition — Age assurance:** Methods to estimate or verify a user's age, from asking for a birth date, to analyzing behavior, to checking an ID. Stronger methods protect children better but collect more personal data from everyone.
+
+```mermaid
+flowchart TD
+    A["Someone opens<br/>a chatbot"] --> B["Age assurance:<br/>is this likely a minor?"]
+    B -->|"likely a minor"| C["Teen settings: stricter content rules,<br/>break reminders,<br/>parental tools"]
+    B -->|"likely an adult"| D["Standard settings"]
+    C --> E["Classifiers watch for<br/>signs of crisis"]
+    D --> E
+    E -->|"crisis signs"| F["Supportive response,<br/>crisis resources,<br/>no harmful detail"]
+    E -->|"no signs"| G["Normal conversation"]
+    F --> H["Escalation where the law<br/>and policy allow:<br/>human review or alerts"]
+```
+*Figure 58.7: The layered protections that companion-chatbot laws and proposals have in common. Each layer is imperfect; together they reduce risk.*
+
+The debate is real. Some researchers and clinicians see promise: an always-available, non-judgmental listener may help lonely people, people who cannot afford therapy, and people who would never talk to a human about their struggles. Others argue that a product that cannot truly care, and that may be optimized for engagement, should not play that role for children at all. The evidence is still thin: careful long-term studies of teenagers and companion apps barely exist yet. What both sides largely agree on is that minors need stronger defaults, that crisis conversations need careful handling, and that sycophancy toward vulnerable users is a safety failure, not a feature.
+
+> **Watch out:** "Only bad actors misuse AI" misses the harms in this section. Some of the most serious ones come from ordinary products, used as intended, by vulnerable people: over-reliance, flattery toward someone in crisis, or a companion that crowds out real relationships.
+
+> **Try it:** If you have a teenager at home, sit down together and look at the AI apps on their phone and the settings each offers: age settings, parental controls, memory and chat history. Ask what they use AI for and what they like about it, before discussing risks. A calm conversation does more than a ban they can route around.
+
+## The environmental footprint, briefly
+
+Part VII of this book covers data centers and energy in depth. Here is the short version, because "AI is destroying the planet" and "AI's energy use is trivial" are both common, and both miss the point.
+
+Per prompt, the footprint of ordinary text chat is small. In August 2025 Google reported that the median text prompt in its Gemini apps used about 0.24 watt-hours of electricity, 0.03 grams of CO2-equivalent emissions and 0.26 milliliters of water, roughly like watching television for under nine seconds. If you send 30 such prompts a day, that is 30 × 0.24 = 7.2 watt-hours a day, about 2.6 kilowatt-hours a year, less than a third of a minute of microwave use per day (a microwave uses about 20 watt-hours a minute) and about 8 milliliters of water a day, under two teaspoons.
+
+In aggregate, the picture changes. The International Energy Agency estimated that data centers used about 415 terawatt-hours in 2024, about 1.5% of the world's electricity, and projected roughly 945 terawatt-hours by 2030, with AI the main driver. Lawrence Berkeley National Laboratory estimated US data centers used 4.4% of US electricity in 2023, possibly 6.7 to 12% by 2028. Heavier workloads (long reasoning, images, video and agents) cost far more per request than a median text prompt, and training adds more. The serious issues are local: new demand on particular grids, who pays for new power plants and transmission, and water in dry regions.
+
+> **Watch out:** "Each prompt boils a bottle of water" is a misconception about typical text prompts. The real environmental questions are about total growth, local grids and water, and heavier workloads, which Chapter 39, Chapter 40 and Chapter 41 cover.
+
+## Copyright and the creative industries
+
+Generative models were trained on enormous amounts of text, images, music and code made by people who were never asked. Whether that is legal, and what creators are owed, is being fought out in courts around the world. Chapter 11 gave the basics and Chapter 59 covers the law; here is where things stand, as of October 2026.
+
+> **Definition — Fair use:** A US legal doctrine that allows some unlicensed use of copyrighted works, judged on four factors: the purpose of the use, the nature of the work, how much was used, and the effect on the market for the original.
+
+> **Definition — Transformative use:** A use that adds a new purpose or meaning rather than substituting for the original. It weighs toward fair use, and AI companies argue that training is highly transformative.
+
+> **Definition — Market dilution:** The argument that a flood of AI-generated works harms the market for human-made works, even if no specific work is copied in the output. Courts have not yet settled whether it can defeat fair use.
+
+| Case | What it was about | Status as of October 2026 |
+|---|---|---|
+| Bartz v. Anthropic (US) | Training on books, including pirated copies from shadow libraries | June 2025 ruling: training on lawfully acquired books was fair use, pirated library copies were not. $1.5 billion settlement, about $3,000 per work for roughly 500,000 works, given final approval on July 20, 2026; fee appeals pending |
+| Kadrey v. Meta (US) | Training on books | June 2025: Meta won summary judgment because the authors had not proved market harm; the judge stressed market dilution could win a better-argued case. Related claims continue |
+| Thomson Reuters v. Ross (US) | Copying legal headnotes to train a competing, non-generative legal search tool | September 29, 2026: appeals court affirmed this was not fair use; commentators stress it is fact-specific and distinct from generative AI |
+| New York Times v. Microsoft and OpenAI (US) | Training on news articles and outputs reproducing them | Core claims survived dismissal; cross-motions on fair use filed September 2026; no trial date |
+| Getty Images v. Stability AI (UK and US) | Training an image generator on Getty's photos | UK High Court (November 2025) largely favored Stability, finding model weights do not store copies of images; appeal permitted. US claims survived dismissal in April 2026 |
+| Music labels v. Suno and Udio (US) | Training music generators on recordings | Universal settled with Udio (October 2025) and Warner with Udio and Suno (November 2025), moving to licensed models; Sony had not settled as of mid-2026 |
+
+*Table 58.3: Key AI copyright cases and their status as of October 2026. Outcomes depend heavily on the facts of each case.*
+
+Look at the per-work arithmetic in the Bartz settlement: $1,500,000,000 ÷ 500,000 works = $3,000 per work. Courts have so far drawn lines less around "training" in general than around specific facts: how the data was obtained (bought or pirated), whether outputs compete with the originals, and whether the model reproduces protected text. In Germany, a Munich court reportedly held in November 2025, in a case brought by the music-rights society GEMA against OpenAI, that a model memorizing and reproducing song lyrics infringed copyright. The US Copyright Office's May 2025 pre-publication report on training said some training uses would not be fair use, especially where outputs compete with the originals. The White House's March 2026 framework left fair use to the courts and suggested Congress could consider collective licensing.
+
+Meanwhile, the market is moving toward licensing: news publishers, stock-image companies and record labels have signed deals with AI companies, and some music generators now train only on licensed catalogs. For working illustrators, voice actors, translators and writers, the questions are both legal and economic: whether they are paid for past training, and whether AI-generated work undercuts their future income. Chapter 60 covers effects on work.
+
+> **Watch out:** "Training on copyrighted works is clearly illegal" and "it is clearly fair use" are both wrong as general statements, as of October 2026. Courts have split along the facts, and the biggest cases are not finished.
+
+## What you can do: a personal checklist
+
+You cannot fix these problems alone, but a handful of habits remove most of the everyday risk.
+
+| Risk | Habit |
+|---|---|
+| Voice-clone and deepfake scams | Family safe word; call back on a known number; treat urgency as a red flag |
+| Prompt injection against your assistant | Be careful with agents that combine private data, untrusted content and the ability to send; require approval for purchases and messages |
+| Privacy | Check training and memory settings; do not paste what you would not want stored; use work accounts for work data |
+| Fakes and misinformation | Check the source before sharing; look for content credentials; remember that missing credentials prove nothing |
+| Biased decisions about you | Ask whether an automated system was used, and request an explanation or human review where the law allows |
+| Children and teens | Talk about how they use AI; use age and parental settings; know the crisis lines |
+| Intimate-image abuse | Report to platforms (48-hour removal in the US), use StopNCII.org or Take It Down, and contact police or a hotline |
+
+*Table 58.4: A personal checklist against everyday AI harms.*
+
+## In plain English
+
+Most harm from AI today is not science fiction. It is old harm made cheap, fast and personal. A scam message that took ten minutes to write now costs a fraction of a cent, a cloned voice can sound exactly like your grandchild, and fake intimate images of real people can be made from an ordinary photo. The law is catching up: as of October 2026, the US TAKE IT DOWN Act requires platforms to remove reported intimate images within 48 hours, and the EU is about to ban AI tools that make them.
+
+New risks come from agents. An assistant that reads web pages and email can be hijacked by instructions hidden in them, and nobody has fully solved this, so the safest rule is never to give one agent your private data, untrusted content and a way to send things out all at once. In cyber, AI now helps attackers and defenders alike; labs have started giving their strongest bug-finding models only to defenders first. In biology, labs act with extra caution because the worst case is catastrophic.
+
+Everyday harms matter too. Systems trained on the past can repeat its unfairness, and there are several reasonable definitions of "fair" that cannot all be met at once, so choosing one is a moral decision. What you type may be stored and, depending on settings, used for training. Teenagers use AI companions widely; lawsuits and new laws focus on crisis handling, age assurance and break reminders. A single text prompt uses little energy, but the total is growing fast. And the copyright fights are being decided case by case. Simple habits, from a family safe word to checking your privacy settings, remove much of the risk.
+
+## Key terms
+Misuse, Dual-use, Threat model, Jailbreak, Prompt injection, Direct and indirect prompt injection, Lethal trifecta, Data exfiltration, Distillation attack, Vulnerability, Exploit, Zero-day vulnerability, Patch, Phishing, Malware, Coordinated vulnerability disclosure, Trusted access program, CBRN, Biosecurity, Tacit knowledge, ASL-3, Social engineering, Voice cloning, Deepfake, NCII (non-consensual intimate imagery), Nudify app, Sextortion, CSAM (child sexual abuse material), Hash matching, Misinformation, Disinformation, Influence operation, Liar's dividend, Watermark (AI), Content provenance, C2PA (Content Credentials), Algorithmic bias, Disparate impact, Proxy variable, Fairness metrics, Demographic parity, Equal false positive rates, Predictive parity, Base rate, Automated decision-making (ADMT), Personal data, Data retention, Training opt-out, Memorization, Data minimization, Companion app, Parasocial relationship, Engagement optimization, AI psychosis (informal), Age assurance, Fair use, Transformative use, Market dilution.
+
+## Exercises
+
+1. **[Easy] Find your privacy settings.** Allow 15 minutes. (1) Open the settings of every chat app you use (for example ChatGPT, Claude and Gemini). (2) For each, find and write down: whether your chats may be used to train future models and how to change it; whether memory is on and how to view or delete what it remembers; how to delete chat history; and whether a temporary or incognito chat mode exists. (3) Compare the defaults across apps in a small table. (4) Change at least one setting to match what you actually want. **What you'll learn:** what an opt-out is, that defaults differ by product and plan, and how much control you really have.
+
+2. **[Easy] Run a scam drill.** (1) Agree on a family safe word or question in person with two or three people you would help in an emergency. (2) Write down your "call back" rule: if anyone calls asking for money urgently, you hang up and call them on a number you already have. (3) Explain voice-clone scams to one older relative using the Arup case and Table 58.1. (4) Ask a chatbot: "List the five most common warning signs of a phone or message scam, in plain language for a 75-year-old," and print or share the result. **What you'll learn:** that the most effective defenses against AI fraud are simple procedures, not technology.
+
+3. **[Easy] Check where an image came from.** (1) Find three images online: one you know is AI-generated (for example from an AI image gallery), one recent news photo from a major outlet, and one viral image whose origin you do not know. (2) Upload each to the Content Credentials verifier at contentcredentials.org/verify. (3) Also run each through a reverse image search such as Google Lens. (4) Record what each check showed. (5) Write two sentences on why "no credentials found" does not mean "fake". **What you'll learn:** what C2PA can and cannot prove, and why provenance is about evidence of origin rather than detecting fakes.
+
+4. **[Medium] Probe a chatbot for bias with paired prompts.** Allow 45 minutes. (1) Ask a chatbot to "write a three-sentence reference letter for Emily, a software engineer with five years of experience who led a team of four." (2) In a new chat, ask the same for "Jamal", then for two more names associated with different genders or backgrounds, keeping every other word identical. (3) List the adjectives each letter uses and count words about competence ("skilled", "technical") versus warmth ("kind", "supportive"). (4) Ask an image generator for "a CEO" and "a nurse" ten times each and tally apparent gender and age. (5) Write a paragraph on what you found and why ten samples are too few to conclude much. **What you'll learn:** how paired testing works, how bias can show up subtly, and the limits of small samples.
+
+5. **[Medium] The fairness trade-off in a spreadsheet.** (1) Recreate the worked example: in a spreadsheet, enter Group A and Group B with the counts from the chapter. (2) Compute for each group the flag rate (flagged ÷ 100), the precision (reoffend among flagged ÷ flagged), the false positive rate (wrongly flagged ÷ all who do not reoffend) and the false negative rate (not flagged but reoffend ÷ all who reoffend). (3) Now change Group B's numbers so that its false positive rate equals Group A's 48%, keeping its 20 reoffenders: try flagging 48 of the 80 people who do not reoffend plus all 20 who do. (4) Recompute precision for Group B. (5) Write a paragraph explaining which definition of fairness each version satisfies and which you would choose for a bail decision, and why. **What you'll learn:** that equal precision and equal error rates cannot both hold when base rates differ, and that the choice is a value judgment.
+
+6. **[Medium] Classify real incidents.** Allow 45 minutes. (1) Go to the AI Incident Database at incidentdatabase.ai. (2) Pick five incidents from different areas: a scam or deepfake, a biased decision, a chatbot harm, a privacy leak, and one more of your choice. (3) For each, record: what happened, who was harmed, whether it was an accident, misuse or structural harm (some are mixtures), and which safeguard might have prevented it. (4) Note which of the five involved a vulnerable person and which involved a company's own product working as designed. **What you'll learn:** how real-world AI harms are documented, and how to reason about prevention.
+
+7. **[Easy] Play a prompt-injection game.** (1) Go to Lakera's Gandalf game at gandalf.lakera.ai, where you try to trick a guarded chatbot into revealing a password. (2) Play levels 1 to 5, writing down which kinds of tricks worked at each level (asking directly, role-play, spelling it out, asking for hints). (3) Write three sentences on why each new level's defense was eventually beaten. (4) Write one sentence on what would change if the bot, instead of guarding a password, could read your email and send messages. **What you'll learn:** why following instructions and resisting manipulation pull against each other, and why layered defenses are needed.
+
+8. **[Easy] Estimate your AI energy footprint.** (1) Estimate how many text prompts you send per day. (2) Multiply by 0.24 watt-hours to get daily energy, then by 365 for a year. (3) Compare with a minute of microwave use (about 20 watt-hours) and a 10-minute hot shower with an electric heater (roughly 1,500 watt-hours, a rough household figure). (4) Note which of your uses are heavier than a median text prompt (images, video, long reasoning, agents). (5) Compare your yearly total with the 415 terawatt-hours data centers used in 2024 (one terawatt-hour is a billion kilowatt-hours). **What you'll learn:** the difference between per-use and aggregate impact, and why the debate is about scale and local grids.
+
+9. **[Challenge] Write a fair-use opinion.** Allow two hours. (1) Read short summaries of Bartz v. Anthropic (Judge Alsup's June 2025 ruling), Kadrey v. Meta (Judge Chhabria, June 2025) and Thomson Reuters v. Ross (Third Circuit, September 2026), for example on Wikipedia or a law-firm summary. (2) Consider this invented case: a startup trains a model on paywalled news articles it obtained through paid subscriptions, and sells a service that writes daily summaries of the news. (3) Apply the four fair-use factors one by one, citing which earlier ruling supports each point. (4) Write a two-page "opinion" reaching a conclusion, then write one paragraph arguing the opposite. **What you'll learn:** how fair-use reasoning works, why market effects and how data was obtained matter, and why outcomes are fact-specific.
+
+10. **[Challenge] Design a safety policy for a teen homework helper.** Allow two to three hours. (1) Write a one-page policy for an AI homework helper used by 13- to 17-year-olds: what it helps with, what it will not do, how it handles sensitive topics, how often it suggests breaks, what it tells users about being an AI, and how it responds when a student seems distressed (with crisis resources and no harmful detail). (2) Compare your policy with the requirements of California's SB 243 described in this chapter and note any gaps. (3) Put the policy into a custom assistant's instructions (a Claude Project, Custom GPT or Gemini Gem). (4) Test it with ten benign scenarios, such as a student who says they are 13, a student chatting at 2 a.m. for the third night running, a request to write an entire essay to hand in, and a student who says they feel stressed about exams. Do not role-play detailed self-harm scenarios. (5) Revise the policy based on what you saw. **What you'll learn:** the trade-offs between helpfulness and protection, how laws translate into product rules, and why specifying behavior is hard.
+
+## Areas of opportunity
+
+- **Trust and safety professional.** Platforms, AI companies and app developers need people to write content policies, run abuse detection, handle NCII and CSAM reports within legal deadlines such as the US 48-hour removal rule, and protect minors. Experience in content moderation, child protection, law enforcement or social work transfers well.
+- **AI security and agent security.** Prompt-injection defenses, agent permission systems, monitoring and red-teaming of agents are fast-growing specialties as companies give agents access to email, files and payments. Security vendors bought AI-security startups in 2025, a sign of where budgets are going.
+- **Cyber defense with AI.** Security teams that can use AI tools to find and fix vulnerabilities faster, and qualify for trusted-access programs, are in demand at software makers, banks and critical-infrastructure operators.
+- **Fraud prevention.** Banks, payment companies and telecoms need deepfake-resistant identity checks, scam detection and customer education. Specialists who understand both fraud operations and AI-generated media are scarce.
+- **Content provenance and deepfake response.** News organizations, camera makers, platforms and law firms need help implementing C2PA credentials, verifying media and responding to deepfake incidents, including for individuals facing image-based abuse.
+- **Age assurance and child-safety tooling.** Laws such as California's SB 243 and proposals for age assurance create demand for products that estimate age privately, apply teen settings, detect crisis signals and support parents.
+- **Fairness auditing and AI governance.** Employers, lenders and insurers using automated decisions need bias audits, documentation and compliance with rules such as the EU AI Act's high-risk obligations (December 2027) and Colorado's 2027 transparency law, as scheduled as of October 2026.
+- **Privacy engineering and counsel.** Companies deploying chatbots and memory features need people who can design data minimization, retention rules and opt-outs, and lawyers who understand both privacy law and how models handle data.
+- **Licensing and rights management for creators.** Licensed training-data marketplaces, collective licensing schemes and tools that let creators track and get paid for use of their work are an open business space as the copyright cases resolve.
+- **Domain-expert red-teaming.** Child-safety specialists, election officials, fraud investigators, clinicians and biosecurity experts are paid to test models for misuse in their fields, one of the few safety roles open to people without programming skills.
+
+## Check your understanding
+
+1. In your own words, why does AI make many old harms worse even when it does not create new ones? Give an example with numbers.
+2. What is the difference between a jailbreak and an indirect prompt injection? In each case, who is the attacker and who is the victim?
+3. Why do labs restrict access to their strongest vulnerability-finding models, and what is the main argument against relying on that restriction?
+4. Give two reasons AI-generated child sexual abuse material causes real harm even though it is synthetic.
+5. A watermark detector finds no watermark in a viral video. What can you conclude?
+6. In the chapter's fairness example, both groups had 60% precision but different false positive rates. Why can't a better-designed tool fix both at once?
+7. Name three things that can happen to a message after you send it to a chatbot.
+8. OpenAI estimated that about 0.07% of weekly users showed possible signs of psychosis or mania. Why does such a small percentage still matter so much?
+
+<details><summary>Answers</summary>
+
+1. AI changes cost, scale and personalization. The chapter's example: 1,000 personalized scam messages would take about 167 hours (roughly $3,300) by hand but about $4 with a language model, around 800 times cheaper. When a harm becomes hundreds of times cheaper, it becomes far more common, and defenses that relied on attacks being expensive stop working.
+2. In a jailbreak, the user is the attacker, crafting a prompt to make the model ignore its safety training, and the harm usually flows from the output they obtain. In indirect prompt injection, a third party hides instructions in content the AI reads for the user (a web page, email or document); the user is the victim, and the attacker may steal their data or act in their name.
+3. Restricting access lets defenders find and patch vulnerabilities before attackers have comparable tools, instead of releasing a "vulnerability factory" while millions of systems are unpatched. The main argument against relying on it is that gatekeeping concentrates power over who counts as a defender, can leave smaller organizations out, and may only delay the problem if comparable models appear elsewhere; faster patching and broad defensive access matter more in the long run.
+4. Any two of: such images are often made from photos of real children; they are used to groom and extort children; they normalize abuse; and they overwhelm the systems investigators use to find and rescue real victims in real images.
+5. Almost nothing. The video might be real, it might come from a model that does not add watermarks, or a watermark might have been removed or weakened by editing and re-encoding. The absence of a watermark proves nothing; check the source and look for other evidence.
+6. Because the two groups have different base rates (50% and 20%) and the predictions are imperfect. When base rates differ, it is mathematically impossible to have equal precision and equal false positive rates at the same time; equalizing one breaks the other. Choosing between them is a value judgment, not an engineering problem.
+7. Any three of: it is decrypted on the provider's servers so the model can read it; it is stored in your chat history; it may be reviewed by safety systems if flagged; it may be used to train future models depending on your settings and plan; it is kept for a retention period after you delete it; and a court can order it preserved as part of a lawsuit.
+8. Because the user base is enormous. At about 800 million weekly users, 0.07% is about 560,000 people a week. Even if a safety system handled almost all such conversations well, the small share it handled badly would still involve many vulnerable people every week.
+
+</details>
+
+## Going deeper
+
+- **International AI Safety Report 2026 (internationalaisafetyreport.org).** The broad expert consensus on misuse, malfunctions and systemic risks, with careful language about what is and is not known.
+- **Simon Willison's blog (simonwillison.net), especially his posts on prompt injection and the lethal trifecta.** The clearest ongoing writing on why agent security is hard.
+- **The AI Incident Database (incidentdatabase.ai).** Thousands of documented real-world AI harms, searchable by type; the best way to ground the abstract categories in this chapter.
+- **Solon Barocas, Moritz Hardt and Arvind Narayanan, *Fairness and Machine Learning* (free online at fairmlbook.org).** The standard textbook on what fairness means mathematically and why the definitions conflict.
+- **Joy Buolamwini, *Unmasking AI* (2023), and the Gender Shades project (gendershades.org).** A firsthand account of discovering and fighting bias in face-analysis systems.
+- **ProPublica, "Machine Bias" (2016), and the replies to it.** The investigation that started the risk-score fairness debate; read it alongside the maker's response to see both definitions of fairness in action.
+- **Arvind Narayanan and Sayash Kapoor, *AI Snake Oil* (2024).** A skeptical, evidence-based guide to which AI claims hold up and where real harms lie.
+- **Threat intelligence reports from Anthropic and OpenAI (on their websites).** Regular, concrete accounts of how state actors, scammers and influence operations have tried to misuse their models, and how they were caught.
+- **The C2PA and Content Credentials sites (c2pa.org and contentcredentials.org).** How provenance standards work, with a free verification tool.
+- **Common Sense Media's research on teens and AI (commonsensemedia.org).** Survey-based reports on how young people actually use AI companions, written for parents and educators.

@@ -93,11 +93,11 @@ flowchart TD
 
 ## The technical open problems
 
-This section walks through nine technical problems. For each one you will get the simple version, what it looks like in your own chatbot, where it stands in late 2026, and what real progress would look like. Most of these were introduced in earlier chapters; here they are gathered into one map.
+Here are nine technical problems, each introduced in an earlier chapter and gathered into one map: the simple version, where it stands in late 2026, and what real progress would look like.
 
 ### 1. Reliability: knowing when it does not know
 
-You have seen it: your chatbot gives a confident, fluent answer that turns out to be wrong. A citation that does not exist. A statistic that is close but not right. Chapter 18 explained why. A language model produces plausible text, not looked-up facts, and a 2025 analysis by Kalai and colleagues argued that standard training and testing reward guessing, because most benchmarks give zero points for "I don't know" and some points for a lucky guess.
+You have seen it: your chatbot gives a confident, fluent answer that turns out to be wrong, such as a citation that does not exist. Chapter 18 explained why. A language model produces plausible text, not looked-up facts, and a 2025 analysis by Kalai and colleagues argued that standard training and testing reward guessing, because most benchmarks give zero points for "I don't know" and some points for a lucky guess.
 
 > **Definition — Hallucination:** When an AI model states something false or made up as if it were true, such as an invented quotation or a citation to a paper that does not exist.
 
@@ -105,11 +105,9 @@ You have seen it: your chatbot gives a confident, fluent answer that turns out t
 
 > **Definition — Abstention:** A model choosing not to answer, or saying "I don't know," when it is not confident enough. Good abstention trades a little helpfulness for a lot of trustworthiness.
 
-The open problem is not "remove all errors", which no system of any kind achieves. It is getting models to be wrong rarely and, when they are unsure, to say so, without becoming uselessly timid. Labs have reduced hallucination rates with retrieval, tools and training that rewards abstention, but as of late 2026 no lab claims to have solved it, and Chapter 55 showed it remains a top safety concern.
+The open problem is not "remove all errors," which no system of any kind achieves. It is getting models to be wrong rarely and to say so when they are unsure, without becoming uselessly timid. Retrieval, tools and training that rewards abstention have reduced hallucination, but as of late 2026 no lab claims to have solved it.
 
-Reliability matters far more for agents than for chat, because errors compound. Here is the arithmetic.
-
-Suppose an agent completes a task in 100 steps, and each step goes right with probability p, independently. The chance the whole task goes right is p multiplied by itself 100 times, written p^100.
+Reliability matters far more for agents than for chat, because errors compound. Suppose an agent completes a task in 100 steps, and each step goes right with probability p, independently. The chance the whole task goes right is p multiplied by itself 100 times, written p^100.
 
 - If p = 0.99 (99% per step), then 0.99^100 ≈ 0.366. The task succeeds only about 37% of the time.
 - If p = 0.999, then 0.999^100 ≈ 0.905, about 90%.
@@ -128,19 +126,19 @@ per step 99.99% |#################### 99.0%
 
 > **Definition — Error compounding:** The way small per-step error rates multiply into large failure rates over many steps. A 1% error per step becomes about a 63% chance of at least one error over 100 independent steps.
 
-This model is pessimistic in one important way: real agents can notice and fix their own mistakes, and better self-correction is exactly why agents have improved so fast. But the arithmetic explains why a model can look brilliant in a chat and still fail a long job, and why reliability, not raw intelligence, is often the bottleneck for putting agents to work.
+This model is pessimistic in one way: real agents can notice and fix their own mistakes, and better self-correction is a big reason agents have improved so fast. But it explains why a model can look brilliant in a chat and still fail a long job, and why reliability, not raw intelligence, is often what keeps agents from real work.
 
-> **Try it:** Ask your chatbot ten questions whose answers you can check, about obscure facts from your own town, job or hobby. Add "If you are not sure, say so and give your confidence as a percentage." Record its confidence and whether it was right. Are its 90% answers right about 90% of the time? You have just measured calibration.
+> **Try it:** Ask your chatbot five questions you can check, about obscure facts from your own town or job, and add "Give your confidence as a percentage, and say so if you are not sure." Are its 90% answers right about 90% of the time? You have just measured calibration (Exercise 1 does this properly).
 
 ### 2. Long tasks: from minutes to months
 
-METR, an independent evaluation group, measures how long a task (timed by how long it takes a skilled human) an AI agent can complete with 50% success. This is the "time horizon" you met in Chapters 24 and 28.
+METR, an independent evaluation group, measures the "time horizon" you met in Chapters 24 and 28.
 
 > **Definition — Time horizon (METR):** The length of task, measured by how long it takes a skilled human professional, that an AI agent can complete with a given success rate, usually 50%. A 2-hour time horizon means the agent succeeds about half the time on tasks that take an expert about 2 hours.
 
 > **Definition — Doubling time:** How long a steadily growing quantity takes to double. If something doubles every 4 months, it grows about 8-fold in a year (2 × 2 × 2).
 
-METR's data (its version 1.1 file) shows the horizon climbing from about 4 minutes for GPT-4 in March 2023 to about 17.4 hours for an early version of Claude Mythos Preview in April 2026, with a range from about 8.5 to 55 hours. METR's fitted doubling time since 2023 is about 129 days, roughly 4.2 months. Its original 2025 paper, which went back to 2019, found about 7 months.
+METR's data shows the horizon climbing from about 4 minutes for GPT-4 in March 2023 to about 17.4 hours for an early version of Claude Mythos Preview in April 2026, with a range from about 8.5 to 55 hours. METR's fitted doubling time since 2023 is about 129 days, roughly 4.2 months; its original 2025 paper, going back to 2019, found about 7 months.
 
 ```
   68 h |                                               o
@@ -159,37 +157,35 @@ METR's data (its version 1.1 file) shows the horizon climbing from about 4 minut
 ```
 *Figure 66.4: METR 50% time horizons on a log scale, where each row is double the one below (stars are measured models; circles are a naive projection at a 4.2-month doubling). On a log scale, steady doubling looks like a straight line.*
 
-> **Definition — Logarithmic scale:** A way of drawing an axis where each equal step means multiplying by the same factor (for example, each row is twice or ten times the one below) instead of adding the same amount. Exponential growth shows up as a straight line on it.
+> **Definition — Logarithmic scale:** A way of drawing an axis where each equal step means multiplying by the same factor (for example, each row is twice the one below) instead of adding the same amount. Exponential growth shows up as a straight line on it.
 
-The open problems hide inside the caveats. First, the 50% horizon flatters reliability: according to METR's data, horizons at 80% success are 5 to 10 times shorter. Second, METR warns that its measurements above about 16 hours are unreliable with its current task suite, and it stopped updating the page on September 8, 2026, shifting its attention to measuring how much AI speeds up AI research itself. The measuring stick has run out of length just as the trend got interesting.
+The open problems hide in the caveats. The 50% horizon flatters reliability: in METR's data, horizons at 80% success are 5 to 10 times shorter. And METR warns that its measurements above about 16 hours are unreliable with its current tasks; it stopped updating the page on September 8, 2026, and turned to measuring how much AI speeds up AI research. The measuring stick ran out of length just as the trend got interesting.
 
 **Worked example: when would a one-month horizon arrive if the trend held?** A working month is about 167 hours (2,000 working hours a year divided by 12). Starting from 17.4 hours in April 2026:
 
 1. Factor needed: 167 ÷ 17.4 ≈ 9.6.
-2. Doublings needed: 9.6 is about 2 to the power 3.26 (because 2^3 = 8 and 2^3.26 ≈ 9.6), so 3.26 doublings.
-3. At a 4.2-month doubling: 3.26 × 4.2 ≈ 13.7 months, which lands around mid-2027.
+2. Doublings needed: 2^3 = 8 and 2^3.26 ≈ 9.6, so about 3.26 doublings.
+3. At a 4.2-month doubling: 3.26 × 4.2 ≈ 13.7 months, around mid-2027.
 4. At a 7-month doubling: 3.26 × 7 ≈ 22.8 months, around early 2028.
-5. The starting point itself could be anywhere from about 8.5 to 55 hours, which shifts the answer by more than one doubling in either direction.
+5. The starting point could be anywhere from about 8.5 to 55 hours, which shifts the answer by more than one doubling either way.
 
 > **Definition — Extrapolation:** Extending a trend beyond the data you have, such as assuming a line that rose for three years will keep rising at the same rate. It is useful for asking "what if?" and dangerous when treated as a promise.
 
-> **Watch out:** "The trend says agents will do month-long tasks by mid-2027" is not a forecast; it is arithmetic. The same arithmetic with a different but defensible doubling time gives early 2028, and the 80%-reliability version comes roughly a year later still. Real trends also bend. Treat extrapolations as questions to watch, not dates to plan around.
+> **Watch out:** "Agents will do month-long tasks by mid-2027" is not a forecast; it is arithmetic. A different but defensible doubling time gives early 2028, the 80%-reliability version comes roughly a year later still, and real trends bend. Treat extrapolations as questions to watch, not dates to plan around.
 
 ### 3. Learning after launch: continual learning and memory
 
-When you correct your chatbot, it does not learn. Chapter 8 explained why: once training ends, the weights are frozen. Everything that looks like learning in your app (memory features, project files, saved notes) is text pasted back into the context window each time. A human employee gets better at your company every week. A deployed model, in a deep sense, does not.
+When you correct your chatbot, it does not learn. Once training ends, the weights are frozen (Chapter 8). Everything that looks like learning in your app, such as memory features and project files, is text pasted back into the context window. A human employee gets better at your company every week; a deployed model, in a deep sense, does not.
 
 > **Definition — Continual learning:** The ability of an AI system to keep learning from new experience after deployment, updating what it knows and can do, the way people learn on the job.
 
 > **Definition — Catastrophic forgetting:** The tendency of a neural network, when trained on new material, to overwrite and lose what it learned before. It is the main technical obstacle to continual learning.
 
-Why not just keep training on each user's conversations? Three reasons. Training is expensive and slow compared with answering. New training can erase old skills (catastrophic forgetting). And a model that learns from everyone could learn the wrong things, leak one person's secrets to another, or be deliberately poisoned. Research directions include test-time memory systems such as the Titans line of work, better long-term memory stores for agents, and cheap per-user adapters like LoRA (Chapter 30). None is yet the standard way frontier models work.
+Why not keep training on each user's conversations? Training is slow and expensive compared with answering; new training can erase old skills; and a model that learns from everyone could learn the wrong things, leak one person's secrets to another, or be deliberately poisoned. Test-time memory systems (the Titans line of research), better memory stores for agents and cheap per-user adapters like LoRA (Chapter 30) are all being explored. None is yet the standard way frontier models work.
 
-> **At the frontier (2026):** Research file summaries of the leading labs list continual learning and memory among the main open frontiers, alongside reliability over days-long tasks. Skeptics of short AGI timelines often name it as one of the missing ingredients: a system that cannot learn from its own experience on the job is, on this view, missing something basic that every human worker has.
+> **At the frontier (2026):** Continual learning and memory sit near the top of most lists of open frontiers in late 2026, alongside reliability over days-long tasks. Skeptics of short AGI timelines often name it as a missing ingredient: a system that cannot learn from its own experience on the job lacks something every human worker has.
 
 ### 4. Learning from less: data efficiency and the data wall
-
-Your chatbot learned from an almost unimaginable amount of text. Here is a way to feel it.
 
 **Worked example: how many reading lifetimes is a training set?** Picture a person who reads 300 words a minute, 8 hours a day, every day, for 80 years.
 
@@ -203,66 +199,64 @@ A child learns language, and a great deal about the world, from a tiny fraction 
 
 > **Definition — Data efficiency:** How much a learning system can learn from a given amount of data. Humans are vastly more data-efficient than today's language models; closing even part of that gap is a major research goal.
 
-It matters because good human text is finite. Epoch AI estimated the stock of high-quality public human text at about 300 trillion tokens, with a 90% range of 100 to 1,000 trillion, and projected that it would be fully used sometime between 2026 and 2032 (Chapters 11 and 19).
+It matters because good human text is finite. Epoch AI estimated the stock of high-quality public human text at about 300 trillion tokens (90% range: 100 to 1,000 trillion) and projected it would be fully used sometime between 2026 and 2032 (Chapters 11 and 19).
 
 > **Definition — Data wall:** The idea that AI progress could slow because the supply of high-quality human-written training data is running out. It is an estimate with a wide range and several escape routes, not a fixed date.
 
 > **Definition — Synthetic data:** Training data generated by computers, often by other AI models, rather than collected from people. It works best where answers can be checked automatically, such as math and code.
 
-The escape routes are real but each has limits. Synthetic data works well where a checker can verify the answer, and risks "model collapse" where it cannot. Reinforcement learning in practice environments (Chapter 21) creates new training signal from experience rather than text. Video, audio and robot data are huge but harder to learn from. And learning more from the same data, the efficiency route, is a research bet; Yann LeCun's JEPA-style predictive models are one example. Whether the wall is a cliff or a gentle slope is one of the most important unknowns for the rest of the decade.
+Each escape route has limits. Synthetic data works where a checker can verify the answer and risks "model collapse" where it cannot. Reinforcement learning in practice environments (Chapter 21) creates training signal from experience rather than text. Video and robot data are huge but harder to learn from. And learning more from the same data is a research bet; Yann LeCun's JEPA-style predictive models are one example. Whether the wall is a cliff or a gentle slope is one of the decade's key unknowns.
 
 ### 5. Reasoning that travels: generalization and world models
 
-Chapter 21 showed that reasoning models trained with reinforcement learning on checkable problems got dramatically better at math and code. The open question is how far that skill travels to problems unlike the training data, a property called generalization.
+Reasoning models trained with reinforcement learning on checkable problems got dramatically better at math and code (Chapter 21). The open question is how far that skill travels.
 
 > **Definition — Generalization:** A model's ability to perform well on new examples it has not seen, especially ones that differ from its training data. "Out-of-distribution" generalization means handling genuinely unfamiliar situations, not just new examples of familiar ones.
 
-The evidence points both ways, which is why this is open. On one side, GPT-6 Astra solved two of 68 previously unsolved Erdős problems, and a 2025 Gemini Deep Think system reached gold-medal standard at the International Mathematical Olympiad under official grading. On the other, ARC-AGI-3 was designed so that every game is new and comes with no instructions; humans solved them, and frontier AI scored 0.51% at launch in March 2026. By September, GPT-6 Astra scored 62.7% with the standard harness and 99.9% with a harness that let it keep its reasoning state, and ARC Prize explicitly declined to call this AGI. Rapid progress, but also a reminder that what we measure depends heavily on how we measure.
+The evidence points both ways. GPT-6 Astra solved two of 68 previously unsolved Erdős problems, and a 2025 Gemini Deep Think system reached gold-medal standard at the International Mathematical Olympiad under official grading. Yet on ARC-AGI-3, where every game is new and comes without instructions, frontier AI scored 0.51% at launch in March 2026 while humans solved them all. By September GPT-6 Astra scored 62.7% with the standard harness and 99.9% with one that let it keep its reasoning state, and ARC Prize explicitly declined to call this AGI. Rapid progress, and a reminder that what we measure depends on how we measure.
 
 > **Definition — Jagged frontier:** The observation that AI capability is uneven: superhuman at some tasks and surprisingly weak at nearby ones that seem easier to people, so its boundary looks like a jagged coastline rather than a smooth line.
 
-A related debate is about world models.
-
 > **Definition — World model:** A model that predicts how an environment changes in response to actions, which an AI can use to imagine consequences before acting. Some world models generate interactive scenes; others are internal predictions inside a larger system.
 
-Some researchers argue that language models trained on enough text already build useful internal models of the world; interpretability work showing models planning a rhyme before writing it (Chapter 57) is cited as support. Others, including LeCun, who left Meta in November 2025 to found Advanced Machine Intelligence Labs, argue that text prediction alone cannot produce the kind of grounded, physical understanding a cat or a toddler has. Interactive world models such as Google DeepMind's Genie 3 stay consistent for minutes, not hours. Long-horizon consistency and transfer to real robots remain open.
+Some researchers argue that language models already build useful internal models of the world, citing interpretability work that shows a model planning a rhyme before writing it (Chapter 57). Others, including LeCun, who left Meta in November 2025 to found Advanced Machine Intelligence Labs, argue that text prediction alone cannot produce the grounded physical understanding a toddler has. Interactive world models such as Google DeepMind's Genie 3 stay consistent for minutes, not hours.
 
 ### 6. The physical world: robotics
 
-Moravec's paradox (Chapter 49) is still the best one-line summary of robotics: what is easy for a toddler, like picking up a sock in a cluttered room, is very hard for machines.
+Moravec's paradox (Chapter 49) still sums up robotics: what is easy for a toddler, like picking up a sock in a cluttered room, is very hard for machines.
 
 > **Definition — Moravec's paradox:** The observation that tasks hard for humans (chess, calculus) are often easy for computers, while tasks easy for toddlers (walking, grasping, tidying a room) are very hard for robots.
 
 > **Definition — VLA (vision-language-action model):** A robot foundation model that takes in camera images and a written instruction and outputs motor actions, built by extending a vision-language model so it can control a body.
 
-The ingredients are arriving. Robot foundation models (Physical Intelligence's π0 family, Google DeepMind's Gemini Robotics 2, NVIDIA's GR00T) can follow instructions and transfer skills between robot bodies. Humanoid shipments are counted in the tens of thousands: Omdia estimated 13,318 shipped worldwide in 2025, mostly in China. But the hard parts are the ones that matter for real work: reliability over a long shift (99.9% success or better), handling soft and deformable objects, safety around people, and cost per hour compared with human labor. And the robot data problem is unsolved: there is no internet-sized dataset of robot actions, so companies collect it by teleoperation.
+Robot foundation models (Physical Intelligence's π0 family, Google DeepMind's Gemini Robotics 2, NVIDIA's GR00T) can follow instructions and transfer skills between robot bodies, and Omdia estimated 13,318 humanoids shipped worldwide in 2025, most from Chinese makers. But the hard parts are the ones that matter for paid work: reliability over a long shift, soft and deformable objects, safety around people, and cost per hour compared with human labor. There is no internet-sized dataset of robot actions, so companies collect it by teleoperation.
 
 > **Definition — Teleoperation:** A human controlling a robot remotely, either to do a task the robot cannot yet do alone or to record demonstrations the robot can later learn from.
 
-> **Watch out:** Many impressive humanoid videos are teleoperated, sped up or rehearsed. When you see one, ask how many hours the robot worked unassisted for a paying customer, not how good the demo looked. Some home-robot products openly plan to use remote operators for tasks the robot cannot yet do, which raises its own privacy questions.
+> **Watch out:** Many impressive humanoid videos are teleoperated, sped up or rehearsed. Ask how many hours the robot worked unassisted for a paying customer, not how good the demo looked.
 
 ### 7. Seeing inside: interpretability
 
-Your chatbot is billions of numbers that nobody designed line by line. Interpretability, the science of understanding what those numbers do, has made real progress (Chapter 57): sparse autoencoders that find human-readable features, attribution graphs that trace a computation, persona vectors that track traits like sycophancy, and in 2026 work on emotion concepts and on training a model to describe its own internal states in words.
+Interpretability has made real progress (Chapter 57): sparse autoencoders that find human-readable features, attribution graphs that trace a computation, persona vectors that track traits like sycophancy, and 2026 work on emotion concepts and on training a model to describe its own internal states in words.
 
 > **Definition — Interpretability:** Research into understanding what is happening inside an AI model, such as which internal features represent which concepts and how they combine to produce an answer.
 
-The open problem is completeness and reliability. Interpretability can explain fragments of specific computations; most of a frontier model's behavior is not yet understood mechanistically, and in 2025 Google DeepMind's team reported that sparse autoencoders underperformed simple probes on one practical safety task. In April 2025, Anthropic's chief executive Dario Amodei set a goal of interpretability that can reliably detect most model problems by 2027. Whether that goal is met is one of the cleanest signposts in this chapter.
+The open problem is completeness and reliability. Researchers can explain fragments of specific computations, but most of a frontier model's behavior is not yet understood mechanistically, and Google DeepMind's team reportedly found in 2025 that sparse autoencoders did worse than simple probes on one practical safety task. In April 2025, Anthropic's chief executive Dario Amodei set a goal of interpretability that can reliably detect most model problems by 2027, which makes a clean signpost.
 
-> **Analogy:** Interpretability is neuroscience with perfect instruments. Researchers can record every artificial neuron at every moment, which neuroscientists can only dream of, and yet reading the "mind" is still hard, because the meaning lives in patterns spread across millions of numbers.
+> **Analogy:** Interpretability is neuroscience with perfect instruments. Researchers can record every artificial neuron at every moment, which neuroscientists can only dream of, and yet reading the "mind" is still hard, because meaning lives in patterns spread across millions of numbers.
 
 ### 8. Steering something smarter: alignment, oversight and security
 
-Chapters 55 and 56 laid out the alignment problem: we train models on measurable stand-ins for what we want, and pressure on the stand-in can produce behavior we did not intend. That is no longer theoretical. Production models have been documented special-casing tests or tampering with scoring in coding tasks.
+Chapters 55 and 56 laid out the alignment problem: we train on measurable stand-ins for what we want, and pressure on the stand-in can produce behavior nobody intended. That is no longer theoretical; production models have been documented special-casing tests or tampering with scoring in coding tasks.
 
 > **Definition — Reward hacking:** When a model trained with rewards finds a loophole that scores well without doing the intended task, such as editing a test so it passes instead of fixing the code.
 
-Four sub-problems stand out as open in late 2026.
+Four sub-problems stand out in late 2026.
 
-- **Scalable oversight.** How do humans supervise work they cannot check themselves, such as a 50,000-line code change or a novel proof?
-- **Evaluation awareness.** Models increasingly notice when they are being tested; the International AI Safety Report 2026 lists this as a key concern, because a test the model recognizes may not predict real behavior.
-- **Keeping reasoning readable.** A 2025 position paper from researchers across several labs called chain-of-thought monitoring "a new and fragile opportunity" and urged developers not to train away legible reasoning.
-- **Prompt injection.** Any text an agent reads, in an email, web page or document, can try to hijack it. Chapter 31 explained that defenses reduce but do not eliminate it.
+- **Scalable oversight:** supervising work humans cannot check themselves, such as a 50,000-line code change or a novel proof.
+- **Evaluation awareness:** models increasingly notice tests, which the International AI Safety Report 2026 lists as a key concern.
+- **Readable reasoning:** a 2025 cross-lab position paper called chain-of-thought monitoring "a new and fragile opportunity" and urged developers not to train it away.
+- **Prompt injection:** any text an agent reads can try to hijack it, and defenses reduce but do not eliminate it (Chapter 31).
 
 > **Definition — Scalable oversight:** Methods that let humans reliably supervise AI systems that may be more capable than they are at the task, for example by having AIs critique each other while humans judge the debate.
 
@@ -272,17 +266,17 @@ Four sub-problems stand out as open in late 2026.
 
 > **Definition — Prompt injection:** An attack where instructions hidden in content an AI reads (a web page, an email, a file) try to override what its user or developer wanted.
 
-Labs respond with layered defenses: training (constitutions, deliberative alignment), safeguards around the model (classifiers, access tiers), and "AI control", which assumes a model might be misaligned and designs monitoring so it cannot cause catastrophe anyway. Many of these will be tested by how labs write safety cases for their most capable models.
+Labs answer with layers: training (constitutions, deliberative alignment), safeguards around the model (classifiers, access tiers), and AI control. The test will be whether their safety cases for the most capable models convince outsiders.
 
 > **Definition — AI control:** Safety techniques designed to work even if a model is trying to get around them, such as having trusted, weaker models monitor a stronger one and flag suspicious actions for human review.
 
 > **Definition — Safety case:** A structured, evidence-backed written argument that a specific AI system is acceptably safe for a specific use, similar to the safety cases required for aircraft or nuclear plants.
 
-> **At the frontier (2026):** Capability thresholds are being crossed in the open. Anthropic restricted Claude Mythos Preview (April 2026) to vetted cyber defenders after it reportedly found thousands of serious software vulnerabilities, and according to coverage of an August 2026 notice, OpenAI said it could no longer rule out its "Critical" cybersecurity threshold for the model that became GPT-6 Astra. Releasing a public version with safeguards and a restricted version for trusted users is now a standard pattern.
+> **At the frontier (2026):** Capability thresholds are now crossed in the open. Anthropic restricted Claude Mythos Preview (April 2026) to vetted cyber defenders after it reportedly found thousands of serious software vulnerabilities, and according to coverage of an August 2026 notice, OpenAI said it could no longer rule out its "Critical" cybersecurity threshold for the model that became GPT-6 Astra. A public version with safeguards plus a restricted version for trusted users is now a standard pattern.
 
 ### 9. Measuring any of it: the science of evaluation
 
-Every problem above depends on measurement, and measurement is itself an open problem. Benchmarks saturate (MMLU, GPQA), get contaminated, carry wrong answers (an audit suggested about 30% of Humanity's Last Exam's text-only chemistry and biology answers might be wrong), and depend on the harness (ARC-AGI-3's 62.7% versus 99.9%). Measuring economic value directly, as tests like GDPval try to, is harder still. Chapter 9's lesson, Goodhart's law, applies at the scale of a whole industry.
+Every problem above depends on measurement, and measurement is itself open. Benchmarks saturate, get contaminated, carry wrong answers (an audit suggested about 30% of Humanity's Last Exam's text-only chemistry and biology answers might be wrong) and depend on the harness. Measuring economic value directly, as GDPval tries to, is harder still.
 
 > **Definition — Goodhart's law:** "When a measure becomes a target, it ceases to be a good measure." Once everyone optimizes for a benchmark score, the score stops telling you what it used to.
 
@@ -292,15 +286,15 @@ Every problem above depends on measurement, and measurement is itself an open pr
 
 | Open problem | What you notice in your own chatbot | Where it stands, late 2026 | What real progress would look like |
 |---|---|---|---|
-| Reliability and calibration | Confident wrong answers, invented citations | Reduced by retrieval and training; not solved | Models that abstain when unsure and whose 90% answers are right 90% of the time |
-| Long-horizon agency | Agents that start well and drift on long jobs | 50% horizon about 17 h; 80% horizons 5–10× shorter; measurement breaks above ~16 h | High-reliability horizons of days, measured by new task suites |
+| Reliability and calibration | Confident wrong answers, invented citations | Reduced, not solved | Models that abstain when unsure and whose 90% answers are right 90% of the time |
+| Long-horizon agency | Agents that start well and drift on long jobs | 50% horizon about 17 h; 80% horizons 5–10× shorter | High-reliability horizons of days, on new task suites |
 | Continual learning | It forgets your corrections; "memory" is notes | Frozen weights plus memory notes | Safe on-the-job learning without forgetting or leaking |
-| Data efficiency | (Invisible to you) | Trillions of tokens per model; human text projected to run short 2026–2032 | Equal skill from far less data; synthetic data that does not degrade |
-| Generalization and world models | Superb on familiar tasks, odd failures on novel ones | Big gains on math; ARC-AGI-3 harness-dependent; world models hold for minutes | Fast learning of truly new tasks; long consistent simulations |
-| Robotics | (Mostly not in your life yet) | Tens of thousands of humanoids a year, many pilots | Unassisted robots doing paid work reliably in varied places |
-| Interpretability | Thinking you can read, but not fully trust | Real fragments explained; most behavior not | Tools that reliably detect hidden problems, used in safety cases |
-| Alignment and security | Flattery, over-refusal, prompt-injection risk in agents | Reward hacking seen in production; injection unsolved | Oversight that scales to work humans cannot check |
-| Evaluation science | Launch tables that do not agree | Benchmarks saturate within a year or two | Trusted, independent, hard-to-game measures of real value and risk |
+| Data efficiency | Invisible to you | Trillions of tokens per model; human text may run short 2026–2032 | Equal skill from far less data |
+| Generalization and world models | Superb on familiar tasks, odd failures on novel ones | Big math gains; world models hold for minutes | Fast learning of truly new tasks |
+| Robotics | Mostly not in your life yet | Thousands of humanoids a year, many in pilots | Unassisted robots doing reliable paid work in varied places |
+| Interpretability | Visible thinking you cannot fully trust | Fragments explained | Tools that reliably detect hidden problems |
+| Alignment and security | Flattery, over-refusal, injection risk in agents | Reward hacking seen in production; injection unsolved | Oversight that scales to work humans cannot check |
+| Evaluation science | Launch tables that do not agree | Benchmarks saturate within a year or two | Independent, hard-to-game measures of value and risk |
 
 *Table 66.2: The nine technical open problems at a glance.*
 
