@@ -44,6 +44,10 @@ Fine-tuning is poor at adding **facts**. That surprises most people, so here is 
 
 > **Key idea:** Fine-tune for *how* the model behaves. Use prompts, retrieval and tools for *what* it knows.
 
+### What about training your own model from scratch?
+
+"Can I just train my own ChatGPT?" is one of the most common questions beginners ask. For learning, yes, at a small scale: Karpathy's nanochat (Chapter 65) trains a model with roughly GPT-2-level ability in about two hours on rented GPUs for about $48. For a useful product, almost never. Chapter 19 works out that pretraining a 70-billion-parameter model on 15 trillion tokens takes about 4.4 million GPU-hours (a GPU-hour is one GPU running for one hour), roughly $11 million at $2.50 per GPU-hour, before counting data, staff, experiments and failed runs, and the result would still trail free open-weight models that others have already trained. The practical path is to start from an existing model and change what it sees, or fine-tune it, which is what the rest of this chapter covers.
+
 ## The decision ladder
 
 Because fine-tuning is slower, costlier and harder to undo than the alternatives, practitioners climb a ladder and only go to the top rung if the lower ones fail to reach their quality, cost or speed target.
