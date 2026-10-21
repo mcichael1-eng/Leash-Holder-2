@@ -296,7 +296,7 @@ Reliability needs its own math, because agents compound errors. Two measures mat
 
 > **Definition — pass@k and pass^k:** Two reliability measures for an agent run k times on the same task. pass@k is the chance that at least one run succeeds; pass^k is the chance that every run succeeds, the better measure of consistency.
 
-Long tasks compound per-step errors too. If each step goes right 99% of the time, a 50-step task succeeds about 0.99^50 ≈ 61% of the time, and a 100-step task only about 37%. Raise per-step reliability to 99.9% and the 100-step task succeeds about 90% of the time. This arithmetic is why agent builders obsess over small per-step improvements, and why METR's finding that the length of tasks frontier agents can complete with 50% reliability has been doubling roughly every 7 months is so closely watched (see Chapter 28 and Chapter 57).
+Long tasks compound per-step errors too. If each step goes right 99% of the time, a 50-step task succeeds about 0.99^50 ≈ 61% of the time, and a 100-step task only about 37%. Raise per-step reliability to 99.9% and the 100-step task succeeds about 90% of the time. This arithmetic is why agent builders obsess over small per-step improvements, and why METR's finding that the length of tasks frontier agents can complete with 50% reliability has been doubling roughly every 4 to 7 months (about every 4 months since 2023) is so closely watched (see Chapter 28 and Chapter 57).
 
 Public agent benchmarks such as SWE-bench (fixing real software bugs), Terminal-Bench (command-line tasks), tau-bench (customer service with tools) and OSWorld (operating a computer) are useful reference points (Chapter 24), but they are not your task. Build a small agent eval of your own, with realistic tasks, a sandboxed copy of your tools and checks of the final state.
 
@@ -720,7 +720,7 @@ Once you know where you stand, several levers move cost and latency without givi
 
 *Table 31.7: Cost and latency levers. Choosing the right tier, prompt caching and batching usually deliver most of the savings.*
 
-Two levers worked through. **Caching:** Juni's 2,500-token system prompt and policy are identical for every customer, so put them first and cache them. On Claude Sonnet 5.5 cache reads cost 0.05 times the base input price ($0.10 per million tokens instead of $2), so the mid-tier reply becomes 2,500 × $0.10 ÷ 1,000,000 = $0.00025 (cached) + 500 × $2 ÷ 1,000,000 = $0.0010 (fresh input) + $0.0025 (output) = **$0.00375**, down from $0.0085, a 56% saving. Writing to the cache costs 1.25 times the normal input price, but only once per five-minute window, which is negligible for a busy shop. **Batching:** summarizing 1,000 customer emails of about 500 words each costs about $3.80 on Sonnet 5.5 at standard prices, about $1.90 through the Batch API, and about $0.19 on Haiku 5.5 at standard prices, a 20-fold lever from model choice alone.
+Two levers worked through. **Caching:** Juni's 2,500-token system prompt and policy are identical for every customer, so put them first and cache them. On Claude Sonnet 5.5 cache reads cost 0.05 times the base input price ($0.10 per million tokens instead of $2) by one published figure; another source lists 0.1 times, so as of October 2026 check the current price page. At $0.10 the mid-tier reply becomes 2,500 × $0.10 ÷ 1,000,000 = $0.00025 (cached) + 500 × $2 ÷ 1,000,000 = $0.0010 (fresh input) + $0.0025 (output) = **$0.00375**, down from $0.0085, a 56% saving (at $0.20 it is $0.0040, a 53% saving). Writing to the cache costs 1.25 times the normal input price, but only once per five-minute window, which is negligible for a busy shop. **Batching:** summarizing 1,000 customer emails of about 500 words each costs about $3.80 on Sonnet 5.5 at standard prices, about $1.90 through the Batch API, and about $0.19 on Haiku 5.5 at standard prices, a 20-fold lever from model choice alone.
 
 Speed works in the other direction. As of October 2026, Anthropic's fast mode for Claude Opus 5.5 costs $8 / $40 per million tokens against the standard $4 / $20, and OpenAI renamed its priority tier "Fast mode" in July 2026. Pay for speed only where users actually wait.
 
@@ -947,14 +947,16 @@ def text_of(response):
 def ask(system_prompt, question):
     """Send one customer question under one system prompt and return the reply text."""
     r = client.messages.create(
-        model=MODEL, max_tokens=400, system=system_prompt,
+        model=MODEL, max_tokens=1000, system=system_prompt,
+        output_config={"effort": "low"},   # think briefly, so thinking does not use up max_tokens
         messages=[{"role": "user", "content": f"<customer_message>{question}</customer_message>"}])
     return text_of(r)
 
 def judge(question, rubric, reply):
     """Ask the judge model whether a reply meets the rubric; return 'PASS' or 'FAIL'."""
     r = client.messages.create(
-        model=JUDGE, max_tokens=300,
+        model=JUDGE, max_tokens=1000,
+        output_config={"effort": "low"},
         system=("You grade customer-support replies against a rubric. Write one sentence of "
                 "reasoning, then on the final line write exactly PASS or FAIL."),
         messages=[{"role": "user", "content":
@@ -1010,7 +1012,7 @@ What each part does (lines starting with `#%%` are comments marking where each C
 <details><summary>Answers</summary>
 
 1. Any three of: outputs are nondeterministic, so passing once does not mean passing every time; five friendly questions miss edge cases, out-of-scope requests and adversarial inputs, where real failures live; a few answers cannot measure a pass rate, since even 20 items carry a margin of error of about ±18 points; demos say nothing about cost, latency or security at scale; and future changes to the prompt or model can break what works today.
-2. Very little. With 20 items the margin of error is roughly ±16 to 18 points, so 85% and 90% are not reliably different. Compare the prompts item by item (which items does each win?), run each item several times, and grow the golden set toward 100 to 200 items before deciding.
+2. Very little. With 20 items the margin of error at these pass rates is roughly ±13 to 16 points, so 85% and 90% are not reliably different. Compare the prompts item by item (which items does each win?), run each item several times, and grow the golden set toward 100 to 200 items before deciding.
 3. Position bias (favoring the first or last answer): run comparisons twice with the order swapped and keep only verdicts that agree. Verbosity bias (favoring longer answers): put length limits and concrete pass rules in the rubric. Self-preference bias (favoring its own model family): use a judge from a different family. In all cases, calibrate the judge against your own grading.
 4. In a jailbreak, the user is the attacker, trying to talk the model past its safety training; resistance comes mainly from the model provider's training and classifiers. In indirect prompt injection, a third party hides instructions in content the AI reads on the user's behalf (a web page, email or PDF), and the user is the victim; defense falls mainly on the builder, who controls what the product reads and what it may do.
 5. It has the lethal trifecta: private data, untrusted content and a way to send data out, so a malicious incoming email could instruct it to forward private messages. Redesigns include splitting reading from sending (the reader cannot send; the sender sees only structured, approved content), requiring human approval for every outgoing email, limiting recipients to an allow-list, and blocking links and images to unknown domains.

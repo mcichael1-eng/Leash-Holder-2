@@ -631,7 +631,7 @@ A hook, in this sense, is a small script that runs automatically at certain mome
 
 > **Definition — Agentic AI Foundation (AAIF):** A Linux Foundation organization launched in December 2025 to govern open agent standards. It started with three projects: MCP (from Anthropic), goose (an open-source agent from Block) and AGENTS.md (from OpenAI).
 
-A2A is a separate Linux Foundation project. Neutral governance matters because companies are reluctant to build on a standard a competitor controls; putting MCP, AGENTS.md and A2A under a neutral foundation is what persuaded rivals such as OpenAI, Google, Microsoft and Amazon to adopt them.
+A2A is a separate Linux Foundation project. Neutral governance matters because companies are reluctant to build on a standard a competitor controls; putting MCP, AGENTS.md and A2A under neutral Linux Foundation governance makes it easier for rivals such as OpenAI, Google, Microsoft and Amazon to adopt and support them (OpenAI had already adopted MCP in March 2025, before the donation).
 
 ```mermaid
 flowchart TD
