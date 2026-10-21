@@ -333,11 +333,11 @@ A single validation set has a weakness: it is one particular slice of data, and 
 
 ```mermaid
 flowchart TD
-  DATA["Dataset cut into 5 folds"] --> R1["Round 1: test on fold 1,<br/>train on folds 2 to 5"]
-  DATA --> R2["Round 2: test on fold 2,<br/>train on the rest"]
-  DATA --> R3["Round 3: test on fold 3"]
-  DATA --> R4["Round 4: test on fold 4"]
-  DATA --> R5["Round 5: test on fold 5"]
+  DATA["Dataset cut into 5 folds"] --> R1["Round 1: validate on fold 1,<br/>train on folds 2 to 5"]
+  DATA --> R2["Round 2: validate on fold 2,<br/>train on the rest"]
+  DATA --> R3["Round 3: validate on fold 3"]
+  DATA --> R4["Round 4: validate on fold 4"]
+  DATA --> R5["Round 5: validate on fold 5"]
   R1 --> AVG["Average the 5 scores<br/>and note their spread"]
   R2 --> AVG
   R3 --> AVG

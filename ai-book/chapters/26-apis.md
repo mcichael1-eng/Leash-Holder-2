@@ -575,7 +575,7 @@ With caching:
   Total                                                   = $0.170
 ```
 
-That is 83% cheaper for the manual's tokens (the short questions and the answers cost the same either way). At the other published read price, 0.1 × $2.00 = $0.20, calls 2-10 cost $0.090 and the total is $0.215, still about 79% cheaper. The cached calls also and the cached calls also start answering faster, because the model skips re-reading the manual.
+That is 83% cheaper for the manual's tokens (the short questions and the answers cost the same either way). At the other published read price, 0.1 × $2.00 = $0.20, calls 2-10 cost $0.090 and the total is $0.215, still about 79% cheaper. The cached calls also start answering faster, because the model skips re-reading the manual.
 
 ```mermaid
 flowchart LR

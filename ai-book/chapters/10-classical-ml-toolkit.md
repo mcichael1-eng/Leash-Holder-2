@@ -541,7 +541,7 @@ A famous result nicknamed "no free lunch" says that, averaged over every possibl
 | Images, audio, long text | A pretrained neural network | An LLM or vision model through an API |
 | No labels, want groups | k-means | DBSCAN, hierarchical clustering |
 | Want to see high-dimensional data | PCA | UMAP, t-SNE |
-| Find rare odd cases | Isolation forest | z-scores, autoencoders |
+| Find rare odd cases | Isolation forest | z-scores, autoencoders (Chapter 16) |
 | Forecast a series | Seasonal naive baseline | Exponential smoothing, boosting with lags, Chronos or TimesFM |
 
 ```mermaid
@@ -627,7 +627,7 @@ Swap the first two lines for any other algorithm and the rest stays the same, so
 
 A model is trained once, but the world keeps moving.
 
-> **Definition — MLOps:** The practices and tools for deploying, monitoring, updating and maintaining machine-learning models in real products, borrowed from software engineering's "DevOps."
+> **Definition — MLOps:** The practices and tools for deploying, monitoring, updating and maintaining machine-learning models in real products, borrowed from "DevOps," software engineering's practices for shipping and running ordinary software reliably.
 
 The biggest threat is drift. Data drift means the inputs change: a marketing campaign brings in younger customers who behave differently. Concept drift means the relationship itself changes: a competitor launches a cheaper product, and customers with the same usage now cancel more often. In 2020, when the pandemic changed how people shopped and spent almost overnight, many forecasting and fraud models trained on earlier years went wrong until they were retrained.
 

@@ -90,7 +90,7 @@ You can tell the story of AI as a story of datasets, each one bigger and messier
 
 **Iris (1936).** The statistician Ronald Fisher published measurements of 150 iris flowers from three species: four numbers per flower (petal and sepal length and width). It is still the "hello world" of machine learning, and it fits on one page.
 
-**MNIST (1998).** Yann LeCun and colleagues assembled 70,000 handwritten digits (60,000 for training, 10,000 for testing). For two decades it was the standard first test of any new image method, and it powered early check-reading systems.
+**MNIST (1998).** Yann LeCun and colleagues assembled 70,000 handwritten digits (60,000 for training, 10,000 for testing). For two decades it was the standard first test of any new image method, and the digit-reading networks developed alongside it were used to read handwritten bank checks (Chapter 14).
 
 **The Netflix Prize (2006).** About 100 million movie ratings, released for a $1 million contest (Chapter 10). It showed the power of big real-world data, and, through a privacy scandal you will meet below, its dangers.
 
@@ -104,7 +104,7 @@ You can tell the story of AI as a story of datasets, each one bigger and messier
 
 > **Definition — Common Crawl:** A nonprofit's free, massive, regularly updated archive of web pages. Most large language-model training datasets start from it.
 
-To feel the scale: Common Crawl's August 2026 crawl captured 2.14 billion web pages, 360 tebibytes uncompressed, gathered between August 7 and 20. That is about 2.14 billion ÷ 14 days ≈ 153 million pages a day, or roughly 1,770 pages every second.
+To feel the scale: Common Crawl's August 2026 crawl captured 2.14 billion web pages, 360 tebibytes (binary terabytes, see Chapter 2) uncompressed, gathered between August 7 and 20. That is about 2.14 billion ÷ 14 days ≈ 153 million pages a day, or roughly 1,770 pages every second.
 
 **C4 (2019).** Google filtered Common Crawl into the "Colossal Clean Crawled Corpus" to train its T5 model, an early sign that cleaning web text mattered as much as collecting it.
 
@@ -202,7 +202,7 @@ Raw data often lacks the answers a model needs. Someone has to draw boxes around
 
 > **Definition — Bounding box and segmentation mask:** Two kinds of image label. A bounding box is a rectangle drawn around an object; a segmentation mask outlines the object's exact shape pixel by pixel.
 
-For chatbots the most valuable labels are different. Experts write ideal answers to prompts, which teach a base model to act as an assistant (Chapter 20). Raters compare two answers and say which is better, producing preference data. Red-teamers try to make the model misbehave. Specialists grade step-by-step reasoning, and increasingly build whole practice tasks with automatic graders.
+For chatbots the most valuable labels are different. Experts write ideal answers to prompts, which teach a base model (the raw next-word predictor that comes out of pretraining) to act as an assistant (Chapter 20). Raters compare two answers and say which is better, producing preference data. Red-teamers try to make the model misbehave. Specialists grade step-by-step reasoning, and increasingly build whole practice tasks with automatic graders.
 
 > **Definition — Preference data:** Human judgments comparing two or more model outputs ("A is better than B"), used to train chatbots to give answers people prefer.
 
@@ -481,8 +481,8 @@ The legal picture as of October 2026 is mixed and unsettled:
 
 | Case or event | What happened | Status, late 2026 |
 |---|---|---|
-| Bartz v. Anthropic (US) | Judge ruled in June 2025 that training on lawfully bought books was fair use, but building a library from pirated copies was not | Settled for $1.5 billion, about $3,000 per book for roughly 480,000 works; final approval July 2026 |
-| Kadrey v. Meta (US) | Judge granted Meta summary judgment on training (June 2025), stressing the ruling was narrow and that market harm could win a better-argued case | Other claims continued into 2026 |
+| Bartz v. Anthropic (US) | Judge ruled in June 2025 that training on lawfully bought books was fair use, but building a library from pirated copies was not | Settled for $1.5 billion, about $3,100 per work for roughly 482,000 works; final approval July 2026 |
+| Kadrey v. Meta (US) | Judge granted Meta summary judgment (a ruling without a full trial) on training (June 2025), stressing the ruling was narrow and that market harm could win a better-argued case | Other claims continued into 2026 |
 | Thomson Reuters v. Ross (US) | Copying Westlaw legal summaries to train a competing, non-generative search tool | First appeals-court ruling on AI training, September 29, 2026: not fair use |
 | New York Times v. OpenAI and Microsoft (US) | Newspapers allege copying of millions of articles | Still pending; no trial date |
 | Getty Images v. Stability AI (UK) | Court found model weights that never stored copies are not "infringing copies" (November 2025) | Getty largely lost; appeal permitted |
