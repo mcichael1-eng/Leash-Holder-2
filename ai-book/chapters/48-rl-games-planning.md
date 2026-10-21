@@ -277,7 +277,7 @@ An agent should not grab the biggest immediate reward. It should maximize the to
 Worked example with γ = 0.9:
 
 - A reward of 10 arriving three steps from now is worth 10 × 0.9 × 0.9 × 0.9 = 10 × 0.729 = **7.29** today.
-- Rewards of 1, 1 and 1 on the next three steps are worth 1 + 0.9 + 0.81 = **2.71**.
+- Rewards of 1 right now, 1 one step from now and 1 two steps from now are worth 1 + 0.9 + 0.81 = **2.71**.
 
 Why discount at all? The future is uncertain, sooner is usually better, and without discounting, an endless task could add up to infinite reward, which breaks the math. Discounting also quietly rewards speed: reaching the goal in 5 steps beats reaching it in 50.
 
