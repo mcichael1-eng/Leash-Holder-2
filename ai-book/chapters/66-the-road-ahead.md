@@ -842,7 +842,7 @@ For any claim, ask six questions: what exactly is claimed, what kind of number i
 
 ## Key terms
 
-KEYTERMS_PLACEHOLDER
+Frontier (of AI), Open problem, Jevons paradox, Hallucination, Calibration, Abstention, Error compounding, Time horizon (METR), Doubling time, Logarithmic scale, Extrapolation, Continual learning, Catastrophic forgetting, Data efficiency, Data wall, Synthetic data, Generalization, Jagged frontier, World model, Moravec's paradox, VLA (vision-language-action model), Teleoperation, Interpretability, Reward hacking, Scalable oversight, Evaluation awareness, Chain-of-thought monitorability, Prompt injection, AI control, Safety case, Goodhart's law, Uplift, Gigawatt (GW), Interconnection queue, Small modular reactor (SMR), Memory wall, Capex (capital expenditure), Depreciation, AI exposure, Concentration of power, Gradual disempowerment, Dual-use, Preemption, Fair use, Model welfare, Forecast, S-curve, AGI (artificial general intelligence), ASI (artificial superintelligence), Signpost, Scenario, Scenario planning, Recursive self-improvement, Run-rate revenue, Circular deal, Primary source, Steelman, Base rate, Reference class, Brier score
 
 ## Exercises
 
