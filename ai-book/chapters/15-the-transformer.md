@@ -147,9 +147,9 @@ A real model's vectors have thousands of numbers, which RoPE treats as hundreds 
 
 Two other ideas are worth knowing. ALiBi (2021) skips rotations and simply lowers the attention score in proportion to distance, so nearby tokens are favored. And some newer models drop positional encoding from a few of their attention layers altogether: Meta's Llama 4 (April 2025) interleaves layers without position information with RoPE layers, a design it calls iRoPE, which can help with very long texts.
 
-> **Key idea:** Attention on its own sees a bag of tokens. Position methods put the order back in, and RoPE does it in the neatest way: it makes the score between two tokens depend on how far apart they are.
-
 > **Definition — ALiBi (Attention with Linear Biases):** A position method that subtracts a penalty from each attention score in proportion to the distance between the two tokens, so the model naturally pays more attention to nearby text.
+
+> **Key idea:** Attention on its own sees a bag of tokens. Position methods put the order back in, and RoPE does it in the neatest way: it makes the score between two tokens depend on how far apart they are.
 
 ### Stretching the context window
 
