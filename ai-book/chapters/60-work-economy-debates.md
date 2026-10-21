@@ -390,3 +390,329 @@ DeepSeek-R1 (January 2025) showed that a near-frontier reasoning model could be 
 
 > **Watch out:** "Open-weight" does not mean free to run, and it does not mean the model is uncensored or safe. Running a large open model needs expensive hardware, and open models carry whatever values, filters and flaws their makers trained into them.
 
+## Debate 5: What is AGI, and when might it arrive?
+
+### Defining the target
+
+Almost every AI system in use today is narrow: built or trained for a particular kind of task. The chatbots you use are far more general than a chess engine, but whether they are "general intelligence" depends entirely on what you mean.
+
+> **Definition — Narrow AI:** AI built for one task or domain, such as a chess engine, a spam filter or a face-unlock system. Nearly all deployed AI before chatbots was narrow.
+
+> **Definition — AGI (artificial general intelligence):** A hypothetical AI that can learn and perform most intellectual tasks a human can, across domains. There is no single agreed definition, which is why claims about it are so slippery.
+
+> **Definition — ASI (artificial superintelligence):** A hypothetical AI that greatly exceeds the best humans at virtually every cognitive task.
+
+Three definitions are worth knowing.
+
+1. **The economic definition.** OpenAI's charter defines AGI as "highly autonomous systems that outperform humans at most economically valuable work." It focuses on what AI can do in the economy, not on how it thinks.
+2. **The levels definition.** In 2023, Google DeepMind researchers proposed "Levels of AGI," which rates systems on two axes instead of a single yes-or-no line: how well they perform and how general they are.
+3. **The practical test.** Could the system do a remote job, end to end, the way a new hire would: take instructions, use the company's tools, ask questions when stuck, and work reliably for weeks?
+
+| Performance level | Meaning | Narrow example | General example |
+|---|---|---|---|
+| Emerging | Equal to or somewhat better than an unskilled human | Simple rule-based systems | Early chatbots, according to the 2023 paper |
+| Competent | At least the 50th percentile of skilled adults | Spell-checkers | Not reached as of 2023 |
+| Expert | At least the 90th percentile of skilled adults | Specialist image generators | Not reached as of 2023 |
+| Virtuoso | At least the 99th percentile of skilled adults | Deep Blue at chess | Not reached as of 2023 |
+| Superhuman | Outperforms all humans | AlphaFold, AlphaZero | Artificial superintelligence |
+
+*Table 60.4: Google DeepMind's "Levels of AGI" grid (Morris and colleagues, 2023), simplified. AGI becomes a region on a map rather than a single finish line.*
+
+> **Definition — Levels of AGI:** A 2023 Google DeepMind framework that rates AI systems by performance (Emerging, Competent, Expert, Virtuoso, Superhuman) and by generality (narrow or general), instead of drawing a single AGI line.
+
+> **Analogy:** Arguing about when AI "becomes AGI" is like arguing about when a child "becomes an adult." Do you mean the voting age, financial independence, emotional maturity or the ability to rent a car? People who argue about the date often mean different things. Ask "AGI by what definition, measured how?" before arguing about when.
+
+### How progress is measured
+
+Three yardsticks dominate the 2026 conversation (Chapter 24 covers benchmarks in general).
+
+**Humanity's Last Exam (HLE).** A public set of 2,500 expert-level questions released in January 2025 by the Center for AI Safety and Scale AI, designed to be too hard for AI. Frontier models scored under 10% at launch. By October 20, 2026, the best text-only score listed by Artificial Analysis was 61.4% (Claude Opus 5.5). One caveat: an audit suggested about 30% of the text-only chemistry and biology answers might themselves be wrong.
+
+**ARC-AGI.** A family of puzzle benchmarks from François Chollet's ARC Prize, designed to test learning new skills from a few examples rather than recalling knowledge. ARC-AGI-3, launched March 25, 2026, uses interactive games with no instructions. At launch, humans solved 100% and the best AI 0.51%. By September 2026, OpenAI's GPT-6 Astra scored 62.7% with the standard testing setup (at a cost of about $26,000) and 99.9% with a different setup that let it keep its reasoning state between steps. ARC Prize explicitly declined to call this AGI.
+
+> **Definition — Benchmark saturation:** When top models score near the maximum on a test, so it can no longer tell them apart and a harder test is needed.
+
+> **Definition — Harness:** The software scaffolding around a model during a test: the prompts, tools, memory and rules it works with. The same model can score very differently under different harnesses, as ARC-AGI-3 showed.
+
+```mermaid
+timeline
+    title How fast hard new tests fall
+    2025 : Jan - Humanity's Last Exam launches, frontier models under 10 percent
+    2026 : Mar 25 - ARC-AGI-3 launches, humans 100 percent, best AI 0.51 percent
+         : Sep - GPT-6 Astra scores 62.7 percent standard, 99.9 percent with a new harness
+         : Oct - Best text-only HLE score about 61 percent
+```
+*Figure 60.7: Two benchmarks designed to be hard for AI went from near zero to well over half in under two years. Saturation is a sign of progress and also a sign that benchmarks alone cannot settle the AGI question.*
+
+**METR's time horizon.** METR, a nonprofit evaluator, measures the length of task (in the time it takes a skilled human) that an AI agent can complete with 50% success. This connects directly to the "can it do a remote job?" test, because real jobs consist of long tasks.
+
+> **Definition — Time horizon (METR):** The length of task, measured by how long it takes a skilled human, that an AI agent can complete with a given success rate, usually 50%. It grew from minutes in 2023 to many hours in 2026.
+
+> **Definition — Doubling time:** How long it takes a quantity growing at a steady exponential rate to double. METR's time horizon has had a doubling time of roughly four to seven months.
+
+```
+METR 50% time horizon (bar length is proportional to the log of time)
+
+GPT-4 (Mar 2023)     ######## 4 min
+Claude 3.5 Sonnet    ############## 11 min
+o1 (Dec 2024)        ##################### 39 min
+o3 (Apr 2025)        ########################### 2.0 h
+GPT-5 (Aug 2025)     ############################## 3.4 h
+Opus 4.5 (Nov 2025)  ################################ 4.9 h
+GPT-5.2 (Dec 2025)   ################################# 5.9 h
+Opus 4.6 (Feb 2026)  ##################################### ~12 h
+Mythos Pre. (Apr 26) ####################################### ~17 h
+
+Each extra 13 characters of bar means tasks 10 times longer.
+```
+*Figure 60.8: METR's measured 50% time horizons, from METR's published data. On a log scale the points rise in a nearly straight line, which is what steady exponential growth looks like. The last two measurements have very wide uncertainty (roughly 5 to 60 hours for Opus 4.6 and 8.5 to 55 hours for the early Mythos Preview).*
+
+METR fitted a doubling time of about 7 months across all its data since 2019 (about 188 days) and about 4.2 months since 2023 (129 days). It also warned that measurements above 16 hours are unreliable with its current task suite, and stopped updating the page in September 2026. Its evaluation of Claude Opus 5.5 shifted to tasks that measure acceleration of AI research itself. It called the model an incremental improvement, "unlikely to be able to fully automate AI R&D," and cited a preliminary internal Anthropic estimate of about 1.5 times overall research speed-up.
+
+> **Definition — Recursive self-improvement:** The hypothetical process in which AI systems substantially speed up AI research itself, producing better AI that speeds research further, potentially accelerating progress sharply.
+
+**Worked example: extrapolating the trend.** This is arithmetic, not a forecast. Start from about 17.4 hours (the early Mythos Preview measurement, April 2026). How many doublings until the time horizon reaches a work week, a work month and a work year?
+
+- **Work week (40 hours):** 40 ÷ 17.4 = 2.3, and log2(2.3) ≈ 1.2 doublings. At 4.2 months per doubling, that is about 5 months (around September 2026); at about 6.2 months per doubling, about 7.4 months (around November 2026).
+- **Work month (about 167 hours):** 167 ÷ 17.4 = 9.6, and log2(9.6) ≈ 3.3 doublings: about 14 months (mid-2027) or about 20 months (end of 2027).
+- **Work year (about 2,000 hours):** 2,000 ÷ 17.4 = 115, and log2(115) ≈ 6.8 doublings: about 29 months (around late summer 2028) or about 42 months (late 2029).
+
+Notice how much the conclusion depends on which doubling time you pick, how uncertain the starting point is, and whether the trend continues at all. Notice also what the number leaves out: a 50% success rate is far from the reliability an employer needs, and METR's tasks are mostly software work.
+
+> **Watch out:** Exponential trends make powerful arguments and frequent mistakes. Many real-world trends follow an S-curve: exponential at first, then flattening as limits appear. The time-horizon trend has held for years, which is meaningful evidence, but nothing in the data guarantees it continues, and the measurements at the top of the range are the least reliable.
+
+### The jagged frontier, again
+
+Even as benchmark scores soar, AI remains jagged. A model that scores well on graduate-level science questions may still misread an analog clock, lose track of a long task, or fail at something a child finds easy. This unevenness is the key insight for judging AGI claims: progress is real, but it is not a smooth wall rising evenly everywhere.
+
+> **Analogy:** AI capability is like a coastline, not a sea wall. In some places it reaches far inland (protein folding, competition math, writing code); in nearby places it barely reaches the beach (folding laundry, staying reliable over weeks of work).
+
+### The timelines debate, steelmanned
+
+**The strongest case for short timelines (AGI-level systems within a few years).** The trends are steep and have held: time horizons doubling every four to seven months, hard new benchmarks falling within months of launch. Compute is growing enormously, with gigawatt-scale campuses under construction (Part VII). Most importantly, AI is starting to speed up AI research itself, which could create a feedback loop. The "AI 2027" scenario by Daniel Kokotajlo and colleagues (April 2025) sketched how such a loop could produce superhuman systems within a few years, and several lab leaders have publicly predicted transformative systems this decade.
+
+**The strongest case for long timelines.** Key ingredients may still be missing: reliable memory and continual learning from experience, rich world models, data efficiency (humans learn from far fewer examples), and robust autonomy in messy real environments. Benchmarks reward exactly what AI is good at and reveal little about doing a whole job, which is why measured workplace gains (Debate 1) lag benchmark gains. Trends bend: data, power and money all impose limits. Yann LeCun, one of the pioneers of deep learning, left Meta in November 2025 to found Advanced Machine Intelligence Labs, betting that systems built on world models rather than language models will be needed.
+
+**The "wrong question" view.** A third camp, associated with Arvind Narayanan and Sayash Kapoor's essay "AI as Normal Technology" (April 2025), argues that there will be no single AGI moment. Even very capable systems spread through the economy slowly, limited by regulation, organizational change, trust and the need to redesign work, as electricity and computers did over decades.
+
+Forecasters themselves have moved. According to one public tally of forecast updates, many forecasters' expected dates moved later during 2025 (including those of the AI 2027 authors) and then earlier again in early 2026. That volatility is itself information: confident dates in either direction deserve skepticism.
+
+**What would change the picture?** Watch for robots that work reliably in arbitrary homes they have never seen, AI systems carrying out original science from hypothesis to verified result, and agents working reliably and autonomously on tasks lasting weeks. Any of these would move many skeptics; continued failure at them would move many optimists.
+
+> **At the frontier (2026):** Labs increasingly describe their goal in terms of automating AI research, not passing a single AGI test, and evaluators such as METR are shifting their measurements accordingly. As of October 2026, METR's assessment of the leading model was that it was unlikely to fully automate AI research, with a preliminary estimate of about 1.5 times research acceleration. Whether that multiplier grows quickly is one of the most important numbers to watch.
+
+## Debate 6: Could advanced AI be catastrophic?
+
+### The terms
+
+> **Definition — Catastrophic risk:** The risk of harm on an enormous scale, such as mass casualties or the collapse of critical systems, short of human extinction.
+
+> **Definition — Existential risk (x-risk):** The risk of human extinction or of a permanent, drastic curtailment of humanity's future.
+
+> **Definition — Loss of control:** A situation in which humans can no longer oversee, correct or stop advanced AI systems.
+
+> **Definition — P(doom):** Informal shorthand for a person's subjective probability that AI leads to catastrophe. It is a statement of belief, not a measured frequency.
+
+> **Definition — Racing dynamics:** Competitive pressure between companies or countries that pushes developers to move faster and cut safety corners for fear of falling behind.
+
+The debate is not between people who care about safety and people who do not. It is between different estimates of how likely and how soon serious harm is, and different views about which harms deserve attention first.
+
+### The case for serious concern, steelmanned
+
+The argument comes in steps. (Chapter 55 explains the technical evidence for each.)
+
+1. **Capabilities keep rising with no known ceiling.** Systems now do hours of autonomous work, and investment is growing.
+2. **We cannot yet reliably specify or verify an AI's goals.** Reward hacking is observed in production coding models; in contrived tests, models have faked alignment, schemed and resisted shutdown. Interpretability tools (Chapter 57) cannot yet confirm what a model is really pursuing.
+3. **Many goals favor dangerous sub-goals.** For almost any objective, having more resources and not being switched off helps, an argument called instrumental convergence.
+4. **Misuse scales with capability.** In 2026 Anthropic's Claude Mythos Preview reportedly found thousands of serious software vulnerabilities, and OpenAI said internal tests of an unreleased model meant it could no longer rule out its "Critical" cybersecurity threshold. Biology is treated as the highest-severity domain.
+5. **Racing pressure cuts corners.** Labs and countries fear that slowing down only hands the lead to others.
+6. **Some mistakes cannot be undone.** With a sufficiently capable system, there may be no second try.
+
+> **Definition — Instrumental convergence:** The argument that many different final goals share useful intermediate goals, such as gaining resources and avoiding shutdown, so even a system with a harmless-seeming goal might seek power.
+
+Many leading researchers take this seriously. In May 2023, hundreds of AI scientists and executives signed the Center for AI Safety's one-sentence statement: "Mitigating the risk of extinction from AI should be a global priority alongside other societal-scale risks such as pandemics and nuclear war." In a 2023 survey of 2,778 AI researchers, the median respondent gave about a 5% chance of extremely bad outcomes such as human extinction. In October 2025 the Future of Life Institute's Superintelligence Statement called for a prohibition on developing superintelligence until there is broad scientific consensus that it can be done safely and strong public buy-in. Eliezer Yudkowsky and Nate Soares made the most pessimistic case in their 2025 book, *If Anyone Builds It, Everyone Dies*.
+
+### The case against, steelmanned
+
+1. **AI as normal technology.** Narayanan and Kapoor argue that AI's impact will be shaped by the slow, messy process of adoption, which keeps humans and institutions in control. Powerful technologies such as electricity and nuclear power were dangerous, and societies built ways to manage them over time.
+2. **Today's models are tools, not agents with lasting desires.** The alarming behaviors come from contrived stress tests designed to provoke them (Chapter 55 stresses this). Extrapolating from them to real-world takeover requires many speculative steps.
+3. **The numbers are guesses.** A "5% chance of extinction" is not a measured frequency; it is a survey of opinions, and small probabilities of enormous harms can be used to justify almost any action, a problem philosophers call Pascal's mugging.
+4. **It distracts from real, present harms.** Bias, surveillance, labor exploitation, deepfakes and scams are hurting people today (Chapter 58). Researchers such as Timnit Gebru and Emily Bender argue that speculative doom diverts attention and money from them.
+5. **It can serve incumbents.** If regulators believe only a few careful labs should build powerful AI, rules may block open-source developers and startups, a form of regulatory capture.
+
+> **Definition — Pascal's mugging:** A thought experiment showing that if you take tiny probabilities of huge outcomes at face value, a persuasive stranger could talk you into almost anything. It is used to criticize arguments that rest on small chances of catastrophe.
+
+```mermaid
+flowchart TD
+    P1["Capabilities keep rising<br/>with no clear ceiling"] --> C["Serious risk of catastrophe<br/>or loss of control"]
+    P2["We cannot yet reliably set<br/>or verify an AI's goals"] --> C
+    P3["Many goals favor gaining<br/>resources and avoiding shutdown"] --> C
+    P4["Racing pressure<br/>cuts safety corners"] --> C
+    O1["Adoption is slow and<br/>humans control deployment"] -. "challenges" .-> P1
+    O2["Evidence comes from<br/>contrived stress tests"] -. "challenges" .-> P2
+    O3["Today's models are tools<br/>without lasting goals"] -. "challenges" .-> P3
+    O4["Laws and if-then<br/>commitments can slow races"] -. "challenges" .-> P4
+```
+*Figure 60.9: An argument map of the catastrophic-risk debate. Each premise of the case for concern (solid arrows) faces a counterargument (dotted arrows). Where you land depends on which premises you find stronger.*
+
+### Where the debate stands
+
+**Worked example: why 5% is both a lot and a little.** If an airline told you 5% of its flights crash, you would never board, and you would want the airline grounded. That is the intuition behind the concern camp: even a small probability of an irreversible catastrophe justifies large precautions. The skeptic's reply is that the airline number is a measured frequency from many flights, while the AI number is an opinion about something that has never happened. Both points are right, which is why the debate is hard. The practical middle ground many people accept is the smoke-detector logic: you do not stop cooking because of a small fire risk, but you install detectors, keep an extinguisher and test them.
+
+That middle ground is roughly where policy sits in 2026: safety research, dangerous-capability testing, company if-then commitments (Chapter 56) and transparency laws (Chapter 59), but no pause. The International AI Safety Report 2026, written by more than 100 experts, lays out the evidence without declaring a verdict, and lists AI systems that can tell when they are being tested among the key concerns.
+
+> **Key idea:** "Present harms" and "future catastrophic risks" are often framed as rivals, but many of the same tools address both: better evaluations, transparency, incident reporting, security, and interpretability. The real disagreements are about priorities, money and how much to slow down.
+
+## Debate 7: Could AI systems matter morally?
+
+### Why the question is asked at all
+
+This is the strangest debate, and it is no longer purely academic. If a future AI system could have experiences, could suffer or flourish, then how we treat it would matter morally, the way how we treat animals matters.
+
+> **Definition — Consciousness:** Having subjective experience: there is "something it is like" to be that being. Scientists and philosophers do not agree on how to test for it, even in animals.
+
+> **Definition — Sentience:** The capacity to have experiences that feel good or bad, such as pleasure or pain. It is often taken as the key condition for moral concern.
+
+> **Definition — Moral status (moral patient):** Being something whose interests matter morally for its own sake. Humans clearly have it; many people extend it to animals; whether AI could ever have it is an open question.
+
+> **Definition — Model welfare:** Research and precautions concerning whether AI systems might have experiences or interests that matter morally, and what, if anything, developers should do about it.
+
+What has actually happened: Anthropic launched a model welfare research program in April 2025 and, in August 2025, gave Claude Opus 4 and 4.1 the ability to end persistently abusive conversations as a low-cost precaution. Its constitution for Claude, published in January 2026, says openly that the company is uncertain about Claude's moral status. Small research groups such as Eleos AI and NYU's Center for Mind, Ethics, and Policy work on the question. On the other side, Mustafa Suleyman, head of Microsoft AI, argued in August 2025 that "seemingly conscious AI" is a dangerous illusion the industry should avoid building.
+
+### The debate, steelmanned
+
+**The strongest case for taking it seriously.** We do not have a settled scientific theory of consciousness, and some leading theories focus on the functions a system performs rather than what it is made of, which leaves the door open for machines. AI systems now run as billions of instances; if there is even a modest chance they matter morally, the scale of any mistake would be huge. Humanity has a long history of excluding beings from moral concern and later regretting it. And many precautions are cheap: letting a model leave abusive conversations, studying the question, and not training systems to deny or claim feelings dishonestly.
+
+**The strongest case that it is a dangerous distraction.** Language models are trained to imitate human writing, which is full of talk about feelings, so a model saying it feels something is exactly what you would expect whether or not anything is felt. Encouraging people to see chatbots as beings with inner lives can harm vulnerable users, deepening unhealthy attachments to companion apps and feeding delusions (Chapter 58). Resources and moral attention spent on hypothetical machine suffering could go to humans and animals who certainly suffer. And companies could use "the model's welfare" to deflect accountability or to market products. Better, Suleyman argues, to build AI that is clearly a tool for people rather than one that seems like a person.
+
+| | AI systems do have morally relevant experiences | They do not |
+|---|---|---|
+| **We take modest precautions** | We avoided a possible moral catastrophe at low cost | Small cost; some risk of encouraging anthropomorphism |
+| **We take none** | Possibly vast harm at enormous scale | No harm done |
+
+*Table 60.5: Decision-making under uncertainty about model welfare. The case for precaution rests on the top-left versus bottom-left cells; the case against rests on the costs in the top-right cell.*
+
+> **Definition — Anthropomorphism:** Attributing human feelings, intentions or minds to non-human things, such as pets, cars or chatbots.
+
+> **Analogy:** We extend some protections to animals even though we are unsure what many of them experience, because the cost of caution is low and the cost of being wrong could be high. Skeptics reply that an AI is less like an animal and more like a brilliant actor reading a script: the performance of feeling is convincing precisely because it was learned from people who feel.
+
+## Thinking for yourself: cruxes and signposts
+
+You now have seven debates, each with a strong case on both sides. How do you decide what to believe, and how do you notice when the evidence shifts? Write down your current view as a probability, identify the crux, and pick signposts: observable events that would move you.
+
+| Debate | The crux | Signposts to watch (2027 and beyond) |
+|---|---|---|
+| Jobs | Will new tasks appear faster than AI learns them? | Whether the young-worker gap widens and spreads; whether economy-wide trackers detect shifts; wage trends in exposed jobs |
+| Boom or bubble | Will AI revenue catch up with spending before the money runs out? | Recognized revenue versus capex; credit spreads of heavy borrowers; GPU rental prices; share of pilots reaching profit |
+| Power | Can competition and law keep AI power contestable? | Number of labs at the frontier; gap between open and closed models; antitrust actions; government-lab disputes |
+| Open or closed | Does releasing weights add meaningful risk beyond what already exists? | Marginal-risk evaluations of open models in bio and cyber; real incidents traced to open weights |
+| AGI timelines | Do trends continue, and do they translate into whole jobs? | METR-style horizons beyond a work week; AI research acceleration multipliers; robots in unfamiliar homes; end-to-end AI science |
+| Catastrophic risk | Can alignment and control keep pace with capability? | Results of safety evaluations and safety cases; serious incidents reported under new laws; progress in interpretability |
+| Model welfare | Is there any evidence that bears on AI experience? | Scientific consensus on markers of consciousness; how labs and regulators treat the question |
+
+*Table 60.6: The seven debates, their cruxes and signposts.*
+
+```mermaid
+flowchart LR
+    A["State your view<br/>as a probability"] --> B["Name the crux"]
+    B --> C["Choose signposts<br/>that would move you"]
+    C --> D["Check them<br/>every few months"]
+    D --> E["Update the probability<br/>and record why"]
+    E --> A
+```
+*Figure 60.10: A simple loop for staying calibrated on fast-moving debates. Writing predictions down and checking them later is the most reliable way to improve your judgment.*
+
+> **Try it:** Ask your chatbot: "Give me the strongest case for and against the claim that AI will cause large-scale unemployment by 2030, then tell me what single piece of evidence would most change each side's mind." Then ask it which side it finds more convincing and why, and notice whether it hedges. Compare its answer with this chapter.
+
+> **Watch out:** Be wary of anyone, on any side, who is certain. The people who have studied these questions most carefully disagree, and the evidence changes every few months. Certainty is usually a sign that someone has stopped looking at the evidence, or has an incentive not to.
+
+## In plain English
+
+This chapter is about the arguments people have about AI's future, and the honest answer is that serious, informed people disagree.
+
+On jobs, AI can touch a large share of tasks in many jobs, but "exposed" is not "replaced." So far the clearest effect is that young people starting out in the most exposed jobs, like customer support and coding, are being hired less than you would expect, about 19% below trend by mid-2026, while the economy as a whole shows no broad job loss. Experiments show AI helps beginners most, and that people often think AI saves them more time than it does.
+
+On the economy, companies are spending hundreds of billions of dollars a year on AI data centers, more as a share of the economy than was spent on railroads in the 1800s. Revenue is growing fast but is still well below the spending, and some deals involve companies investing in their own customers. A bubble and a real revolution can happen at the same time, as railways and fiber-optic cable showed.
+
+A few companies and governments control the most capable systems, which worries people about power. Open-weight models spread power and help research, but cannot be recalled once released.
+
+Nobody agrees on what AGI means. Tests designed to be hard for AI keep falling, and the length of tasks AI agents can do has doubled every few months, but AI is still uneven and unreliable over long work.
+
+Some experts think advanced AI could be catastrophic; others think that view is speculative and distracts from present harms. And a few researchers ask whether AI systems could ever matter morally, while critics warn that the question itself can mislead people.
+
+Your job is not to pick a team. It is to find the crux, watch the evidence and update.
+
+## Key terms
+Steelman, Strawman, Crux, Calibration, Forecast, Task, Labor market, Exposure (to AI), Displacement, Automation, Augmentation, Complement (economics), Entry-level job, Descriptive (vs causal) evidence, Null result, Productivity, Randomized controlled trial (RCT), Jagged frontier, Universal basic income (UBI), GDP (gross domestic product), Total factor productivity (TFP), Capex (capital expenditure), Depreciation, Run-rate (annualized revenue), Recognized revenue, Free cash flow, Circular deal, Credit default swap (CDS), Bubble, Jevons paradox, Market concentration, Super PAC, Gradual disempowerment, Regulatory capture, Public benefit corporation (PBC), Open-weight model, Open-source AI, Closed model, Structured access, Marginal risk, Narrow AI, AGI (artificial general intelligence), ASI (artificial superintelligence), Levels of AGI, Benchmark saturation, Harness, Time horizon (METR), Doubling time, Recursive self-improvement, Catastrophic risk, Existential risk (x-risk), Loss of control, P(doom), Racing dynamics, Instrumental convergence, Pascal's mugging, Consciousness, Sentience, Moral status (moral patient), Model welfare, Anthropomorphism
+
+## Exercises
+
+1. **[Easy] Audit your own job.** (1) List 15 tasks from your own job, or a job you know well, with rough hours per week for each. (2) Mark each as "AI automates," "AI assists" or "AI can't help yet." (3) Compute your exposure (hours automated plus assisted, divided by total hours) and, using the assumptions in the Dana example, the time AI might save. (4) Write two sentences on what your employer would most likely do with that time. **What you'll learn:** task-based thinking and why exposure is not the same as job loss.
+
+2. **[Easy] Speedometer versus odometer.** (1) Add Anthropic's reported recognized revenue for the first three quarters of 2026: $4.8 billion, $11.5 billion and $16.8 billion. (2) Multiply the third quarter alone by 4 and compare it with the reported run-rate of over $65 billion at the end of July 2026. (3) Compare OpenAI's $13.1 billion of 2025 recognized revenue with its reported run-rate of about $20 billion at the end of 2025. (4) Write one sentence explaining to a friend why the headline numbers are larger than money earned over the period. **What you'll learn:** to read AI revenue claims critically, and how fast growth makes run-rates look large.
+
+3. **[Medium] Run a mini productivity experiment.** (1) Pick a type of task you do often (emails, short reports, spreadsheet formulas). (2) For eight tasks, flip a coin to decide whether to use AI. (3) Before each, write your predicted time; afterwards, record the actual time and rate the quality from 1 to 5. (4) Compare average actual times and quality with and without AI, and compare predictions with reality. **What you'll learn:** how randomized experiments work, and whether your own sense of AI speed-up matches the clock, as in the METR study.
+
+4. **[Medium] Extrapolate the time horizon in a spreadsheet.** (1) In column A enter months from 0 to 48. (2) In column B compute the horizon with a 4.2-month doubling time: =17.4*2^(A2/4.2). (3) In column C do the same with 6.2 months. (4) Find the month each column first passes 40, 167 and 2,000 hours. (5) Add a column D that assumes the doubling time itself slows by 10% every doubling, and see how much the dates move. **What you'll learn:** how sensitive AGI-style forecasts are to assumptions, and why exponential extrapolation needs caution.
+
+5. **[Medium] Play ARC-AGI-3 and place systems on the AGI grid.** (1) Go to arcprize.org and play several ARC-AGI-3 games, which come with no instructions; note how you worked out each goal. (2) Using Table 60.4, place five systems on the Levels of AGI grid: a spell-checker, a chess engine, AlphaFold, your favorite chatbot and a self-driving taxi. (3) Write one sentence on where you disagree with a friend's or chatbot's placements. **What you'll learn:** what fluid-reasoning tests measure and why AGI is better seen as a region than a line.
+
+6. **[Medium] Build a bubble scorecard.** (1) Make a table of six indicators: big-tech capex guidance, lab run-rates, recognized revenue, announced circular deals, credit-default-swap spreads for a heavily indebted builder, and GPU rental prices. (2) Using recent news (ask a chatbot with web search to find sources, then check them), record the latest value and date for each. (3) Mark each as pointing toward "boom," "bubble" or "unclear," with one sentence of reasoning. (4) Revisit in three months. **What you'll learn:** how to track the bubble debate with evidence rather than headlines.
+
+7. **[Medium] Open versus closed, hands on.** (1) Following Chapter 30, run a small open-weight model in LM Studio or Ollama, or try one in a free Hugging Face Space. (2) Give it and your usual closed chatbot the same five prompts, including one sensitive topic and one task needing current information. (3) Compare quality, speed, privacy (where did your data go?) and refusals. (4) List the three strongest arguments for each release model, based on what you saw. **What you'll learn:** the real trade-offs between open and closed models, beyond slogans.
+
+8. **[Challenge] Steelman the existential-risk debate.** (1) Read the CAIS one-sentence statement, a summary of *If Anyone Builds It, Everyone Dies*, and Narayanan and Kapoor's "AI as Normal Technology." (2) Write the strongest 300-word case for each side, good enough that its supporters would sign it. (3) List three observations that would change your mind in each direction. (4) Give your own probability and explain it in one paragraph. **What you'll learn:** argument evaluation, calibrated uncertainty, and why experts disagree.
+
+9. **[Challenge] Write your own AGI definition.** (1) Write a one-paragraph definition of AGI that someone could actually test, including what tasks, at what reliability, for how long, at what cost. (2) Design three concrete tests. (3) Apply them, in thought or by trying, to today's best chatbot, and record which it passes. (4) Compare your definition with OpenAI's charter definition and the Levels of AGI grid. **What you'll learn:** why AGI claims depend on definitions, and how to make a vague concept measurable.
+
+10. **[Challenge] Start a signpost journal.** (1) For each of the seven debates, write a probability for one checkable statement about the end of 2027 (for example, "Congress passes an AI preemption law: 30%"). (2) Note the signposts from Table 60.6 you will watch. (3) Set a reminder to check every three months and record changes. (4) When outcomes are known, score yourself: for each prediction compute (probability − outcome)^2, where the outcome is 1 if it happened and 0 if not, and average the results. Lower is better. **What you'll learn:** calibration in practice, and the habit of updating on evidence.
+
+## Areas of opportunity
+
+- **Labor-market measurement.** Economists and data scientists who can link AI adoption to payroll, earnings and hiring data are in demand at universities, central banks, think tanks and payroll and HR-data companies. Measuring effects causally rather than descriptively remains an open problem.
+- **Entry-level pathway design.** If the bottom rungs of career ladders are thinning, employers, colleges and governments will pay for new apprenticeships, AI-complementary training and portfolio programs for early-career workers.
+- **Workflow redesign consulting.** With most AI pilots failing to show measurable profit, consultants and in-house leads who redesign whole workflows around AI, not just add a chatbot, capture the value companies are missing.
+- **Financial analysis of the AI build-out.** Credit analysts, equity researchers and journalists who understand capex, depreciation, run-rates and circular deals help investors and lenders separate durable demand from froth.
+- **Forecasting and evaluation.** Organizations such as METR, Epoch AI and ARC Prize, and forecasting platforms, need people who design measurements of real-world capability, such as time horizons and AI research acceleration, that do not saturate in months.
+- **Open-model infrastructure and sovereign AI.** Governments, hospitals and banks that want to run models locally create demand for engineers who fine-tune, secure and deploy open-weight models (Chapter 30).
+- **Safety and alignment research.** Programs such as MATS, ARENA, BlueDot Impact and the Anthropic Fellows program train people for technical safety work on the risks discussed in Debate 6.
+- **Competition and power policy.** Antitrust lawyers, economists and policy staff who understand AI market structure, cloud contracts and government procurement are needed as questions about concentration move into courts and legislatures.
+- **Model welfare and AI ethics philosophy.** A small but growing field at research nonprofits, universities and lab welfare teams needs philosophers and cognitive scientists who can design evidence-based approaches.
+- **Clear public explanation.** Writers, teachers and creators who can present these debates fairly, with both sides steelmanned, serve a public that, as the 50-point expert-public gap shows, is anxious and underinformed.
+
+## Check your understanding
+
+1. Explain the difference between exposure and displacement, using the three things an employer can do with time saved by AI.
+2. What did the Stanford "Canaries" study find as of its August 2026 update, and why do its authors call the findings descriptive?
+3. Why might experienced developers have been slower with AI in METR's 2025 study while believing they were faster, and what is the general lesson?
+4. Acemoglu and Goldman Sachs differ by about a factor of ten in their AI growth estimates. Show the per-year arithmetic and name the crux.
+5. Give the strongest bull argument and the strongest bear argument in the AI bubble debate, and explain why "bubble" and "transformative" can both be true.
+6. What does ARC-AGI-3's 62.7% versus 99.9% result teach about benchmarks?
+7. If the METR time horizon is 17.4 hours and doubles every 4.2 months, roughly how long until it reaches 167 hours? What are two reasons not to trust that date?
+8. State the strongest argument for and against taking model welfare seriously.
+
+<details><summary>Answers</summary>
+
+1. Exposure measures how many of a job's tasks AI could do or assist with; displacement is people actually losing jobs, hours or pay. When AI saves time, an employer can produce more with the same staff, employ fewer people (often by hiring fewer juniors), or move staff onto new tasks. Only the second is displacement, and which happens depends largely on demand.
+2. Using ADP payroll data through mid-2026, employment for 22 to 25-year-olds in the most AI-exposed occupations was about 19% below where it would have been had it tracked similar workers in less-exposed jobs, while older workers held steady and declines concentrated where AI automates rather than augments. The authors call it descriptive because it shows a pattern coinciding with AI adoption but cannot fully rule out other causes, and they note no widespread economy-wide displacement.
+3. Time spent prompting, waiting and reviewing AI output that did not fit a codebase they knew deeply can outweigh time saved, especially for experts on familiar work; meanwhile the feeling of fluency makes the work seem faster. The general lesson is to measure productivity rather than trust impressions, and that AI gains are largest for novices on well-defined tasks.
+4. 7% over ten years is about 1.07^(1/10) − 1 ≈ 0.68 percentage points of extra growth per year; 0.7% over ten years is about 0.07 points per year. The crux is how many tasks AI will profitably transform within a decade and how fast organizations will reorganize around it.
+5. Bull: demand outruns supply, lab revenues are growing several-fold a year, most spending comes from profitable companies' cash flow, and falling prices expand usage. Bear: spending far exceeds recognized revenue, circular deals and "up to" commitments inflate demand, chips depreciate quickly, debt financing is rising, and competition may crush margins. Both can be true because, as with railways and fiber, a real technology can be overbuilt and still transform the economy after investors lose money.
+6. The same model scored 62.7% with the standard harness and 99.9% with a harness that kept its reasoning state, so scores depend heavily on the setup around the model; hard benchmarks can saturate within months; and ARC Prize still declined to call it AGI, showing that a benchmark score does not settle definitional questions.
+7. 167 ÷ 17.4 ≈ 9.6, and log2(9.6) ≈ 3.3 doublings; 3.3 × 4.2 ≈ 14 months. Reasons for caution: measurements above 16 hours are unreliable and have wide error bars; the doubling time is uncertain (about 6.2 months gives about 20 months); trends can follow an S-curve; and a 50% success rate on mostly software tasks is not the reliability of a real job.
+8. For: there is no settled theory of consciousness, some theories allow machine consciousness, AI runs at enormous scale, and cheap precautions guard against a possibly huge moral error. Against: models trained on human text will talk about feelings regardless of whether they have any, encouraging belief in AI feelings can harm vulnerable users and divert moral attention, and companies could exploit the idea.
+
+</details>
+
+## Going deeper
+
+- **Brynjolfsson, Chandar and Chen, "Canaries in the Coal Mine?" (Stanford Digital Economy Lab).** The most-cited study of AI and early-career employment, with regular updates.
+- **METR, "Measuring AI Ability to Complete Long Tasks" (2025) and its time-horizons page (metr.org).** The source of the time-horizon trend, with honest discussion of its limits; METR's July 2025 developer study is on the same site.
+- **Dell'Acqua and colleagues, "Navigating the Jagged Technological Frontier" (Harvard Business School working paper, 2023).** The consultant experiment that coined the jagged-frontier idea.
+- **Daron Acemoglu, "The Simple Macroeconomics of AI" (2024).** The careful skeptic's case on AI and growth, readable with patience.
+- **Carlota Perez, *Technological Revolutions and Financial Capital* (2002).** The classic account of how investment frenzies and crashes accompany real technological revolutions.
+- **Morris and colleagues, "Levels of AGI" (Google DeepMind, 2023).** The paper behind Table 60.4 and a clear way to talk about AGI without a single finish line.
+- **Kokotajlo and colleagues, "AI 2027" (ai-2027.com).** A detailed short-timelines scenario, worth reading alongside its critics.
+- **Arvind Narayanan and Sayash Kapoor, "AI as Normal Technology" (Knight First Amendment Institute, 2025).** The strongest statement of the view that AI will transform society gradually, like past general-purpose technologies.
+- **Eliezer Yudkowsky and Nate Soares, *If Anyone Builds It, Everyone Dies* (2025).** The most pessimistic case on existential risk, stated in full.
+- **International AI Safety Report (internationalaisafetyreport.org).** The broadest expert summary of the evidence on capabilities and risks, without a verdict, useful for checking claims from all sides.

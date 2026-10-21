@@ -51,7 +51,7 @@ Your map app does this every time you ask for directions. Each intersection is a
 
 The simplest search strategies have no sense of direction.
 
-> **Definition — Breadth-first search (BFS):** A search method that explores all places one step away, then all places two steps away, and so on, like ripples spreading in a pond. It always finds the shortest path but can be slow.
+> **Definition — Breadth-first search (BFS):** A search method that explores all places one step away, then all places two steps away, and so on, like ripples spreading in a pond. It always finds the shortest path when every step costs the same, but it can be slow.
 
 > **Definition — Depth-first search (DFS):** A search method that follows one path as far as it can go before backing up and trying another, like keeping your hand on one wall of a maze.
 

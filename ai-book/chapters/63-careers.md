@@ -545,6 +545,8 @@ A job is a bundle of tasks. A paralegal summarizes documents, drafts letters, or
 
 Real usage data supports the task view. Microsoft researchers analyzed about 200,000 conversations with Bing Copilot and found that information work, meaning creating, processing and communicating information, was both the most common and the most successful kind of AI-assisted activity. Since nearly every occupation includes some information work, most occupations have some exposure, but very few are exposed in every task.
 
+> **Try it:** Look up your occupation on O*NET OnLine (onetonline.org), the US Department of Labor's database that lists the tasks of nearly every occupation. Copy its task list into a chat and ask: "For each task, would current AI mostly automate it, mostly assist a person, or barely help? Explain in one line each." Then mark where you disagree from your own experience.
+
 Here is a worked example of a task audit, with invented but realistic numbers. Maya, the paralegal from Figure 63.5, logs a typical 40-hour week and labels each task.
 
 | Task | Hours per week | Exposure | AI's likely role |

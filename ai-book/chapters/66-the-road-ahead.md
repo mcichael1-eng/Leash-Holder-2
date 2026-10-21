@@ -33,6 +33,8 @@ Here is the picture as of late October 2026, using figures from earlier chapters
 | Money | The largest US cloud companies guided to roughly $720–800 billion of 2026 capital spending, depending on who is counted and how | FactSet and company guidance (Chapter 43) |
 | Work | Employment of 22–25-year-olds in the most AI-exposed jobs is about 19% below the trend of similar workers in less-exposed jobs; no economy-wide displacement seen | Stanford Digital Economy Lab, Aug 2026 (Chapter 60) |
 
+*Table 66.1: A snapshot of AI in late October 2026, drawn from earlier chapters.*
+
 Read that table twice and something stands out. The numbers are huge and moving fast, yet nearly every row carries a caveat: an estimate, a wide range, a harness, a definition. That is the honest state of the field. Capability is rising quickly, measurement is struggling to keep up, and the physical and social systems around AI are straining to absorb it.
 
 > **Definition — Frontier (of AI):** The edge of what the most capable AI systems can currently do. A "frontier model" is one of the most capable models in existence at a given time, usually trained with the most computing power.
@@ -312,7 +314,7 @@ The technical problems decide what AI can do. The infrastructure problems decide
 
 > **Definition — Gigawatt (GW):** A billion watts, a unit of power (a rate of energy use). One gigawatt running for a year delivers 8.76 terawatt-hours of energy, about the yearly electricity of 800,000 average US homes.
 
-The open problems are about speed and fairness more than raw supply. JLL reports average waits of more than four years for a grid connection in major markets, which pushes builders toward gas turbines on site. Gas fills most of the near-term gap, nuclear restarts help this decade, and new small modular reactors mostly arrive in the 2030s: the first US construction permit for one was issued only on September 28, 2026. Meanwhile prices in the eastern US capacity market jumped many times over, sparking fights about whether households subsidize data centers (Chapter 41).
+The open problems are about speed and fairness more than raw supply. JLL reports average waits of more than four years for a grid connection in major markets, which pushes builders toward gas turbines on site. Gas fills most of the near-term gap, nuclear restarts help this decade, and new small modular reactors mostly arrive in the 2030s: the first US construction permit for a BWRX-300, a leading small-reactor design, was issued only on September 28, 2026. Meanwhile prices in the eastern US capacity market jumped many times over, sparking fights about whether households subsidize data centers (Chapter 41).
 
 > **Definition — Interconnection queue:** The waiting line of projects asking to connect to the electricity grid. Each needs engineering studies and often new equipment, and waits are now measured in years.
 
@@ -330,7 +332,7 @@ Published roadmaps give you dates to check: NVIDIA's Rubin Ultra in "Kyber" rack
 
 ### Money: can revenue catch up with capex?
 
-The largest US cloud companies guided to roughly $720–745 billion of 2026 capital spending across four companies, and FactSet put it "close to $800bn" for five once finance leases are counted. The Wall Street Journal estimated AI investment in 2026 at about 3.6% of US GDP, against about 2.2% for the railroads of the 1800s. Lab revenue is growing very fast, but so are losses: the Financial Times reported OpenAI projecting cumulative negative free cash flow of about $278 billion from 2026 to 2030.
+The largest US cloud companies guided to roughly $720–745 billion of 2026 capital spending across four companies, and FactSet put it "close to $800bn" for five once finance leases are counted. In September 2026 the Wall Street Journal put AI investment at about 3.6% of US GDP, against about 2.2% for the railroads of the 1800s. Lab revenue is growing very fast, but so are losses: the Financial Times reported OpenAI projecting cumulative negative free cash flow of about $278 billion from 2026 to 2030.
 
 > **Definition — Capex (capital expenditure):** Money spent on long-lived physical assets such as buildings, power equipment and chips, as opposed to day-to-day operating costs.
 
@@ -606,7 +608,7 @@ Published forecasts swing too. According to one tally of public updates, forecas
 
 ## Thinking for yourself: a method for AI claims
 
-Facts in this book will go stale; by the time you read this sentence, some model names already have. What lasts is a way of thinking. Chapter 65 gave you a ten-point checklist for AI news. This section turns it into a method you can apply to any claim: a headline, a forecast, a pitch from a vendor, or a confident friend.
+Facts in this book will go stale; some model names already have. What lasts is a way of thinking. Chapter 65 gave you a checklist for AI news; this section turns it into a method for any claim, whether a headline, a forecast, a vendor's pitch or a confident friend.
 
 ### The six questions
 
@@ -623,21 +625,21 @@ flowchart TD
 ```
 *Figure 66.8: The six-question method for any AI claim, ending in a written, checkable forecast.*
 
-**1. What exactly is being claimed?** Strip the claim down to one sentence. Is it about what AI can do, what people will do, or what they should do? Pin down the definitions: "solved", "autonomous", "AGI", "human-level". For a model claim, which model, which version, which settings, which harness, on what date?
+**1. What exactly is claimed?** Strip it to one sentence. Is it about what AI can do, what people will do, or what they should do? Pin down words like "solved," "autonomous" and "AGI," and for a model claim, which model, settings, harness and date.
 
-**2. What kind of number is it?** This book has taught you a whole zoo of slippery numbers. Run-rate revenue is not revenue. "Up to" is a ceiling, not a commitment. Peak sparse FP4 is not dense performance; per rack is not per chip. A 50% time horizon is not an 80% one. Capacity (gigawatts) is not consumption (gigawatt-hours). Per prompt is not in aggregate.
+**2. What kind of number is it?** This book has shown you a zoo of slippery numbers. Run-rate revenue is not revenue. "Up to" is a ceiling, not a commitment. Sparse FP4 peak is not dense performance; per rack is not per chip. A 50% horizon is not an 80% one. Gigawatts of capacity are not gigawatt-hours used. Per prompt is not in aggregate.
 
 > **Definition — Run-rate revenue:** A company's recent revenue scaled up to a full year, such as one month's revenue times 12. It is a speedometer reading of current pace, not money actually received over a year.
 
 > **Definition — Circular deal:** An arrangement in which a supplier invests in, or lends to, a customer that then uses the money to buy the supplier's products, which can make sales look larger than independent demand.
 
-**3. Who says so, and how do they know?** Find the primary source and read it. Ask what the source gains if you believe it. Look for independent measurement: METR, Epoch AI, government institutes, peer-reviewed studies, court records, regulatory filings.
+**3. Who says so, and how do they know?** Find the primary source, ask what its author gains if you believe it, and look for independent measurement: METR, Epoch AI, government institutes, peer-reviewed studies, court records, filings.
 
 > **Definition — Primary source:** The original document behind a claim, such as the research paper, the company's filing or system card, the court ruling or the official dataset, as opposed to an article or post about it.
 
-**4. Compared with what?** Every number needs a baseline. Compared with last year? With humans? With a simple tool like web search? What is the denominator? "Postings grew more than 30-fold" sounds different once you learn they started from fewer than 200. A two-point benchmark lead on a few hundred questions may be noise (Chapter 24).
+**4. Compared with what?** Every number needs a baseline and a denominator. The famous "95% of AI pilots fail" was a reframing of a study finding that about 5% of pilots showed measurable profit-and-loss impact, which is a different claim. A two-point benchmark lead on a few hundred questions may be noise (Chapter 24).
 
-**5. Demo, deployment or measured impact?** Claims travel through a life cycle, and most of the hype lives in the early stages.
+**5. Demo, deployment or measured impact?** Claims travel through a life cycle, and most hype lives in the early stages.
 
 ```mermaid
 stateDiagram-v2
@@ -653,54 +655,43 @@ stateDiagram-v2
     Measured --> [*]
     Abandoned --> [*]
 ```
-*Figure 66.9: The life cycle of an AI claim. Many claims stop at "Announced" or "Demo"; only some reach independent replication, real deployment and measured impact.*
+*Figure 66.9: The life cycle of an AI claim. Many stop at "Announced" or "Demo"; only some reach independent replication, real deployment and measured impact.*
 
-**6. What would change my mind, and how sure am I?** End by writing down a probability and a date. This is the step most people skip, and it is the one that makes you better over time.
+**6. What would change my mind, and how sure am I?** Write down a probability and a date. Most people skip this step, and it is the one that makes you better over time.
 
 > **Definition — Steelman:** The strongest, most charitable version of an argument you disagree with, the opposite of a "straw man." Testing your view against the steelman of the other side is one of the best guards against fooling yourself.
 
 ### Worked example 1: "AI aces the test built to measure AGI"
 
-Imagine the headline: "AI scores 99.9% on ARC-AGI-3. Is this AGI?"
+Imagine the headline "AI scores 99.9% on ARC-AGI-3. Is this AGI?"
 
-1. **Claim.** That a model can solve novel puzzle games. The AGI framing is the headline's, not the test-maker's: ARC Prize explicitly declined to call the result AGI.
-2. **Number.** 99.9% was with a "Provider Adapter" harness that let GPT-6 Astra keep its reasoning state and compress its history; with the standard harness, the same model scored 62.7%, at a reported cost of about $26,000 at maximum effort.
-3. **Source.** ARC Prize's own blog is the primary source, and it is independent of the model's maker.
+1. **Claim.** A model can solve novel puzzle games. The AGI framing is the headline's; ARC Prize explicitly declined to call the result AGI.
+2. **Number.** 99.9% used a harness that let GPT-6 Astra keep its reasoning state; with the standard harness it scored 62.7%, at a reported cost of about $26,000 at maximum effort.
+3. **Source.** ARC Prize's own blog, independent of the model's maker.
 4. **Compared with what?** Humans scored 100%; frontier AI scored 0.51% at launch in March 2026. The jump is real and fast.
-5. **Stage.** A benchmark result, which is a measured lab result, not a deployment.
-6. **What would change my mind?** Scores on the next, unseen version of the test at its launch, and evidence of the same adaptability on messy real-world tasks.
+5. **Stage.** A measured lab result, not a deployment.
+6. **What would change my mind?** Scores on the next, unseen version at its launch, and the same adaptability on messy real-world tasks.
 
-Verdict: a genuine, rapid capability gain on novel tasks, and also a lesson in how much the harness matters. Not, by itself, evidence for or against any particular AGI date.
+Verdict: a genuine, rapid gain on novel tasks and a lesson in how much the harness matters; not, by itself, evidence for any AGI date.
 
 ### Worked example 2: "A $100 billion, 10-gigawatt deal"
 
-In September 2025, NVIDIA and OpenAI announced a letter of intent for at least 10 GW of NVIDIA systems, with NVIDIA intending to invest up to $100 billion progressively. Run the questions.
-
-1. **Claim.** A plan, signed as a letter of intent, not a binding contract.
-2. **Number.** "Up to" $100 billion, "at least" 10 GW, staged over years. Gigawatts of capacity, not of power actually flowing.
-3. **Source.** Company announcements; later press reports.
-4. **Compared with what?** Epoch's tracker counts about 14.2 GW of IT power across all 95 large AI data centers it follows, so 10 GW would be enormous.
-5. **Stage.** Announced. And reportedly the arrangement was later restructured: press reports in early 2026 said the up-to-$100 billion plan was shelved in favor of a $30 billion equity investment in a funding round. It is also circular: the supplier invests in the customer that buys its chips.
-6. **What would change my mind?** Delivered capacity on Epoch's tracker. For comparison, Stargate's Abilene campus was planned at 1.2 GW; Epoch estimated about 0.3 GW of facility power running in April 2026, and a planned expansion to about 2.1 GW was cancelled.
-
-Verdict: treat gigawatt headlines as options on the future, and check delivered megawatts.
+In September 2025, NVIDIA and OpenAI announced a letter of intent for at least 10 GW of NVIDIA systems, with NVIDIA intending to invest up to $100 billion progressively. The number is "up to" and "at least," staged over years, and counts capacity, not power flowing (question 2). It is a letter of intent, not a contract, and circular: the supplier invests in the customer that buys its chips (question 5). Press reports in early 2026 said the plan was shelved in favor of a $30 billion equity investment. For comparison (question 4), Epoch's tracker counts about 14.2 GW of IT power across all 95 large AI data centers it follows, and Stargate's Abilene campus, planned at 1.2 GW, had about 0.3 GW of facility power running in April 2026 by Epoch's estimate. Verdict: treat gigawatt headlines as options on the future, and check delivered megawatts.
 
 ### Worked example 3: "Every chatbot question uses a bottle of water"
 
-1. **Claim.** About the resource cost of a single typical prompt.
-2. **Number.** Google reported its median Gemini text prompt used about 0.24 Wh of energy and 0.26 mL of water; Sam Altman put an average ChatGPT query at about 0.34 Wh; Epoch AI estimated about 0.3 Wh for a typical query. A bottle of water is about 500 mL, so the claim is off by roughly a thousandfold for a typical prompt.
-3. **Source.** Company self-reports (Google notes its figure was not independently verified) and an independent estimate that roughly agrees.
-4. **Compared with what?** Here is where it gets interesting. Epoch estimated that a prompt with 100,000 input tokens uses about 40 Wh, more than 100 times a short question.
-5. **Aggregate.** Suppose, hypothetically, a billion short prompts a day at 0.3 Wh each: 300 MWh a day, an average draw of about 12.5 MW. Now suppose a billion long agentic requests a day at 40 Wh each: 40 GWh a day, an average of about 1.7 GW, the output of more than one large power plant.
-6. **What would change my mind?** Audited, standardized per-token energy and water disclosures, which do not yet exist.
+Google reported that its median Gemini text prompt used about 0.24 Wh of energy and 0.26 mL of water; OpenAI's Sam Altman put an average ChatGPT query at about 0.34 Wh; Epoch AI independently estimated about 0.3 Wh. A bottle holds about 500 mL, so for a typical prompt the claim is off by roughly a thousandfold. But compare (question 4): Epoch estimated that a prompt with 100,000 input tokens uses about 40 Wh. Now scale up (question 2):
 
-Verdict: the per-prompt claim is wrong, but the underlying concern is right in aggregate. The future footprint depends on long contexts, agents, video and training, not on your quick questions.
+- Hypothetically, a billion short prompts a day at 0.3 Wh each is 300 MWh a day, an average draw of about 12.5 MW.
+- A billion long agentic requests a day at 40 Wh each is 40 GWh a day, an average of about 1.7 GW, more than a large power plant.
+
+Verdict: wrong per prompt, right to worry in aggregate. The footprint will be decided by long contexts, agents, video and training, not by your quick questions.
 
 > **Key idea:** Most bad takes on AI fail in one of two directions: they accept a big number without asking what kind of number it is, or they dismiss a real trend because one example was overblown. The six questions protect you from both.
 
 ### Put a number on it: calibration and keeping score
 
-The most reliable way to improve your judgment is to make forecasts you can check, write them down, and score them. Research on forecasting, popularized in Philip Tetlock and Dan Gardner's book *Superforecasting*, found that ordinary people who did this carefully could out-predict experts who did not.
+The surest way to improve your judgment is to make forecasts you can check, write them down and score them. Research popularized in Philip Tetlock and Dan Gardner's book *Superforecasting* found that ordinary people who did this carefully could out-predict experts who did not.
 
 > **Definition — Base rate:** How often something happens in general, before you consider the specifics of a case. If 3 in 10 dramatic announcements of a given kind tend to hold up, 30% is your starting point for the next one.
 
@@ -708,46 +699,39 @@ The most reliable way to improve your judgment is to make forecasts you can chec
 
 > **Definition — Brier score:** A simple way to score probability forecasts: for each forecast, take the difference between your probability and what happened (1 if it happened, 0 if not), square it, and average over all forecasts. Zero is perfect; always saying 50% scores 0.25.
 
-**Worked example: scoring three forecasts.** Say you made three forecasts. (A) 90% that something happens; it happened. (B) 70% that something happens; it did not. (C) 20% that something happens; it did not.
+**Worked example: scoring three forecasts.** You said 90% for event A (it happened), 70% for B (it did not) and 20% for C (it did not).
 
 | Forecast | Your probability | Outcome | (probability − outcome)² |
 |---|---|---|---|
 | A | 0.9 | 1 | (0.9 − 1)² = 0.01 |
 | B | 0.7 | 0 | (0.7 − 0)² = 0.49 |
 | C | 0.2 | 0 | (0.2 − 0)² = 0.04 |
-| Average (Brier score) | | | (0.01 + 0.49 + 0.04) ÷ 3 = 0.18 |
+| Brier score | | | (0.01 + 0.49 + 0.04) ÷ 3 = 0.18 |
 
-*Table 66.9: A Brier score worked by hand. 0.18 beats the 0.25 of always saying 50%; forecast B was the costly overconfident one.*
+*Table 66.8: A Brier score worked by hand. 0.18 beats the 0.25 of always saying 50%; forecast B was the costly, overconfident one.*
 
-**Worked example: updating with Bayes.** Chapter 6 introduced Bayes' rule. Here it is applied to AI news, with made-up but plausible numbers. Suppose your log shows that about 30% of dramatic capability claims of a certain kind hold up a year later. Now an independent evaluator reproduces a new claim. Suppose that, for claims that hold up, independent reproduction comes quickly 80% of the time, and for claims that do not, a misleading "reproduction" appears only 20% of the time.
+**Worked example: updating with Bayes.** Here is Chapter 6's Bayes' rule applied to AI news, with made-up but plausible numbers. Suppose about 30% of dramatic capability claims of some kind hold up a year later, and an independent evaluator now reproduces a new one. Suppose real claims get quick independent reproduction 80% of the time, and false ones get a misleading "reproduction" 20% of the time. Out of 100 claims, 30 are real and 24 of those get reproduced; 70 are not, and 14 of those get a misleading reproduction. Of the 38 reproduced claims, 24 are real: 24 ÷ 38 ≈ 63%. One independent replication moved you from 30% to about 63%, which is why question 3 matters so much.
 
-- Imagine 100 such claims: 30 will hold up, 70 will not.
-- Of the 30 that hold up, 80% get reproduced: 24 claims.
-- Of the 70 that do not, 20% get a misleading reproduction: 14 claims.
-- So of the 38 reproduced claims, 24 hold up: 24 ÷ 38 ≈ 63%.
+Here is a starter prediction log. Fill in your own probabilities; the point is that they are yours.
 
-One independent replication moved you from 30% to about 63%. That is the logic behind question 3: independent evidence is worth a great deal, and a lab's own chart is worth much less.
+| Question (specific and dated) | My probability | Resolves by | Where to check | Outcome |
+|---|---|---|---|---|
+| Waymo announces at least 1 million paid rides per week | your number | Dec 31, 2026 | Waymo announcements | |
+| An independent evaluator publishes an 80% time horizon above 8 hours | your number | Dec 31, 2027 | metr.org | |
+| Congress passes a law preempting state AI rules for frontier developers | your number | Dec 31, 2027 | congress.gov | |
+| A drug discovered and designed with AI is approved by the FDA or EMA | your number | Dec 31, 2030 | FDA and EMA | |
 
-Here is a template for your own prediction log. Fill in your own probabilities; the point is that they are yours.
+*Table 66.9: A prediction log template. Write each question so that two people would agree on the outcome.*
 
-| Date written | Question (specific, dated) | My probability | Resolves by | Where to check | Outcome | Score |
-|---|---|---|---|---|---|---|
-| Today | Waymo announces at least 1 million paid rides per week | your number | Dec 31, 2026 | Waymo announcements | | |
-| Today | METR or another independent evaluator publishes an 80% time horizon above 8 hours | your number | Dec 31, 2027 | metr.org | | |
-| Today | Congress passes a law preempting state AI rules for frontier developers | your number | Dec 31, 2027 | congress.gov | | |
-| Today | A drug discovered and designed with AI is approved by the FDA or EMA | your number | Dec 31, 2030 | FDA and EMA | | |
+### Your chatbot as a sparring partner, not an oracle
 
-*Table 66.10: A prediction log template. Write the questions so that two people would agree on the outcome.*
+Use your chatbot to steelman both sides of a debate, list the assumptions behind a forecast, and find primary sources (then open them yourself, because citations can be wrong). Ask it to argue against your view. And remember sycophancy (Chapter 55): if you state your belief first, it may tilt toward agreeing, so ask neutrally.
 
-### Using your chatbot as a sparring partner, not an oracle
-
-Your chatbot is an excellent thinking partner if you use it the right way. Ask it to steelman both sides of a debate. Ask it to list the assumptions behind a forecast and which signposts would test each one. Ask it to find primary sources, then click them yourself, because citations can be wrong (Chapter 25). Ask it to argue against your own view. And remember sycophancy (Chapter 55): if you tell it what you believe first, it may tilt toward agreeing with you, so ask the question neutrally, or ask for the case against your position before you share it.
-
-> **Try it:** Paste this into your chatbot: "Give me the strongest case that AI will transform the economy faster than electricity did, then the strongest case that it will be slower. For each, list three checkable signposts for 2028 that would support it. Do not tell me which side you favor." Then ask a second chat the same question after first saying which side you believe. Compare the answers.
+> **Try it:** Ask your chatbot: "Give me the strongest case that AI will transform the economy faster than electricity did, then the strongest case that it will be slower. For each, list three checkable signposts for 2028. Do not tell me which side you favor." Then ask a fresh chat the same thing after first saying which side you believe, and compare.
 
 ## The whole book on one page
 
-You started this book knowing what a chatbot feels like. Here is everything you have learned since, in one picture.
+You started this book knowing what a chatbot feels like. Here is what you have learned since, in one picture.
 
 ```mermaid
 flowchart TD
@@ -766,16 +750,16 @@ flowchart TD
 ```
 *Figure 66.10: How the ten Parts of this book connect, from switches and slopes to your own choices.*
 
-If you keep only ten ideas, keep these. They will stay true long after the model names change.
+If you keep only ten ideas, keep these; they will outlast every model name.
 
-1. **Everything is numbers.** Text, images and sound become numbers, and AI is mostly multiplying and adding them, trillions of times (Chapters 2, 3, 5).
+1. **Everything is numbers.** Text, images and sound become numbers, and AI mostly multiplies and adds them (Chapters 2, 3, 5).
 2. **Learning is walking downhill.** A loss measures how wrong a model is; gradients say which way to nudge every knob (Chapters 6, 8, 12).
-3. **A chatbot predicts, it does not look up.** It generates plausible text one token at a time from patterns in its weights, which is why it is fluent and sometimes wrong (Chapters 15, 18).
-4. **Scale bought most of the progress, and training choices steer it.** Compute and data, then post-training and reinforcement learning, turned a text predictor into an assistant and a reasoner (Chapters 19 to 21).
+3. **A chatbot predicts; it does not look up.** It writes plausible text one token at a time, which is why it is fluent and sometimes wrong (Chapters 15, 18).
+4. **Scale bought most of the progress; training choices steer it.** Compute and data, then post-training and reinforcement learning, made a text predictor into an assistant and a reasoner (Chapters 19 to 21).
 5. **Measurement is hard.** Benchmarks saturate, leak and depend on harnesses; your own small test beats any leaderboard (Chapters 9, 24, 31).
 6. **Context is everything when you use AI.** The model knows only what is on its desk; clear briefing is the core skill (Chapters 25 to 27).
 7. **Models ask; software acts.** Agents are loops of requests and tools, and their safety depends on what you let them touch (Chapters 28, 31).
-8. **AI is physical.** Every answer runs on chips made in a few factories, in buildings that need gigawatts and water, paid for with enormous capital (Parts VI and VII).
+8. **AI is physical.** Every answer runs on chips from a few factories, in buildings that need gigawatts, paid for with enormous capital (Parts VI and VII).
 9. **AI is many branches with a jagged edge.** Vision, speech, robots, science and recommenders progress at different speeds (Part VIII).
 10. **Safety, law and society are part of the technology.** How AI is trained, governed and shared decides what it does to people (Part IX), and your judgment is now part of that system (Part X).
 
@@ -820,7 +804,7 @@ Frontier (of AI), Open problem, Jevons paradox, Hallucination, Calibration, Abst
 
 4. **[Medium] Extrapolate a trend and watch it break.** (1) In a spreadsheet, enter METR's time horizons from this chapter: GPT-4 (March 2023, 4 minutes), o1 (December 2024, 39 minutes), o3 (April 2025, 120 minutes), GPT-5 (August 2025, 204 minutes), Claude Opus 4.6 (February 2026, 720 minutes), Mythos Preview (April 2026, 1,044 minutes). (2) Add a column with =LOG(B2,2) to convert each value to doublings, and plot it against date; it should look roughly straight. (3) Project forward from 1,044 minutes with a 4.2-month doubling using =1044*2^(months/4.2), and again with 7 months. (4) Find when each projection passes one working month (about 10,000 minutes). (5) Mark the 16-hour line where METR says its measurement becomes unreliable. **What you'll learn:** how log scales reveal exponential trends, how sensitive projections are to the doubling time, and why measurement limits matter.
 
-5. **[Medium] Start a prediction log.** (1) Copy Table 66.10 into a spreadsheet. (2) Add six more questions drawn from Tables 66.4 to 66.7, each with a specific date and a public place to check. (3) Write your probability for each before looking up any commentary. (4) Set calendar reminders for each resolution date. (5) When a question resolves, compute its Brier contribution, (probability − outcome)², and keep a running average. **What you'll learn:** calibrated forecasting, the single best way to improve your judgment about AI over time.
+5. **[Medium] Start a prediction log.** (1) Copy Table 66.9 into a spreadsheet. (2) Add six more questions drawn from Tables 66.4 to 66.6, each with a specific date and a public place to check. (3) Write your probability for each before looking up any commentary. (4) Set calendar reminders for each resolution date. (5) When a question resolves, compute its Brier contribution, (probability − outcome)², and keep a running average. **What you'll learn:** calibrated forecasting, the single best way to improve your judgment about AI over time.
 
 6. **[Medium] Napkin math for power.** (1) Compute the yearly energy of a 1 GW campus at 60%, 70% and 80% average load, using 1 GW × 8,760 h × load. (2) Compare the 70% case with the IEA's projected rise in data center electricity from about 415 TWh (2024) to about 945 TWh (2030). How many such campuses does that rise equal? (3) Redo the "compute trend to 2030" worked example with your own assumptions: try 1.5× per year energy efficiency instead of 1.34×, and a 180-day training run instead of 90. **What you'll learn:** how capacity, consumption and efficiency interact, and how much each assumption moves the answer.
 

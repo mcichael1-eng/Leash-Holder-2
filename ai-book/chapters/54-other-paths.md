@@ -406,3 +406,485 @@ Ant colony optimization (Marco Dorigo, early 1990s) sends virtual ants over a ne
 
 > **At the frontier (2026):** Evolution has merged with language models. Google DeepMind's AlphaEvolve (May 2025) uses an LLM to propose changes to code, automatic evaluators to score them, and an evolutionary loop to keep and recombine the best. It found a way to multiply 4 × 4 complex-valued matrices with 48 multiplications, the first improvement in that setting over the approach descended from Strassen's 1969 algorithm, and slightly improved bounds on several open math problems. An August 2026 preprint reported using it to nudge the best known bound on the exponent of matrix multiplication to about 2.371177. The LLM supplies clever variations; evolution supplies relentless selection.
 
+## Causality: from "goes with" to "causes"
+
+### Correlation is not causation, again
+
+Chapter 6 introduced the classic example: ice-cream sales and drownings rise and fall together, but ice cream does not cause drowning. Hot weather drives both. Everyone nods at that example, and then makes the same mistake with their own data the next day. Machine learning makes the mistake easy, because a model trained to predict finds whatever goes with the outcome, causal or not, and reports it with impressive accuracy.
+
+> **Definition — Causal inference:** The methods for working out whether, and how much, one thing actually causes another, rather than merely occurring alongside it.
+
+> **Definition — Confounder:** A third factor that influences both a supposed cause and its supposed effect, making them look causally linked when they are not, or hiding a real link. Hot weather confounds ice cream and drownings.
+
+### A worked confounder: the AI feature that "boosted" sales
+
+You work at a shopping app that has launched "Smart Summaries", an AI feature that condenses product reviews. The dashboard is thrilling: among 250 customers who used the feature, 24% made a purchase that week; among 250 who did not, only 14% did. The feature seems to boost purchases by 10 points. Should you roll it out to everyone and announce the win?
+
+Split the same customers by how engaged they were before the launch:
+
+| Group | Used feature | Bought | Rate | Did not use | Bought | Rate |
+|---|---|---|---|---|---|---|
+| Heavy users | 200 | 56 | 28% | 50 | 15 | 30% |
+| Light users | 50 | 4 | 8% | 200 | 20 | 10% |
+| Everyone | 250 | 60 | 24% | 250 | 35 | 14% |
+
+Read it row by row. Among heavy users, feature users bought slightly *less* (28% versus 30%). Among light users, feature users also bought slightly less (8% versus 10%). Yet overall, feature users bought far more (24% versus 14%). The overall comparison points the opposite way from every subgroup.
+
+The explanation is engagement. Heavy users try every new feature and buy a lot anyway. Light users rarely try new features and rarely buy. So the "used the feature" column is packed with heavy users who were always going to buy. Engagement is a confounder: it causes both feature use and purchasing.
+
+> **Definition — Simpson's paradox:** When a trend that appears in every subgroup of the data disappears or reverses once the subgroups are combined, usually because a confounder is distributed unevenly between the groups being compared.
+
+```mermaid
+flowchart TD
+    E["Engagement before launch<br/>the confounder"] --> U["Used Smart Summaries"]
+    E --> B["Bought something"]
+    U -.->|"the effect we want"| B
+```
+
+*Figure 54.7: A causal diagram of the example. Engagement drives both feature use and buying, opening a misleading path between them; the dotted arrow is the true effect we are trying to measure.*
+
+> **Definition — Causal diagram:** A drawing of variables connected by arrows that mean "directly causes", used to reason about which comparisons reveal real effects and which are confounded. Technically it is a directed acyclic graph (DAG): arrows have directions and never loop back.
+
+**Adjusting for the confounder.** If engagement is the only confounder, you can compare like with like and then average. Heavy and light users are each half of all 500 customers, so:
+
+- With the feature: 0.5 × 28% + 0.5 × 8% = 18%.
+- Without the feature: 0.5 × 30% + 0.5 × 10% = 20%.
+
+The adjusted effect is −2 points: the feature may slightly hurt sales, perhaps because summaries make customers more aware of the negatives. The catch is the "if": adjustment works only if you have measured every important confounder, and you can never be sure you have.
+
+### The gold standard: randomize
+
+The cleanest fix is to take the choice away from the customers. Flip a coin for each one: heads, they get the feature; tails, they do not. Now engagement cannot influence who gets the feature, because a coin decides. With 500 customers including 250 heavy users, each group gets about 125 heavy users, give or take a few by chance. Any remaining difference in purchases is caused by the feature or by luck.
+
+> **Definition — Randomized controlled trial (RCT):** An experiment that randomly assigns subjects to receive a treatment or not, so that confounders are balanced between the groups on average and any difference in outcomes can be attributed to the treatment.
+
+> **Definition — A/B test:** A randomized experiment in a product: users are randomly shown version A or version B, and the difference in their behavior measures the causal effect of the change. It is the workhorse of causal evidence in tech.
+
+Luck matters more than people expect. If about 20% of customers buy, then with 250 per group random noise alone moves the difference between groups by around 3 to 4 percentage points, so a true effect of 2 points would be invisible. It takes roughly 6,500 customers per group to shrink that noise below a point. This is why large tech companies run thousands of controlled experiments a year on huge user bases, and why small companies often cannot measure small effects at all. When your chatbot occasionally shows you two answers and asks which you prefer, you are taking part in a close cousin of this: a controlled comparison.
+
+### Pearl's ladder of causation
+
+In *The Book of Why* (2018), Judea Pearl and Dana Mackenzie describe three rungs of causal reasoning.
+
+```mermaid
+flowchart TD
+    R3["Rung 3: Imagining<br/>Would she have bought if<br/>she had not seen the feature?"] --- R2["Rung 2: Doing<br/>What happens if we give<br/>the feature to everyone?"]
+    R2 --- R1["Rung 1: Seeing<br/>What does feature use<br/>tell us about buying?"]
+```
+
+*Figure 54.8: Pearl's ladder of causation. Each rung asks a harder kind of question and needs more than data from the rung below.*
+
+1. **Seeing (association).** "Customers who used the feature bought more." Pure observation. Most machine learning, including next-word prediction, lives here.
+2. **Doing (intervention).** "If we turn the feature on for everyone, will sales rise?" This needs experiments, or causal assumptions strong enough to stand in for them. Pearl writes it as P(buy given do(feature)), with a special "do" to mark that we set the feature rather than observe it.
+3. **Imagining (counterfactuals).** "This customer saw the feature and bought. Would she have bought anyway?" Questions about what would have happened in a world that did not occur. Courts ask them ("Would the patient have lived if the doctor had acted?"), and so does anyone deciding who deserves credit or blame.
+
+> **Definition — Intervention:** Deliberately setting a variable to a value, rather than passively observing it, to see what it causes. Pearl's "do" notation, P(Y given do(X)), marks the difference from ordinary observation, P(Y given X).
+
+> **Definition — Counterfactual:** A "what would have happened if..." question about a specific case, such as whether a particular patient would have recovered without a treatment. It is the top rung of the ladder of causation.
+
+> **Definition — Ladder of causation:** Judea Pearl's three levels of causal reasoning: seeing (association), doing (intervention) and imagining (counterfactuals). Each level answers questions the level below cannot.
+
+**Where do LLMs stand?** This is debated. Pearl has argued that a system trained only on observational data cannot climb past the first rung by itself. Language models are trained to predict text, which is rung-one data. But text is full of rung-two and rung-three knowledge: descriptions of experiments, scientific findings and human causal explanations. So chatbots answer textbook causal questions well, and studies find they are much shakier on genuinely new causal problems where memorized knowledge does not help. The other side of the debate notes that agents can now run experiments themselves (execute code, run A/B tests, drive lab robots), which gives them access to the second rung directly.
+
+### Why prediction models break when you act on them
+
+> **Definition — Distribution shift:** A change between the conditions a model was trained on and the conditions where it is used, such as new customer behavior or a new policy. Models that learned correlations rather than causes are especially fragile to it.
+
+Two famous stories show the danger.
+
+**The asthma paradox.** In a well-known dataset of pneumonia patients from the 1990s, revisited by Rich Caruana and colleagues in 2015, a model learned that patients with asthma were *less* likely to die of pneumonia. The pattern was real in the data, because hospitals sent asthmatic pneumonia patients straight to intensive care, and the extra care saved them. A model used to decide who could safely be sent home would have sent asthmatics home, removing the very treatment that created the pattern. The prediction was accurate; acting on it would have been deadly.
+
+**Google Flu Trends.** Launched in 2008, it estimated flu levels from what people searched for. It worked well for a few years, then in the 2012–13 season badly overestimated flu, at one point roughly double the official estimate, partly because heavy news coverage made healthy people search for flu symptoms. The correlation between searches and sickness had shifted. Google shut the service down in 2015.
+
+> **Key idea:** Prediction asks "What usually comes with X?" Decisions ask "What happens if I do X?" They are different questions, and the second needs experiments or careful causal reasoning, not just more data.
+
+## Neuro-symbolic AI: a live debate
+
+### Intuition plus rigor
+
+The psychologist Daniel Kahneman described human thinking as two systems: fast, intuitive "System 1" (recognizing a face, finishing a sentence) and slow, deliberate "System 2" (checking a proof, doing long division). Neural networks look a lot like System 1: superb pattern recognition, prone to confident errors. Symbolic systems look like System 2: slow and rigid, but exact. Neuro-symbolic AI tries to combine them.
+
+> **Definition — Neuro-symbolic AI:** Systems that combine neural networks (pattern recognition, intuition, flexibility) with symbolic components (logic, rules, search, proof checkers) to get both flexibility and rigor.
+
+> **Definition — Formal proof:** A proof written in a precise computer language, such as Lean, so that software can check every step mechanically with no room for error. Lean is the most widely used such language for mathematics.
+
+> **Definition — Verifier:** Any program that can check whether an answer is correct, such as a proof checker, a unit test or a calculator. Verifiers let a neural system's guesses be trusted, and they provide the rewards for reinforcement learning (Chapter 21).
+
+### AlphaGeometry: guess, then deduce
+
+Olympiad geometry problems are notoriously hard because the key step is often adding something to the diagram, a new point or line, that makes the proof possible. In January 2024 Google DeepMind published AlphaGeometry. It pairs two parts. A language model, trained on 100 million synthetic geometry proofs, proposes creative constructions ("add the midpoint of this side"). A symbolic deduction engine then derives every fact that logically follows, with complete rigor. If the goal is not yet reached, the language model proposes another construction, and the loop continues.
+
+> **Definition — Symbolic deduction engine:** A program that mechanically derives all facts that follow from given facts by the rules of logic or geometry. It never makes a mistake, but it cannot come up with creative new ideas by itself.
+
+```mermaid
+flowchart LR
+    P["Geometry problem"] --> D["Symbolic engine deduces<br/>everything that follows"]
+    D --> Q{"Goal proved?"}
+    Q -->|Yes| A["Checked proof"]
+    Q -->|No| L["Language model proposes<br/>a new point or line"]
+    L --> D
+```
+
+*Figure 54.9: The AlphaGeometry loop. The neural part supplies creative guesses; the symbolic part supplies exact deduction.*
+
+On a test set of 30 olympiad geometry problems, AlphaGeometry solved 25, close to the average of human gold medalists, and every proof it produced could be checked. In 2024, AlphaProof, which uses reinforcement learning to search for proofs written in Lean, together with an improved AlphaGeometry 2, reached the silver-medal standard at the International Mathematical Olympiad, scoring 28 of 42, although some problems took days of computation. Because Lean checks every step, a found proof is a correct proof.
+
+### The counterpunch
+
+Then the pure neural side answered. At the 2025 Olympiad, an advanced version of Google's Gemini with Deep Think scored 35 of 42, the gold-medal standard, solving five of six problems in natural language within the official 4.5-hour limit, and was graded by the Olympiad's own coordinators. OpenAI reported that an experimental model also scored 35 of 42, graded by former medalists. No formal proof language, no symbolic engine: a language model that reasons at length (Chapter 21). Chapter 52 covers these results in more detail.
+
+Meanwhile neuro-symbolic ideas spread quietly into every chatbot. When Claude runs Python to do arithmetic, queries a database, or a lab trains a model with rewards from unit tests and proof checkers (Chapter 21), a neural network is being paired with a symbolic tool. AlphaEvolve, described above, wraps a language model in an evolutionary loop with automatic evaluators. The question is no longer whether neural and symbolic parts get combined. It is where the symbols should live: built into the architecture, learned inside the network, or used as external tools.
+
+### The debate, stated fairly
+
+**The strongest case that AI needs symbols.** Researchers such as Gary Marcus have argued for years that pure neural networks will keep making errors no amount of scale removes. Their evidence: models hallucinate; they often fail on slightly altered versions of problems they solve in standard form; they need vastly more data than a child to learn a concept. Symbolic systems offer what networks lack: guarantees (a proof checker is never fooled by a fluent wrong proof), data efficiency (one rule covers infinitely many cases), compositional generalization, and inspectable reasoning. The most reliable mathematical results, formal proofs, came from systems with symbolic checkers. In safety-critical uses (aircraft software, medical devices, legal compliance), "usually right" is not good enough, and verifiers are the only path to "provably right."
+
+> **Definition — Compositional generalization:** The ability to understand new combinations of known parts, as when someone who knows "jump" and "twice" immediately understands "jump twice". Rules do it automatically; neural networks do it unevenly.
+
+**The strongest case that scale and learning are enough.** Richard Sutton's 2019 essay "The Bitter Lesson" observed that across 70 years, methods built on human-designed knowledge were repeatedly overtaken by general methods that scale with computation, in chess, Go, speech and vision. Hand-built symbolic components are exactly the kind of human knowledge that keeps losing. Networks appear to learn their own internal structure, features and circuits that behave much like symbols (Chapter 57). The 2025 natural-language gold medal shows that the formal machinery may not be needed even for olympiad mathematics. And using a calculator or a proof checker as a tool does not make the system "symbolic" any more than a mathematician becomes symbolic by using paper.
+
+**The middle ground, which most labs act on.** Let the neural network propose and let verifiers check, wherever checking is possible. Use tools for exact work. Train with verifiable rewards. Keep the debate open about whether deeper symbolic structure must be built in. What would settle it? If pure neural systems become reliable over long, novel tasks without external checkers, the scaling side wins. If the most trusted systems in mathematics, software verification and science keep depending on symbolic checking, the neuro-symbolic side does.
+
+> **At the frontier (2026):** Formal verification has become a training ground. Proof checkers like Lean and automated test suites give unlimited, perfectly reliable rewards, which is why mathematics and coding improved fastest in the reasoning-model era (Chapter 21). The open question is how to bring that rigor to messy domains such as medicine or law, where no program can check the answer.
+
+## Language before LLMs
+
+### The four eras
+
+Your chatbot is the latest chapter in a 70-year effort to get computers to handle human language. The field is called natural language processing, and machine translation runs through all four of its eras.
+
+> **Definition — Natural language processing (NLP):** The branch of AI that deals with human language: reading, writing, translating, classifying and extracting meaning from text and speech.
+
+```mermaid
+timeline
+    title Four eras of language AI
+    section Rules
+        1954 : Georgetown-IBM translation demo
+        1966 : ALPAC report and ELIZA
+    section Statistics
+        1990 : IBM statistical translation
+        2006 : Google Translate launches
+    section Neural networks
+        2013 : word2vec embeddings
+        2016 : Neural Google Translate
+    section Transformers and LLMs
+        2017 : The Transformer, built for translation
+        2022 : NLLB-200 and ChatGPT
+```
+
+*Figure 54.10: The four eras of language AI, with translation as the thread that runs through all of them.*
+
+**Era 1: rules (1950s–1980s).** Linguists wrote grammars and dictionaries by hand. On January 7, 1954, IBM and Georgetown University demonstrated a system that translated more than 60 Russian sentences into English using a vocabulary of about 250 words and six grammar rules. The organizers predicted that machine translation would be largely solved within three to five years. It was not. In 1966 the US government's ALPAC report concluded that machine translation was slower, less accurate and more expensive than human translation, and US funding collapsed. The same year, Joseph Weizenbaum's ELIZA imitated a therapist by matching keywords and reflecting statements back as questions ("I feel sad." "Why do you feel sad?"). People confided in it anyway, a reaction Chapter 7 calls the ELIZA effect. Around 1970, Terry Winograd's SHRDLU could follow typed instructions about a small world of toy blocks, impressively, but only inside that world. Rule-based translation did survive in niches: the SYSTRAN system, for example, served governments for decades.
+
+**Era 2: statistics (1990s–2000s).** In 1990 a team at IBM showed that translation could be learned from data. They took Canadian parliamentary records, published in both English and French, and computed which words and phrases tended to correspond. No grammar rules, just counting and probability. The same statistical revolution gave speech recognition its hidden Markov models and gave every language task its n-gram models (Chapter 6). Google Translate launched in 2006 on statistical methods.
+
+> **Definition — Statistical machine translation:** Translation using probabilities learned from huge collections of human-translated sentence pairs. It was the dominant approach from the 1990s until about 2016.
+
+> **Definition — Parallel corpus:** A collection of texts paired with their translations, sentence by sentence, such as parliamentary records published in two languages. It is the training data for machine translation.
+
+**Era 3: neural networks (2010s).** Word embeddings such as word2vec (2013) turned words into points in a meaning space; sequence-to-sequence networks (2014) read a whole sentence and wrote its translation; attention (2014) let the translator look back at the relevant source words (Chapter 14). In 2016 Google switched Translate to a neural system, and quality jumped.
+
+> **Definition — Neural machine translation:** Translation done end to end by a neural network that reads the source sentence and writes the target sentence, the standard approach since about 2016.
+
+**Era 4: Transformers and LLMs (2017–now).** The Transformer (Chapter 15) was invented in 2017 *for translation*, and then turned out to work for nearly everything. Meta's NLLB-200 (2022) translates between 200 languages, and phones and earbuds now offer live speech-to-speech translation. Of the world's roughly 7,000 languages, most still have very little digital text, so "low-resource" languages remain the field's hardest open problem.
+
+> **Watch out:** You may have heard that an early system translated "The spirit is willing but the flesh is weak" into Russian and back as "The vodka is good but the meat is rotten." It is a great story, but almost certainly a legend. The real failures of rule-based translation were more mundane: stilted, word-by-word output that broke on idioms and ambiguity.
+
+### Measuring translation: BLEU
+
+> **Definition — BLEU score:** An automatic measure of translation quality, introduced in 2002, that counts how many short word sequences (one to four words long) in a machine translation also appear in human reference translations. Higher is better, but it misses meaning that is phrased differently.
+
+**Worked example.** Reference: "the cat sat on the mat". Machine output: "the cat sat on a mat".
+
+- Single words: the output's six words are the, cat, sat, on, a, mat. Five appear in the reference ("a" does not). Unigram precision = 5 ÷ 6 ≈ 0.83.
+- Word pairs: the cat, cat sat, sat on, on a, a mat. Three appear in the reference. Bigram precision = 3 ÷ 5 = 0.60.
+- Combining just these two with a geometric mean: √(0.83 × 0.60) = √0.50 ≈ 0.71.
+
+Real BLEU uses up to four-word sequences and penalizes outputs that are too short. Its weakness is visible even here: "the feline rested upon the rug" means nearly the same thing and would score close to zero. Modern evaluation increasingly uses learned metrics, human judgment and LLM judges (Chapter 31).
+
+### The classic NLP tasks
+
+Before chatbots, NLP was a toolbox of separate tasks, each turning text into something structured. Take one customer review: *"Bought the Aurora X2 headphones in Berlin on 3 May. Battery life is amazing, but the case cracked within a week."*
+
+| Task | Text in | Structured thing out |
+|---|---|---|
+| Text classification | The review | Topic: electronics; type: product review |
+| Sentiment analysis | The review | Mixed: battery positive, durability negative |
+| Named entity recognition | The review | Aurora X2 = product; Berlin = place; 3 May = date |
+| Information extraction | The review | product: Aurora X2; city: Berlin; date: 3 May; praised: battery; problem: case cracked |
+| Summarization | The review | "Great battery, fragile case." |
+| Question answering | "Where were they bought?" | "Berlin" |
+
+> **Definition — Sentiment analysis:** Detecting the emotional tone of text, such as positive, negative or mixed, often per aspect (battery versus durability). Companies run it over millions of reviews and social posts.
+
+> **Definition — Named entity recognition (NER):** Finding and labeling the names in text: people, organizations, places, products, dates and amounts.
+
+> **Definition — Information extraction:** Pulling structured facts, such as fields, tables and relationships, out of unstructured text like contracts, medical notes or reviews.
+
+A single LLM prompt now does all six tasks at once. So why do specialized small models still process billions of documents a day? Cost, speed and consistency. Suppose a company classifies 10 million incoming emails a day, about 500 tokens each.
+
+- With a cheap LLM at about $0.10 per million input tokens (roughly the cheapest tier of a major lab in late 2026): 10 million × 500 = 5 billion tokens = $500 a day, plus a little for output: around $190,000 a year.
+- A small fine-tuned classifier on a few ordinary servers might cost a small fraction of that (illustrative), answer in milliseconds rather than hundreds of milliseconds, and give exactly the same answer every time.
+
+A common 2026 pattern combines both: use a large model to label a few thousand examples, then train a small model on those labels (distillation, Chapter 30) to do the volume work.
+
+## Brains and machines
+
+### Real neurons and artificial ones
+
+The artificial neuron of Chapter 12 was inspired by biology: Warren McCulloch and Walter Pitts described a simple logical neuron in 1943, and Frank Rosenblatt built the perceptron in 1958. But the resemblance is a cartoon.
+
+```
+BIOLOGICAL NEURON                    ARTIFICIAL NEURON
+inputs arrive on dendrites           inputs x1, x2, x3 ...
+  from thousands of synapses           each times a weight w1, w2, w3
+cell body accumulates charge         sum = w1*x1 + w2*x2 + w3*x3 + b
+fires a spike if charge passes       output = activation(sum),
+  a threshold (all or nothing)         e.g. max(0, sum)
+spike travels down the axon          number passes to the next layer
+timing of spikes carries meaning     one number per step, no timing
+learns by local chemical changes     learns by backpropagation
+```
+
+*Figure 54.11: A biological neuron and an artificial neuron side by side. The artificial version keeps the idea of weighted inputs and a threshold and drops almost everything else.*
+
+> **Definition — Synapse:** The junction where one neuron passes a signal to another. Its strength can change with experience, which is how brains learn. Weights in an artificial network are a loose analogy.
+
+> **Definition — Action potential (spike):** The brief, all-or-nothing electrical pulse a neuron fires when its input charge passes a threshold. Neurons communicate with patterns and timing of spikes.
+
+Some numbers. A human brain has about 86 billion neurons, each connected to thousands of others, for something on the order of 100 trillion synapses. It runs on about 20 watts, the power of a dim light bulb. A single data-center GPU draws around 700 to 1,000 watts, and frontier models are trained on tens of thousands of them. Frontier models have hundreds of billions to trillions of parameters, but comparing parameters with synapses is misleading: a real synapse is a complex chemical machine, not one number, and a neuron does computation inside its branches. How the brain learns is still an open question; most neuroscientists doubt it uses backpropagation in the form networks do.
+
+### Ideas that flowed from brains to AI
+
+- **Vision.** In the late 1950s and early 1960s David Hubel and Torsten Wiesel found neurons in the cat's visual cortex that respond to edges at particular angles, arranged in layers that build up more complex features; they shared a Nobel Prize in 1981. Kunihiko Fukushima's Neocognitron (1980) copied that layered design, and it led to the convolutional networks of Chapter 14.
+- **Reward.** In the 1990s Wolfram Schultz recorded dopamine neurons in monkeys, and in 1997 he, Peter Dayan and Read Montague showed that their firing matched the "temporal-difference error" of reinforcement learning (Chapter 48).
+
+> **Definition — Reward prediction error:** The difference between the reward an animal or agent expected and the reward it got. Dopamine neurons appear to signal it, and reinforcement-learning algorithms learn from the same quantity.
+
+**Worked example: the dopamine signal.** A monkey hears a tone, and a second later gets juice. Prediction error = reward received − reward expected.
+
+- Before learning: the tone means nothing, so the juice is unexpected: error = 1 − 0 = +1 when the juice arrives. Dopamine neurons burst.
+- After learning: the tone predicts juice. The tone itself arrives unexpectedly and raises the expected reward from 0 to 1, so the burst moves to the tone (+1). When juice arrives as predicted, error = 1 − 1 = 0, and there is no burst.
+- If the juice is then withheld: error = 0 − 1 = −1 at the moment the juice should have come. Dopamine firing dips below its normal level.
+
+That is the pattern Schultz recorded, and the same arithmetic drives the learning algorithms behind AlphaGo and, in more elaborate forms, the reinforcement learning that shapes your chatbot.
+
+### Spiking networks and neuromorphic chips
+
+> **Definition — Spiking neural network:** A neural network whose units communicate with discrete spikes over time, like biological neurons, instead of passing continuous numbers at every step. They can be very energy-efficient but are hard to train.
+
+> **Definition — Neuromorphic chip:** A processor designed to run spiking neural networks efficiently, with memory and computation interleaved like neurons and synapses, and activity only when spikes occur.
+
+The brain's 20 watts inspired chips that compute only when something happens. IBM's TrueNorth (2014) packed one million artificial spiking neurons onto a chip. Intel's Loihi (2017) and Loihi 2 (2021) are research chips that let spiking networks learn on the chip, and the University of Manchester's SpiNNaker machine simulates large spiking networks. They have shown impressive energy savings on some sensing and control tasks. But as of 2026 none is competitive with GPUs for training or running frontier models: spiking networks are hard to train, the software tools are immature, and the whole AI ecosystem is built around dense matrix math (Chapters 32 and 35).
+
+### Brain-computer interfaces
+
+> **Definition — Brain-computer interface (BCI):** A system that records brain activity and translates it, with AI decoders, into commands for a computer, a robotic arm or synthesized speech.
+
+> **Definition — EEG (electroencephalography):** Recording the brain's electrical activity through sensors on the scalp. It needs no surgery but gives a blurry signal, like listening to a stadium from outside.
+
+> **Definition — Neuroprosthesis:** A device connected to the nervous system that restores a lost function, such as movement, communication or hearing.
+
+```mermaid
+flowchart LR
+    A["Motor or speech<br/>cortex"] --> B["Electrodes record<br/>neuron activity"]
+    B --> C["Amplifier and<br/>wireless link"]
+    C --> D["AI decoder maps<br/>activity to intent"]
+    D --> E["Cursor, text,<br/>voice or robot arm"]
+    E --> F["User sees or hears<br/>the result"]
+    F --> A
+```
+
+*Figure 54.12: A brain-computer interface is a closed loop: the user sees the result and adjusts, while the decoder is calibrated to that user's brain.*
+
+| Approach | How electrodes get there | Signal quality | Examples |
+|---|---|---|---|
+| Non-invasive | Cap on the scalp | Blurry | EEG headsets |
+| Minimally invasive | Threaded through a blood vessel | Medium | Synchron's stent-based electrode |
+| Invasive | Implanted in brain tissue by surgery | Sharpest | Utah arrays (BrainGate), Neuralink |
+
+**The decoder is ordinary machine learning.** Suppose two recorded neurons tend to fire faster when a person intends to move a cursor right (neuron A) or left (neuron B). A simple linear decoder might compute horizontal speed = 0.05 × (rate of A) − 0.05 × (rate of B), in centimeters per second.
+
+- A fires at 30 spikes per second, B at 10: speed = 0.05 × 30 − 0.05 × 10 = 1.5 − 0.5 = +1.0. The cursor moves right.
+- A at 10, B at 30: speed = −1.0. The cursor moves left.
+
+The weights are learned by asking the person to imagine moving toward targets on a screen: supervised learning (Chapter 8) with intent as the label. Real systems use hundreds of channels and neural networks, and they need recalibration as signals drift.
+
+**What has been achieved.** In 2006 the BrainGate team reported that a man with paralysis could move a computer cursor using an implanted array. In 2023 two studies, at Stanford and at UCSF with UC Berkeley, decoded attempted speech from people who could no longer speak clearly, at roughly 60 to 80 words per minute; the UCSF team also drove a talking digital avatar. In 2024 a UC Davis team reported in the *New England Journal of Medicine* that a man with ALS could communicate through a speech neuroprosthesis with about 97% word accuracy. Neuralink implanted its first human participant in January 2024; a February 2026 report put the number of participants using its implant at 21 or more (a secondary source), and as of mid-2026 reports its vision implant, Blindsight, was still awaiting a first human implant. Synchron's electrode reaches the brain through a blood vessel, avoiding open-brain surgery.
+
+> **At the frontier (2026):** Speech neuroprostheses are the most striking progress: people who lost the ability to speak are communicating at conversational speeds, sometimes in a synthesized version of their own former voice. The open problems are implant longevity, wireless bandwidth, frequent recalibration, and making devices that work at home without a research team.
+
+### Reading the brain from outside
+
+> **Definition — fMRI (functional magnetic resonance imaging):** A brain scanner that measures changes in blood flow, which follow neural activity, across the whole brain. It is non-invasive but slow, lagging a few seconds behind thought.
+
+In 2023 researchers at the University of Texas at Austin published a "semantic decoder" that used an fMRI scanner and a language model to reconstruct the gist of stories a person was listening to or imagining. It paraphrased rather than transcribed, needed about 16 hours of scanner recordings to train for each person, did not work on people it had not been trained on, and could be thwarted by a cooperative subject who deliberately thought about something else. It is a remarkable result and a long way from mind reading.
+
+> **Watch out:** "Brain implants and scanners can read your thoughts." Today's systems decode specific, trained signals, such as intended movement or attempted speech, from cooperating users. They cannot pull arbitrary private thoughts from an unwilling person. That is exactly why now is the time to set rules, before the technology improves.
+
+> **Definition — Neural data:** Information measured from a person's nervous system, by implants, scanners or consumer headbands. Because it may reveal mental states, some jurisdictions now protect it specially.
+
+**Neural privacy.** Chile amended its constitution in 2021 to protect mental integrity and brain data, the first country to do so. In 2024 Colorado became the first US state to include neural data in its privacy law, and California soon followed. Consumer EEG headbands for meditation and focus already collect brain signals, so these questions are not hypothetical.
+
+## In plain English
+
+Neural networks won the last decade, but there have always been other ideas about how to make machines intelligent, and many are still at work. Expert systems wrote expert knowledge as IF-THEN rules. They could explain their reasoning, but they broke as soon as a situation fell outside their rules, and writing rules by hand never scaled. Rules still run tax software and the guardrails around chatbots. Knowledge graphs store facts as simple triples, like "Paris is the capital of France", which is how search engines answer factual questions instantly and exactly.
+
+Bayesian networks reason with probabilities: if the grass is wet, rain becomes more likely, unless you learn the sprinkler ran, which "explains away" the wetness. Fuzzy logic handles vague ideas like "somewhat warm" and runs appliances and trains smoothly. Genetic algorithms breed solutions, keeping the fittest and adding random changes; they designed a NASA antenna and now work alongside language models to discover algorithms.
+
+Causal inference is the science of telling "goes together" from "causes". Confounders can make a useless feature look brilliant, which is why companies run randomized A/B tests, and why predictions can fail badly once you act on them.
+
+Neuro-symbolic AI combines neural intuition with symbolic rigor, as in AlphaGeometry, and whether future AI needs symbols built in is a genuine open debate. Language AI went through rules, statistics, neural networks and Transformers, with translation the thread throughout. Finally, real neurons are far richer than artificial ones; brain-inspired chips remain niche, but brain-computer interfaces are restoring speech to people who lost it, raising new questions about the privacy of our minds.
+
+## Key terms
+
+Symbolic AI (GOFAI), Production rule, Expert system, Knowledge base, Inference engine, Certainty factor, Forward chaining, Backward chaining, Brittleness, Knowledge acquisition bottleneck, Knowledge graph, Triple, Ontology, Bayes' rule, Bayesian network, Conditional probability table, Explaining away, Fuzzy logic, Membership function, Evolutionary algorithm, Genetic algorithm, Fitness function, Crossover, Mutation, Swarm intelligence, Causal inference, Confounder, Simpson's paradox, Causal diagram, Randomized controlled trial (RCT), A/B test, Intervention, Counterfactual, Ladder of causation, Distribution shift, Neuro-symbolic AI, Formal proof, Verifier, Symbolic deduction engine, Compositional generalization, Natural language processing (NLP), Statistical machine translation, Parallel corpus, Neural machine translation, BLEU score, Sentiment analysis, Named entity recognition (NER), Information extraction, Synapse, Action potential (spike), Reward prediction error, Spiking neural network, Neuromorphic chip, Brain-computer interface (BCI), EEG (electroencephalography), Neuroprosthesis, fMRI (functional magnetic resonance imaging), Neural data
+
+## Exercises
+
+1. **[Easy] Run and break the car expert system.**
+   1. Copy the six rules from this chapter onto paper.
+   2. Run forward chaining for these facts: the engine cranks, the fuel gauge reads empty, it is below freezing. Which rules fire, and what is recommended?
+   3. Now use: the engine does not crank, the headlights are bright. Compute the certainty of the final recommendation.
+   4. Invent a situation where the system gives dangerous or silly advice. Write two new rules to fix it, then find a situation that breaks your new rules.
+   **What you'll learn:** how forward chaining and certainty factors work, and why hand-written rule bases are brittle and keep growing.
+
+2. **[Easy] Walk a knowledge graph.**
+   1. Go to wikidata.org and search for "Marie Curie". Find at least five statements (occupation, award received, spouse, place of birth) and write each as a triple.
+   2. Go to query.wikidata.org, paste the capital-of-France query from this chapter and click run. Change Q142 to Q183, then to Q17 (Japan), and run again.
+   3. Ask your chatbot the same questions and compare.
+   **What you'll learn:** knowledge as triples, how exact queries work, and how a knowledge graph differs from a language model's fuzzy memory.
+
+3. **[Medium] A Bayesian network in a spreadsheet.**
+   1. Make four rows for the four combinations of rain and sprinkler. Columns: P(combination), P(wet given combination), and P(combination and wet) = the product.
+   2. Compute P(rain given wet), P(rain given wet and sprinkler on) and P(rain given wet and sprinkler off), and check them against this chapter (0.46, 0.24, 0.82).
+   3. Change P(sprinkler) to 0.6 and recompute. Does explaining away get stronger or weaker? Why?
+   **What you'll learn:** how a Bayesian network turns small probability tables into answers to many questions, and how explaining away works.
+
+4. **[Medium] Build a fuzzy fan controller.** In a spreadsheet, list temperatures from 16°C to 32°C. Add columns computing warm and hot membership with the ramp rules from this chapter (use MAX and MIN formulas), then the fan speed = (warm × 40 + hot × 100) ÷ (warm + hot), or 0 if both are zero. Chart fan speed against temperature next to a simple thermostat that switches from 0% to 100% at 25°C.
+   **What you'll learn:** how fuzzy rules produce smooth control, and the difference between degrees of truth and probabilities.
+
+5. **[Medium] One more generation, by hand.** Start from Generation 1 of the backpack example (01110, 10011, 11010, 10101).
+   1. Compute each one's share of total fitness for roulette selection.
+   2. Use a die or random numbers to pick four parents.
+   3. Pair them, pick cut points with a die, and make four children.
+   4. Flip a coin five times for each child; on three heads in a row, flip one bit of your choice.
+   5. Score the new generation. Did the best survive? (This is why many algorithms keep the best candidate unchanged, a trick called elitism.)
+   **What you'll learn:** selection, crossover and mutation, and why randomness both helps and hurts.
+
+6. **[Challenge] Evolve a backpack in Google Colab.** Open colab.research.google.com, create a new notebook, paste the code below into a cell and press the play button. It packs a 12 kg backpack from ten items.
+
+   ```python
+   import random  # Python's built-in tools for random numbers
+
+   # The items: (name, weight in kg, value in points)
+   items = [("tent", 5, 10), ("stove", 4, 7), ("camera", 2, 4), ("book", 1, 1),
+            ("water filter", 3, 8), ("rope", 2, 3), ("first aid kit", 1, 5),
+            ("chair", 4, 2), ("lantern", 2, 4), ("snacks", 1, 3)]
+   CAPACITY = 12         # the backpack holds at most 12 kg
+   POP_SIZE = 20         # how many packing lists live in each generation
+   GENERATIONS = 30      # how many rounds of evolution to run
+   MUTATION_RATE = 0.05  # chance that any single bit flips
+
+   def fitness(genome):
+       # A genome is a list of 0s and 1s, one per item (1 = pack it).
+       weight = sum(item[1] for bit, item in zip(genome, items) if bit)
+       value = sum(item[2] for bit, item in zip(genome, items) if bit)
+       return value if weight <= CAPACITY else 0  # overweight bags score zero
+
+   def random_genome():
+       return [random.randint(0, 1) for _ in items]
+
+   def select(population):
+       # Roulette wheel: fitter genomes are more likely to become parents.
+       weights = [fitness(g) + 1 for g in population]  # +1 gives zero scorers a tiny chance
+       return random.choices(population, weights=weights, k=1)[0]
+
+   def crossover(mum, dad):
+       cut = random.randint(1, len(items) - 1)  # choose a cut point
+       return mum[:cut] + dad[cut:]             # child = front of mum + back of dad
+
+   def mutate(genome):
+       return [1 - bit if random.random() < MUTATION_RATE else bit for bit in genome]
+
+   population = [random_genome() for _ in range(POP_SIZE)]
+   for gen in range(GENERATIONS):
+       best = max(population, key=fitness)
+       average = sum(fitness(g) for g in population) / POP_SIZE
+       print(f"Generation {gen:2d}: best {fitness(best)}, average {average:.1f}")
+       # Keep the best genome unchanged (elitism), breed the rest.
+       children = [mutate(crossover(select(population), select(population)))
+                   for _ in range(POP_SIZE - 1)]
+       population = [best] + children
+
+   best = max(population, key=fitness)
+   print("Best packing list:", [item[0] for bit, item in zip(best, items) if bit])
+   print("Value:", fitness(best))
+   ```
+
+   In plain words: `items` lists what you could pack; `fitness` adds up value and gives zero to overweight bags; `select` spins a roulette wheel weighted by fitness; `crossover` glues the front of one parent to the back of another; `mutate` occasionally flips a choice; the loop runs 30 generations, always keeping the best bag found so far. The best possible value for this problem is 30. Run it five times: how often does it find 30? Then try MUTATION_RATE = 0.0, 0.2 and 0.5, and POP_SIZE = 5 and 100. Write down what happens.
+   **What you'll learn:** how a real genetic algorithm behaves, why it sometimes stalls below the best answer, and how mutation rate and population size trade exploration against stability.
+
+7. **[Medium] Be a Simpson's paradox detective.**
+   1. Put the Smart Summaries table into a spreadsheet and confirm the overall rates (24% versus 14%) and the adjusted rates (18% versus 20%).
+   2. Change the numbers so that the feature genuinely helps in both groups by 3 points, while the overall comparison still exaggerates the effect.
+   3. Open Gapminder at gapminder.org/tools, plot two variables that move together across countries (for example income per person and life expectancy) and write down three possible confounders.
+   **What you'll learn:** how confounders create misleading comparisons, how adjustment works, and why randomized experiments are the gold standard.
+
+8. **[Easy] ELIZA versus your chatbot.** Ask your chatbot: "For the next five messages, behave exactly like the 1966 ELIZA program: use only simple keyword rules to turn my statements into questions, with no real understanding." Tell it about a small problem in your day. Then say "Stop being ELIZA" and repeat the conversation. Compare the two. Where did the keyword rules fail, and why did people in 1966 still find ELIZA compelling?
+   **What you'll learn:** the difference between rule-based pattern matching and learned language understanding, and the ELIZA effect.
+
+9. **[Medium] Translation round trip and a hand-made BLEU.** Take three sentences you wrote, including one idiom ("it's raining cats and dogs"). Translate them into a language you do not speak and back into English using two different tools (for example Google Translate and your chatbot). For each result, compute unigram and bigram precision against your original, as in this chapter's BLEU example. Then rate the meaning yourself from 1 to 5. Where do the numbers and your judgment disagree?
+   **What you'll learn:** how translation quality is measured, and why word-overlap scores miss meaning.
+
+10. **[Challenge] Prove 2 + 2 = 4 the way AlphaProof does.** Go to adam.math.hhu.de, choose the Natural Number Game, and complete the first world (the tutorial levels). Notice that Lean accepts nothing that is not fully justified.
+    **What you'll learn:** what a formal proof is, why a computer can check it perfectly, and why proof checkers became ideal teachers and referees for AI.
+
+## Areas of opportunity
+
+- **Knowledge graph engineering.** Pharmaceutical companies, banks, intelligence agencies and large retailers pay ontologists and knowledge-graph engineers to connect entities across millions of documents, increasingly combined with LLMs (GraphRAG) for question answering.
+- **Rules plus LLMs for regulated decisions.** Insurers, lenders, tax and benefits agencies need systems where a language model reads messy inputs but hard-coded, auditable rules make the final determination. People who can design that split are in demand.
+- **Experimentation and causal analytics.** Every app, retailer and marketer needs A/B testing and causal measurement, and many get it wrong. Experimentation analysts and causal-inference specialists are valued in tech, marketing and health care, where "real-world evidence" studies support medical decisions.
+- **Formal verification and proof engineering.** Writing machine-checked proofs, for mathematics (the Lean community) and for critical software such as cryptography, chips and aerospace code, is a growing niche, and AI labs hire for it because verifiers make reliable training rewards.
+- **Probabilistic modeling for risk.** Insurers, epidemiologists, reliability engineers and climate-risk firms use Bayesian models to put honest uncertainty on decisions. Probabilistic programming skills pair well with domain expertise.
+- **Optimization and evolutionary design.** Engineering firms use evolutionary and other search methods for antennas, structures, chips, schedules and logistics. LLM-guided evolutionary search, the AlphaEvolve pattern, is opening a new market for automated algorithm and heuristic discovery.
+- **Cost-cutting with small NLP models.** Companies running LLMs on huge volumes of classification and extraction can save large sums by distilling into small specialized models; consultants and engineers who do this can prove their value in dollars.
+- **Low-resource languages.** Collecting data and building translation, speech and text tools for languages with little digital text serves billions of speakers, with funding from governments, foundations and companies entering new markets.
+- **Brain-computer interfaces and neuroethics.** Neural engineers, clinical-trial coordinators, rehabilitation specialists and neuroethicists are needed as speech and motor neuroprostheses move toward real products, along with lawyers and policy experts for neural-data privacy.
+- **Open problems.** Reliable compositional reasoning in neural networks, causal reasoning by AI agents, efficient training for spiking networks, implant longevity, and bringing verifiable rigor to domains where no program can check the answer.
+
+## Check your understanding
+
+1. In the car expert system, why did the certainty that the battery was weak come out at 0.86, and why could the system not handle the flooded car?
+2. What is a triple, and why can a knowledge graph be corrected more easily than a language model?
+3. In the wet-grass network, why did learning that the sprinkler ran make rain less likely, even though the sprinkler and rain are independent?
+4. How does "26°C is warm to degree 0.4" differ from "there is a 40% chance it is warm"?
+5. In a genetic algorithm, what does each of selection, crossover and mutation contribute, and what goes wrong if the fitness function is badly designed?
+6. In the Smart Summaries example, why did the feature look helpful overall but slightly harmful within each group, and how would an A/B test settle the question?
+7. Give the strongest argument on each side of the debate over whether AI needs symbolic components.
+8. Why do specialized small NLP models still run at large scale, even though one LLM prompt can do every classic NLP task?
+
+<details><summary>Answers</summary>
+
+1. Two rules supported "battery weak": R1 at 0.8 and R2 at 0.3. MYCIN's combination formula gives 0.8 + 0.3 × (1 − 0.8) = 0.86. The flooded car broke it because no rule mentioned floods, and the system has no common sense to notice that a situation lies outside its rules: it is brittle.
+2. A triple is one fact written as subject, relation, object, such as "France, capital, Paris". Each fact is stored explicitly in one place, so changing it means editing one triple; in a language model, knowledge is spread across billions of parameters with no single place to edit.
+3. Wet grass needs some cause. Once the sprinkler is known to have run, it already explains the wetness, so the wet grass no longer counts as evidence for rain, and the probability of rain drops back toward its 20% starting point (to about 24%). This is explaining away; the causes are independent beforehand but become linked once you observe their shared effect.
+4. The fuzzy statement says the temperature is known exactly and "warm" applies to it partly. The probability statement says it is uncertain whether a crisp event ("warm") is true. Fuzziness is about vagueness; probability is about uncertainty.
+5. Selection makes fitter candidates more likely to reproduce, crossover combines good parts of different parents, and mutation adds new variety. A badly designed fitness function gets exploited: evolution optimizes the score, not your intention, as Karl Sims's creatures exploiting physics bugs showed.
+6. Heavy users were both more likely to use the feature and more likely to buy anyway, so the overall comparison mixed the feature's effect with engagement, a confounder. An A/B test randomly assigns the feature, so heavy and light users end up roughly balanced in both groups, and with enough users the difference measures the feature's real effect.
+7. For symbols: neural networks still hallucinate and fail on altered problems, while symbolic checkers give guarantees, data efficiency and compositional generalization, and the most reliable formal mathematical results used them. For scale: across 70 years, general learning methods that scale with compute kept beating hand-built knowledge (the Bitter Lesson), networks learn symbol-like internal structure, and a language model reached gold-medal olympiad level in natural language without a formal checker.
+8. Cost, speed and consistency. At millions of documents a day, even a cheap LLM costs hundreds of thousands of dollars a year and takes hundreds of milliseconds per call, while a small fine-tuned model is far cheaper, answers in milliseconds and always gives the same output. LLMs are often used to label the training data for those small models.
+
+</details>
+
+## Going deeper
+
+- **Stuart Russell and Peter Norvig, *Artificial Intelligence: A Modern Approach* (4th edition, 2020).** The standard textbook; its chapters on logic, knowledge representation, probabilistic reasoning and evolutionary search cover this chapter's first half in depth.
+- **Pedro Domingos, *The Master Algorithm* (2015).** A readable tour of the five tribes of machine learning and what each believes.
+- **Judea Pearl and Dana Mackenzie, *The Book of Why* (2018).** Causal diagrams, the ladder of causation and why data alone cannot answer "why", for general readers.
+- **Ron Kohavi, Diane Tang and Ya Xu, *Trustworthy Online Controlled Experiments* (2020).** The practical guide to A/B testing from people who ran experimentation at Microsoft, Google and LinkedIn.
+- **Melanie Mitchell, *An Introduction to Genetic Algorithms* (1996) and *Artificial Intelligence: A Guide for Thinking Humans* (2019).** A clear introduction to evolutionary computation, and a thoughtful book on the limits of today's AI.
+- **Gary Marcus and Ernest Davis, *Rebooting AI* (2019), read with Richard Sutton's essay "The Bitter Lesson" (2019, at incompleteideas.net).** The strongest short statements of the two sides of the neuro-symbolic debate.
+- **Dan Jurafsky and James H. Martin, *Speech and Language Processing* (3rd edition draft, free at web.stanford.edu/~jurafsky/slp3).** The standard NLP textbook, from n-grams and classic tasks to Transformers.
+- **Grace Lindsay, *Models of the Mind* (2021).** How mathematical models have shaped neuroscience, and how neuroscience and AI have influenced each other.
+- **The Lean community site (leanprover-community.github.io) and the Natural Number Game.** The place to start with formal proofs and the mathematics library that AI provers train on.

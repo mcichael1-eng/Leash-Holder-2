@@ -495,3 +495,132 @@ AI is now routine across the physical sciences, usually as a specialized tool ra
 > **Definition — Tokamak:** A doughnut-shaped device that uses powerful magnetic fields to confine plasma hot enough for nuclear fusion. Keeping the plasma stable is a fast, delicate control problem.
 
 > **Definition — Trigger system:** The fast filter at a particle collider that decides, in millionths of a second, which collision events to record and which to discard forever.
+
+## AI in medicine
+
+Medicine is where AI meets the highest stakes and the strictest rules. A wrong movie recommendation wastes an evening; a wrong diagnosis can cost a life. That is why medical AI is regulated as a medical device, and why "it scored well on a test set" is only the start of the story.
+
+### The regulator's view
+
+In the United States, software that diagnoses, treats or informs clinical decisions can count as a medical device and needs FDA authorization before it can be marketed for that use.
+
+> **Definition — SaMD (software as a medical device):** Software that performs a medical purpose by itself, such as detecting a disease on a scan, without being part of a physical device. Most medical AI is regulated in this category.
+
+> **Definition — 510(k) clearance:** The FDA's most common route to market for a medical device, granted by showing the device is "substantially equivalent" to one already legally sold. Most AI medical devices are cleared this way.
+
+> **Definition — De Novo authorization:** The FDA route for a new kind of low-to-moderate-risk device with no existing equivalent. A De Novo authorization creates a category that later devices can use as their comparison.
+
+> **Definition — PMA (premarket approval):** The FDA's strictest route, for high-risk devices, requiring direct evidence of safety and effectiveness, usually from clinical studies.
+
+The FDA keeps a public list of AI-enabled medical devices it has authorized. It counted about 1,451 through the end of 2025; one secondary analysis counted 1,614 as of June 29, 2026. About three-quarters are in radiology. The FDA notes that the list is not exhaustive. Most of these are narrow tools: find a suspected bleed on a head CT, measure the heart's pumping on an ultrasound, flag a suspicious spot on a mammogram.
+
+```mermaid
+flowchart LR
+  A["Collect and label<br/>patient data"] --> B["Train and test<br/>the model"]
+  B --> C["Validate on other<br/>hospitals' data"]
+  C --> D["Clinical study,<br/>ideally prospective"]
+  D --> E["Regulator review<br/>510k, De Novo or PMA"]
+  E --> F["Deploy in<br/>clinical workflow"]
+  F --> G["Monitor performance<br/>and drift"]
+  G -->|"performance drops"| B
+```
+*Figure 52.10: The life cycle of a medical AI device. The steps that most often get skipped or rushed are external validation, prospective studies and monitoring after deployment.*
+
+### Imaging and pathology
+
+Radiology dominates because images are digital, plentiful and come with labels in the form of radiologists' reports. Most tools are assistive: they flag, measure or prioritize, and a clinician decides.
+
+> **Definition — Computer-aided detection (CAD):** Software that marks suspicious areas on medical images, such as possible tumors on a mammogram, for a clinician to review.
+
+The strongest evidence comes from randomized trials. In Sweden's MASAI trial, which randomized about 80,000 women in breast-cancer screening, interim results published in 2023 found that AI-supported screening detected about 20 percent more cancers than standard double reading by two radiologists, while cutting radiologists' screen-reading workload by about 44 percent. In pathology, where tissue slides are now scanned into enormous digital images, the FDA authorized its first AI tool to help pathologists spot prostate cancer, Paige Prostate, in 2021.
+
+### The first autonomous diagnosis
+
+In April 2018 the FDA authorized IDx-DR, the first AI system allowed to make a screening decision without a specialist reviewing the image. It checks retinal photos of people with diabetes for diabetic retinopathy, a leading cause of blindness. A nurse or technician in a primary-care clinic takes the photos; the software says either "refer to an eye specialist" or "rescreen in 12 months." In its pivotal study of 900 people with diabetes at 10 primary-care sites, it had a sensitivity of 87.2 percent and a specificity of 90.7 percent.
+
+> **Definition — Autonomous AI diagnostic:** An AI system authorized to make a diagnostic or screening decision without a clinician interpreting the result first. IDx-DR (2018) was the first FDA-authorized example.
+
+> **Definition — Sensitivity:** The share of people who really have a condition that a test correctly flags. A sensitivity of 87 percent means 13 of every 100 sick people are missed.
+
+> **Definition — Specificity:** The share of people without the condition whom a test correctly clears. A specificity of 91 percent means about 9 of every 100 healthy people are wrongly flagged.
+
+> **Definition — Positive predictive value (PPV):** Of the people a test flags, the share who actually have the condition. Unlike sensitivity and specificity, it depends heavily on how common the condition is.
+
+> **Definition — Prevalence:** How common a condition is in the group being tested, for example 10 percent of people screened.
+
+What do those numbers mean for a patient? Suppose, for illustration, that 10 percent of a clinic's diabetic patients have disease serious enough to need referral, and 1,000 are screened.
+
+```
+              1,000 people with diabetes screened
+                /                              \
+     100 have the disease               900 do not
+        /            \                   /            \
+  87 flagged      13 missed       84 flagged      816 cleared
+  true positive   false negative  false positive  true negative
+
+  Flagged:  87 + 84  = 171, of whom 87 are sick   PPV = 51%
+  Cleared: 816 + 13  = 829, of whom 816 are fine  NPV = 98.4%
+```
+*Figure 52.11: Screening arithmetic with IDx-DR's published sensitivity and specificity and an illustrative 10 percent prevalence.*
+
+About half of the people flagged are actually sick, which is fine for a screening test: they get a specialist visit, which they might not otherwise have had at all. A "cleared" result is right 98 percent of the time. If the clinic screened a healthier group with 2 percent prevalence, the PPV would fall to about 16 percent, because false alarms from the large healthy group would swamp the true cases. The same model gives very different meanings to "positive" in different populations, a point Chapter 9 made with natural frequencies.
+
+> **Key idea:** A medical AI's accuracy is not one number. Sensitivity and specificity describe the model; what a positive or negative result means for a patient depends on how common the disease is in the people being tested. Always ask "accurate for whom, and compared with what?"
+
+### When a model fails in the wild: sepsis
+
+Sepsis, the body's overwhelming response to infection, kills many hospital patients, and catching it early saves lives. So hospitals eagerly adopted prediction models that watch patients' records and raise alerts. The most widely used was a proprietary model built into the Epic electronic health record system. In 2021 researchers at the University of Michigan published an independent evaluation in *JAMA Internal Medicine*, covering tens of thousands of hospitalizations. They found an AUC (Chapter 9) of 0.63, well below the figures the developer had reported. The model missed about two-thirds of sepsis cases while generating alerts for about 18 percent of all hospitalized patients.
+
+> **Definition — External validation:** Testing a model on data from a different hospital, time period or population than it was developed on. Models that look excellent internally often perform worse externally.
+
+> **Definition — Dataset shift:** A change between the data a model was trained on and the data it meets in use, such as different patients, equipment, coding practices or treatments. It is the most common reason medical AI underperforms after deployment.
+
+> **Definition — Alert fatigue:** When clinicians receive so many automated warnings, most of them false, that they start ignoring or overriding them, including the important ones.
+
+> **Definition — Retrospective vs prospective study:** A retrospective study tests a model on records collected in the past; a prospective study follows patients forward in time as the model is actually used. Prospective evidence is far more convincing, and randomized prospective trials are best.
+
+The sepsis story is not that prediction cannot work. A different system, TREWS, developed at Johns Hopkins, was associated with lower death rates in a large 2022 prospective study when clinicians confirmed its alerts promptly, though that study was not randomized. The story is that a model's published accuracy is a claim to be tested, that it must be validated where it will be used, and that the way an alert fits into a busy ward matters as much as the model.
+
+> **Watch out:** "The model has an AUC of 0.9" says little about whether patients benefit. Ask: was it tested on another hospital's data, was it studied prospectively, did outcomes (deaths, complications, time to treatment) improve, and how many false alarms did clinicians receive? Many medical AI products have strong retrospective numbers and little evidence of patient benefit.
+
+### Ambient scribes: AI that listens
+
+The fastest-spreading clinical AI tool by the mid-2020s is not a diagnostic at all. It is paperwork. Doctors spend hours a day writing notes in electronic health records, a major driver of burnout.
+
+> **Definition — Ambient AI scribe:** Software that listens, with consent, to a conversation between clinician and patient, then drafts the clinical note for the clinician to review, edit and sign.
+
+Abridge (rated Best in KLAS for ambient speech in 2025 and 2026) and Microsoft's Dragon Copilot, formed in March 2025 from its DAX Copilot and Dragon Medical One products, lead the market, while Epic's built-in tool adds pressure. Reported outcomes include a 27 percent reduction in time spent on notes per appointment at Intermountain Health. The risks are familiar from Chapter 18: a scribe can mishear, omit or invent a detail, so the clinician must review every note, and patients must be told the conversation is being recorded and processed.
+
+### Patients asking chatbots
+
+You may already have asked a chatbot about a symptom or a lab result. You are not alone: ChatGPT alone reached about 900 million weekly users in February 2026, and in January 2026 OpenAI launched ChatGPT Health, a health-focused experience. Language models score highly on medical exam questions: Google reported in 2023 that its Med-PaLM 2 reached 86.5 percent on a benchmark of US medical licensing exam-style questions.
+
+But exam scores are not patient outcomes. A randomized study led by Oxford researchers with about 1,300 UK participants, released in 2025, found that language models given medical scenarios on their own usually identified the relevant conditions, yet members of the public who used those same models to work through the scenarios did no better than people who used ordinary resources such as web search. The bottleneck was the conversation: people left out key details, and they did not always follow good advice. Similarly, Microsoft reported in mid-2025 that its diagnostic AI system solved about 85 percent of difficult published case records, against about 20 percent for experienced physicians in the comparison; but those physicians were barred from consulting colleagues, books or search, and published case puzzles are not live patients. Results like these show capability, not proven benefit.
+
+> **Try it:** Ask your chatbot to explain a common blood test result, such as "What does a high LDL cholesterol number mean, and what questions should I ask my doctor?" Then ask it, "What would you need to know about me to give better information, and what should I not rely on you for?" Notice how it handles uncertainty, whether it suggests seeing a clinician, and whether its answer depends on details you did not give. Do not paste identifying medical records into a chatbot unless you understand its privacy settings.
+
+### How to read a medical AI claim
+
+| Question to ask | Weak answer | Strong answer |
+|---|---|---|
+| What data was it tested on? | The developer's own hospital, retrospectively | Several other hospitals, prospectively |
+| Compared with what? | Nothing, or doctors working under artificial limits | Current standard care in real conditions |
+| What outcome was measured? | Accuracy or AUC on a test set | Patient outcomes: deaths, complications, time to treatment |
+| Who might it fail? | Not reported | Results broken down by age, sex, ethnicity, equipment, site |
+| What is its regulatory status? | "AI-powered" marketing language | FDA-authorized for a stated use, with the pathway named |
+| What happens after launch? | Nothing planned | Ongoing monitoring for drift and errors |
+
+> **At the frontier (2026):** The frontier in medical AI is moving from single-task tools toward multimodal "generalist" models that read images, notes, lab results and genomes together, and toward AI agents that handle administrative work such as prior authorizations and coding. The hard problems are not mainly technical: proving patient benefit in trials, assigning liability when AI contributes to an error, monitoring models after deployment, protecting privacy, and making sure tools work for every population, including the low-resource clinics that could benefit most.
+
+## In plain English
+
+AI is changing science by doing three things: giving fast answers where experiments or simulations are slow, searching huge spaces of possibilities, and starting to automate parts of research itself. In every case, the computer's answer is a proposal that reality has to confirm.
+
+The clearest success is AlphaFold. Proteins are strings of amino acids that fold into shapes, and the shape decides the job. By learning from evolution's patterns and from known structures, AlphaFold predicts shapes with near-lab accuracy, and its free database now holds over 260 million predictions. That earned a share of the 2024 Nobel Prize in Chemistry. Designers now run the problem backwards to invent new proteins, and DNA models read the genome to guess which mutations matter.
+
+Drugs are harder. AI can shrink the discovery stage from years to months, but every drug must still pass Phase I, II and III trials in people, which take years, and only about 8 in 100 drugs entering trials are approved. The most advanced AI-designed drug, rentosertib, showed a promising signal in a small trial; none had been approved by late 2026.
+
+AI weather models trained on decades of reconstructed weather now forecast in minutes, and Europe's main forecasting center runs one daily, though they still rely on traditional observations and physics. In math, AI went from olympiad silver in 2024 to gold in 2025; claims of perfect 2026 scores were unverified. In medicine there are over a thousand FDA-authorized AI devices, mostly in radiology, plus scribes that write doctors' notes. But a famous sepsis model failed outside its developer's tests, a reminder to ask how any medical AI was validated and whether patients actually benefit.
+
+## Key terms
+Surrogate model, simulation, in silico, wet lab, protein, amino acid, protein folding problem, X-ray crystallography, cryo-EM (cryo-electron microscopy), PDB (Protein Data Bank), CASP (Critical Assessment of protein Structure Prediction), multiple sequence alignment (MSA), co-evolution, AlphaFold, pLDDT (predicted local distance difference test), PAE (predicted aligned error), ligand, intrinsically disordered region, protein design, binder, enzyme, inverse folding, protein language model, DNA, gene, genome, regulatory DNA, variant, missense variant, variant of uncertain significance (VUS), DNA language model, drug target, small molecule, lead compound, preclinical studies, clinical trial, Phase I, II and III trials, randomized controlled trial (RCT), placebo, FDA (Food and Drug Administration), crystal structure, stable material, DFT (density functional theory), self-driving lab, machine-learned interatomic potential, numerical weather prediction (NWP), data assimilation, ensemble forecast, reanalysis, autoregressive rollout, formal proof, proof assistant, autoformalization, IMO (International Mathematical Olympiad), neuro-symbolic AI, AI co-scientist, reproducibility, peer review, tokamak, trigger system, SaMD (software as a medical device), 510(k) clearance, De Novo authorization, PMA (premarket approval), computer-aided detection (CAD), autonomous AI diagnostic, sensitivity, specificity, positive predictive value (PPV), prevalence, external validation, dataset shift, alert fatigue, retrospective vs prospective study, ambient AI scribe
