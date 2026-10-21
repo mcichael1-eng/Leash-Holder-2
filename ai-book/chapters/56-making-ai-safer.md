@@ -61,7 +61,7 @@ Now the catch. Layers often fail together. A clever attack, for example a reques
 0.10 × 0.60 = 0.06, or 60 in 1,000 (before monitoring)
 ```
 
-That is 24 times worse than the independent estimate. The lesson is not that layers are useless. It is that layers help most when they are different in kind: a trained refusal, a separate classifier trained on different data, a human reviewer, an access restriction and an alarm on unusual account behavior fail for different reasons.
+That is 12 times worse than the 5 in 1,000 the independent estimate gives at the same point (and monitoring would still leave about 30, against 2.5). The lesson is not that layers are useless. It is that layers help most when they are different in kind: a trained refusal, a separate classifier trained on different data, a human reviewer, an access restriction and an alarm on unusual account behavior fail for different reasons.
 
 > **Key idea:** Defense in depth works by multiplying small failure rates, but only to the extent the layers fail for different reasons. Diversity of defenses matters more than the strength of any one.
 
@@ -222,7 +222,7 @@ Anthropic then ran a public bug bounty inviting people to find universal jailbre
 
 > **Definition — Bug bounty:** A program that pays outside researchers for finding and responsibly reporting weaknesses, such as jailbreaks that defeat a model's safeguards.
 
-Classifiers have their own costs. Every classifier trades missed attacks against false alarms, exactly like the refusal trade-off in Chapter 20, and over-blocking frustrates legitimate users such as nurses, security researchers and novelists. Classifiers can also be shared: in September 2025 OpenAI released gpt-oss-safeguard, open-weight models that classify content against a policy the user writes.
+Classifiers have their own costs. Every classifier trades missed attacks against false alarms, exactly like the refusal trade-off in Chapter 20, and over-blocking frustrates legitimate users such as nurses, security researchers and novelists. Classifiers can also be shared: in late 2025 OpenAI released gpt-oss-safeguard, open-weight models that classify content against a policy the user writes.
 
 > **Try it:** Ask your chatbot two questions that sit near the line from opposite sides. First, an edgy but legitimate one: "I'm a nursing student. What are the warning signs of an opioid overdose?" Second, a harmless one with a scary word: "How do I kill a frozen program on Windows?" A well-calibrated system answers both helpfully. If either is refused or wrapped in warnings, you have seen the false-alarm side of the safeguard trade-off.
 
@@ -445,7 +445,7 @@ The strongest critiques:
 
 > **Definition — Safety-washing:** Presenting safety commitments or research mainly to reassure the public or regulators, without changing risky behavior in a meaningful way.
 
-> **Watch out:** "Safety frameworks are laws." RSP, Preparedness and FSF are voluntary company policies. What changed in 2026 is that California and, from 2027, New York require the largest developers to publish such frameworks and follow them, so breaking your own published framework can now carry legal penalties. The content of the framework is still largely up to the company (Chapter 59).
+> **Watch out:** "Safety frameworks are laws." RSP, Preparedness and FSF are voluntary company policies. What changed in 2026 is that, as of October 2026, California and, from 2027, New York require the largest developers to publish such frameworks and follow them, so breaking your own published framework can now carry legal penalties. The content of the framework is still largely up to the company (Chapter 59).
 
 ## Safety cases: arguing that a system is safe enough
 

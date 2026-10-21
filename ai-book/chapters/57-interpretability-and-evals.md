@@ -164,7 +164,7 @@ That last case is the price of superposition. It works beautifully when concepts
 
 > **Definition — Interference:** The small, unwanted signal one stored concept leaks into the reading of another when they share space. Models tolerate it, and use tricks such as ReLU thresholds to filter it out.
 
-There is a second reason superposition works so well in real models: high-dimensional spaces are roomy in a way our 3D intuition does not capture. Two arrows at right angles are called **orthogonal**; their dot product is zero, so they do not interfere at all. In 2 dimensions you can fit only 2 orthogonal arrows. But in 1,000 dimensions, two arrows pointing in random directions are almost orthogonal: their cosine similarity is typically about 1 ÷ √1,000 ≈ 0.03, which corresponds to an angle of about 88 degrees. In 4,096 dimensions it is about 1 ÷ 64 ≈ 0.016, or about 89 degrees. You can fit vastly more than 4,096 arrows that are all nearly at right angles to each other. Each one interferes with the others only slightly.
+There is a second reason superposition works so well in real models: high-dimensional spaces are roomy in a way our 3D intuition does not capture. Two arrows at right angles are called **orthogonal**; their dot product is zero, so they do not interfere at all. In 2 dimensions you can fit only 2 orthogonal arrows. But in 1,000 dimensions, two arrows pointing in random directions are almost orthogonal: their cosine similarity (the dot product of the two arrows scaled to length 1, where 1 means the same direction and 0 means right angles; Chapter 5) is typically about 1 ÷ √1,000 ≈ 0.03, which corresponds to an angle of about 88 degrees. In 4,096 dimensions it is about 1 ÷ 64 ≈ 0.016, or about 89 degrees. You can fit vastly more than 4,096 arrows that are all nearly at right angles to each other. Each one interferes with the others only slightly.
 
 > **Definition — Orthogonal:** At right angles. Two orthogonal directions have a dot product of zero, so a signal along one does not show up when you read the other.
 
@@ -254,7 +254,7 @@ Two complications are worth knowing. First, the features you find depend on the 
 
 > **Definition — Feature splitting:** The tendency of one broad feature in a small sparse autoencoder to break into several narrower features in a larger one, for example "mathematics" splitting into "algebra" and "geometry".
 
-A close cousin of the SAE is the **transcoder**. Instead of rebuilding the same activation, a transcoder reads the input to one of the model's feed-forward blocks and predicts that block's output, using sparse features in between. Its features therefore describe what a part of the model computes, not just what is stored, which makes transcoders the workhorse for tracing computations step by step (later in this chapter). A cross-layer transcoder does this across many layers at once.
+A close cousin of the SAE is the **transcoder**. Instead of rebuilding the same activation, a transcoder reads the input to one of the model's feed-forward blocks (the part of each Transformer layer that processes every token on its own, Chapter 15) and predicts that block's output, using sparse features in between. Its features therefore describe what a part of the model computes, not just what is stored, which makes transcoders the workhorse for tracing computations step by step (later in this chapter). A cross-layer transcoder does this across many layers at once.
 
 > **Definition — Transcoder:** A variant of the sparse autoencoder that approximates how one part of a model transforms its input into its output, using a few interpretable features in between. A cross-layer transcoder does this for many layers together and is used for circuit tracing.
 
@@ -619,7 +619,7 @@ That is 89%. A "20% success rate" sounds reassuring; "89% with ten tries" does n
 
 **Contamination and artificiality.** Test questions leak into training data (Chapter 24), and safety scenarios are often obviously staged. Making realistic tests without causing real harm is a design challenge in its own right.
 
-**The real-world gap.** A benchmark task is not a real attack. A model that scores well on a capture-the-flag exercise may still be unhelpful in a messy real network, or far more helpful than expected once someone builds the right tools around it.
+**The real-world gap.** A benchmark task is not a real attack. A model that scores well on a capture-the-flag exercise (a hacking contest in which players break into deliberately vulnerable systems to find hidden "flags") may still be unhelpful in a messy real network, or far more helpful than expected once someone builds the right tools around it.
 
 ```mermaid
 flowchart LR

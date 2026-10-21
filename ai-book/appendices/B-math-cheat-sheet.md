@@ -1,6 +1,6 @@
 # Appendix B: Math Cheat Sheet
 
-This appendix collects every formula used in the book in one place. Each one appears three ways: in plain words, in symbols, and with one tiny worked example you can check on a calculator. Chapter 5 and Chapter 6 teach all of it from scratch; Appendix A covers units, prefixes and reference numbers such as chip specifications.
+This appendix collects every formula used in the book in one place. Each one appears three ways: in plain words, in symbols, and with one tiny worked example you can check on a calculator. Chapter 5 and Chapter 6 teach the core math from scratch; the compute and memory rules of thumb are worked through in Chapters 19, 23, 33 and 37; Appendix A covers units, prefixes and reference numbers such as chip specifications.
 
 How to read it. Multiplication is written ×, division ÷, and "x squared" as `x^2`. `10^25` means 10 to the 25th power. `sqrt()` is the square root, `e` is about 2.718, `exp(x)` means e to the power x, `ln` is the natural logarithm and `log10` the base-10 logarithm. Vectors are lists in square brackets, like [3, 4]. N is a model's number of parameters and D its number of training tokens. The symbol ≈ means "about". Prices and hardware figures in examples are illustrative unless a chapter gives them as facts.
 
@@ -144,7 +144,7 @@ How to read it. Multiplication is written ×, division ÷, and "x squared" as `x
 | Standard deviation | Square root of the variance, in the original units | `sd = sqrt(variance)` | sqrt(4) = 2 |
 | z-score | How many standard deviations a value sits from the mean | `z = (x − mean) ÷ sd` | 184 cm with mean 170 and sd 7: z = 2 |
 | 68–95–99.7 rule | Shares of a normal distribution within 1, 2 and 3 sd of the mean | `mean ± 1 sd`, `± 2 sd`, `± 3 sd` | mean 170, sd 7: about 68% between 163 and 177 cm |
-| Percentile | The value that a given percentage of the data falls below | p50 = median, p99 = slowest 1% | p99 latency 30 s: 99% of requests finish faster |
+| Percentile | The value that a given percentage of the data falls below | p50 = median; p99 = where the slowest 1% begins | p99 latency 30 s: 99% of requests finish faster |
 | Correlation | How strongly two things move together in a straight line, from −1 to 1 | `r = sum((x − mean x)(y − mean y)) ÷ sqrt(sum((x − mean x)^2) × sum((y − mean y)^2))` | quiz data: 10.5 ÷ sqrt(5 × 22.75) ≈ 0.98 |
 | Error bar on an accuracy score | One standard deviation of a pass rate p measured on n questions | `sd ≈ sqrt(p × (1 − p) ÷ n)` | 80% on 400 questions: sqrt(0.16 ÷ 400) = 0.02, so about ±4 points at 95% confidence |
 

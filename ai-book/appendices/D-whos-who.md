@@ -2,7 +2,7 @@
 
 *A quick reference to the organizations and people named in this book, grouped by where they sit in the AI stack.*
 
-How to use this appendix: each row gives one or two plain-English lines and the chapter where the topic is covered in depth. Model names, products and job titles are as of October 2026 and change quickly; check the company's own site before relying on them. Revenue, valuation and deal figures are deliberately left out here, because they go stale within weeks; Chapter 61 and Chapter 43 discuss them with dates and sources.
+How to use this appendix: each row gives one or two plain-English lines and the chapter where the topic is covered in depth. Model names, products and job titles are as of October 2026 and change quickly; check the company's own site before relying on them. Revenue, valuation and deal figures are mostly left out here, because they go stale within weeks; Chapter 61 and Chapter 43 discuss them with dates and sources.
 
 ## Frontier labs and their flagship models
 
@@ -15,11 +15,11 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | SpaceXSI (formerly xAI) | Founded by Elon Musk in 2023; acquired by SpaceX on February 2, 2026, and renamed SpaceXSI in October 2026. | Grok 4.7; the Colossus supercomputers in Memphis | Chapter 24 |
 | Microsoft AI | Microsoft's in-house AI group; Microsoft was OpenAI's earliest large backer and is also an Anthropic compute partner. | Copilot assistants in Windows and Office; in-house models | Chapter 61 |
 | Amazon | Builds its own Nova models and the Bedrock platform that serves many labs' models; Anthropic's main cloud and training partner. | Nova models; Bedrock; Alexa | Chapter 61 |
-| DeepSeek | Hangzhou lab founded in 2023 by Liang Wenfeng and funded by the quantitative hedge fund High-Flyer; known for efficient open-weight models. | DeepSeek V4-Pro, V4-Flash, V4.1-Flash (MIT license); the R1 reasoning model (2025) | Chapter 21 |
+| DeepSeek | Hangzhou lab founded in 2023 by Liang Wenfeng and funded by the quantitative hedge fund High-Flyer; known for efficient open-weight models. | DeepSeek V4-Pro, V4-Flash, V4.1-Flash (MIT license); the R1 reasoning model (2025) | Chapter 24 |
 | Alibaba Qwen | The model team of Alibaba Cloud; Qwen is one of the most widely used open-weight families. | Qwen3.8-Max (closed); Qwen3.8-2.4T-A95B and Qwen3.8-27B (open) | Chapter 24 |
-| Moonshot AI | Beijing startup founded in 2023 by Yang Zhilin; maker of the Kimi assistant. | Kimi K3 (open weights, 2.8 trillion parameters) | Chapter 17 |
+| Moonshot AI | Beijing startup founded in 2023 by Yang Zhilin; maker of the Kimi assistant. | Kimi K3 (open weights, 2.8 trillion parameters) | Chapter 24 |
 | Z.ai (formerly Zhipu AI) | Beijing lab that grew out of Tsinghua University research. | GLM-5.3 (open weights) | Chapter 24 |
-| MiniMax | Shanghai company making language, speech and video models. | MiniMax models; Hailuo video app | Chapter 47 |
+| MiniMax | Shanghai company making language, speech and video models. | MiniMax models; Hailuo video app | Chapter 17 |
 | Xiaomi | Chinese phone and electronics maker that also trains large models. | MiMo-V2.6-Pro, the top open-weight model on the Artificial Analysis index in October 2026 | Chapter 24 |
 | StepFun | Shanghai model startup. | Step 5 | Chapter 24 |
 | Mistral AI | Paris lab founded in 2023 by Arthur Mensch, Guillaume Lample and Timothée Lacroix; Europe's leading model maker. | Mistral Large 4 (preview), Medium 3.5, Large 3 (Apache-2.0); Le Chat assistant | Chapter 24 |
@@ -93,7 +93,7 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | CoreWeave | The largest "neocloud" (a cloud specializing in GPUs); went public in March 2025; Microsoft and Meta are major customers. | Chapter 43 |
 | Nebius | Amsterdam-based neocloud spun out of Yandex in 2024, with large Microsoft and Meta contracts. | Chapter 43 |
 | Lambda | GPU cloud popular with researchers and startups. | Chapter 43 |
-| Crusoe | Builds and runs AI data centers; constructed the Stargate Abilene campus. | Chapter 42 |
+| Crusoe | Builds and runs AI data centers; builder of the Stargate Abilene campus. | Chapter 42 |
 | Together AI | Cloud for running and fine-tuning open-weight models. | Chapter 30 |
 | Nscale | UK neocloud and partner in Stargate Norway. | Chapter 42 |
 | Fluidstack | Builds and operates GPU and TPU data centers, including a large US build-out for Anthropic. | Chapter 42 |
@@ -139,9 +139,9 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | LangChain | Open-source framework for building LLM apps; LangGraph for agents and LangSmith for tracing and evals. | Chapter 28 |
 | LlamaIndex | Framework for connecting models to your documents and data (retrieval). | Chapter 27 |
 | Pinecone, Weaviate, Qdrant, Chroma | Vector databases that store embeddings for semantic search and RAG. | Chapter 27 |
-| Databricks | Data and AI platform from the creators of Apache Spark; bought MosaicML in 2023. | Chapter 10 |
+| Databricks | Data and AI platform from the creators of Apache Spark; bought MosaicML in 2023. | Chapter 11 |
 | Snowflake | Cloud data warehouse that has added AI features. | Chapter 11 |
-| Weights & Biases | Experiment-tracking tools for model training; bought by CoreWeave in 2025. | Chapter 13 |
+| Weights & Biases | Experiment-tracking tools for model training; bought by CoreWeave in 2025. | Chapter 10 |
 | Braintrust, Arize, Langfuse | Evaluation and observability tools for monitoring LLM apps in production. | Chapter 31 |
 | vLLM, SGLang | Open-source engines for serving models fast; vLLM introduced PagedAttention. | Chapter 23 |
 | Ollama, LM Studio, llama.cpp | Free tools for running open-weight models on your own computer. | Chapter 30 |
@@ -154,7 +154,7 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 
 | Company | Who they are and why they matter | More in |
 |---|---|---|
-| Cursor (Anysphere) | AI-first code editor; agreed in June 2026 to be acquired by SpaceX in an all-stock deal reported at about $60 billion. | Chapter 29 |
+| Cursor (Anysphere) | AI-first code editor; acquired by SpaceX in an all-stock deal announced in June 2026 and reported at about $60 billion. | Chapter 29 |
 | Cognition | Maker of Devin, an autonomous coding agent; bought the Windsurf code editor in 2025. | Chapter 29 |
 | GitHub (Microsoft) | Copilot (2021) was the first mass-market AI coding assistant; now includes cloud coding agents. | Chapter 29 |
 | Replit | Browser-based coding platform with Replit Agent for building apps from descriptions. | Chapter 29 |
@@ -180,7 +180,7 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | Unitree, AgiBot | Chinese robot makers that led humanoid shipments in 2025. | Chapter 49 |
 | Boston Dynamics, Agility Robotics, Apptronik, 1X | Makers of the Atlas, Digit, Apollo and NEO robots. | Chapter 49 |
 | Isomorphic Labs | Google DeepMind spin-out (2021) using AI for drug discovery. | Chapter 52 |
-| Insilico Medicine | Drug-discovery company whose AI-designed drug rentosertib reached a Phase IIa trial in 2025. | Chapter 52 |
+| Insilico Medicine | Drug-discovery company whose AI-designed drug rentosertib reported small Phase IIa trial results in 2025. | Chapter 52 |
 
 *Table D.7: Companies that build products on top of AI models.*
 
@@ -232,9 +232,9 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | Claude Shannon | Founded information theory (1948), the math of bits; co-organized the 1956 Dartmouth workshop. | Chapter 2 |
 | John McCarthy | Coined the term "artificial intelligence" in the 1955 Dartmouth proposal and created the Lisp language. | Chapter 7 |
 | Marvin Minsky | Dartmouth co-organizer and MIT AI pioneer; co-wrote *Perceptrons* (1969), which cooled interest in neural networks. | Chapter 7 |
-| Herbert Simon and Allen Newell | Built the Logic Theorist (1956), an early reasoning program, and championed symbolic AI. | Chapter 54 |
+| Herbert Simon and Allen Newell | Built the Logic Theorist (1956), an early reasoning program, and championed symbolic AI. | Chapter 7 |
 | Frank Rosenblatt | Invented the perceptron (1958), the first learning artificial neuron. | Chapter 12 |
-| Arthur Samuel | Coined "machine learning" in 1959 with a checkers program that improved by playing itself. | Chapter 8 |
+| Arthur Samuel | Popularized the term "machine learning" in 1959 with a checkers program that improved by playing itself. | Chapter 8 |
 | Joseph Weizenbaum | Created ELIZA (1966), the first famous chatbot, and later warned about over-trusting machines. | Chapter 7 |
 | Judea Pearl | Developed Bayesian networks and a mathematics of cause and effect; Turing Award 2011. | Chapter 54 |
 | Geoffrey Hinton | Helped popularize backpropagation (1986) and, with students, built AlexNet (2012); Turing Award 2018 and Nobel Prize in Physics 2024; left Google in 2023 to speak about AI risks. | Chapter 12 |
@@ -296,7 +296,7 @@ Roles are as of October 2026; leadership changes are frequent.
 | Jan Leike | Alignment researcher who co-led OpenAI's superalignment team before joining Anthropic. | Chapter 56 |
 | Paul Christiano | Co-author of foundational RLHF research (2017); founded the Alignment Research Center and later led safety at the US AI Safety Institute. | Chapter 20 |
 | Neel Nanda | Leads mechanistic interpretability work at Google DeepMind. | Chapter 57 |
-| Evan Hubinger | Anthropic researcher behind the "sleeper agents" and alignment-faking studies. | Chapter 55 |
+| Evan Hubinger | Anthropic researcher who led the "sleeper agents" study and co-authored the alignment-faking study. | Chapter 55 |
 | Buck Shlegeris and Ryan Greenblatt | Redwood Research leaders who developed AI control. | Chapter 56 |
 | Beth Barnes | Founder of METR. | Chapter 57 |
 | Marius Hobbhahn | CEO of Apollo Research. | Chapter 57 |

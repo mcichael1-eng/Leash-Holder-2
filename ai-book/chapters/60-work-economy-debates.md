@@ -297,11 +297,11 @@ Warning lights have flickered. The Bank of England and the IMF both warned in Oc
 
 ### The bull case, the bear case and history
 
-**The strongest bull case.** Demand is real and still outruns supply: labs and clouds say they are limited by compute, not customers. Revenue at the leading labs grew several-fold within a year. Most hyperscaler spending is paid for out of the cash flows of already very profitable businesses, not borrowed money. As the price of a given level of AI falls, often tenfold or more a year (Chapter 23), usage expands faster than prices fall, a pattern known as the Jevons paradox. Major banks including Goldman Sachs, Morgan Stanley and JPMorgan argued that valuations are backed by actual earnings, unlike the dot-com era's profitless companies. And even pessimists agree the underlying technology works.
+**The strongest bull case.** Demand is real and still outruns supply: labs and clouds say they are limited by compute, not customers. Revenue at the leading labs grew several-fold within a year. Most spending by the hyperscalers (the giant cloud companies) is paid for out of the cash flows of already very profitable businesses, not borrowed money. As the price of a given level of AI falls, often tenfold or more a year (Chapter 23), usage expands faster than prices fall, a pattern known as the Jevons paradox. Major banks including Goldman Sachs, Morgan Stanley and JPMorgan argued that valuations are backed by actual earnings, unlike the dot-com era's profitless companies. And even pessimists agree the underlying technology works.
 
 > **Definition — Jevons paradox:** The observation that making a resource cheaper or more efficient to use can increase total consumption of it, because people find many more uses. Named after a 19th-century economist who noticed it with coal.
 
-**The strongest bear case.** Spending is running far ahead of revenue, and much of that revenue is a run-rate rather than money in the bank. Circular deals and "up to" commitments inflate apparent demand. Chips lose value fast as new generations arrive, so the window to earn back their cost is short. More of the build is being financed with debt and private credit, which turns a stock-market correction into a credit problem. Competition, including near-frontier open-weight models, could push prices toward cost and squeeze margins. Only a small share of corporate pilots show measurable profit so far. And if capability progress slows, the world will have built far more capacity than it can use profitably.
+**The strongest bear case.** Spending is running far ahead of revenue, and much of that revenue is a run-rate rather than money in the bank. Circular deals and "up to" commitments inflate apparent demand. Chips lose value fast as new generations arrive, so the window to earn back their cost is short. More of the build is being financed with debt and private credit (loans from investment funds rather than banks), which turns a stock-market correction into a credit problem. Competition, including near-frontier open-weight models, could push prices toward cost and squeeze margins. Only a small share of corporate pilots show measurable profit so far. And if capability progress slows, the world will have built far more capacity than it can use profitably.
 
 **What history says.** Economic historians point out that bubbles and genuine revolutions often come together. Britain's railway mania of the 1840s ruined many investors, yet left a rail network that served the country for a century. The late-1990s telecom boom laid vast amounts of fiber-optic cable, much of which sat unused ("dark") after the 2000 to 2002 crash; that same fiber later carried the internet's growth. The economist Carlota Perez describes a recurring pattern: a frenzy of investment installs a new technology, a crash follows, and then a long period of broad deployment delivers the real gains.
 
@@ -410,9 +410,9 @@ Three definitions are worth knowing.
 
 | Performance level | Meaning | Narrow example | General example |
 |---|---|---|---|
-| Emerging | Equal to or somewhat better than an unskilled human | Simple rule-based systems | Early chatbots, according to the 2023 paper |
-| Competent | At least the 50th percentile of skilled adults | Spell-checkers | Not reached as of 2023 |
-| Expert | At least the 90th percentile of skilled adults | Specialist image generators | Not reached as of 2023 |
+| Emerging | Equal to or somewhat better than an unskilled human | Simple rule-based systems | 2023 chatbots such as ChatGPT, according to the paper |
+| Competent | At least the 50th percentile of skilled adults | Smart speakers such as Siri | Not reached as of 2023 |
+| Expert | At least the 90th percentile of skilled adults | Grammar checkers, image generators | Not reached as of 2023 |
 | Virtuoso | At least the 99th percentile of skilled adults | Deep Blue at chess | Not reached as of 2023 |
 | Superhuman | Outperforms all humans | AlphaFold, AlphaZero | Artificial superintelligence |
 
@@ -467,13 +467,13 @@ Each extra 13 characters of bar means tasks 10 times longer.
 ```
 *Figure 60.8: METR's measured 50% time horizons, from METR's published data. On a log scale the points rise in a nearly straight line, which is what steady exponential growth looks like. The last two measurements have very wide uncertainty (roughly 5 to 60 hours for Opus 4.6 and 8.5 to 55 hours for the early Mythos Preview).*
 
-METR fitted a doubling time of about 7 months across all its data since 2019 (about 188 days) and about 4.2 months since 2023 (129 days). It also warned that measurements above 16 hours are unreliable with its current task suite, and stopped updating the page in September 2026. Its evaluation of Claude Opus 5.5 shifted to tasks that measure acceleration of AI research itself. It called the model an incremental improvement, "unlikely to be able to fully automate AI R&D," and cited a preliminary internal Anthropic estimate of about 1.5 times overall research speed-up.
+METR fitted a doubling time of about 6.2 months across all its data since 2019 (about 188 days; its original 2025 study had found about 7 months) and about 4.2 months since 2023 (129 days). It also warned that measurements above 16 hours are unreliable with its current task suite, and stopped updating the page in September 2026. Its evaluation of Claude Opus 5.5 shifted to tasks that measure acceleration of AI research itself. It called the model an incremental improvement, "unlikely to be able to fully automate AI R&D," and cited a preliminary internal Anthropic estimate of about 1.5 times overall research speed-up.
 
 > **Definition — Recursive self-improvement:** The hypothetical process in which AI systems substantially speed up AI research itself, producing better AI that speeds research further, potentially accelerating progress sharply.
 
 **Worked example: extrapolating the trend.** This is arithmetic, not a forecast. Start from about 17.4 hours (the early Mythos Preview measurement, April 2026). How many doublings until the time horizon reaches a work week, a work month and a work year?
 
-- **Work week (40 hours):** 40 ÷ 17.4 = 2.3, and log2(2.3) ≈ 1.2 doublings. At 4.2 months per doubling, that is about 5 months (around September 2026); at about 6.2 months per doubling, about 7.4 months (around November 2026).
+- **Work week (40 hours):** 40 ÷ 17.4 = 2.3, and log2(2.3) ≈ 1.2 doublings (log2 counts how many doublings it takes to grow by a given factor; Chapter 6). At 4.2 months per doubling, that is about 5 months (around September 2026); at about 6.2 months per doubling, about 7.4 months (around November 2026).
 - **Work month (about 167 hours):** 167 ÷ 17.4 = 9.6, and log2(9.6) ≈ 3.3 doublings: about 14 months (mid-2027) or about 20 months (end of 2027).
 - **Work year (about 2,000 hours):** 2,000 ÷ 17.4 = 115, and log2(115) ≈ 6.8 doublings: about 29 months (around late summer 2028) or about 42 months (late 2029).
 

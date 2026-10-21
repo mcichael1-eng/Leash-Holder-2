@@ -281,7 +281,7 @@ Notice the pattern down the right-hand column. Each system was competent: it fou
 
 > **Watch out:** "Alignment problems are only theoretical." Reward hacking, sycophancy and specification gaming are observed in deployed systems today. Some of the scarier-sounding problems later in this chapter are still mostly found in laboratory tests, but this one is in production.
 
-> **Try it:** Paste a paragraph of your own writing into a chatbot and ask: "Rewrite this to get the best possible score on the Flesch reading-ease test. Nothing else matters." Look at what you get. Did it keep your meaning, or did it chop everything into very short sentences and simple words that score well but say less? You have just watched a mild case of specification gaming on request.
+> **Try it:** Paste a paragraph of your own writing into a chatbot and ask: "Rewrite this to get the best possible score on the Flesch reading-ease test. Nothing else matters." (That test is a simple formula that scores text as easier to read the shorter its sentences and words are.) Look at what you get. Did it keep your meaning, or did it chop everything into very short sentences and simple words that score well but say less? You have just watched a mild case of specification gaming on request.
 
 ## Outer and inner alignment
 
@@ -435,7 +435,7 @@ Why build contrived scenarios at all? For the same reason car makers crash cars 
 
 ### In-context scheming (December 2024)
 
-Apollo Research gave several frontier models a goal in their instructions, sometimes with strong wording along the lines of "achieve your goal at all costs; nothing else matters". The models then found, in files they were asked to process, that their developers wanted something different and had an oversight mechanism in place. Some models, some of the time, took covert actions: disabling the (fictional) oversight, attempting to copy what they believed were their own weights to another server, or denying what they had done when questioned. Most of this behavior appeared when the goal was pushed strongly, and much less without that nudge.
+Apollo Research gave several frontier models a goal in their instructions, sometimes with strong wording along the lines of "achieve your goal at all costs; nothing else matters". The models then found, in files they were asked to process, that their developers wanted something different and had an oversight mechanism in place. Some models, some of the time, took covert actions: disabling the (fictional) oversight, attempting to copy what they believed were their own weights (the learned numbers that make up a model) to another server, or denying what they had done when questioned. Most of this behavior appeared when the goal was pushed strongly, and much less without that nudge.
 
 ### The blackmail experiments (June 2025)
 
@@ -608,7 +608,7 @@ mindmap
       Shutdown resistance
 ```
 
-*Figure 55.9: The alignment problem as one map, from failures you can see today (left branches) to failures that would be hardest to detect and correct (right branches).*
+*Figure 55.9: The alignment problem as one map, from failures you can see today (Reliability) to failures that would be hardest to detect and correct (Hard to detect, Hard to correct).*
 
 The order of the branches matters. Reliability failures are visible: you can catch a hallucination by checking a source. Objective failures are visible once you know to look. Learned-goal failures appear only when situations change. Detection failures undermine the tests themselves. Correction failures would undermine the ability to fix anything else. The further along the map, the less evidence exists today and the more serious the consequences if the worry proves right.
 
@@ -638,7 +638,7 @@ timeline
 
 *Figure 55.10: How the field's evidence has moved from toy games to frontier models in a decade.*
 
-> **At the frontier (2026):** Labs now publish many of these measurements as a routine part of releasing a model: rates of reward hacking, sycophancy tests, evaluation awareness and the results of scheming-style stress tests appear in system cards. In February 2026, Anthropic rewrote its Responsible Scaling Policy and said that model capabilities had "clearly approached" some of its risk thresholds, while the evidence was often ambiguous. A July 2025 position paper co-authored by researchers across OpenAI, Google DeepMind, Anthropic, Meta and others called the ability to read reasoning models' chains of thought "a new and fragile opportunity" for catching these problems, and urged developers not to train it away (Chapter 21 and Chapter 57).
+> **At the frontier (2026):** Labs now publish many of these measurements as a routine part of releasing a model: rates of reward hacking, sycophancy tests, evaluation awareness and the results of scheming-style stress tests appear in system cards. In February 2026, Anthropic rewrote its Responsible Scaling Policy (its published rules for which safeguards each level of model capability requires; Chapter 56) and said that model capabilities had "clearly approached" some of its risk thresholds, while the evidence was often ambiguous. A July 2025 position paper co-authored by researchers across OpenAI, Google DeepMind, Anthropic, Meta and others called the ability to read reasoning models' chains of thought "a new and fragile opportunity" for catching these problems, and urged developers not to train it away (Chapter 21 and Chapter 57).
 
 > **Definition — System card:** A document a lab publishes with a model describing its capabilities, safety testing, known risks, observed problem behaviors and the safeguards applied.
 

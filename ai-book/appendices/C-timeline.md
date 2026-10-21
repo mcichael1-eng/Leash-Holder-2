@@ -238,7 +238,7 @@ timeline
 | Oct 2024 | Physical Intelligence's π0 robot foundation model | General-purpose robot control models |
 | Nov 2024 | Google's Big Sleep agent finds an exploitable SQLite bug | AI starts finding real security flaws |
 | Nov 25, 2024 | Anthropic introduces the Model Context Protocol (MCP) | Standard plug between AI apps and tools |
-| Dec 2024 | DeepSeek-V3 (final run about 2.79 million GPU-hours, about $5.6 million) | Efficient open-weight frontier-class model; FP8 training at scale |
+| Dec 2024 | DeepSeek-V3 (final run about 2.79 million H800 GPU-hours, about $5.6 million at $2 per GPU-hour; excludes research and earlier runs) | Efficient open-weight frontier-class model; FP8 training at scale |
 | Dec 2024 | OpenAI announces o3; GenCast weather model; alignment-faking paper | Reasoning scales; AI ensembles for weather; models gaming their training in tests |
 | Dec 2024 | US restricts HBM exports to China; GM ends Cruise robotaxis | Memory joins chip controls; a robotaxi exit |
 | Dec 2024 | LBNL report: US data centers used about 4.4% of US electricity in 2023 | Benchmark for AI's power demand |
@@ -267,7 +267,7 @@ timeline
 | May 2025 | Google's Veo 3 | Video generation with synchronized sound and dialogue |
 | May 22, 2025 | Claude Opus 4 and Sonnet 4; Claude Code generally available | First Anthropic model deployed under ASL-3 protections |
 | Jun 2025 | Tesla Robotaxi launches in Austin with safety monitors; US AI Safety Institute renamed CAISI | Camera-only robotaxis; US shifts to standards and security |
-| Jun 2025 | Court rulings in Bartz v. Anthropic and Kadrey v. Meta on training and fair use | Training on lawfully acquired books ruled fair use; pirated copies not |
+| Jun 2025 | Court rulings in Bartz v. Anthropic and Kadrey v. Meta on training and fair use | Bartz: training on lawfully acquired books ruled fair use, pirated copies not; Kadrey: Meta wins because the authors failed to show market harm |
 | Jun 2025 | Common Pile v0.1 (8 TB of openly licensed text) | Shows licensed-only training is viable at moderate scale |
 | Jul 1, 2025 | US Senate votes 99–1 to drop a 10-year moratorium on state AI laws | States keep power to regulate AI |
 | Jul 9, 2025 | NVIDIA becomes the first public company worth $4 trillion | AI chips become the center of the stock market |
@@ -288,18 +288,18 @@ timeline
 | Oct 6, 2025 | OpenAI–AMD deal for 6 GW of GPUs | A major second source for frontier compute |
 | Oct 13, 2025 | OpenAI–Broadcom deal for 10 GW of custom accelerators | Labs design their own chips |
 | Oct 2025 | Anthropic secures up to 1 million Google TPUs | Multi-vendor compute for a frontier lab |
-| Oct 2025 | Amazon's Project Rainier comes online with about 500,000 Trainium2 chips | One of the largest AI clusters, built for Anthropic |
+| Oct 2025 | Amazon's Project Rainier comes online with about 500,000 Trainium2 chips, according to Amazon | One of the largest AI clusters, built for Anthropic |
 | Oct 2025 | Microsoft's second Fairwater site (Atlanta) begins operating, linked to Wisconsin | Multi-site "AI WAN" training |
 | Oct 2025 | ChatGPT Atlas browser; ChatGPT at about 800 million weekly users | Agentic browsing; mass adoption |
 | Oct 28, 2025 | OpenAI restructures into a public benefit corporation | New governance for the largest AI lab |
 | Oct 29, 2025 | NVIDIA reaches $5 trillion | Scale of the AI investment boom |
-| Nov 2025 | Ironwood TPU generally available; Google's Project Suncatcher study of solar-powered TPU satellites | Google's seventh-generation TPU; orbital data centers studied |
+| Nov 2025 | Google announces Ironwood TPU general availability; Google's Project Suncatcher study of solar-powered TPU satellites | Google's seventh-generation TPU; orbital data centers studied |
 | Nov 2025 | Anthropic reports disrupting a largely AI-orchestrated cyber-espionage campaign | First reported case of AI doing most of a real cyberattack |
 | Nov 2025 | Anthropic–Microsoft–NVIDIA compute deal; Fluidstack data center plan | More multi-gigawatt commitments |
 | Nov 2025 | Yann LeCun leaves Meta to found a world-model company | A leading researcher bets beyond LLMs |
+| Nov 2025 | "Vibe coding" named Collins Word of the Year; WeatherNext 2 | AI coding enters everyday language; faster AI weather forecasts |
 | Nov 2025 | GPT-5.1; Gemini 3 Pro (Nov 18); Claude Opus 4.5 (Nov 24) | Three new flagships within weeks |
 | Nov 24, 2025 | US "Genesis Mission" executive order for AI-driven science | Government push for AI in research |
-| Nov 2025 | "Vibe coding" named Collins Word of the Year; WeatherNext 2 | AI coding enters everyday language; faster AI weather forecasts |
 | Dec 2025 | GPT-5.2; AWS Trainium3 generally available | More flagships; Amazon's first 3 nm AI chip |
 | Dec 2025 | MCP donated to the Linux Foundation's Agentic AI Foundation | Neutral governance for agent standards |
 | Dec 8, 2025 | US announces H200 sales to approved Chinese customers | Export policy loosens for older chips |
@@ -331,7 +331,7 @@ timeline
 | Feb 2026 | ChatGPT reaches about 900 million weekly active users; GPT-5.3-Codex | Mass adoption; specialized coding models |
 | Feb 23, 2026 | Anthropic reports large-scale distillation attacks on its models | Model copying becomes a security issue |
 | Feb 24, 2026 | Anthropic Responsible Scaling Policy v3.0 | Major rewrite of a frontier safety framework |
-| Mar 2026 | GPT-5.4; Stanford AI Index 2026 finds a 2.7% US–China gap on Arena scores | Open and Chinese models close in |
+| Mar 2026 | GPT-5.4; top US and Chinese models only 2.7% apart on Arena scores (as reported in the Stanford AI Index 2026) | Open and Chinese models close in |
 | Mar 2026 | Mississippi reportedly approves a permanent ~1.2 GW gas plant for xAI's Southaven site | Data centers build their own power plants |
 | Mar 16, 2026 | NVIDIA GTC 2026: Groq 3 LPX inference racks; Feynman preview | Inference-specific hardware; roadmap to 2028 |
 | Mar 20, 2026 | White House framework urges federal preemption of state AI rules | Federal–state battle over AI regulation |
@@ -368,12 +368,12 @@ timeline
 | Jul 21, 2026 | Gemini 3.6 Flash; Gemini 3.5 Pro reportedly never gets a general release | Not every planned model ships |
 | Jul 23, 2026 | FactSet: five big US tech companies on track for close to $800 billion of 2026 capital spending | Scale of the build-out |
 | Jul 24, 2026 | Claude Opus 5 | Anthropic's fifth-generation flagship |
-| Jul 27, 2026 | EU Digital Omnibus on AI in force | Delays high-risk rules to December 2027; adds bans on intimate deepfakes |
+| Jul 27, 2026 | EU Digital Omnibus on AI in force | Delays many high-risk rules to December 2027; adds bans on intimate deepfakes |
 | Jul 2026 | IMO 2026: several perfect-score claims by AI models, none officially certified as of October | A lesson in verifying dramatic claims |
 | Jul 30, 2026 | Gemini Robotics 2; Zoox receives the first US exemption for a purpose-built robotaxi | Whole-body humanoid control; cars without steering wheels |
 | Late Jul 2026 | Bipartisan FRONTIER Act introduced in the US House | Federal preemption debate continues |
 | Aug 2, 2026 | EU enforcement powers over general-purpose AI and transparency duties begin | EU AI Act gains teeth |
-| Aug 2026 | OpenAI says it can no longer rule out "Critical" cyber capability for an unreleased model, per press coverage | Cyber capability becomes the leading safety concern |
+| Aug 2026 | Press reports say OpenAI can no longer rule out "Critical" cyber capability for an unreleased model | Cyber capability becomes the leading safety concern |
 | Aug 10, 2026 | Zoox begins paid robotaxi rides in Las Vegas | Purpose-built robotaxis enter commercial service |
 | Aug 13, 2026 | DeepSeek-V4-Pro generally available; Gemini 3.7 Flash | Open-weight frontier model released; rapid Flash updates |
 | Aug 2026 | Qwen3.8 family, including a 2.4T open model | Chinese open-weight scale-up |
@@ -386,7 +386,7 @@ timeline
 | Sep 2026 | GPT-6 Astra scores 62.7% on ARC-AGI-3 (standard harness) and 99.9% with a custom harness | Benchmark falls within six months; harness choice matters |
 | Sep 21, 2026 | Grok 4.7 | SpaceX's AI unit releases a new model |
 | Sep 22, 2026 | Claude Opus 5.5 | Tops several capability indices as of October 2026 |
-| Late Sep or Oct 2026 | GPT-6 Sol and GPT-6 Luna (sources give Sep 22 or October) | Cheaper GPT-6 tiers |
+| Sep 22, 2026 | GPT-6 Sol and GPT-6 Luna | Cheaper GPT-6 tiers built on Astra's advances |
 | Sep 28, 2026 | Claude Sonnet 5.5; first US construction permit for a BWRX-300 small modular reactor (TVA, Tennessee) | Mid-tier update; new nuclear for the grid |
 | Sep 29, 2026 | GPT-6.1 Sol; appeals court rules in Thomson Reuters v. Ross that copying for a competing legal-search AI was not fair use | Price drops for near-frontier models; a copyright loss for AI training |
 | Around Sep 30, 2026 | Gemini 4 Argon announced (per Epoch) | Google's fourth-generation flagship |
@@ -398,4 +398,4 @@ timeline
 | Oct 16, 2026 | China proposes export controls on 40 technologies, including AI | Tech controls become two-way |
 | Oct 17, 2026 | DeepSeek V4.1 Flash update | Open-weight models update monthly too |
 | Oct 20, 2026 | Epoch AI tracks 95 large AI data centers with about 14.2 GW of IT power | A snapshot of the gigawatt era |
-| Oct 2026 | Mistral Large 4 preview; xAI's unit rebranded SpaceXSI | European open-weight frontier; corporate reshuffles |
+| Oct 2026 | Mistral Large 4 preview; xAI's unit rebranded SpaceXSI | Europe's flagship, with open weights promised; corporate reshuffles |

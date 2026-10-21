@@ -643,7 +643,7 @@ The arguments on each side are strong.
 
 ## The United Kingdom
 
-The UK chose a "pro-innovation" path. Instead of one horizontal AI law, a 2023 government white paper asked existing sector regulators (for finance, health, competition, data protection and so on) to apply shared principles such as safety, transparency and fairness within their own domains. A comprehensive UK AI bill has been repeatedly discussed and delayed; as of the research for this chapter, none had passed.
+The UK chose a "pro-innovation" path. Instead of one horizontal AI law, a 2023 government white paper asked existing sector regulators (for finance, health, competition, data protection and so on) to apply shared principles such as safety, transparency and fairness within their own domains. A comprehensive UK AI bill has been repeatedly discussed and delayed; as of October 2026, none had passed.
 
 The UK's most distinctive contribution is its testing institute. Created as the AI Safety Institute around the 2023 Bletchley summit, it was renamed the AI Security Institute in February 2025 to focus on national-security risks. It tests frontier models with the labs before release and runs large research programs on AI control, cyber and chemical and biological risks (Chapter 57).
 
