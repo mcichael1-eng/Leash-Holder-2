@@ -1,0 +1,91 @@
+#!/usr/bin/env python3
+"""Write ai-book/README.md from outline.json and the stats line printed by build.py.
+
+Usage: python3 gen_readme.py <book_dir> '<stats json>' [artifact_url]
+"""
+import json
+import sys
+from pathlib import Path
+
+book = Path(sys.argv[1])
+stats = json.loads(sys.argv[2])
+url = sys.argv[3] if len(sys.argv) > 3 else ""
+outline = json.loads((book / "outline.json").read_text())
+roman = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
+
+lines = [
+    "# The AI Field Guide",
+    "",
+    "*Everything about artificial intelligence, built up from nothing. October 2026 edition.*",
+    "",
+    "A complete book for someone with almost no computer-science background who uses AI chatbots every day "
+    "and wants to understand all of it: how computers work, the math, how machines learn, neural networks and "
+    "Transformers, how frontier labs build large language models, how to build with AI, chips and compute, "
+    "data centers and energy, every major branch of AI, safety, law and society, and the skills, careers and "
+    "opportunities that come with it.",
+    "",
+    f"- **{stats['parts']} parts, {stats['chapters']} chapters, 5 appendices**",
+    f"- **{stats['terms']:,} terms** in a searchable glossary (every term is defined where it first appears)",
+    f"- **{stats['diagrams']} diagrams**, plus tables and hand-worked numeric examples",
+    f"- **{stats['exercises']} exercises** from Easy to Challenge, none of which require prior coding experience",
+    f"- About **{round(stats['words'], -4):,} words**",
+    "",
+    "## How to read it",
+    "",
+]
+if url:
+    lines += [f"- **Online:** {url} (contents sidebar, every diagram drawn, searchable glossary, reading progress).", ""]
+lines += [
+    "- **Offline:** open `site/index.html` in a browser after building (see below), or read the Markdown chapters "
+    "in `chapters/` directly on GitHub, which also renders the diagrams.",
+    "- Read in order if you are new: each chapter assumes only the ones before it. Chapter 1 maps the whole field and "
+    "suggests three reading paths.",
+    "- Look for the boxes: **Definition** (every term), **Key idea**, **Analogy**, **Try it** (a one-minute experiment), "
+    "**At the frontier (2026)** (what leading labs do now) and **Watch out** (common mistakes).",
+    "",
+    "## Contents",
+    "",
+]
+for pi, part in enumerate(outline["parts"], 1):
+    lines.append(f"### Part {roman[pi]}: {part['title']}")
+    lines.append("")
+    lines.append(f"*{part.get('blurb', '')}*")
+    lines.append("")
+    for ch in part["chapters"]:
+        lines.append(f"{ch['n']}. [{ch['title']}](chapters/{ch['file']})")
+    lines.append("")
+lines += ["### Reference", ""]
+for ap in outline.get("appendices", []):
+    lines.append(f"- Appendix {ap['letter']}: [{ap['title']}](appendices/{ap['file']})")
+lines += ["- [Glossary](GLOSSARY.md) (generated)", ""]
+lines += [
+    "## How it was made",
+    "",
+    "1. **Research.** Ten research agents mapped every area of AI (foundations, machine learning and data, deep learning, "
+    "large language models, building with AI, compute and chips, data centers and energy, the branches of AI, "
+    "safety and policy, careers and opportunity), checking 2025–2026 facts against sources.",
+    "2. **Outline.** The findings became a 66-chapter outline with a brief for every chapter (`planning/OUTLINE.md`) "
+    "and a house style (`planning/STYLE.md`).",
+    "3. **Writing.** Writer agents drafted two chapters each from the research, then validated every diagram and "
+    "checked every chapter against the style rules.",
+    "4. **Editing.** One editor per Part re-checked worked calculations, facts, cross-references and consistency "
+    "across chapters, and hedged anything the research could not confirm.",
+    "",
+    "Facts about fast-moving areas (models, chips, data centers, prices, law) reflect sources available in October 2026 "
+    "and will date. Figures from secondary sources are marked as reported; check the Going deeper lists for primary sources.",
+    "",
+    "## Rebuilding the web version",
+    "",
+    "```bash",
+    "cd ai-book/build",
+    "npm install                       # mermaid-cli, used to draw the diagrams",
+    "python3 gen_extra_terms.py ../planning/research ..   # optional: research glossary terms (needs the research files)",
+    "python3 check.py ..               # style checks for every chapter",
+    "python3 build.py .. ../site       # writes site/index.html, p1.html ... p10.html, reference, glossary, exercises",
+    "```",
+    "",
+    "Needs Python 3, pandoc and Node.js. Set `CHROME_PATH` if Puppeteer cannot find a Chromium to render diagrams with.",
+    "",
+]
+(book / "README.md").write_text("\n".join(lines))
+print("README written")
