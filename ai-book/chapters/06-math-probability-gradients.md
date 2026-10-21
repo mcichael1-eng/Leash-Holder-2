@@ -25,7 +25,7 @@ The first is **how a model deals with uncertainty**. When you type "The best thi
 
 The second is **how a model learns**. Chapter 5 found the best line through four quiz scores using a spreadsheet's built-in shortcut. A chatbot with billions of knobs has no shortcut. Instead, it measures how wrong it is, works out which way to turn every knob to be a little less wrong, turns them a tiny amount, and repeats this trillions of times. To understand this you need slopes, gradients and the chain rule.
 
-Along the way you will pick up the statistics you need to read benchmark claims, news stories and company announcements without being fooled.
+Along the way you will pick up the statistics you need to read benchmark claims (scores on standard tests used to compare AI models), news stories and company announcements without being fooled.
 
 ## Exponentials: repeated multiplication
 
@@ -146,7 +146,7 @@ This is how researchers discovered scaling laws. In 2020, Jared Kaplan and colle
 
 > **Definition — Scaling laws:** Observed patterns, usually straight lines on log-log plots, showing that a model's error falls predictably as training compute, data and parameters grow together.
 
-> **At the frontier (2026):** Epoch AI's trend charts (updated February 2026) are all drawn on log scales: frontier training compute growing about 5 times per year, training costs about 3.5 times per year, AI chip performance per dollar improving about 49% per year, and GPU memory bandwidth improving only about 28% per year. That last, slower line is the "memory wall" from Chapter 5 made visible, and it explains why so much engineering effort goes into moving fewer bytes.
+> **At the frontier (2026):** Epoch AI's trend charts (updated February 2026) are all drawn on log scales: frontier training compute growing about 5 times per year, training costs about 3.5 times per year, AI chip performance per dollar improving about 49% per year, and GPU memory bandwidth improving only about 28% per year. That last, slower line is the "memory wall" from Chapter 2 made visible, and it explains why so much engineering effort goes into moving fewer bytes.
 
 ## Probability: a number between 0 and 1
 
@@ -371,7 +371,7 @@ This kind of model, which looks only at the previous word or few words, is calle
 
 > **Definition — N-gram model:** A simple language model that predicts the next word from only the previous few words (n − 1 of them), using counts from a large body of text. A "bigram" model looks back one word.
 
-Why aren't chatbots built this way? Because counting breaks down. Your prompt today, together with everything before it in your conversation, has almost certainly never appeared anywhere in history, so there is nothing to count. A large language model instead *learns a function* (Chapter 5) that computes `P(next token | everything so far)` for contexts it has never seen, by generalizing from patterns. It conditions on your entire conversation, up to its context window, not just the last word.
+Why aren't chatbots built this way? Because counting breaks down. Your prompt today, together with everything before it in your conversation, has almost certainly never appeared anywhere in history, so there is nothing to count. A large language model instead *learns a function* (Chapter 5) that computes `P(next token | everything so far)` for contexts it has never seen, by generalizing from patterns. It conditions on your entire conversation, up to its context window (the maximum amount of text it can take in at once), not just the last word.
 
 ## Bayes' rule: updating beliefs with evidence
 

@@ -127,7 +127,7 @@ Three examples tie rates to your chatbot.
 
 - **Speed.** Chatbots typically stream tens of tokens per second. At 50 tokens per second, a 1,000-token answer (about 750 words) takes 1,000 ÷ 50 = 20 seconds to finish appearing.
 - **Price.** Epoch AI found that the price of GPT-4-level performance on a standard knowledge test fell from $37.50 per million tokens in March 2023 to $0.18 by February 2025. For a 1,000-token answer, that is 3.75 cents falling to 0.018 cents, about 200 times cheaper in two years.
-- **Energy.** Google reported that the median text prompt in its Gemini apps in May 2025 used about 0.24 watt-hours of electricity (a company figure, not independently verified). That is about the energy a 10-watt LED bulb uses in 86 seconds: 0.24 Wh × 3,600 seconds per hour = 864 joules, and 864 ÷ 10 watts = 86.4 seconds.
+- **Energy.** Google reported that the median text prompt in its Gemini apps in May 2025 used about 0.24 watt-hours of electricity (a company figure, not independently verified). A watt-hour is the energy of drawing one watt for an hour, and a joule, the scientific unit of energy, is one watt for one second; the section on power and heat later in this chapter explains both. That is about the energy a 10-watt LED bulb uses in 86 seconds: 0.24 Wh × 3,600 seconds per hour = 864 joules, and 864 ÷ 10 watts = 86.4 seconds.
 
 > **Try it:** Ask your chatbot a question that needs a long answer and time it with your phone's stopwatch. Paste the answer into a free word counter, divide words by 0.75 to estimate tokens, and divide by the seconds to get tokens per second. You have just measured your first AI rate.
 
@@ -219,7 +219,7 @@ Binary addition follows the same rules as the column addition you learned in sch
 Let us add 5 + 3, which is 0101 + 0011, working from the right.
 
 ```
-  carries:   1 1 1
+  carries:    1 1 1
               0 1 0 1     (5)
             + 0 0 1 1     (3)
             ---------
@@ -552,6 +552,8 @@ The processor can only work on numbers in its registers, and it has only a few d
 | SSD | terabytes | about 100 µs | about 28 hours |
 | Hard drive | terabytes | about 10 ms | about 4 months |
 | Another machine across a data center or the internet | effectively unlimited | 1 ms and up | 11.6 days and up |
+
+SRAM and DRAM in the table are the two main kinds of memory chip: SRAM is faster and pricier per byte and is used for caches, while DRAM is denser and cheaper and is used for main memory.
 
 Look at the last column. If fetching from cache took one second, fetching from the SSD would take more than a day, and asking another computer over the network at least a million seconds, which you now know is 11.6 days. The gaps are factors of thousands, which is why so much of AI engineering is about keeping the right data close to the processor.
 

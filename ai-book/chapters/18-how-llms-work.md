@@ -106,7 +106,7 @@ One more preview. A model fresh out of its first and largest training stage is c
 
 ### Why not letters, and why not whole words?
 
-Computers handle only numbers, so text must become numbers before a model can read it (Chapter 3). But what size of chunk should get a number? Single letters make sequences very long: "The capital of France is" would be 23 items, each needing its own trip around the loop in Figure 18.2. Whole words fail the other way: no list can hold every name, typo, URL and word in every language, and a missing word would be unreadable.
+Computers handle only numbers, so text must become numbers before a model can read it (Chapter 3). But what size of chunk should get a number? Single letters make sequences very long: "The capital of France is" would be 24 items (counting the spaces), each needing its own trip around the loop in Figure 18.2. Whole words fail the other way: no list can hold every name, typo, URL and word in every language, and a missing word would be unreadable.
 
 Modern models use something in between: **tokens**, common chunks of text. Frequent words like " the" or " capital" are single tokens. A rare made-up word like "flumbering" might become "fl", "umber", "ing". Any text can be written with tokens, and common text needs few of them.
 
@@ -145,15 +145,15 @@ Let's build one. Our training text is a tiny corpus of five words, each appearin
 ```
 Corpus: chat x6, chats x3, hat x4, that x5, cat x2
 
-Step  Pair merged   Count  New token  How the words now look
-----  -----------   -----  ---------  -------------------------
- 0    (letters)       -        -      c h a t | t h a t | h a t
- 1    a + t          20       at      c h at  | t h at  | h at
- 2    h + at         18       hat     c hat   | t hat   | hat
- 3    c + hat         9       chat    chat    | t hat   | hat
- 4    t + hat         5       that    chat    | that    | hat
- 5    chat + s        3       chats   chats   | that    | hat
- 6    c + at          2       cat     cat     | that    | hat
+Step  Pair merged  Count  All five words after this step
+----  -----------  -----  -----------------------------------------
+ 0    (letters)       -   c h a t | c h a t s | h a t | t h a t | c a t
+ 1    a + t          20   c h at | c h at s | h at | t h at | c at
+ 2    h + at         18   c hat | c hat s | hat | t hat | c at
+ 3    c + hat         9   chat | chat s | hat | t hat | c at
+ 4    t + hat         5   chat | chat s | hat | that | c at
+ 5    chat + s        3   chat | chats | hat | that | c at
+ 6    c + at          2   chat | chats | hat | that | cat
 
 Final vocabulary: a c h s t + at hat chat that chats cat
 ```
@@ -164,7 +164,7 @@ Our tokenizer is now a vocabulary of 11 tokens plus an ordered list of six merge
 Now **use** the tokenizer on words it never saw. To encode a word, split it into letters and apply the merge rules in the order they were learned:
 
 - "hats" → h a t s → (rule 1) h at s → (rule 2) hat s. No rule joins "hat" and "s", so the result is two tokens: [hat] [s].
-- "thatch" → t h a t c h → h at → t hat c h → (rule 4) that c h. No rule joins "c" and "h" by themselves (we only ever merged "c" with "hat"), so the result is [that] [c] [h].
+- "thatch" → t h a t c h → (rule 1) t h at c h → (rule 2) t hat c h → (rule 4) that c h. No rule joins "c" and "h" by themselves (we only ever merged "c" with "hat"), so the result is [that] [c] [h].
 
 The tokenizer handled a word it had never seen by falling back to smaller pieces. That is why real tokenizers never meet a word they cannot write.
 

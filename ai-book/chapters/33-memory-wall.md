@@ -108,7 +108,7 @@ NVMe SSD (~10 GB/s)      |########
                          +-------+-------+-------+-------+-------
                          1 GB/s  10      100     1 TB/s  10 TB/s
 ```
-*Figure 33.2: Bandwidth of each level on a log scale. NVLink (the link to another GPU's memory, Chapter 34) and PCIe (the link from the CPU to the GPU) are included because data often has to cross them. The on-chip SRAM figure is a rough "tens of TB/s" order of magnitude.*
+*Figure 33.2: Bandwidth of each level on a log scale. NVLink (the link to another GPU's memory, Chapter 34) and PCIe (the link from the CPU to the GPU) are included because data often has to cross them; NVIDIA's NVLink figure counts both directions together, while the PCIe figure is for one direction. The on-chip SRAM figure is a rough "tens of TB/s" order of magnitude.*
 
 ### Latency at human scale
 

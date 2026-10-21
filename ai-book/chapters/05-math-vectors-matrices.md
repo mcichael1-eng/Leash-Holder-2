@@ -883,7 +883,7 @@ AI has walked steadily down a ladder of smaller and smaller number formats. Here
 | BF16 | 16 | 2 | 2 to 3 | 3.4 × 10^38 | 3.140625 | Default for training large models |
 | FP16 | 16 | 2 | 3 | 65,504 | 3.140625 | Older half precision |
 | FP8 (E4M3) | 8 | 1 | 1 | 448 | 3.25 | Training and serving on recent chips |
-| FP4 (E2M1) | 4 | 0.5 | only 16 possible values | 6 | 3 | Serving, and emerging training |
+| FP4 (E2M1) | 4 | 0.5 | only 16 bit patterns | 6 | 3 | Serving, and emerging training |
 
 > **Definition — FP32:** "Single precision": 32 bits (4 bytes) per number, with about 7 significant decimal digits. It was the standard for training neural networks and is still used for the most sensitive numbers.
 
@@ -893,7 +893,7 @@ AI has walked steadily down a ladder of smaller and smaller number formats. Here
 
 > **Definition — FP8:** An 8-bit (1-byte) floating-point format, supported in hardware since NVIDIA's Hopper chips. Variants trade detail against range (E4M3 keeps more detail, E5M2 more range).
 
-> **Definition — FP4:** A 4-bit (half-byte) floating-point format that can represent only 16 distinct values: 0, 0.5, 1, 1.5, 2, 3, 4, 6 and their negatives. It works only with scaling tricks that share one scale factor across a block of numbers.
+> **Definition — FP4:** A 4-bit (half-byte) floating-point format with only 16 possible bit patterns, standing for 0, 0.5, 1, 1.5, 2, 3, 4, 6 and their negatives. It works only with scaling tricks that share one scale factor across a block of numbers.
 
 > **Definition — INT8 and INT4:** Formats that store whole numbers in 8 or 4 bits, multiplied by a shared scale factor to represent decimals. They are mainly used to shrink trained models for serving.
 

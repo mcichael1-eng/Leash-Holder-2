@@ -715,7 +715,7 @@ flowchart LR
 
 Each arrow is an agreement (UTF-8, JSON, the tokenizer's vocabulary) and each box is software. Underneath all of it, billions of transistors switch on and off.
 
-> **At the frontier (2026):** As of late 2026, leading models accept text, images, PDFs and audio in one conversation, write and run their own code in sandboxes, and can return JSON that exactly matches a structure you specify (Chapter 26). Every one of those abilities still rests on the bytes, encodings and formats in this chapter.
+> **At the frontier (2026):** As of late 2026, leading models accept text, images, PDFs and audio in one conversation, write and run their own code in sandboxes (sealed-off test environments), and can return JSON that exactly matches a structure you specify (Chapter 26). Every one of those abilities still rests on the bytes, encodings and formats in this chapter.
 
 ## In plain English
 
@@ -847,7 +847,7 @@ Encoding, ASCII, Unicode, Code point, UTF-8, Token, Tokenizer, Pixel, RGB, Resol
 
 - **Document-to-data services.** Law firms, insurers, hospitals and accountants sit on mountains of PDFs, scans and recordings. People who can turn them into clean JSON or CSV with AI, and check the results, are paid to save thousands of hours of manual data entry.
 - **Small-business automation from unstructured data.** Bookkeepers and small shops pay for workflows that read receipts, invoices and emails and fill spreadsheets automatically. This needs only the formats in this chapter, an AI model and careful testing.
-- **Reviewing and hardening AI-written code.** Vibe-coded prototypes are cheap, but companies need people who can read Python, write tests, use Git and catch logic errors before software reaches customers. Code review and QA testing skills are rising in value, not falling.
+- **Reviewing and hardening AI-written code.** Vibe-coded prototypes (software built by describing it to an AI and accepting the code without reading it closely) are cheap, but companies need people who can read Python, write tests, use Git and catch logic errors before software reaches customers. Code review and QA testing skills are rising in value, not falling.
 - **AI-assisted security work.** Project Glasswing showed AI models finding long-hidden bugs in operating systems and open-source libraries. Defenders who understand operating systems, open source and how to triage AI-found vulnerabilities are in demand at software vendors and security firms.
 - **Open-source contribution as a career launchpad.** Fixing documentation, writing tests and answering issues on popular AI projects on GitHub builds a public portfolio that employers can inspect directly.
 - **Model and license auditing.** With about 3.17 million models on Hugging Face as of October 2026 and licenses that vary widely, companies need people who can check whether a model's license, data disclosure and terms fit their use before they build on it.

@@ -76,7 +76,7 @@ A few of these numbers are worth checking with your own arithmetic, because that
 - **Rack memory:** 72 GPUs × 288 GB = 20,736 GB ≈ 20 TB. NVIDIA's page says 20 TB. It matches.
 - **Rack compute:** 72 × 15 PF = 1,080 PF. NVIDIA's page lists 1,080 PF dense FP4. It matches.
 - **Power per GPU slot:** 130 kW ÷ 72 ≈ 1.8 kW. That includes the GPU's share of CPUs, switches, NICs and pumps, which is why it is much more than any single chip's rating.
-- **Cluster power:** 100,000 ÷ 72 ≈ 1,389 racks. 1,389 × 130 kW ≈ 180 MW of IT load. Add cooling and power losses at a PUE of 1.2 (Chapter 40) and the building draws about 217 MW.
+- **Cluster power:** 100,000 ÷ 72 ≈ 1,389 racks. 1,389 × 130 kW ≈ 180 MW of IT load. Add cooling and power losses at a PUE of 1.2 (power usage effectiveness: the whole building's power divided by the computers' power, Chapter 40) and the building draws about 217 MW.
 
 There is a second pattern hiding in the ladder. Every rung outward, the links get longer, slower and more expensive per bit.
 
@@ -88,7 +88,7 @@ There is a second pattern hiding in the ladder. Every rung outward, the links ge
 | Back-end network (fiber) | tens to hundreds of meters | 0.4–1.6 Tb/s, which is 50–200 GB/s | microseconds |
 | Between campuses (long-haul fiber) | hundreds of kilometers | a small, shared slice | about 5 µs per km, so milliseconds |
 
-*Table 34.2: Bandwidth falls and latency rises at every step outward from the chip.*
+*Table 34.2: Bandwidth falls and latency rises at every step outward from the chip. NVIDIA's NVLink figures count both directions together; the network figures are for one direction.*
 
 > **Key idea:** Bandwidth drops roughly tenfold, and latency rises, at each step away from the chip. The whole art of building AI clusters is putting the chattiest work on the fastest, shortest links and the patient work on the long ones.
 
@@ -212,7 +212,7 @@ Meta's Llama 3 405B model was trained on 16,384 H100s; at eight per server, that
 
 > **Definition — DPU (Data Processing Unit) and SuperNIC:** Network cards with their own processors that take over networking, storage and security chores from the main CPU (examples: NVIDIA BlueField, AMD Pensando). NVIDIA uses "SuperNIC" for its fastest GPU-facing network cards.
 
-Why so many network cards? Because PCIe is slow compared with what the GPUs need. NVLink on the Hopper generation moved 900 GB/s per GPU. A PCIe 5.0 slot moves about 64 GB/s per direction. That is a 14× gap, and it is why GPU-to-GPU traffic avoids PCIe whenever it can.
+Why so many network cards? Because PCIe is slow compared with what the GPUs need. NVLink on the Hopper generation moved 900 GB/s per GPU, counting both directions together. A 16-lane PCIe 5.0 slot moves about 64 GB/s per direction, or 128 GB/s counting both. That is a 7× gap, the figure NVIDIA itself quotes, and it is why GPU-to-GPU traffic avoids PCIe whenever it can.
 
 ### Superchips and compute trays
 
@@ -275,7 +275,7 @@ There are two ways to grow a computer, and the whole networking story turns on t
 
 Scale-up links are short, extremely fast and let chips treat each other's memory almost like their own. Scale-out links are longer, slower and work by sending messages. NVIDIA's scale-up technology is NVLink.
 
-> **Definition — NVLink:** NVIDIA's high-speed GPU-to-GPU connection, far faster than PCIe: about 900 GB/s per GPU on Hopper (NVLink 4), 1.8 TB/s on Blackwell (NVLink 5), and 3–3.6 TB/s on Rubin (NVLink 6).
+> **Definition — NVLink:** NVIDIA's high-speed GPU-to-GPU connection, far faster than PCIe: about 900 GB/s per GPU on Hopper (NVLink 4), 1.8 TB/s on Blackwell (NVLink 5), and 3–3.6 TB/s on Rubin (NVLink 6). NVIDIA quotes these figures counting both directions together, so each direction gets half.
 
 A link between two GPUs is nice; what you really want is for *every* GPU to talk to *every* other GPU at full speed at the same time. Wiring every pair directly does not scale (72 GPUs would need 2,556 separate pairwise links), so NVIDIA built a switch chip for NVLink.
 
@@ -333,11 +333,11 @@ Now the payoff. Why does it matter that 72 GPUs act as one?
 
 **Worked example: moving 1 GB.** Suppose a step of a training run or a big inference job needs to move 1 GB of numbers from one GPU to another.
 
-- Over NVLink 5 at 1.8 TB/s: 1 GB ÷ 1,800 GB/s ≈ 0.56 milliseconds.
+- Over NVLink 5, rated 1.8 TB/s counting both directions, so 900 GB/s each way: 1 GB ÷ 900 GB/s ≈ 1.1 milliseconds.
 - Over an 800 Gb/s network card (which is 100 GB/s, see the Watch out below): 1 GB ÷ 100 GB/s = 10 milliseconds.
 - Over a PCIe 5.0 slot at about 64 GB/s: about 16 milliseconds.
 
-The NVLink path is about 18 times faster than the network. Some kinds of work need such exchanges every single layer of the model, dozens of times per token. In particular, *tensor parallelism* (splitting each matrix multiplication across GPUs) and *expert parallelism* (spreading the experts of a mixture-of-experts model across GPUs, Chapter 17) generate constant, all-to-all traffic. Inside an NVL72, a giant mixture-of-experts model can spread its experts across 72 GPUs and route each token to the right expert at NVLink speed. Outside the rack, the same traffic would choke the network. NVIDIA's projected claims for Vera Rubin, such as training large mixture-of-experts models with a quarter of the GPUs needed on GB200, rest heavily on this.
+The NVLink path is about 9 times faster than the network. Some kinds of work need such exchanges every single layer of the model, dozens of times per token. In particular, *tensor parallelism* (splitting each matrix multiplication across GPUs) and *expert parallelism* (spreading the experts of a mixture-of-experts model across GPUs, Chapter 17) generate constant, all-to-all traffic. Inside an NVL72, a giant mixture-of-experts model can spread its experts across 72 GPUs and route each token to the right expert at NVLink speed. Outside the rack, the same traffic would choke the network. NVIDIA's projected claims for Vera Rubin, such as training large mixture-of-experts models with a quarter of the GPUs needed on GB200, rest heavily on this.
 
 > **Key idea:** An NVL72 rack is valuable not because it has 72 GPUs (you could buy 72 GPUs in nine ordinary servers) but because all 72 share one memory-like fabric. To the software it looks like one GPU with 20 TB of memory.
 
@@ -411,7 +411,7 @@ There is one more power problem unique to AI. In a training run, thousands of GP
 
 ### Why a second network
 
-No rack is big enough. A 100,000-GPU cluster made of NVL72 racks is about 1,389 racks, and those racks must cooperate on one training run. They are joined by a conventional, if extremely fast, network. Each GPU typically gets 400 Gb/s to 1.6 Tb/s of scale-out bandwidth, which is 50–200 GB/s, roughly ten to twenty times less than its NVLink bandwidth.
+No rack is big enough. A 100,000-GPU cluster made of NVL72 racks is about 1,389 racks, and those racks must cooperate on one training run. They are joined by a conventional, if extremely fast, network. Each GPU typically gets 400 Gb/s to 1.6 Tb/s of scale-out bandwidth, which is 50–200 GB/s in each direction, roughly a tenth of its NVLink bandwidth in each direction.
 
 > **Watch out:** Networking speeds are quoted in **bits** per second (Gb/s, lowercase b) while memory and NVLink speeds are quoted in **bytes** per second (GB/s, uppercase B). One byte is 8 bits, so an "800G" network card moves 100 GB/s, not 800 GB/s. Mixing them up makes networks look eight times faster than they are.
 
@@ -730,7 +730,7 @@ Die, Reticle limit, Chiplet, UCIe (Universal Chiplet Interconnect Express), HBM 
 
 2. **[Easy] See real GPU wiring in Google Colab.** (1) In Colab, choose Runtime, Change runtime type, and pick a GPU. (2) In a cell, run `!nvidia-smi` and note the GPU name, memory and power draw. (3) Run `!nvidia-smi topo -m` and read the grid (on one GPU it is tiny; note the legend explaining NV#, PIX and SYS links). (4) Run `!nvidia-smi -q | grep -i -A3 "link"` to see the PCIe generation and link width. (5) Write two sentences on what would change on an 8-GPU NVLink server. **What you'll learn:** GPUs are physical devices with specific links, and tools exist to inspect exactly how they are wired.
 
-3. **[Easy] Bits, bytes and transfer times (spreadsheet).** (1) Make rows for: PCIe 5.0 x16 (64 GB/s), NVLink 5 (1,800 GB/s), NVLink 6 (3,600 GB/s), an 800 Gb/s NIC, a 1.6 Tb/s NIC and a 1 Gb/s home internet line. (2) Convert every bit rate to GB/s by dividing by 8. (3) Compute the time to move 1 GB, 100 GB and 1 TB over each. (4) Highlight the fastest and slowest in each column. **What you'll learn:** the bits-versus-bytes trap, and why a 20 TB NVL72 behaves so differently from 72 GPUs on a network.
+3. **[Easy] Bits, bytes and transfer times (spreadsheet).** (1) Make rows for: PCIe 5.0 x16 (64 GB/s each way), NVLink 5 (900 GB/s each way; NVIDIA's 1.8 TB/s counts both directions), NVLink 6 (1,800 GB/s each way at launch), an 800 Gb/s NIC, a 1.6 Tb/s NIC and a 1 Gb/s home internet line. (2) Convert every bit rate to GB/s by dividing by 8. (3) Compute the time to move 1 GB, 100 GB and 1 TB over each. (4) Highlight the fastest and slowest in each column. **What you'll learn:** the bits-versus-bytes trap, and why a 20 TB NVL72 behaves so differently from 72 GPUs on a network.
 
 4. **[Medium] Build the ladder in a spreadsheet.** (1) Create rows for package, superchip, compute tray, rack, a 16-rack pod, a 100,000-GPU cluster and a 1 GW campus. (2) Columns: GPUs, HBM (288 GB per GPU), dense FP4 (15 PF per GPU) and IT power (130 kW per 72-GPU rack). (3) For the campus, work backwards: 1 GW ÷ 1.2 (PUE) ÷ 130 kW per rack = how many racks and GPUs? (4) Compare your GPU count with Epoch AI's figure of about 1.1 million H100-equivalents for Colossus 2 and explain why the units differ. **What you'll learn:** how chips, racks and power scale together, and how to sanity-check claims about gigawatt sites.
 

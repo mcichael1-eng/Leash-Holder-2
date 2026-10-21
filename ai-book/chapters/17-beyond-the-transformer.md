@@ -151,7 +151,7 @@ Because only a few experts run per token, an MoE model has two sizes. Total para
 
 Work through DeepSeek V4-Pro, the largest open model from DeepSeek as of late 2026.
 - **Compute per token:** 2 × 49 billion ≈ 98 billion operations. A dense 1.6T model would need 2 × 1.6 trillion = 3.2 trillion, about 33 times more.
-- **Training compute:** with the 6 × N × D rule (Chapter 19), using active parameters for N and about 33 trillion training tokens for D: 6 × 49e9 × 33e12 ≈ 9.7 × 10^24 operations, matching Epoch AI's estimate. A dense 1.6T model trained on the same data would need about 3.2 × 10^26, again about 33 times more.
+- **Training compute:** with the 6 × N × D rule (Chapter 19), using active parameters for N and about 33 trillion training tokens for D: 6 × 49e9 × 33e12 ≈ 9.7 × 10^24 operations, matching the estimate of Epoch AI, a research group that tracks AI training runs. A dense 1.6T model trained on the same data would need about 3.2 × 10^26, again about 33 times more.
 - **Memory:** all 1.6 trillion parameters must sit in fast memory. DeepSeek stores the expert weights in a 4-bit format (FP4) and most other weights in 8-bit (FP8). At half a byte per parameter, 1.6T is about 0.8 TB; at one byte, 1.6 TB. Either way, that is a multi-GPU server, not a laptop.
 
 Precision matters for MoE because the expert weights are most of the memory. OpenAI's open gpt-oss-120b stores its MoE weights in MXFP4, about 4.25 bits per number, which is how a 116.8-billion-parameter model fits on a single 80 GB GPU. Roughly: 116.8 billion × 4.25 bits ÷ 8 ≈ 62 GB, if every weight used that format (Chapter 23 covers quantization).
@@ -339,7 +339,7 @@ The modern line runs:
 - **S4 (2021).** Albert Gu and colleagues borrowed state-space equations from control engineering and found a way to train them in parallel like a convolution. S4 was strong on very long sequences but weak on language, because its update rule was the same for every token.
 - **Mamba (December 2023).** Gu and Tri Dao made the state updates selective (input-dependent), with a GPU-friendly algorithm to keep training fast. Mamba was among the first such models to match Transformers of similar size on language.
 - **Mamba-2 (2024).** A reformulation showing that SSMs and attention are mathematically close relatives, which made training much faster on GPUs.
-- **Mamba-3 (2026, an oral paper at ICLR 2026).** Adds a more expressive recurrence, complex-valued state updates and a "multi-input, multi-output" design. At 1.5 billion parameters it beat Gated DeltaNet on average downstream accuracy and matched Mamba-2's perplexity with half the state size.
+- **Mamba-3 (2026, an oral paper at ICLR 2026).** Adds a more expressive recurrence, complex-valued state updates and a "multi-input, multi-output" design. At 1.5 billion parameters it beat Gated DeltaNet on average downstream accuracy and matched Mamba-2's perplexity (a standard score of how well a model predicts text, where lower is better; Chapter 12) with half the state size.
 
 > **Definition — Mamba:** A selective state-space model introduced in December 2023 whose state updates depend on the input, letting it choose what to remember. Successors are Mamba-2 (2024) and Mamba-3 (2026).
 
@@ -484,9 +484,9 @@ A frontier pretraining run can occupy tens of thousands of chips for months. If 
 
 > **Definition — Attention sink:** The habit of attention heads to park leftover attention on the first token when nothing else is relevant, a side effect of softmax weights having to add up to 1.
 
-**DyT (Dynamic Tanh).** Normalization layers (Chapter 13) keep numbers in a sane range but cost time. A 2025 paper by Zhu, Chen, He, LeCun and Liu showed that replacing them with a simple squashing function, `tanh(α × x)` with a learned α, matches normalized Transformers in many settings. With α = 0.5: an input of 0.2 becomes about 0.10, an input of 4 becomes about 0.96, and an outlier of −10 becomes about −1.00. Ordinary values pass almost unchanged; extreme ones are tamed.
+**DyT (Dynamic Tanh).** Normalization layers (Chapter 13) keep numbers in a sane range but cost time. A 2025 paper by Zhu, Chen, He, LeCun and Liu showed that replacing them with a simple squashing function, `tanh(α × x)` with a learned α, matches normalized Transformers in many settings. With α = 0.5: an input of 0.2 becomes about 0.10, an input of 4 becomes about 0.96, and an outlier of −10 becomes about −1.00. Ordinary values are simply scaled by α, almost in a straight line (a learned scale afterwards can restore their size); extreme ones are tamed.
 
-> **Definition — DyT (Dynamic Tanh):** A 2025 replacement for normalization layers that passes each number through tanh(α × x) with a learned α, squashing outliers while leaving ordinary values nearly untouched.
+> **Definition — DyT (Dynamic Tanh):** A 2025 replacement for normalization layers that passes each number through tanh(α × x) with a learned α, squashing outliers while keeping ordinary values in nearly straight-line proportion.
 
 > **Analogy:** These tricks are the circuit breakers and surge protectors of a power grid. Nobody notices them on a normal day, but without them one surge anywhere in a giant system can take the whole thing down.
 
@@ -496,7 +496,7 @@ Several research directions question whether bigger stacks of fixed layers are t
 
 - **Looped (recursive) models.** Instead of 100 different layers, run a smaller block many times, refining an answer with each pass. The Tiny Recursive Model (October 2025) reported that a network with only millions of parameters, looping its reasoning, could compete with far larger language models on certain grid puzzles. Whether looping can substitute for scale on general tasks is open.
 - **Test-time memory.** Google's Titans research gives a model a memory module whose weights keep updating while it reads, storing what surprised it. It is one approach to the bigger goal of models that keep learning after deployment (Chapter 24).
-- **Multi-token prediction.** Training a model to predict several upcoming tokens, not just the next one, gives a richer learning signal and can speed up generation through speculative decoding (Chapter 23). DeepSeek-V3 and NVIDIA's Nemotron 3 Super use it.
+- **Multi-token prediction.** Training a model to predict several upcoming tokens, not just the next one, gives a richer learning signal and can speed up generation through speculative decoding, where several tokens are drafted cheaply and then checked in one pass (Chapter 23). DeepSeek-V3 and NVIDIA's Nemotron 3 Super use it.
 - **Depth.** A NeurIPS 2025 best paper, "1000 Layer Networks for Self-Supervised RL," scaled networks for reinforcement learning to 1,024 layers, a reminder that how deep networks can usefully go is still being explored.
 
 > **Definition — Looped (recursive) model:** A network that applies the same block of layers repeatedly to refine its answer, trading more computation per answer for fewer distinct parameters.

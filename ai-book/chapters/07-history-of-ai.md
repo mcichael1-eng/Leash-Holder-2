@@ -588,7 +588,7 @@ On January 21, 2025 OpenAI and partners announced Stargate, a plan for up to $50
 - **January 23:** OpenAI's Operator, an agent that browses the web for you.
 - **February 2:** OpenAI's Deep Research; the same day Andrej Karpathy coined "vibe coding", later named Collins Dictionary's 2025 Word of the Year.
 - **February 24:** Claude 3.7 Sonnet, the first "hybrid" model you could ask to think or not, and Claude Code, a coding agent that works in a terminal.
-- **May 22:** Claude Opus 4 and Sonnet 4; Opus 4 was the first model Anthropic deployed under its stricter ASL-3 safety protections.
+- **May 22:** Claude Opus 4 and Sonnet 4; Opus 4 was the first model Anthropic deployed under its stricter ASL-3 safety protections (AI Safety Level 3, a tier of Anthropic's safety policy with tighter security and extra safeguards against misuse).
 - **July:** ChatGPT agent, which works on its own virtual computer. **October:** OpenAI's ChatGPT Atlas, a web browser with an agent built in.
 
 > **Definition — Vibe coding:** Building software by describing what you want to an AI and accepting the code it writes, often without reading it closely. The term was coined by Andrej Karpathy in February 2025 (see Chapter 29).
@@ -650,11 +650,11 @@ On September 3, 2026 OpenAI unveiled GPT-6 Astra. OpenAI described it as its lar
 
 ### Open weights and new players
 
-DeepSeek-V4-Pro has 1.6 trillion total parameters (49 billion active per token), a 1-million-token context window and a permissive MIT license. Moonshot's Kimi K3 (July 16) has 2.8 trillion parameters. Stanford's 2026 AI Index found the top US model led the top Chinese model by only 2.7% on Arena scores as of March 2026. Meta replaced its Llama line with a new "Muse" family, releasing Muse Wonder on October 13, 2026 according to press reports. SpaceX acquired xAI in February 2026 (an all-stock deal, per reports), and the combined company released Grok 4.7 in September. Not every plan shipped: Google's Gemini 3.5 Pro reportedly never got a general release, and OpenAI announced in March 2026 that it would shut down its Sora video app.
+DeepSeek-V4-Pro has 1.6 trillion total parameters (49 billion active per token), a 1-million-token context window and a permissive MIT license. Moonshot's Kimi K3 (July 16) has 2.8 trillion parameters. Stanford's 2026 AI Index found the top US model led the top Chinese model by only 2.7% on Arena scores (ratings from a public website where people vote between two anonymous models' answers) as of March 2026. Meta replaced its Llama line with a new "Muse" family, releasing Muse Wonder on October 13, 2026 according to press reports. SpaceX acquired xAI in February 2026 (an all-stock deal, per reports), and the combined company released Grok 4.7 in September. Not every plan shipped: Google's Gemini 3.5 Pro reportedly never got a general release, and OpenAI announced in March 2026 that it would shut down its Sora video app.
 
 ### Measuring a moving target
 
-Benchmarks now fall within months. ARC-AGI-3, launched March 25, 2026, used interactive puzzle games with no instructions; at launch humans scored 100% and frontier AI 0.51%. By September GPT-6 Astra scored 62.7% using the standard setup, and 99.9% with a different "harness" that let it keep its reasoning between steps. ARC Prize declined to call this AGI. Humanity's Last Exam, launched in January 2025 when frontier models scored under 10%, saw Claude Opus 5.5 reach about 61% by October 2026 (text-only, per Artificial Analysis).
+Benchmarks now fall within months. ARC-AGI-3, launched March 25, 2026, used interactive puzzle games with no instructions; at launch humans scored 100% and frontier AI 0.51%. By September GPT-6 Astra scored 62.7% using the standard setup, and 99.9% with a different "harness" that let it keep its reasoning between steps. ARC Prize declined to call this AGI. Humanity's Last Exam, a set of very hard expert-written questions launched in January 2025 when frontier models scored under 10%, saw Claude Opus 5.5 reach about 61% by October 2026 (text-only, per Artificial Analysis).
 
 > **Definition — Benchmark saturation:** The point at which top models score so high on a test that it can no longer tell them apart, forcing the field to build harder tests.
 

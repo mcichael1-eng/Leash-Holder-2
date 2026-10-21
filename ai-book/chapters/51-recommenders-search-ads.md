@@ -128,7 +128,7 @@ Neighbor-based methods hit a wall. Real tables are almost entirely empty: a typi
 
 > **Definition — Matrix factorization:** Approximating a big, mostly empty user-by-item table as the product of two much smaller tables: one giving each user a short list of taste numbers and one giving each item a short list of trait numbers. A predicted rating is the dot product of a user's tastes and an item's traits.
 
-Let's work one completely. Four friends have rated four films on a 1 to 5 scale. A question mark means they have not seen it.
+Here is one worked completely. Four friends have rated four films on a 1 to 5 scale. A question mark means they have not seen it.
 
 ```
               Alien   Star Wars   Titanic   Notebook

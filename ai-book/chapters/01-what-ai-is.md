@@ -19,7 +19,7 @@ Nothing. Start here. This chapter assumes only that you have typed a question in
 
 ## Start with what you already know
 
-You have used a chatbot almost every day for more than a year. You type a question, press Enter, and after a short pause the answer streams onto your screen a few words at a time. You have seen it write a cover letter in seconds and then confidently invent a book that does not exist. You are in good company: ChatGPT alone reached about 900 million weekly users by February 2026, and the 2026 Stanford AI Index reported that generative AI reached 53% population adoption within just three years.
+You have used a chatbot almost every day for more than a year. You type a question, press Enter, and after a short pause the answer streams onto your screen a few words at a time. You have seen it write a cover letter in seconds and then confidently invent a book that does not exist. You are in good company: ChatGPT alone reached about 900 million weekly users by February 2026, and the 2026 Stanford AI Index, an annual report on the state of AI, found that generative AI reached 53% population adoption within just three years.
 
 What you probably do not know is what happens underneath. That is what this book is for. We will use your own chatbot as the running example from the first page to the last, and keep asking one question: what is really happening when I press Enter?
 
@@ -297,7 +297,7 @@ A second difficulty is that AI progress is uneven. Researchers call this the "ja
 
 > **Analogy:** Arguing about "when AGI arrives" is like arguing about when a child "becomes an adult." Is it at 16 when they can drive, at 18 when they can vote, or when they pay their own rent? Before arguing about the date, agree on the definition.
 
-So how close is AGI? Well-informed people disagree strongly. Some lab leaders and forecasters expect AI that can do most remote knowledge work within a few years, pointing to evidence such as METR's finding that the length of tasks AI agents can complete has been doubling roughly every seven months since 2019. Skeptics point to missing ingredients: reliability over long tasks, learning continuously after training, and robust understanding of the physical world. Chapter 60 lays out this debate fairly. For now, carry one habit: when you read that something "is AGI," ask "by what definition, measured how?"
+So how close is AGI? Well-informed people disagree strongly. Some lab leaders and forecasters expect AI that can do most remote knowledge work within a few years, pointing to evidence such as a finding by METR, an independent research group that tests AI agents, that the length of tasks AI agents can complete has been doubling roughly every seven months since 2019. Skeptics point to missing ingredients: reliability over long tasks, learning continuously after training, and robust understanding of the physical world. Chapter 60 lays out this debate fairly. For now, carry one habit: when you read that something "is AGI," ask "by what definition, measured how?"
 
 > **Watch out:** Some 2026 marketing describes new models as AGI or as a "generational leap." Treat such words as claims to examine, not facts: does the claim name a specific definition and a specific measurement?
 
@@ -402,7 +402,7 @@ flowchart TD
 | Data centers and power | Buildings full of racks, plus power and cooling | The largest AI sites approach 1 gigawatt, roughly the electricity of a million US homes | Part VII |
 | Training data | Text, images, code and audio that models learn from | Meta's Llama 3 was trained on about 15.6 trillion tokens | Chapter 11, Chapter 19 |
 | Models | Trained neural networks | Frontier models have hundreds of billions to trillions of parameters | Parts III and IV |
-| Apps and agents | Products built on models | Hugging Face hosts about 3.17 million public models (October 2026) | Part V |
+| Apps and agents | Products built on models | Hugging Face, the main website for sharing models, hosts about 3.17 million of them (October 2026) | Part V |
 | You | Users, builders, workers, citizens | About 900 million weekly ChatGPT users (February 2026) | Parts IX and X |
 
 > **Definition — Chip (integrated circuit):** A small slice of silicon with billions of microscopic switches and wires manufactured onto it. Processors, memory and AI accelerators are all chips.
@@ -510,7 +510,7 @@ This book has 66 chapters in ten Parts, plus five appendices. It is built as a s
 | IV | Large Language Models: How Frontier Models Are Made | 18–24 | How does an LLM work, and how is a frontier model pretrained, post-trained, taught to reason, made multimodal, served cheaply and compared? |
 | V | Using and Building With AI | 25–31 | How do you get the most from chatbots, call models with code, add your own knowledge, build agents, code with AI, customize models and ship reliable products? |
 | VI | Compute: The Machines Behind AI | 32–37 | How do GPUs and other AI chips work, why is memory the bottleneck, how are thousands of chips wired together, who makes them and how, and what does training really cost? |
-| VII | Data Centers and Energy | 38–44 | What is inside an AI data center, how does power reach the chips, where does the heat go, where does the energy come from, who is building what, and how does it all add up? |
+| VII | Data Centers and Energy | 38–44 | What is inside an AI data center, how does power reach the chips, where does the heat go, where does the energy come from, who is building what, what does it all cost, and how does it all fit together? |
 | VIII | The Branches of AI | 45–54 | What does AI do beyond chatbots: vision, speech, generative media, games, robots, cars, recommenders, science, industry and older paths to intelligence? |
 | IX | Safety, Ethics, Law and Society | 55–60 | What can go wrong, how do labs make AI safer, how do we look inside and test models, what are the harms, what are the laws, and what are the big debates about work and the future? |
 | X | Your Path: Skills, Careers and Opportunity | 61–66 | Who makes money in AI, what skills matter, what jobs exist, where are the opportunities, how do you keep learning, and what are the open problems ahead? |
