@@ -705,6 +705,8 @@ Per prompt, text chat is a small water user. The concern is the total and the lo
 
 Companies call this water replenishment: funding projects that restore or save water elsewhere (wetland restoration, leak repairs, irrigation efficiency) to offset their own consumption. Critics point out that the restored water is often not in the same basin as the data center.
 
+How much a particular data center uses is often not public, because in the United States reporting is mostly voluntary. In October 2025 California's governor vetoed a bill (AB 93) that would have required data centers to estimate their water use before getting a business license and report actual use each year, writing that he was "reluctant to impose rigid reporting requirements about operational details on this sector" (as reported). The European Union has gone the other way: under its Energy Efficiency Directive, data centres with significant energy use must report their energy performance and water footprint to a European database, with the indicators set by a 2024 regulation.
+
 Companies respond by choosing designs to fit the place. Google reports using air-cooled designs at water-scarce sites such as Mesa, Arizona; Microsoft's Fairwater design uses a closed liquid loop filled once at construction. Both choices save water at the cost of some extra electricity on hot days, which is the trade-off from earlier in the chapter.
 
 > **Watch out:** "Closed-loop cooling means zero water." The rack loop is sealed, and on-site evaporation can be near zero, but the power plants generating the electricity still use water, and dry cooling uses more electricity on hot days. "Zero water" claims usually mean zero direct water.

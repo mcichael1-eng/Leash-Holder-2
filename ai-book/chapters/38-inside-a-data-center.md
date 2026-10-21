@@ -524,6 +524,8 @@ Redundant power and cooling protect against the failures you can see in the buil
 
 That is why operators release changes gradually (a staged rollout, Chapter 44), watch closely and roll back fast, and why they design services to bend rather than break.
 
+Rare physical disasters still happen, and fire is the one people ask about. Data centers are full of electrical gear and large battery rooms, which is why fire suppression is part of the gray space described earlier. The best-known case came on the night of March 9, 2021, when fire destroyed OVHcloud's SBG2 building in Strasbourg, France, and damaged a neighboring building. The company told customers to activate their business recovery plans, and customers who kept their data and backups only in that building lost them (as reported). The lesson is the one in this section: the backup that saves you is the one in another building, ideally another region.
+
 > **Definition — Graceful degradation:** Designing a service so that when parts fail or are overloaded, it keeps working with reduced quality or fewer features instead of failing completely, for example by switching to a smaller model or pausing non-essential features.
 
 > **Watch out:** "A Tier IV building means a service that never goes down." The Tier rating covers the building's power and cooling only. Software, configuration, networks and the model itself can fail too, and a service that needs all of its parts is only as available as their product: three parts at 99.9% each give 0.999 × 0.999 × 0.999 ≈ 99.7%.

@@ -128,6 +128,8 @@ In an AI server, the CPU still matters. It is the "host": it loads data, turns t
 
 > **Analogy:** A CPU is a few master chefs. Each can cook any dish, improvise, and handle a complicated recipe with many decisions. A GPU is a stadium of line cooks who can each only chop, but there are tens of thousands of them, all chopping at once. Training and running an AI model is a mountain of chopping.
 
+> **Watch out:** "A GPU is always faster than a CPU" is false. A GPU wins when there is a mountain of identical math to share out. For a tiny model, a small batch of data, or code full of decisions, the time spent copying data to the GPU and launching work on it can cost more than the math saves, and many classic machine-learning methods (Chapter 10) run happily on CPUs. Running a trained model follows the same rule: a small quantized model can run on an ordinary computer's CPU, just more slowly (Chapter 30), while large models need a GPU's memory bandwidth to answer at a usable speed (Chapter 33).
+
 ## Moore's law, Dennard scaling and the end of free speed
 
 Why did the industry need a new kind of chip at all? For decades, CPUs simply got faster every year. Two trends made that happen, and the end of one of them is the reason GPUs and TPUs exist.
@@ -662,6 +664,12 @@ flowchart TD
 
 > **Watch out:** "Lower precision means worse AI" is mostly wrong. With careful scaling, models train and run at nearly the same quality in BF16, FP8 and block-scaled FP4. Precision is a tool. The real risk is careless quantization of a model that was never designed for it, which can quietly hurt accuracy on hard tasks.
 
+How low can it go? In February 2024 researchers at Microsoft Research and the University of Chinese Academy of Sciences described BitNet b1.58, a language model trained from the start with every weight equal to −1, 0 or +1. Three possible values need about 1.58 bits each (2 to the power 1.58 is about 3). The paper reported that, at the sizes it tested (quality compared up to 3.9 billion parameters), it matched full-precision models trained on the same data while using less memory, time and energy. In April 2025 the team released open weights for a 2-billion-parameter version trained on 4 trillion tokens.
+
+> **Definition — Ternary weights:** Weights restricted to three values, −1, 0 and +1, which need about 1.58 bits each. Multiplying by them is just subtracting, skipping or adding, so most of the multiplications in a layer disappear.
+
+That is why 1-bit and 1.58-bit models prompt the question of whether future chips will need today's multiplier-heavy designs. So far, though, the published BitNet models are small, and frontier models use FP8 and FP4 (see the box above), so the idea has not changed what the big labs buy.
+
 ## The accelerator zoo: CPU, GPU, TPU, NPU and friends
 
 We now have all the pieces: parallel workers, matrix units, data reuse and low precision. Different companies combine them differently. Here is the zoo.
@@ -846,7 +854,7 @@ Finally, the chips have become so fast at math that they spend most of their tim
 
 ## Key terms
 
-Accelerator, Transistor, Logic gate, Multiply-accumulate (MAC), Clock speed (GHz), Die, CPU (Central Processing Unit), Core, Thread, Cache, Instruction set architecture (ISA), x86, Arm, RISC-V, SIMD (Single Instruction, Multiple Data), Moore's law, Dennard scaling, Power wall, Multicore processor, Matrix multiplication (GEMM), Tensor, FLOP (floating-point operation), FLOPS (FLOP/s), Peak performance, MFU (Model FLOPs Utilization), Structured sparsity (2:4), TOPS (Tera Operations Per Second), Parallelism, SIMT (Single Instruction, Multiple Threads), Warp, Latency, Throughput, Amdahl's law, GPU (Graphics Processing Unit), CUDA, Kernel (GPU kernel), HBM (High Bandwidth Memory), Streaming multiprocessor (SM), CUDA core, Tensor core, Systolic array, Floating point, Precision, FP32, TF32 (TensorFloat-32), FP16 (half precision), BF16 (bfloat16), FP8, FP4, INT8 / INT4, Microscaling (MX) formats, NVFP4, Mixed precision, Quantization, ASIC (Application-Specific Integrated Circuit), TPU (Tensor Processing Unit), LPU (Language Processing Unit), Wafer-scale engine, NPU (Neural Processing Unit), FPGA (Field-Programmable Gate Array), Superchip, Domain-specific architecture (DSA), Dark silicon, Image signal processor (ISP), Transcoding
+Accelerator, Transistor, Logic gate, Multiply-accumulate (MAC), Clock speed (GHz), Die, CPU (Central Processing Unit), Core, Thread, Cache, Instruction set architecture (ISA), x86, Arm, RISC-V, SIMD (Single Instruction, Multiple Data), Moore's law, Dennard scaling, Power wall, Multicore processor, Matrix multiplication (GEMM), Tensor, FLOP (floating-point operation), FLOPS (FLOP/s), Peak performance, MFU (Model FLOPs Utilization), Structured sparsity (2:4), TOPS (Tera Operations Per Second), Parallelism, SIMT (Single Instruction, Multiple Threads), Warp, Latency, Throughput, Amdahl's law, GPU (Graphics Processing Unit), CUDA, Kernel (GPU kernel), HBM (High Bandwidth Memory), Streaming multiprocessor (SM), CUDA core, Tensor core, Systolic array, Floating point, Precision, FP32, TF32 (TensorFloat-32), FP16 (half precision), BF16 (bfloat16), FP8, FP4, INT8 / INT4, Microscaling (MX) formats, NVFP4, Mixed precision, Quantization, Ternary weights, ASIC (Application-Specific Integrated Circuit), TPU (Tensor Processing Unit), LPU (Language Processing Unit), Wafer-scale engine, NPU (Neural Processing Unit), FPGA (Field-Programmable Gate Array), Superchip, Domain-specific architecture (DSA), Dark silicon, Image signal processor (ISP), Transcoding
 
 ## Exercises
 

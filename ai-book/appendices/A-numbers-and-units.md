@@ -237,7 +237,7 @@ Power (watts) is a rate, like speed. Energy (watt-hours) is an amount, like dist
 | A GB200 or GB300 NVL72 rack | about 120–140 kW | About 100 homes in one cabinet |
 | US data centers, 2023 | 176 TWh, about 4.4% of US electricity | Lawrence Berkeley National Laboratory |
 | All data centers worldwide, 2024 | about 415 TWh, about 1.5% of world electricity | International Energy Agency; projected about 945 TWh by 2030 |
-| Ireland's data centres, 2024 | 22% of metered electricity | Central Statistics Office |
+| Ireland's data centres, 2025 | 23% of metered electricity (22% in 2024) | Central Statistics Office |
 
 *Table A.16: Energy and power with real-world comparisons.*
 

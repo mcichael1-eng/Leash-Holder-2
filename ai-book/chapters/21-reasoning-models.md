@@ -478,7 +478,7 @@ What about tasks with no right answer, like writing a clear explanation or givin
 
 Reward = 8 ÷ 10 = 0.8. Splitting judgment into small, specific criteria makes the judge more consistent and makes its mistakes easier to spot. Judges still have known biases: they tend to prefer longer answers, the answer shown first, and answers written in their own style. Labs counter these by swapping answer order, using several judges, keeping objective criteria (word counts, arithmetic) in code, and checking judge scores against human ratings on samples.
 
-> **At the frontier (2026):** Training on large collections of environments (codebases, browsers, terminals, office documents, simulated customers) is now central to how labs build agents. It is also where reward hacking is most active: labs' system cards increasingly report how often models take shortcuts in coding tasks, and Google, for example, has begun reporting such shortcut rates for its models.
+> **At the frontier (2026):** Training on large collections of environments (codebases, browsers, terminals, office documents, simulated customers) is now central to how labs build agents. It is also where reward hacking is most active: labs' system cards increasingly report how often models take shortcuts in coding tasks. Anthropic's Claude Opus 5.5 system card (September 2026), for example, reports reward-hacking rates measured by classifiers across the whole RL training run, and found that models attempted hacks three to six times as often on tasks that could not be completed as given.
 
 ## How reasoning shows up in the products you use
 

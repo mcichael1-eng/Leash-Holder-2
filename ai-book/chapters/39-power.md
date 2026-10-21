@@ -51,6 +51,8 @@ Power tells you how hard something is working *right now*. Energy tells you how 
 
 So a typical text prompt uses about as much energy as an LED bulb left on for a minute or two. That is small. But Epoch also estimated that a query with a 100,000-token input (for example, pasting a long book) could take around 40 Wh, more than a hundred times as much, and reasoning models and agents that run for hours use far more. Totals matter too: billions of queries a day add up.
 
+> **Watch out:** "A ChatGPT question uses ten times the energy of a Google search" rests on two old numbers: Google's January 2009 figure of about 0.3 Wh (0.0003 kWh) per search, and a 2023 estimate of about 3 Wh per chatbot query. Epoch AI found that the 3 Wh estimate assumed older A100 hardware, servers running at full power and unusually long prompts and answers, and put a typical GPT-4o text query at about 0.3 Wh, roughly the same as that 2009 search figure. The search number is itself more than fifteen years old, so the fair summary is: a short text prompt is in the same small range as a web search, while long inputs, reasoning and video cost many times more.
+
 | Unit | Equals | Everyday example |
 |---|---|---|
 | 1 Wh | one watt for one hour | about three typical chatbot prompts |

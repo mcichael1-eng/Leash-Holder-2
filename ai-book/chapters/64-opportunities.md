@@ -524,6 +524,20 @@ Idea X scores well on AI fit, because summarizing meetings is easy for models, b
 
 > **Watch out:** The worksheet is a thinking tool, not an oracle. Scores you guess at are worth little; scores backed by the evidence from steps 2, 3 and 8 are worth a lot. Re-score after every customer conversation.
 
+### After the pilot: first customers and funding
+
+Two questions follow almost every validated idea: "How do I find customers when I have no audience?" and "Do I need investors?"
+
+Early customers rarely come from advertising. They come from the people you interviewed in step 3, the pilot customer from step 8 and the people those customers know. Founders typically sell the first few deals themselves, by direct outreach to a narrow, named list of buyers, because every early conversation also teaches you what to build. Publishing useful, tested material for one audience brings the next ones; Chapter 65's advice on building in public applies to founders too. An AI product that solves a painful problem for one industry is far easier to sell than a general tool for everyone.
+
+Funding comes in three broad forms. Bootstrapping means paying your own way from savings and early revenue; an AI application that runs on rented model APIs can often start this way, because there is no model to train and no hardware to buy. Angel investors are individuals who invest their own money in very young companies. Accelerators and venture capital funds (firms that invest in young, risky companies, Chapter 61) invest in exchange for part of the company and expect a chance at a very large outcome, so they suit ideas that can grow very big, not every good business. As one published benchmark, Y Combinator's standard deal, as listed on its website in October 2026, is $500,000: $125,000 for 7% of the company plus $375,000 on a second agreement whose terms are set by the company's next round. Whatever the route, money from paying customers is the cheapest funding there is, and the strongest evidence for any later investor.
+
+> **Definition — Bootstrapping:** Building a company with the founders' own money and its early revenue instead of outside investment, so the founders keep full ownership and control but grow only as fast as revenue allows.
+
+> **Definition — Angel investor:** A wealthy individual who invests personal money in a very early company, usually in exchange for a small share of ownership, often before any venture capital fund will.
+
+> **Definition — Accelerator:** A program, such as Y Combinator, that invests a fixed amount in many young companies at once in exchange for a share of ownership, and gives them a few months of intensive advice and introductions to investors.
+
 ## Open problems worth working on
 
 Some of the largest opportunities are not businesses yet. They are unsolved problems that labs, universities, governments and startups are working on, where a well-chosen contribution from a newcomer can matter. Table 64.7 collects the most important ones from across this book, with a way in for a reader. Chapter 66 discusses where they might lead.
@@ -643,7 +657,7 @@ The chapter listed 26 ideas, from voice receptionists for dentists to eval packs
 Avoid the classic traps: thin wrappers, demos instead of workflows, depending on one platform or one customer, prices that heavy users break, and hype. The winners are usually specific, patient and close to a problem they understand.
 
 ## Key terms
-Opportunity, Pain point, Willingness to pay, Pilot, P&L (profit and loss), The AI stack (value chain), Picks and shovels, Hyperscaler, Neocloud, Capex (capital expenditure), Open-weight model, Seat-based pricing, Usage-based pricing, Outcome-based pricing, Retainer, Productized service, Services-as-software, Vertical AI, Horizontal AI, Unit economics, Gross margin, Value-based pricing, CAC (customer acquisition cost), Churn, LTV (customer lifetime value), Payback period, Gross revenue and net revenue, Customer discovery, Concierge MVP (Wizard of Oz test), MVP (minimum viable product), TAM (total addressable market), Bottom-up sizing, Moat, Wrapper, "The model eats your feature", Data flywheel, Switching cost, Distribution, Product-market fit (PMF), Open problem, Platform risk, Customer concentration, Hype cycle, Run-rate, Recognized revenue, "Up to" deal, Circular deal.
+Opportunity, Pain point, Willingness to pay, Pilot, P&L (profit and loss), The AI stack (value chain), Picks and shovels, Hyperscaler, Neocloud, Capex (capital expenditure), Open-weight model, Seat-based pricing, Usage-based pricing, Outcome-based pricing, Retainer, Productized service, Services-as-software, Vertical AI, Horizontal AI, Unit economics, Gross margin, Value-based pricing, CAC (customer acquisition cost), Churn, LTV (customer lifetime value), Payback period, Gross revenue and net revenue, Customer discovery, Concierge MVP (Wizard of Oz test), MVP (minimum viable product), TAM (total addressable market), Bottom-up sizing, Moat, Wrapper, "The model eats your feature", Data flywheel, Switching cost, Distribution, Product-market fit (PMF), Bootstrapping, Angel investor, Accelerator, Open problem, Platform risk, Customer concentration, Hype cycle, Run-rate, Recognized revenue, "Up to" deal, Circular deal.
 
 ## Exercises
 

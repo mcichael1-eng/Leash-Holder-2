@@ -476,6 +476,8 @@ Three more paths sit beside the families. **AI founders** do everything at once:
 
 Very few people start in an AI job. Most arrive from a neighboring one, carrying skills that transfer and adding one to three new ones. Figure 63.4 shows the most common routes, labeled with the skills that bridge each move.
 
+This is also the honest answer to a question career changers ask constantly: "Am I too old, or is it too late?" Most of the routes below start from an existing career, and what you bring from it, such as domain knowledge, judgment and dealing with people, is exactly what the new skills multiply. What takes time is learning the bridging skills, roughly the part-time durations in Table 63.12, and that clock starts whenever you do.
+
 ```mermaid
 flowchart LR
     P1["Domain professional<br/>nurse, lawyer, accountant"] -->|"workflow design, evals,<br/>change management"| R1["AI implementation<br/>or adoption lead"]
@@ -542,6 +544,18 @@ A good rule of thumb: one relevant certification plus three strong portfolio pie
 > **Analogy:** Think of your career as the letter T. The tall vertical bar is depth in your own field, such as nursing, accounting or electrical work. AI fluency is the crossbar that connects that depth to everything else. People with only a crossbar are easy to replace; people with only a vertical bar are being left behind; people with both are the ones employers are searching for.
 
 > **Watch out:** "AI jobs are only in San Francisco" is out of date. In October 2026 the frontier labs' postings spanned London, Dublin, Paris, Munich, Tokyo, Seoul, Sydney, Bangalore, Mumbai, Singapore, Washington DC and remote US roles, and implementation work exists wherever businesses are. Data-center jobs, by definition, are wherever the power is.
+
+### Finding openings and getting through interviews
+
+Where are the jobs posted? The labs and most AI companies list every opening on their own careers pages, like the job boards counted earlier in this chapter. General job sites and LinkedIn carry most of the rest. For startups, Hacker News runs a monthly "Ask HN: Who is hiring?" thread in which companies post roles directly, with a companion "Who wants to be hired?" thread for job seekers. Often the most effective channel is not a board at all but the people who read your public work: a write-up a practitioner shares, or a fix to an open-source tool a company relies on, can open a door that a cold application would not.
+
+What do the interviews test? It varies by employer, so ask the recruiter for the format. For engineering roles, common pieces are a live coding exercise, a system-design conversation, a take-home project or a paired building session, and a deep discussion of something you built. Large tech companies often still test classic data structures and algorithms in their coding rounds, so practice them if those employers are your target. For applied AI roles, expect questions only builders can answer well: how you evaluated your system, what failed, what it cost per request and what you would change. Your eval set and error analysis (Chapter 65) are the best preparation. For non-engineering roles, a work sample such as the one in Exercise 8 plays the same part.
+
+> **Definition — Coding interview:** A job interview in which you solve programming problems while an interviewer watches, often built on classic data structures and algorithms, meaning standard ways of organizing and processing data such as lists, lookup tables, trees and graphs.
+
+> **Definition — System-design interview:** An interview in which you sketch how you would build a whole service, such as a support assistant that must stay fast, reliable and affordable for many users, and explain the trade-offs. For AI roles it usually covers retrieval, evals, cost and failure handling.
+
+> **Definition — Take-home assignment:** A small project a candidate completes on their own time, often over a few days, and then discusses with the interviewers. For AI roles it is often "build a small feature on a model API and show how you tested it".
 
 ## How AI is changing the jobs that already exist
 
@@ -679,7 +693,7 @@ The roles fall into nine families: research, engineering, infrastructure and dat
 For the job you already have, think in tasks, not jobs. Test which of your tasks AI does well, because its abilities are jagged. Let it draft where you can verify, automate where mistakes are cheap, and spend the time you get back on judgment, relationships and the decisions only you can own.
 
 ## Key terms
-Role family, Frontier lab, Pay-transparency law, BLS (Bureau of Labor Statistics), Levels.fyi, Base salary, Bonus, Equity, RSU (restricted stock unit), Stock option, Vesting, Cliff, Total compensation (TC), Liquidity, Tender offer, Dilution, Research scientist, Research engineer, Evals (evaluations), Fellowship (residency), AI engineer (LLM application engineer), ML engineer (MLE), MLOps (machine-learning operations), Kernel, Prompt engineering, Site reliability engineering (SRE), Critical facilities, Powered land, Product manager (PM), Conversation designer, TPM (technical program manager), Data analyst, Data scientist, Data engineer, Human data, Expert contractor (AI trainer), RL environment, Go-to-market (GTM), Account executive (AE), OTE (on-target earnings), Customer success manager (CSM), Solutions architect (Applied AI architect), Proof of concept (POC), FDE (forward-deployed engineer), AI governance, Trust and safety (safeguards), AISI and CAISI, AIGP (Artificial Intelligence Governance Professional), Think tank, Civil society, AI adoption lead (AI transformation lead), Change management, Commissioning, Apprenticeship, Developer relations (DevRel), Technical writer, Portfolio, T-shaped skills, Task, AI exposure, Automation, Augmentation, Jagged frontier.
+Role family, Frontier lab, Pay-transparency law, BLS (Bureau of Labor Statistics), Levels.fyi, Base salary, Bonus, Equity, RSU (restricted stock unit), Stock option, Vesting, Cliff, Total compensation (TC), Liquidity, Tender offer, Dilution, Research scientist, Research engineer, Evals (evaluations), Fellowship (residency), AI engineer (LLM application engineer), ML engineer (MLE), MLOps (machine-learning operations), Kernel, Prompt engineering, Site reliability engineering (SRE), Critical facilities, Powered land, Product manager (PM), Conversation designer, TPM (technical program manager), Data analyst, Data scientist, Data engineer, Human data, Expert contractor (AI trainer), RL environment, Go-to-market (GTM), Account executive (AE), OTE (on-target earnings), Customer success manager (CSM), Solutions architect (Applied AI architect), Proof of concept (POC), FDE (forward-deployed engineer), AI governance, Trust and safety (safeguards), AISI and CAISI, AIGP (Artificial Intelligence Governance Professional), Think tank, Civil society, AI adoption lead (AI transformation lead), Change management, Commissioning, Apprenticeship, Developer relations (DevRel), Technical writer, Portfolio, T-shaped skills, Coding interview, System-design interview, Take-home assignment, Task, AI exposure, Automation, Augmentation, Jagged frontier.
 
 ## Exercises
 

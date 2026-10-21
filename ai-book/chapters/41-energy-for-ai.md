@@ -422,7 +422,7 @@ Here is every option on one page. Cost tiers are relative. As a rough guide, wid
 |---|---|---|---|---|---|---|
 | Gas, combined cycle | Medium | about 4–6+ years; big turbines ordered 2025–26 often quoted for about 2029–30 (reported) | about 490 | Firm | Small plant, plus pipelines and gas fields | Entergy plants for Meta Hyperion (2026) |
 | Gas, simple-cycle and aeroderivative turbines | Medium-high | months (rented mobile units) to about 3 years | higher than combined cycle | Firm | Small | xAI Colossus turbines (2024–26); 1.2 GW Southaven plant approved March 2026 |
-| Gas reciprocating engines | Medium-high | months to about 2 years | higher than combined cycle | Firm | Small | 700 MW VoltaGrid engines, Stargate Shackelford (2026) |
+| Gas reciprocating engines | Medium-high | months to about 2 years | higher than combined cycle | Firm | Small | About 700 MW of VoltaGrid engines reported for Stargate Shackelford (2026) |
 | Fuel cells on natural gas | High | months | roughly gas-plant level | Firm, if gas flows | Very small | Bloom deals with AEP, Oracle, Brookfield |
 | Coal, delayed retirement | Low to run (old plants) | already built | about 820 | Firm | Plant plus mines | Retirements postponed (2025–26) |
 | Existing nuclear, bought by contract | Medium | immediate, but moves existing clean power | about 12 | Firm, about 90%+ of hours | Very small | Talen–Amazon (about 1.9 GW); Vistra–Meta (2.1 GW+, January 2026) |
@@ -655,7 +655,7 @@ mindmap
 *Figure 41.10: What a community weighs when a data center is proposed.*
 
 - **Water.** Chapter 40 covers this in depth: the key questions are evaporative versus dry cooling, local water stress, and the indirect water at power plants.
-- **Noise.** Thousands of cooling fans run day and night, generators are tested regularly, and on-site turbines add a low-frequency hum. Noise complaints are among the most common local objections.
+- **Noise.** Thousands of cooling fans run day and night, generators are tested regularly, and on-site turbines add a low-frequency hum. Noise complaints are among the most common local objections. What neighbors describe is usually less a loud noise than a constant one, a steady hum that never stops at night. Low-pitched sound also travels farther and passes through walls and windows more easily than high-pitched sound. Local limits are usually written in A-weighted decibels (dBA), a scale that, like the human ear, gives low-pitched sound less weight, so a site can meet its limit while a low hum is still noticeable indoors. Remedies communities ask for include sound walls, quieter fans, more distance from homes and limits on when generators may be tested.
 - **Land.** Meta's Hyperion site covers about 2,250 acres. Campuses, substations, solar farms and new transmission lines all claim farmland and forest.
 - **Jobs.** Construction can employ thousands for a few years, but a finished hyperscale campus may employ only hundreds.
 - **Taxes.** Data centers can pay large property taxes that fund schools and roads, but many states and towns grant big tax breaks to win them.
@@ -664,6 +664,8 @@ mindmap
 The strongest case for welcoming a data center: a large, stable tax base that can cut residents' property taxes or fund schools; construction work; long-term grid investment that can benefit the region; and a role in a nationally important industry. The strongest case against: higher bills if costs are shifted, water and noise, lost land, air pollution from on-site generation, few permanent jobs, and secrecy, since projects are often negotiated under non-disclosure agreements before residents hear about them. Increasingly, the middle ground is a community benefit agreement: a binding deal in which the developer commits to local hiring, water limits, noise standards, payments to local funds and paying its own grid costs.
 
 > **Watch out:** "Data centers bring lots of permanent jobs." Construction employs thousands, but a finished hyperscale campus may employ only hundreds. The main local benefit is usually tax revenue, which incentives sometimes reduce.
+
+> **Try it:** If a data center is proposed near you, find the rezoning or permit application on your county's or city's website (search for the parcel or the developer's name) and look for answers to seven questions. How many megawatts, now and at full build-out? What cooling design, how much water, and from which source? Where will generators or turbines sit, and when will they be tested? What noise limit applies at the nearest homes, and who measures it? Who pays for new substations and transmission lines? What taxes will it pay after any incentives? Is there a community benefit agreement, and what does it bind the developer to? Bring the unanswered ones to the public hearing, where Chapter 42's development steps are decided.
 
 > **At the frontier (2026):** The next few years will test several bets at once: whether SMRs can be built on schedule after the first US construction permit in September 2026; whether turbine and transformer backlogs ease; whether flexible, grid-aware AI loads become standard; and whether on-site nuclear and multi-site training let campuses grow beyond what any single grid connection can supply. Chapter 42 follows the megaprojects themselves, and Chapter 66 returns to energy as one of AI's defining open problems.
 

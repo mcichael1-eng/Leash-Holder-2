@@ -661,7 +661,7 @@ A chain moves only as fast as its slowest link. Each layer of the stack can be e
 
 **7. Talent.** Two talent bottlenecks sit at opposite ends of the stack. At the top, the people who can run frontier training, write fast GPU kernels and debug 100,000-GPU clusters number in the thousands; Meta's widely reported eight- and nine-figure offers in 2025 show their price. At the bottom are electricians: the US Bureau of Labor Statistics projects 9% job growth for them from 2025 to 2035, citing data centers, and OpenAI has posted Stargate technician roles at $157,000 to $302,000 in base pay.
 
-**8. Capital.** Alphabet, Amazon, Meta, Microsoft and Oracle were on track for close to $800 billion of capital spending in calendar 2026, counting finance leases (FactSet), and are borrowing and selling shares to fund it: Alphabet announced an $80 billion equity program in June 2026, and S&P cut Oracle to BBB-, the lowest investment grade, in July. If revenue does not keep pace, capital becomes the bottleneck (Chapter 43).
+**8. Capital.** Alphabet, Amazon, Meta, Microsoft and Oracle were on track for close to $800 billion of capital spending in calendar 2026, counting finance leases (FactSet), and are borrowing and selling shares to fund it: Alphabet announced an $80 billion equity program in June 2026 (about $85 billion once priced), and S&P cut Oracle to BBB-, the lowest investment grade, in July. If revenue does not keep pace, capital becomes the bottleneck (Chapter 43).
 
 > **Definition — Capex (capital expenditure):** Money spent on long-lived assets such as buildings, chips and power equipment, as opposed to operating costs like electricity and salaries. AI's buildout is measured in capex.
 

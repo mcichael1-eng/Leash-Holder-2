@@ -162,12 +162,14 @@ Under the hood, the SDK sends exactly the kind of request you read above. You ne
 
 ```text
 POST https://api.anthropic.com/v1/messages
-x-api-key: sk-ant-...               (your secret key)
-anthropic-version: 2023-06-01       (which version of the API rules)
+authorization: Bearer sk-ant-...    (your secret key)
+anthropic-version: 2026-10-21       (which version of the API rules)
 content-type: application/json      (the body is JSON)
 
 { "model": "claude-opus-5-5", "max_tokens": 2000, "messages": [ ... ] }
 ```
+
+The version line matters more than it looks. On October 21, 2026 Anthropic released API version 2026-10-21 together with version 2.0 of its Python library, which sends the new version and passes the key in the `authorization` header. Older code that sends `anthropic-version: 2023-06-01` and an `x-api-key` header still works; the API accepts the key in either header.
 
 ### API keys and how not to lose money
 
@@ -398,7 +400,7 @@ The vocabulary shifts (`instructions` instead of `system`, `input` instead of `m
 
 > **Definition — Top-p (nucleus sampling):** A second randomness control that limits the model's choices to the most likely tokens whose probabilities add up to p, such as the top 90%.
 
-For years, temperature was the first setting every tutorial taught: low for factual extraction, high for brainstorming. In 2026 the picture has changed. Many reasoning models fix or restrict these dials, because their training assumes a particular sampling setup. As of late 2026, Anthropic's current Claude models reject custom temperature and top-p values, and steer behavior through the effort setting and the prompt instead. Older and open-weight models, and some other providers' models, still accept them.
+For years, temperature was the first setting every tutorial taught: low for factual extraction, high for brainstorming. In 2026 the picture has changed. Many reasoning models fix or restrict these dials, because their training assumes a particular sampling setup. As of late 2026, Anthropic's current Claude models reject custom temperature and top-p values, and steer behavior through the effort setting and the prompt instead; API version 2026-10-21 (October 2026) goes further and returns an error if a request includes temperature, top-p or top-k at all. Older and open-weight models, and some other providers' models, still accept them.
 
 > **Watch out:** "Temperature 0 means the output is always identical" is false. Even at the lowest setting, outputs can differ slightly between runs because of how servers batch and compute requests (Chapter 18). If you are testing a prompt, run it several times and look at the spread, not one lucky answer.
 

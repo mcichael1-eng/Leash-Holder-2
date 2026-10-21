@@ -484,6 +484,12 @@ On a typical PC, a model runs fast only if it fits in the graphics card's VRAM; 
 
 > **Definition — Unified memory:** A design in which the CPU and GPU share one pool of memory, as on Apple Silicon Macs. It lets a laptop with 32 to 128 GB of memory load models far larger than a typical graphics card could hold.
 
+**No GPU, a small GPU, or a non-NVIDIA one?** All three can work, with trade-offs. With no graphics card at all, tools built on llama.cpp, such as Ollama and LM Studio, run the model on the CPU from ordinary memory. Small models (1B to 8B parameters at 4-bit) are usable that way, but speed follows the bandwidth rule in the next section, and ordinary PC memory is many times slower than a graphics card's. If a model is a little too big for your VRAM, the same tools can split it between the GPU and ordinary memory. It works, but the slow part sets the pace. To see where a model actually landed, Ollama's `ollama ps` command shows whether it sits on the GPU, in system memory, or split between the two: the first thing to check when a model is unexpectedly slow. NVIDIA cards have the broadest support. Ollama's documentation also lists AMD cards (through AMD's ROCm software, its counterpart to NVIDIA's CUDA, Chapter 32), Apple Silicon (through Apple's Metal) and other cards through Vulkan, a cross-vendor graphics interface; expect a little more setup outside NVIDIA.
+
+> **Definition — Layer offloading:** Splitting a model so that some of its layers run on the GPU and the rest on the CPU from ordinary memory, letting a model that is slightly too big for the graphics card still run, more slowly.
+
+One more trap: local apps often start with a short context window to save memory. Ollama's FAQ gives a default of 4,096 tokens, so a long document can be silently cut off unless you raise the setting, and raising it costs KV-cache memory, as worked out above.
+
 ### How fast will it be?
 
 Once it fits, speed depends mostly on how quickly the computer can read the weights. To write each new token, the model must read essentially all of its active weights from memory once (Chapter 33 explains why this "decode" phase is limited by memory, not math).
@@ -552,6 +558,10 @@ Other formats you will meet: **MLX** files for Apple Silicon, **AWQ** and **GPTQ
 
 > **Watch out:** "Quantized models are broken models" is wrong, and "quantization is free" is also wrong. Good 8-bit and 4-bit models often lose little on everyday tasks, but losses can show up first in exact recall, arithmetic, long reasoning chains and less common languages. Test the specific quant on your own tasks.
 
+Quantization is one of three common ways to shrink a model. Distillation, defined earlier in this chapter, trains a smaller model to imitate a bigger one. Pruning cuts away the parts of a model that matter least and then retrains briefly to recover. The two are often combined: a 2024 report on the "Minitron" approach used pruning plus distillation to compress Llama 3.1 8B to 4 billion parameters and Mistral NeMo 12B to 8 billion. As a local user, quantization is the one you choose yourself when you pick a download; pruning and distillation are done by model makers, and you meet their results as the smaller sizes in a model family.
+
+> **Definition — Pruning:** Removing the individual weights, or whole layers, of a trained model that contribute least to its output, usually followed by a short retraining (often by distillation) so it recovers most of its quality in a smaller, faster package.
+
 ## The local toolkit
 
 Running a model locally needs two layers: an engine that does the math efficiently on your hardware, and an app that gives you a chat window or an API.
@@ -596,6 +606,8 @@ The local API is the quietly powerful part. Both Ollama and LM Studio can act as
 > **Definition — Local server (localhost API):** A model served by an app on your own computer at an address such as `http://localhost:11434` (Ollama's default) or `http://localhost:1234` (LM Studio's default), so other programs on the machine can send it requests without anything leaving the computer.
 
 > **Definition — OpenAI-compatible API:** An API that accepts requests in the same format as OpenAI's, so code, coding agents and apps written for the cloud can be pointed at a local model just by changing the address.
+
+This is how people build a fully private version of the retrieval system in Chapter 27, a common request for confidential documents. Every piece can run on one machine: a small embedding model, the program that turns passages into lists of numbers for searching by meaning (the Colab project in Chapter 27 uses one that runs on a laptop, and Ollama can also serve embedding models through its `/api/embed` endpoint); a vector database such as Chroma, which stores those lists on your own disk; and a local chat model answering through the localhost API. Nothing leaves the computer. The trade-off is quality: the answer is only as good as the local model, so test it on your real questions before trusting it.
 
 ```mermaid
 sequenceDiagram
@@ -650,7 +662,7 @@ quadrantChart
 
 *Figure 30.10: Matching tasks to where they run. Privacy pushes work local; difficulty pushes it toward bigger models.*
 
-> **At the frontier (2026):** Local AI is moving into devices you already own. Phones and laptops now ship with small built-in models and chips designed to run them (Chapter 53 covers edge AI and NPUs), and an open model of around 30 billion parameters, small enough for a well-equipped laptop, now beats 2023's GPT-4 on many tasks. At the other end, the largest open models (DeepSeek V4, Kimi K3, Qwen3.8) need data-center hardware; some desktop apps, LM Studio among them, now also offer access to such models alongside truly local ones.
+> **At the frontier (2026):** Local AI is moving into devices you already own. Phones and laptops now ship with small built-in models and chips designed to run them (Chapter 53 covers edge AI and NPUs), and an open model of around 30 billion parameters, small enough for a well-equipped laptop, now beats 2023's GPT-4 on many tasks. At the other end, the largest open models (DeepSeek V4, Kimi K3, Qwen3.8) need data-center hardware; some desktop apps, LM Studio among them, now also offer access to such models alongside truly local ones. Ollama likewise offers cloud models and web search; its FAQ says it does not see your prompts when you run locally, that cloud requests are processed on its servers to provide the service, and that a local-only mode switches the cloud features off. If privacy is your reason for going local, check which kind of model you picked.
 
 ## A customization playbook
 
@@ -676,7 +688,7 @@ Open-weight models from DeepSeek, Alibaba, Moonshot, Google, OpenAI, Mistral and
 
 ## Key terms
 
-Weights (parameters), fine-tuning, supervised fine-tuning (SFT), training example, JSONL, preference tuning, DPO, reinforcement fine-tuning (RFT), grader, distillation, full fine-tuning, epoch, learning rate, validation set, catastrophic forgetting, optimizer, LoRA, low-rank matrix, rank, adapter, target modules, merging an adapter, prompt tuning (soft prompt), QLoRA, NF4, VRAM, gradient checkpointing, held-out test set, synthetic data, Hugging Face TRL and PEFT, open-weight model, open-source AI, license, permissive license, acceptable use policy, mixture of experts, instruct model, Hugging Face Hub, model card, safetensors, gated model, Space, Gradio and Streamlit, KV cache, unified memory, memory bandwidth, tokens per second, quantization, bits per weight, GGUF, quantization level, quantization-aware training, inference engine, llama.cpp, Ollama, LM Studio, MLX, vLLM, local server, OpenAI-compatible API.
+Weights (parameters), fine-tuning, supervised fine-tuning (SFT), training example, JSONL, preference tuning, DPO, reinforcement fine-tuning (RFT), grader, distillation, full fine-tuning, epoch, learning rate, validation set, catastrophic forgetting, optimizer, LoRA, low-rank matrix, rank, adapter, target modules, merging an adapter, prompt tuning (soft prompt), QLoRA, NF4, VRAM, gradient checkpointing, held-out test set, synthetic data, Hugging Face TRL and PEFT, open-weight model, open-source AI, license, permissive license, acceptable use policy, mixture of experts, instruct model, Hugging Face Hub, model card, safetensors, gated model, Space, Gradio and Streamlit, KV cache, unified memory, layer offloading, memory bandwidth, tokens per second, quantization, bits per weight, GGUF, quantization level, quantization-aware training, pruning, inference engine, llama.cpp, Ollama, LM Studio, MLX, vLLM, local server, OpenAI-compatible API.
 
 ## Exercises
 

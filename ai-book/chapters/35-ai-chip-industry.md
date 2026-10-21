@@ -160,7 +160,7 @@ Why go to all that trouble?
 3. **More of each dollar.** A data center buyer spends money on GPUs, CPUs, networking and software. Selling all of them captures more revenue per gigawatt.
 4. **Stickiness.** When the GPU, network, NIC and software all come from one vendor and are tuned together, swapping out any single piece is harder.
 
-Prices are not published. Industry reports put a GB200 or GB300 NVL72 rack at roughly $3–4 million, and an H100 reportedly sold for around $25,000–40,000; treat both as unconfirmed estimates.
+Prices are not published. Industry reports put a GB200 or GB300 NVL72 rack at roughly $3–4 million, and an H100 reportedly sold for around $25,000–40,000; treat both as unconfirmed estimates. Why so much? Chapter 36 works through it: the processed silicon is only a few percent of the price, and the rest pays for HBM, advanced packaging, years of design and software, and NVIDIA's margin (about 75%, above).
 
 The flip side of this strategy is that customers feel locked in, and that pushes the biggest buyers toward their own chips. NVIDIA has partly answered with NVLink Fusion (Chapter 34), which lets other companies' CPUs and accelerators plug into NVLink fabrics; AWS says its future Trainium4 will use it.
 
@@ -533,7 +533,7 @@ From September 2025 onward, AI labs signed chip deals measured not in chips but 
 
 | Date | Deal | What was announced | Confidence |
 |---|---|---|---|
-| Sept 2025 | OpenAI–NVIDIA | Letter of intent for at least 10 GW of NVIDIA systems, with NVIDIA intending to invest up to $100B progressively; first gigawatt on Vera Rubin in 2H 2026 | Later reports (February 2026) said the plan was shelved in favor of a $30B NVIDIA equity investment in OpenAI |
+| Sept 2025 | OpenAI–NVIDIA | Letter of intent for at least 10 GW of NVIDIA systems, with NVIDIA intending to invest up to $100B progressively; first gigawatt on Vera Rubin in 2H 2026 | Later reports (February 2026) said the plan was shelved in favor of a $30B NVIDIA equity investment in OpenAI; in August 2026 NVIDIA agreed to back SB Energy's planned 8 GW PORTS-Pike campus in Ohio, leased to OpenAI (Chapter 42) |
 | Sept 2025 | NVIDIA–Intel | $5B investment; joint x86 CPUs with NVLink and PC chips | Announced |
 | Oct 6, 2025 | OpenAI–AMD | 6 GW over several generations; 1 GW of MI450 from 2H 2026; warrant for AMD shares | Announced; warrant details reported |
 | Oct 13, 2025 | OpenAI–Broadcom | 10 GW of OpenAI-designed accelerators plus Ethernet, 2H 2026 to 2029 | Announced; first deployment unconfirmed |

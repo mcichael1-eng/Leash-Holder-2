@@ -547,7 +547,7 @@ The golden rule is never peek at the future. A random train/test split lets a mo
 
 > **Definition — Backtesting:** Testing a forecasting method by repeatedly training only on data up to a past date, forecasting the period after it, and comparing with what actually happened.
 
-> **At the frontier (2026):** Forecasting has its own foundation models, pretrained on huge collections of time series. Amazon's Chronos-2 (October 2025) handles many related series and outside factors together; Google's TimesFM 2.5 is available inside the BigQuery data warehouse; Salesforce's Moirai and others compete on the GIFT-Eval benchmark. Whether they beat a tuned boosted-tree forecaster depends on the data, so backtest both.
+> **At the frontier (2026):** Forecasting has its own foundation models, pretrained on huge collections of time series. Amazon's Chronos-2 (October 2025) handles many related series and outside factors together; Google's TimesFM 2.5 is the default forecaster inside the BigQuery data warehouse, with TimesFM 3.0, which can forecast several related series together, in preview as of October 2026; Salesforce's Moirai and others compete on the GIFT-Eval benchmark. Whether they beat a tuned boosted-tree forecaster depends on the data, so backtest both.
 
 > **Definition — Time-series foundation model:** A model pretrained on a large, varied collection of time series that can forecast a new series with little or no task-specific training.
 

@@ -392,11 +392,11 @@ timeline
 | Sep 21, 2026 | Grok 4.7 | SpaceX's AI unit releases a new model |
 | Sep 22, 2026 | Claude Opus 5.5 | Tops several capability indices as of October 2026 |
 | Sep 22, 2026 | GPT-6 Sol and GPT-6 Luna | Cheaper GPT-6 tiers built on Astra's advances |
-| Sep 28, 2026 | Claude Sonnet 5.5; first US construction permit for a BWRX-300 small modular reactor (TVA, Tennessee) | Mid-tier update; new nuclear for the grid |
-| Sep 29, 2026 | GPT-6.1 Sol; appeals court rules in Thomson Reuters v. Ross that copying for a competing legal-search AI was not fair use | Price drops for near-frontier models; a copyright loss for AI training |
+| Sep 28, 2026 | Claude Sonnet 5.5 | Mid-tier update |
+| Sep 29, 2026 | GPT-6.1 Sol; appeals court rules in Thomson Reuters v. Ross that copying for a competing legal-search AI was not fair use; NRC announces the first US construction permit for a BWRX-300 small modular reactor (TVA, Tennessee) | Price drops for near-frontier models; a copyright loss for AI training; new nuclear for the grid |
 | Around Sep 30, 2026 | Gemini 4 Argon announced (per Epoch) | Google's fourth-generation flagship |
 | Oct 2, 2026 | Anthropic's Claude Frontier Academy: $100 million to train 10,000 deployment engineers | Demand for people who put AI to work |
-| Oct 5, 2026 | US Defense Department says it has stopped using Anthropic products (reported) | A dispute over limits on military use reaches its peak |
+| Oct 5, 2026 | US Defense Department says it has stopped using Anthropic products (reported) | A lab's limits on military use of its models collide with a government customer |
 | Oct 6, 2026 | Anthropic expands its Cyber Verification Program into three access tiers and folds Project Glasswing into it | Structured access for cyber-capable models |
 | Oct 7, 2026 | Claude Haiku 5.5 | Small, cheap model in the 5.5 family |
 | Oct 7–8, 2026 | GPT-6 reaches all ChatGPT users, including free | Frontier model for hundreds of millions |

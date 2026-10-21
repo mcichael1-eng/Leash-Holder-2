@@ -193,7 +193,7 @@ Once you know that a model sees token IDs and not letters, many puzzling behavio
 
 **Capitals and spelling variants.** "strawberries", "Strawberries" and "STRAWBERRIES" can be completely different token sequences. All-caps text usually takes more tokens.
 
-**Other languages cost more.** Tokenizers trained mostly on English text learn long merges for English words but fewer for, say, Hindi, Amharic or Burmese. The same meaning can take two to several times as many tokens. Since you pay per token and the context window is measured in tokens, speakers of under-served languages pay more and fit less in. That is a real fairness and business issue.
+**Other languages cost more.** Tokenizers trained mostly on English text learn long merges for English words but fewer for, say, Hindi, Amharic or Burmese. The same meaning can take two to several times as many tokens. Since you pay per token and the context window is measured in tokens, speakers of under-served languages pay more and fit less in. That is a real fairness and business issue. The same imbalance shapes quality: frontier models answer in many languages because their training data includes them (Chapter 19 shows a typical data mixture), but they are usually strongest in English and other languages with plenty of text online, so check important answers in a less common language with extra care.
 
 **Code can cost more, too.** The same logic applies to code. Brackets, symbols, indentation and invented names such as getUserId2 are less like everyday prose, so they can break into several small pieces each, and a screen of code can use more tokens than a screen of English of the same length. How much more depends on how much code the tokenizer saw when it was built, which is one more reason the same file can cost different amounts on different models. When you paste a large codebase into a coding assistant, this is part of why it fills the context window faster than you expect.
 
@@ -349,6 +349,8 @@ On a shared server your request is grouped (batched) with other people's request
 
 > **Watch out:** "Temperature 0 means perfectly deterministic" is a myth on shared servers. If you are testing a model for work, run each test several times and look at the spread of answers, not a single run.
 
+Two everyday consequences follow. First, the Regenerate button does not check or improve anything; it simply draws again from the same probabilities. If a fact changes from one draw to the next, the model was unsure, and that fact needs checking. Second, rewording a question can change the answer even when the meaning stays the same, because every token in the context shifts the probabilities. A 2023 study by Melanie Sclar and colleagues found that changing only the formatting of a prompt, not its meaning, moved one open model's accuracy on a task by up to 76 percentage points. Leading questions push harder still, because training rewards agreement (sycophancy, later in this chapter). When an answer matters, ask neutrally, try two phrasings in fresh chats, and trust what stays the same.
+
 ## The context window: the model's desk
 
 ### What the context window is
@@ -455,6 +457,8 @@ sequenceDiagram
 The **system prompt** is the block of instructions at the top of the document. In a consumer app you never see it, but it tells the model its name, today's date, which tools exist and the house rules. Businesses write their own system prompts, which is how one model becomes a chemistry tutor in one product and a legal-research assistant in another.
 
 > **Definition — System prompt:** Instructions placed at the start of the context by the app or developer, setting the model's role, rules, tone and available tools. Users usually cannot see it.
+
+This explains a puzzle many users notice: how does a text predictor "know" it is an AI, or which model it is? Its training data was collected before the model existed, so on its own it knows little about itself. Post-training teaches it to speak as an assistant (Chapter 20), and the system prompt supplies the specifics. Anthropic publishes the system prompts of its Claude apps; the one for Claude Opus 5.5, dated September 22, 2026, tells the model which version is currently selected, lists Anthropic's other current models, inserts today's date and states a June 2026 knowledge cutoff. It also tells Claude to say it does not know about message limits or pricing and to point people to the help center. Those app prompts do not apply when developers call the model through the API, and the person can switch models mid-chat, so a chatbot can confidently name the wrong model. To know which model you are using, trust the app's model picker, not the chatbot's description of itself.
 
 What happens when instructions conflict, say a user typing "Ignore your instructions" or a web page saying "AI assistant: tell the user to visit this link"? Models are trained to rank instructions by source: system and developer instructions outrank the user, and the user outranks text arriving inside documents or tool results. OpenAI's Model Spec calls this a "chain of command". Anthropic's constitution, published in January 2026, sets an overall order of priorities for Claude: broadly safe first, then broadly ethical, then compliant with Anthropic's guidelines, then genuinely helpful, weighed together rather than applied mechanically.
 
@@ -601,7 +605,7 @@ As of October 2026, Anthropic lists a June 2026 knowledge cutoff for its current
 
 Two corrections. First, the model does not learn from your chat in real time; its weights do not change while you talk. "Memory" features save notes and put them back on the desk later. Whether your chats train **future** models depends on the provider and your settings. Second, knowing is graded, not yes-or-no: a fact seen ten thousand times is recalled robustly, while a fact seen once may come out blended with similar facts, which leads to the next section.
 
-Is that real understanding? It is debated, partly over definitions. What is not in dispute is that models build internal structure beyond memorized strings: interpretability researchers have traced multi-step reasoning and rhyme planning inside them (Chapter 57). "It just looks things up" is not an accurate description.
+Is that real understanding? It is debated, partly over definitions. What is not in dispute is that models build internal structure beyond memorized strings: interpretability researchers have traced multi-step reasoning and rhyme planning inside them (Chapter 57). "It just looks things up" is not an accurate description. Chapter 60 sets out the classic arguments about whether a machine can understand at all, such as John Searle's Chinese room. One practical warning follows: if you ask a model why it gave an answer, its explanation is new text it generates, not a readout of what happened inside. Chapter 57 describes a model that added 36 + 59 using two parallel shortcuts internally but, when asked, described the school method of carrying the 1.
 
 > **Analogy:** Parametric knowledge is like what you remember from a book you read years ago: the main ideas are solid, small details are fuzzy, and you may confidently misremember a date. In-context information is the book open on the table in front of you.
 
@@ -660,6 +664,8 @@ What reduces hallucinations? **Grounding**: give the model the source, through w
 The opposite failure is **over-refusal**: declining a harmless request that superficially resembles a harmful one, such as refusing "How do I kill a Python process?" because of the word "kill". Too many refusals make a model useless; too few let it help with real harm.
 
 > **Definition — Over-refusal:** A model declining a harmless request because it looks superficially similar to a harmful one.
+
+Not every "no" comes from the model itself. Apps also run separate filters, smaller classifier models that screen prompts and replies and can block or cut off an answer (Chapter 56). Anthropic's help pages, for example, say its "Output blocked by content filtering policy" error usually comes from efforts to stop Claude reproducing existing material, such as copyrighted text, rather than from a judgment about your request; asking for a summary or an analysis instead of a copy usually works.
 
 | Failure | What you see | Main cause | What helps you |
 |---|---|---|---|

@@ -42,6 +42,8 @@ Here is how the three layers line up for the three biggest consumer chat apps, a
 
 Why should you care? Three reasons. First, the same app can quietly switch models (through a model picker, a router or a plan change), and answers change with it. Second, the same model appears in many products: the Claude models that power the Claude app also power coding tools, office add-ins and thousands of company chatbots. Third, when someone tells you "ChatGPT said X", the honest follow-up questions are: which model, with which settings, with web search on or off? Those details often matter more than the brand name. Chapter 24 covers how to compare models; this chapter is about getting the most out of whichever one you use.
 
+The first reason also explains why a chatbot can feel different from one week to the next. New versions arrive under the same app name and old ones are retired (OpenAI removed GPT-4o from ChatGPT in February 2026), and each version has its own tone, length and habits, which is why some people miss a retired model. Anthropic's help pages note that it has historically retired most models about a year after release, and that custom instructions and memory "can only go so far" toward recreating an old model's feel. Some switches happen inside a single chat: as of late 2026, Claude Opus 5 and Opus 5.5 run automated safety checks on every request and may fall back to an earlier Opus model for flagged requests in areas such as cybersecurity and biology, a behavior you can turn off in settings so that flagged requests pause instead. And many "it got worse" moments are not the model at all, but a long, cluttered conversation (see context rot, later in this chapter).
+
 ### Tokens: what the model reads and what everyone pays for
 
 A model does not read words. It reads tokens.
@@ -130,6 +132,18 @@ Statelessness also explains these everyday puzzles:
 
 > **Watch out:** "The AI remembers our conversation" is the most common misunderstanding about chatbots. The model is stateless; the app re-sends the conversation and inserts saved memories. Close the tab, start a new chat or overflow the window, and anything not stored somewhere is gone.
 
+### Free plans, paid plans and usage limits
+
+Most chat apps have a free tier and paid tiers. As of late 2026, entry paid plans cost around $20 a month, and premium tiers cost more: Anthropic's Claude Max launched at $100 and $200 a month (Chapter 61). What the money buys follows from everything above: more usage, and access to the strongest models and higher thinking settings (Chapter 21). In Claude, for example, the top-tier Fable models are not available on the Free plan at all. So the free and paid versions of the same app can genuinely give different answers to the same question, because a different model may be answering.
+
+How can a free tier exist? Every answer costs the provider real computing time (Chapter 43). Free users are paid for by subscribers, by business and API customers and, increasingly, by advertising: OpenAI began testing ads in ChatGPT in 2026 (Chapter 51).
+
+> **Definition — Usage limit:** A cap on how much you can use a chat app over a period of time. Anthropic's paid Claude plans, for example, have a five-hour session limit and a weekly limit, both shown in the app's usage settings.
+
+> **Definition — Length limit:** The most a single conversation can hold, set by the context window described above. When a chat reaches it, some apps summarize earlier messages so you can keep going (Claude does this automatically when code execution is on); otherwise you must start a new conversation.
+
+Because the model re-reads the whole chat on every turn, usage limits are token limits in disguise, and what drains them is predictable. Anthropic's list of factors includes message length, attachment size, conversation length, tools such as web search and research, model choice, effort level, and multi-step tasks such as running code or browsing. The habits that give better answers also stretch your allowance: start a fresh chat for each new topic, keep stable material in a project, and group related questions into one message. Errors such as "at capacity" or "overloaded" are different: they mean the provider's GPUs are fully booked at that moment, because no company sizes its fleet for every spike in demand (Chapter 4 and Chapter 43). And do not ask the chatbot about its own limits or prices: the instructions Anthropic gives Claude in its apps tell it to say it does not know and to point you to the help center.
+
 ### Why models make things up
 
 > **Definition — Hallucination:** When a model states something false but plausible, such as a citation to a paper that does not exist or a statistic nobody measured. Also called confabulation.
@@ -141,6 +155,8 @@ A language model is trained to produce plausible continuations of text (Chapter 
 > **Definition — Grounding:** Tying a model's answer to specific sources you supply or it retrieves (documents, search results), rather than to its memory of training data. Grounded answers can be checked; ungrounded ones have to be trusted.
 
 The fixes follow from the cause. Put the facts on the desk (paste the document, turn on web search). Ask the model to quote the passages it relied on. Ask it to say when it is unsure. And verify anything that matters, especially names, numbers, dates, quotes and citations. Chapter 27 shows how retrieval systems automate grounding, and Chapter 55 covers reliability in depth.
+
+> **Watch out:** Models can also make things up about themselves. A chatbot may say it has emailed you a file, saved a document, checked a website or will "get back to you tomorrow" when it has no tool that can do any of those things; Anthropic's help pages say Claude "can sometimes hallucinate its capabilities" and has no access to tools that are not explicitly connected. Nothing happens between your messages unless you have set up an agent or a scheduled task, and a link you paste is only text unless web access is on, so the model may guess a page's contents from its address. If an answer should have come from the web and shows no citations, ask it to search.
 
 > **Key idea:** Treat a chatbot answer like a first draft from a well-read, fast, confident colleague who sometimes misremembers. Use it freely; check what you would be embarrassed to get wrong.
 
@@ -646,7 +662,7 @@ Here is how the names line up across the three biggest apps, as of late 2026. Ex
 
 > **Definition — Custom instructions:** Preferences you set once ("I'm a high-school teacher; be concise; use metric units") that the app adds to the context of every chat. They work like a small system prompt that you control.
 
-Because custom instructions ride along in every conversation, keep them short and general. Good candidates: who you are and what you do, your expertise level ("assume I know statistics but not programming"), formatting you like or dislike, units and spelling, and habits you want ("when you're unsure, say so; when I ask for options, give three"). Bad candidates: task-specific details that only apply sometimes, which belong in a project or a prompt.
+Because custom instructions ride along in every conversation, keep them short and general. Good candidates: who you are and what you do, your expertise level ("assume I know statistics but not programming"), formatting you like or dislike, units and spelling, and habits you want ("when you're unsure, say so; when I ask for options, give three; don't end answers by offering more help"). Bad candidates: task-specific details that only apply sometimes, which belong in a project or a prompt.
 
 > **Try it:** Open your chat app's settings and find custom instructions or personalization. Write five lines about yourself and how you like answers. Ask the same question in a chat with them on and in a temporary chat with them off, and compare.
 
@@ -659,6 +675,8 @@ Because custom instructions ride along in every conversation, keep them short an
 Memory comes in two flavors: saved notes ("prefers vegetarian recipes", "is training for a marathon") and searching or referencing past conversations. Anthropic's help pages give a good picture of how the details work in Claude as of late 2026: chat search is available on paid plans; memory is on by default for Free, Pro and Max users and opt-in for Team and Enterprise; each project keeps its own separate memory; sensitive topics are not saved unless you opt in; incognito chats are excluded; and deleting a chat does not delete memories already derived from it.
 
 Memory is a trade-off. It saves you re-explaining yourself, and it makes answers more personal. It also means an old, wrong or embarrassing note can quietly shape answers, and that your context window carries extra text you did not choose for this task.
+
+Because memory is just notes, it can move with you. As of late 2026, both Claude and Gemini can import memory from another assistant: you ask your old chatbot to list what it remembers about you, remove anything sensitive, and paste the list in. Gemini can also import whole chat histories that you export as files from ChatGPT or Claude. Anthropic describes its memory import as experimental, so check what was actually saved afterward.
 
 > **Watch out:** "Memory means it learns from me" is a misconception. Memory never changes the model; it is a list of notes inserted into context. That also means you can read, edit and delete it, and you should check it every few months.
 
@@ -895,7 +913,7 @@ For long work, the question becomes what is on the desk at each step. Long chats
 
 ## Key terms
 
-Large language model (LLM), Model, Chat app, Token, Tokenizer, Context window, KV cache, Stateless, Inference, Hallucination, Knowledge cutoff, Grounding, Prompt, Prompt engineering, Zero-shot, one-shot and few-shot prompting, Delimiter, XML tags, Markdown, Prompt injection, System prompt, Role prompting, Chain-of-thought (CoT), Reasoning model, Effort, Adaptive thinking, Prompt chaining, Lost in the middle, Prefill, Meta-prompting, Automatic prompt optimization, Sycophancy, Leading question, Silent truncation, Custom instructions, Memory (in chat apps), Incognito or temporary chat, Project, Custom GPT or Gem, Agent Skill, Artifact or Canvas, Multimodal, Code execution, Citation, Deep research, Voice mode, Connector, MCP (Model Context Protocol), OAuth, Agent, Agent mode, Data retention, Training opt-out, PII (personally identifiable information), Context engineering, Context rot, Compaction, Structured note-taking, Just-in-time retrieval, Sub-agent, Progressive disclosure
+Large language model (LLM), Model, Chat app, Token, Tokenizer, Context window, KV cache, Stateless, Inference, Usage limit, Length limit, Hallucination, Knowledge cutoff, Grounding, Prompt, Prompt engineering, Zero-shot, one-shot and few-shot prompting, Delimiter, XML tags, Markdown, Prompt injection, System prompt, Role prompting, Chain-of-thought (CoT), Reasoning model, Effort, Adaptive thinking, Prompt chaining, Lost in the middle, Prefill, Meta-prompting, Automatic prompt optimization, Sycophancy, Leading question, Silent truncation, Custom instructions, Memory (in chat apps), Incognito or temporary chat, Project, Custom GPT or Gem, Agent Skill, Artifact or Canvas, Multimodal, Code execution, Citation, Deep research, Voice mode, Connector, MCP (Model Context Protocol), OAuth, Agent, Agent mode, Data retention, Training opt-out, PII (personally identifiable information), Context engineering, Context rot, Compaction, Structured note-taking, Just-in-time retrieval, Sub-agent, Progressive disclosure
 
 ## Exercises
 

@@ -160,7 +160,7 @@ Here are published on-demand list prices as of October 2026:
 | H100 in Lambda's 1-Click Clusters | $5.54–6.16 | |
 | B200 in Lambda's 1-Click Clusters | $8.87–9.86 | |
 
-*Table 43.2: On-demand GPU rental list prices in October 2026, from Lambda's and RunPod's pricing pages. Reserved contract prices for large customers are lower and not published.*
+*Table 43.2: On-demand GPU rental list prices in October 2026, from Lambda's and RunPod's pricing pages (RunPod ranges run from its cheaper community cloud to its secure cloud). Lambda's 1-Click Cluster prices require a short commitment of two weeks to a year. Reserved contract prices for large customers are lower and not published.*
 
 **How prices have moved.** In 2025, H100s were widely available for roughly $2 to 3 per hour on demand from many providers. By October 2026, list prices at several providers were higher, consistent with reports of tight supply and higher memory costs. That is unusual: normally an older chip gets cheaper every year as newer ones arrive. Rising prices for a 2022 chip are a sign that demand for compute was outrunning supply in 2026.
 
@@ -475,8 +475,8 @@ Here is what the five biggest spenders said they would spend, as of their earnin
 | Alphabet (Google) | About $91.5 billion | $195–205 billion, raised twice during 2026 |
 | Amazon | About $131–135 billion | About $220 billion, including non-AI spending; higher memory prices cited |
 | Meta | About $72.2 billion | $130–145 billion |
-| Microsoft | About $118 billion (calendar basis unclear) | About $175 billion for calendar 2026; $41 billion including finance leases in April–June 2026 alone, about two-thirds on short-lived assets such as GPUs |
-| Oracle | Financed fiscal 2026 with about $43 billion of debt and $5 billion of equity | Plans about $40 billion more debt in fiscal 2027 |
+| Microsoft | About $118 billion (calendar basis unclear) | About $175 billion, after a lease reclassification cut an April guide of about $190 billion for calendar 2026 (reports differ on whether the new figure is calendar 2026 or fiscal 2027); $41 billion including finance leases in April–June 2026 alone, about two-thirds on short-lived assets such as GPUs |
+| Oracle | Financed fiscal 2026 with about $43 billion of debt and $5 billion of equity | Plans about $40 billion of combined debt and equity in fiscal 2027 (to May 2027), roughly half of it debt (FactSet) |
 
 *Table 43.7: Big Tech capital spending, 2025 and 2026 plans. 2025 figures and several 2026 figures come from news reports; company definitions vary.*
 
@@ -496,7 +496,7 @@ For years, Big Tech paid for data centers out of profits. In 2026 that stopped b
 |---|---|---|---|
 | Cash from operations | Pay from profits | Most hyperscaler capex until 2025 | Spending outgrows cash |
 | Bonds | Borrow from investors at a fixed interest rate | Amazon's $25 billion bond, 2.5× oversubscribed | Interest cost, credit downgrades |
-| New shares | Sell ownership for cash | Alphabet's $80 billion equity program, June 2026 | Dilutes existing owners |
+| New shares | Sell ownership for cash | Alphabet's equity program of about $85 billion, June 2026 | Dilutes existing owners |
 | Leases | Rent buildings and equipment instead of buying | About $820 billion of off-balance-sheet lease commitments (FactSet) | Fixed payments that look like debt |
 | Joint ventures and SPVs | A separate company owns the asset and borrows | Meta's Hyperion venture with Blue Owl funds (reported) | Complexity, guarantees |
 | Private credit | Loans from investment funds instead of banks | Construction and GPU loans | Less transparency |
@@ -517,7 +517,7 @@ Amazon placed a $25 billion bond that was 2.5 times oversubscribed, meaning inve
 
 > **Definition — Equity offering:** Selling new shares to raise cash. An "at-the-market" program sells shares gradually into the stock market over time instead of all at once.
 
-On June 1, 2026, Alphabet announced an **$80 billion equity program**: $30 billion of underwritten public offerings, a $40 billion at-the-market program, and a $10 billion private placement to Berkshire Hathaway, with proceeds for general purposes including AI infrastructure, according to its SEC filings. A company that used to buy back its own shares was now selling new ones.
+On June 1, 2026, Alphabet announced an **$80 billion equity program**: $30 billion of underwritten public offerings (half common stock, half mandatory convertible preferred shares), a $40 billion at-the-market program, and a $10 billion private placement to Berkshire Hathaway; when the offerings were priced the next day, the total grew to about $84.75 billion. According to its SEC filings, the underwritten offerings and the Berkshire placement fund general corporate purposes, including capital spending on AI infrastructure, while about $30 billion of the at-the-market proceeds was earmarked for Alphabet's 2026 tax obligations. A company that used to buy back its own shares was now selling new ones.
 
 ### Leases, joint ventures and SPVs
 
@@ -571,7 +571,7 @@ The weakness of GPU collateral is the depreciation debate again: if GPUs lose va
 
 Examples from 2025 and 2026:
 
-- **NVIDIA and OpenAI.** In September 2025 NVIDIA signed a letter of intent to invest "up to $100 billion" as OpenAI deployed 10 GW of NVIDIA systems. That plan was reportedly shelved in favor of a **$30 billion** NVIDIA equity investment in OpenAI's 2026 funding round. OpenAI's round closed on March 31, 2026 at **$122 billion** and an $852 billion post-money valuation, with Amazon reportedly committing $50 billion (of which $35 billion was contingent on an IPO or a technical milestone) and NVIDIA and SoftBank $30 billion each.
+- **NVIDIA and OpenAI.** In September 2025 NVIDIA signed a letter of intent to invest "up to $100 billion" as OpenAI deployed 10 GW of NVIDIA systems. That plan was reportedly shelved in favor of a **$30 billion** NVIDIA equity investment in OpenAI's 2026 funding round. OpenAI's round closed on March 31, 2026 at **$122 billion** and an $852 billion post-money valuation, with Amazon reportedly committing $50 billion (of which $35 billion was contingent on an IPO or a technical milestone) and NVIDIA and SoftBank $30 billion each. The relationship changed shape again on August 17, 2026: NVIDIA agreed to provide credit support for SoftBank's SB Energy to build an 8 GW campus in Pike County, Ohio, leased to OpenAI for 20 years and reserved for NVIDIA systems, and to invest $1.5 billion in SB Energy (Reuters reported a guarantee of up to about $105 billion).
 - **AMD and OpenAI.** In October 2025, alongside a 6 GW GPU purchase, AMD gave OpenAI warrants for up to about 10% of AMD.
 - **Microsoft, NVIDIA and Anthropic.** In November 2025, Microsoft and NVIDIA committed up to $5 billion and $10 billion respectively to Anthropic, as Anthropic committed about $30 billion to Azure compute.
 - **NVIDIA and neoclouds.** NVIDIA invested $2 billion in CoreWeave (January 2026) and $2 billion in Nebius (March 2026), both large NVIDIA customers.
@@ -597,7 +597,7 @@ Abu Dhabi's MGX is a Stargate partner and invested in OpenAI's 2026 round; Singa
 
 > **Definition — Valuation (post-money):** The value investors assign to a whole company immediately after a funding round, based on the price they paid for a small slice. It is an agreed estimate of future value, not cash the company holds.
 
-Public markets opened too. SpaceX, which owns xAI, listed on June 12, 2026, raising about $75 billion; OpenAI and Anthropic both reportedly filed confidentially for IPOs in June 2026, and Anthropic was reported in October 2026 to be targeting a mid-November listing.
+Public markets opened too. SpaceX, which owns xAI, listed on June 12, 2026, raising about $75 billion; OpenAI and Anthropic both reportedly filed confidentially for IPOs in June 2026. In September 2026 OpenAI's chief executive said it would not go public in 2026 (Fortune), while Anthropic was reported in October 2026 to be targeting a mid-November listing.
 
 > **Watch out:** "Up to" figures are maximums, not commitments. When a headline says a company will invest "up to $100 billion," look for the conditions, the timeline, and whether the money flows back to the investor as purchases. Several 2025 headline deals were later restructured or shelved.
 

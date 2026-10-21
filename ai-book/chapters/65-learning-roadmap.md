@@ -393,6 +393,8 @@ Finish Stage 1, and in the last month start DeepLearning.AI's "AI Python for Beg
 
 > **Definition — Python:** The most widely used programming language in AI, known for readable code and a huge collection of ready-made libraries. Almost every AI course, tool and research codebase uses it.
 
+A common question is "Python or R?" R is a language built for statistics and is still common in statistics, academic research and some data-analysis jobs. But the major model providers all offer official Python libraries, the main deep-learning frameworks such as PyTorch are Python-first, and nearly every course in this chapter uses Python, so learn Python first.
+
 ### 3–12 months: the core stack
 
 This is the heart of Track B. Work through it as a series of projects, using courses as references rather than as the main event. Three terms from earlier chapters appear in the table: SQL is the standard language for asking questions of databases (Chapter 11); an API is the doorway through which a program sends text to a model and gets an answer back, paying per token (Chapter 26); and prompt injection is the attack in which instructions hidden in content an AI reads hijack its behavior (Chapter 31).

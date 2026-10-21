@@ -795,6 +795,8 @@ learns by local chemical changes     learns by backpropagation
 
 Some numbers. A human brain has about 86 billion neurons, each connected to thousands of others, for something on the order of 100 trillion synapses. It runs on about 20 watts, the power of a dim light bulb. A single data-center GPU draws around 700 to 1,000 watts, and frontier models are trained on tens of thousands of them. Frontier models have hundreds of billions to trillions of parameters, but comparing parameters with synapses is misleading: a real synapse is a complex chemical machine, not one number, and a neuron does computation inside its branches. How the brain learns is still an open question; most neuroscientists doubt it uses backpropagation in the form networks do.
 
+So how much computing would it take to match a brain? Nobody knows. The research group AI Impacts, collecting published estimates, found answers ranging from about 10^12 to 10^28 operations per second, a spread of sixteen powers of ten. A single H100 does roughly 10^15 operations per second at 16-bit precision (Chapter 2). So one GPU already exceeds the lowest estimate a thousand times over, and falls short of the highest by a factor of ten trillion. The spread says more about how little we understand the brain than about chips.
+
 ### Ideas that flowed from brains to AI
 
 - **Vision.** In the late 1950s and early 1960s David Hubel and Torsten Wiesel found neurons in the cat's visual cortex that respond to edges at particular angles, arranged in layers that build up more complex features; they shared a Nobel Prize in 1981. Kunihiko Fukushima's Neocognitron (1980) copied that layered design, and it led to the convolutional networks of Chapter 14.

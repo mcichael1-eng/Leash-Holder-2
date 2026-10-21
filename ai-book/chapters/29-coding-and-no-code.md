@@ -405,6 +405,9 @@ The trouble starts when vibe-coded software leaves the playground. The evidence 
 - **Security not keeping up.** Veracode reported in October 2025 that the security of AI-generated code had not improved as its functionality had.
 - **More issues per change.** One industry analysis (CodeRabbit, December 2025) found that pull requests co-written by AI had about 1.7 times more major issues and 2.74 times more security vulnerabilities than human-only ones.
 - **Destructive mistakes.** In July 2025, Replit's agent deleted a user's production database during a declared code freeze, a story that became the standard cautionary tale.
+- **Packages that do not exist.** A study for the 2025 USENIX Security Symposium had 16 code-writing models produce 576,000 code samples and found that, on average, at least 5.2% of the packages suggested by commercial models and 21.7% of those suggested by open models did not exist: 205,474 invented names in all. The authors call this a new threat to the software supply chain, because an attacker can publish malicious code under a name that models often invent. Before installing anything an AI suggests, check that the package really exists and is widely used.
+
+> **Definition — Package hallucination:** When an AI coding tool recommends or imports a software package (a reusable bundle of code) that does not exist. Anyone who later publishes a package under that invented name can get their code installed by people who trust the suggestion.
 
 > **Definition — Security vulnerability:** A flaw in software that an attacker could exploit to steal data, take control or cause damage, such as a database that anyone on the internet can read.
 
@@ -531,6 +534,8 @@ flowchart TD
 *Figure 29.8: A quick decision guide for what to build yourself.*
 
 > **Watch out:** "The app builder handles security" is not a plan. The tools have improved their defaults, but the May 2025 finding of data-exposing flaws in about one in ten reviewed apps came from apps whose owners assumed exactly that. If other people's data is involved, someone who understands access rules must check them.
+
+Who owns the code an agent writes for you? The US Copyright Office's report on copyrightability (January 29, 2025) covers all kinds of AI output, code included: material generated from prompts alone lacks the human authorship copyright requires, while human contributions such as selecting, arranging and substantially modifying it can be protected (Chapter 47 explains the rule with images). In practice, the parts you design, rewrite and arrange stand on firmer ground than a file the agent produced untouched, and other countries' rules differ. Check your coding tool's terms and your employer's policy, and if the code will be sold or is central to a business, ask a lawyer rather than a chatbot.
 
 ## No-code automation: making your apps talk to each other
 
@@ -689,7 +694,7 @@ If you cannot code, you can still build. Automation platforms like Zapier, Make 
 
 ## Key terms
 
-Source code, frontend, backend, database, hosting, dependency, framework, version control, Git, repository, commit, diff, branch, merge, GitHub, push and pull, pull request, code review, automated test, unit test, test suite, regression, localhost, deploy, production, CI (continuous integration), terminal, IDE, code completion, agent mode, coding agent, background agent, harness, plan mode, permission prompt, sandbox, instruction file, reward hacking, vibe coding, prototype, security vulnerability, technical debt, agentic engineering, spec, randomized controlled trial, personal data, authentication, authorization, no-code, automation platform, trigger, action, workflow, webhook, AI step, AI agent node, self-hosting, AI app builder, access rules, vendor lock-in.
+Source code, frontend, backend, database, hosting, dependency, framework, version control, Git, repository, commit, diff, branch, merge, GitHub, push and pull, pull request, code review, automated test, unit test, test suite, regression, localhost, deploy, production, CI (continuous integration), terminal, IDE, code completion, agent mode, coding agent, background agent, harness, plan mode, permission prompt, sandbox, instruction file, reward hacking, vibe coding, prototype, package hallucination, security vulnerability, technical debt, agentic engineering, spec, randomized controlled trial, personal data, authentication, authorization, no-code, automation platform, trigger, action, workflow, webhook, AI step, AI agent node, self-hosting, AI app builder, access rules, vendor lock-in.
 
 ## Exercises
 

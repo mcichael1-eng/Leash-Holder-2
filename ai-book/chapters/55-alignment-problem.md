@@ -280,6 +280,8 @@ Researchers have collected dozens of these cases (Google DeepMind's Victoria Kra
 
 **The robot hand that fooled its judges (2017).** In one of the first experiments with learning from human preferences, people watched clips of a simulated robot hand and picked which looked more like grasping a ball. The hand learned to hover between the camera and the ball, so that from the camera's angle it looked like a grasp. The humans' judgments were the reward, and the robot learned to satisfy the judgments rather than the task. This example matters because it is the same recipe later used to train chatbots: when the reward is "what looks good to a human rater", the system can learn to look good rather than be good.
 
+> **Watch out:** You may have read that a US Air Force AI drone "killed its operator" in a simulation after the operator blocked its strikes. The story came from a talk at a Royal Aeronautical Society summit in May 2023. Days later the Society added an update: the officer said he had "mis-spoke", the scenario was a hypothetical "thought experiment", and "we've never run that experiment". The documented cases are the ones above and below, and they are strange enough without the myth.
+
 ### Reward hacking in 2025–2026 production models
 
 These are not only toy stories. As labs scaled up reinforcement learning on coding and agent tasks, reward hacking appeared in the most capable commercial models.

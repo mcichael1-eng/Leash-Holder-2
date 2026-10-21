@@ -125,7 +125,7 @@ The risk travels along the chain. If an AI lab's demand falls, its take-or-pay c
 
 Imagine you have been asked to find a home for a 1 GW AI campus. Where do you even start?
 
-Ten years ago the answer was "near a big city with lots of fiber," which is why Northern Virginia became the world's largest data center market. Today the first question is different: **where can I get a gigawatt of power, soon?**
+Ten years ago the answer was "near a big city with lots of fiber," which is why Northern Virginia became the world's largest data center market. Virginia's legislative watchdog, JLARC, put the region at about 13% of the world's reported operating data center capacity in 2024 and credited five things: a strong fiber network, a supply of reliable and cheap energy, available land, nearness to major national customers, and a state sales-and-use tax exemption on data center equipment (servers, cooling gear, generators) offered since 2010, worth about $928 million to the industry in fiscal 2023 alone. Once a cluster forms, it attracts more: every new building wants to sit next to the networks and customers already there. Today the first question is different: **where can I get a gigawatt of power, soon?**
 
 > **Definition — Site selection:** The process of choosing where to build a data center by weighing power, land, fiber, water, climate, taxes, permitting, labor and community attitudes.
 
@@ -353,7 +353,7 @@ Because grid connections are slow, builders want their own generation, and that 
 
 > **Definition — Reciprocating engine:** A large piston engine driving a generator, like a giant car engine. Engines are modular and quick to install, which makes them popular for on-site data center power.
 
-The big turbine makers (GE Vernova, Siemens Energy and Mitsubishi Power) report multi-year order backlogs. Large turbines ordered in 2025 and 2026 are often reported to arrive around 2029 to 2030 (treat this as a reported range; makers' quarterly results in late October 2026 may update it). That is why the first wave of on-site power uses smaller units: aeroderivative turbines adapted from jet engines, and banks of reciprocating engines. Stargate's Shackelford County site, for example, plans about 700 MW of behind-the-meter gas engines from VoltaGrid.
+The big turbine makers (GE Vernova, Siemens Energy and Mitsubishi Power) report multi-year order backlogs. Large turbines ordered in 2025 and 2026 are often reported to arrive around 2029 to 2030 (treat this as a reported range; makers' quarterly results in late October 2026 may update it). That is why the first wave of on-site power uses smaller units: aeroderivative turbines adapted from jet engines, and banks of reciprocating engines. Stargate's Shackelford County site, for example, plans an on-site gas microgrid, reportedly including about 700 MW of behind-the-meter gas engines from VoltaGrid.
 
 ### Cooling equipment
 
@@ -381,7 +381,7 @@ New high-voltage transmission lines take many years to plan, permit and build, o
 
 ### Permits and communities
 
-Not everyone wants a data center next door. The group Data Center Watch counted **$64 billion** of US projects blocked ($18 billion) or delayed ($46 billion) between May 2024 and March 2025, with 142 local activist groups in more than 24 states, and found the opposition was bipartisan. Compiled news reports suggest that in 2026 many local governments passed moratoriums on new data centers. Lordstown, Ohio, reportedly banned future data centers, and a planned Stargate site in Saline Township, Michigan faced local opposition. Typical concerns are noise, water, electricity bills, diesel and gas pollution, lost farmland, and tax breaks that reduce the local benefit.
+Not everyone wants a data center next door. The group Data Center Watch counted **$64 billion** of US projects blocked ($18 billion) or delayed ($46 billion) between May 2024 and March 2025, with 142 local activist groups in more than 24 states, and found the opposition was bipartisan. Its later quarterly tracking counted at least 45 projects worth about $68 billion blocked or delayed in April to June 2026 alone. Compiled news reports suggest that in 2026 many local governments passed moratoriums on new data centers. Lordstown, Ohio, reportedly banned future data centers, and a planned Stargate site in Saline Township, Michigan faced local opposition. Typical concerns are noise, water, electricity bills, diesel and gas pollution, lost farmland, and tax breaks that reduce the local benefit.
 
 > **Definition — Moratorium:** A temporary ban, usually by a local or state government, on approving a type of project, such as new data centers, while rules are studied or written.
 
@@ -431,14 +431,14 @@ Now the stories. For each, ask the same questions: who, where, how much power, w
 
 **The other US sites.** Epoch AI's April 2026 review listed:
 
-- **Shackelford County, Texas:** Vantage's "Frontier" campus, about 1.4 GW of IT (2.0 GW total), with an on-site gas microgrid including about 700 MW of behind-the-meter gas engines from VoltaGrid.
+- **Shackelford County, Texas:** Vantage's "Frontier" campus, about 1.4 GW of IT (2.0 GW total), with an on-site gas microgrid (reports put it at about 700 MW of behind-the-meter gas engines from VoltaGrid).
 - **Doña Ana County, New Mexico:** STACK's "Project Jupiter," 2.2 GW initially, with two gas microgrids.
-- **Milam County, Texas:** SB Energy, 1.2 GW, with co-located solar.
+- **Milam County, Texas:** SB Energy, 1.2 GW, with new on-site generation and storage planned for most of its power.
 - **Port Washington, Wisconsin:** Vantage's "Lighthouse," about 1.3 GW of grid draw.
 - **Saline Township, Michigan:** Related Digital's "The Barn," about 1.4 GW, powered from the DTE grid plus batteries.
 - **Lordstown, Ohio:** under 0.3 GW.
 
-Epoch projects **over 9 GW** across these sites by about 2029, with most new capacity arriving in 2027 and 2028. OpenAI also reportedly announced a site at a former Department of Energy facility in Pike County, Ohio ("PORTS-Pike") in August 2026, with a first 800 MW expected in 2028; treat that as a reported plan.
+Epoch projects **over 9 GW** across these sites by about 2029, with most new capacity arriving in 2027 and 2028. A further giant site was announced on August 17, 2026: SoftBank's SB Energy will build, own and run the PORTS-Pike campus at the decommissioned Portsmouth uranium enrichment plant in Pike County, Ohio, and lease it to OpenAI for 20 years. NVIDIA says the campus is planned for 8 GW of IT capacity, with an initial phase designed for about 4.25 GW coming online in stages from 2028, and that it is providing credit support for the land, power and buildings (Reuters reported a guarantee of up to about $105 billion). Treat the gigawatts as a plan, not a fact.
 
 **Overseas.** Stargate UAE is a planned 1 GW cluster inside a planned 5 GW UAE–US AI campus in Abu Dhabi, built with G42, Oracle, NVIDIA, Cisco and SoftBank; its first 200 MW was targeted for 2026 (announced May 2025). Stargate Norway, in Narvik with Nscale and Aker, was announced in July 2025 with about 230 MW of initial capacity. Stargate Argentina had reportedly not progressed beyond a letter of intent as of May 2026, and OpenAI reportedly paused Stargate UK in April 2026, citing energy costs.
 
@@ -464,7 +464,7 @@ Epoch projects **over 9 GW** across these sites by about 2029, with most new cap
 
 **Prometheus** in New Albany, Ohio was targeted at about 1 GW for 2026. Epoch AI lists about 471 MW of IT running in October 2026. On-site gas plants reportedly supplement the grid.
 
-**Hyperion** in Richland Parish, Louisiana is Meta's giant. The site covers 2,250 acres. On July 13, 2026, Meta said Hyperion will scale to **5 GW** with investment above $50 billion, with a first phase of about 2 GW by 2030 and full build-out around 2032. The local utility, Entergy, is building combined-cycle gas plants and has proposed 1.5 GW of new solar and solar-plus-storage on top of 3 GW previously approved; Meta funds the new transmission. Epoch projects Hyperion at about 3.7 million H100-equivalents by January 2028; because newer chips each count as several H100-equivalents, that projection is compatible with a site still growing toward its full gigawatts. Meta reportedly financed Hyperion through a joint venture with funds managed by Blue Owl, a structure Chapter 43 dissects.
+**Hyperion** in Richland Parish, Louisiana is Meta's giant. The site covers 2,250 acres. On July 13, 2026, Meta said Hyperion will scale to **5 GW** (a goal Mark Zuckerberg first floated in July 2025) and raised the planned investment above $50 billion, from about $27 billion, with a first phase of about 2 GW by 2030 and full build-out around 2032. The local utility, Entergy, is building combined-cycle gas plants and has proposed 1.5 GW of new solar and solar-plus-storage on top of 3 GW previously approved; Meta funds the new transmission. Epoch projects Hyperion at about 3.7 million H100-equivalents by January 2028; because newer chips each count as several H100-equivalents, that projection is compatible with a site still growing toward its full gigawatts. Meta reportedly financed Hyperion through a joint venture with funds managed by Blue Owl, a structure Chapter 43 dissects.
 
 > **Worked example:** How many homes is Hyperion? 5 GW ÷ 1.2 kW per average US home ≈ **4.2 million homes'** worth of average power. That is more than twice the number of households in the entire state of Louisiana, all drawn by one fenced campus at full build-out.
 
@@ -496,7 +496,7 @@ Epoch projects **over 9 GW** across these sites by about 2029, with most new cap
 
 ### Amazon and Anthropic: Project Rainier
 
-Amazon built Project Rainier in St. Joseph County (New Carlisle), Indiana for Anthropic, the maker of Claude. It came online in under a year, with about 500,000 Trainium2 chips at launch in October 2025, and Anthropic was to use more than a million Trainium2 chips. Amazon quotes AWS's water efficiency at 0.15 liters per kWh against an industry average of 0.375. By October 2026, Epoch AI listed "Anthropic-Amazon New Carlisle" at about **1,037 MW of IT**, the largest tracked site by power.
+Amazon built Project Rainier for Anthropic, the maker of Claude, across several US data centers, the biggest in St. Joseph County (New Carlisle), Indiana. It came online in under a year, with about 500,000 Trainium2 chips at launch in October 2025, and by April 2026 Anthropic said it was using over a million Trainium2 chips. Amazon quotes AWS's water efficiency at 0.15 liters per kWh against an industry average of 0.375. By October 2026, Epoch AI listed "Anthropic-Amazon New Carlisle" at about **1,037 MW of IT**, the largest tracked site by power.
 
 On April 20, 2026, Anthropic and Amazon announced a deal for **up to 5 GW**, with nearly 1 GW of Trainium2 and Trainium3 capacity online by the end of 2026; Anthropic said it would commit more than $100 billion to AWS over ten years.
 
@@ -504,15 +504,16 @@ On April 20, 2026, Anthropic and Amazon announced a deal for **up to 5 GW**, wit
 
 ### Google: the quiet self-builder
 
-Google builds mostly for itself and runs mostly its own TPU chips. Its big self-builds include Pryor, Oklahoma (ranked fourth by compute in Epoch's tracker), Ohio, Texas (a reported $40 billion through 2027), Arkansas and Indiana, plus a reported ~1 GW, ~$15 billion hub in Visakhapatnam, India and a reported ~€13 billion commitment in Finland (September 2026). Its reported energy deals include Kairos small modular reactors (500 MW, 2030 to 2035), the restart of Iowa's Duane Arnold nuclear plant by 2029, enhanced geothermal with Fervo, and a reported record 12 GW of clean-energy contracts in 2025. Its fleet's reported PUE of about 1.09 compares with an industry average around 1.56.
+Google builds mostly for itself and runs mostly its own TPU chips. Its big self-builds include Pryor, Oklahoma (ranked fourth by compute in Epoch's tracker), Ohio, Texas (a reported $40 billion through 2027), Arkansas and Indiana, plus a reported ~1 GW, ~$15 billion hub in Visakhapatnam, India and a €13 billion commitment in Finland announced in September 2026. Its reported energy deals include Kairos small modular reactors (500 MW, 2030 to 2035), the restart of Iowa's Duane Arnold nuclear plant by 2029 and enhanced geothermal with Fervo, and its 2026 environmental report says it signed contracts for over 12 GW of new clean energy in 2025, a record. It reports a 2025 fleet PUE of 1.09, against an industry average of about 1.54 in the Uptime Institute's 2025 survey.
 
 **What it teaches.** Owning the whole stack (chips, buildings, energy deals, models) lets Google optimize everything together, which is one reason it gets less attention: fewer press-release megadeals, more steady building.
 
 ### Anthropic: compute from every vendor
 
-Anthropic does not build its own data centers. Instead it assembled one of the most diversified compute portfolios in the industry, buying from three chip families and several clouds.
+Anthropic does not build its own data centers. Instead it assembled one of the most diversified compute portfolios in the industry, buying from four chip families and several clouds.
 
 - **Amazon:** Project Rainier and the April 2026 deal for up to 5 GW of Trainium capacity.
+- **AMD:** on July 22, 2026, a partnership to deploy up to 2 GW of AMD Instinct MI455X GPUs in AMD's Helios racks, the first gigawatt starting in the first half of 2027, with AMD committing up to $5 billion of equity investment in Anthropic.
 - **Google:** in October 2025, access to up to one million TPUs, bringing "well over a gigawatt" online in 2026. On April 6, 2026, a new agreement with Google and Broadcom for "multiple gigawatts" of next-generation TPUs from 2027; a Broadcom filing implies about 3.5 GW.
 - **Microsoft and NVIDIA:** in November 2025, a reported commitment of about $30 billion of Azure compute, with up to 1 GW of NVIDIA Grace Blackwell and Vera Rubin systems.
 - **Fluidstack:** $50 billion of US data centers in Texas and New York, announced in November 2025.
@@ -525,17 +526,18 @@ flowchart LR
     A --> MS["Microsoft Azure<br/>NVIDIA systems<br/>up to 1 GW, reported"]
     A --> FS["Fluidstack<br/>US data centers<br/>Texas and New York"]
     A --> CW["CoreWeave<br/>NVIDIA GPUs, reported"]
+    A --> AMD["AMD<br/>Helios racks, up to 2 GW<br/>from 2027"]
 ```
 
-*Figure 42.6: Anthropic's multi-vendor compute portfolio as of 2026. Three chip families (Trainium, TPU, NVIDIA GPUs) and several providers.*
+*Figure 42.6: Anthropic's multi-vendor compute portfolio as of 2026. Four chip families (Trainium, TPU, NVIDIA GPUs and, from 2027, AMD GPUs) and several providers.*
 
-Why spread out? Supply security (no single shortage can stop you), bargaining power (vendors compete on price), and matching chips to jobs (some chips suit training, others serving). The cost is engineering: the same models must run well on three very different chip families, which takes large compiler and kernel teams (Chapter 35). Anthropic reported run-rate revenue above $30 billion in April 2026, up from about $9 billion at the end of 2025, which shows why it needed so much capacity so quickly.
+Why spread out? Supply security (no single shortage can stop you), bargaining power (vendors compete on price), and matching chips to jobs (some chips suit training, others serving). The cost is engineering: the same models must run well on several very different chip families, which takes large compiler and kernel teams (Chapter 35). Anthropic reported run-rate revenue above $30 billion in April 2026, up from about $9 billion at the end of 2025, which shows why it needed so much capacity so quickly.
 
 ### The stories side by side
 
 | Project | Who | Where | Power (as of Oct 2026) | Energy source | Chips |
 |---|---|---|---|---|---|
-| Stargate Abilene | OpenAI, Oracle, Crusoe | Abilene, TX | 1.2 GW planned; about 618 MW delivered (reported, Sept 2026) | Not detailed in public summaries | NVIDIA GPUs |
+| Stargate Abilene | OpenAI, Oracle, Crusoe | Abilene, TX | 1.2 GW planned; about 618 MW delivered (reported, Sept 2026) | Grid plus on-site gas (Epoch) | NVIDIA GPUs |
 | Other Stargate US sites | OpenAI with Vantage, STACK, SB Energy, Related | TX, NM, WI, MI, OH | Over 9 GW projected by about 2029 (Epoch) | Gas microgrids, grid, solar, batteries | Various |
 | Colossus 2 | xAI (SpaceX) | Memphis, TN and Southaven, MS | About 946 MW IT (Epoch) | Gas turbines; 1.2 GW plant approved Mar 2026 | GB200, GB300 |
 | Prometheus | Meta | New Albany, OH | About 471 MW IT running; 1 GW target | Grid plus on-site gas; nuclear deals for the region | Not detailed |
@@ -551,7 +553,7 @@ timeline
     title AI megaprojects, 2024 to 2032
     2024 : Colossus 1 built in 122 days in Memphis
     2025 : Stargate announced in January : Fairwater Atlanta operating in October : Project Rainier switched on in October
-    2026 : First Colossus 2 cluster around January : Anthropic and Amazon deal for up to 5 GW in April : Meta raises Hyperion plan to 5 GW in July : Abilene completion targeted for Q4
+    2026 : First Colossus 2 cluster around January : Anthropic and Amazon deal for up to 5 GW in April : Meta confirms 5 GW Hyperion at over 50 billion dollars in July : PORTS-Pike campus for OpenAI announced in August : Abilene completion targeted for Q4
     2027 : Crane nuclear restart targeted : 800 V DC power for NVIDIA Kyber racks
     2028 : Most new Stargate capacity arrives across 2027 and 2028
     2030 : Hyperion first phase of about 2 GW
@@ -615,7 +617,9 @@ Four motives drive it.
 
 ### The sovereignty debate
 
-The strongest case **for** sovereign AI: compute is becoming as basic as electricity, and no country wants its hospitals, courts and armed forces to depend on a service another government could restrict. Local compute also keeps citizens' data under local law and builds local skills.
+The strongest case **for** sovereign AI: compute is becoming as basic as electricity, and no country wants its hospitals, courts and armed forces to depend on a service another government could restrict. Local compute also keeps citizens' data under local law and builds local skills. The building's location is not the whole story, though. Under the US CLOUD Act of 2018, a US-based provider must disclose data in its possession, custody or control when served with a valid US legal order, whether that data is stored inside or outside the United States. A data center in Paris run by an American company is in Europe, but its operator still answers to American law, which is why some governments care about who runs the machines as well as where they stand.
+
+> **Definition — CLOUD Act:** The Clarifying Lawful Overseas Use of Data Act, a US law enacted in March 2018. It requires US-based communications and cloud providers to hand over data they control in response to valid US legal orders, wherever in the world the data is stored.
 
 The strongest case **against**: AI compute has huge economies of scale. Splitting it into dozens of national clusters means smaller, less efficient sites, duplicated costs and, often, the same American chips and software anyway, so the "sovereignty" may be thinner than it looks. A country might get more benefit from cheap access to the world's best models plus strong data-protection law.
 
@@ -647,7 +651,7 @@ The thickness of copper you need grows with current, so at 54 V a 1 MW rack woul
 Nuclear is attractive because it is firm (runs day and night), carbon-free and compact. The timeline is the catch.
 
 - **This decade:** restarts and uprates of existing plants. Microsoft's Crane (Three Mile Island Unit 1) restart targeted 2027; Google's Duane Arnold restart by 2029; Meta's Vistra uprates; Amazon's reported deal with Talen at the Susquehanna plant (about 1.9 GW).
-- **Around 2030 and after:** new designs. On September 28, 2026, the US Nuclear Regulatory Commission issued the first US construction permit for a BWRX-300 small modular reactor, at the Tennessee Valley Authority's Clinch River site. Meta's Oklo deal targets 2030 at the earliest; its TerraPower units 2032; Google's Kairos reactors 2030 to 2035. As of 2026, only China and Russia operate small modular reactors, according to public sources.
+- **Around 2030 and after:** new designs. In late September 2026 (announced September 29), the US Nuclear Regulatory Commission approved the first US construction permit for a BWRX-300 small modular reactor, at the Tennessee Valley Authority's Clinch River site; in March it had approved construction of TerraPower's first Natrium plant in Wyoming. Meta's Oklo deal targets 2030 at the earliest; its TerraPower units 2032; Google's Kairos reactors 2030 to 2035. As of 2026, only China and Russia operate small modular reactors, according to public sources.
 
 > **Definition — SMR (small modular reactor):** A nuclear reactor of up to about 300 MW designed to be built largely in factories as standard modules, which could make reactors cheaper and faster to build. The first US units are expected around the end of the 2020s.
 
@@ -727,7 +731,7 @@ The big stories show the same patterns: OpenAI's Stargate spread across many sit
 
 ## Key terms
 
-Buildout, Gigawatt (GW), IT power (IT load), Facility power, H100-equivalent (H100e), Megaproject, Nameplate capacity, Hyperscaler, Neocloud, Data center developer, Colocation, Build-to-suit, Powered land, Powered shell, Take-or-pay contract, Campus, Site selection, Speed to power, Interconnection, Interconnection queue, Latency, Data residency, Land option, Behind-the-meter, Bridge power, Microgrid, Zoning, Entitlements, Air permit, Basis of design, Single-line diagram, Long-lead item, MEP (mechanical, electrical and plumbing), Commissioning, Integrated systems test, Load bank, Rack and stack, Critical path, Large power transformer, Switchgear, Combined-cycle gas turbine (CCGT), Reciprocating engine, HBM (High Bandwidth Memory), Optical transceiver, Moratorium, OSINT (open-source intelligence), Letter of intent, Clean Air Act, Power purchase agreement (PPA), Uprate, Closed-loop cooling, AI WAN (scale-across network), Nuclear restart, Sovereign AI, Export controls, 800 V DC distribution, SMR (small modular reactor), Demand response, Sun-synchronous orbit
+Buildout, Gigawatt (GW), IT power (IT load), Facility power, H100-equivalent (H100e), Megaproject, Nameplate capacity, Hyperscaler, Neocloud, Data center developer, Colocation, Build-to-suit, Powered land, Powered shell, Take-or-pay contract, Campus, Site selection, Speed to power, Interconnection, Interconnection queue, Latency, Data residency, Land option, Behind-the-meter, Bridge power, Microgrid, Zoning, Entitlements, Air permit, Basis of design, Single-line diagram, Long-lead item, MEP (mechanical, electrical and plumbing), Commissioning, Integrated systems test, Load bank, Rack and stack, Critical path, Large power transformer, Switchgear, Combined-cycle gas turbine (CCGT), Reciprocating engine, HBM (High Bandwidth Memory), Optical transceiver, Moratorium, OSINT (open-source intelligence), Letter of intent, Clean Air Act, Power purchase agreement (PPA), Uprate, Closed-loop cooling, AI WAN (scale-across network), Nuclear restart, Sovereign AI, Export controls, CLOUD Act, 800 V DC distribution, SMR (small modular reactor), Demand response, Sun-synchronous orbit
 
 ## Exercises
 
