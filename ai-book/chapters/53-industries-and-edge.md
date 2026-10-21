@@ -137,7 +137,7 @@ Suppose, for illustration, that 1 in 1,000 card payments is fraud. A bank's mode
 - Total flagged: 950 + 9,990 = 10,940. Of those, only 950 are fraud.
 - Precision = 950 ÷ 10,940 ≈ 8.7%.
 
-More than 11 of every 12 alerts are honest customers. This is the base-rate trap from Chapter 6, and it explains a lot about how banks behave. They rarely decline a payment outright on a moderate score. Instead they "step up": send you a one-time code or a push notification, which costs you five seconds and catches the criminal who does not have your phone.
+More than 9 of every 10 alerts are honest customers. This is the base-rate trap from Chapter 6, and it explains a lot about how banks behave. They rarely decline a payment outright on a moderate score. Instead they "step up": send you a one-time code or a push notification, which costs you five seconds and catches the criminal who does not have your phone.
 
 The decision also depends on money at stake. Say the model gives a $400 payment a 2% chance of being fraud. The expected loss if the bank approves it is 0.02 × $400 = $8. If a wrong decline costs the bank more than $8 (a lost fee, an annoyed customer who moves their spending to another card), approving is the rational choice. The same 2% on a $4,000 payment means an expected loss of $80, and a step-up check becomes worth it.
 
