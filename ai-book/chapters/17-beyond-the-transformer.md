@@ -587,3 +587,108 @@ State-space models and linear attention attack the memory bill. They replace the
 Around these big ideas sits plumbing that keeps giant training runs stable: constrained residual streams (mHC), bounded attention scores (QK-norm), gates and simple squashing functions. Graph neural networks apply the same "pass messages between neighbors" idea to molecules, maps and weather.
 
 By 2026 the open frontier has converged on a recipe of sparse MoE, cheaper attention, million-token contexts, 4-to-8-bit numbers and stability tricks. Closed labs don't say what they use, and data and training matter at least as much as the blueprint.
+
+## Key terms
+Feed-forward block (FFN), Dense model, KV cache, Quadratic cost, Mixture of experts (MoE), Expert, Router (gating network), Conditional computation (sparse activation), Top-k routing, Gating weight, Total parameters, Active parameters, MXFP4 and NVFP4, Shared expert, Fine-grained experts, Routing collapse (expert collapse), Load balancing, Expert capacity (capacity factor), Token dropping, Auxiliary loss (load-balancing loss), Auxiliary-loss-free balancing, Expert parallelism, All-to-all communication, Graph, Node and edge, Graph neural network (GNN), Message passing, Graph convolutional network (GCN), Sparse and compressed attention, State (memory state), Selectivity (selective state), State-space model (SSM), Mamba, Linear attention, Delta rule, Gated DeltaNet, Kimi Delta Attention (KDA), RWKV and xLSTM, Multi-hop reasoning, Hybrid architecture, Gated attention, Kernel (GPU kernel), Loss spike, Residual stream, Hyper-connections, mHC (manifold-constrained hyper-connections), Attention logit, QK-norm, QK-clip (MuonClip), Attention sink, DyT (Dynamic Tanh), Looped (recursive) model, Test-time memory, Multi-token prediction (MTP), Inductive bias
+
+## Exercises
+
+1. **[Easy] Decode model names.** Model names often encode both sizes: "Qwen3.5-397B-A17B," "Nemotron 3 Nano 30B-A3B" and "Gemma 4 26B-A4B." For each, write down the total and active parameters, the active share (active ÷ total), the operations per token (2 × active) and the memory needed at 4 bits (half a byte per parameter). Which would fit on a single 80 GB GPU at 4 bits? (Expected: about 4.3%, 10% and 15% active; about 199 GB, 15 GB and 13 GB, so the last two fit.) **What you'll learn:** to read total versus active parameters straight off a model card.
+
+2. **[Easy] Route a token by hand.** A token's router scores for six experts are E1 1.2, E2 0.3, E3 2.1, E4 −0.5, E5 1.8, E6 0.0. (1) Pick the top 2. (2) Compute their gating weights with softmax over the two winners: e^2.1 ÷ (e^2.1 + e^1.8), and so on. (3) If Expert 3 outputs [1, 0] and Expert 5 outputs [0, 1], what is the blended output? (4) Now E3 is overloaded (selection bias −0.4) and E1 underused (bias +0.7). Which two experts win now, and what are their gating weights if they still come from the original scores? (Expected: E3 and E5 with about 0.57 and 0.43, output [0.57, 0.43]; then E1 and E5 with about 0.35 and 0.65.) **What you'll learn:** exactly what a router does, and how bias-based balancing changes choices without changing the mixing math.
+
+3. **[Easy] Spread the jazz gossip one more round.** Using Figure 17.6 and the round-2 scores in this chapter (Ana 5.5, Ben 5.5, Cal 4.875, Dee 3.75), compute round 3 with the same averaging rule. Then add a friendship between Ana and Dee, restart from the original scores (9, 3, 6, 0) and redo round 1. (Expected round 3: Ana and Ben about 5.29, Cal about 4.91, Dee about 4.31.) **What you'll learn:** how message passing moves information one hop per round, and how adding one edge changes the flow.
+
+4. **[Medium] Simulate load balancing with dice or a spreadsheet.** For 16 tokens, pick two different experts out of 8 for each token, either by rolling an 8-sided die (re-roll duplicates) or with `=RANDBETWEEN(1,8)` in a spreadsheet. Tally the load per expert. With capacity 5, count dropped slots. Then make the router "biased": treat any roll of 1 or 2 as Expert 3. Count again. Finally try capacities of 4 (factor 1.0) and 8 (factor 2.0). **What you'll learn:** even random routing is lumpy, favoritism quickly causes dropping, and a bigger capacity factor trades wasted memory for fewer drops.
+
+5. **[Medium] Build a KV-cache calculator.** In a spreadsheet, make input cells for layers with full attention, key-value heads, numbers per head, bytes per number and context length. The cache in bytes is `2 × heads × numbers per head × bytes × layers × tokens`. Reproduce Table 17.3, then find the context length at which one conversation's cache reaches 80 GB for 60 attention layers and for 15. (Expected: about 325,000 tokens and about 1.3 million tokens.) **What you'll learn:** why long context is a memory problem and exactly how much a 3:1 hybrid saves.
+
+6. **[Medium] Delta rule versus plain adding, on paper.** Use 2-number keys and values and a memory that starts at zero. Write value [3, 1] under key [1, 0], then value [0, 4] under key [0, 1], then value [2, 2] under key [1, 0] again. Do it twice: once by simply adding `value × keyᵀ` each time, once with the delta rule (write only the difference between the new value and what the memory currently returns). After all three writes, read with each key. (Expected: adding gives [5, 3] and [0, 4]; the delta rule gives [2, 2] and [0, 4].) **What you'll learn:** why the delta rule lets a fixed-size memory update facts instead of blurring them.
+
+7. **[Medium] Architecture detective.** On huggingface.co, search for Qwen3.5-397B-A17B and DeepSeek-V4-Flash. On each model page, read the model card and open `config.json` under "Files and versions." Look for fields whose names mention experts, layer types or hidden layers (names differ between companies). Fill in a table: number of layers, attention types, experts (total and active per token), context length, number precision and license. Cross-check with Sebastian Raschka's LLM Architecture Gallery. **What you'll learn:** to map this chapter's vocabulary onto real frontier specifications.
+
+8. **[Challenge] A tiny MoE router in Google Colab.** Open colab.research.google.com, choose New notebook, paste the code below and press run. It needs no GPU.
+   ```python
+   import numpy as np                          # numpy: fast math on arrays of numbers
+   rng = np.random.default_rng(0)              # random-number generator with a fixed seed
+   n_tokens, n_experts, dim, top_k = 16, 8, 4, 2
+   tokens = rng.normal(size=(n_tokens, dim))   # 16 made-up token vectors, 4 numbers each
+   router = rng.normal(size=(dim, n_experts))  # the router: one column of weights per expert
+   bias = np.zeros(n_experts)                  # per-expert selection bias, starts at zero
+
+   def route(bias):
+       scores = tokens @ router                # dot product of every token with every expert
+       chosen = np.argsort(-(scores + bias), axis=1)[:, :top_k]  # the top-2 experts per token
+       return scores, chosen
+
+   scores, chosen = route(bias)
+   for t in range(n_tokens):
+       s = scores[t, chosen[t]]                # original scores of the two winners
+       w = np.exp(s) / np.exp(s).sum()         # softmax over the winners = gating weights
+       print(f"token {t:2d} -> experts {chosen[t]}, weights {np.round(w, 2)}")
+
+   capacity = int(1.25 * n_tokens * top_k / n_experts)   # fair share 4 x 1.25 = 5
+   load = np.bincount(chosen.ravel(), minlength=n_experts)  # tokens per expert
+   print("load per expert:", load, "capacity:", capacity,
+         "dropped:", np.maximum(load - capacity, 0).sum())
+
+   for step in range(30):                      # DeepSeek-style balancing by bias
+       _, chosen = route(bias)
+       load = np.bincount(chosen.ravel(), minlength=n_experts)
+       bias -= 0.1 * np.sign(load - n_tokens * top_k / n_experts)  # busy down, idle up
+   print("after balancing:", load, "dropped:", np.maximum(load - capacity, 0).sum())
+   print("biases:", np.round(bias, 1))
+   ```
+   In plain words: it invents 16 token vectors and a router, scores every token against every expert, keeps the top 2, prints each token's experts and gating weights, counts each expert's load and the slots dropped over capacity, and then nudges per-expert biases for 30 rounds the way DeepSeek-V3 does. With seed 0 the first load is lumpy (one expert gets 8 tokens, another 0, and 4 slots are dropped); after balancing every expert gets 3 to 5 tokens and nothing is dropped. Change `top_k` to 1 or 4 and the seed to other numbers. **What you'll learn:** routing, gating, capacity and auxiliary-loss-free balancing as real running code.
+
+9. **[Challenge] Judge the hybrid debate.** Ask a chatbot to argue, in 200 words each, (a) that 3:1 hybrid attention is the future and (b) that full attention is worth its cost, using only facts from this chapter: MiniMax M2's stated reasons, Kimi Linear's company-reported gains and the criticism of them, Qwen3.5's and Kimi K3's designs, and DeepSeek V4's compressed attention. Then write your own 150-word verdict and design one test that would settle the question for your use case, such as multi-hop questions about a 300-page document. **What you'll learn:** how to weigh vendor claims, separate benchmarks from real workloads and form an evidence-based view.
+
+10. **[Medium] Explain it back.** Ask your chatbot: "Quiz me with eight questions on mixture of experts, state-space models and hybrid architectures, one at a time, and grade each answer." Answer from memory, then reread the sections where you slipped. **What you'll learn:** active recall of this chapter's core ideas.
+
+## Areas of opportunity
+
+- **ML performance and kernel engineer.** Every new layer type (DeltaNet variants, compressed attention, MoE routing, 4-bit formats) needs fast GPU kernels before anyone can use it. People who write CUDA or Triton kernels are chronically scarce and among the best paid in AI.
+- **Inference engineer for MoE serving.** Expert parallelism, all-to-all communication, KV-cache management and quantization decide what each token costs. Providers serving open MoE models pay well for each percentage point of efficiency.
+- **Research engineer on architectures and optimizers.** Labs need people who can run careful experiments on routers, hybrids, stability tricks and optimizers like Muon. It requires strong math and large-scale engineering and is very competitive.
+- **Model selection consultant.** Companies adopting open-weight models (DeepSeek, Qwen, Kimi, Nemotron, gpt-oss) need someone who can read configs and licenses, explain total versus active parameters, and size the hardware. Few people can translate this for business buyers.
+- **Long-context evaluation.** Whether hybrids lose recall on real multi-hop work is unresolved. Building realistic long-document and long-session test suites for law firms, insurers or research groups is valuable and needs domain knowledge more than code.
+- **Edge and on-device AI.** Fixed-memory SSM and hybrid layers, quantized to 4 bits, suit phones, cars and factory devices. Products that run long-context assistants locally, for privacy or offline use, are an open market.
+- **Domain-specialist GNN work.** Molecules, materials, power grids, logistics networks and fraud rings are graphs. Domain experts who learn GNN basics are a rare combination in pharma, energy and finance.
+- **Interpretability of MoE models.** Understanding what experts encode and auditing models whose computation path changes for every token is an open safety research problem (Chapter 57).
+- **Technical educator and writer.** Few people can explain MoE, SSMs and hybrids accurately to non-experts. Developer relations teams, courses and media need them.
+
+## Check your understanding
+
+1. What is the difference between total and active parameters? Use DeepSeek V4-Pro's numbers, and say which one sets memory and which sets compute per token.
+2. A router picks two experts with scores 1.0 and 0.0. What are the gating weights?
+3. What is routing collapse, and what are two ways labs prevent it?
+4. Why does an MoE layer need all-to-all communication, and why does that favor certain hardware?
+5. Why does a state-space or linear-attention layer use the same memory at 1,000 tokens as at 1,000,000, and what does it give up?
+6. What does a 3:1 hybrid do to the KV cache, and why did MiniMax go back to full attention?
+7. What problems do QK-norm and mHC each solve?
+8. In what sense is a Transformer a graph neural network?
+
+<details><summary>Answers</summary>
+
+1. Total parameters are everything stored (1.6 trillion for V4-Pro); active parameters are those used for one token (49 billion). Memory follows the total, because every expert must be stored; compute per token follows the active count, about 2 × 49 billion ≈ 98 billion operations.
+2. Softmax over the two: e^1 ÷ (e^1 + e^0) ≈ 2.718 ÷ 3.718 ≈ 0.73, and 0.27 for the other.
+3. Routing collapse is when a few experts get most tokens, improve faster, and attract even more, leaving the rest unused. Fixes: an auxiliary load-balancing loss; DeepSeek's auxiliary-loss-free bias adjustment; and expert capacity limits with token dropping as a backstop.
+4. Experts sit on different chips, so each token's vector must be sent to the chips holding its chosen experts and the results sent back; every chip may exchange data with every other. That favors hardware with very fast chip-to-chip links, such as 72-GPU NVL72 racks.
+5. It folds everything it has read into a fixed-size state (a summary or memory matrix) instead of keeping a key and value per token. It gives up exact recall of arbitrary old details, which can hurt multi-hop reasoning.
+6. Only a quarter of the layers keep a KV cache, so it shrinks to about a quarter (about 61 GB instead of 245 GB at 1 million tokens in this chapter's example). MiniMax said hybrids looked fine on benchmarks but degraded on multi-hop reasoning at scale, and full attention has far more mature kernels and tooling.
+7. QK-norm keeps attention scores bounded by normalizing queries and keys, preventing exploding logits and loss spikes. mHC keeps the mixing of multiple residual streams from amplifying or shrinking signals over many layers, so deep networks train stably.
+8. Attention is message passing in which every token is connected to every other token and the edge weights (attention scores) are computed on the fly. A Transformer is a GNN on a fully connected graph, which is also why its cost grows with the square of the number of tokens.
+
+</details>
+
+## Going deeper
+
+- **Shazeer et al., "Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer" (2017)** — the paper that made MoE work at scale; readable introduction and figures.
+- **Fedus, Zoph and Shazeer, "Switch Transformers" (2021)** — top-1 routing, capacity factors and the auxiliary balancing loss, clearly explained.
+- **DeepSeek-AI, "DeepSeek-V3 Technical Report" (arXiv 2412.19437, 2024)** — fine-grained and shared experts, auxiliary-loss-free balancing and multi-token prediction in one place.
+- **Hugging Face blog, "Mixture of Experts Explained" (December 2023)** — a friendly overview with history, diagrams and serving trade-offs.
+- **Gu and Dao, "Mamba: Linear-Time Sequence Modeling with Selective State Spaces" (2023), and Tri Dao's Mamba-3 blog posts at tridao.me (2026)** — the source papers for selective state-space models, from the authors.
+- **Sebastian Raschka's LLM Architecture Gallery (sebastianraschka.com)** — side-by-side diagrams of current open models' layers, attention types and expert counts, kept up to date.
+- **Sanchez-Lengeling et al., "A Gentle Introduction to Graph Neural Networks" (Distill, 2021)** — an interactive, visual explanation of message passing.
+- **Model cards for DeepSeek-V4-Pro and Kimi-K3 on Hugging Face** — primary sources for the frontier numbers in this chapter; good practice in reading real specifications.
+- **Rich Sutton, "The Bitter Lesson" (2019 essay)** — a one-page argument for why general methods that scale with compute keep winning, useful for judging every architecture claim.

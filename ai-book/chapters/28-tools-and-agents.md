@@ -126,6 +126,8 @@ sequenceDiagram
 
 > **Key idea:** A tool call is just structured output (Chapter 26) with a name attached. The model writes JSON; your code decides whether and how to act on it.
 
+> **Try it:** Paste the `get_weather` definition above into any chatbot and say: "Pretend you are a model with this tool. I ask: should I bring a coat in Oslo today? Write the exact JSON tool call you would make. Then, if the tool returned 3 C with light rain, write your final answer." Compare its JSON with the format shown here.
+
 ### What a tool call costs
 
 Because the API is stateless (Chapter 25), the second call re-sends everything: the question, the tool definitions, the model's tool call and the result. Suppose the first request is 1,200 tokens (instructions, tool definition and question) and the model writes 60 tokens of tool call. The second request is then about 1,360 tokens in and 80 tokens out. At Claude Opus 5.5's list prices as of late 2026 ($4 per million input tokens, $20 per million output tokens):
@@ -286,6 +288,8 @@ Answer:   Lisbon is warmer, by about 11.5 degrees Celsius (18.4 C versus 6.9 C).
 ```
 
 Three model calls, three tool runs, one answer. Exercise 8 lets you run exactly this agent in Google Colab with free weather data.
+
+> **Try it:** Give a chatbot with web search a two-hop question, such as "Who directed the film that won Best Picture at the Oscars the year I was born, and what was their next film?" Expand its search steps and label each one as thought, action or observation. Count how many times it went round the loop.
 
 ### The whole agent is a loop
 
@@ -521,6 +525,8 @@ Servers are listed in registries, directories where hosts and users can find and
 
 A second extension, Tasks, handles long-running work: a server can accept a job, return immediately, and report progress and the final result later.
 
+> **Try it:** Open your chat app's settings and find its list of connectors or plugins. For each one you have enabled, click through to its permissions and write down what it can read and what it can do. Disconnect anything you no longer use.
+
 ```mermaid
 sequenceDiagram
   participant U as User
@@ -715,3 +721,251 @@ MCP is the standard plug that lets any AI app connect to any tool or data source
 
 ## Key terms
 Function, Tool, Tool use (function calling), Tool definition, JSON Schema, Tool call, Stop reason, Tool result, Tool choice, Parallel tool calls, Client-side tool, Server-side tool, Code execution (code interpreter), Sandbox, Workflow, Agent, Prompt chaining, Routing, Parallelization, Orchestrator-workers, Evaluator-optimizer, Agent loop, ReAct, Planning (agents), Short-term memory (agents), Long-term memory (agents), Episodic, semantic and procedural memory, Compaction, Stop condition, Human-in-the-loop, Multi-agent system, Subagent, Handoff, Harness (scaffold), Background agent, Time horizon (METR), MCP (Model Context Protocol), MCP host, client and server, MCP tools, resources and prompts, JSON-RPC, Transport (stdio and Streamable HTTP), OAuth, Connector, MCP Apps, Tool poisoning, A2A (Agent2Agent protocol), Agent Card, Agent Skill, Progressive disclosure, AGENTS.md (and CLAUDE.md), Plugin (agent plugin), Agentic AI Foundation (AAIF), Computer use, Browser agent, Indirect prompt injection, Lethal trifecta, Least privilege, Agent SDK, Agent framework
+
+## Exercises
+
+1. **[Easy] Watch a tool call happen.** See the "model asks, app acts" pattern in a product you already use.
+   1. In ChatGPT, Claude or Gemini, turn on web search and ask: "What is the weather in Lisbon right now, and what was the top news story in Portugal today?"
+   2. While it works, look for the step indicators ("Searching the web...", a list of queries, or an expandable tool-call box). Click to expand them if you can.
+   3. Write down: how many searches it ran, the exact queries it wrote, and whether it ran any in parallel.
+   4. Ask a follow-up that needs no tool ("Translate your answer into Spanish") and note that no search happens.
+   **What you'll learn:** the model writes the search queries and the app runs them, and models decide for themselves when a tool is needed.
+
+2. **[Easy] Be the model: write tool calls by hand.** Practise reading tool definitions the way a model does, with pencil and paper.
+   1. You have three tools: `get_weather(city)`, `calculator(expression)` and `search_calendar(date, keyword)`, where date is written YYYY-MM-DD.
+   2. For each request, write either the exact tool call(s) as JSON, such as `{"name": "get_weather", "input": {"city": "Oslo"}}`, or "no tool needed": (a) "Is it raining in Rome?"; (b) "What is 17.5% of 2,340?"; (c) "Do I have a dentist appointment on 3 November 2026?"; (d) "Write me a haiku about rain"; (e) "Is it warmer in Cairo or Athens, and by how much?"
+   3. For (e), write the calls in the order an agent would make them, and mark which can run in parallel.
+   4. Rewrite the description of `search_calendar` so a model would never confuse it with a to-do list tool.
+   **What you'll learn:** a tool call is just structured output, descriptions steer when tools are used, and multi-step requests become agent loops.
+
+3. **[Easy] Workflow or agent?** Practise the most important design decision in this chapter.
+   1. For each scenario, decide whether a single model call, a fixed workflow (name the pattern) or an agent fits best, and write one sentence why: (a) tag 10,000 support emails as billing, technical or other; (b) turn meeting notes into a summary, then an action list, then an email; (c) investigate why a website got slower last week; (d) translate a contract and have a second model check legal terms; (e) plan a 5-day trip with flights, hotels and opening hours; (f) answer "what is our refund policy?" from a handbook.
+   2. Compare your answers with a chatbot's, after giving it this chapter's definitions of workflow and agent. Where do you disagree?
+   **What you'll learn:** most tasks do not need an agent, and "use the simplest thing that works" is a practical rule.
+
+4. **[Medium] Fix three bad tools.** Practise tool design, which is prompt writing for machines.
+   1. Here are three poor definitions: `do_stuff(x)`: "Does stuff with x."; `db(q)`: "Query the database."; `email(to, body)`: "Email."
+   2. Imagine they belong to a small bakery's ordering assistant. Rename each one, rewrite its description (what it does, when to use it, when not to), and define its inputs with types and examples.
+   3. For the email tool, decide what should require human approval, and what the tool should refuse to do on its own (for example, sending to addresses outside the customer list).
+   4. Paste your three definitions into a chatbot and ask it to role-play as an agent: give it five customer messages and ask which tool it would call for each, with what inputs. Revise any definition it misused.
+   **What you'll learn:** good names, descriptions, input schemas and permission limits are what make agents reliable.
+
+5. **[Medium] Connect an MCP server or connector to your chat app.** Give your assistant real access to one of your own services and watch the permissions at work.
+   1. **Option A (no installation).** In Claude, ChatGPT or Gemini, open Settings and find the section for connectors (it may be called Connectors, Apps, Plugins or Extensions; ChatGPT renamed its "apps" to "plugins" in July 2026). Connect one low-risk service, such as Google Drive or a calendar. On the consent screen, write down every permission (scope) requested.
+   2. **Option B (local MCP server).** Install the Claude Desktop app and Node.js (nodejs.org). Create a folder called `ai-test` on your desktop and put two small text files in it. In Claude Desktop open Settings, then Developer, then Edit Config, and paste the following, replacing the path with your folder's real path (on Windows use double backslashes, such as `C:\\Users\\yourname\\Desktop\\ai-test`). Save the file and restart Claude Desktop. If your version offers an Extensions page with a ready-made filesystem extension, you can install that instead.
+
+   ```json
+   {
+     "mcpServers": {
+       "filesystem": {
+         "command": "npx",
+         "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/yourname/Desktop/ai-test"]
+       }
+     }
+   }
+   ```
+
+   3. Ask a question that needs two of your files, such as "Compare the two notes in my ai-test folder and list where they disagree."
+   4. Watch for the approval prompt before each tool runs. Expand it and record the tool name and the exact arguments the model wrote.
+   5. Ask it to do something outside its permissions (Option B: read a file outside the `ai-test` folder; Option A: delete a file). Record what happens.
+   6. Finally, disconnect the connector or remove the config entry, and confirm the tool is gone.
+   **What you'll learn:** what hosts, clients and servers look like from the outside, that every tool call can be inspected and approved, and that scopes and folder limits are your real protection.
+
+6. **[Medium] Why long tasks fail: a reliability spreadsheet.** See compounding error with your own numbers.
+   1. In a spreadsheet, put per-step success rates in column A: 0.90, 0.95, 0.99, 0.995, 0.999.
+   2. Put task lengths in row 1: 5, 10, 20, 50, 100, 200 steps.
+   3. In each cell compute success rate to the power of steps, for example `=$A2^B$1`.
+   4. Find, for each per-step rate, the longest task that still succeeds at least half the time.
+   5. Add a row for "an agent that catches and fixes half of its own errors": its effective per-step failure is half as large (for 0.95, use 0.975). How much longer can its tasks be?
+   **What you'll learn:** why per-step reliability and self-correction, not just intelligence, determine how long agents can work alone.
+
+7. **[Medium] Write your own AGENTS.md and a skill.** Package your know-how the way agents consume it.
+   1. Pick a project you do repeatedly (a monthly budget review, a newsletter, a class lesson plan).
+   2. Write an `AGENTS.md` of 10 to 15 lines: what the project is, where things live, your conventions, and three things never to do.
+   3. Write a `SKILL.md` for one recurring task, with a name, a one-line description that says *when* to use it, and numbered instructions.
+   4. Test it: in a chat app that supports skills or projects, add both files as instructions or knowledge (or paste them at the start of a chat). Give it the task twice, once mentioning the skill's trigger words and once not. Did it pick up the skill?
+   5. Improve the description until the skill is used when it should be and not otherwise.
+   **What you'll learn:** progressive disclosure depends on good descriptions, and clear written procedures are one of the most useful things you can give an agent.
+
+8. **[Challenge] Build a tiny agent in Google Colab.** Run the Lisbon-versus-Oslo agent from this chapter, with a real weather tool (free, no key) and a calculator. You need an Anthropic API key with a small spending limit; the whole exercise costs a few cents.
+   1. Go to colab.research.google.com and create a notebook. Click the key icon (Secrets), add `ANTHROPIC_API_KEY` with your key, and allow notebook access. Never paste the key into a cell.
+   2. Paste each block into its own cell and run them in order.
+
+   ```python
+   # CELL 1: install Anthropic's library (requests is already in Colab)
+   !pip install -q anthropic
+   ```
+
+   ```python
+   # CELL 2: setup
+   import ast, json, operator
+   import requests, anthropic
+   from google.colab import userdata
+
+   client = anthropic.Anthropic(api_key=userdata.get("ANTHROPIC_API_KEY"))
+   MODEL = "claude-opus-5-5"     # or "claude-haiku-5-5" to spend less
+   ```
+
+   ```python
+   # CELL 3: the real functions (the agent's hands)
+   def get_weather(city):
+       """Find the city's coordinates, then its current weather (Open-Meteo, free)."""
+       try:
+           geo = requests.get("https://geocoding-api.open-meteo.com/v1/search",
+                              params={"name": city, "count": 1}, timeout=20).json()
+           if not geo.get("results"):
+               return {"error": f"No place called '{city}' was found. Check the spelling."}
+           place = geo["results"][0]
+           weather = requests.get("https://api.open-meteo.com/v1/forecast",
+                                  params={"latitude": place["latitude"],
+                                          "longitude": place["longitude"],
+                                          "current": "temperature_2m,precipitation"},
+                                  timeout=20).json()
+           return {"city": place["name"], "country": place.get("country"),
+                   "temperature_c": weather["current"]["temperature_2m"],
+                   "precipitation_mm": weather["current"]["precipitation"]}
+       except requests.RequestException as err:
+           return {"error": f"The weather service did not answer: {err}"}
+
+   ALLOWED = {ast.Add: operator.add, ast.Sub: operator.sub, ast.Mult: operator.mul,
+              ast.Div: operator.truediv, ast.Pow: operator.pow, ast.USub: operator.neg}
+
+   def calculator(expression):
+       """Safely evaluate plain arithmetic such as '(18.4 - 6.9) * 2'."""
+       def evaluate(node):
+           if isinstance(node, ast.Constant) and isinstance(node.value, (int, float)):
+               return node.value
+           if isinstance(node, ast.BinOp) and type(node.op) in ALLOWED:
+               return ALLOWED[type(node.op)](evaluate(node.left), evaluate(node.right))
+           if isinstance(node, ast.UnaryOp) and type(node.op) in ALLOWED:
+               return ALLOWED[type(node.op)](evaluate(node.operand))
+           raise ValueError("Only numbers and + - * / ** ( ) are allowed.")
+       try:
+           return {"result": round(evaluate(ast.parse(expression, mode="eval").body), 4)}
+       except Exception as err:
+           return {"error": str(err)}
+   ```
+
+   ```python
+   # CELL 4: the tool definitions (the menu the model reads)
+   TOOLS = [
+       {"name": "get_weather",
+        "description": "Get the current temperature in Celsius and the precipitation "
+                       "for one city. Use it whenever the user asks about weather now.",
+        "input_schema": {"type": "object",
+                         "properties": {"city": {"type": "string",
+                                                 "description": "City name, e.g. Lisbon"}},
+                         "required": ["city"]}},
+       {"name": "calculator",
+        "description": "Evaluate an arithmetic expression exactly, e.g. '18.5 - 9.2'. "
+                       "Use it for every calculation instead of doing math in your head.",
+        "input_schema": {"type": "object",
+                         "properties": {"expression": {"type": "string"}},
+                         "required": ["expression"]}},
+   ]
+   FUNCTIONS = {"get_weather": get_weather, "calculator": calculator}
+   ```
+
+   ```python
+   # CELL 5: the agent loop
+   def run_agent(question, max_steps=8):
+       messages = [{"role": "user", "content": question}]
+       for step in range(1, max_steps + 1):
+           response = client.messages.create(model=MODEL, max_tokens=4000,
+                                             tools=TOOLS, messages=messages)
+           messages.append({"role": "assistant", "content": response.content})
+
+           if response.stop_reason != "tool_use":          # no tool requested: done
+               text = "".join(b.text for b in response.content if b.type == "text")
+               print(f"\nFinal answer after {step} model call(s):\n{text}")
+               return
+
+           results = []
+           for block in response.content:                  # run every requested tool
+               if block.type != "tool_use":
+                   continue
+               print(f"Step {step}: model asks for {block.name}({json.dumps(block.input)})")
+               if block.name in FUNCTIONS:
+                   output = FUNCTIONS[block.name](**block.input)
+               else:
+                   output = {"error": f"There is no tool called {block.name}."}
+               print(f"        your code returns {output}")
+               results.append({"type": "tool_result", "tool_use_id": block.id,
+                               "content": json.dumps(output), "is_error": "error" in output})
+           messages.append({"role": "user", "content": results})
+       print(f"\nStopped: reached the limit of {max_steps} steps.")
+
+   run_agent("Is it warmer in Lisbon or Oslo right now, and by how many degrees?")
+   ```
+
+   3. Read the printed trace. Count the model calls and tool calls, and check whether the two weather lookups were requested in the same step (parallel tool calls).
+   4. Try three more questions: one misspelled city ("Lisbonn"), one needing no tools ("Tell me a joke about clouds"), and one needing many steps ("Rank Tokyo, Nairobi, Lima and Reykjavik from warmest to coldest right now").
+   5. Set `max_steps=1` and re-run the first question to see the stop condition fire.
+
+   **What each part does, in plain words:** Cell 2 creates the client that talks to Claude, reading your key from Colab Secrets. Cell 3 holds the two ordinary Python functions the agent can use: `get_weather` asks the free Open-Meteo service for a city's coordinates and then its current weather, and returns a helpful error message instead of crashing; `calculator` does arithmetic safely by allowing only numbers and the basic operators. Cell 4 is what the model actually sees: a name, a description and an input schema for each tool. Cell 5 is the agent loop from this chapter: call the model with the conversation and tool list; if it did not ask for a tool, print the answer and stop; otherwise run each requested tool, send all the results back in one message, linked by ID and marked if they failed, and go round again, never more than `max_steps` times. The full assistant reply, including any hidden thinking blocks, is added back to the conversation unchanged, as the API expects.
+   **What you'll learn:** an agent really is a model plus tools plus a loop with a limit, and you can now read and modify one.
+
+9. **[Challenge] Build and connect your own MCP server.** Expose your own data to your chat app through MCP, with a coding agent doing most of the typing.
+   1. Install a coding agent such as Claude Code, Codex CLI or Cursor (Chapter 29), and Python or Node.js.
+   2. In an empty folder, create `recipes.json` with five of your recipes (name, ingredients, steps).
+   3. Ask the coding agent, in plan mode if available: "Build a small MCP server using the official MCP SDK, with two tools: search_recipes(ingredient), which returns matching recipe names and ingredients, and add_recipe(name, ingredients, steps), which appends to recipes.json. Write clear tool descriptions, return helpful errors, and explain each file to a beginner."
+   4. Test it with the MCP Inspector tool the agent suggests, and check that the tool list and descriptions look right.
+   5. Connect it to Claude Desktop or another MCP host (as in Exercise 5) and ask: "What can I cook with chickpeas?" then "Save this new recipe: ...". Watch for the approval prompt on `add_recipe`.
+   6. Change one tool description to be vague ("Searches stuff") and observe whether the model still uses it correctly. Change it back.
+   **What you'll learn:** hosts, clients and servers from the inside, why tool descriptions matter, and why write tools deserve approval prompts.
+
+10. **[Medium] A lethal-trifecta audit of your own assistant.** Assess the real risk of the agents and connectors you use.
+    1. List every connector, plugin, browser extension and agent feature you have enabled across your AI apps.
+    2. For each, mark three columns: can it read private data (email, files, calendar)? Is it exposed to untrusted content (web pages, incoming email, shared documents)? Can it communicate externally (send email, post messages, open URLs, make purchases)?
+    3. Highlight every row, or combination of tools in the same app, that ticks all three boxes.
+    4. For each highlighted case, choose a fix that removes one leg: narrower scopes, read-only access, approval before sending, turning off web browsing in that workspace, or disconnecting the tool.
+    5. Write a one-paragraph personal policy, such as "my email-reading assistant never gets web browsing and never sends without my approval".
+    **What you'll learn:** how to apply the lethal-trifecta test and least privilege to your own setup, which is the most practical agent-security skill there is.
+
+## Areas of opportunity
+
+- **MCP servers for underserved software.** Thousands of niche business tools, legacy systems and government data sources have no good MCP server. Building, securing and maintaining them is a product opportunity, and a distribution channel for existing software companies that want to be usable from every AI app.
+- **Vertical agents that own a workflow.** Agents that handle an entire process in one industry (insurance claims intake, freight paperwork, dental billing, construction bids) win through integration, domain data and trust, which large horizontal labs find hard to copy. Buyers pay for outcomes, not for a chatbot.
+- **Forward-deployed and applied AI engineering.** Labs and startups hire engineers who sit with customers and make agents work inside real workflows; it is one of the fastest-growing AI roles of 2025 and 2026 and suits people who like both code and customers.
+- **No-code agent and automation builders.** Small and medium businesses pay specialists to build agents in tools such as n8n, Zapier and Microsoft Copilot Studio (Chapter 29), and to connect them safely to email, CRMs and spreadsheets.
+- **Agent evaluation.** Companies need test suites for agents: task success, cost per task, steps taken and safety violations. Domain experts who can write realistic agent tasks and graders are especially valuable.
+- **Agent security.** Prompt-injection testing, MCP supply-chain review, permission and approval design, sandboxing and audit logging are scarce skills, and the NSA's 2026 warning about MCP's security model shows why organizations will pay for them.
+- **Writing for agents.** Tool descriptions, AGENTS.md files, skills and API documentation that agents read are becoming a specialty of their own, close to technical writing but measured by how well agents perform.
+- **Agent observability and cost control.** Tracing, budgeting and debugging long multi-agent runs is a growing tooling market, because agent runs can cost tens to hundreds of times more than chats.
+- **Agentic commerce.** Making products and services purchasable by agents, with structured catalogs and payment protocols such as AP2, is an early market for retailers and the companies that serve them.
+- **Open problems.** A real fix for prompt injection, reliable long-horizon agents, identity and authorization for agents acting on someone's behalf, and fair evaluation of open-ended agent work are all unsolved and worth research effort.
+
+## Check your understanding
+
+1. When ChatGPT says "Searching the web...", what exactly does the model do, and what does the app do?
+2. What three parts make up a tool definition, and which one most affects whether the model uses the tool correctly?
+3. What is the difference between a workflow and an agent? Give one example where each is the better choice.
+4. Describe the agent loop in four or five steps, and name three kinds of stop condition.
+5. An agent succeeds at each step 98% of the time. Roughly what is its chance of completing a 50-step task without self-correction, and what does that imply for design?
+6. Name the three roles in MCP and the three kinds of things an MCP server can offer. Which transport would a server on your own laptop use?
+7. How do MCP, A2A and Agent Skills differ in what they connect or package?
+8. What is the lethal trifecta, and how would you make a browser agent that reads your email safer?
+
+<details><summary>Answers</summary>
+
+1. The model writes a structured tool call (a search query as JSON) and stops. The app (or the provider, for a server-side search tool) runs the search, pastes the results into the conversation as a tool result, and calls the model again so it can write an answer with citations. The model never touches the internet itself.
+2. A name, a description and an input schema (JSON Schema). The description matters most, because it tells the model what the tool does and when to use it; it is effectively a prompt.
+3. In a workflow, code fixes the sequence of steps and the model fills in each one; in an agent, the model decides its own steps in a loop. A workflow suits a predictable process such as summarize, then extract actions, then draft an email. An agent suits an open-ended task such as investigating why a website slowed down, where the next step depends on what is found.
+4. The model reads the goal and context and decides what to do; it calls a tool; the app runs the tool; the result is added to the context; the model decides again, until it judges the goal met. Stop conditions include the model declaring it is done, a maximum number of steps, a spending or token budget, a time limit, and a human approval checkpoint.
+5. 0.98 to the power of 50 is about 36%. Long tasks need very high per-step reliability, ways for the agent to notice and fix its own errors (tests, checks, re-reading results), checkpoints, and human review of the outcome.
+6. Host, client and server. Tools (actions), resources (data to read) and prompts (reusable templates). A local server uses the stdio transport; remote servers use Streamable HTTP, usually with OAuth.
+7. MCP connects an agent to tools and data (agent-to-tool). A2A connects agents from different vendors so they can discover each other through Agent Cards and delegate tasks (agent-to-agent). Agent Skills package instructions, scripts and resources into folders that an agent loads only when relevant (progressive disclosure); they are know-how, not connections.
+8. It is the combination of access to private data, exposure to untrusted content and the ability to communicate externally; together they let a hidden instruction steal data. To make the email-reading browser agent safer, remove at least one leg: give it read-only email access, block it from sending or posting without your approval, restrict the websites it may visit, or separate the agent that reads web pages from the one that can touch your email, and keep logs.
+
+</details>
+
+## Going deeper
+
+- **Anthropic, "Building effective agents" (December 2024, anthropic.com/engineering).** The clearest short guide to workflows versus agents and the five workflow patterns, with practical advice on when not to build an agent.
+- **Anthropic, "Effective context engineering for AI agents" (September 2025).** How long-running agents manage their context: compaction, structured notes, just-in-time retrieval and sub-agents.
+- **Yao et al., "ReAct: Synergizing Reasoning and Acting in Language Models" (2022, arXiv:2210.03629).** The paper behind the think-act-observe loop; the examples are easy to follow.
+- **Model Context Protocol documentation and specification (modelcontextprotocol.io).** Start with the architecture overview, then read the 2026-07-28 changelog to see how the protocol is evolving.
+- **A2A protocol site (a2a-protocol.org) and Agent Skills site (agentskills.io).** The primary sources for the agent-to-agent standard and the skills format.
+- **METR, "Measuring AI Ability to Complete Long Tasks" (March 2025) and the METR time-horizons page (metr.org).** The method and data behind the time-horizon measurements, including their caveats.
+- **OWASP Top 10 for LLM Applications 2025 (genai.owasp.org).** A concise list of the main security risks for LLM apps and agents, including prompt injection and excessive agency.
+- **Hugging Face Agents Course (huggingface.co/learn) and DeepLearning.AI's "Agentic AI" course with Andrew Ng.** Free or low-cost hands-on courses that build agents step by step.

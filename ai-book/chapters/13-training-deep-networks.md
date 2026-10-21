@@ -147,9 +147,7 @@ In 2017 Ilya Loshchilov and Frank Hutter noticed that the usual way of adding we
 
 ### Beyond Adam: Lion, Shampoo and SOAP
 
-Researchers kept looking for better walkers. **Lion** (Google, 2023), found partly by an automated search over possible update rules, uses only the *sign* of a momentum-like quantity, so every parameter moves by exactly the same amount each step, and it stores less state than Adam. **Shampoo** (2018) and its 2024 descendant **SOAP** go the other way: they keep richer information about the *curvature* of the landscape, meaning how the slope itself changes as you move, for each layer. Curvature tells you how big a step is safe in each direction, so these optimizers can take better-aimed steps at the cost of extra memory and computation.
-
-> **Definition — Curvature:** How quickly the slope of the loss changes as you move, that is, how sharply the landscape bends. High curvature means a step that looks safe can quickly overshoot; optimizers that track curvature are sometimes called "second-order" methods.
+Researchers kept looking for better walkers. **Lion** (Google, 2023), found partly by an automated search over possible update rules, uses only the *sign* of a momentum-like quantity, so every parameter moves by exactly the same amount each step, and it stores less state than Adam. **Shampoo** (2018) and its 2024 descendant **SOAP** go the other way: they keep richer information about the *curvature* of the landscape, meaning how the slope itself changes as you move, for each layer. Curvature tells you how big a step is safe in each direction (where the landscape bends sharply, a step that looks safe can quickly overshoot), so these optimizers, sometimes called "second-order" methods, can take better-aimed steps at the cost of extra memory and computation.
 
 > **Definition — Lion, Shampoo and SOAP:** Alternative optimizers. Lion (2023) moves each parameter by a fixed amount in the direction of the sign of its momentum. Shampoo (2018) and SOAP (2024) use per-layer curvature information to shape their steps, at extra cost.
 
@@ -188,6 +186,8 @@ Muon also stores less than Adam: one momentum buffer per parameter instead of tw
 > **Definition — Newton–Schulz iteration:** A short recipe of repeated matrix multiplications that approximately orthogonalizes a matrix. Muon uses about five rounds because it is far faster on GPUs than computing the exact answer.
 
 > **Analogy:** Think of a team where two people do all the work and everyone else sits idle. Muon is the manager who rebalances the workload so every member contributes equally. The team (the weight matrix) improves along all its dimensions at once instead of only its busiest ones.
+
+> **Try it:** Ask your chatbot: "Using a 2-by-2 matrix, show me what it means to orthogonalize a matrix, and explain in plain words why the Muon optimizer does this to its updates." Check its example: after orthogonalizing, every stretch factor of the matrix (its singular values) should equal 1, while the directions stay the same.
 
 ```mermaid
 flowchart LR
@@ -292,6 +292,8 @@ stateDiagram-v2
 *Figure 13.4: The life of a large training run. Most of the time it is healthy; when a spike does not recover, the team rolls back to a checkpoint and changes something.*
 
 > **Key idea:** The learning rate controls the size of every step. Warm it up gently, keep it high while there is ground to cover, and bring it down at the end. Most failed training runs are learning-rate problems in disguise.
+
+> **Try it:** Make a loss spike yourself. At https://playground.tensorflow.org, choose the Spiral dataset, press play at learning rate 0.03, and let the loss fall for a few hundred epochs. Then switch the learning rate to 3 for a few seconds and watch the loss chart jump. Switch back to 0.03 and see whether the run recovers on its own, the same question engineers ask on a frontier run.
 
 ## Initialization: where the walk begins
 
@@ -609,6 +611,8 @@ Every weight, activation and gradient is stored in a fixed number of bits. More 
 
 Training uses **mixed precision**: most of the heavy matrix multiplication happens in a low-precision format such as BF16 or FP8, while a few sensitive quantities, like a master copy of the weights and the optimizer's running averages, stay in FP32. Small updates would otherwise vanish when rounded to a coarse format: adding 0.0001 to a weight of 1.0 can round straight back to 1.0 in BF16, which only keeps about two to three decimal digits.
 
+> **Try it:** Ask your chatbot: "In the BF16 number format, what is 1.0 + 0.0001, and why? What about 1.0 + 0.01?" A good answer explains that BF16 keeps only about 8 bits of precision, so numbers near 1 are spaced about 0.008 apart: the first sum rounds back to 1.0, and the second becomes about 1.0078.
+
 This has a large effect on memory. A common accounting for training with Adam in mixed precision is about **16 bytes per parameter**: 2 for the BF16 weights, 2 for the BF16 gradients, 4 for the FP32 master weights, and 4 + 4 for Adam's two running averages. For a 70-billion-parameter model that is 70 billion × 16 bytes ≈ 1.1 terabytes, before counting the activations saved for backpropagation. A single top GPU of the H100 generation holds 80 gigabytes, so the model must be split across many chips just to fit (Chapter 33 and Chapter 37).
 
 > **Definition — Floating-point format:** A way of storing a number in a fixed number of bits as a sign, an exponent (rough size) and a fraction (fine detail), so the same bits can represent both very large and very small values. FP32, BF16, FP8 and FP4 are formats with 32, 16, 8 and 4 bits.
@@ -879,4 +883,212 @@ Finally, frameworks such as PyTorch do the calculus for you, so a complete, mode
 
 ## Key terms
 
-Optimizer, loss landscape, saddle point, momentum, Adam, optimizer state, weight decay, AdamW, curvature, Lion, Shampoo and SOAP, Muon, orthogonalization, Newton–Schulz iteration, NaN (Not a Number), learning-rate schedule, warmup, cosine decay, WSD (warmup–stable–decay), loss spike, checkpoint, symmetry breaking, initialization, Xavier (Glorot) initialization, He initialization, generalization, overfitting, underfitting, regularization, dropout, data augmentation, early stopping, double descent, grokking, normalization layer, batch normalization, layer normalization, RMSNorm, pre-norm and post-norm, DyT (Dynamic Tanh), vanishing gradient, exploding gradient, gradient norm, gradient clipping, residual connection (skip connection), ResNet, residual stream, hyper-connections and mHC, universal approximation theorem, inductive bias, the Bitter Lesson, scaling laws, floating-point format, BF16, mixed precision, quantization, framework, PyTorch, JAX, TensorFlow and Keras, CUDA, Triton and kernels, Hugging Face.
+Optimizer, loss landscape, saddle point, momentum, Adam, optimizer state, weight decay, AdamW, Lion, Shampoo and SOAP, Muon, orthogonalization, Newton–Schulz iteration, NaN (Not a Number), learning-rate schedule, warmup, cosine decay, WSD (warmup–stable–decay), loss spike, checkpoint, symmetry breaking, initialization, Xavier (Glorot) initialization, He initialization, generalization, overfitting, underfitting, regularization, dropout, data augmentation, early stopping, double descent, grokking, normalization layer, batch normalization, layer normalization, RMSNorm, pre-norm and post-norm, DyT (Dynamic Tanh), vanishing gradient, exploding gradient, gradient norm, gradient clipping, residual connection (skip connection), ResNet, residual stream, hyper-connections and mHC, universal approximation theorem, inductive bias, the Bitter Lesson, scaling laws, floating-point format, BF16, mixed precision, quantization, framework, PyTorch, JAX, TensorFlow and Keras, CUDA, Triton and kernels, Hugging Face.
+
+## Exercises
+
+1. **[Easy] TensorFlow Playground: find the learning-rate cliff.** Open https://playground.tensorflow.org. Choose the **Circle** dataset, keep the default network (two hidden layers) and the Tanh activation.
+   1. Set the Learning rate menu to 0.00001 and press play for about 300 epochs (the counter is at the top). Note the "Test loss".
+   2. Press the reset button (the circular arrow), then repeat with 0.001, 0.03, 0.3, 3 and 10.
+   3. Make a small table: learning rate, test loss after about 300 epochs, and whether the loss chart was smooth, slow or jumpy.
+
+   **What you'll learn:** the three behaviors of the learning rate (crawl, settle, thrash) on a real network, and that the good range is narrower than you might expect.
+
+2. **[Easy] TensorFlow Playground: overfit on purpose, then fix it.** At https://playground.tensorflow.org choose the **Spiral** dataset. Move the "Ratio of training to test data" slider to 10% and the "Noise" slider to about 50. Build a big network (six hidden layers of eight neurons), tick "Show test data", and train with ReLU at learning rate 0.01.
+   1. Watch the decision boundary twist around individual training dots, and compare "Training loss" with "Test loss". The gap is overfitting.
+   2. Press reset, set Regularization to L2 with a regularization rate of 0.01 or 0.03 (this is weight decay), and train again. Compare the gap.
+   3. Try instead a much smaller network with no regularization. Which fix narrows the gap more?
+
+   **What you'll learn:** what memorization looks like, and how weight decay and smaller capacity trade training accuracy for generalization.
+
+3. **[Medium] TensorFlow Playground: watch gradients vanish.** Choose the **Circle** dataset and build six hidden layers of eight neurons. Set Activation to **Sigmoid** and learning rate to 0.03, press play, and note how many epochs it takes for the test loss to fall clearly (it may sit flat for a long time). Watch the lines between the first two layers: their thickness shows the weights, and they barely change. Reset and repeat with **ReLU**, then with **Tanh**. Finally, try sigmoid with only one hidden layer.
+
+   **What you'll learn:** the vanishing gradient problem live: deep sigmoid stacks starve their early layers of learning signal, while ReLU passes it through.
+
+4. **[Easy] Chatbot as tutor: four hikers.** Ask your chatbot: "Explain plain SGD, momentum, Adam and Muon as four different hikers trying to reach a valley in fog. Then describe three different landscapes and quiz me on which hiker would do best in each, grading my answers." Then ask: "Which optimizer and learning-rate schedule were used to train you?" A good answer says honestly whether this has been published. Compare its claims with this chapter's At the frontier callouts.
+
+   **What you'll learn:** the intuition behind optimizers through active recall, and the habit of checking whether a model's statements about itself are disclosed facts or guesses.
+
+5. **[Medium] Momentum in a spreadsheet.** Compare plain gradient descent with momentum on the loss L = (w − 3)², whose slope is 2 × (w − 3).
+   1. In Google Sheets or Excel, put the learning rate 0.01 in H1 and the momentum factor 0.9 in H2.
+   2. Row 2 is step 0: A2 = 0 (step), B2 = 0 (plain w), C2 = 0 (momentum w), D2 = 0 (velocity).
+   3. Row 3: A3: =A2+1. B3: =B2-$H$1*2*(B2-3). D3: =$H$2*D2+2*(C2-3). C3: =C2-$H$1*D3.
+   4. Copy row 3 down to row 62 and chart columns B and C against A.
+   5. Check: at step 10, plain w ≈ 0.55 and momentum w ≈ 2.08; momentum overshoots past 3 around step 20, then settles. Now try H2 = 0.5 and H2 = 0.99.
+
+   **What you'll learn:** how momentum speeds up progress, why it overshoots, and how the momentum factor controls that trade-off.
+
+6. **[Medium] Normalize, clip and drop out by hand.** With pencil and calculator:
+   1. Layer-normalize [1, 3, 5, 7]: subtract the mean, divide by the spread (standard deviation).
+   2. RMS-normalize the same vector: divide by the square root of the average of the squares.
+   3. Clip the gradient [6, 8] to a maximum norm of 5.
+   4. Apply dropout with probability 0.5 to [2, 4, 6, 8], keeping the first and fourth values and doubling them. Compare the averages before and after. Then keep the second and fourth instead.
+
+   Answers to check yourself: (1) mean 4, spread √5 ≈ 2.236, result [−1.342, −0.447, 0.447, 1.342]; (2) root-mean-square √21 ≈ 4.583, result [0.218, 0.655, 1.091, 1.528]; (3) norm 10, so halve it to [3, 4]; (4) [4, 0, 0, 16], average 5 before and after, but keeping the second and fourth gives [0, 8, 0, 16], average 6: dropout preserves the average only on average over many coin flips. **What you'll learn:** these "plumbing" operations are simple arithmetic you can do yourself.
+
+7. **[Medium] Train, then break, a real network in Google Colab.** Copy the complete script from the section "A complete training script for Google Colab" in this chapter into a new notebook at https://colab.research.google.com and run it. Confirm you see about 26,122 parameters and roughly 97% test accuracy. Then change one thing at a time, rerun, and write down the final test accuracy and what the loss curves look like:
+   1. Learning rate `lr=3e-3` to `lr=1.0` (expect instability), then to `lr=1e-5` (expect crawling).
+   2. Remove both `nn.ReLU()` entries (the network collapses into a linear model; accuracy drops).
+   3. Change `nn.Linear(64, 128)` and the next layer to width 8 instead of 128 (fix the matching numbers so the shapes line up: 64 → 8 → 8 → 10).
+   4. Set `warmup = 0` and remove the line with `clip_grad_norm_`; then set `EPOCHS = 200` and look for the generalization gap widening.
+
+   **What you'll learn:** how the learning rate, activations, capacity and schedule show up in real training curves, the skill practitioners call "reading the loss".
+
+8. **[Challenge] Optimizer race in Colab.** Paste the code below into a new Colab notebook and run it. It trains the same network from the same starting weights, on the same batches, with five optimizers, and plots their training loss.
+
+   ```python
+   import torch, torch.nn as nn
+   from sklearn.datasets import load_digits
+   import matplotlib.pyplot as plt
+
+   X, y = load_digits(return_X_y=True)
+   X, y = torch.tensor(X / 16, dtype=torch.float32), torch.tensor(y)
+
+   def make_model():
+       torch.manual_seed(0)                 # every racer starts from the SAME weights
+       return nn.Sequential(nn.Linear(64, 128), nn.ReLU(),
+                            nn.Linear(128, 128), nn.ReLU(),
+                            nn.Linear(128, 10))
+
+   def make_optimizers(model, name):
+       p = list(model.parameters())
+       if name == "SGD":       return [torch.optim.SGD(p, lr=0.05)]
+       if name == "Momentum":  return [torch.optim.SGD(p, lr=0.05, momentum=0.9)]
+       if name == "Adam":      return [torch.optim.Adam(p, lr=1e-3)]
+       if name == "AdamW":     return [torch.optim.AdamW(p, lr=1e-3, weight_decay=0.01)]
+       if name == "Muon":      # Muon for weight matrices, AdamW for everything else
+           mats = [q for q in p if q.ndim == 2]
+           rest = [q for q in p if q.ndim != 2]
+           return [torch.optim.Muon(mats, lr=0.02), torch.optim.AdamW(rest, lr=1e-3)]
+
+   racers = ["SGD", "Momentum", "Adam", "AdamW"]
+   if hasattr(torch.optim, "Muon"):         # only in PyTorch 2.9 and later
+       racers.append("Muon")
+
+   for name in racers:
+       model = make_model()
+       opts = make_optimizers(model, name)
+       loss_fn = nn.CrossEntropyLoss()
+       g = torch.Generator().manual_seed(1)   # same batch order for everyone
+       curve = []
+       for epoch in range(5):
+           order = torch.randperm(len(X), generator=g)
+           for i in range(0, len(X), 64):
+               idx = order[i:i + 64]
+               loss = loss_fn(model(X[idx]), y[idx])
+               for o in opts: o.zero_grad()
+               loss.backward()
+               for o in opts: o.step()
+               curve.append(loss.item())
+       print(f"{name:9s} final loss {sum(curve[-20:]) / 20:.3f}")
+       plt.plot(curve, label=name, alpha=0.8)
+
+   plt.yscale("log"); plt.xlabel("step"); plt.ylabel("training loss (log scale)")
+   plt.legend(); plt.show()
+   ```
+
+   What each part does: the first block loads the digits; `make_model` builds a fresh 64 → 128 → 128 → 10 network with identical starting weights for every racer; `make_optimizers` creates each optimizer, giving Muon only the 2-D weight matrices and AdamW the biases, as recommended; the main loop trains each racer for five epochs on the same shuffled batches and records the loss after every step; the chart uses a log scale so small and large losses are both visible. In our run, plain SGD was still far behind after five epochs (final loss about 1.9), momentum, Adam and AdamW reached roughly 0.14 to 0.24, and Muon reached about 0.03. Your numbers may differ. Now multiply and divide each learning rate by 10 and rerun. Does the ranking change?
+
+   **What you'll learn:** optimizers differ in speed, the learning rate interacts with the choice of optimizer, and a fair comparison needs the same starting point and the same data.
+
+9. **[Challenge] Residual connections versus a plain deep network in Colab.** Paste and run this code. It builds two 30-layer networks of sigmoid layers that differ in one line: whether each layer's input is added back to its output.
+
+   ```python
+   import torch, torch.nn as nn
+   from sklearn.datasets import load_digits
+
+   X, y = load_digits(return_X_y=True)
+   X, y = torch.tensor(X / 16, dtype=torch.float32), torch.tensor(y)
+
+   class DeepNet(nn.Module):
+       def __init__(self, depth=30, width=64, residual=False):
+           super().__init__()
+           self.inp = nn.Linear(64, width)
+           self.blocks = nn.ModuleList([nn.Linear(width, width) for _ in range(depth)])
+           self.out = nn.Linear(width, 10)
+           self.residual = residual
+       def forward(self, x):
+           h = self.inp(x)
+           for layer in self.blocks:
+               f = torch.sigmoid(layer(h))           # an old-fashioned squashing layer
+               h = h + f if self.residual else f      # the ONLY difference
+           return self.out(h)
+
+   for residual in (False, True):
+       torch.manual_seed(0)
+       model = DeepNet(residual=residual)
+       opt = torch.optim.Adam(model.parameters(), lr=1e-3)
+       loss_fn = nn.CrossEntropyLoss()
+       # 1) How strong is the learning signal at the first vs the last block?
+       loss_fn(model(X[:256]), y[:256]).backward()
+       first = model.blocks[0].weight.grad.norm().item()
+       last = model.blocks[-1].weight.grad.norm().item()
+       opt.zero_grad()
+       # 2) Train briefly and measure accuracy on the training data.
+       for epoch in range(10):
+           for i in range(0, len(X), 64):
+               loss = loss_fn(model(X[i:i + 64]), y[i:i + 64])
+               opt.zero_grad(); loss.backward(); opt.step()
+       acc = (model(X).argmax(1) == y).float().mean().item()
+       name = "WITH skip connections" if residual else "plain (no skips)    "
+       print(f"{name}: gradient first block {first:.2e}, last block {last:.2e}, "
+             f"accuracy after training {acc:.0%}")
+   ```
+
+   What each part does: `DeepNet` stacks an input layer, 30 hidden sigmoid layers and an output layer; the line marked "the ONLY difference" either replaces the signal with the layer's output (plain) or adds the output to it (residual). Step 1 runs one backward pass and measures the gradient norm at the first and last hidden layers. Step 2 trains each network for ten epochs with Adam. In our run the plain network's first-layer gradient was so small it printed as 0.00e+00, and it stayed at chance level (10%), while the residual network had a healthy first-layer gradient and reached 93%. Then try `depth=5` for both, and change `torch.sigmoid` to `torch.relu`.
+
+   **What you'll learn:** vanishing gradients and the residual fix, measured directly rather than taken on trust.
+
+10. **[Challenge] Read a real model's training settings.** Go to https://huggingface.co and open the page of an open-weight model, for example one from the Qwen, DeepSeek, Mistral or Llama families (Chapter 24 lists current ones). Click "Files and versions" and open `config.json`. Find the fields whose names look like these (they vary by model): the number of layers (`num_hidden_layers`), the width (`hidden_size`), the activation (`hidden_act`, often "silu"), the normalization setting (a name containing `rms_norm`, which tells you it uses RMSNorm), the initialization spread (`initializer_range`) and the stored number format (`torch_dtype`, often "bfloat16"). Then open the model's technical report or model card and search for the words "optimizer", "learning rate", "warmup" and "weight decay". Fill a small table, and ask a chatbot to explain any field you do not recognize, checking its answers against this chapter.
+
+    **What you'll learn:** how this chapter's vocabulary maps onto the actual configuration of real 2026 models, and how to read primary sources instead of summaries.
+
+## Areas of opportunity
+
+- **Training and research engineer.** Frontier labs and well-funded startups pay top salaries for people who can keep large training runs healthy: choosing learning rates and schedules, diagnosing loss spikes, and testing new optimizers such as Muon. The skill set is rare because it combines the math of this chapter with large-scale engineering.
+- **Fine-tuning specialist for companies.** Many businesses fine-tune open models on their own data (Chapter 30). Most failed fine-tunes are learning-rate, overfitting or data problems, exactly this chapter's material. Consultants who can run a clean, well-validated fine-tune and explain the loss curves to a client are in steady demand.
+- **Low-precision and kernel engineering.** Every move from BF16 to FP8 to FP4 training needs new GPU kernels, careful scaling tricks and numerical debugging. NVIDIA, AMD, the hyperscalers and the labs all compete for engineers who can make 4-bit training match 16-bit quality.
+- **Training observability tools.** Teams running expensive training jobs pay for tools that track loss curves, gradient norms and hardware health, detect spikes early and automate rollbacks. There is room for products aimed at mid-sized companies that train or fine-tune models without a dedicated platform team.
+- **Hyperparameter tuning and automated experimentation.** Searching learning rates, batch sizes and schedules costs a lot of compute. Services and methods that find good settings with fewer trial runs, or transfer them from small models to large ones, save customers real money.
+- **Practical training education.** Courses, workshops and internal training that teach people to read loss curves and debug training runs, using tools like TensorFlow Playground and Colab, have a large audience among engineers moving into AI.
+- **Open problem: why optimizers like Muon work, and what comes next.** Practice is ahead of theory. A clear explanation could guide the next generation of optimizers and save large amounts of training compute.
+- **Open problem: stability at trillion-parameter scale.** Loss spikes, growing attention scores, residual-stream design (such as mHC) and 4-bit pretraining are all active research areas where small improvements are worth a lot at frontier scale.
+- **Open problem: why big networks generalize.** Double descent, grokking and the memorization timescales in diffusion models remain only partly explained. Better theory would help predict when a model will memorize sensitive or copyrighted data.
+- **Open problem: continual learning.** Today's models are trained once and then frozen. Methods that let a model keep learning from new data without forgetting what it knew would change how AI products work.
+
+## Check your understanding
+
+1. Why can't all the weights of a network start at zero?
+2. With a momentum factor of 0.9 and a gradient that stays at 1, what is the velocity after three steps, and what value does it approach?
+3. What problem with plain SGD does Adam solve, and how?
+4. What does Muon do differently from Adam, and which parameters is it usually applied to?
+5. Why do training runs use a warmup at the start of the learning-rate schedule?
+6. The sigmoid's slope is at most 0.25. Roughly how much of the learning signal survives backward through 8 sigmoid layers, and how do residual connections change the picture?
+7. Your training loss is 0.01 and still falling, but your validation loss has been rising since epoch 10. What is happening, and name two fixes.
+8. What does the universal approximation theorem guarantee, and what does it not guarantee?
+
+<details><summary>Answers</summary>
+
+1. If every weight starts equal, every neuron in a layer computes the same output, receives the same gradient and gets the same update, so they stay identical forever and the layer behaves like a single neuron. Random starting values break this symmetry so neurons can learn different features.
+2. The velocity goes 1, then 0.9 × 1 + 1 = 1.9, then 0.9 × 1.9 + 1 = 2.71. It approaches 1 ÷ (1 − 0.9) = 10.
+3. Plain SGD uses one learning rate for every parameter, but parameters receive gradients of very different sizes, so some barely move while others jump around. Adam keeps a running average of each parameter's gradient and squared gradient and divides one by the square root of the other, giving each parameter its own effective step size, combined with momentum.
+4. Adam treats each parameter separately. Muon treats each weight matrix as a whole: it takes the momentum update for the matrix and orthogonalizes it (with a few Newton–Schulz rounds of matrix multiplication), so every direction of change gets equal strength. It is applied to the 2-D weight matrices of hidden layers, with AdamW used for embeddings, the output layer, biases and other parameters.
+5. At the start the weights are random, gradients are large and erratic, and Adam's running averages are not yet reliable. Large steps then can destabilize training or cause a loss spike, so the learning rate is ramped up gradually from near zero.
+6. At most 0.25^8 ≈ 0.000015, about one sixty-five-thousandth. With residual connections, each block adds its output to its input, and addition passes blame back with a slope of exactly 1, so there is always a shortcut route along which the signal reaches the early layers at full strength.
+7. The network is overfitting: memorizing the training examples rather than learning patterns that generalize. Fixes include early stopping (keep the checkpoint from around epoch 10), more weight decay, dropout, data augmentation, more training data or a smaller model.
+8. It guarantees that a network with one sufficiently wide hidden layer can approximate any reasonable function, meaning suitable weights exist. It does not say how many neurons are needed (often impractically many), whether gradient descent will find those weights, or whether the result will generalize to new data.
+
+</details>
+
+## Going deeper
+
+- **Andrej Karpathy, "A Recipe for Training Neural Networks" (blog post, 2019).** A practical, opinionated guide to debugging training, from checking the data to tuning learning rates.
+- **Google Research, "Deep Learning Tuning Playbook" (GitHub, 2023).** A free, detailed guide from Google engineers on choosing optimizers, batch sizes and learning-rate schedules systematically.
+- **Keller Jordan, "Muon: An optimizer for hidden layers in neural networks" (blog post, December 2024).** The original description of Muon, with the reasoning behind orthogonalized updates.
+- **Gabriel Goh, "Why Momentum Really Works" (Distill, 2017).** An interactive article with sliders that let you watch momentum succeed and fail on different landscapes.
+- **Sebastian Ruder, "An overview of gradient descent optimization algorithms" (2016).** A clear survey of SGD, momentum, RMSProp, Adam and their relatives.
+- **Kaiming He and colleagues, "Deep Residual Learning for Image Recognition" (2015).** The ResNet paper; its introduction explains the "deeper is worse" puzzle that skip connections solved.
+- **Rich Sutton, "The Bitter Lesson" (essay, 2019).** Two pages that shaped how the field thinks about scale versus cleverness; read it alongside the counterarguments in this chapter.
+- **PyTorch tutorials, "Learn the Basics" (pytorch.org/tutorials).** The official step-by-step introduction to tensors, datasets, models, autograd and the optimization loop.
+- **Simon J. D. Prince, *Understanding Deep Learning* (MIT Press, 2023; free PDF at udlbook.github.io).** Its chapters on fitting, initialization, regularization and residual networks cover this chapter in more mathematical depth, with excellent figures.
+- **Sebastian Raschka, "LLM Architecture Gallery" (sebastianraschka.com).** Side-by-side diagrams of recent open models showing their normalization, residual and attention choices.

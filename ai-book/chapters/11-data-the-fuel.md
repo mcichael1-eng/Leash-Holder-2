@@ -566,3 +566,195 @@ When real data runs short, synthetic data can help, especially where answers can
 
 Data, dataset, structured data, semi-structured data, unstructured data, categorical feature, token, data exhaust, Common Crawl, web crawler, web scraping, robots.txt, annotation (labeling), bounding box, segmentation mask, preference data, RL environment, gold standard, inter-annotator agreement, expert data, data cleaning, deduplication, feature engineering, one-hot encoding, standardization, TF-IDF, database, relational database, SQL, primary key, join, vector database, data pipeline, ETL, ELT, data warehouse, data lake, lakehouse, data quality, datasheet (data card), sampling bias, historical bias, proxy variable, feedback loop, algorithmic fairness, PII, re-identification, GDPR, CCPA, differential privacy, federated learning, memorization, synthetic data, model collapse, copyright, fair use, TDM exception, data wall.
 
+## Exercises
+
+1. **[Easy] Your data exhaust diary.** Pencil and paper, 15 minutes.
+   1. List every digital action you took this morning: alarms, messages, searches, payments, maps, music, chatbot questions.
+   2. For each, write what data it probably produced, who holds it, and whether it is structured (a row in a table), semi-structured or unstructured.
+   3. Circle the items that could identify you if combined, such as location plus time plus purchase.
+
+   **What you'll learn:** how much data ordinary life produces, the three shapes of data, and why combinations of facts are a privacy risk.
+
+2. **[Easy] Check robots.txt for AI crawlers.** Web browser, 15 minutes.
+   1. Visit nytimes.com/robots.txt, reddit.com/robots.txt and the robots.txt of a small blog or local business you know.
+   2. Search each page (Ctrl+F or Cmd+F) for GPTBot, ClaudeBot, Google-Extended and CCBot. Note which are blocked ("Disallow: /") and which are not mentioned.
+   3. Ask a chatbot what company runs each of these crawlers and what blocking it does and does not prevent.
+
+   **What you'll learn:** how sites signal consent to AI training, and that robots.txt is a request, not a lock.
+
+3. **[Easy] Read real pretraining data.** Hugging Face, 25 minutes.
+   1. Go to huggingface.co/datasets and open HuggingFaceFW/fineweb. Use the dataset viewer to read 20 random rows.
+   2. Tally what you see: useful articles, ads or spam, boilerplate, non-English text, anything that looks like personal information.
+   3. Read the dataset card's sections on filtering and personal information, then open the FineWeb-Edu dataset and compare 10 rows.
+
+   **What you'll learn:** what web-scale training text really looks like and why cleaning and quality filtering matter.
+
+4. **[Easy] Explore a famous dataset without code.** Kaggle, 30 minutes.
+   1. Create a free account at kaggle.com and open the Titanic competition dataset.
+   2. Read its data description, then use the column previews to answer: who survived more often, by sex and by passenger class? Which columns have missing values?
+   3. Open three public notebooks and read only their text cells. What cleaning and feature engineering did their authors do?
+
+   **What you'll learn:** exploratory data analysis, missing values, and how real datasets are documented and shared.
+
+5. **[Medium] Data detective: clean a messy dataset.** Chatbot plus spreadsheet, 45 minutes.
+   1. Ask a chatbot: "Generate a 40-row CSV of fictional customer records with realistic errors: duplicates, missing values, inconsistent state names, impossible ages, mixed date formats and one outlier. Do not tell me where the errors are."
+   2. Paste it into Google Sheets (File, Import, or paste and use Data, Split text to columns).
+   3. Find and fix every problem, logging each fix in a new column: what was wrong and what you did.
+   4. Ask the chatbot to reveal the planted errors and score yourself. Which did you miss, and how long did it take?
+
+   **What you'll learn:** data cleaning, the data-quality dimensions, and why cleaning eats so much of a data scientist's time.
+
+6. **[Medium] The four SQL moves in Colab.** Google Colab, 30 minutes. Open colab.research.google.com, create a new notebook, paste each block into its own cell and run it with Shift+Enter. Nothing needs installing: SQLite is a small database built into Python.
+
+   ```python
+   # ---------- Cell 1: build a tiny database in memory ----------
+   import sqlite3                     # a small database engine built into Python
+   import pandas as pd                # to show results as neat tables
+
+   db = sqlite3.connect(":memory:")   # a throwaway database that lives only in this notebook
+   db.executescript("""
+   CREATE TABLE users (user_id INTEGER PRIMARY KEY, name TEXT, country TEXT, plan TEXT);
+   INSERT INTO users VALUES
+    (1,'Ana','Brazil','Pro'), (2,'Ben','USA','Free'), (3,'Chen','China','Pro'),
+    (4,'Dara','USA','Pro'),   (5,'Eli','Brazil','Free'), (6,'Fay','India','Pro');
+   CREATE TABLE chats (chat_id INTEGER PRIMARY KEY, user_id INTEGER, topic TEXT, tokens INTEGER);
+   INSERT INTO chats VALUES
+    (1,1,'cooking',1200), (2,1,'coding',5400), (3,2,'travel',800), (4,3,'coding',7000),
+    (5,4,'homework',2300),(6,4,'coding',3100), (7,5,'cooking',600), (8,6,'travel',1500),
+    (9,6,'coding',4200), (10,3,'cooking',900);
+   """)
+
+   def sql(query):
+       """Run a SQL question and show the answer as a table."""
+       return pd.read_sql_query(query, db)
+
+   # ---------- Cell 2: move 1, SELECT (choose columns) ----------
+   print(sql("SELECT name, plan FROM users"))
+
+   # ---------- Cell 3: move 2, WHERE (filter rows) ----------
+   print(sql("SELECT name, country FROM users WHERE plan = 'Pro'"))
+
+   # ---------- Cell 4: move 3, GROUP BY (summarize) ----------
+   print(sql("""SELECT topic, COUNT(*) AS chats, SUM(tokens) AS total_tokens
+                FROM chats GROUP BY topic ORDER BY total_tokens DESC"""))
+
+   # ---------- Cell 5: move 4, JOIN (combine tables on a shared key) ----------
+   print(sql("""SELECT users.country, SUM(chats.tokens) AS total_tokens
+                FROM chats JOIN users ON chats.user_id = users.user_id
+                GROUP BY users.country ORDER BY total_tokens DESC"""))
+   ```
+
+   Cell 1 creates the two tables from Figure 11.6 inside a temporary database and defines a helper, `sql`, that runs a question and prints the answer as a table. Cells 2 to 5 run one move each; you should see the same answers as in this chapter (coding 19,700 tokens; China 7,900). Then write your own questions: total tokens per plan (Free versus Pro), the user with the most chats, and coding tokens by country. If you get stuck, ask a chatbot to write the query, then check that its answer matches the tables by hand.
+
+   **What you'll learn:** SELECT, WHERE, GROUP BY and JOIN, and that databases are just organized tables you can question precisely.
+
+7. **[Medium] Bias audit of a toy hiring dataset.** Chatbot plus spreadsheet, 45 minutes.
+   1. Ask a chatbot: "Create a 100-row CSV of fictional past job applicants with columns gender, university, hobby, years_experience and hired (yes/no), where past decisions favored men even at equal experience, and where one hobby is much more common among women."
+   2. In Sheets, build a pivot table of hire rate by gender, then by hobby.
+   3. Imagine training a model on this data with the gender column deleted. Which column would act as a proxy? What would the model learn?
+   4. Write three sentences on what you would change before using such data.
+
+   **What you'll learn:** historical bias, proxy variables, and why "just remove the gender column" is not enough.
+
+8. **[Medium] Differential privacy with a coin flip.** Google Sheets, 30 minutes.
+   1. In cell A2 type `=IF(RAND()<0.3,1,0)` (the hidden truth: 30 percent "yes"). In B2, `=IF(RAND()<0.5,1,0)` (first coin). In C2, `=IF(RAND()<0.5,1,0)` (second coin). In D2, `=IF(B2=1,A2,C2)` (the answer actually reported). Copy row 2 down to row 1001.
+   2. In F1, compute the true rate: `=AVERAGE(A2:A1001)`. In F2, the reported "yes" rate: `=AVERAGE(D2:D1001)`. In F3, the private estimate: `=(F2-0.25)/0.5`.
+   3. Compare F1 and F3. Press Delete in an empty cell a few times to re-randomize and watch how close the estimate stays. Then try only 100 rows.
+   4. Explain why no single row of column D reveals the truth about that person.
+
+   **What you'll learn:** the randomized-response idea behind differential privacy, and the trade-off between privacy, noise and sample size.
+
+9. **[Challenge] Watch model collapse happen in Colab.** Google Colab, 30 minutes. Paste this into a new notebook cell and run it.
+
+   ```python
+   # ---------- Model collapse in a few lines ----------
+   import numpy as np                      # fast number crunching
+   import matplotlib.pyplot as plt         # charts
+
+   rng = np.random.default_rng(seed=1)     # fixed seed so your run matches ours
+
+   def run(fresh_share, generations=200, size=50):
+       """Train many generations. fresh_share = fraction of each generation that is new human data."""
+       data = rng.normal(0, 1, size=size)          # generation 0: 50 points of "human" data, spread 1.0
+       spreads = []
+       for g in range(generations):
+           mean, spread = data.mean(), data.std()  # "train" a tiny model: learn the average and the spread
+           spreads.append(spread)
+           n_fresh = int(size * fresh_share)       # how many new human points we can collect
+           synthetic = rng.normal(mean, spread, size=size - n_fresh)   # data made by the model
+           fresh = rng.normal(0, 1, size=n_fresh)                      # new human data
+           data = np.concatenate([synthetic, fresh])                   # next generation's training set
+       return spreads
+
+   only_synthetic = run(0.0)               # every generation learns only from the last model's output
+   with_fresh = run(0.2)                   # every generation gets 20% fresh human data
+   print("Only synthetic data, last generation spread:", round(only_synthetic[-1], 3))
+   print("20% fresh data,      last generation spread:", round(with_fresh[-1], 3))
+
+   plt.plot(only_synthetic, label="only model-made data")
+   plt.plot(with_fresh, label="20% fresh human data each round")
+   plt.xlabel("generation"); plt.ylabel("spread of the data (standard deviation)")
+   plt.legend(); plt.title("Model collapse in miniature")
+   plt.show()
+   ```
+
+   The "model" here is as simple as possible: it learns only the average and the spread of its training data, then generates the next generation's data. Run purely on its own output for 200 generations, the spread shrinks from about 1.0 to a few hundredths (we got 0.016): the variety, and especially the rare extreme values, disappears. With 20 percent fresh human data mixed into every generation, the spread stays near 1 (we got 0.867). Try fresh shares of 0.05 and 0.5, and a larger `size` such as 1000. What changes, and why does a bigger sample slow the collapse?
+
+   **What you'll learn:** why training recursively on model-generated data loses diversity, and why fresh human data matters.
+
+10. **[Challenge] Write a datasheet for a dataset.** Writing, 60 minutes.
+    1. Pick a dataset you met in this chapter or in Chapter 10's exercises (the scikit-learn breast-cancer data, MNIST, Titanic or FineWeb).
+    2. Write a one-page datasheet answering: who made it and why; how it was collected and labeled; what each row represents; what is missing or under-represented; who could be harmed by misuse; its license; and recommended and not-recommended uses.
+    3. Compare your datasheet with the dataset's real documentation. What did the creators leave out?
+
+    **What you'll learn:** data documentation, licensing and the ethics of data reuse, the habits that separate careful practitioners from careless ones.
+
+## Areas of opportunity
+
+- **Data engineer and analytics engineer.** Every AI system depends on reliable pipelines, warehouses and quality checks. SQL, Python and an understanding of data quality remain among the most consistently hired skills in tech.
+- **AI trainer and expert data contributor.** Doctors, lawyers, accountants, engineers, scientists and programmers are paid by firms such as Surge, Mercor, Scale, Handshake, micro1 and Turing to write hard problems, grade answers and build rubrics. It is flexible and can pay well for scarce expertise, but it is gig work with volatile projects, confidentiality burdens and real data-security risk.
+- **Labeling operations and quality lead.** Someone has to write annotation guidelines, measure inter-annotator agreement, design gold-standard checks and audit vendors; labs and enterprises both pay for this.
+- **RL environment builder.** Simulated tasks with automatic graders are an emerging niche where software engineering meets machine learning, as labs look for training signal beyond web text.
+- **Niche, rights-cleared datasets.** Licensed corpora in medicine, law, industry, regional languages, or consented audio and video are increasingly valuable to model builders who want to avoid lawsuits.
+- **Data licensing and partnerships.** Publishers, archives and platforms need people who can price, package and negotiate data deals; AI companies need people who can source them. Pay-per-crawl and machine-readable licensing standards create new payment infrastructure to build.
+- **Privacy, data governance and AI compliance.** EU training-data summaries, California's disclosure law, copyright policies, consent management and provenance audits all need specialists who understand both data and law.
+- **Synthetic data services.** Hospitals, banks and insurers need realistic test data that protects real people, and robotics and self-driving teams need rare-event simulations; the hard, valuable part is proving the synthetic data is faithful.
+- **Data-quality and provenance tooling.** Deduplication, PII detection, dataset documentation and data-attribution tools (measuring which data actually improves a model) are open problems with paying customers.
+- **Open problems worth working on.** Fair pay and consent for creators, labor standards for annotators, machine unlearning, measuring data value, robust fairness audits without sensitive attributes, and whether synthetic data and RL environments can carry AI past the data wall.
+
+## Check your understanding
+
+1. What is the difference between structured, semi-structured and unstructured data? Give one example of each from your phone.
+2. A website's robots.txt says "User-agent: GPTBot, Disallow: /". What does this do, and what does it not do?
+3. Why has the labeling industry shifted from generalist crowdwork toward credentialed experts, and what are two downsides of this work for the people doing it?
+4. Two labelers agree on 85 of 100 items, and chance agreement would be 50 percent. What is Cohen's kappa, and what does it suggest?
+5. Why does deleting the gender column from a hiring dataset not make a model fair?
+6. In the coin-flip survey, 400 of 1,000 people answer "yes." What is the estimated true rate, and why is each individual protected?
+7. What is model collapse, and what single change prevented it in the Colab experiment?
+8. State the data wall argument in one sentence, then give three escape routes the optimists point to.
+
+<details><summary>Answers</summary>
+
+1. Structured data sits in fixed rows and columns (your bank transactions or contacts list); semi-structured data has labels but no fixed table (the JSON a weather app receives, or a calendar invite); unstructured data has no built-in organization (photos, voice notes, the text of messages).
+2. It asks OpenAI's crawler not to visit any page on the site, and reputable crawlers honor it. It does not technically block anyone: a crawler can ignore it or use a different name, and it does not affect copies of the site already collected or other crawlers such as CCBot unless they are listed too.
+3. Simple labels are increasingly produced by models, while chatbots need hard, professional-level judgment (writing ideal answers, grading reasoning, building RL tasks) that only experts can supply. Downsides include unstable gig work with projects that appear and vanish, confidentiality burdens, data-security risks (as in the 2026 Mercor breach) and, for lower-paid generalist work, low wages and psychologically harmful content.
+4. Kappa = (0.85 − 0.50) ÷ (1 − 0.50) = 0.70: substantial but imperfect agreement, a sign that the instructions or categories could be clearer.
+5. Other columns can act as proxies for gender (hobbies, clubs, colleges, even word choices), and the labels themselves reflect past unfair decisions, so the model can rebuild the bias without the column.
+6. Expected yes share = 0.5 × p + 0.25, so 0.40 = 0.5 × p + 0.25 and p = 0.30, or 30 percent. Each person's "yes" might have come from the second coin flip rather than the truth, so no single answer reveals anything certain about them.
+7. Model collapse is the loss of diversity and rare patterns when models are trained generation after generation on model-made data. Mixing in a steady share (20 percent) of fresh human data each generation kept the spread near its original value.
+8. High-quality public human text is finite (about 300 trillion tokens by Epoch AI's 2024 estimate) and models may use it up between 2026 and 2032. Escape routes include verified synthetic data, other modalities such as video and audio, RL environments and verifiable tasks, private and licensed data, expert-written data, and better data efficiency or repeated passes over the best data.
+
+</details>
+
+## Going deeper
+
+- **"Datasheets for Datasets"** (Gebru and colleagues, 2018, later in Communications of the ACM): the short paper that started modern dataset documentation; its questions are a ready-made checklist.
+- **Ghost Work** (Mary L. Gray and Siddharth Suri, 2019): a readable investigation of the hidden human workforce behind AI and online platforms.
+- **Weapons of Math Destruction** (Cathy O'Neil, 2016): accessible stories of how biased data and feedback loops cause real harm.
+- **Atlas of AI** (Kate Crawford, 2021): a wide-angle look at the material, labor and data costs of AI.
+- **The FineWeb paper and dataset card** (Hugging Face, 2024, arXiv 2406.17557): a clear, detailed account of how a 15-trillion-token web dataset is filtered and deduplicated.
+- **"Will we run out of data?"** (Epoch AI, 2024, epoch.ai): the source of the data-wall estimate, with its assumptions laid out.
+- **"AI models collapse when trained on recursively generated data"** (Shumailov and colleagues, Nature, 2024): the model-collapse paper.
+- **SQLBolt** (sqlbolt.com): free, interactive SQL lessons in the browser, the quickest way to make the four moves second nature.
+- **Designing Data-Intensive Applications** (Martin Kleppmann): the standard deeper guide to databases, pipelines and data systems, for readers heading toward data engineering.
+- **US Copyright Office, Copyright and Artificial Intelligence reports** (copyright.gov/ai): the official US analysis of training and fair use, useful context for Chapters 58 and 59.
