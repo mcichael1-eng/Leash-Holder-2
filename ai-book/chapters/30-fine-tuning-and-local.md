@@ -916,7 +916,7 @@ Weights (parameters), fine-tuning, supervised fine-tuning (SFT), training exampl
    ```
 
    This builds 30 new notes with names and tasks the model never trained on, then scores two approaches by exact match: the fine-tuned model with no examples, and the original base model (adapter switched off) given five worked examples in the prompt. Record both scores, then try three variations: change `pairs[:5]` to `pairs[:2]`, rerun Cell 7 with `num_train_epochs=1`, and add a new sentence pattern to `templates` used only for the held-out set. Write two sentences on when fine-tuning was worth it here.
-   **What you'll learn:** a proper comparison against a strong prompting baseline, and why few-shot prompting often gets surprisingly close to fine-tuning on simple format tasks, while fine-tuning saves prompt tokens on every call.
+   **What you'll learn:** how to compare fine-tuning fairly against a prompting baseline; on a narrow format task like this one fine-tuning can win clearly, but the gap depends on model size and the number of examples, and you only know by measuring.
 
 10. **[Medium] Call your local model from code, privately.** With Ollama running (Exercise 2), turn off Wi-Fi. On Mac or Linux, paste this into a terminal:
 

@@ -192,9 +192,9 @@ So the modern AI hall looks like this in cross-section:
    +----+    +----+                 ~~~~ coolant pipes ~~~~
    |RACK|    |RACK|                   +----+    +----+
    |    |    |    |                   |RACK|    |RACK|
-   +----+    +----+                   | 1.5|    | to |
-  _[tile]_[perf tile]_[tile]_         | -3 t    |    |
-  |  cold air + cables under  |       +----+    +----+
+   +----+    +----+                   |    |    |    |
+  _[tile]_[perf tile]_[tile]_         +----+    +----+
+  |  cold air + cables under  |      racks of 1.5 to 3 t
   |_____ floor plenum ________|     =====================
   ======= concrete ===========         concrete slab
 ```

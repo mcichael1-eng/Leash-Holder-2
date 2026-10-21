@@ -27,7 +27,7 @@ All of these are one branch of AI.
 
 Computer vision is one of the oldest dreams in AI. In 1963 Larry Roberts, a graduate student at MIT, wrote a thesis on recovering 3D block shapes from photographs, often called the start of the field. In 1966 MIT ran a "Summer Vision Project" that hoped a few students could make serious progress on getting a computer to describe what a camera saw in a single summer. They could not. It took roughly fifty more years, and the turn to learning from data, before machines could reliably say "this is a cat."
 
-For decades, engineers tried to hand-write the rules of seeing: find edges, find corners, describe the texture, then match against templates. These "hand-crafted features" worked in tightly controlled settings such as a factory line with fixed lighting, and failed almost everywhere else. The breakthrough came in 2012, when a neural network called AlexNet learned its own features from a million labeled photos and crushed the hand-engineered competition (Chapter 14 tells that story). Since then, the field's motto has been "learn it, don't hand-code it."
+For decades engineers hand-wrote the rules of seeing (find edges and corners, match templates), which worked on a factory line with fixed lighting and failed almost everywhere else. In 2012 a neural network called AlexNet learned its own features from a million labeled photos and beat the hand-engineered systems by a wide margin (Chapter 14 tells the story). The field has followed "learn it, don't hand-code it" ever since.
 
 In Chapter 1 we sorted all of AI into five verbs: perceive, predict, create, decide and act. Computer vision is the biggest part of *perceive*. It feeds the other verbs: a self-driving car must see before it can decide, and a robot must see before it can act.
 
@@ -100,15 +100,7 @@ Here is a tiny grayscale corner of a photo, zoomed in until you can see the indi
 
 ### Why seeing is hard for a computer
 
-You recognize your friend in sunlight or shade, from the side, half hidden behind a door, in a blurry photo, wearing a hat. To a computer, each of those situations produces a completely different grid of numbers. Engineers list the main troublemakers:
-
-- **Viewpoint.** A mug from above and a mug from the side share almost no pixel values.
-- **Lighting.** The same red car at noon and at dusk has different numbers in every pixel.
-- **Scale.** A dog filling the frame and a dog in the far background are thousands of pixels versus a dozen.
-- **Occlusion.** Things are partly hidden behind other things.
-- **Deformation.** Cats curl, stretch and sit; cloth folds; people bend.
-- **Clutter.** The object may sit in a busy scene full of similar shapes.
-- **Variety within a class.** A chihuahua and a Great Dane are both "dog."
+You recognize your friend in sunlight or shade, from the side, half hidden behind a door, wearing a hat. To a computer, each of those produces a completely different grid of numbers. Viewpoint (a mug from above and from the side share almost no pixel values), lighting, scale, occlusion (things partly hidden), deformation (a cat curling up), background clutter and sheer variety within a class (a chihuahua and a Great Dane are both "dog") all change the numbers while the right answer stays the same.
 
 Even a tiny change breaks naive approaches. Shift a photo one pixel to the right and nearly every number moves to a new position in the list. A model that compared raw numbers directly would think it was a different picture. Learning features that ignore these changes, while staying sensitive to the ones that matter, is the core problem of computer vision.
 
@@ -389,7 +381,7 @@ Action recognition needs time. A single frame of someone with an arm raised coul
 
 Since 2024, multimodal chatbots have added long-video question answering: you upload a recording and ask "when does the speaker first show the sales chart?" Chapter 22 explained how they do it by sampling frames, which is also their weak spot: a moment that falls between sampled frames can be missed entirely.
 
-**Where tracking and video understanding are used.** Sports is the showcase. Hawk-Eye, a multi-camera ball-tracking system, has reviewed line calls in professional tennis since 2006, and in 2025 Wimbledon replaced its human line judges with electronic line calling. Football, basketball and cricket clubs track every player's position many times a second to measure running distance, spacing and tactics. Retailers count footfall and queue lengths. Cities count traffic. Care homes test fall detection. Factories check that assembly steps happen in the right order.
+**Where tracking and video understanding are used.** Sports is the showcase: Hawk-Eye's multi-camera ball tracking has reviewed line calls in professional tennis since 2006, Wimbledon replaced its human line judges with electronic line calling in 2025, and professional clubs track every player many times a second to measure running and tactics. Retailers count footfall and queues, cities count traffic, care homes test fall detection, and factories check that assembly steps happen in order.
 
 ## Pose estimation: the body as a stick figure
 
@@ -408,3 +400,405 @@ Uses include fitness and physical therapy apps that check form, coaching tools t
 > **Watch out:** Pose models are less reliable when joints are hidden, with loose or flowing clothing, at unusual camera angles, and for bodies poorly represented in training data, such as wheelchair users or people with limb differences. An app that "scores your form" can be confidently wrong.
 
 > **Try it:** In Teachable Machine, start a Pose Project. Make two classes, "standing" and "squatting," record about 30 samples of each, train it, and watch the skeleton overlay as you move. Then try it from a side angle or with a coat on.
+
+## Reading the world: OCR and document AI
+
+Reading text was one of vision's first commercial successes. In the 1990s, systems built on Yann LeCun's LeNet read handwritten digits on bank checks (by one commonly cited estimate, more than a tenth of US checks by the late 1990s), and postal services sorted mail by machine-reading addresses. Tesseract, an OCR engine begun at Hewlett-Packard in the 1980s, was open-sourced in 2005 and developed further by Google; it is still widely used.
+
+> **Definition — OCR (optical character recognition):** Software that finds text in an image and converts it into machine-readable characters, from printed pages to street signs to handwriting.
+
+> **Definition — License plate recognition (ANPR):** Automatic number-plate recognition: cameras that detect a vehicle's plate and read its characters, used for parking, tolls, traffic enforcement and police watchlists.
+
+Classic OCR outputs a stream of characters with little sense of what they mean. A business does not want "characters"; it wants "the invoice total is 1,284.50, due March 3."
+
+> **Definition — Document AI:** Systems that understand whole documents, including layout, tables, forms, checkboxes, stamps and signatures, and turn them into structured data a computer system can use.
+
+> **Definition — Key-value extraction:** Pulling specific labeled fields out of a document, such as "Invoice number: 4471" or "Date of birth: 1985-02-14," and storing each as a field name and value.
+
+```mermaid
+flowchart LR
+    A["Scan or phone photo<br/>of an invoice"] --> B["Clean up<br/>straighten and sharpen"]
+    B --> C["Read the text<br/>OCR or a VLM"]
+    C --> D["Understand layout<br/>tables and fields"]
+    D --> E["Extract fields<br/>vendor, date, total"]
+    E --> F["Check business rules<br/>do the lines add up"]
+    F --> G["High confidence<br/>straight into the system"]
+    F --> H["Low confidence<br/>human review"]
+    H --> I["Corrections become<br/>new training data"]
+```
+
+*Figure 45.7: A document AI pipeline. The rules check and the human review queue matter as much as the model.*
+
+Before 2023, each box in Figure 45.7 was often a separate model or hand-written rule. Since then, vision-language models increasingly read text, layout and meaning in one step (Chapter 22 explains how and what that costs in tokens). The rest of the pipeline, the rule checks and the human review, did not go away, because of a piece of arithmetic every document project runs into.
+
+**Worked example: why 99% accuracy is not good enough.** A system reads characters with 99% accuracy. That sounds excellent. An invoice has 15 fields of about 20 characters each.
+
+1. Chance a 20-character field has no error: 0.99 × 0.99 × ... (20 times) = 0.99^20 ≈ 0.82.
+2. So about 18% of fields, nearly one in five, contain at least one wrong character.
+3. With 15 fields, the chance the whole invoice is perfect is 0.82^15 ≈ 0.05. About 95% of invoices need a fix somewhere.
+4. At 99.9% character accuracy: 0.999^20 ≈ 0.98 per field, and 0.98^15 ≈ 0.74 for a perfect invoice. Much better, but still one invoice in four has an error.
+
+> **Key idea:** Measure document AI at the level where mistakes cost money: the field and the whole document, not the character. Then design the workflow so that low-confidence fields, and fields that fail a rule (line items that do not add up to the total), go to a person.
+
+Document AI runs accounts-payable departments, insurance claims, loan applications, "know your customer" identity checks at banks (which pair reading the ID card with matching its photo to a live selfie), hospital intake forms, shipping paperwork and the digitization of historical archives, including old handwriting that few living people can read.
+
+> **Watch out:** OCR errors are dangerous because they look plausible. A smudged 7 read as a 1 produces a neat, well-formatted, wrong number. For anything you will act on, ask for the exact text read, a flag such as [unclear] for unreadable parts, and a check of the critical fields against the original.
+
+## Faces: the most personal kind of vision
+
+Faces are where computer vision's power and its risks are most concentrated, so it is worth being precise about the words.
+
+> **Definition — Face detection:** Finding *that* there is a face in an image and where it is, without knowing whose it is. Your camera's little box around faces is detection.
+
+> **Definition — Face verification:** A one-to-one check: is this face the same person as one stored reference? Phone unlock and passport gates do verification.
+
+> **Definition — Face identification:** A one-to-many search: who, out of a gallery of thousands or millions of stored faces, is this? Police searches of mugshot databases do identification.
+
+> **Definition — Biometrics:** Identifying or verifying people from body characteristics such as face, fingerprint, iris, voice or the way they walk.
+
+Fast face detection arrived in consumer cameras after the Viola–Jones method (2001), a clever hand-designed detector. Recognition jumped with deep learning: Facebook's DeepFace (2014) and Google's FaceNet (2015) approached or exceeded human accuracy on a standard benchmark of celebrity photos. FaceNet introduced the approach still used today.
+
+> **Definition — Face embedding:** A short list of numbers (FaceNet used 128) that a network computes from a face photo, trained so that photos of the same person land close together and photos of different people land far apart.
+
+```mermaid
+flowchart TD
+    A["Camera image"] --> B["Face detection<br/>find each face"]
+    B --> C["Alignment<br/>rotate and crop to a standard pose"]
+    C --> D["Face embedding<br/>a few hundred numbers"]
+    D --> E["Verification<br/>compare with one stored face"]
+    D --> F["Identification<br/>compare with a whole gallery"]
+    E --> G["Similarity above threshold<br/>unlock or reject"]
+    F --> H["Ranked candidate list<br/>for a human to review"]
+```
+
+*Figure 45.8: The face recognition pipeline. The same embedding serves two very different jobs.*
+
+Every system compares a similarity score with a threshold, and every threshold trades two errors.
+
+> **Definition — False match rate and false non-match rate:** The two errors of any biometric system. A false match accepts the wrong person (a stranger unlocks your phone). A false non-match rejects the right person (your phone refuses you). Raising the threshold lowers false matches and raises false non-matches.
+
+**Worked example: same accuracy, different job.** Apple has said the chance that a random stranger could unlock your iPhone with Face ID is about 1 in 1,000,000. For verification, that is superb: a thief gets one comparison against one stored face.
+
+Now imagine a search system with that same per-comparison false match rate, used for identification against a gallery of 1,000,000 faces.
+
+1. Each search makes 1,000,000 comparisons.
+2. Expected false matches per search: 1,000,000 × (1 ÷ 1,000,000) = 1.
+3. Against a gallery of 10,000,000: about 10 false matches per search.
+4. If the person in the photo is not in the gallery at all, every match it returns is wrong.
+
+Real search systems usually return a ranked list for a human to review, and their error rates depend heavily on the image: a grainy, angled security-camera frame is far harder than a passport photo. The arithmetic still holds: the bigger the gallery, the more innocent look-alikes appear. This is the base-rate problem from Chapter 9 in its starkest form.
+
+### Accuracy gaps across groups
+
+In 2018 the Gender Shades study by Joy Buolamwini and Timnit Gebru tested commercial face-analysis systems on classifying gender. Error rates reached 34.7% for darker-skinned women, against 0.8% for lighter-skinned men. The companies involved improved their systems after publication. In 2019 the US National Institute of Standards and Technology (NIST) tested 189 face recognition algorithms and found that, for many of them, false match rates for some demographic groups were 10 to 100 times higher than for others; the most accurate algorithms showed much smaller gaps.
+
+These gaps have had real consequences. In January 2020 Robert Williams, a Black man in the Detroit area, was arrested in front of his family for a theft he did not commit, after a face recognition search matched a blurry store-camera image to his old driver's license photo. A 2024 legal settlement changed the Detroit police department's rules so that a face match alone cannot justify an arrest.
+
+> **Key idea:** A face recognition "system" is not just an algorithm. It is the algorithm plus the probe photo's quality, the gallery's size and makeup, the threshold, and what humans do with the result. Most real-world harms come from the whole system, especially from treating a candidate match as an identification.
+
+### Surveillance, consent and the law
+
+The strongest case for face recognition is real: finding missing children and trafficking victims, identifying suspects in serious crimes faster, speeding passengers through airports, securing phones and bank accounts without passwords, and helping people who cannot recognize faces. The strongest case against is also real: once cameras can name everyone they see, anonymity in public disappears, which can chill protest and free association; errors fall unevenly; images are often collected without consent; and systems built for one purpose tend to expand to others.
+
+Laws reflect that split, and differ sharply by place (Chapter 59 covers AI law in depth):
+
+- **European Union.** Since February 2, 2025, the EU AI Act bans building face databases by untargeted scraping of images from the internet or CCTV, and bans emotion recognition in workplaces and schools. Real-time remote face identification in public spaces by police is banned except in narrowly defined cases, such as searching for a kidnapping victim, with prior authorization.
+- **Illinois.** The Biometric Information Privacy Act (2008) requires informed written consent before collecting biometrics and lets individuals sue. Facebook paid $650 million to settle a class action under it in 2021.
+- **Cities.** San Francisco banned city agencies, including police, from using face recognition in 2019, and other US cities followed. Other places, including much of China and some US police departments, use it widely.
+- **Scraping.** Clearview AI built a search tool from billions of photos scraped from the web and was fined by data-protection regulators in several European countries.
+
+> **Definition — Emotion recognition:** Software that claims to infer a person's emotional state from facial expressions, voice or body language. Scientific reviews have found that facial movements do not map reliably onto inner emotions across people and cultures, which is one reason the EU banned it at work and school.
+
+```mermaid
+quadrantChart
+    title Face technology uses by consent and stakes
+    x-axis Low consent --> High consent
+    y-axis Low stakes --> High stakes
+    quadrant-1 Consented but serious
+    quadrant-2 Most contested
+    quadrant-3 Quiet background scanning
+    quadrant-4 Everyday convenience
+    Phone unlock: [0.9, 0.25]
+    Photo app grouping: [0.72, 0.15]
+    Airport gate check: [0.62, 0.55]
+    Bank ID selfie check: [0.82, 0.62]
+    Store watchlist: [0.18, 0.58]
+    Police database search: [0.15, 0.85]
+    Live city surveillance: [0.05, 0.95]
+```
+
+*Figure 45.9: An illustrative map of face technology uses by how much the person consented and how much is at stake. Positions are the author's judgment, not measurements; the most contested uses sit top left.*
+
+> **At the frontier (2026):** The arms race in identity checks has moved to "liveness." Banks and apps that verify you with a selfie must now tell a real face from a printed photo, a screen, a mask or a deepfake video fed straight into the camera stream. Liveness detection and provenance signals are an active area of product work, and fraud with synthetic faces is a growing concern for finance (Chapter 58).
+
+## Seeing in 3D
+
+A single photo flattens the world. Robots, cars, headsets and phones need to know how far away things are.
+
+> **Definition — Depth estimation:** Predicting the distance from the camera to every point in an image, producing a "depth map" in which each pixel holds a distance instead of a color.
+
+There are several ways to get depth. **Stereo vision** uses two cameras a known distance apart, like your two eyes: the closer an object, the more its position differs between the two images. **Structured light** projects an invisible dot pattern and measures how it distorts; Apple's Face ID projects tens of thousands of infrared dots onto your face, which is why a flat photo cannot fool it. **Lidar** measures distance directly with laser pulses (Chapter 50 covers its role in self-driving cars). And since about 2024, models such as Depth Anything estimate surprisingly good depth from a single ordinary photo, having learned from millions of images what near and far tend to look like.
+
+> **Definition — Point cloud:** A 3D scene represented as a large set of dots, each with x, y and z coordinates and sometimes a color. It is the typical output of a lidar sensor or 3D scanner.
+
+> **Definition — SLAM (simultaneous localization and mapping):** Building a map of an unknown space while tracking your own position within it at the same time. Robot vacuums, drones and AR headsets rely on it.
+
+A robot vacuum running SLAM starts with no map. As it moves, it spots landmarks with its lidar or camera, estimates how far it has traveled, and stitches the observations into a floor plan, constantly correcting both the map and its own position.
+
+To capture a whole object or scene in 3D, you take many photos from different angles.
+
+> **Definition — Photogrammetry:** Reconstructing 3D shapes from many overlapping photographs by matching features between them and working out where each camera was.
+
+> **Definition — NeRF (neural radiance field):** A 2020 technique that trains a small neural network to represent one 3D scene: given any point in space and a viewing direction, it returns a color and a density. Rendering new viewpoints means asking the network about many points along every pixel's line of sight, which is slow.
+
+> **Definition — Gaussian splatting:** A 2023 technique that represents a 3D scene as millions of tiny, soft, colored, semi-transparent blobs ("Gaussians"). It renders photorealistic new views in real time and trains faster than NeRFs.
+
+```mermaid
+flowchart TD
+    A["30 to 200 overlapping photos<br/>walking around the object"] --> B["Work out where each<br/>camera was standing"]
+    B --> C["Photogrammetry<br/>a mesh of triangles"]
+    B --> D["NeRF<br/>a network answers color and<br/>density for any point"]
+    B --> E["Gaussian splatting<br/>millions of soft colored blobs"]
+    C --> F["Editable model<br/>for games and 3D printing"]
+    D --> G["Photoreal new views<br/>but slow to render"]
+    E --> H["Photoreal new views<br/>in real time on a phone"]
+```
+
+*Figure 45.10: Three routes from a ring of photos to a 3D scene.*
+
+| Method | Year it took off | Output | Rendering speed | Strengths | Weaknesses |
+|---|---|---|---|---|---|
+| Photogrammetry | Decades old, improved with deep features | Triangle mesh plus texture | Fast | Easy to edit, measure and 3D print | Struggles with thin, shiny or see-through things |
+| NeRF | 2020 | A trained network | Slow | Beautiful light and reflections | Slow, hard to edit |
+| Gaussian splatting | 2023 | Millions of blobs | Real time | Photoreal and fast | Large files, harder to edit as solid shapes |
+| Single-image 3D (e.g. SAM 3D) | 2025 | Object or body shape | Fast | Needs only one photo | Back sides are educated guesses |
+
+*Table 45.2: Ways to capture 3D from ordinary cameras.*
+
+**Worked example: why splat files are big.** Each Gaussian stores its position (3 numbers), size along three axes (3), rotation (4), opacity (1) and a color description that changes with viewing angle (48 in the original method), about 60 numbers in all. A detailed room might use 3 million Gaussians: 3,000,000 × 60 = 180 million numbers. At 4 bytes per number that is about 720 megabytes, which is why compressing splats is an active research and product area.
+
+The newest step is reconstruction from a single image. SAM 3D (November 2025) estimates the 3D shape of an object or a human body from one photo, filling in hidden sides from what it has learned about how things are usually shaped.
+
+3D vision is used for real-estate walkthroughs, insurance claims (scan the damaged room), construction progress tracking, preserving historic buildings and artifacts, film visual effects, 3D product views in online shops, AR furniture placement, and robots and cars that must move through real space (Chapters 49 and 50).
+
+## Vision meets language
+
+Chapter 16 described CLIP (2021), which learned from hundreds of millions of image–caption pairs to put pictures and words in one space of meaning, and Chapter 22 described how your chatbot bolts a vision encoder onto a language model.
+
+> **Definition — Vision-language model (VLM):** A model that takes images and text together and can describe images, answer questions about them, read the text in them and reason about what they show.
+
+For the applied field, VLMs changed one big thing: many vision tasks went from *training* to *prompting*. Instead of collecting 2,000 labeled photos of "pallet blocking the fire exit," a safety team can describe it in a sentence and test immediately. In 2026 many VLMs can also answer with locations, not just words.
+
+> **Definition — Visual grounding:** Linking words to specific places in an image, such as returning the box or point for "the second mug from the left." It turns a description into coordinates a robot arm or a software agent can act on.
+
+Specialist models have not disappeared. They are often the right choice in production.
+
+| | Specialist model (e.g. a small detector) | General VLM |
+|---|---|---|
+| Speed | Milliseconds per frame, runs on a camera | Often a second or more per image |
+| Cost per image | Tiny once deployed | Paid per token, adds up on video |
+| Setup | Needs labeled examples | A written prompt |
+| New categories | Retrain | Change the prompt |
+| Explaining its answer | Boxes and scores only | Can describe its reasoning in words |
+| Typical failures | Unseen situations | Counting, exact positions, small text, invented details |
+
+*Table 45.3: Specialist vision models versus general vision-language models.*
+
+> **Key idea:** A common 2026 pattern combines both. A large VLM (or SAM 3) labels a pile of images from a text description, people check a sample, and that data trains a small, fast model that runs on the device thirty times a second. The big model is the teacher; the small model does the shift work.
+
+> **Watch out:** Chatbots are still weak at some visual tasks that feel trivial: counting many similar objects, reading analog clocks, judging exact left/right relationships, and reading tiny text in a shrunk image. They may also describe objects that are not there because they usually appear in similar scenes. Chapter 22 gives prompting habits that help.
+
+## How vision systems fail
+
+Vision models can look superhuman in a demo and fail in the field. The failure modes are well understood, and knowing them is half the job of deploying vision responsibly.
+
+> **Definition — Distribution shift:** When the images a model meets in use differ from the ones it was trained and tested on (new camera, new lighting, new country, new product), so its accuracy drops, often silently.
+
+> **Definition — Shortcut learning:** When a model learns an easy cue that happened to correlate with the label in its training data instead of the real thing. It passes tests drawn from the same data and fails when the cue disappears.
+
+Two classic shortcut stories. Researchers explaining model decisions in 2016 deliberately trained a classifier where wolf photos had snowy backgrounds and husky photos did not; it learned "snow means wolf," and explanation tools exposed it. In 2018 a study of pneumonia-detecting X-ray models found they partly recognized *which hospital* an image came from, through markers and scanner differences, and performance dropped at other hospitals.
+
+> **Definition — Adversarial example:** An input deliberately altered, often invisibly to people, so that a model makes a wrong prediction with high confidence.
+
+In 2014 researchers added a faint, carefully computed noise pattern to a photo of a panda; a top classifier then labeled it a gibbon with 99.3% confidence. In 2018 another team showed that a few black and white stickers on a real stop sign could make a classifier read it as a speed-limit sign. Defenses exist but none is complete.
+
+> **Definition — Long tail:** The huge number of rare situations (an overturned truck, a person in a costume, a kangaroo on the road) that each almost never happen but together happen all the time. Models trained on common cases are weakest there.
+
+> **Definition — Automation bias:** The human tendency to over-trust a machine's output and stop checking it, especially when the machine is usually right.
+
+| Failure | Example | Common mitigation |
+|---|---|---|
+| Distribution shift | A defect model trained in summer fails when winter sunlight hits the line | Collect data from every setting; monitor accuracy after launch |
+| Shortcut learning | "Snow means wolf" | Test on deliberately varied data; inspect what the model looks at |
+| Adversarial inputs | Stickers on a stop sign | Multiple sensors, robust training, human checks for high stakes |
+| Long tail | A rare object on a road | Fleet data collection, simulation, conservative fallback behavior |
+| Biased data | Higher error rates for some skin tones | Representative data, per-group testing, published audits |
+| Automation bias | Officers treat a face "hit" as proof | Rules requiring independent evidence, training, audit logs |
+
+*Table 45.4: How vision systems fail and how practitioners respond.*
+
+> **Watch out:** "Beats radiologists" or "99% accurate" on a benchmark is the start of the question, not the answer. Ask: tested on whose images, from which hospitals or cameras, at what threshold, with what error rate for each group, and does it improve real outcomes when people use it?
+
+## Computer vision at work: an industry tour
+
+| Industry | Main vision tasks | A real example | Main risk |
+|---|---|---|---|
+| Manufacturing | Defect detection, segmentation | Inspecting welds, circuit boards, bottles and fabric | Missed defects, false rejects, lighting drift |
+| Agriculture | Weed and crop detection | John Deere's See & Spray targets individual weeds; the company reports large herbicide savings | Unusual fields and crops |
+| Healthcare | Classification and segmentation of scans | IDx-DR (2018), the first FDA-authorized autonomous AI diagnostic, screens for diabetic eye disease | Uneven performance across hospitals and groups |
+| Retail | Detection, tracking | Shelf monitoring, produce recognition at self-checkout | Billing errors, customer privacy |
+| Finance and insurance | OCR, faces, damage assessment | ID-plus-selfie checks; photo-based car damage estimates | Deepfake fraud, unfair denials |
+| Logistics | OCR, detection, counting | Reading labels, counting pallets, checking loads | Throughput errors |
+| Accessibility | VLM scene description | Be My Eyes added a GPT-4-based "Be My AI" describer in 2023 | Confident wrong descriptions |
+| Environment | Classification of camera-trap and satellite images | Counting wildlife, tracking deforestation | Rare species mislabeled |
+| Sports and media | Tracking, pose | Electronic line calling, player tracking, auto-highlights | Disputed calls, broadcaster dependence |
+| Public safety | Faces, plates, re-ID | Plate readers, face searches | Wrongful arrests, mass tracking |
+
+*Table 45.5: Computer vision across industries in 2026.*
+
+**Healthcare** is the most regulated user. The FDA's list of AI-enabled medical devices held about 1,451 authorizations through the end of 2025, roughly three-quarters of them in radiology; one secondary analysis counted 1,614 by late June 2026. Most were cleared as tools that help a clinician rather than replace one (Chapter 52 goes deeper).
+
+**Retail** offers a cautionary tale. Amazon opened its first cashierless "Just Walk Out" store in 2018, using ceiling cameras and shelf sensors to track what each shopper took. In 2024 it removed the system from its US Amazon Fresh grocery stores in favor of smart carts, amid reports that it needed substantial human review (Amazon said reviewers mainly labeled data to improve the model). A demo for a few shoppers is a long way from crowded aisles all day.
+
+**Manufacturing** shows why base rates matter.
+
+**Worked example: false rejects on a fast line.** A bottling line inspects 10 bottles per second, around the clock: 10 × 86,400 seconds = 864,000 bottles a day. True defects are rare, 0.05% or 432 a day. The vision system catches 95% of them (410) but also wrongly rejects 0.1% of good bottles (about 864). So of the roughly 1,274 bottles rejected each day, only about a third are actually defective. Whether that is acceptable depends on what a rejected good bottle costs versus a defective one reaching a customer, and that is a business decision, not a model setting.
+
+Most vision projects follow the same loop.
+
+```mermaid
+flowchart LR
+    A["Define the decision<br/>and the cost of each error"] --> B["Collect images<br/>from the real setting"]
+    B --> C["Label them<br/>with SAM or VLM help"]
+    C --> D["Fine-tune a model<br/>or prompt a VLM"]
+    D --> E["Test on held-out<br/>and hard cases"]
+    E --> F["Deploy<br/>on device or in the cloud"]
+    F --> G["Monitor for drift<br/>new lighting, new products"]
+    G --> B
+```
+
+*Figure 45.11: The life cycle of a vision product. The loop back from monitoring to data collection never stops.*
+
+> **Definition — Data annotation:** The work of labeling images or video (drawing boxes, tracing masks, tagging classes) so they can be used to train or test models. Much of it is done by large outsourced workforces, often for low pay (Chapter 11).
+
+## The ethics of machines that see
+
+Vision models turn every cheap camera into a sensor that can count, recognize and remember, which is the source of both their value and their danger. Five issues recur. **Privacy and consent:** people in view rarely agreed to be analyzed, so on-device processing, blurring faces and plates, and deleting footage quickly all reduce harm. **Surveillance and power:** face search, re-identification and plate readers can track movements at scale, and who may use them under what oversight is a political question. **Bias:** uneven error rates fall on those least represented in the data and least able to contest a mistake. **Dual use:** a detector that counts endangered animals can help a drone pick targets (Chapter 53); in 2020 YOLO's creator, Joseph Redmon, said he had stopped vision research over military uses and privacy concerns. **Labor:** vision runs on human labeling work and changes jobs from line inspectors to line judges.
+
+Before deploying any camera-based AI, ask: what decision will it drive, what happens to a person when it is wrong, who checks it, how long is footage kept, and would the people on camera agree if asked?
+
+## At the frontier, and what is still unsolved
+
+> **At the frontier (2026):** Vision is converging on promptable, general models. SAM 3 finds and tracks any concept you can name; vision-language models return boxes and points as well as words; single-image 3D reconstruction (SAM 3D) and video world models (Chapter 47) are pushing models from flat pictures toward an understanding of space and physics; and robot foundation models reuse vision-language backbones as their eyes (Chapter 49). At the same time, neural processing units in phones and cameras let more of this run on the device, without sending video anywhere.
+
+The big open problems are robustness to unusual conditions and attacks; real 3D and physical understanding (predicting what happens if you push, pour or stack things); small objects and fine detail, such as a hairline crack or a distant pedestrian a few pixels tall; equal accuracy across skin tones, ages, bodies and regions; getting the benefits of cameras without building a surveillance archive; and systems that say "I can't tell" instead of guessing.
+
+## In plain English
+
+A computer sees a photo as millions of numbers, three per pixel. Seeing is hard because the same object gives completely different numbers depending on angle, light and distance. Since 2012, neural networks have learned which number patterns matter, and today they start from huge pretrained "foundation" models instead of learning from scratch.
+
+Vision tasks form a ladder. Classification names what is in a picture. Detection, like YOLO, draws boxes around each object in a few milliseconds. Segmentation cuts out exact outlines; Meta's Segment Anything models do this for anything you click or name, even in video. Tracking follows objects through time, and pose estimation turns a body into a stick figure. OCR and document AI read text and turn invoices into data, but even 99% character accuracy leaves errors in about one field in five, so humans review the uncertain cases. 3D vision builds depth maps and models from photos, using techniques like photogrammetry, NeRFs and Gaussian splats.
+
+Face recognition shows the stakes. Checking your face against your phone's single stored copy is very reliable. Searching a face against millions of people produces innocent look-alikes, error rates have differed across groups, and people have been wrongly arrested. Laws such as the EU AI Act and Illinois's biometrics law limit some uses.
+
+Vision models fail when the world differs from their training data, when they learn shortcuts, and when people trust them too much. Used well, they inspect products, read paperwork, screen eyes for disease, help blind people navigate and track wildlife. Used carelessly, they become surveillance.
+
+## Key terms
+
+Computer vision, Pixel, RGB, Resolution, Backbone, Transfer learning, Fine-tuning, Vision foundation model, Image classification, Top-1 and top-5 accuracy, Zero-shot classification, Object detection, Bounding box, Confidence score, YOLO (You Only Look Once), Non-maximum suppression (NMS), Open-vocabulary detection, IoU (Intersection over Union), mAP (mean average precision), Frames per second (FPS), Edge deployment, Segmentation, Mask, Semantic segmentation, Instance segmentation, Panoptic segmentation, Promptable segmentation, Segment Anything Model (SAM), Data engine, Object tracking, Re-identification (re-ID), Action recognition, Pose estimation, Keypoint, OCR (optical character recognition), License plate recognition (ANPR), Document AI, Key-value extraction, Face detection, Face verification, Face identification, Biometrics, Face embedding, False match rate and false non-match rate, Emotion recognition, Depth estimation, Point cloud, SLAM (simultaneous localization and mapping), Photogrammetry, NeRF (neural radiance field), Gaussian splatting, Vision-language model (VLM), Visual grounding, Distribution shift, Shortcut learning, Adversarial example, Long tail, Automation bias, Data annotation
+
+## Exercises
+
+1. **[Easy] Pixel peeping.** (1) Open any photo in a free browser image editor that has a color picker, such as Photopea (photopea.com). (2) Zoom in until you see individual squares at the edge of a dark object against a bright background. (3) Use the eyedropper on five pixels across the edge and write down their red, green and blue values. (4) Look up your photo's width and height and compute width × height × 3 to get the number of raw values in it. **What you'll learn:** an image really is a grid of numbers, and edges are just places where the numbers jump.
+
+2. **[Easy] Your phone as a vision lab.** (1) Use Google Lens or Apple's Visual Look Up on a plant, a pet and a product. (2) Photograph a printed page and copy its text (OCR). (3) Point the camera at a sign or menu in another language and translate it live. (4) Search your photo library for "receipt," "beach" and "car." (5) Write down every failure you notice (blurry text, a rare object, a wrong photo in the search results) and guess why. **What you'll learn:** classification, OCR and search by image run in seconds, partly on the device, and fail in predictable ways.
+
+3. **[Medium] Train, then sabotage, an image classifier.** (1) At teachablemachine.withgoogle.com, start an Image Project with three classes: "thumbs up," "thumbs down" and "nothing." (2) Record about 50 webcam images for each, varying your hand position. (3) Train and test live. (4) Now start over, but record every "thumbs up" image while wearing a red shirt and every "thumbs down" image in a different-colored shirt. (5) Test thumbs up while wearing the other shirt. **What you'll learn:** training data, generalization and shortcut learning, demonstrated in your own living room.
+
+4. **[Medium] Segment Anything playground.** (1) Open Meta's Segment Anything playground (aidemos.meta.com) or a SAM demo on Hugging Face Spaces (huggingface.co/spaces, search "SAM"). (2) Upload a cluttered photo. (3) Click one object, then click a part of an object, and compare the candidate masks. (4) Type concept prompts such as "shoes," "yellow things" or "windows." (5) If video is supported, track an object through a short clip. (6) Note which objects it struggles with (glass, hair, shadows, reflections). **What you'll learn:** the difference between detection and segmentation, promptable vision, and its limits.
+
+5. **[Easy] IoU, precision and recall with a pencil.** (1) A predicted box covers x 0–40 and y 0–40; the true box covers x 20–60 and y 0–40. Draw both on squared paper and compute the overlap area, the union and the IoU. Does it pass a 0.5 threshold? (2) A pedestrian detector is shown 200 images containing 120 pedestrians. It reports 100 detections, of which 90 are real pedestrians. Compute precision and recall. (3) Write one sentence on which error matters more for a car, and why. **What you'll learn:** how detectors are scored, and why the threshold is a safety decision.
+
+6. **[Medium] The 99% trap.** (1) In a spreadsheet, put character accuracies 0.95, 0.99, 0.995 and 0.999 in column A. (2) In column B compute the chance a 20-character field is perfect with =A1^20. (3) In column C compute the chance a 15-field form is perfect with =B1^15. (4) Then photograph a long store receipt, ask a chatbot to extract every line as a table, and count how many fields are fully correct. **What you'll learn:** why document AI is judged at the field and document level, and why human review of uncertain fields stays essential.
+
+7. **[Medium] The face-search base-rate spreadsheet.** (1) In a spreadsheet, list gallery sizes of 1,000, 100,000, 1,000,000 and 10,000,000 faces. (2) Assume a false match rate of 1 in 100,000 per comparison. (3) For each gallery, compute expected false matches per search (gallery size ÷ 100,000). (4) Repeat with 1 in 1,000,000. (5) Write a short paragraph explaining to a city council member why "the algorithm is 99.999% accurate" does not mean a match is 99.999% likely to be the right person. **What you'll learn:** the base-rate problem in identification, and how to explain it to non-experts.
+
+8. **[Medium] Pose estimation in Teachable Machine.** (1) Start a Pose Project at teachablemachine.withgoogle.com. (2) Make two classes, "standing" and "squatting," and record about 30 samples of each, facing the camera. (3) Train and test. (4) Test again from the side, with a coat on, and with part of your body out of frame. (5) Note when the skeleton overlay breaks. **What you'll learn:** keypoints, how much a body compresses to a stick figure, and how occlusion and viewpoint hurt pose models.
+
+9. **[Challenge] Run a real-time object detector in Google Colab.** (1) Open colab.research.google.com, sign in with a Google account and create a new notebook. (2) Paste the code below into a cell and press the play button. Step 1 installs the free Ultralytics library; step 2 downloads a small YOLO detector trained on 80 everyday object types; step 3 runs it on a sample street photo; step 4 prints each detected object with its confidence score; step 5 draws the boxes and shows the picture.
+
+   ```python
+   # 1. Install the Ultralytics library, which packages YOLO detectors
+   !pip -q install ultralytics
+   from ultralytics import YOLO
+   from PIL import Image
+
+   # 2. Load a small pretrained detector (if this name stops working,
+   #    check docs.ultralytics.com for the current small model name)
+   model = YOLO("yolo11n.pt")
+
+   # 3. Run it on a sample photo (swap in any public image URL)
+   results = model("https://ultralytics.com/images/bus.jpg")
+
+   # 4. Print each detection: class name and confidence score
+   for box in results[0].boxes:
+       print(model.names[int(box.cls)], round(float(box.conf), 2))
+
+   # 5. Draw boxes and show the image (flip BGR colors to RGB)
+   Image.fromarray(results[0].plot()[..., ::-1])
+   ```
+
+   (3) Replace the URL with a photo of a busy street, a kitchen or a desk, and see what it finds and misses. (4) Change step 3 to `model(url, conf=0.7)` and then `conf=0.2`, and watch boxes appear and disappear. **What you'll learn:** what a detector outputs, how the score threshold trades precision for recall, and what a fixed list of 80 classes cannot see.
+
+10. **[Challenge] Scan an object into 3D with your phone.** (1) Install a free 3D-capture app that supports Gaussian splats or photogrammetry, such as Scaniverse, Polycam or Luma. (2) Walk slowly around a plant or a shoe, keeping it in view. (3) View the result from new angles. (4) Repeat with a shiny or transparent object (a glass, a metal pan). (5) Compare the file sizes and quality. **What you'll learn:** how robots, headsets and estate agents capture 3D, and why reflective and see-through surfaces break the methods.
+
+11. **[Challenge] Design a vision system for a real business.** (1) Pick a local business (a bakery, a garage, a farm, a clinic). (2) Find one decision it makes by looking at things (is this loaf burnt, is this tire worn, is this fruit ripe). (3) Write one page covering: the decision, what a false alarm and a miss each cost, where the images come from, how many you would label, whether a VLM prompt or a small trained model fits better, whether it must run on the device, what privacy issues arise, and who reviews uncertain cases. (4) Ask a chatbot to critique your plan as a skeptical investor. **What you'll learn:** how to turn vision techniques into a product with honest error costs.
+
+## Areas of opportunity
+
+- **Visual inspection for small manufacturers.** Off-the-shelf detectors plus SAM-assisted labeling make defect inspection affordable for factories that could never pay for a custom system. Integrators who can set up cameras, lighting, labeling and monitoring can sell this as a service.
+- **Document automation for small and mid-size businesses.** Invoices, delivery notes, claim forms and IDs are still retyped by hand in many offices. Accountants, logistics firms and clinics pay per document for extraction with rule checks and human review.
+- **Labeling and data-quality services.** Every vision project needs clean, consistent labels. Annotation leads who know how to use SAM- and VLM-assisted tools, write labeling guidelines and audit quality are in demand.
+- **3D capture with Gaussian splats.** Real estate agents, insurers, museums, construction firms and online shops want cheap, photoreal 3D captures. A one-person business with a phone, a capture app and good technique can serve a whole city.
+- **Sports video analytics for amateur teams.** Tracking and pose tools that were once only for professional clubs can now serve schools and amateur leagues, which will pay modest subscriptions for highlights and player statistics.
+- **Accessibility tools.** Scene description, sign and menu reading, and navigation help for blind and low-vision users are high-impact and funded by nonprofits, governments and accessibility-focused companies; honest uncertainty is the key product feature.
+- **Privacy-preserving vision.** Services that blur faces and plates in dashcam, bodycam and street footage, or vision products that process everything on the device and never upload video, answer a growing legal and customer demand.
+- **Fairness auditing and compliance.** Companies using face, ID or camera analytics under the EU AI Act, Illinois's biometrics law and similar rules need per-group testing, documentation and audits, a niche for people who combine vision knowledge with policy skills.
+- **Drone and satellite analytics.** Farmers, insurers, utilities and conservation groups pay for crop health maps, damage assessment, power-line inspection and deforestation monitoring.
+- **Open problems for researchers.** Robustness to unusual conditions, long-tail and small-object recognition, physical and 3D understanding from video, fair performance across groups, privacy-preserving training, and calibrated "I can't tell" answers.
+
+## Check your understanding
+
+1. Why does shifting a photo by a single pixel defeat a naive "compare the raw numbers" approach, and what do neural networks learn instead?
+2. What is the difference between semantic and instance segmentation? Give a situation where the difference matters.
+3. A predicted box covers x 0–40, y 0–40 and the true box covers x 20–60, y 0–40. What is the IoU, and does it count as a correct detection at the usual threshold?
+4. A detector flags 50 items, 40 of which are real, and there are 80 real items in total. What are its precision and recall?
+5. Why can the same per-comparison error rate be excellent for phone unlock and troubling for a police database search?
+6. Why does 99% character accuracy still leave many invoice fields wrong?
+7. What was SAM's "data engine," and why did it matter?
+8. Name two ways vision systems fail in the field and one mitigation for each.
+
+<details><summary>Answers</summary>
+
+1. Shifting the image moves almost every value to a new position in the grid, so a pixel-by-pixel comparison sees a completely different list of numbers. Networks learn features (edges, textures, parts, objects) that respond to the same pattern wherever it appears and under varied lighting and viewpoints.
+2. Semantic segmentation labels every pixel with a class but merges touching objects of the same class; instance segmentation gives each object its own mask. It matters when you must count or act on individual objects, such as counting cells, tracking each car or picking one item from a pile.
+3. The overlap is x 20–40 by y 0–40 = 20 × 40 = 800. Each box is 1,600, so the union is 1,600 + 1,600 − 800 = 2,400. IoU = 800 ÷ 2,400 ≈ 0.33, below 0.5, so it counts as a miss.
+4. Precision = 40 ÷ 50 = 0.80. Recall = 40 ÷ 80 = 0.50.
+5. Verification makes one comparison, so a tiny false match rate means almost no false accepts. Identification makes a comparison against every face in the gallery, so the tiny rate is multiplied by the gallery size, producing look-alike matches on most searches, and none of them may be right if the person is not in the gallery.
+6. Errors compound: a 20-character field is fully correct only with probability 0.99^20 ≈ 0.82, so about 18% of fields contain an error, and a 15-field invoice is perfect only about 5% of the time.
+7. A loop in which SAM proposed masks, people corrected them, the model was retrained and then labeled more images, until it could label images automatically. It produced about 1.1 billion masks on 11 million images, far more than hand-tracing could, and that data made a general "segment anything" model possible.
+8. Examples: distribution shift (collect data from every setting and monitor accuracy after launch); shortcut learning (test on deliberately varied data and inspect what the model attends to); adversarial inputs (use multiple sensors and human checks for high stakes); biased data (test per group and rebalance data); automation bias (require independent evidence before acting on a match).
+
+</details>
+
+## Going deeper
+
+- **Stanford CS231n: Deep Learning for Computer Vision (cs231n.stanford.edu)** — the classic free course notes and lectures; clear explanations of CNNs, detection and segmentation.
+- **Richard Szeliski, *Computer Vision: Algorithms and Applications*, 2nd edition (2022)** — the standard textbook, free as a PDF from the author's website; covers classic geometry, 3D and modern learning.
+- **Fei-Fei Li, *The Worlds I See* (2023)** — a memoir by ImageNet's creator, a readable history of how vision became deep learning's first triumph.
+- **Kirillov et al., "Segment Anything" (2023), and Meta's SAM 2 and SAM 3 pages** — the paper explains promptable segmentation and the data engine in accessible language.
+- **Redmon et al., "You Only Look Once: Unified, Real-Time Object Detection" (2016)** — a short, readable paper that introduced one-stage real-time detection.
+- **Gender Shades (gendershades.org) and the documentary *Coded Bias* (2020)** — the study and film that put face-analysis bias on the public agenda.
+- **NIST's Face Recognition Technology Evaluation reports (formerly FRVT)** — the most authoritative independent measurements of face recognition accuracy, including demographic effects.
+- **Hugging Face Computer Vision Course (huggingface.co/learn)** — a free, hands-on course using open models, with notebooks you can run in Colab.
+- **Ultralytics documentation (docs.ultralytics.com)** — practical guides to training and deploying YOLO detectors on your own images.

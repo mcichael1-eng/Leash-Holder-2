@@ -20,9 +20,9 @@ This is the capstone of the first seven Parts of the book, so almost every earli
 
 Two things happen on two very different clocks every time you use a chatbot.
 
-The fast clock is your request. You type a question, tap Send, and about a second later (or, for a hard question, ten or twenty seconds later) words start appearing. In that time your message crosses a city, maybe a continent, enters a building the size of several football fields, gets turned into numbers, is multiplied through about a trillion learned parameters stored on chips that each draw more power than a hair dryer, and comes back to you as text.
+The fast clock is your request. You type a question, tap Send, and about a second later (or, for a hard question, ten or twenty seconds later) words start appearing. In that time your message crosses a city, maybe a continent, enters a building the size of several football fields, gets turned into numbers, is multiplied through about a trillion learned parameters stored on chips that each draw about as much power as a hair dryer, and comes back to you as text.
 
-The slow clock is the model itself. The thing that answered you took one to two years to make. Before a single training step could run, someone had to buy land, win a grid connection, pour concrete, order hundreds of thousands of chips more than a year in advance, and assemble a team of hundreds. Then a cluster of around 100,000 accelerators ran for about three months, drawing the power of a mid-sized city, followed by months more of fine-tuning, reinforcement learning and safety testing.
+The slow clock is the model itself. The thing that answered you took one to two years to make. Before a single training step could run, someone had to buy land, win a grid connection, pour concrete, order hundreds of thousands of chips far in advance, and assemble a team of hundreds. Then a cluster of around 100,000 accelerators ran for about three months, drawing the power of a mid-sized city, followed by months more of fine-tuning, reinforcement learning and safety testing.
 
 The two clocks run on the same machine. The racks that serve your prompt today look like the racks that trained the model last year. The same electricity grid, the same chip factories in Taiwan, the same memory makers in Korea and the same bottlenecks shape both. That is why this chapter tells both stories in turn and then draws the single stack underneath them.
 
@@ -30,7 +30,7 @@ The two clocks run on the same machine. The racks that serve your prompt today l
 
 > **Key idea:** A chatbot answer is the visible tip of a very large physical system. Every quantity in this chapter (milliseconds, watt-hours, cents, megawatts, months, dollars) comes from somewhere in that system, and you can estimate most of them yourself with a few multiplications.
 
-A word on honesty before the numbers start. Labs do not publish the size of their closed models, the exact hardware that served your request, or what each request cost them. So this chapter uses public anchors (published chip specs, company energy figures, open-weight model sizes, independent estimates from groups like Epoch AI) and fills the gaps with clearly labeled assumptions. Treat every figure here as "the right order of magnitude," good to within a factor of two or three, not as a measurement of any particular company.
+A word on honesty. Labs do not publish the size of their closed models, the hardware that served your request, or what it cost them. So this chapter uses public anchors (chip specs, company energy figures, open-weight model sizes, independent estimates from groups like Epoch AI) and fills the gaps with labeled assumptions. Treat every figure as the right order of magnitude, good to within a factor of two or three, not as a measurement of any particular company.
 
 ## Journey 1: the life of one prompt
 
@@ -71,13 +71,13 @@ Using the rule of thumb from Chapter 5, each token costs about 2 operations per 
 
 **Packaging (a few milliseconds).** The app extracts the text from your PDF and wraps the whole conversation (lease, question, settings, your login token) into a JSON request of about 40 KB. It reuses an encrypted connection it already has open to the provider.
 
-**Radio (roughly 10 to 30 ms).** Your phone sends the request as radio waves to the nearest cell tower, which hands it to your carrier's network. This first hop is often the slowest part of the whole network trip, because radio links schedule transmissions in small time slots and must handle interference. A typical good 5G or 4G connection adds something like 10 to 30 milliseconds; a weak signal adds much more.
+**Radio (roughly 10 to 30 ms).** Your phone sends the request by radio to the nearest cell tower. This first hop is often the slowest part of the network trip, because radio links schedule transmissions in small time slots; a good 5G or 4G connection adds something like 10 to 30 milliseconds, a weak signal much more.
 
 > **Definition — Cell tower (base station):** The radio equipment that connects your phone to the mobile network. It converts your phone's radio signal into data on fiber or microwave links into the carrier's network.
 
-**Fiber to the edge (about 5 ms).** From the carrier's network, packets travel over fiber to the AI provider's nearest point of presence, often in the same metro area. Light in glass covers about 200 km per millisecond, so a few dozen kilometers cost well under a millisecond; most of this time is spent passing through routers.
+**Fiber to the edge (about 5 ms).** Packets travel over fiber to the AI provider's nearest point of presence, often in your own metro area. Most of this time is spent passing through routers, not traveling.
 
-> **Definition — Point of presence (PoP):** A provider's network entrance in a city, where it accepts users' traffic, terminates encryption and passes requests onto its own private backbone. Big providers have hundreds around the world.
+> **Definition — Point of presence (PoP):** A provider's network entrance in a city, where it accepts users' traffic, terminates encryption and passes requests onto its own private backbone. Big providers run many of them around the world.
 
 **The encryption handshake (0 or about 50 ms).** If your app had to open a fresh secure connection, it would spend one extra round trip agreeing on encryption keys. Because it reuses the connection, this step costs nothing today.
 
@@ -99,7 +99,7 @@ Running total: about 35 milliseconds, and nothing interesting has happened to yo
 
 > **Definition — API gateway:** The front-door service of an AI provider that checks logins or API keys, enforces rate limits and routes each request to the right back-end system before any expensive GPU work starts.
 
-**Safety screening (milliseconds to tens of ms).** Many providers run small, fast classifier models over the input before the main model sees it, looking for clearly prohibited requests. Some also screen the output as it streams. Anthropic, for instance, runs classifiers around its Fable model that route flagged cyber, biology and chemistry requests to a more conservative model; the company says over 95% of Fable sessions see no such fallback (Chapter 56).
+**Safety screening (milliseconds to tens of ms).** Many providers run small, fast classifier models over the input before the main model sees it, looking for clearly prohibited requests. Some also screen the output as it streams. Anthropic, for instance, runs classifiers around its Fable model that route flagged cyber, biology and chemistry requests to an earlier model, Opus 4.8; the company says over 95% of Fable sessions see no such fallback (Chapter 56).
 
 > **Definition — Safety classifier:** A smaller, separate model that scores inputs or outputs for risky content, so a request can be blocked, flagged or routed to a safer model. It runs alongside the main model, not inside it.
 
@@ -127,7 +127,7 @@ flowchart TD
     RW --> R["Rack: NVL72-style<br/>72 GPUs, about 130 kW, over 1 tonne"]
     R --> T["Compute tray<br/>4 GPUs and 2 CPUs on cold plates"]
     T --> G["One GPU package<br/>2 dies plus 8 HBM stacks, 288 GB"]
-    G --> W["In HBM: a slice of the model's experts<br/>plus KV caches for hundreds of users"]
+    G --> W["In HBM: a slice of the model's experts<br/>plus KV caches for many users"]
     R --> N["NVLink switches<br/>let all 72 GPUs share work every layer"]
 ```
 
@@ -139,7 +139,7 @@ Why a whole rack? Because the model's 1 TB of weights is too big for one GPU's 2
 
 > **Definition — HBM (High Bandwidth Memory):** Stacks of memory chips placed right beside an AI accelerator on the same package, holding the model's weights and working data and delivering terabytes per second (Chapter 33).
 
-The rack draws about 130 kilowatts, roughly the average draw of 100 American homes, from overhead busway. Coolant flows through metal cold plates on every chip and carries the heat to a coolant distribution unit at the end of the row, then to the building's water loop and finally to dry coolers or cooling towers outside (Chapter 40). On a modern AI campus, the cooling and power-conversion overhead adds roughly 10 to 20% on top of the IT power.
+The rack draws about 130 kilowatts, roughly the average draw of 100 American homes. Liquid coolant flowing through cold plates on every chip carries the heat out of the building (Figure 44.10), and on a modern AI campus cooling and power conversion add roughly 10 to 20% on top of the IT power.
 
 > **Definition — PUE (power usage effectiveness):** Total facility energy divided by the energy used by the computing equipment. A PUE of 1.2 means 20% overhead for cooling and power losses; leading AI sites run about 1.1 to 1.2, and the industry average is around 1.5.
 
@@ -234,7 +234,7 @@ setup 0.5s   #
 answer 3.5s   #########
 ```
 
-*Figure 44.3: A reasoning request with a tool call spends almost all its time generating tokens. A quick question with thinking off is dominated by the network and prefill, and finishes in a few seconds.*
+*Figure 44.3: A reasoning request with a tool call spends almost all its time generating tokens. A quick question with thinking off shows its first word in about half a second, most of it network and prefill, and finishes in a few seconds.*
 
 ```mermaid
 pie title Where the 19 seconds of one reasoning request go
@@ -295,11 +295,11 @@ Assume the provider's all-in cost (hardware depreciation, power, building, netwo
 
 At a more realistic 50% average utilization, the cost doubles to about 0.56 cents. Of that, the electricity alone is 1.2 Wh = 0.0012 kWh × $0.08 per kWh (an assumed industrial rate) ≈ $0.0001, a hundredth of a cent. Electricity is only a few percent of the cost of serving AI; the chips are most of it.
 
-Now compare with what the provider charges. At Claude Opus 5.5's list price in October 2026 ($4 per million input tokens and $20 per million output tokens), our request would cost an API customer 14,000 × $4 ÷ 1,000,000 + 1,400 × $20 ÷ 1,000,000 = $0.056 + $0.028 = **$0.084, about 8 cents**, a bit less with prompt caching on the system prompt, plus a small fee for the search. At Sonnet 5.5's $2 and $10 it would be about 4 cents; at Haiku 5.5's $0.10 and $0.50, about 0.2 cents.
+Now compare with what the provider charges. At Claude Opus 5.5's October 2026 list price ($4 and $20 per million input and output tokens), an API customer would pay 14,000 × $4 ÷ 1,000,000 + 1,400 × $20 ÷ 1,000,000 = $0.056 + $0.028 ≈ **8 cents**, slightly less with prompt caching. At Sonnet 5.5's $2 and $10 it is about 4 cents; at Haiku 5.5's $0.10 and $0.50, about 0.2 cents.
 
 > **Definition — Cost per million tokens:** The standard unit of AI inference pricing and cost: what it costs to read (input) or write (output) a million tokens. Output usually costs four to five times more than input, mirroring the hardware gap between decode and prefill.
 
-The gap between roughly half a cent of compute and 8 cents of list price is not pure profit. It pays for idle hardware at night, free users, the training runs that made the model (Journey 2), research that did not pan out, safety work, staff and a margin. The section "The same numbers from both directions," later in this chapter, puts a rough figure on the training share.
+The gap between half a cent of compute and 8 cents of list price is not pure profit: it pays for idle hardware, free users, the training runs that made the model (Journey 2), failed research, safety work, staff and a margin.
 
 | Request type | Input tokens | Output tokens | Energy (our model) | Compute cost at 100% use | List price at Opus 5.5 rates |
 |---|---|---|---|---|---|
@@ -310,7 +310,7 @@ The gap between roughly half a cent of compute and 8 cents of list price is not 
 
 *Table 44.2: How energy and cost scale with the kind of request, using this chapter's assumed rack (156 kW, 100,000 output and 1,000,000 input tokens per second, $5 per GPU-hour). Treat these as orders of magnitude.*
 
-Two cautions about the table. First, our simple model charges every input token the same, but attention's work grows faster than the input at very long lengths; Epoch AI's 2025 estimate for a 100,000-token input was about 40 Wh on that era's hardware and attention designs. Newer designs shrink this a lot (DeepSeek says its V4 attention needs 27% of the per-token compute and 10% of the KV cache of its previous version at a million tokens), but long inputs remain the most uncertain row. Second, the quick-question row lands at about 0.27 Wh, right in the 0.24–0.34 Wh range that Google, OpenAI and Epoch published, which is a useful sanity check on the assumptions.
+Two cautions. Our simple model charges every input token the same, but attention's work grows faster than the input at very long lengths: Epoch AI's 2025 estimate for a 100,000-token input was about 40 Wh on that era's hardware, though newer designs cut this sharply (DeepSeek says V4's attention needs 27% of the per-token compute and 10% of the KV cache of its predecessor at a million tokens). And reassuringly, the quick-question row lands at about 0.27 Wh, inside the 0.24–0.34 Wh range that Google, OpenAI and Epoch published.
 
 > **At the frontier (2026):** Serving hardware is splitting by phase. NVIDIA pairs Vera Rubin racks, which hold the big KV caches, with Groq-based LPX racks (256 chips each with about 500 MB of very fast on-chip memory) aimed at fast token generation; Google split its eighth TPU generation into TPU 8t for training and TPU 8i for inference, with 384 MB of on-chip memory. The goal is the same as this section's arithmetic: more tokens per second per user and per megawatt, so the cents and watt-hours per request keep falling.
 
@@ -321,6 +321,8 @@ Two cautions about the table. First, our simple model charges every input token 
 The model that answered your lease question did not exist two years earlier. To follow how such a model is made, we invent "Model F," a composite 2026 frontier model. Its numbers come from public anchors wherever possible: Epoch AI's estimate of OpenAI's GPT-6 Astra run (about 100,000 GB200 GPUs for about 90 days, roughly `9.4 × 10^26` operations), Meta's detailed Llama 3 paper, DeepSeek's technical reports, and the data center and energy figures from Part VII. Where no public number exists, the chapter says so and uses a labeled assumption.
 
 > **Definition — Frontier model:** One of the most capable AI models in existence at a given time, typically trained by a handful of labs on the largest clusters. In late 2026 that includes Claude Opus 5.5, GPT-6 Astra and Gemini 4 Argon, with open-weight models a few months behind.
+
+> **Analogy:** Making a frontier model is like making a blockbuster film. Years of pre-production (studios, equipment, scripts) lead to a short, enormously expensive shoot (pretraining), then months of editing and test screenings (post-training and evaluations), then a worldwide release that has to earn back the budget (deployment), with sequels on a schedule.
 
 ```mermaid
 timeline
@@ -348,17 +350,17 @@ A training cluster of 100,000 Blackwell-class GPUs needs about 1,390 NVL72-style
 
 You can rebuild that figure from parts. The building and its electrical and mechanical systems cost roughly $11–18 million per MW in 2025–26 (JLL and Cushman & Wakefield), so 180 MW × $11–18 million ≈ $2–3.2 billion. The racks themselves have reportedly sold for about $3–4 million each, so 1,390 × $3–4 million ≈ $4–5.6 billion. Total: about $6–9 billion, consistent with Epoch's estimate. The chips are the biggest slice.
 
-Almost none of this work is done by the AI lab. A hyperscaler or a neocloud usually develops or leases the site; construction firms, electricians and pipefitters build it; a utility (or on-site gas turbines, at some 2025–26 megaprojects) supplies the power. NVIDIA designs the GPUs, TSMC manufactures them in Taiwan, SK hynix, Samsung and Micron make the HBM, and contract manufacturers such as Foxconn and Quanta assemble the racks (Chapters 35, 36 and 42). Chip orders are placed more than a year ahead, because packaging and memory capacity are booked out.
+Almost none of this work is done by the AI lab. A hyperscaler or neocloud develops or leases the site, construction trades build it, and a utility or on-site turbines supply the power. NVIDIA designs the GPUs, TSMC makes them, SK hynix, Samsung and Micron make the HBM, and contract manufacturers such as Foxconn and Quanta assemble the racks (Chapters 35, 36 and 42). Big chip orders are placed far in advance, because packaging and memory capacity are scarce.
 
 Meanwhile, inside the lab, researchers train dozens to hundreds of small "proxy" models to choose the architecture, the data mixture and the hyperparameters. They fit scaling laws to those small runs to predict how the big one will turn out (Chapter 19). This research, and the runs that fail or get abandoned, consume a large share of a lab's total compute.
 
 ### Step 1: data (months, and never really finished)
 
-Pretraining data comes from web crawls such as Common Crawl, code repositories, books, scientific papers, licensed news and reference sources, transcribed audio and video, and increasingly synthetic data written by earlier models. Raw crawl is measured in petabytes, and most of it is thrown away by the curation pipeline: text extraction, language identification, exact and fuzzy deduplication, rule-based and model-based quality filters, removal of personal data and toxic content, removal of benchmark questions, and respect for opt-outs (Chapter 19).
+Pretraining data comes from web crawls such as Common Crawl, code, books, papers, licensed sources, transcribed audio and video, and increasingly synthetic data. Raw crawl is measured in petabytes, and the curation pipeline (text extraction, language identification, deduplication, quality filters, removal of personal data, toxic content and benchmark questions, and respect for opt-outs) throws most of it away (Chapter 19).
 
 > **Definition — Data curation:** Cleaning, filtering, deduplicating and balancing raw data before training. For pretraining it typically discards most of the raw web crawl and keeps the highest-quality fraction.
 
-Published pretraining runs used about 15.6 trillion tokens (Llama 3, 2024), more than 30 trillion (Llama 4, 2025), about 36 trillion (Qwen3, 2025) and about 33 trillion (DeepSeek-V4-Pro, 2026). Stored as plain text at about 4 bytes per token, 30 trillion tokens is about 120 TB, which fits on a few dozen large hard drives. The data is small; reading it is what costs.
+Published pretraining runs used about 15.6 trillion tokens (Llama 3, 2024), more than 30 trillion (Llama 4, 2025), about 36 trillion (Qwen3, 2025) and about 33 trillion (DeepSeek-V4-Pro, 2026). Stored as plain text at about 4 bytes per token, 30 trillion tokens is about 120 TB, which fits on a handful of large hard drives. The data is small; reading it is what costs.
 
 Here is a puzzle worth working through. The 6ND rule says training compute ≈ 6 × N × D, where N is the number of active parameters and D the number of training tokens (Chapter 19). If Model F's run is about `10^27` operations, then N × D ≈ `10^27 ÷ 6` ≈ `1.7 × 10^26`. Labs do not publish N and D for runs like this, but try two guesses: with 500 billion active parameters, D ≈ 330 trillion tokens; with 1 trillion active, D ≈ 170 trillion. Either way it is several times the 15–36 trillion tokens of the published runs, and in the neighborhood of Epoch AI's 2024 estimate that only about 300 trillion tokens of high-quality public human text exist (Chapter 11). That is why frontier labs now train on images, audio and video tokens, repeat their best data, generate synthetic data and lean ever harder on reinforcement learning, which creates its own training data.
 
@@ -441,15 +443,15 @@ The base model can continue any document but does not reliably follow instructio
 
 > **Definition — RL environment:** A sandbox with tasks, tools and an automatic grader (for example a code repository with tests, or a simulated website) used to train models by trial and error. Building them became an industry in 2025–26.
 
-How much does this stage cost? Labs rarely say. One public data point is small: DeepSeek reported that the reasoning-RL stage of its R1 model cost about $294,000 (published September 2025). Frontier labs' RL budgets in 2026 are not published but are widely understood to be far larger, because RL now runs on very large clusters for weeks: every attempt requires the model to generate thousands of tokens, which is inference, so RL inherits all the decode economics of Journey 1.
+How much does this stage cost? Labs rarely say. One early public data point is small: DeepSeek reported that the reasoning-RL stage of its R1 model cost about $294,000. Frontier RL budgets in 2026 are unpublished but almost certainly far larger, because every RL attempt means generating thousands of tokens, which is inference, so RL inherits all the decode economics of Journey 1.
 
-Post-training also produces the smaller siblings. A big model can teach smaller ones by distillation, which is how one training effort yields a whole price ladder: OpenAI described its GPT-6 Sol and Luna models as cheaper tiers built on Astra's advances, priced 50% below their predecessors, and Alibaba says its Qwen3.8-27B is distilled from Qwen3.8-Max. The model that answered your lease question may well be one of those siblings rather than the giant itself.
+Post-training also produces the smaller siblings. A big model can teach smaller ones by distillation, which is how one training effort yields a whole price ladder: OpenAI described its GPT-6 Sol and Luna models as cheaper tiers built on Astra's advances, priced 50% below their predecessors, and Alibaba's Qwen3.8-27B is reported to be distilled from Qwen3.8-Max. The model that answered your lease question may well be one of those siblings rather than the giant itself.
 
 > **Definition — Distillation:** Training a smaller "student" model to imitate a larger "teacher" model's outputs or probabilities, producing a cheaper, faster model that keeps much of the teacher's ability.
 
 ### Step 5: evaluations and safety testing (one to three months, overlapping)
 
-Before release, the model is tested from every angle (Chapters 24 and 57). Capability benchmarks measure knowledge, coding, agentic tasks and reasoning; private internal evaluations measure what the lab really cares about. Dangerous-capability evaluations check whether the model could meaningfully help someone build biological or chemical weapons, carry out cyberattacks, or act autonomously in risky ways, including speeding up AI research itself. Internal and external red teams attack it. Government institutes such as the UK AI Security Institute and the US Center for AI Standards and Innovation (CAISI), and independent evaluators such as METR and Apollo Research, may get pre-release access.
+Before release, the model is tested from every angle (Chapters 24 and 57): public benchmarks and private internal evaluations; dangerous-capability evaluations that check whether it could meaningfully help with biological or chemical weapons or cyberattacks, or act autonomously in risky ways, including speeding up AI research; and internal and external red teams. Government institutes such as the UK AI Security Institute and the US Center for AI Standards and Innovation (CAISI), and independent evaluators such as METR and Apollo Research, may get pre-release access.
 
 > **Definition — Red teaming:** Deliberately attacking a model, with clever prompts, tools and scenarios, to find harmful or unsafe behaviors before release.
 
@@ -515,3 +517,303 @@ The two journeys meet in three calculations.
 
 > **Key idea:** Training is a huge fixed cost paid once; serving is a smaller cost paid on every token forever. The business only works when a model is used enough to spread the first over the second, which is why both clocks matter to everything from pricing to power plants.
 
+## From sand to answer: the whole stack
+
+Now step back and draw the machine that both journeys run on. It is a chain of about ten layers, each built by different industries, each with its own physics and its own money. Figure 44.8 shows the whole chain on one page; Figures 44.9 to 44.11 zoom into its three physical stretches; Table 44.5 gives one number to remember for each layer.
+
+```mermaid
+flowchart TD
+    S["1. Sand and minerals"] --> F["2. Fabs<br/>wafers become chips, TSMC with ASML tools"]
+    F --> K["3. Packages<br/>GPU dies plus HBM memory"]
+    K --> R["4. Racks and clusters<br/>72 GPUs per rack, about 130 kW"]
+    R --> B["5. Buildings, power and cooling<br/>100 MW to 1 GW campuses"]
+    B --> T["6. Training<br/>about 10^27 operations over months"]
+    T --> W["7. Model weights<br/>a file of about a terabyte"]
+    W --> I["8. Inference fleet<br/>hundreds to thousands of racks"]
+    I --> A["9. API and app<br/>gateway, safety checks, tools"]
+    A --> Y["10. Your answer<br/>about 1 Wh, under a cent of compute"]
+    E["Grid and power plants"] --> B
+    D["Data<br/>web, books, code, experts"] --> T
+    M["Capital<br/>about $800B of 2026 hyperscaler capex"] --> B
+    P["People<br/>researchers to electricians"] --> T
+```
+
+*Figure 44.8: The full stack from sand to answer, with the four outside inputs (power, data, capital and people) that feed it. Each numbered layer is expanded in a figure or table below and covered in depth in Parts I to VII.*
+
+### Stretch 1: sand to rack
+
+Chips begin as quartz sand, refined into polysilicon of extraordinary purity, grown into a single crystal and sliced into wafers 300 mm across. Each wafer goes through hundreds to over a thousand steps of depositing materials, printing patterns with light, etching and polishing, layer upon layer (Chapter 36).
+
+> **Definition — Wafer:** A thin, round slice of ultra-pure silicon, 300 mm across for leading chips, on which many chips are built at once before being cut apart.
+
+The finest layers are printed with extreme ultraviolet light, 13.5 nanometers in wavelength, made by blasting about 50,000 tiny tin droplets per second with a laser. Only one company, ASML in the Netherlands, makes these machines, and each costs about $180 million. A leading-edge factory costs $20 billion or more.
+
+> **Definition — EUV lithography:** Printing chip patterns with extreme ultraviolet light (13.5 nm) generated from tin plasma and focused by mirrors in a vacuum. It is required for the most advanced chips, and ASML is the only supplier of the machines.
+
+A single die can be no larger than about 858 mm², the most a lithography machine can print at once, so NVIDIA's Blackwell joins two dies (208 billion transistors in all) into one GPU. Next to them sit stacks of HBM made by SK hynix, Samsung or Micron, each stack 8 to 16 memory dies high and wired vertically with through-silicon vias. TSMC's CoWoS packaging bonds the GPU dies and HBM stacks side by side on a silicon interposer so they can exchange terabytes per second (Chapter 34).
+
+> **Definition — CoWoS (Chip-on-Wafer-on-Substrate):** TSMC's advanced packaging method that places GPU dies and HBM stacks side by side on a thin silicon slab with dense wiring. Its limited capacity has been a key brake on AI chip supply since 2023.
+
+```mermaid
+flowchart LR
+    S["Quartz sand"] --> P["Ultra-pure polysilicon"]
+    P --> I["Ingots sliced into<br/>300 mm wafers"]
+    I --> L["Hundreds of steps<br/>deposit, EUV print, etch<br/>at TSMC with ASML tools"]
+    L --> D["GPU dies<br/>up to about 858 mm² each"]
+    M["DRAM wafers<br/>SK hynix, Samsung, Micron"] --> H["HBM stacks<br/>8 to 16 dies high"]
+    D --> C["CoWoS packaging<br/>dies and HBM on an interposer"]
+    H --> C
+    C --> G["One GPU package<br/>B300: 288 GB at 8 TB/s"]
+    G --> T["Superchips and compute trays"]
+    T --> R["NVL72 rack<br/>72 GPUs, 20 TB of HBM"]
+```
+
+*Figure 44.9: Stretch 1 of the stack, from sand to a rack. Every major AI accelerator of 2026, from NVIDIA, AMD, Google and Amazon, passes through TSMC's fabs and packaging lines.*
+
+> **Definition — NVL72 (rack-scale system):** NVIDIA's rack of 72 GPUs and 36 CPUs joined by NVLink switches so they act like one giant GPU, liquid-cooled and drawing roughly 120–140 kW. Competitors build similar rack-scale systems.
+
+### Stretch 2: grid to chip, and chip to sky
+
+Every one of those racks needs electricity delivered at the right voltage and heat carried away. Power arrives from a power plant (or, at several 2025–26 megaprojects, from gas turbines on site) over transmission lines at hundreds of thousands of volts. A campus substation steps it down; transformers and switchgear step it down again; uninterruptible power supplies with batteries bridge the seconds before backup generators start; overhead busways carry it along each row; power shelves in the rack convert it to about 54 volts DC; and voltage regulators beside each chip convert that to about 1 volt (Chapter 39).
+
+Essentially all of that energy becomes heat. Cold plates on each chip pass it to a coolant loop, a coolant distribution unit hands it to the building's water loop, and dry coolers, chillers or cooling towers release it to the outside air (Chapter 40). The leading sites lose only 10–20% of their energy to this overhead.
+
+```mermaid
+flowchart TD
+    PL["Power plant or on-site turbines"] --> TL["Transmission line<br/>about 345 kV"]
+    TL --> SS["Campus substation<br/>down to about 34.5 kV"]
+    SS --> TR["Transformers and switchgear<br/>down to 480 or 415 V"]
+    TR --> UPS["UPS and batteries<br/>generators on standby"]
+    UPS --> BW["Busway over the row"]
+    BW --> PS["Rack power shelf<br/>AC to about 54 V DC"]
+    PS --> VR["Voltage regulators<br/>about 1 V at the chip"]
+    VR --> GPU["GPU<br/>about 1 kW or more, all becomes heat"]
+    GPU --> CP["Cold plate and coolant loop"]
+    CP --> CDU["Coolant distribution unit"]
+    CDU --> FW["Facility water loop"]
+    FW --> OUT["Dry coolers, chillers or towers<br/>heat released to outside air"]
+```
+
+*Figure 44.10: Stretch 2 of the stack: power flows in from the grid and leaves as heat. NVIDIA plans to replace several of the middle conversion steps with 800-volt DC distribution for its 2027-generation racks.*
+
+### Stretch 3: data to weights to you
+
+The last stretch is the one Journeys 1 and 2 walked in detail. Data is collected and curated, the model is pretrained, refined and tested, and the resulting weights are copied onto the inference fleet that answers you.
+
+```mermaid
+flowchart LR
+    W["Web, books, code,<br/>licensed and expert data"] --> CU["Curation<br/>keep the best tokens"]
+    CU --> PT["Pretraining<br/>about 10^27 operations"]
+    PT --> PO["Post-training and RL"]
+    PO --> EV["Evaluations and<br/>safety decision"]
+    EV --> WT["Weights file<br/>about a terabyte"]
+    WT --> FL["Inference fleet<br/>hundreds to thousands of racks"]
+    FL --> API["API and app<br/>gateway, safety, tools"]
+    API --> YOU["You<br/>about 1 Wh, under a cent"]
+```
+
+*Figure 44.11: Stretch 3 of the stack, linking Journey 2 (left half) to Journey 1 (right half).*
+
+| Layer | What happens there | One number to remember | Main players (2026) | Chapters |
+|---|---|---|---|---|
+| Materials and fabs | Sand becomes patterned silicon | EUV tool about $180 million; leading fab $20 billion or more | ASML, TSMC, Samsung, Intel | 36 |
+| Chips and memory | GPU dies and HBM joined in one package | B300: 288 GB of HBM at 8 TB/s | NVIDIA, AMD, Google, Amazon; SK hynix, Samsung, Micron | 32, 33, 35 |
+| Racks and networks | 72 GPUs wired to act as one | NVL72: about 130 kW and 20 TB of HBM per rack | NVIDIA, Broadcom, Foxconn, Quanta | 34 |
+| Buildings and cooling | Halls, liquid cooling, backup power | PUE about 1.1–1.2 at leading AI sites; $11–18 million per MW to build | Vertiv, Schneider Electric, construction firms | 38, 40 |
+| Power | Grid, gas, nuclear, solar and batteries | grid connections take over 4 years in primary markets | utilities, grid operators, GE Vernova, Siemens Energy | 39, 41 |
+| Capital | Buying and financing all of the above | about $800 billion of hyperscaler capex in 2026 | hyperscalers, neoclouds, lenders, investors | 42, 43 |
+| Data | Crawling, curating, buying expert data | 15–36 trillion tokens in published pretraining runs | Common Crawl, publishers, data vendors | 11, 19 |
+| Training | Pretraining, post-training, RL | about `10^27` operations and 216 MW for about 3 months | OpenAI, Anthropic, Google DeepMind, Meta, SpaceXSI, DeepSeek | 19, 20, 21, 37 |
+| Serving | Running the model for users | prices for a fixed capability fall about 10× or more per year | the labs and their cloud partners | 23 |
+| Apps and you | Chat, API, agents | about 1 Wh and well under a cent of compute for a long request | chat apps, developers, you | 25 to 31 |
+
+*Table 44.5: The stack in one table, with one number per layer. If you can explain each row to a friend, you understand the physical and economic machine behind AI.*
+
+> **Analogy:** The AI stack is like the electricity industry of a century ago. Mines and steel mills (sand and fabs) feed turbine makers (chipmakers); power plants (data centers) turn fuel (electricity and data) into a product (tokens) that flows over wires (the internet) into appliances (apps). Most of the people who made electrification work never built a power plant, and the same is true of AI.
+
+> **Watch out:** "The cloud" is not weightless. Every answer you read was produced in a specific building, in a specific town, by chips made in a specific factory, cooled by specific water or air, and powered by a specific grid or turbine. When people argue about AI's costs and benefits, they are often arguing about those specific places.
+
+## The bottlenecks that decide how fast AI can grow
+
+A chain moves only as fast as its slowest link. Each layer of the stack can be expanded, but some take months and others take the better part of a decade. The layer that is hardest to expand right now is the bottleneck, and over 2023–26 the bottleneck has moved.
+
+> **Definition — Bottleneck:** The single slowest or scarcest part of a process, which limits the output of the whole thing. Widening anything else does not help until the bottleneck is widened.
+
+> **Definition — Lead time:** The delay between ordering something and receiving it, or between deciding to build something and having it working. For AI infrastructure, lead times range from weeks (software) to years (power plants).
+
+> **Definition — Critical path:** The sequence of steps in a project that determines its total duration; a delay anywhere on it delays the whole project. For new AI campuses the critical path usually runs through power, not the building.
+
+**1. Leading-edge chips.** Demand for AI accelerators has outrun supply since 2023: NVIDIA reported $89.0 billion of data center revenue in the quarter ending July 2026, up 117% in a year. New generations arrive about yearly, but nearly all of them, NVIDIA's, AMD's, Google's and Amazon's alike, are made by TSMC, and a new leading-edge fab takes years and $20 billion or more.
+
+**2. Memory.** Every GPU needs several HBM stacks, and only three companies make them. GPU memory bandwidth has grown only about 28% a year since 2008 (the memory wall of Chapter 33), and in 2026 memory was tight enough that Amazon reportedly cited higher memory prices when it raised its spending plans.
+
+**3. Advanced packaging.** Even with enough wafers and memory, chips must be assembled on CoWoS-style interposers. TSMC's CoWoS capacity has been the gating factor for AI accelerator supply since 2023, and expanding it means building new packaging plants.
+
+**4. Power.** The headline bottleneck of 2025–26. JLL estimates that the average wait for a grid connection in primary data center markets exceeds four years, while an AI building can go up in 18 to 36 months. In the PJM region of the eastern US, capacity prices reportedly jumped from about $29 per megawatt-day (2024/25) to about $270 (2025/26) and then to the cap of about $329, driven mainly by forecast data center demand. So builders bring their own power: xAI reportedly built Colossus 1 in Memphis in 122 days in 2024, with temporary gas turbines filling the gap (its turbine use later drew a Clean Air Act lawsuit). New nuclear comes later: the first US construction permit for a BWRX-300 small modular reactor was issued only in September 2026.
+
+> **Definition — Interconnection queue:** The waiting line of projects (power plants and, increasingly, large loads such as data centers) asking to connect to the grid. Each must be studied and may require new lines or substations, which is why waits are measured in years.
+
+**5. Electrical and mechanical equipment.** Large power transformers, switchgear, high-voltage breakers, chillers and gas turbines all have long lead times. Turbine makers report multi-year backlogs, and large turbines ordered in 2025–26 are often reported as delivering around 2029–2030. The people who install all this are scarce too: electricians are the biggest constraint at many sites.
+
+**6. Data.** Epoch AI estimated in 2024 that about 300 trillion tokens of high-quality public human text exist (range 100 to 1,000 trillion), likely to be used up by frontier training between 2026 and 2032, and Model F's arithmetic shows frontier runs are already close. The escape routes are synthetic data, other modalities, RL environments, expert-written data and private data.
+
+> **Definition — Data wall:** The idea that AI progress could slow as the supply of high-quality human-written training data runs out. It is an estimate with wide uncertainty and several workarounds, not a fixed date.
+
+**7. Talent.** Two talent bottlenecks sit at opposite ends of the stack. At the top, the people who can run frontier training, write fast GPU kernels and debug 100,000-GPU clusters number in the thousands; Meta's widely reported eight- and nine-figure offers in 2025 show their price. At the bottom are electricians: the US Bureau of Labor Statistics projects 9% job growth for them from 2025 to 2035, citing data centers, and OpenAI has posted Stargate technician roles at $157,000 to $302,000 in base pay.
+
+**8. Capital.** Alphabet, Amazon, Meta, Microsoft and Oracle were on track for close to $800 billion of capital spending in calendar 2026, counting finance leases (FactSet), and are borrowing and selling shares to fund it: Alphabet announced an $80 billion equity program in June 2026, and S&P cut Oracle to BBB-, the lowest investment grade, in July. If revenue does not keep pace, capital becomes the bottleneck (Chapter 43).
+
+> **Definition — Capex (capital expenditure):** Money spent on long-lived assets such as buildings, chips and power equipment, as opposed to operating costs like electricity and salaries. AI's buildout is measured in capex.
+
+Local permission and policy are brakes too: one tracker counted $64 billion of US data center projects blocked or delayed by local opposition between May 2024 and March 2025, and export controls shape who can buy chips (Chapter 36).
+
+```mermaid
+flowchart TD
+    CAP["Capital<br/>about $800B of 2026 capex"] --> ORD["Chip orders<br/>placed a year or more ahead"]
+    ORD --> FAB["TSMC leading-edge wafers"]
+    ORD --> HBM["HBM from three suppliers"]
+    FAB --> PKG["CoWoS packaging"]
+    HBM --> PKG
+    PKG --> RK["Racks delivered"]
+    RK --> PWR["Megawatts needed<br/>grid waits over 4 years"]
+    PWR --> GEAR["Transformers, turbines<br/>and electricians"]
+    GEAR --> ON["Cluster online"]
+    DATA["Data supply"] --> RUN["Training and serving"]
+    TAL["Talent"] --> RUN
+    ON --> RUN
+    RUN --> REV["Revenue and valuations"]
+    REV --> CAP
+```
+
+*Figure 44.12: How the bottlenecks connect. Money flows in at the top, becomes chips, needs power and people, and must come back as revenue to fund the next round. A shortage anywhere on the loop slows everything downstream.*
+
+The bottlenecks interact in three ways.
+
+- **They hand off.** When packaging and memory were the tightest link in 2023–24, chips were scarce and data center space was not. As chip supply grew, the shortage moved to power and electrical gear, which is why "speed to power" became the industry's top priority in 2025–26. Relieve power, and the pressure moves again: perhaps to memory, to data, or to capital.
+- **They amplify.** Scarce HBM raises GPU prices, which raises the capital each gigawatt needs, which raises the revenue needed to justify it. Slow grid connections push builders to on-site gas turbines, which tightens the turbine backlog and draws local opposition.
+- **They are offset by efficiency, but only partly.** GPU energy efficiency improves about 34% per year and the price of a fixed level of capability falls tenfold or more per year. But frontier training compute grows about 5× per year, and cheaper tokens invite more use, so total demand for chips and power keeps rising. This is the Jevons paradox.
+
+> **Definition — Jevons paradox:** The pattern, first noticed with coal in the 1860s, that making a resource more efficient to use can increase total consumption of it, because cheaper use invites much more use.
+
+```mermaid
+quadrantChart
+    title AI bottlenecks in late 2026, a rough judgment by the author
+    x-axis Quick to relieve --> Slow to relieve
+    y-axis Loosely binding --> Tightly binding
+    quadrant-1 Hard limits for years
+    quadrant-2 Painful now, easing
+    quadrant-3 Manageable
+    quadrant-4 Slow-building risks
+    Grid power: [0.88, 0.9]
+    Electrical gear: [0.72, 0.76]
+    HBM memory: [0.55, 0.7]
+    Leading-edge chips: [0.65, 0.6]
+    CoWoS packaging: [0.42, 0.55]
+    Electricians: [0.62, 0.52]
+    Top researchers: [0.38, 0.42]
+    Quality data: [0.78, 0.35]
+    Capital: [0.2, 0.3]
+```
+
+*Figure 44.13: One way to place the bottlenecks, as of October 2026. This is the author's judgment, not a measurement; reasonable experts would move several dots, and the exercise below asks you to make your own version.*
+
+> **Try it:** Open Epoch AI's data center hub (epoch.ai/data/data-centers) and sort the sites by power. Pick one, note its megawatts, and estimate how many Blackwell-class GPUs it could hold at about 1.8 kW per GPU slot and a PUE of 1.2. Then compare with the H100-equivalents Epoch lists, and work out why one new GPU counts as more than one H100.
+
+| Link in the chain | Rough time to add capacity | 2026 signal |
+|---|---|---|
+| A new chip generation | about one year | Vera Rubin shipping in 2026; Rubin Ultra planned for 2027 |
+| A leading-edge fab | several years and $20 billion or more | TSMC's N2 process entered volume production in late 2025 |
+| An AI data center building | about 18–36 months; about 2 years for a gigawatt site | Colossus 1 reportedly went up in 122 days, an outlier |
+| A grid connection | over 4 years on average in primary markets | builders turning to on-site gas and batteries |
+| Large gas turbines | orders reportedly delivering around 2029–2030 | multi-year backlogs at turbine makers |
+| New nuclear (SMRs) | first US units around 2030 | first BWRX-300 construction permit, September 2026 |
+| Skilled electricians | years of apprenticeship | 9% projected job growth, data centers cited |
+| New high-quality human text | cannot be produced on demand | about 300 trillion tokens estimated in total |
+
+*Table 44.6: Lead times along the chain. The slowest rows, power and people, decide where and when new AI capacity can appear.*
+
+> **At the frontier (2026):** The industry is redesigning around power. NVIDIA is designing for racks above 1 MW, with 800-volt DC distribution in production alongside its Kyber racks in 2027, because a megawatt at 54 volts would need about 200 kg of copper busbar. Meta said in July 2026 that its Hyperion campus in Louisiana will scale to 5 GW, and Epoch AI tracks Anthropic and Amazon's New Carlisle, Indiana site at about 1,037 MW of IT power, the largest it tracks by power. Microsoft's Fairwater sites link campuses hundreds of miles apart. When one site cannot get enough power, the answer is increasingly to spread one computer across several.
+
+> **Watch out:** "Bigger clusters automatically mean proportionally smarter AI" is wrong in both directions. Chips and power are necessary but not sufficient: algorithms, data quality, post-training and utilization matter as much, and scaling is sub-linear because of communication overhead and failures. But "power shortages will stop AI" is also too simple: efficiency gains, on-site generation, multi-site training and moving inference to wherever power is available all bend the constraint.
+
+## In plain English
+
+When you send a hard question to a chatbot, your words travel by radio to a cell tower and by light through glass fiber to a building perhaps a thousand kilometers away, in about 30 milliseconds. There, a gateway checks your account, safety filters screen the request, and a scheduler squeezes it into a batch with over a thousand other people's conversations on a rack of 72 GPUs that draws as much power as 100 homes. The model reads everything you sent in a fraction of a second, then writes one token at a time, often thinking for longer than it takes to write the answer, sometimes pausing to run a web search. A long, reasoning request like our lease question uses about a watt-hour of electricity, roughly what an LED bulb uses in seven minutes, and well under a cent of computing, even though an API customer would pay several cents for it.
+
+The model itself took one to two years to make. Companies first had to build a campus, connect it to power and buy tens of thousands of chips, then train the model for about three months on about 100,000 GPUs drawing over 200 megawatts, while something broke every half hour. Months of fine-tuning, reinforcement learning and safety testing followed before launch, and updates continue for the model's whole life.
+
+Under both journeys sits one stack, from sand and silicon through chips, racks, buildings, power, data and people to your screen. How fast AI grows depends on its slowest links: chips, memory, packaging, power, electrical equipment, data, talent and money. In 2026 the tightest of them is power.
+
+## Key terms
+
+Full stack, System prompt, Thinking tokens, Mixture of experts (MoE), Cell tower (base station), Point of presence (PoP), TLS handshake, Round-trip time (RTT), Load balancer, API gateway, Safety classifier, Tokenizer, Scheduler (inference), Inference fleet, Expert parallelism, HBM (High Bandwidth Memory), PUE (power usage effectiveness), Prefill, Prompt caching, KV cache, Decode, Tool call, Streaming (server-sent events), Time to first token (TTFT), Joule, Watt-hour (Wh), GPU-hour, Utilization, Cost per million tokens, Frontier model, Data curation, 6ND rule, Pretraining, MFU (Model FLOPs Utilization), Checkpoint, Goodput, Mid-training, Post-training, RLVR (reinforcement learning with verifiable rewards), RL environment, Distillation, Red teaming, Dangerous-capability evaluation, System card, Staged rollout, Wafer, EUV lithography, CoWoS (Chip-on-Wafer-on-Substrate), NVL72 (rack-scale system), Bottleneck, Lead time, Critical path, Interconnection queue, Data wall, Capex (capital expenditure), Jevons paradox
+
+## Exercises
+
+1. **[Easy] Time your own two kinds of request.** (1) In your usual chatbot, turn thinking off (or pick the fastest setting) and ask a one-line factual question. With a stopwatch, record when the first word appears and when the answer ends. (2) Turn thinking on, attach a document of several pages (any long article saved as a PDF works) and ask a question that also needs a web search. Record when "Thinking" starts, when the first answer word appears and when it ends. (3) Draw both timelines as bars, like Figure 44.3. (4) Estimate how many thinking tokens were generated, assuming about 80 tokens per second. **What you'll learn:** for hard questions, the wait is the model generating tokens, not the network.
+
+2. **[Easy] Your daily AI footprint.** (1) In a spreadsheet, list the kinds of AI requests you make on a typical day (quick questions, document questions, reasoning questions, agent or coding sessions) and how many of each. (2) Multiply each by the energy column of Table 44.2 (0.27 Wh, 1.2 Wh, about 5 Wh, about 30 Wh). (3) Add them up and compare with boiling a kettle (about 100 Wh), an hour of a 10 W LED bulb (10 Wh) and a 10-mile electric-car drive (about 3,000 Wh). (4) Multiply your daily total by a billion users and convert to an average power in megawatts (divide watt-hours per day by 24 and by a million). **What you'll learn:** individual use is small, totals are large, and the kind of request matters far more than the number of requests.
+
+3. **[Medium] Rebuild the money budget.** (1) Make a spreadsheet with inputs: dollars per GPU-hour ($5), GPUs per rack (72), rack output throughput (100,000 tokens per second), rack input throughput (1,000,000 tokens per second) and utilization (100%). (2) Compute the rack's dollars per second, the cost per million output and input tokens, and the cost of the lease request (14,000 input and 1,400 output tokens). (3) Change utilization to 50% and 25%, then halve the output throughput. (4) Look up the current API prices of three models from different providers and compute what the same request would cost at each list price. (5) Write two sentences on what the gap between your cost and the list price has to pay for. **What you'll learn:** how serving costs follow from hardware prices, throughput and utilization, and why list prices sit well above raw compute cost.
+
+4. **[Medium] Plan a training run on a napkin.** A lab wants `3 × 10^26` operations of pretraining on 50,000 GPUs, each with a peak of `5 × 10^15` 8-bit operations per second, at 30% utilization. (1) Compute the run time in seconds and days (check: about 46 days). (2) Compute GPU-hours and the rental-equivalent cost at $3 per GPU-hour. (3) At 1.8 kW per GPU slot and a PUE of 1.2, compute the power drawn from the grid in megawatts and the total energy in gigawatt-hours. (4) Price the electricity at 8 cents per kWh and compare it with the compute cost. (5) Use the 6ND rule to give two possible combinations of active parameters and training tokens. **What you'll learn:** to turn any training-compute claim into chips, days, megawatts and dollars, and why electricity is a small share of the cost.
+
+5. **[Medium] Failure arithmetic.** (1) Using Llama 3's rate of about 0.00047 unexpected interruptions per GPU per day, compute interruptions per day for clusters of 10,000, 100,000 and 1,000,000 GPUs. (2) For each, compute the average time between interruptions in minutes. (3) Suppose each interruption costs the whole cluster 2, 5 or 10 minutes; compute the fraction of each day lost in all nine cases. (4) Mark which combinations keep goodput above 90%. **What you'll learn:** why fast recovery and fault tolerance become more important than chip speed as clusters grow toward a million accelerators.
+
+6. **[Medium] Map a different product from sand to answer.** (1) Pick another AI product you use: an image generator, a voice assistant, a navigation app or a self-driving car service. (2) Redraw Figure 44.8 for it, keeping the ten layers but changing what happens at each. (3) Ask a chatbot for one number per layer (for example, how long an image takes to generate, or what chips the product likely runs on), then check at least three of those numbers against a primary source such as a company blog or specification page. (4) Mark which layers are the same as for a chatbot and which differ. **What you'll learn:** that almost all of AI shares one physical stack, and how to check a chatbot's numbers rather than trusting them.
+
+7. **[Medium] Bottleneck detective.** (1) Find three news stories from the last month about AI infrastructure: a chip or memory deal, a data center announcement and a power or grid story. (2) For each, decide which of the eight bottlenecks it relieves, and which it might make worse (for example, on-site gas turbines relieve grid waits but add to turbine backlogs). (3) Redraw Figure 44.13 with your own placement of the dots and one sentence defending each move. **What you'll learn:** to read AI infrastructure news as moves on a single board rather than isolated headlines.
+
+8. **[Challenge] One gigawatt, end to end.** Take a campus drawing 1 GW from the grid. (1) At a PUE of 1.2, compute the IT power. (2) At 130 kW per 72-GPU rack, compute the number of racks and GPUs. (3) Using this chapter's serving assumptions (0.028 rack-seconds per lease-sized request), compute how many such requests the campus could serve per day at full use. (4) At an average load of 70% of capacity, compute the energy used in a year in terawatt-hours and the electricity bill at 8 cents per kWh. (5) Using Epoch AI's figure of about $38 billion per gigawatt of IT power, estimate the up-front cost. (6) Compare that cost with the electricity bill and comment. **What you'll learn:** how chips, power, money and usage connect at the scale of the 2026 megaprojects.
+
+9. **[Challenge] Follow a shock through the stack.** Choose one shock: (a) HBM supply falls 20% for a year, (b) a planned 1 GW campus's grid connection slips by two years, or (c) a new attention method cuts the cost of long inputs by 80%. (1) Using Figure 44.12, trace the effects step by step through the chain, including second-order effects on prices, capex and which companies benefit. (2) Write a one-page memo with your best guess of what happens over 12 months. (3) Ask a chatbot to argue the opposite conclusion and revise your memo if it finds a real flaw. **What you'll learn:** systems thinking about the AI stack, and using AI as a sparring partner rather than an oracle.
+
+10. **[Challenge] Explain it to a friend.** (1) Write a 600-word "life of a prompt" for a friend who has never thought about where AI runs, using at least five numbers from this chapter (milliseconds, watt-hours, cents, megawatts and months). (2) Paste it into a chatbot and ask it to find any number that looks wrong or unsupported. (3) Check each flagged number against this chapter and the earlier chapters it cites, and correct your text. **What you'll learn:** whether you can explain the whole stack in plain words, which is the real test of understanding it.
+
+## Areas of opportunity
+
+- **Full-stack AI infrastructure analysts.** Investors, journalists, utilities and policymakers need people who can turn a chip order, a power deal or a satellite photo into megawatts, GPUs and dollars, as Epoch AI does publicly. The skills are this chapter's arithmetic plus careful sourcing, and many entry points need no engineering degree.
+- **Inference cost and energy optimization.** Companies spending heavily on AI APIs pay consultants and tools that cut bills through prompt caching, routing easy requests to cheaper models, batching, shorter thinking budgets and distilled models. Savings are easy to measure, which makes the work easy to sell.
+- **Per-request energy, water and carbon measurement.** Today's per-prompt figures are mostly self-reported and measure different things. Standard, audited per-token disclosure tools would be valuable to regulators, enterprise buyers with sustainability targets, and the providers themselves.
+- **Reliability engineering for giant clusters.** At 100,000 GPUs something fails every half hour. Engineers and startups that detect failing chips early, checkpoint faster and restart in seconds save labs millions of dollars per run.
+- **Grid-aware AI computing.** Software that shifts flexible work such as batch inference, evaluation runs and some training to times and places with spare power could help data centers connect sooner and earn demand-response payments. Utilities, grid operators and AI labs are all potential customers.
+- **Skilled trades and site operations.** Electricians, pipefitters, controls technicians and data center technicians are a binding constraint on the buildout, and frontier projects post technician roles well into six figures. Community colleges and training providers that run fast, credible programs have a growing market.
+- **Long-lead supply chain and procurement.** Transformers, switchgear, turbines, HBM and optics all have long lead times. People who can forecast, secure and finance that equipment, or companies that manufacture it closer to demand, are in short supply.
+- **RL environments, expert data and evaluations.** The post-training and testing stages of Journey 2 buy tasks, graders, expert-written examples and independent evaluations. Domain experts (lawyers, doctors, accountants, scientists) can enter through data vendors or evaluation firms without being programmers.
+- **Open problems worth working on.** Training one model across several campuses, making long-context and agent inference cheap, smoothing tens-of-megawatt power swings, and agreeing on standard measures of AI energy use are all unsolved, and each sits at a boundary between layers of the stack.
+
+## Check your understanding
+
+1. In this chapter's lease example, roughly how long does the request take from Send to the last word, and which step takes most of that time?
+2. A rack draws 156 kW from the grid and produces 100,000 output tokens per second across all its users. How much energy does one output token use, and how much does a 1,000-token answer use in watt-hours?
+3. Electricity is only a few percent of the cost of serving a request. Why, then, is power the tightest bottleneck on AI growth in 2026?
+4. A training run uses 100,000 GPUs for 90 days. How many GPU-hours is that, and roughly how much power does it draw from the grid at 1.8 kW per GPU slot and a PUE of 1.2?
+5. Using Llama 3's failure rate, about how often does a 100,000-GPU run suffer an unexpected interruption, and why does that make recovery speed so important?
+6. Why might the model that answers your question be different from the giant model produced by the big pretraining run?
+7. Name three of the eight bottlenecks and give one example of how relieving one can worsen another.
+8. Why does the 6ND rule suggest that frontier pretraining is running into the data wall?
+
+<details><summary>Answers</summary>
+
+1. About 19 seconds. Most of it (about 11 seconds) is the model generating roughly 900 thinking tokens, followed by about 6 seconds writing the visible answer. Everything before the model starts thinking (network, gateway, safety checks, queueing and prefill) takes only about a third of a second.
+2. 156,000 joules per second ÷ 100,000 tokens per second = 1.56 joules per token. A 1,000-token answer uses 1,560 joules, and 1,560 ÷ 3,600 ≈ 0.43 Wh (plus a smaller amount for reading the input).
+3. Because cost and feasibility are different things. Chips dominate the cost, so electricity is a small share of each request's price, but a data center cannot run at all without megawatts delivered to its site, and new grid connections, turbines and transformers take years. Power decides where and when capacity can exist, even though it is cheap per token.
+4. 100,000 × 90 × 24 = 216 million GPU-hours. Power: 100,000 × 1.8 kW = 180 MW of IT load, times 1.2 = about 216 MW from the grid.
+5. Llama 3 saw about 0.00047 unexpected interruptions per GPU per day; at 100,000 GPUs that is about 47 per day, one every half hour. If each costs the whole cluster 10 minutes, about a third of every day is lost, so teams need frequent background checkpoints, hot spares and restarts measured in a minute or two.
+6. Labs often serve smaller, cheaper siblings built with distillation and further post-training from the big model, and they keep updating models after launch. The flagship may be too expensive to serve to everyone, so the app may route your question to a smaller tier.
+7. Any three of chips, memory, packaging, power, electrical equipment, data, talent and capital. Example: relieving slow grid connections with on-site gas turbines worsens the turbine backlog and can trigger local opposition; relieving chip shortages moves the pressure onto power.
+8. A run of about `10^27` operations implies N × D ≈ `1.7 × 10^26`. With 500 billion to 1 trillion active parameters, that means roughly 170 to 330 trillion training tokens, close to Epoch AI's estimate of about 300 trillion tokens of high-quality public human text. So labs turn to other modalities, synthetic data, repeated data and reinforcement learning.
+
+</details>
+
+## Going deeper
+
+- **Epoch AI, "Trends in AI" and its data hubs (epoch.ai/trends, epoch.ai/data).** The best public source for training compute, costs, model estimates and data center capacity, with transparent methods; most of this chapter's anchors come from here.
+- **Meta, "The Llama 3 Herd of Models" (2024, arXiv 2407.21783).** The most detailed public account of a large training run: cluster design, parallelism, failures, power swings and data pipeline.
+- **Google Cloud blog, "Measuring the environmental impact of AI inference" (August 2025).** How Google measured energy, water and carbon for a median Gemini prompt, including what it chose to count.
+- **Epoch AI, "How much energy does ChatGPT use?" (February 2025).** A clear independent estimate of per-query energy and how it scales with input length.
+- **Microsoft, "Inside the world's most powerful AI datacenter" (September 2025).** A readable tour of the Fairwater design, from rack layout and closed-loop cooling to construction quantities.
+- **International Energy Agency, *Energy and AI* (2025).** The reference report on how much electricity data centers use today and may use by 2030.
+- **Chris Miller, *Chip War* (2022).** A gripping history of the semiconductor industry and why chip manufacturing became concentrated in a few companies and places.
+- **Austin and colleagues at Google DeepMind, "How to Scale Your Model" (2025, free online book).** A technical but readable guide to how Transformers are split across thousands of accelerators for training and serving.
+- **Barroso, Hölzle and Ranganathan, *The Datacenter as a Computer* (Morgan & Claypool, free online).** The classic book on treating a whole building as one machine, written by Google engineers.
