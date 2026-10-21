@@ -193,7 +193,7 @@ Read the table from top to bottom. Predicting the average for every day underfit
 |   .o*                 |   .o*                 |    o*
 |*.*.                   |*.*                    |*.*..
 |.                      |                       |
-+---------------------  +---------------------  +---------------------
++---------------------  +---------------------  +--------------------
   degree 1: underfit      degree 2: good fit      degree 7: overfit
 ```
 

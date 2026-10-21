@@ -90,6 +90,8 @@ For the largest models, labs rarely publish N and D. Epoch AI, a research group 
 
 > **Watch out:** Training-compute figures for frontier models are almost always outside estimates, not disclosures. Treat them as "probably within a factor of two or three," and look for the confidence range when one is given.
 
+> **Try it:** Ask your chatbot: "Using the 6 × N × D rule, estimate the training compute of a 70-billion-parameter model trained on 15 trillion tokens, then estimate how many days it would take on 4,096 H100 GPUs at 40% MFU. Show every step." Check its arithmetic against the method in this section (you should get about `6.3 × 10^24` FLOP and about 45 days).
+
 ### From FLOP to days
 
 Now turn work into time. If you have G chips, each with a peak speed P (FLOP per second), and they achieve a fraction U of that peak on real work, then:
@@ -473,6 +475,8 @@ Every strategy above depends on groups of GPUs exchanging numbers in coordinated
 
 > **Analogy:** An all-reduce is a group of friends splitting a restaurant bill. Everybody shares their numbers until each person knows the total, and one slow friend holds up the whole table.
 
+> **Try it:** Before reading the worked example below, take four sheets of paper, write four numbers on each, and try to get the column totals onto every sheet by passing only one number at a time to the sheet on your right. Count how many passes it takes; the ring algorithm below does it in six rounds.
+
 ### Ring all-reduce, worked by hand
 
 The naive way to sum gradients would be for everyone to send everything to one GPU, which adds it all up and sends the result back. That GPU's link would be swamped. The **ring all-reduce** spreads the load evenly: arrange the GPUs in a circle, cut each GPU's data into as many chunks as there are GPUs, and pass chunks around the ring.
@@ -686,6 +690,8 @@ When you send a prompt, the server works in two phases.
 > **Definition — KV cache:** Stored keys and values for every earlier token in a conversation, kept in GPU memory so the model doesn't recompute them for each new token. It grows with context length and with the number of users.
 
 > **Definition — TTFT (time to first token):** How long you wait before the first word of a response appears. It is set mostly by queueing and prefill.
+
+> **Try it:** Paste a long document (several thousand words) into your chatbot and ask for a one-line summary, then ask a short question with no attachment. Notice that the long prompt takes noticeably longer before the first word appears (prefill), while the speed of the words once they start streaming (decode) is about the same.
 
 ```mermaid
 sequenceDiagram

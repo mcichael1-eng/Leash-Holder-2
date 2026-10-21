@@ -631,7 +631,7 @@ Here is a worked example. Suppose a model for "will this student pass?" learned 
      |        ........
  0.0 |........
      +---------------------------------------------------------
-      0      1      2      3      4      5      6      7      8  hours
+      0      1      2      3      4      5      6      7      8 hours
 ```
 
 *Figure 8.10: The sigmoid curve for z = −4 + hours. The probability of passing crosses 0.5 (the dashed threshold line) at exactly 4 hours.*

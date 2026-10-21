@@ -448,3 +448,121 @@ Federated learning takes a different route: instead of sending your data to the 
 Large language models add a new risk: memorization. Researchers have shown that models can sometimes reproduce exact passages from their training data, including personal details, when prompted cleverly. And what you type can travel further than you expect: in the New York Times lawsuit against OpenAI, a court ordered production of a 20-million-log sample of ChatGPT outputs in January 2026. Removing one person's data from an already-trained model, called machine unlearning, remains an open research problem.
 
 > **Definition — Memorization:** When a model can reproduce exact pieces of its training data, such as a paragraph of a book or a person's phone number, raising privacy and copyright concerns.
+
+> **Key idea:** Removing names is not the same as protecting privacy. Combinations of ordinary facts identify people, so real protection needs minimization, access controls, and mathematical tools such as differential privacy.
+
+## Synthetic data and model collapse
+
+When real data is scarce, private or expensive, you can make more. Synthetic data is produced by simulations or by models: game-engine streets full of virtual pedestrians for self-driving cars, realistic but fake patient records for testing hospital software, and, above all in 2026, text written by one AI model to train another. Alibaba said it used its own math and coding models to generate synthetic textbooks and question-and-answer pairs for Qwen3. Training a smaller "student" model on a stronger "teacher" model's answers is called distillation (Chapter 20). A simpler cousin, data augmentation, makes extra examples by tweaking real ones: flipping or cropping photos, or paraphrasing sentences.
+
+> **Definition — Synthetic data:** Artificially generated data, made by simulations or by AI models, used in place of or alongside real data.
+
+Synthetic data works best where results can be checked. A model can generate a million math problems with worked solutions, and a program can verify which answers are correct, keeping only those. The same goes for code that must pass tests. Where nothing checks the output, the generator's errors, biases and blind spots flow straight into the next model, and generated text tends to be cleaner, blander and more repetitive than real human writing. The commercial market is consolidating: NVIDIA acquired the synthetic-data company Gretel in 2025.
+
+The extreme risk is model collapse. In a 2024 paper in *Nature*, Ilia Shumailov and colleagues showed that when models are trained generation after generation on the output of earlier models, without fresh human data, they progressively lose the rare and unusual parts of the original distribution, and eventually produce narrow, degraded output. A toy calculation shows why rare things vanish first: if each generation keeps only 90 percent of the previous generation's rare phrasings, after 10 generations only 0.9¹⁰ ≈ 35 percent remain. Exercise 9 lets you watch a simple version happen in Colab, and shows that mixing in a steady share of fresh real data prevents it.
+
+> **Definition — Model collapse:** The degradation that can occur when models are trained repeatedly on model-generated data without enough fresh human data, losing rare patterns and diversity with each generation.
+
+> **Analogy:** Synthetic data is a flight simulator. Pilots learn a great deal in one, but a simulator cannot teach what its designers did not model, and nobody wants a pilot trained only in one. Model collapse is photocopying a photocopy: each generation loses a little detail.
+
+> **Watch out:** Both "synthetic data is fake, so it is useless" and "synthetic data solves the data problem" are wrong. It works well where outputs can be verified (math, code) or simulated (driving scenes), and it is risky where it drifts from reality or recycles a model's own mistakes.
+
+## Who owns the data? Copyright, licensing and lawsuits in brief
+
+Much of the text, images and music that AI learns from was made by people who were never asked. Whether that is legal is one of the biggest open questions in AI. This section gives the basics; Chapter 58 covers the creative-industry fights and Chapter 59 the law in depth.
+
+> **Definition — Copyright:** The legal rights an author has over an original creative work, including control over copying and distribution. It covers most books, articles, photos, music and code automatically, without registration.
+
+> **Definition — Fair use:** A US legal doctrine allowing some unlicensed uses of copyrighted works, judged case by case on four factors, including the purpose of the use and its effect on the market for the original.
+
+> **Definition — TDM (text and data mining) exception:** Laws in places such as the EU, UK and Japan that allow automated analysis of content under certain conditions; in the EU, rights holders can opt out of commercial mining in machine-readable ways.
+
+The legal picture as of October 2026 is mixed and unsettled:
+
+| Case or event | What happened | Status, late 2026 |
+|---|---|---|
+| Bartz v. Anthropic (US) | Judge ruled in June 2025 that training on lawfully bought books was fair use, but building a library from pirated copies was not | Settled for $1.5 billion, about $3,000 per book for roughly 480,000 works; final approval July 2026 |
+| Kadrey v. Meta (US) | Judge granted Meta summary judgment on training (June 2025), stressing the ruling was narrow and that market harm could win a better-argued case | Other claims continued into 2026 |
+| Thomson Reuters v. Ross (US) | Copying Westlaw legal summaries to train a competing, non-generative search tool | First appeals-court ruling on AI training, September 29, 2026: not fair use |
+| New York Times v. OpenAI and Microsoft (US) | Newspapers allege copying of millions of articles | Still pending; no trial date |
+| Getty Images v. Stability AI (UK) | Court found model weights that never stored copies are not "infringing copies" (November 2025) | Getty largely lost; appeal permitted |
+| Music labels v. Suno and Udio | Universal and Warner settled (late 2025) and moved to licensed models | Partly settled |
+
+Alongside the lawsuits runs a licensing market. Reported deals include Reddit with Google (about $60 million a year, reported in 2024), News Corp with OpenAI (more than $250 million over five years, reported 2024), the New York Times with Amazon (2025) and News Corp with Meta (up to $50 million a year for three years, March 2026). OpenAI alone had signed roughly two dozen publisher deals by mid-2026. In December 2025 Disney agreed to let OpenAI's Sora video app generate short videos with more than 200 Disney characters, alongside a $1 billion Disney investment in OpenAI.
+
+> **Watch out:** "Courts have decided that AI training is legal" (or illegal) is wrong as of October 2026. Two US trial judges found training fair use on their records, with pirated acquisition treated differently; the only appeals ruling found non-generative training on a competitor's content not fair use; and the big generative-AI cases are still pending.
+
+The open questions are the ones to watch: Is training a generative model fair use? Does it matter if the data was pirated? When do outputs themselves infringe? How detailed must training-data disclosures be? And can collective licensing, where creators are paid through a shared pool, work at internet scale?
+
+## The data wall: are we running out?
+
+Here is the debate that ties this chapter together. Frontier language models have grown by training on ever more text: GPT-3 (2020) used about 300 billion tokens, Llama 3 (2024) about 15.6 trillion, and Llama 4 and Qwen3 (2025) more than 30 trillion. But there is only one internet.
+
+> **Definition — Data wall:** The idea that AI progress could stall because the supply of high-quality, human-generated training data is running out.
+
+In 2024 the research group Epoch AI estimated that the stock of high-quality, publicly available human text is about 300 trillion tokens (with a wide range of 100 to 1,000 trillion), and that at current trends models would use it all up sometime between 2026 and 2032, around 2028 for the most compute-efficient training, earlier if labs train smaller models on extra data. In December 2024 the OpenAI co-founder Ilya Sutskever told the NeurIPS conference that pretraining "as we know it will end," because "we have but one internet," calling data the "fossil fuel of AI."
+
+```
+tokens (log scale)
+1000T | - - - - - - - - - - - - - - - - - - - - - - * - -  high
+ 300T |=================================*=================  central
+ 100T | - - - - - - - - - - - - * - - - - - - - - - - - -  low
+  30T |                     Q
+  10T |                 L
+   3T |
+   1T |
+ 0.3T | G
+      +-+-------+-------+-------+-------+-------+-------+-
+       2020    2022    2024    2026    2028    2030    2032
+  G = GPT-3   L = Llama 3   Q = Llama 4, Qwen3   * = trend
+```
+
+*Figure 11.9: A schematic of the data wall. Training sets (letters) climb toward Epoch AI's 2024 estimate of usable public text (dashed and double lines); where the trend meets the band depends on which estimate is right. Not to scale beyond orders of magnitude.*
+
+A worked comparison: 36 trillion tokens is already about 12 percent of the central 300-trillion estimate, and training sets have been growing several-fold every couple of years. A few more doublings and they reach the band.
+
+The pessimistic side argues that the easy reserves are drilled: the best text (books, papers, quality journalism) is limited, much of the rest is spam or duplicates, sites are now blocking crawlers, and courts may restrict what remains. The optimistic side points to many escape routes:
+
+- **Synthetic data**, especially where a checker can verify it, as in math and code.
+- **Other modalities**: video, audio and images contain vastly more raw information than text.
+- **RL environments and verifiable tasks**: instead of reading more, models practice. DeepSeek's V3.2 technical report (December 2025) described generating large numbers of synthetic agent tasks for reinforcement learning (Chapter 21), and expert-data firms are expanding into building such environments.
+- **Private and proprietary data**: company documents, licensed archives and specialist databases dwarf the public web.
+- **Expert-written data**: small amounts of very high-quality human data, bought from the industry described above.
+- **Better data efficiency and repetition**: training several passes over the best data, and algorithms that learn more from each token.
+
+```mermaid
+flowchart LR
+    W["Public web via Common Crawl"] --> CL["Clean: dedupe,<br/>language, quality,<br/>remove PII"]
+    B["Books, papers, code"] --> CL
+    LIC["Licensed news and archives"] --> CL
+    SYN["Synthetic data,<br/>verified"] --> CL
+    CL --> PT["Pretraining mix"]
+    PT --> BASE["Base model"]
+    EXP["Expert answers and<br/>preference rankings"] --> POST["Post-training"]
+    RLE["RL environments<br/>and graders"] --> POST
+    BASE --> POST
+    POST --> BOT["Your chatbot"]
+```
+
+*Figure 11.10: The life of training data for a 2026 chatbot. As public text runs short, the right-hand sources (synthetic data, expert data and RL environments) carry more of the load.*
+
+> **At the frontier (2026):** Frontier labs increasingly describe their data advantage less in terms of web scraping and more in terms of expert data, verified synthetic data and RL environments. Simulated practice worlds are widely called "the new training data," and the labeling industry's shift toward experts and environment-building is the market's response.
+
+> **Key idea:** The data wall is real pressure, not a cliff date. It is an estimate with wide uncertainty and many workarounds, and it is changing what labs collect and buy, from more text toward better text, verified practice and new kinds of data.
+
+> **At the frontier (2026):** The training-data supply chain is being renegotiated on every front at once: websites charge crawlers, publishers sign licences, courts weigh fair use, the EU requires training-data summaries, and openly licensed datasets such as the Common Pile test whether rights-cleared training can keep up.
+
+## In plain English
+
+AI runs on data the way a car runs on fuel, and the quality of the fuel matters as much as the quantity. Data comes as tidy tables, semi-structured files and messy text, images and audio, and all of it ends up as numbers. The history of AI is partly a history of datasets: 150 iris flowers, 70,000 handwritten digits, 14 million labeled ImageNet photos, and now tens of trillions of tokens of web text gathered by crawlers.
+
+Collecting that text is getting harder. robots.txt is a polite request, not a lock, and since 2025 many websites block AI crawlers by default or charge them per page. Raw data also needs human labels, and the labeling industry has moved from cheap crowdwork, often done by low-paid workers abroad, toward doctors, lawyers and PhDs writing and judging answers for chatbots.
+
+Before any model sees data, people clean it, engineer features, store it in databases they question with SQL, and move it through pipelines into warehouses and lakes. Good teams document where data came from and check its quality. Data can carry bias, from unrepresentative samples to unfair history to proxies and feedback loops, and "anonymous" data can often be traced back to real people; tools like differential privacy and federated learning help.
+
+When real data runs short, synthetic data can help, especially where answers can be checked, but training models only on other models' output can cause collapse. Courts are still deciding whether training on copyrighted work is fair use. And the data wall debate asks whether we are running out of human text, with labs turning to synthetic data, video, expert data and practice environments.
+
+## Key terms
+
+Data, dataset, structured data, semi-structured data, unstructured data, categorical feature, token, data exhaust, Common Crawl, web crawler, web scraping, robots.txt, annotation (labeling), bounding box, segmentation mask, preference data, RL environment, gold standard, inter-annotator agreement, expert data, data cleaning, deduplication, feature engineering, one-hot encoding, standardization, TF-IDF, database, relational database, SQL, primary key, join, vector database, data pipeline, ETL, ELT, data warehouse, data lake, lakehouse, data quality, datasheet (data card), sampling bias, historical bias, proxy variable, feedback loop, algorithmic fairness, PII, re-identification, GDPR, CCPA, differential privacy, federated learning, memorization, synthetic data, model collapse, copyright, fair use, TDM exception, data wall.
+

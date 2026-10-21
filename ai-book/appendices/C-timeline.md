@@ -171,10 +171,10 @@ timeline
 | Jul 2021 | AlphaFold Protein Structure Database opens | Free predicted structures for researchers worldwide |
 | Jan 2022 | Chain-of-thought prompting paper | Step-by-step reasoning improves accuracy; precursor to reasoning models |
 | Mar 2022 | InstructGPT (RLHF) and Chinchilla (about 20 tokens per parameter) | How to make assistants; how to balance model size and data |
+| Mar 2022 | China's algorithm recommendation rules take effect | Among the first national rules for AI-driven feeds |
 | Apr 2022 | DALL·E 2 | High-quality image generation goes public |
 | 2022 | NVIDIA H100 (80 billion transistors, FP8) | The defining AI chip of 2023–2024 |
 | 2022 | FlashAttention and speculative decoding | Faster attention and faster text generation |
-| Mar 2022 | China's algorithm recommendation rules take effect | Among the first national rules for AI-driven feeds |
 | Aug 2022 | Stable Diffusion released with downloadable weights | Open image generation for everyone |
 | Aug 2022 | US CHIPS Act ($52.7 billion) | Industrial policy to rebuild US chipmaking |
 | Sep 2022 | OpenAI Whisper (open speech recognition) | Near-human transcription, freely available |
