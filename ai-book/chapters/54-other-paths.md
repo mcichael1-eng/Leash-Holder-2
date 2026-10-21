@@ -195,7 +195,6 @@ In 2012 Google introduced its Knowledge Graph with the slogan "things, not strin
 Wikidata gives every entity and relation an ID so that facts are unambiguous in any language. France is Q142, Paris is Q90, and the relation "capital" is P36. The triple "France — capital — Paris" is stored as Q142, P36, Q90. You can query it in a language called SPARQL at query.wikidata.org:
 
 ```sparql
-# Ask Wikidata: what is the capital of France?
 SELECT ?capitalLabel WHERE {
   wd:Q142 wdt:P36 ?capital .   # France (Q142) has capital (P36) ?capital
   SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
@@ -495,6 +494,8 @@ Two famous stories show the danger.
 **The asthma paradox.** In a well-known dataset of pneumonia patients from the 1990s, revisited by Rich Caruana and colleagues in 2015, a model learned that patients with asthma were *less* likely to die of pneumonia. The pattern was real in the data, because hospitals sent asthmatic pneumonia patients straight to intensive care, and the extra care saved them. A model used to decide who could safely be sent home would have sent asthmatics home, removing the very treatment that created the pattern. The prediction was accurate; acting on it would have been deadly.
 
 **Google Flu Trends.** Launched in 2008, it estimated flu levels from what people searched for. It worked well for a few years, then in the 2012–13 season badly overestimated flu, at one point roughly double the official estimate, partly because heavy news coverage made healthy people search for flu symptoms. The correlation between searches and sickness had shifted. Google shut the service down in 2015.
+
+> **Try it:** Ask your chatbot: "Countries that eat more chocolate per person win more Nobel Prizes per person. Does chocolate make people smarter? Name three possible confounders and describe an experiment that could settle it." Then push back: "Could the arrow run the other way?" Notice whether it reasons about causes or just recites the famous example.
 
 > **Key idea:** Prediction asks "What usually comes with X?" Decisions ask "What happens if I do X?" They are different questions, and the second needs experiments or careful causal reasoning, not just more data.
 

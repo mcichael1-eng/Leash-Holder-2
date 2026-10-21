@@ -1,0 +1,9 @@
+{
+  "name": "ai-field-guide-build",
+  "private": true,
+  "type": "module",
+  "description": "Renders the book's mermaid diagrams to SVG with the book's palette.",
+  "dependencies": {
+    "@mermaid-js/mermaid-cli": "11.4.2"
+  }
+}

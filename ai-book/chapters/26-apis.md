@@ -561,9 +561,9 @@ Many applications send the same long beginning over and over: a 30-page manual, 
 
 > **Definition — Cache hit and cache miss:** A cache hit is a request that reuses a stored prefix and pays the low "cache read" price. A cache miss is a request whose prefix was not stored (or had expired, or changed by even one character) and pays full price, plus a small surcharge to write the cache.
 
-On Anthropic's API as of late 2026, writing a prefix to the cache for the default five minutes costs 1.25 times the normal input price (2 times for a one-hour cache), and reading it back costs a small fraction: 0.1 times the base input price on most models, 0.05 times on Opus 5.5 and Sonnet 5.5, and 0.025 times on Fable 5.1. Each cache hit refreshes the five-minute timer. OpenAI's price list shows a similar idea as a separate "cached input" price, such as $0.10 instead of $2.00 per MTok for gpt-6.1-sol.
+On Anthropic's API as of late 2026, writing a prefix to the cache for the default five minutes costs 1.25 times the normal input price (2 times for a one-hour cache), and reading it back costs a small fraction: 0.1 times the base input price on most models, 0.05 times on Opus 5.5, and 0.025 times on Fable 5.1. Sources disagree on Sonnet 5.5 (some list 0.05 times, others 0.1 times), so treat these read prices as of October 2026 and check the current price page before you budget. Each cache hit refreshes the five-minute timer. OpenAI's price list shows a similar idea as a separate "cached input" price, such as $0.10 instead of $2.00 per MTok for gpt-6.1-sol.
 
-A worked example. You have a 50,000-token product manual and want to ask 10 questions about it, using Claude Sonnet 5.5 ($2.00 per MTok input; cache writes $2.50; cache reads 0.05 × $2.00 = $0.10).
+A worked example. You have a 50,000-token product manual and want to ask 10 questions about it, using Claude Sonnet 5.5 ($2.00 per MTok input; cache writes $2.50; cache reads taken here as 0.05 × $2.00 = $0.10, one of the two published figures as of October 2026).
 
 ```text
 Without caching:
@@ -575,7 +575,7 @@ With caching:
   Total                                                   = $0.170
 ```
 
-That is 83% cheaper for the manual's tokens (the short questions and the answers cost the same either way), and the cached calls also start answering faster, because the model skips re-reading the manual.
+That is 83% cheaper for the manual's tokens (the short questions and the answers cost the same either way). At the other published read price, 0.1 × $2.00 = $0.20, calls 2-10 cost $0.090 and the total is $0.215, still about 79% cheaper. The cached calls also and the cached calls also start answering faster, because the model skips re-reading the manual.
 
 ```mermaid
 flowchart LR
