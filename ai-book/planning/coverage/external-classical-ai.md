@@ -49,13 +49,13 @@ each, since earlier audits checked them in detail.
 | Ch 2. Rationality and performance measures | THIN | Ch 8 mentions performance measures for learning | Rational agent defined in Ch 1 and Ch 48 |
 | Ch 2. Properties of task environments (observable, deterministic, episodic, static, discrete, multiagent) | THIN | Ch 48 Figure on hidden information vs number of players only | Added Table 48.1 and three definitions (observable, deterministic/stochastic, episodic/sequential) |
 | Ch 2. Agent structures (simple reflex, model-based, goal-based, utility-based, learning) | MISSING | None | Added the agent ladder with four definitions and everyday examples in Ch 48 |
-| Ch 2. Atomic, factored and structured representations | OUT OF SCOPE | Implicit in CSPs and planning | None (technical vocabulary; the ideas appear in the new CSP and planning sections) |
+| Ch 2. Atomic, factored and structured representations | OUT OF SCOPE | Implicit in CSPs and planning | None (technical vocabulary; the ideas appear in the new CSP and planning sections) [Re-audited after verification: CS2023 AI-Search lists "factoring states into representations" in its CS Core, so factored representation was added to Ch 48 "States, actions and goals" with a definition; now COVERED] |
 | **Part II** | | | |
 | Ch 3. Problem formulation: states, actions, goals, state space | COVERED | Ch 48 "States, actions and goals" | None |
 | Ch 3. Breadth-first and depth-first search | COVERED | Ch 48 "Blind search" | None |
 | Ch 3. Uniform-cost search (Dijkstra) | MISSING | Only a resource link in Ch 48 Going deeper | Added explanation and definition to Ch 48 "Blind search" |
 | Ch 3. Depth-limited search and iterative deepening | MISSING | None | Added explanation and definition to Ch 48 |
-| Ch 3. Bidirectional search | OUT OF SCOPE | None | None (a refinement the reader does not need) |
+| Ch 3. Bidirectional search | OUT OF SCOPE | None | None (a refinement the reader does not need) [Re-audited after verification: CS2023 lists bidirectional search in the AI-Search KA Core, so it was added to Ch 48 "Blind search" with a worked count and a definition; now COVERED] |
 | Ch 3. Greedy best-first search | MISSING | None | Added to Ch 48 A* section with definition |
 | Ch 3. A* search and admissible heuristics | COVERED | Ch 48 A* worked on a grid | None |
 | Ch 3. Designing heuristics (relaxed problems, pattern databases, learned heuristics) | THIN | Manhattan distance only | Added relaxed-problem heuristics in the Ch 48 planning section (Manhattan distance as a relaxed maze); pattern databases left out |
@@ -67,19 +67,19 @@ each, since earlier audits checked them in detail.
 | Ch 4. Nondeterministic actions (AND-OR search, contingency plans) | OUT OF SCOPE | None | None (replanning is named in the new Ch 48 planning section) |
 | Ch 4. Partially observable search and belief states | MISSING | None | Belief state defined in the new Ch 48 MDP section |
 | Ch 4. Online search in unknown environments | OUT OF SCOPE | Exploration covered under RL in Ch 48 | None |
-| Ch 5. Defining CSPs (variables, domains, constraints) | MISSING | None | Added Ch 48 "Constraint satisfaction" with a meeting-schedule example solved by hand |
-| Ch 5. Constraint propagation | MISSING | None | Added with definition |
-| Ch 5. Backtracking search and variable ordering (most-constrained first) | MISSING | None | Added with definition and worked steps |
-| Ch 5. Local search for CSPs (min-conflicts) | MISSING | None | Added one sentence in the CSP section |
-| Ch 5. Problem structure (tree-structured CSPs, decomposition) | OUT OF SCOPE | None | None |
-| Ch 6. Two-player zero-sum games | COVERED | Ch 48 zero-sum game definition, game trees | None |
-| Ch 6. Minimax | COVERED | Ch 48 minimax worked on tic-tac-toe | None |
-| Ch 6. Alpha-beta pruning | COVERED | Ch 48 | None |
-| Ch 6. Evaluation functions and cutoff search | COVERED | Ch 48 (Deep Blue, Stockfish) | None |
-| Ch 6. Monte Carlo tree search | COVERED | Ch 48 (UCB worked) | None |
-| Ch 6. Stochastic games (expectiminimax) | THIN | Backgammon named, method absent | Added Ch 48 "Games with dice: chance nodes" with a worked dice example |
-| Ch 6. Partially observable games (card games) | COVERED | Ch 48 poker, imperfect information, CFR | None |
-| Ch 6. Limitations of game search | COVERED | Ch 48 Watch out on narrowness and adversarial Go strategies | None |
+| Ch 6 [corrected: was Ch 5]. Defining CSPs (variables, domains, constraints) | MISSING | None | Added Ch 48 "Constraint satisfaction" with a meeting-schedule example solved by hand |
+| Ch 6 [corrected: was Ch 5]. Constraint propagation | MISSING | None | Added with definition |
+| Ch 6 [corrected: was Ch 5]. Backtracking search and variable ordering (most-constrained first) | MISSING | None | Added with definition and worked steps |
+| Ch 6 [corrected: was Ch 5]. Local search for CSPs (min-conflicts) | MISSING | None | Added one sentence in the CSP section |
+| Ch 6 [corrected: was Ch 5]. Problem structure (tree-structured CSPs, decomposition) | OUT OF SCOPE | None | None |
+| Ch 5 [corrected: was Ch 6]. Two-player zero-sum games | COVERED | Ch 48 zero-sum game definition, game trees | None |
+| Ch 5 [corrected: was Ch 6]. Minimax | COVERED | Ch 48 minimax worked on tic-tac-toe | None |
+| Ch 5 [corrected: was Ch 6]. Alpha-beta pruning | COVERED | Ch 48 | None |
+| Ch 5 [corrected: was Ch 6]. Evaluation functions and cutoff search | COVERED | Ch 48 (Deep Blue, Stockfish) | None |
+| Ch 5 [corrected: was Ch 6]. Monte Carlo tree search | COVERED | Ch 48 (UCB worked) | None |
+| Ch 5 [corrected: was Ch 6]. Stochastic games (expectiminimax) | THIN | Backgammon named, method absent | Added Ch 48 "Games with dice: chance nodes" with a worked dice example |
+| Ch 5 [corrected: was Ch 6]. Partially observable games (card games) | COVERED | Ch 48 poker, imperfect information, CFR | None |
+| Ch 5 [corrected: was Ch 6]. Limitations of game search | COVERED | Ch 48 Watch out on narrowness and adversarial Go strategies | None |
 | **Part III** | | | |
 | Ch 7. Knowledge-based agents | COVERED | Ch 54 knowledge base and inference engine | None |
 | Ch 7. Propositional logic and entailment | MISSING | None | Added Ch 54 "Logic: the mathematics underneath the rules" with a worked truth-table example |
@@ -94,15 +94,15 @@ each, since earlier audits checked them in detail.
 | Ch 9. Resolution theorem provers | THIN | Lean and formal proofs in Ch 54 neuro-symbolic | Covered by the new resolution passage |
 | Ch 10. Ontological engineering and ontologies | COVERED | Ch 54 Ontology, Wikidata, Google Knowledge Graph | None |
 | Ch 10. Categories, inheritance, semantic networks and description logics | MISSING | None | Added Ch 54 "Ancestors, defaults and the frame problem" (semantic networks, inheritance, OWL/description logics) |
-| Ch 10. Frames | MISSING | None | Added Minsky's frames with definition |
-| Ch 10. Events, situation calculus and the frame problem | MISSING | None | Added the frame problem; situation calculus left out |
+| Ch 10. Frames [not a heading in the published contents; 10.5 lists semantic networks and description logics] | MISSING | None | Added Minsky's frames with definition |
+| Ch 10. Events, situation calculus and the frame problem [published heading: 10.3 Events, with Time and Fluents; situation calculus is not a heading] | MISSING | None | Added the frame problem; situation calculus left out |
 | Ch 10. Mental objects and modal logic | OUT OF SCOPE | None | None |
 | Ch 10. Default (non-monotonic) reasoning; truth maintenance | MISSING | None | Added default reasoning (the penguin example); truth maintenance left out |
 | Ch 11. Classical planning representation (STRIPS, PDDL, preconditions and effects) | MISSING | Shakey named in Ch 7 and Ch 48; STRIPS absent | Added Ch 48 "Planning with actions: from Shakey to PDDL" with a worked tea-making domain (Table 48.3) |
 | Ch 11. Planning algorithms (forward and backward state-space search) | MISSING | None | Backward search worked in the tea example; forward search described |
 | Ch 11. Planning heuristics (relaxation, ignoring delete effects) | MISSING | None | Added |
 | Ch 11. Hierarchical planning (HTN) | MISSING | None | Added with definition |
-| Ch 11. Partial-order planning | MISSING | None | Named and explained in the tea example |
+| Ch 11. Partial-order planning [not a heading; falls under 11.2.4 Other classical planning approaches] | MISSING | None | Named and explained in the tea example |
 | Ch 11. Planning and acting in nondeterministic domains (monitoring, replanning) | THIN | Ch 28 agents revise plans | Added execution monitoring and replanning, linked to Ch 28 agents |
 | Ch 11. Time, schedules and resources | THIN | Scheduling uses mentioned in Ch 54 | Added (scheduling as a constraint problem; NASA Remote Agent) |
 | **Part IV** | | | |
@@ -121,8 +121,8 @@ each, since earlier audits checked them in detail.
 | Ch 14. Hidden Markov models | THIN | Defined in Ch 46 speech history only | Added HMM in Ch 54 with the worked example |
 | Ch 14. Kalman filters | MISSING | None | Added with definition (GPS, Apollo) |
 | Ch 14. Dynamic Bayesian networks and particle filtering | MISSING | None | Added particle filter (robot localization); DBN described, not named |
-| Ch 15 (US ed.). Probabilistic programming | THIN | Named once in Ch 54 | Added definition (Stan, PyMC) |
-| Ch 15 (US ed.). Relational and open-universe probability models | OUT OF SCOPE | None | None |
+| Ch 15 (US ed.; Ch 18 in the Global ed.). Probabilistic programming | THIN | Named once in Ch 54 | Added definition (Stan, PyMC) |
+| Ch 15 (US ed.; Ch 18 in the Global ed.). Relational and open-universe probability models | OUT OF SCOPE | None | None |
 | Ch 16. Utility theory and the maximum expected utility principle | MISSING | Only expected value (Ch 6) | Added Ch 48 "Deciding when you are not sure" with a worked umbrella decision |
 | Ch 16. Utility of money and risk aversion | MISSING | None | Added with definition |
 | Ch 16. Human judgment and irrationality | OUT OF SCOPE | Kahneman's System 1 and 2 in Ch 54 | None |
@@ -138,21 +138,21 @@ each, since earlier audits checked them in detail.
 | Ch 18. Mixed strategies and repeated games | MISSING | None | Added (rock-paper-scissors; Axelrod's tit-for-tat) |
 | Ch 18. Cooperative game theory (Shapley value) | MISSING | None | Added with a worked two-player split and the link to SHAP explanations |
 | Ch 18. Auctions | COVERED | Ch 51 second-price and first-price ad auctions | None |
-| Ch 18. Mechanism design | MISSING | None | Added with the truthful second-price auction |
+| Ch 18. Mechanism design [not a heading; the published section is 18.4 Making Collective Decisions: contract net, auctions, voting, bargaining] | MISSING | None | Added with the truthful second-price auction |
 | Ch 18. Voting, bargaining, contract net | OUT OF SCOPE | None | None (mechanism design definition mentions voting systems) |
 | **Part V** | | | |
 | Ch 19. Forms of learning; supervised learning | COVERED | Ch 8 | None |
 | Ch 19. Decision trees | COVERED | Ch 10 (Gini worked) | None |
 | Ch 19. Model selection, cross-validation, regularization | COVERED | Ch 9 | None |
-| Ch 19. Learning theory (PAC learning, VC dimension) | OUT OF SCOPE | Bias-variance intuition in Ch 9 | None (mathematical; not a term this reader will meet) |
+| Ch 19. Learning theory (PAC learning, VC dimension) [published: 19.5 The Theory of Learning with a PAC example; VC dimension is not a heading] | OUT OF SCOPE | Bias-variance intuition in Ch 9 | None (mathematical; not a term this reader will meet) |
 | Ch 19. Linear and logistic regression, perceptron | COVERED | Ch 8, Ch 10 | None |
 | Ch 19. Nonparametric models (kNN, SVMs, kernels) | COVERED | Ch 10 | None |
 | Ch 19. Ensembles (bagging, random forests, boosting) | COVERED | Ch 10 | None |
 | Ch 19. Developing machine learning systems | COVERED | Ch 10 lifecycle and MLOps; Ch 11 | None |
-| Global ed. / 3rd ed. Knowledge in learning (explanation-based, relevance-based, inductive logic programming) | OUT OF SCOPE | None | None (research niche; the reader will not meet these terms) |
+| Global ed. Ch 20 [corrected: chapter number confirmed]. Knowledge in learning (published sections: a logical formulation of learning, knowledge in learning, explanation-based learning, learning using relevance information, inductive logic programming) | OUT OF SCOPE | None | None (research niche; the reader will not meet these terms) |
 | Ch 20. Maximum likelihood estimation | MISSING | None when this audit began | Added to Ch 6 by a parallel audit during this round; no action needed |
 | Ch 20. Bayesian parameter learning (priors and posteriors) | COVERED | Ch 6 prior and posterior; Ch 10 Laplace smoothing | None |
-| Ch 20. Smoothing of count estimates | THIN | Ch 10 Laplace smoothing for naive Bayes only | Added add-one smoothing worked on the Ch 6 n-gram model, with definition |
+| Ch 23 [corrected: was Ch 20; the published section is 23.1.4 Smoothing n-gram models]. Smoothing of count estimates | THIN | Ch 10 Laplace smoothing for naive Bayes only | Added add-one smoothing worked on the Ch 6 n-gram model, with definition |
 | Ch 20. Bayesian network structure learning; density estimation | OUT OF SCOPE | None | None |
 | Ch 20. EM algorithm and mixtures of Gaussians | MISSING | None when this audit began | Added to Ch 10 by a parallel audit during this round; no action needed |
 | Ch 21. Feedforward networks, computation graphs, backpropagation | COVERED | Ch 12, Ch 13; Ch 6 chain rule | None |
@@ -194,7 +194,7 @@ each, since earlier audits checked them in detail.
 | Ch 26. What robotics solves; sense-plan-act | COVERED | Ch 49 | None |
 | Ch 26. Localization and mapping (Monte Carlo localization, SLAM) | COVERED | Ch 45 SLAM; Ch 50 localization | Particle-filter localization added in Ch 54 |
 | Ch 26. Configuration space and motion planning (RRT, roadmaps) | MISSING | "Motion planning" defined for cars in Ch 50 only | Added Ch 49 "From go there to motor commands" (configuration space, RRT) |
-| Ch 26. Forward and inverse kinematics | MISSING | None | Added with definition |
+| Ch 26. Forward and inverse kinematics [not a separate heading; sits inside 26.5 Planning and Control; CS2023 AI-Robotics lists it explicitly] | MISSING | None | Added with definition |
 | Ch 26. Trajectory-tracking control (PID) | MISSING | "Controller" defined without any method | Added PID with a worked example |
 | Ch 26. Planning uncertain movements | OUT OF SCOPE | None | None |
 | Ch 26. Reinforcement learning in robotics | COVERED | Ch 49 learning to walk, sim-to-real | None |
@@ -229,119 +229,119 @@ each, since earlier audits checked them in detail.
 | Rational vs human-like behavior | THIN | Implicit | Added the four approaches and rational agent to Ch 1 |
 | Problem characteristics: observability, determinism, static/dynamic, discrete/continuous, single/multiagent | MISSING | None | Added Table 48.1 |
 | Autonomy levels: autonomous, semi-autonomous, human in the loop | COVERED | Ch 28 humans in the loop; Ch 50 SAE levels | None |
-| Philosophical issues | THIN | Ch 60 Debate 7 (consciousness) | Added classic arguments to Ch 60 |
-| Symbolic vs sub-symbolic; rules vs learning | COVERED | Ch 1 three ways; Ch 54 five tribes | None |
-| History of AI | COVERED | Ch 7 | None |
+| Philosophical issues [published as a Non-core item] | THIN | Ch 60 Debate 7 (consciousness) | Added classic arguments to Ch 60 |
+| Symbolic vs sub-symbolic; rules vs learning [not an AI-Introduction item; the preamble and AI-KRR item 1 (types of representations) cover it, so it duplicates the AI-KRR row; excluded from the verified count] | COVERED | Ch 1 three ways; Ch 54 five tribes | None |
+| History of AI | COVERED | Ch 7 [published as a Non-core item] | None |
 | **AI-Search: Search (CS Core and KA Core)** | | | |
 | State spaces and problem formulation | COVERED | Ch 48 | None |
 | Uninformed search (BFS, DFS, iterative deepening, uniform cost) | THIN | BFS and DFS only | Added uniform-cost and iterative deepening |
 | Heuristic search (greedy best-first, A*, admissibility) | THIN | A* only | Added greedy best-first |
 | Space and time efficiency of search | COVERED | Ch 7 combinatorial explosion; Ch 48 BFS vs A* counts | None |
-| Local search (hill climbing, simulated annealing, beam search) | MISSING | None | Added Ch 48 local search |
-| Population-based search (genetic algorithms) | COVERED | Ch 54 | None |
+| Local search (hill climbing, simulated annealing, beam search) [tiers differ: hill climbing CS Core, beam search KA Core, local search and simulated annealing Non-core] | MISSING | None | Added Ch 48 local search |
+| Population-based search (genetic algorithms) [Non-core item 17b] | COVERED | Ch 54 | None |
 | Constraint satisfaction (backtracking, propagation, local search) | MISSING | None | Added Ch 48 CSP section |
 | Two-player games: minimax and alpha-beta | COVERED | Ch 48 | None |
-| Games with chance (expectimax) | THIN | Backgammon named only | Added chance nodes |
+| Games with chance (expectimax) [Non-core item 16] | THIN | Backgammon named only | Added chance nodes |
 | Monte Carlo tree search | COVERED | Ch 48 | None |
 | **AI-KRR: Fundamental Knowledge Representation and Reasoning (CS Core)** | | | |
 | Types of representation: symbolic, logical, probabilistic, neural | COVERED | Ch 1; Ch 54 | None |
-| Propositional and predicate (first-order) logic | MISSING | None | Added Ch 54 logic section |
-| Resolution and theorem proving | MISSING | None | Added |
-| Forward and backward chaining | COVERED | Ch 54 | None |
-| Ontologies, semantic networks, knowledge graphs | THIN | Knowledge graphs and ontologies only | Added semantic networks and frames |
+| Propositional and predicate (first-order) logic [published under AI-LRR item 1, Non-core, not AI-KRR] | MISSING | None | Added Ch 54 logic section |
+| Resolution and theorem proving [published under AI-LRR item 2, propositional only] | MISSING | None | Added |
+| Forward and backward chaining [published under AI-LRR item 2a] | COVERED | Ch 54 | None |
+| Ontologies, semantic networks, knowledge graphs [published under AI-LRR items 3b (ontology engineering) and 11 (semantic networks); knowledge graphs are not named] | THIN | Knowledge graphs and ontologies only | Added semantic networks and frames |
 | Probability review, Bayes' theorem, Bayesian inference | COVERED | Ch 6 | None |
 | Random variables, joint distributions, conditional independence | THIN | Ch 6 independence only | Added full joint distribution and conditional independence |
-| Decision-theoretic agents: utility and expected utility | MISSING | None | Added Ch 48 expected utility |
-| Value of information | MISSING | None | Added |
+| Decision-theoretic agents: utility and expected utility [published as AI-KRR KA Core item 8, Utility and decision making] | MISSING | None | Added Ch 48 expected utility |
+| Value of information [not in the published list; excluded from the verified count] | MISSING | None | Added |
 | **AI-ML: Machine Learning (CS Core and KA Core)** | | | |
 | Definitions and examples: classification, regression, clustering | COVERED | Ch 8, Ch 10 | None |
 | Supervised learning: features, labels, training and test data | COVERED | Ch 8, Ch 9 | None |
 | Linear and logistic regression, decision trees, naive Bayes, kNN | COVERED | Ch 8, Ch 10 | None |
 | Overfitting, regularization, cross-validation, evaluation metrics | COVERED | Ch 9 | None |
-| Unsupervised learning: k-means, hierarchical clustering, dimensionality reduction | COVERED | Ch 10 | None |
-| EM and Gaussian mixtures | MISSING | None when this audit began | Added to Ch 10 by a parallel audit; no action needed |
+| Unsupervised learning: k-means, hierarchical clustering, dimensionality reduction [published: clustering (CS Core) and k-means (Non-core); hierarchical clustering and dimensionality reduction are not named] | COVERED | Ch 10 | None |
+| EM and Gaussian mixtures [Non-core item 24] | MISSING | None when this audit began | Added to Ch 10 by a parallel audit; no action needed |
 | Ensembles | COVERED | Ch 10 | None |
 | Neural networks and deep learning (backpropagation, CNNs, RNNs, Transformers) | COVERED | Part III | None |
 | Generative models | COVERED | Ch 16 | None |
-| Reinforcement learning: MDPs, value and policy iteration, Q-learning, policy gradients | THIN | Q-learning and policy gradients only | Added MDPs, value iteration, POMDPs |
-| Explainability (feature importance, SHAP) | THIN | Ch 10 feature importance; Ch 53, Ch 57 | Added Shapley value and SHAP |
+| Reinforcement learning: MDPs, value and policy iteration, Q-learning, policy gradients [Non-core item 30; the KA Core lists only an overview] | THIN | Q-learning and policy gradients only | Added MDPs, value iteration, POMDPs |
+| Explainability (feature importance, SHAP) [published names LIME and Shapley values; LIME added on verification, see new rows] | THIN | Ch 10 feature importance; Ch 53, Ch 57 | Added Shapley value and SHAP |
 | Fairness, bias and privacy in ML | COVERED | Ch 11, Ch 58 | None |
 | Data collection and preparation | COVERED | Ch 11 | None |
 | **AI-SEP: Applications and Societal Impact (CS Core)** | | | |
 | Societal and economic impact | COVERED | Ch 60 | None |
 | Ethics and fairness | COVERED | Ch 58 | None |
 | Privacy and surveillance | COVERED | Ch 45, Ch 58 | None |
-| Safety, robustness and alignment | COVERED | Ch 55-57 | None |
-| Misinformation and deepfakes | COVERED | Ch 58 | None |
+| Safety, robustness and alignment [not in the published list; excluded from the verified count] | COVERED | Ch 55-57 | None |
+| Misinformation and deepfakes [not an AI-SEP item; the preamble mentions fake photos and videos; excluded from the verified count] | COVERED | Ch 58 | None |
 | Environmental impact | COVERED | Part VII; Ch 58 | None |
 | Law, regulation and governance | COVERED | Ch 59 | None |
-| Dual use and military applications | COVERED | Ch 53, Ch 58 | None |
-| Accountability and transparency | COVERED | Ch 57, Ch 59 | None |
-| **AI-LRR: Logical Representation and Reasoning (KA Core)** | | | |
+| Dual use and military applications [not an AI-SEP item; autonomous weapons are AI-Robotics item 15d, counted in the new rows; excluded from the verified count] | COVERED | Ch 53, Ch 58 | None |
+| Accountability and transparency [published as trust/explainability and human autonomy, oversight, regulations and legal requirements] | COVERED | Ch 57, Ch 59 | None |
+| **AI-LRR: Logical Representation and Reasoning (Non-core) [corrected: was KA Core]** | | | |
 | Non-monotonic and default reasoning | MISSING | None | Added Ch 54 |
 | Argumentation | OUT OF SCOPE | None | None |
-| Reasoning about action and change (situation calculus, frame problem) | MISSING | None | Added the frame problem; situation calculus left out |
+| Reasoning about action and change (situation calculus, frame problem) [published: situation and event calculus] | MISSING | None | Added the frame problem; situation calculus left out |
 | Temporal and spatial reasoning (formal calculi) | OUT OF SCOPE | None | None |
 | Rule-based expert systems | COVERED | Ch 54 | None |
-| Semantic networks, frames, description logics | MISSING | None | Added Ch 54 |
+| Semantic networks, frames, description logics [frames are not named in the published list] | MISSING | None | Added Ch 54 |
 | Model-based and case-based reasoning | THIN | Ch 54 analogizers | Added case-based reasoning definition |
 | Logic programming (Prolog) and answer set programming | THIN | Prolog in Appendix C only | Added Prolog; answer set programming left out |
-| SAT and SMT solvers | MISSING | None | Added SAT solvers |
-| **AI-Probability: Probabilistic Representation and Reasoning (KA Core)** | | | |
+| SAT and SMT solvers [not in the published list; excluded from the verified count] | MISSING | None | Added SAT solvers |
+| **AI-Probability: Probabilistic Representation and Reasoning (Non-core) [corrected: was KA Core]** | | | |
 | Bayesian networks | COVERED | Ch 54 | None |
 | Exact inference | COVERED | Ch 54 enumeration with natural frequencies | None |
 | Approximate inference (sampling, MCMC) | MISSING | None | Added |
 | Markov networks (undirected models) | OUT OF SCOPE | None | None |
-| Probabilistic programming and relational models | THIN | Named once | Added probabilistic programming definition |
-| Temporal models: Markov chains and HMMs | THIN | HMM in Ch 46 only | Added Ch 54 reasoning over time |
-| Filtering: Kalman and particle filters | MISSING | None | Added |
-| Decision networks / influence diagrams | OUT OF SCOPE | None | None |
-| **AI-Planning: Planning (KA Core)** | | | |
+| Probabilistic programming and relational models [corrected: the published item 2c is relational probability models only; consistent with the AIMA row this is OUT OF SCOPE; the probabilistic programming definition added earlier stays] | THIN | Named once | Added probabilistic programming definition |
+| Temporal models: Markov chains and HMMs [published: HMMs here; Markov chains are AI-KRR KA Core item 7, counted in the new rows] | THIN | HMM in Ch 46 only | Added Ch 54 reasoning over time |
+| Filtering: Kalman and particle filters [not in the published list; excluded from the verified count] | MISSING | None | Added |
+| Decision networks / influence diagrams [not in the published list; the unit lists Decision Theory instead (new rows); excluded from the verified count] | OUT OF SCOPE | None | None |
+| **AI-Planning: Planning (Non-core) [corrected: was KA Core]** | | | |
 | Planning representations (STRIPS, PDDL) | MISSING | None | Added Ch 48 planning section |
-| State-space planning and planning heuristics | MISSING | None | Added |
+| State-space planning and planning heuristics [published: total order planning; heuristics are not named] | MISSING | None | Added |
 | Partial-order planning | MISSING | None | Added |
-| Planning graphs (GraphPlan) and planning as SAT | OUT OF SCOPE | None | None |
+| Planning graphs (GraphPlan) and planning as SAT [published: plan graphs and GraphPlan; planning as SAT is not named] | OUT OF SCOPE | None | None |
 | Hierarchical planning | MISSING | None | Added |
 | Plan execution, monitoring and replanning | THIN | Ch 28 agents revise plans | Added |
-| Scheduling with time and resources | THIN | Uses named only | Added |
-| Probabilistic planning: MDPs and POMDPs | MISSING | None | Added Ch 48 |
+| Scheduling with time and resources [not in the published list; excluded from the verified count] | THIN | Uses named only | Added |
+| Probabilistic planning: MDPs and POMDPs [published: MDP-based planning and probabilistic planning; POMDPs are not named] | MISSING | None | Added Ch 48 |
 | Multi-agent planning | OUT OF SCOPE | None | None |
-| Planning with language models | COVERED | Ch 28 planning; Ch 21 | None |
-| **AI-Agents: Agents and Cognitive Systems (KA Core)** | | | |
+| Planning with language models [not in the published list; excluded from the verified count] | COVERED | Ch 28 planning; Ch 21 | None |
+| **AI-Agents: Agents and Cognitive Systems (Non-core) [corrected: was KA Core]** | | | |
 | Agent architectures (reactive, deliberative, layered) | THIN | Ch 49 layered control loops | Added agent ladder (Ch 48) and subsumption (Ch 49) |
-| Belief-desire-intention (BDI) agents | OUT OF SCOPE | None | None |
+| Belief-desire-intention (BDI) agents [not an AI-Agents item; "beliefs, desires, and intentions" appears under AI-NLP item 3d, counted in the new rows; excluded from the verified count] | OUT OF SCOPE | None | None |
 | Cognitive architectures (Soar, ACT-R) | MISSING | None | Added to Ch 28 memory section |
 | Multi-agent systems: coordination and communication | COVERED | Ch 28 multi-agent systems, A2A | None |
-| Game theory and Nash equilibria | THIN | Nash equilibrium only | Added game theory section |
-| Mechanism design, auctions, voting | THIN | Auctions in Ch 51 | Added mechanism design |
-| LLM-based agents and tool use | COVERED | Ch 28, Ch 29 | None |
+| Game theory and Nash equilibria [published: Rationality, Game Theory (decision-theoretic agents, MDPs, bandit algorithms)] | THIN | Nash equilibrium only | Added game theory section |
+| Mechanism design, auctions, voting [published: competitive agents (auctions, voting); mechanism design is not named] | THIN | Auctions in Ch 51 | Added mechanism design |
+| LLM-based agents and tool use [corrected: the published item 4 is software agents, personal assistants and information access (collaborative and information-gathering agents)] | COVERED | Ch 28, Ch 29 | None |
 | Human-agent interaction | COVERED | Ch 28 humans in the loop; Ch 31 product design | None |
-| **AI-NLP: Natural Language Processing (KA Core)** | | | |
+| **AI-NLP: Natural Language Processing (Non-core) [corrected: was KA Core]** | | | |
 | Deterministic and stochastic grammars; parsing | MISSING | None | Added Ch 54 grammar and parsing |
 | Representing meaning | COVERED | Ch 14 embeddings; Ch 54 knowledge graphs | None |
 | N-gram models and smoothing | THIN | N-grams in Ch 6; smoothing only in Ch 10 | Added n-gram smoothing to Ch 6 |
-| Part-of-speech tagging and morphology | MISSING | None | Added POS tagging; morphology left out |
-| Information retrieval (vector space, TF-IDF, BM25, precision and recall) | COVERED | Ch 27, Ch 9 | None |
+| Part-of-speech tagging and morphology | MISSING | None | Added POS tagging; morphology left out [Verified online: morphology is part of the published item 7, so it was added to Ch 54 with stemming and lemmatization on October 21] |
+| Information retrieval (vector space, TF-IDF, BM25, precision and recall) [BM25 is not named] | COVERED | Ch 27, Ch 9 | None |
 | Information extraction and named entities | COVERED | Ch 54 | None |
 | Machine translation | COVERED | Ch 54 | None |
 | Text classification and sentiment | COVERED | Ch 54, Ch 10 | None |
 | Word embeddings, Transformers and large language models | COVERED | Ch 14, Ch 15, Part IV | None |
-| Evaluation (BLEU, perplexity) | COVERED | Ch 54, Ch 6 | None |
-| **AI-Robo: Robotics (KA Core)** | | | |
+| Evaluation (BLEU, perplexity) [not in the published list; excluded from the verified count] | COVERED | Ch 54, Ch 6 | None |
+| **AI-Robotics: Robotics (Non-core) [corrected: was "AI-Robo", KA Core]** | | | |
 | Sensors and actuators | COVERED | Ch 49 | None |
 | Configuration space and motion planning | MISSING | None | Added Ch 49 |
 | Kinematics | MISSING | None | Added Ch 49 |
 | Localization and mapping | COVERED | Ch 45, Ch 50 | Filters added in Ch 54 |
-| Navigation and control (PID) | THIN | Controller defined without method | Added PID |
-| Robot learning (RL, imitation, foundation models) | COVERED | Ch 49 | None |
-| Multi-robot systems | OUT OF SCOPE | None | None |
+| Navigation and control (PID) [PID is not named] | THIN | Controller defined without method | Added PID |
+| Robot learning (RL, imitation, foundation models) [not in the published list; excluded from the verified count] | COVERED | Ch 49 | None |
+| Multi-robot systems [published: multiple-robot coordination and collaboration] | OUT OF SCOPE | None | None |
 | Human-robot interaction, safety and ethics | COVERED | Ch 49 | None |
-| **AI-Vision: Perception and Computer Vision (KA Core)** | | | |
+| **AI-Vision: Perception and Computer Vision (Non-core) [corrected: was KA Core]** | | | |
 | Image acquisition and representation | COVERED | Ch 3, Ch 45 | None |
-| Feature extraction and edges | COVERED | Ch 14 | None |
+| Feature extraction and edges [a learning outcome (edge or corner detector), not a topic item] | COVERED | Ch 14 | None |
 | Segmentation, recognition and detection | COVERED | Ch 45 | None |
 | Motion analysis, tracking, optical flow | THIN | Tracking only | Added optical flow |
-| 3D vision | COVERED | Ch 45 | None |
+| 3D vision [not an AI-Vision item; depth and stereo appear only as robot sensors (AI-Robotics item 2a); excluded from the verified count] | COVERED | Ch 45 | None |
 | Speech and audio recognition | COVERED | Ch 46 | None |
 | Deep learning for vision | COVERED | Ch 14, Ch 45 | None |
 
