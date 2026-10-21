@@ -603,7 +603,7 @@ Three lessons hide in that table.
 
 **PUE is worth fighting over.** The same 100 MW of IT at PUE 1.5 instead of 1.1 uses an extra 0.4 × 100 MW × 8,760 h ≈ 350 GWh per year at full load, about $25 million a year at 7 cents. That is why operators fight over decimal points (Chapter 40).
 
-**Energy charges are not the whole bill.** Large customers also pay for delivery and transmission and for their share of the grid's *capacity*, the promise that power will be there at peak. In the PJM grid region, capacity prices reportedly hit a cap of about $329 per megawatt-day for 2026/27. If a 120 MW peak were charged at that price in full, it would add roughly 120 × $329 × 365 ≈ $14 million a year; how such costs reach a data center depends on its utility's tariff (Chapter 41).
+**Energy charges are not the whole bill.** Large customers also pay for delivery and transmission and for their share of the grid's *capacity*, the promise that power will be there at peak. In the PJM grid region (run by the operator PJM across 13 states from New Jersey to Illinois, plus Washington, DC), capacity prices reportedly hit a cap of about $329 per megawatt-day for 2026/27. If a 120 MW peak were charged at that price in full, it would add roughly 120 × $329 × 365 ≈ $14 million a year; how such costs reach a data center depends on its utility's tariff (Chapter 41).
 
 **Scale it up.** A 1 GW campus is ten of these sites: roughly 7.9 TWh and $550 million a year at the same assumptions.
 

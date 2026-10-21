@@ -623,7 +623,7 @@ flowchart LR
 | Power | Grid, gas, nuclear, solar and batteries | grid connections take over 4 years in primary markets | utilities, grid operators, GE Vernova, Siemens Energy | 39, 41 |
 | Capital | Buying and financing all of the above | about $800 billion of hyperscaler capex in 2026 | hyperscalers, neoclouds, lenders, investors | 42, 43 |
 | Data | Crawling, curating, buying expert data | 15–36 trillion tokens in published pretraining runs | Common Crawl, publishers, data vendors | 11, 19 |
-| Training | Pretraining, post-training, RL | about `10^27` operations and 216 MW for about 3 months | OpenAI, Anthropic, Google DeepMind, Meta, SpaceXAI (formerly xAI), DeepSeek | 19, 20, 21, 37 |
+| Training | Pretraining, post-training, RL | about `10^27` operations and 216 MW for about 3 months | OpenAI, Anthropic, Google DeepMind, Meta, SpaceXSI (formerly xAI), DeepSeek | 19, 20, 21, 37 |
 | Serving | Running the model for users | prices for a fixed capability fall about 10× or more per year | the labs and their cloud partners | 23 |
 | Apps and you | Chat, API, agents | about 1 Wh and well under a cent of compute for a long request | chat apps, developers, you | 25 to 31 |
 

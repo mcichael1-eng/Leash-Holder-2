@@ -249,7 +249,7 @@ Some regions also pay power plants simply to exist and be available at peak time
 
 > **Definition — Base Residual Auction (BRA):** PJM's main capacity auction, held about three years ahead of each delivery year, in which the price per megawatt per day of available capacity is set for the whole region.
 
-PJM's auctions became the clearest example of data center demand reaching household bills. The figures below are as reported from PJM's auction results; they were flagged in our research for re-checking against PJM's official reports before you rely on them:
+PJM's auctions became the clearest example of data center demand reaching household bills. The figures below are as reported from PJM's auction results; check PJM's official auction reports for the exact final numbers before you rely on them:
 
 | Delivery year | Capacity price (approximate, $ per MW-day) |
 |---|---|
@@ -337,7 +337,7 @@ What the AI industry did with gas, as of October 2026:
 - **xAI's Colossus in Memphis** started with an initial grid supply of only about 8 MW in 2024 and filled the gap with temporary gas turbines and Tesla Megapack batteries (reported). For Colossus 2 next door, Mississippi approved a permanent **plant of about 1.2 GW with 41 turbines in Southaven (March 2026)**, and the NAACP, represented by the Southern Environmental Law Center and Earthjustice, sued in April 2026 under the Clean Air Act (reported).
 - **Stargate's Shackelford County, Texas, site** plans an on-site gas microgrid, including **700 MW of VoltaGrid gas engines behind the meter**, and the **Doña Ana County, New Mexico** site plans two gas microgrids (Epoch AI, April 2026).
 - **Meta's Hyperion** in Louisiana is served by new combined-cycle gas plants that the utility Entergy is building, and Meta's Prometheus campus in Ohio uses on-site gas plants to supplement the grid (reported).
-- **Turbine makers** (GE Vernova, Siemens Energy, Mitsubishi Power) report multi-year backlogs. Large turbines ordered in 2025–26 are often reported to arrive around 2029–2030; that estimate was flagged for re-checking against the makers' late-October 2026 results.
+- **Turbine makers** (GE Vernova, Siemens Energy, Mitsubishi Power) report multi-year backlogs. Large turbines ordered in 2025–26 are often reported to arrive around 2029–2030, an estimate the makers' late-October 2026 results may update.
 
 Why gas? It is firm, it uses an existing pipeline network, engines and small turbines can arrive in months to a couple of years, and its fuel has been relatively cheap in the US. The downsides are carbon (a combined-cycle plant emits roughly half as much CO₂ per kWh as coal, but far more than nuclear or renewables), methane leaks from wells and pipelines, local air pollution from turbines and engines, air permits, and exposure to future fuel prices.
 
@@ -357,7 +357,7 @@ Nuclear power is firm, nearly carbon-free and runs about 90% or more of the hour
 
 > **Definition — Nuclear restart:** Returning a shut-down nuclear plant to service by repairing, relicensing and refueling it. It is far faster and cheaper than building a new reactor but only possible at a few recently closed plants.
 
-- **Three Mile Island Unit 1**, renamed the Crane Clean Energy Center, will sell its output to Microsoft under a 20-year agreement announced in 2024 (about 835 MW according to Constellation). A $1 billion Department of Energy loan was announced in November 2025, and the restart was reportedly targeted for 2027 (originally 2028); the date was flagged for re-checking.
+- **Three Mile Island Unit 1**, renamed the Crane Clean Energy Center, will sell its output to Microsoft under a 20-year agreement announced in 2024 (about 835 MW according to Constellation). A $1 billion Department of Energy loan was announced in November 2025, and the restart was reportedly targeted for 2027 (originally 2028), a date that could still move.
 - **Duane Arnold** in Iowa is reportedly being restarted for Google by 2029, and Holtec has been restarting **Palisades** in Michigan.
 
 **4. New reactors.** This is where the long-term bets are.
@@ -419,14 +419,14 @@ Here is every option on one page. Cost tiers are relative. As a rough guide, wid
 
 | Source | Cost tier (new build) | Typical time to first power (2026) | Lifecycle carbon (g CO₂e per kWh) | Firmness | Land | AI examples (dated) |
 |---|---|---|---|---|---|---|
-| Gas, combined cycle | Medium | about 4–6+ years; big turbines ordered 2025–26 often quoted for about 2029–30 (verify) | about 490 | Firm | Small plant, plus pipelines and gas fields | Entergy plants for Meta Hyperion (2026) |
+| Gas, combined cycle | Medium | about 4–6+ years; big turbines ordered 2025–26 often quoted for about 2029–30 (reported) | about 490 | Firm | Small plant, plus pipelines and gas fields | Entergy plants for Meta Hyperion (2026) |
 | Gas, simple-cycle and aeroderivative turbines | Medium-high | months (rented mobile units) to about 3 years | higher than combined cycle | Firm | Small | xAI Colossus turbines (2024–26); 1.2 GW Southaven plant approved March 2026 |
 | Gas reciprocating engines | Medium-high | months to about 2 years | higher than combined cycle | Firm | Small | 700 MW VoltaGrid engines, Stargate Shackelford (2026) |
 | Fuel cells on natural gas | High | months | roughly gas-plant level | Firm, if gas flows | Very small | Bloom deals with AEP, Oracle, Brookfield |
 | Coal, delayed retirement | Low to run (old plants) | already built | about 820 | Firm | Plant plus mines | Retirements postponed (2025–26) |
 | Existing nuclear, bought by contract | Medium | immediate, but moves existing clean power | about 12 | Firm, about 90%+ of hours | Very small | Talen–Amazon (about 1.9 GW); Vistra–Meta (2.1 GW+, January 2026) |
 | Nuclear uprate | Medium | a few years | about 12 | Firm | None extra | Vistra–Meta 433 MW (January 2026) |
-| Nuclear restart | Medium | about 3–4 years | about 12 | Firm | None extra | Crane/TMI-1 for Microsoft, reportedly 2027 (verify) |
+| Nuclear restart | Medium | about 3–4 years | about 12 | Firm | None extra | Crane/TMI-1 for Microsoft, reportedly 2027 (date may move) |
 | New large nuclear | Very high | 10+ years | about 12 | Firm | Small | Vogtle 3 and 4 (2023–24), the cautionary tale |
 | SMR / advanced reactor | Unknown, hoped to fall | first US units around 2030 at the earliest | about 12 (expected) | Firm | Small | First US BWRX-300 permit, September 28, 2026; Kairos, Oklo, TerraPower, X-energy deals |
 | Fusion | Unknown | unproven; no grid power yet | very low (expected) | Firm (expected) | Small | Microsoft–Helion (2023) |
@@ -436,7 +436,7 @@ Here is every option on one page. Cost tiers are relative. As a rough guide, wid
 | Geothermal (conventional and enhanced) | Medium | several years | about 38 | Firm | Small | Google–Fervo |
 | Hydro (existing) | Low to run | already built; new dams take a decade or more | about 24 | Firm-ish, droughts cut output | Very large reservoirs | Historic draw to the Pacific Northwest and Nordics |
 
-*Table 41.3: Every energy source compared, as of October 2026. Cost tiers are relative; carbon figures are IPCC 2014 lifecycle medians where available; "verify" marks dates our research flagged for re-checking.*
+*Table 41.3: Every energy source compared, as of October 2026. Cost tiers are relative; carbon figures are IPCC 2014 lifecycle medians where available; dates marked "reported" or "may move" come from news reports and are the most likely to change.*
 
 The same story in one picture: the sources you can get fastest are mostly fossil, and the cleanest firm sources are mostly slow.
 
@@ -549,7 +549,7 @@ Grids are built for the few hours of the year when demand peaks. If a data cente
 
 > **Definition — Demand response (curtailment):** Reducing electricity use when the grid is stressed, either on request or automatically, usually in exchange for payment or a faster connection.
 
-Rules are starting to require this. **Texas SB 6 (2025)** requires large loads of 75 MW or more to disclose their backup generation, share in interconnection costs, and accept being curtailed, or switched to backup power, during grid emergencies (as summarized in our research). A widely cited February 2025 study from Duke University estimated that US grids could absorb on the order of 100 GW of new load without new peak capacity if those loads agreed to be curtailed for less than 1% of the hours in a year.
+Rules are starting to require this. **Texas SB 6 (2025)** requires large loads of 75 MW or more to disclose their backup generation, share in interconnection costs, and accept being curtailed, or switched to backup power, during grid emergencies, according to summaries of the law. A widely cited February 2025 study from Duke University estimated that US grids could absorb on the order of 100 GW of new load without new peak capacity if those loads agreed to be curtailed for less than 1% of the hours in a year.
 
 **Worked example.** 0.5% of the 8,760 hours in a year is about 44 hours. A 1 GW data center that agrees to cut back for those 44 hours (spread over a few heat waves or cold snaps) might connect years earlier than one demanding guaranteed power every hour, because the grid would not need new peak plants for it.
 
@@ -646,7 +646,7 @@ mindmap
 - **Land.** Meta's Hyperion site covers about 2,250 acres. Campuses, substations, solar farms and new transmission lines all claim farmland and forest.
 - **Jobs.** Construction can employ thousands for a few years, but a finished hyperscale campus may employ only hundreds.
 - **Taxes.** Data centers can pay large property taxes that fund schools and roads, but many states and towns grant big tax breaks to win them.
-- **Opposition.** Data Center Watch counted **$64 billion** of US projects blocked ($18 billion) or delayed ($46 billion) between May 2024 and March 2025, with 142 activist groups in more than 24 states, and found the opposition bipartisan. In 2026, many local jurisdictions reportedly enacted moratoriums (reports say hundreds; verify locally). Lordstown, Ohio, reportedly banned future data centers, and the Saline Township, Michigan, Stargate site faced local opposition.
+- **Opposition.** Data Center Watch counted **$64 billion** of US projects blocked ($18 billion) or delayed ($46 billion) between May 2024 and March 2025, with 142 activist groups in more than 24 states, and found the opposition bipartisan. In 2026, many local jurisdictions reportedly enacted moratoriums (reports say hundreds; check local news for your area). Lordstown, Ohio, reportedly banned future data centers, and the Saline Township, Michigan, Stargate site faced local opposition.
 
 The strongest case for welcoming a data center: a large, stable tax base that can cut residents' property taxes or fund schools; construction work; long-term grid investment that can benefit the region; and a role in a nationally important industry. The strongest case against: higher bills if costs are shifted, water and noise, lost land, air pollution from on-site generation, few permanent jobs, and secrecy, since projects are often negotiated under non-disclosure agreements before residents hear about them. Increasingly, the middle ground is a community benefit agreement: a binding deal in which the developer commits to local hiring, water limits, noise standards, payments to local funds and paying its own grid costs.
 

@@ -456,7 +456,7 @@ Epoch projects **over 9 GW** across these sites by about 2029, with most new cap
 
 > **Definition — Clean Air Act:** The main US federal law limiting air pollution. It requires permits for large sources such as power plants and turbines, and lets citizens sue when they believe permits were not obtained.
 
-**Corporate changes.** SpaceX acquired xAI in an all-stock deal on February 2, 2026, valuing xAI at $250 billion, and the AI business was later rebranded SpaceXAI.
+**Corporate changes.** SpaceX acquired xAI in an all-stock deal on February 2, 2026, valuing xAI at $250 billion, and the AI business was later rebranded SpaceXAI (July 2026) and then SpaceXSI (October 2026).
 
 **What it teaches.** Speed is possible when you reuse an existing building and bring your own power, but the shortcuts carry legal, health and reputational costs that can follow a project for years.
 
