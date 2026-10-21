@@ -22,7 +22,7 @@ Open your usual chatbot and type a question. It feels like a private conversatio
 - If you are in the European Union, a rule that started applying in August 2026 says a chatbot must make clear you are talking to a machine, and AI-generated images and audio must carry a machine-readable marker.
 - If you use a "companion" app in California, the app must remind you that it is an AI and must prompt minors to take breaks.
 - The chips that trained the model were sold under US export rules that decide which countries may buy them.
-- The books in the training data were the subject of court rulings and a $1.5 billion settlement that changed how labs acquire text.
+- Books used as training data have been the subject of court rulings and, in one case, a $1.5 billion settlement over how they were acquired.
 - If someone uses an AI tool to post a fake intimate image of you, a US federal law signed in 2025 requires platforms to remove it within 48 hours of a valid report.
 
 None of these came from one "AI law." They came from legislatures, agencies, presidents, judges, standards committees and the companies themselves. This chapter untangles them. We start with the toolbox of governance, then tour the major jurisdictions (the EU, the US federal government, the US states, the UK, China and others), then look at the cross-cutting tools: international summits, export controls, standards, courts and voluntary commitments. We finish with a method for reading AI policy news.
@@ -390,7 +390,7 @@ The Omnibus:
 - Delayed Annex III high-risk obligations from August 2, 2026 to **December 2, 2027**.
 - Delayed Annex I (product-embedded) high-risk obligations to **August 2, 2028**.
 - Added bans on non-consensual intimate deepfakes and AI-generated CSAM from **December 2, 2026**.
-- Softened the AI-literacy duty, which had required organizations to ensure their staff had sufficient AI literacy, into a duty to take measures toward it.
+- Softened the duty on organizations to make sure their staff are AI-literate.
 - Simplified documentation for small and medium-sized enterprises and for a new category of "small mid-caps."
 - Created a legal basis to process sensitive personal data where needed to detect and correct bias.
 - Gave the AI Office expanded investigation and fining powers.
@@ -558,7 +558,7 @@ The law also created CalCompute, a consortium to plan a public cloud computing r
 
 > **Definition — Transparency report:** A document a developer publishes when releasing a model, describing what the model is, its intended uses and how it was assessed for risk.
 
-> **Definition — Critical safety incident:** Under California and New York frontier AI laws, a serious event such as theft of model weights, harm caused by a model, or loss of control over a model, which must be reported to the state within a set deadline.
+> **Definition — Critical safety incident:** Under California and New York frontier AI laws, a serious event defined in the law, such as certain unauthorized access to model weights, a model causing serious harm, or loss of control over a model, which must be reported to the state within a set deadline.
 
 > **Definition — Whistleblower protection:** Legal protection against firing or other retaliation for employees who report safety or legal concerns to the authorities.
 
@@ -570,7 +570,7 @@ The law also created CalCompute, a consortium to plan a public cloud computing r
 
 New York's **Responsible AI Safety and Education (RAISE) Act**, sponsored by Assemblymember Alex Bores, was signed by Governor Kathy Hochul on December 19, 2025, with agreed amendments. It covers developers with over $500 million in revenue that train frontier models. They must publish safety frameworks and transparency reports, report incidents within 72 hours, and face penalties of up to $1 million for a first violation and $3 million for later ones. The law creates a new oversight office in the state's Department of Financial Services and takes effect on January 1, 2027.
 
-**Worked example: incident clocks.** Suppose a large frontier developer discovers on a Monday at 9:00 a.m. that its model weights have been stolen. Under New York's law, once in effect, 72 hours means the report is due by Thursday at 9:00 a.m. Under California's law the standard deadline is 15 days, which is Tuesday two weeks later; but if the theft creates an imminent risk of death or serious injury, the deadline is 24 hours, Tuesday at 9:00 a.m. A company covered by both laws must build its incident process around the tightest clock that could apply.
+**Worked example: incident clocks.** Suppose a large frontier developer discovers on a Monday at 9:00 a.m. an event that counts as a critical safety incident under both laws, such as a serious security breach involving its model weights. Under New York's law, once in effect, 72 hours means the report is due by Thursday at 9:00 a.m. Under California's law the standard deadline is 15 days, which is Tuesday two weeks later; but if the event creates an imminent risk of death or serious injury, the deadline is 24 hours, Tuesday at 9:00 a.m. A company covered by both laws must build its incident process around the tightest clock that could apply.
 
 ### Colorado: from a broad duty to narrow transparency
 
@@ -829,7 +829,7 @@ When legislatures are slow, courts make policy one case at a time. Three kinds o
 
 - **Copyright.** Courts have split according to the facts. In *Bartz v. Anthropic*, Judge Alsup ruled in June 2025 that training on lawfully acquired books was fair use but that downloading pirated books was not; a $1.5 billion settlement received final approval on July 20, 2026. In *Kadrey v. Meta*, Judge Chhabria ruled for Meta because the authors failed to prove market harm, while warning that a "market dilution" argument could win in a better-argued case. On September 29, 2026, the Third Circuit affirmed in *Thomson Reuters v. Ross* that copying legal headnotes to train a competing, non-generative search tool was not fair use. *New York Times v. Microsoft and OpenAI* awaits rulings on fair-use motions filed in September 2026.
 - **Product safety.** Families have sued chatbot makers over teen suicides, for example *Raine v. OpenAI*, filed in August 2025. In January 2026, Character.AI and Google agreed to settle several such suits without admitting liability.
-- **Constitutional limits.** In March 2026 a federal judge reportedly issued a temporary injunction blocking the government's designation of Anthropic as a "supply chain risk" after a dispute over limits on military uses (Chapter 60 discusses it as a case of government power over labs), and xAI's challenge to Colorado showed that companies will test state laws in court.
+- **Constitutional limits.** In March 2026 a federal judge reportedly issued a temporary injunction in a dispute between Anthropic and the federal government over the company's limits on military uses of its models (Chapter 60 discusses it as a case of government power over labs), and xAI's challenge to Colorado showed that companies will test state laws in court.
 
 > **Definition — Fair use:** A US copyright doctrine that allows some unlicensed use of copyrighted works, judged on four factors including the purpose of the use and its effect on the market for the original.
 
