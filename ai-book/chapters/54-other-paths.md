@@ -459,7 +459,7 @@ The cleanest fix is to take the choice away from the customers. Flip a coin for 
 
 > **Definition — A/B test:** A randomized experiment in a product: users are randomly shown version A or version B, and the difference in their behavior measures the causal effect of the change. It is the workhorse of causal evidence in tech.
 
-Luck matters more than people expect. If about 20% of customers buy, then with 250 per group random noise alone moves the difference between groups by around 3 to 4 percentage points, so a true effect of 2 points would be invisible. It takes roughly 6,500 customers per group to shrink that noise below a point. This is why large tech companies run thousands of controlled experiments a year on huge user bases, and why small companies often cannot measure small effects at all. When your chatbot occasionally shows you two answers and asks which you prefer, you are taking part in a close cousin of this: a controlled comparison.
+Luck matters more than people expect. If about 20% of customers buy, then with 250 per group random noise alone moves the difference between groups by around 3 to 4 percentage points, so a true effect of 2 points would be invisible. It takes roughly 6,500 customers per group before a true 2-point effect reliably stands out from the noise. This is why large tech companies run thousands of controlled experiments a year on huge user bases, and why small companies often cannot measure small effects at all. When your chatbot occasionally shows you two answers and asks which you prefer, you are taking part in a close cousin of this: a controlled comparison.
 
 ### Pearl's ladder of causation
 

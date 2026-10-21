@@ -582,9 +582,9 @@ weight   ÷0.171   rounded   stored as   back to   error
 -0.96    -5.61      -6        -6       -1.029    0.069
  1.10     6.43       6         6        1.029    0.071
 
--1.2      -0.6       0        0.6       1.2
- |----|----|----|----|----|----|----|----|  15 allowed values,
--7   -5   -3   -1    1    3    5    7      spaced 0.171 apart
+-1.2                   0                   1.2
+  |--|--|--|--|--|--|--|--|--|--|--|--|--|--|  15 allowed values (whole numbers -7 to 7),
+ -7    -5    -3    -1     1     3     5     7     spaced 0.171 apart
 ```
 
 *Figure 53.8: Four-bit quantization of eight weights. Each weight snaps to the nearest of 15 allowed values; no error exceeds half a step (about 0.086).*
