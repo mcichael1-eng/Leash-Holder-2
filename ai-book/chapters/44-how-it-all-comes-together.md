@@ -399,9 +399,9 @@ Now the big run. Model F's 100,000 GPUs train as one machine for about 90 days, 
 One day of a 100,000-GPU training run (illustrative)
 Each digit is one hour: the number of unexpected interruptions
 
-hour   0     4     8     12    16    20   24
-       |-----|-----|-----|-----|-----|----|
-       212332202321314203122232
+hour   0   4   8   12  16  20  24
+       |---|---|---|---|---|---|
+       212322202321314203122232
 
 About 47 a day. If each costs the whole cluster 10 minutes,
 47 x 10 = 470 minutes, about a third of every day, is lost.
@@ -507,7 +507,7 @@ flowchart TD
 
 The two journeys meet in three calculations.
 
-**Training cost per token served.** Suppose Model F's final run cost about $0.75 billion at rental-equivalent prices (the middle of our range), and the whole program (experiments, failed runs, post-training, data, people) cost about four times that, $3 billion. The research file behind this book describes total program cost as "several times" the final run; four times is our assumption. Now suppose the model family serves about 5.5 trillion tokens a day for six months, about `10^15` tokens. Then training adds $3 billion ÷ `10^15` = $3 per million tokens served. Serve ten times fewer tokens and it is $30 per million; ten times more and it is $0.30. Training is a fixed cost that becomes cheap per token only at enormous volume, which is why labs fight for usage, distill cheap tiers, and cut prices as usage grows.
+**Training cost per token served.** Suppose Model F's final run cost about $0.75 billion at rental-equivalent prices (the middle of our range), and the whole program (experiments, failed runs, post-training, data, people) cost about four times that, $3 billion. Outside analysts describe total program cost as several times the final run; four times is our assumption. Now suppose the model family serves about 5.5 trillion tokens a day for six months, about `10^15` tokens. Then training adds $3 billion ÷ `10^15` = $3 per million tokens served. Serve ten times fewer tokens and it is $30 per million; ten times more and it is $0.30. Training is a fixed cost that becomes cheap per token only at enormous volume, which is why labs fight for usage, distill cheap tiers, and cut prices as usage grows.
 
 **Energy: training versus serving.** Model F's pretraining used about 470 GWh. If its family then served a billion lease-sized requests a day at about 1.2 Wh each, serving would use 1.2 GWh per day and would match the whole pretraining run in about 390 days. At a billion short 0.3 Wh prompts per day, it would take about four years. Either way, over a model's life, inference energy catches up with training, which is why the industry expects inference to become the larger share of AI computing (JLL projects it overtaking training around 2027).
 

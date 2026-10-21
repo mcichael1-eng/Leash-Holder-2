@@ -166,7 +166,7 @@ The switchgear, transformers, UPS systems, pumps and heat exchangers needed to d
 
 ## Floors: raised floor versus slab
 
-Classic data centers of the 1990s to the 2010s had raised floors. Walk into one and the floor sounds hollow: it is a grid of removable square tiles, about 60 cm (2 feet) on a side, sitting on metal pedestals above the real concrete floor. The gap underneath, often half a meter or more, served as a giant duct. Air conditioners blew cold air into it, and perforated tiles in front of the racks let that cold air rise up into the servers. Cables also ran under the floor.
+Walk into a classic data center of the 1990s to 2010s and the floor sounds hollow: it is a grid of removable tiles, about 60 cm (2 feet) square, on metal pedestals above the real concrete. The gap underneath, often half a meter or more, was a giant duct. Air conditioners blew cold air into it, perforated tiles let it rise into the servers, and cables ran there too.
 
 > **Definition — Raised floor:** A floor made of removable tiles on pedestals, with an open space beneath it. Historically, data centers pushed cold air through that space and up through perforated tiles in front of the racks.
 
@@ -201,7 +201,7 @@ So the modern AI hall looks like this in cross-section:
 
 *Figure 38.3: Left, a raised floor used as an air duct with cables underneath. Right, an AI hall with racks on the slab and power, fiber and coolant running overhead.*
 
-> **Watch out:** The raised floor did not disappear everywhere. Many older and air-cooled data centers still use it, and some AI halls keep raised floors for other reasons. The trend for dense, liquid-cooled AI halls is toward slabs with services overhead.
+> **Watch out:** The raised floor has not disappeared. Many older and air-cooled data centers still use it; the trend toward slabs is for dense, liquid-cooled AI halls.
 
 ## Racks, rows and aisles
 
@@ -211,19 +211,17 @@ Now look at the racks themselves, and how they are arranged.
 
 > **Definition — Rack unit (U):** The standard unit of height inside a rack: 1.75 inches (4.445 cm). A "1U server" is one unit tall, like a thick pizza box; a 42U rack has 73.5 inches of mounting space.
 
-Racks stand side by side in long lines, and rows are grouped into repeatable blocks.
-
 > **Definition — Row, pod and cluster (data center layout):** A row is a line of racks standing side by side. A pod is a repeatable block of rows with its own network layer and shared power and cooling. A cluster is a set of pods networked together to work on shared jobs.
 
 ### Hot aisles and cold aisles
 
-Even in a liquid-cooled AI hall, some heat still leaves the racks as warm air, and older halls rely on air entirely. Servers pull cool air in at the front and push hot air out of the back. If you lined racks up all facing the same direction, each row would breathe in the hot exhaust of the row in front of it. So racks are placed face to face and back to back.
+Even in a liquid-cooled AI hall, some heat leaves the racks as warm air, and older halls rely on air entirely. Servers pull cool air in at the front and push hot air out the back. If every row faced the same way, each would breathe the hot exhaust of the row in front, so racks are placed face to face and back to back.
 
 > **Definition — Hot aisle and cold aisle:** A layout in which rows of racks face each other so that their fronts share an aisle of cool supply air (the cold aisle) and their backs share an aisle of hot exhaust air (the hot aisle).
 
 > **Definition — Containment:** Doors at the ends of an aisle and panels over its top that enclose either the hot or the cold aisle, so that hot and cold air cannot mix and cooling energy is not wasted.
 
-Industry guidance from ASHRAE recommends server inlet air of roughly 18 to 27 °C. Hot aisles run much warmer, which is why technicians in some halls work in the cold aisle whenever they can.
+Industry guidance from ASHRAE recommends server inlet air of roughly 18 to 27 °C; hot aisles run much warmer.
 
 > **Analogy:** Containment is keeping the fridge door closed. If you leave it open, the fridge works twice as hard and your kitchen gets warm. Doors and lids on an aisle stop the cold air from leaking out before it reaches the servers.
 
@@ -256,7 +254,7 @@ Here is a simplified floor plan of one block of an AI data hall, as if you were 
 
 *Figure 38.4: A floor plan of one block of an AI data hall. Forty GPU racks at about 130 kW each make roughly 5 MW of IT load, fed by the electrical room on the left and cooled through the CDUs and mechanical room.*
 
-Look at the ratio in that picture. Forty racks at 130 kW is 5.2 MW, about the average electricity use of 4,000 American homes, in a space the size of a large classroom. The coolant distribution units at the row ends pass heat from the racks' liquid loop to the building's water loop (Chapter 40). The network row holds switches that link the racks to each other and to the outside world.
+Forty racks at 130 kW is 5.2 MW, the average electricity use of about 4,000 American homes, in a space the size of a large classroom. The coolant distribution units at the row ends pass heat from the racks' liquid loop to the building's water loop (Chapter 40).
 
 > **Definition — CDU (coolant distribution unit):** A cabinet of pumps and a heat exchanger that circulates clean coolant through the racks' cold plates and hands the heat to the building's facility water loop, while controlling flow, pressure and temperature.
 
@@ -272,7 +270,7 @@ Power and data are kept apart on separate levels, both for safety and because po
 
 > **Definition — Structured cabling:** An organized system of permanent cables, labeled pathways and patch panels (rows of ports where those cables end), so that technicians make changes by moving short patch cords rather than pulling new long cables.
 
-The amount of cable in an AI hall is staggering. Inside an NVL72 rack, a copper "spine" of roughly 5,000 cables links the 72 GPUs (Chapter 34). Between racks, the back-end network uses optical fiber, and a rough rule of thumb from Chapter 34 is about six optical transceivers per GPU in a large three-layer network. For a 100,000-GPU cluster that is on the order of 600,000 transceivers and hundreds of thousands of fiber links, every one of which must be installed, labeled, tested and occasionally replaced.
+The amount of cable is staggering. Inside an NVL72 rack, a copper "spine" of roughly 5,000 cables links the 72 GPUs (Chapter 34). Between racks, a rough rule of thumb is about six optical transceivers per GPU in a large three-layer network, so a 100,000-GPU cluster needs on the order of 600,000 transceivers and hundreds of thousands of fiber links, each installed, labeled, tested and occasionally replaced.
 
 > **Watch out:** Cable management is not a cosmetic issue. A badly routed bundle blocks airflow, a mislabeled fiber can take hours to trace, and in AI clusters one flaky link can slow down a training job running on thousands of GPUs. Good cabling crews are prized for exactly this reason.
 
@@ -284,7 +282,7 @@ Follow the fiber trays out of the hall and you reach a locked room full of racks
 
 > **Definition — Cross-connect:** A physical cable, usually fiber, run inside the meet-me room to link one party's equipment directly to another's, for example a tenant to a carrier, or two tenants to each other. Colocation operators charge a monthly fee per cross-connect.
 
-A data center that welcomes many competing carriers is called "carrier-neutral". Tenants can then buy connectivity from whichever carrier is cheapest or fastest, and two companies in the same building can connect with a short cable instead of sending traffic across the internet. That is why some buildings become magnets for networks.
+A "carrier-neutral" data center welcomes many competing carriers, so tenants can pick the cheapest or fastest, and two companies in the same building can connect with a short cable instead of crossing the internet.
 
 ```mermaid
 flowchart LR
@@ -303,7 +301,7 @@ flowchart LR
 
 > **Definition — Internet exchange point (IXP):** A place, usually inside a carrier hotel or large data center, where many networks connect to a shared switch to hand traffic directly to each other instead of paying a third party to carry it.
 
-AI training campuses usually sit far from these city-center hubs, because they need land and power more than they need to be near users. They connect back to the internet's meeting points over long fiber routes. Inference data centers, which answer your prompts, care more about being close to users and to exchange points.
+AI training campuses usually sit far from these city hubs, because they need land and power more than closeness to users; inference data centers, which answer your prompts, care more about being near users and exchange points.
 
 ## Inside the rack: 2015 versus 2026 versus the megawatt rack
 
@@ -350,13 +348,13 @@ Here is the same comparison as numbers.
 
 *Table 38.1: Rack generations. "Homes" uses an average US home drawing about 1.2 kW averaged over a year.*
 
-A 130 kW rack draws about as much power, averaged over the year, as 100 US homes. NVIDIA says the jump from its Hopper generation to Blackwell alone raised rack density about 3.4 times, "from tens of kilowatts to well over 100". It is now designing for more than 1 MW per rack, with 800-volt DC power distribution entering production alongside its Kyber racks in 2027. Chapter 39 explains why the voltage has to rise.
+NVIDIA says the jump from its Hopper generation to Blackwell alone raised rack density about 3.4 times, "from tens of kilowatts to well over 100". It is now designing for more than 1 MW per rack, with 800-volt DC power distribution entering production alongside its Kyber racks in 2027. Chapter 39 explains why the voltage has to rise.
 
-What does a rack like that produce? Microsoft says each 72-GPU rack in its Fairwater design can generate about 865,000 tokens per second. At roughly 0.75 words per token, that is about 650,000 words per second, the length of several long novels every second, from one cabinet.
+What does such a rack produce? Microsoft says each 72-GPU rack in its Fairwater design can generate about 865,000 tokens per second: at roughly 0.75 words per token, several long novels' worth of text every second from one cabinet.
 
 > **Analogy:** Fitting 130 kW into one rack is like fitting a whole suburban street's electricity into a refrigerator-sized cabinet, and then removing all of that energy again as heat through pipes the width of a garden hose.
 
-> **At the frontier (2026):** Vera Rubin NVL72 racks were ramping into production in 2026 at CoreWeave, Google Cloud, Microsoft Azure, Oracle Cloud Infrastructure and Nebius, according to NVIDIA. AMD's competing Helios rack, with 72 MI455X GPUs in Meta's wider Open Rack Wide form factor, begins shipping in the second half of 2026. Rack designs are now negotiated between chipmakers, cloud companies and building designers years in advance, because a new rack can force changes to floors, pipes and power rooms.
+> **At the frontier (2026):** NVIDIA says Vera Rubin NVL72 racks were ramping into production in 2026, and AMD's competing Helios rack (72 MI455X GPUs in Meta's wider Open Rack Wide form factor) begins shipping in the second half of 2026. Rack designs are now negotiated between chipmakers, clouds and building designers years ahead, because a new rack can force changes to floors, pipes and power rooms.
 
 ## The networks inside the building
 
@@ -370,10 +368,10 @@ Walk to the end of a row and you reach the network racks. An AI data hall does n
 
 The four networks of a typical AI hall:
 
-1. **The scale-up network** lives *inside* the rack. In an NVL72 it is NVLink over copper cables, joining 72 GPUs so tightly that software treats them as one giant GPU.
-2. **The scale-out or back-end network** links racks to each other so that thousands of GPUs can work on one training job or one large inference service. It uses InfiniBand or high-speed Ethernet over optical fiber, through leaf, spine and sometimes core switches in the network rows.
-3. **The front-end network** connects servers to users, to the internet through the meet-me room, and to storage, where training data and checkpoints (saved copies of a model mid-training) live. It looks like an ordinary cloud data center network.
-4. **The management network** is a separate, slower network that lets operators reach every server's control chip even when the server itself has crashed, to reboot it, update it or read its sensors.
+1. **The scale-up network** lives *inside* the rack: in an NVL72, NVLink over copper joins 72 GPUs so tightly that software treats them as one giant GPU.
+2. **The scale-out or back-end network** links racks so thousands of GPUs can work on one job, using InfiniBand or high-speed Ethernet over fiber through leaf and spine switches in the network rows.
+3. **The front-end network** connects servers to users, to the internet through the meet-me room, and to storage, where training data and checkpoints (saved copies of a model mid-training) live.
+4. **The management network** is a separate, slower network that lets operators reach every server's control chip even when the server has crashed.
 
 > **Definition — Scale-up, scale-out and front-end networks:** Scale-up joins GPUs inside a rack or domain with ultra-fast links such as NVLink. Scale-out (the back-end) joins many racks for shared jobs using InfiniBand or Ethernet. The front-end carries user traffic, internet traffic and storage.
 
@@ -424,7 +422,7 @@ Light in glass fiber travels at about two-thirds of its speed in vacuum, roughly
 
 *Table 38.2: Delay from the speed of light alone, at about 5 microseconds per kilometer of fiber. Real links add switching and routing delays on top.*
 
-For your chatbot, a few milliseconds hardly matter: you wait far longer for the model to think. For a training job, they matter a lot. GPUs inside an NVL72 exchange data over links measured in nanoseconds. Several milliseconds is a thousand to ten thousand times longer.
+For your chatbot, a few milliseconds hardly matter; you wait far longer for the model to think. For a training job, whose GPUs exchange data over links measured in nanoseconds, several milliseconds is an eternity.
 
 ### AI WANs: one model, several states
 
@@ -504,11 +502,11 @@ The commonly quoted rule-of-thumb availabilities for the four Tiers convert into
 
 A bank's data center is usually built to Tier III or IV, because a few minutes of downtime can stop payments for millions of people. You might expect AI data centers, which cost tens of billions of dollars, to be even more paranoid. For *training* halls, the industry often goes the other way. Here is the reasoning.
 
-1. **Training jobs crash anyway.** Chapter 34 showed that at 100,000 GPUs, some component fails roughly every half hour. During a 54-day stretch of Llama 3 training on 16,384 GPUs, Meta recorded 419 unexpected interruptions. Training software is therefore built to save checkpoints often and restart quickly.
-2. **Grid outages are rare by comparison.** A hall-wide power blip might happen a few times a year. Losing a few minutes of training (and rolling back to the last checkpoint) costs far less than doubling every transformer, UPS and switchboard.
-3. **Redundant gear competes for scarce power and equipment.** Every megawatt of spare electrical capacity is a megawatt of transformers and switchgear that could have fed more GPUs, and those parts are among the hardest to buy in 2026.
+1. **Training jobs crash anyway.** During a 54-day stretch of Llama 3 training on 16,384 GPUs, Meta recorded 419 unexpected interruptions, mostly hardware. Training software is therefore built to save checkpoints often and restart quickly (Chapter 34).
+2. **Grid outages are rare by comparison.** Losing a few minutes of training and rolling back to the last checkpoint costs far less than doubling every transformer, UPS and switchboard.
+3. **Redundant gear competes for scarce equipment.** Every megawatt of spare electrical capacity is transformers and switchgear that could have fed more GPUs, and those parts are among the hardest to buy in 2026.
 
-So training halls often use leaner designs, for example N+1 rather than 2N in places, and accept that the cluster will occasionally pause. *Inference* halls, which answer your prompts live, are different: users notice outages immediately and enterprise customers have SLAs. Even there, big AI providers lean on *geographic* redundancy, sending traffic to another site or region when one fails, rather than making any single building perfect.
+So training halls often use leaner designs, for example N+1 rather than 2N in places, and accept occasional pauses. *Inference* halls, which answer your prompts live, need more: users notice outages at once and enterprise customers have SLAs. Even there, big AI providers lean on *geographic* redundancy, sending traffic to another site when one fails, rather than making any single building perfect.
 
 > **Key idea:** Redundancy is a business decision, not a moral one. The right level depends on what an outage costs. A training run can restart from a checkpoint; a payment network cannot un-drop a payment.
 
@@ -574,9 +572,7 @@ flowchart TD
 
 *Figure 38.11: Layers of physical security, from the road to the rack. Each layer logs who passed and when.*
 
-Other habits complete the picture. Addresses are often not publicized and buildings carry no logo. Visitors cannot bring in unregistered devices. Failed storage drives are commonly destroyed on site rather than shipped out with data on them. In shared buildings, each customer's racks sit inside a locked wire-mesh cage.
-
-AI adds a new reason for all this. A frontier model's weights, the file of numbers that *is* the model, may be among the most valuable digital assets in the world, and some labs treat the physical security of the machines that hold them as part of AI safety. Chapter 56 covers model weight security levels.
+Other habits complete the picture: addresses are often not publicized, buildings carry no logo, biometric readers (fingerprint or palm scans) back up badges, failed storage drives are commonly destroyed on site, and in shared buildings each customer's racks sit inside a locked wire-mesh cage. AI adds a new reason for all this: a frontier model's weights, the file of numbers that *is* the model, are among the most valuable digital assets in the world (Chapter 56 covers weight security).
 
 ## Types of data centers
 
@@ -635,12 +631,11 @@ Converted crypto-mining sites deserve a note. Bitcoin miners such as IREN, Ciphe
 
 Who builds, owns and fills all these buildings? Think of it as a stack of companies.
 
-- **Hyperscalers** (AWS, Microsoft Azure, Google Cloud, Meta, Oracle) design and build their own campuses, lease more from developers, and rent capacity to AI labs and other customers.
-- **Neoclouds** are newer cloud companies that specialize in renting GPUs: CoreWeave, Nebius, Lambda, Crusoe, Together AI, Nscale, Fluidstack, IREN and others. CoreWeave reportedly ran around 51 AI data centers in 2026, with Microsoft accounting for about two-thirds of its 2025 revenue.
-- **Colocation developers and landlords** (Equinix, Digital Realty, QTS, Vantage, Aligned, STACK, CyrusOne, Related Digital and others) build and lease buildings, from retail cages to entire campuses.
-- **Equipment makers** supply what goes inside: chips and networking (NVIDIA, AMD, Broadcom) and power and cooling gear (Vertiv, Schneider Electric, Eaton, ABB, Siemens, GE Vernova, Hitachi Energy).
-- **Utilities and grid operators** deliver the power (Chapter 41).
-- **Finance**: private equity, infrastructure funds, private credit lenders and sovereign wealth funds pay for much of it (Chapter 43).
+- **Hyperscalers** (AWS, Microsoft Azure, Google Cloud, Meta, Oracle) build their own campuses, lease more, and rent capacity to AI labs and others.
+- **Neoclouds** rent GPUs: CoreWeave, Nebius, Lambda, Crusoe, Together AI, Nscale, Fluidstack, IREN and others. CoreWeave reportedly ran around 51 AI data centers in 2026.
+- **Colocation developers and landlords** (Equinix, Digital Realty, QTS, Vantage, Aligned, STACK, CyrusOne, Related Digital and others) build and lease everything from cages to campuses.
+- **Equipment makers** supply chips and networking (NVIDIA, AMD, Broadcom) and power and cooling gear (Vertiv, Schneider Electric, Eaton, ABB, Siemens, GE Vernova, Hitachi Energy).
+- **Utilities and grid operators** deliver the power (Chapter 41), and **financiers** (private equity, infrastructure funds, private credit, sovereign wealth funds) pay for much of it (Chapter 43).
 
 > **Definition — Neocloud:** A newer cloud company that specializes in renting AI accelerators, such as CoreWeave, Nebius, Lambda or Crusoe, as opposed to a general-purpose hyperscale cloud.
 
@@ -686,10 +681,9 @@ That is why AI labs sign multi-year, take-or-pay contracts instead: they get low
 
 Put the tour together and the frontier campus of 2026 is:
 
-- **Built fast.** xAI's first Colossus site in Memphis, a former Electrolux factory, reportedly went from start to about 100,000 H100s in 122 days in 2024. Amazon's Project Rainier site in Indiana came online in under a year with about 500,000 Trainium2 chips for Anthropic.
-- **Built huge.** Epoch AI lists the Anthropic–Amazon site at New Carlisle, Indiana at about 1,037 MW of IT power, the largest tracked site by power as of October 2026, and xAI's Colossus 2 at about 946 MW, the largest by compute at roughly 1.1 million H100-equivalents.
-- **Liquid-cooled and dense.** Microsoft says its Wisconsin Fairwater site holds hundreds of thousands of NVIDIA GB200 GPUs, cools more than 90% of its capacity with a closed liquid loop that is filled once, and stacks racks on two stories.
-- **Joined to other campuses.** Fairwater's Wisconsin and Atlanta sites act as one system over an AI WAN.
+- **Built fast.** xAI's first Colossus site in Memphis, a former Electrolux factory, reportedly reached about 100,000 H100s in 122 days in 2024. Amazon's Project Rainier site in Indiana came online in under a year with about 500,000 Trainium2 chips for Anthropic.
+- **Built huge.** Epoch AI lists the Anthropic–Amazon site at New Carlisle, Indiana at about 1,037 MW of IT power, the largest tracked site by power as of October 2026, and xAI's Colossus 2 at about 946 MW, the largest by compute (roughly 1.1 million H100-equivalents).
+- **Dense and joined up.** Microsoft's Wisconsin Fairwater site holds hundreds of thousands of GB200 GPUs, cools more than 90% of its capacity with a closed liquid loop filled once, and acts as one system with its Atlanta sibling.
 
 > **Key idea:** The unit of AI infrastructure has grown from the server to the rack to the building to the campus, and now to groups of campuses joined by fiber. The physical constraints at each level (weight, heat, power, distance) shape what AI companies can build and how fast.
 

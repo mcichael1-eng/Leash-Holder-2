@@ -572,3 +572,230 @@ timeline
 > **Watch out:** A campus "for OpenAI" or "for Anthropic" is usually owned and operated by someone else (Oracle, Crusoe, Amazon) and financed by yet others. When a project struggles or succeeds, check which company actually carries the cost.
 
 > **Try it:** Open Epoch AI's data center hub at epoch.ai/data/data-centers. Find the three largest sites by power and by compute, and note whether the two lists match. Then look at one site's satellite images over time. You'll see how analysts estimate capacity from rooftops, cooling units and turbines.
+
+## Sovereign AI: countries want their own compute
+
+So far this chapter has been mostly American, because most of the world's AI compute sits in the United States. But governments everywhere have noticed that AI runs on physical machines in specific places, and they want some of those machines inside their own borders.
+
+> **Definition — Sovereign AI:** A country's effort to own or control AI computing capacity, data and models within its own borders, so that it does not depend entirely on foreign companies or governments.
+
+Four motives drive it.
+
+1. **Data residency.** Laws and customers increasingly require that sensitive data (health records, government files, bank data) be processed in-country. You can see this in API price lists: OpenAI charges a 10% uplift for regional-processing endpoints on models released from March 2026, so keeping your data in a particular region literally costs more.
+2. **National security.** Governments don't want their defense, intelligence or critical services to depend on compute that another country could switch off.
+3. **Energy.** Places with abundant, cheap power (the Gulf states with gas and sun, the Nordic countries with hydro and wind and cold air) see AI as a new way to export their energy, in the form of computation.
+4. **Access to chips.** The United States restricts exports of the most advanced AI chips (Chapter 36). Countries that want them must strike deals that satisfy US rules, and countries that can't get them, like China, build their own.
+
+> **Definition — Export controls:** Government rules limiting which goods and technologies can be sold to which countries. The US uses them to restrict access to its most advanced AI chips and chipmaking tools.
+
+### Around the world
+
+**The Gulf.** The United Arab Emirates is home to Stargate UAE, a planned 1 GW cluster inside a planned 5 GW UAE–US AI campus in Abu Dhabi, with G42, Oracle, NVIDIA, Cisco and SoftBank; its first 200 MW was targeted for 2026. Saudi Arabia's **Humain**, founded in May 2025 and owned by the Public Investment Fund (the kingdom's sovereign wealth fund), reportedly plans "several gigawatts" and has announced partnerships with NVIDIA, AMD and Qualcomm. Abu Dhabi's MGX is also an investor in Stargate itself.
+
+**Europe.** The European Union's InvestAI initiative plans several "AI gigafactories," large public-private compute facilities meant to give European researchers and companies frontier-scale capacity. Stargate Norway in Narvik, with Nscale and Aker, launched with about 230 MW planned initially, using the region's clean hydropower and cold climate. Google reportedly committed about €13 billion in Finland in September 2026. Nordic sites also lead in reusing data center heat for district heating (Chapter 40).
+
+**The United Kingdom.** The UK government has designated "AI Growth Zones" meant to speed planning and grid access for data centers. But high energy costs bite: OpenAI reportedly paused Stargate UK in April 2026, citing energy prices.
+
+**India.** Google reportedly plans a hub of about 1 GW and about $15 billion in Visakhapatnam, and the government runs national programs to provide GPUs to local researchers and startups.
+
+**Asia more broadly.** Malaysia's Johor state, just across the border from Singapore, has become a major hub; DayOne's Nusajaya campus (about 473 MW of IT) ranks among Epoch AI's top five sites worldwide. Japan is investing in domestic compute alongside its effort to rebuild leading-edge chipmaking (Chapter 36). China, cut off from NVIDIA's best chips, is building on Huawei's Ascend chips, with a 256,000-card Ascend "SuperCluster" being deployed in 2026.
+
+| Region | Main efforts (as of 2026) | Main driver |
+|---|---|---|
+| United Arab Emirates | Stargate UAE, 1 GW within a planned 5 GW campus | Energy, investment, partnership with the US |
+| Saudi Arabia | Humain, reportedly "several gigawatts" planned | Energy, economic diversification |
+| European Union | InvestAI "AI gigafactories" | Independence from US clouds, data rules |
+| Norway, Finland | Stargate Norway; Google's reported Finland commitment | Clean power, cold climate |
+| United Kingdom | AI Growth Zones; Stargate UK reportedly paused | Growth policy, held back by energy costs |
+| India | Google's reported Visakhapatnam hub; national GPU programs | Huge user base, data residency |
+| Malaysia | Johor cluster near Singapore | Land and power next to a constrained hub |
+| China | Huawei Ascend clusters | Export controls force a domestic stack |
+
+*Table 42.5: Sovereign AI efforts around the world, as of 2026. Many figures are announcements or reports, not running capacity.*
+
+### The sovereignty debate
+
+The strongest case **for** sovereign AI: compute is becoming as basic as electricity, and no country wants its hospitals, courts and armed forces to depend on a service another government could restrict. Local compute also keeps citizens' data under local law and builds local skills.
+
+The strongest case **against**: AI compute has huge economies of scale. Splitting it into dozens of national clusters means smaller, less efficient sites, duplicated costs and, often, the same American chips and software anyway, so the "sovereignty" may be thinner than it looks. A country might get more benefit from cheap access to the world's best models plus strong data-protection law.
+
+Most countries are landing in between: a modest national cluster for sensitive uses, plus deals that bring global hyperscalers to build locally under local rules.
+
+> **Key idea:** Sovereign AI is about control, not just capacity. Countries build or attract data centers so that data, security and access to chips depend less on decisions made elsewhere, and countries with cheap energy see AI compute as a new export.
+
+## What comes next, and how feasible it is
+
+The buildout is still accelerating, and engineers are working on ideas that range from nearly certain to science-fiction-adjacent. Here they are, with honest notes.
+
+### Megawatt racks and 800 V DC power
+
+A rack held about 5 to 10 kW in 2015 and about 120 to 140 kW in a 2026 NVIDIA GB200 or GB300 NVL72. NVIDIA is designing for **more than 1 MW per rack**, with **800 V DC** power distribution entering production alongside its Kyber racks in **2027**.
+
+> **Definition — 800 V DC distribution:** A data center power design that sends high-voltage direct current (800 volts) straight to the racks, instead of lower-voltage alternating current, to cut copper, conversion losses and space. NVIDIA plans it for 2027-era racks.
+
+**Worked example: why the voltage must rise.** Power = voltage × current (Chapter 39). For a 1 MW rack:
+
+- At today's 54 V rack power: current = 1,000,000 W ÷ 54 V ≈ **18,500 amps**.
+- At 800 V: current = 1,000,000 ÷ 800 = **1,250 amps**, about 15 times less.
+
+The thickness of copper you need grows with current, so at 54 V a 1 MW rack would need about 200 kg of copper busbar, according to NVIDIA. NVIDIA says 800 V DC carries 85% more power through the same conductor than today's 415 V AC, cuts copper by about 45% and improves end-to-end efficiency by up to 5%.
+
+**Feasibility: high.** This is hard engineering (safety at 800 V, cooling a megawatt in a refrigerator-sized cabinet, floors that hold several tonnes, servicing such dense racks), but the companies involved have the money, the motive and a published roadmap.
+
+### Nuclear power for AI
+
+Nuclear is attractive because it is firm (runs day and night), carbon-free and compact. The timeline is the catch.
+
+- **This decade:** restarts and uprates of existing plants. Microsoft's Crane (Three Mile Island Unit 1) restart targeted 2027; Google's Duane Arnold restart by 2029; Meta's Vistra uprates; Amazon's reported deal with Talen at the Susquehanna plant (about 1.9 GW).
+- **Around 2030 and after:** new designs. On September 28, 2026, the US Nuclear Regulatory Commission issued the first US construction permit for a BWRX-300 small modular reactor, at the Tennessee Valley Authority's Clinch River site. Meta's Oklo deal targets 2030 at the earliest; its TerraPower units 2032; Google's Kairos reactors 2030 to 2035. As of 2026, only China and Russia operate small modular reactors, according to public sources.
+
+> **Definition — SMR (small modular reactor):** A nuclear reactor of up to about 300 MW designed to be built largely in factories as standard modules, which could make reactors cheaper and faster to build. The first US units are expected around the end of the 2020s.
+
+**Feasibility: real but slow.** Expect existing plants to supply AI this decade and new reactors to matter in the 2030s. A reactor inside a data center's fence, powering it directly, is further off still, because of licensing, security and the need to keep the reactor running even when the data center doesn't need the power.
+
+### Grid-aware training
+
+Training runs are flexible in a way most factories are not: you can save a checkpoint (Chapter 37), slow down, and resume. That opens an idea: let AI campuses connect sooner by promising to cut their power use during the few hours a year when the grid is stressed.
+
+> **Definition — Demand response:** An arrangement in which a large electricity user reduces its consumption when the grid is under stress, usually in exchange for payment or a faster connection. Data centers that do this are called flexible loads.
+
+Texas already requires large loads (75 MW and up) to be curtailable in grid emergencies under its 2025 law SB 6. The engineering challenge is that synchronized GPUs can swing a site's power by tens of megawatts in seconds, so slowing down must be done smoothly, with batteries and software.
+
+**Worked example: the cost of pausing.** Chapter 43 shows that one GPU's purchase price alone works out to roughly $1.14 per hour of its life. A 100,000-GPU cluster that pauses for 1% of the year (about 88 hours) leaves about 100,000 × 88 × $1.14 ≈ **$10 million** of hardware idle. That sounds like a lot, until you compare it with getting connected to the grid years earlier.
+
+**Feasibility: medium.** Technically straightforward, economically attractive when it buys faster connection, but it requires new contracts and trust between utilities and operators.
+
+### Multi-site training
+
+If no single site can get enough power, train across several. Microsoft's two Fairwater sites, about 700 miles apart, are linked by a dedicated AI WAN, and Google says its software (JAX and Pathways) can scale one training cluster past a million TPU chips.
+
+**Worked example: the speed-of-light tax.** About 1,200 km of fiber between Wisconsin and Atlanta at about 5 microseconds per km gives about **6 milliseconds** one way. GPUs inside one rack exchange data in a few microseconds, a thousand times faster. So engineers split the job so that the chattiest communication (tensor and pipeline parallelism, Chapter 37) stays inside each site, and only less frequent exchanges, such as averaging updates between whole copies of the model, cross the long link.
+
+**Feasibility: already happening** for some workloads, and likely to become standard for the largest runs.
+
+### Data centers in space
+
+In November 2025, Google described **Project Suncatcher**: solar-powered satellites carrying TPUs in a dawn-dusk sun-synchronous orbit (where the satellite almost always sees the Sun), linked to each other by laser beams. A bench demonstration of the laser links reached 1.6 terabits per second, and a Trillium TPU survived radiation tests well beyond the dose expected over five years. Google estimated that the economics roughly work only if launch costs fall below about $200 per kilogram in the mid-2030s, and planned two prototype satellites with Planet by early 2027. Separately, the NVIDIA-backed startup Starcloud flew an H100 in orbit in November 2025, and SpaceX, which now owns xAI, has publicly promoted orbital AI compute.
+
+> **Definition — Sun-synchronous orbit:** An orbit around Earth's poles that keeps a satellite at the same angle to the Sun. A "dawn-dusk" version rides the line between day and night, so the satellite's solar panels are almost always in sunlight.
+
+**Worked example: the radiator problem.** Space is cold, but it is a vacuum, and a vacuum is an insulator: heat can leave only by radiating away as infrared light. A flat radiator panel at about 57 °C (330 kelvin), radiating from both sides, sheds at most about 1,200 watts per square meter (from the Stefan–Boltzmann law of physics, ignoring sunlight that falls on it). So:
+
+- **1 MW** of chips needs roughly **800 to 1,000 square meters** of radiator, about two basketball courts, and more once sunlight is counted.
+- The same 1 MW needs about **3,000 square meters** of solar panels (sunlight in orbit delivers about 1,361 watts per square meter, and panels convert roughly a quarter of it).
+- A **1 GW** orbital data center would need on the order of a square kilometer of radiators and three square kilometers of solar panels, all launched, assembled and kept working with no technician to swap a failed GPU.
+
+> **Analogy:** A solar-powered satellite data center is a laptop in a thermos. It gets all the power it wants, but it has a very hard time getting rid of its heat.
+
+**Feasibility: low in this decade.** The physics allows it; the economics depend on launch costs falling severalfold, and repair, radiation and data links to the ground remain unsolved. Small demonstrations, yes; gigawatts, not soon.
+
+### Under the sea and offshore
+
+Microsoft's **Project Natick** sank sealed data center pods off the coast of Scotland in trials from 2015 to 2020, then ended the program. China has deployed commercial underwater data center modules off Hainan. The appeal is free cooling from cold seawater; the drawbacks are maintenance (you can't walk in to replace a part), corrosion, permits and power cables. **Feasibility: niche.** Expect small deployments, not gigawatt campuses.
+
+```mermaid
+quadrantChart
+    title Next-generation ideas, rough judgment as of 2026
+    x-axis Far from deployment --> Ready to deploy
+    y-axis Small impact --> Large impact
+    quadrant-1 Coming soon and big
+    quadrant-2 Big but far off
+    quadrant-3 Long shots
+    quadrant-4 Useful niches
+    Megawatt racks: [0.8, 0.8]
+    Multi-site training: [0.75, 0.7]
+    Grid-aware training: [0.6, 0.6]
+    Nuclear restarts: [0.65, 0.5]
+    New small reactors: [0.3, 0.75]
+    Orbital data centers: [0.1, 0.55]
+    Underwater pods: [0.4, 0.15]
+```
+
+*Figure 42.8: A rough judgment of how ready and how important each next-generation idea is, as of late 2026. Positions are the author's assessment from the evidence in this chapter, not measurements.*
+
+> **At the frontier (2026):** The leading builders are combining several of these ideas at once: megawatt-class racks on 800 V DC, campuses designed as multi-site systems from day one, on-site gas today with nuclear deals for the 2030s, and contracts that let the grid curtail them in emergencies in exchange for faster connection.
+
+> **Watch out:** "Space data centers will solve AI's energy problem" mixes up power and heat. Orbit offers abundant sunlight, but every watt a chip uses must still be radiated away, launch is expensive, and nobody can drive out to fix a failed server. Treat orbital compute as a long-term research bet, not a near-term answer.
+
+## In plain English
+
+AI chatbots run on real buildings, and since 2024 companies have been building them at a pace not seen since the great railroad and telecom booms. By October 2026, Epoch AI tracked 95 big AI sites drawing up to about 18.5 gigawatts, as much as about 15 million American homes.
+
+These projects involve many companies at once. An AI lab like OpenAI or Anthropic signs a long contract with a cloud company like Oracle or Amazon, which leases buildings from a developer, which borrows from banks and funds and buys equipment from dozens of suppliers. Choosing a site now starts with one question: where can we get lots of electricity soon? Grid connections often take four or more years, while the building takes two or three, so builders turn to on-site gas turbines, batteries and sites next to power plants. Transformers, turbines, electricians, memory chips and permits are all in short supply, and local communities increasingly push back.
+
+The big stories show the same patterns: OpenAI's Stargate spread across many sites with mixed progress; xAI's Colossus built at record speed with controversial gas turbines; Meta's Hyperion in Louisiana planned at 5 gigawatts; Microsoft linking distant Fairwater sites into one system; Amazon's Rainier running Anthropic's work on Amazon's own chips. Countries want their own AI compute too, for control over data and security. Next come megawatt racks, nuclear power in the 2030s, training that flexes with the grid, and long-shot ideas like data centers in orbit.
+
+## Key terms
+
+Buildout, Gigawatt (GW), IT power (IT load), Facility power, H100-equivalent (H100e), Megaproject, Nameplate capacity, Hyperscaler, Neocloud, Data center developer, Colocation, Build-to-suit, Powered land, Powered shell, Take-or-pay contract, Campus, Site selection, Speed to power, Interconnection, Interconnection queue, Latency, Data residency, Land option, Behind-the-meter, Bridge power, Microgrid, Zoning, Entitlements, Air permit, Basis of design, Single-line diagram, Long-lead item, MEP (mechanical, electrical and plumbing), Commissioning, Integrated systems test, Load bank, Rack and stack, Critical path, Large power transformer, Switchgear, Combined-cycle gas turbine (CCGT), Reciprocating engine, HBM (High Bandwidth Memory), Optical transceiver, Moratorium, OSINT (open-source intelligence), Letter of intent, Clean Air Act, Power purchase agreement (PPA), Uprate, Closed-loop cooling, AI WAN (scale-across network), Nuclear restart, Sovereign AI, Export controls, 800 V DC distribution, SMR (small modular reactor), Demand response, Sun-synchronous orbit
+
+## Exercises
+
+1. **[Easy] How many homes is a gigawatt?** (1) Find your household's yearly electricity use on a bill, or use the US average of about 10,500 kWh per year. (2) Divide by 8,760 hours to get your average draw in kW. (3) Divide 1,000,000 kW (1 GW) by your number to get homes per gigawatt. (4) Repeat for Hyperion's 5 GW and Stargate's 10 GW plan. (5) Compare with the number of households in your city or state (search "[your state] number of households"). **What you'll learn:** what a gigawatt means in human terms, and that it measures a rate, not an amount.
+
+2. **[Easy] Spot a data center from the sky.** (1) Open Google Maps in satellite view, or a public map such as datacentermap.com. (2) Search for a data center near you or a famous one (try "Abilene Texas" and zoom to the campus north of town, or "New Albany Ohio data center"). (3) Find the substation (a fenced yard of transformers and wires), the generator yard (rows of identical boxes), the cooling yard (rows of fans on the roof or ground), and the buildings. (4) Estimate the roof area with the map's measuring tool. **What you'll learn:** to recognize the physical anatomy of an AI campus.
+
+3. **[Medium] Score three sites.** (1) Copy Table 42.2 into a spreadsheet with columns for factor, weight and three sites. (2) Pick three real counties (for example one in Texas, one in Virginia, one in Wyoming). (3) Score each factor from 1 to 5 using public sources: state electricity prices from the EIA, water stress from the WRI Aqueduct map, climate, local news for community attitudes, and state economic-development pages for tax incentives. (4) Compute the weighted score with `=SUMPRODUCT(weights, scores)/5`. (5) Change the weights twice (once for a company in a hurry, once for a company with strict carbon goals) and see whether the winner changes. **What you'll learn:** the multi-factor trade-off real site selectors make, and how weights drive the answer.
+
+4. **[Medium] Watch a megaproject grow.** (1) Install Google Earth Pro (free) on a computer, or use the Sentinel Hub EO Browser online. (2) Go to Abilene, Texas or Richland Parish, Louisiana. (3) Use the historical imagery slider to view the site each year from 2023 to the most recent image. (4) Count buildings, cooling units and any turbines in each image. (5) Compare your count with Epoch AI's published estimates. **What you'll learn:** how open-source intelligence analysts estimate AI capacity, and how fast these sites rise.
+
+5. **[Medium] Build a megaproject tracker.** (1) Open Epoch AI's data center hub (epoch.ai/data/data-centers). (2) Copy the ten largest sites into a spreadsheet with columns for owner, location, IT power (MW) and H100-equivalents. (3) Add a column computing H100-equivalents per MW. (4) Sort by each column and note which sites rank high on compute but lower on power, and why newer chips would explain that. (5) Add a "source and date" column, and set a calendar reminder to update it in three months. **What you'll learn:** to work with real infrastructure data and to date every number.
+
+6. **[Medium] Find the critical path.** (1) In a spreadsheet, list the ten lifecycle steps from this chapter with a start month and a duration in months (use Figure 42.4 as a guide). (2) Add a column for "end month" with `=start+duration`. (3) Make a simple bar chart (a stacked bar chart with the start column formatted invisible works as a Gantt chart). (4) Now change only the grid power duration from 24 to 60 months and see which step decides the go-live date. (5) Add a "bridge power" row of 12 months and see how it changes the answer. **What you'll learn:** why power, not construction, sets data center timelines.
+
+7. **[Medium] Hold a planning board hearing.** (1) Ask a chatbot: "Role-play a county planning board hearing on a proposed 500 MW AI data center on farmland. Play four speakers: the developer, a farmer neighbor, the county finance director and an environmental advocate. Each speaks for one paragraph." (2) Write down the three strongest arguments on each side. (3) Draft five conditions (on water, noise, tax payments, power costs and jobs) that might win approval. (4) Check one fact each speaker used against a real source. **What you'll learn:** the community politics that now decide many projects, and how to argue both sides fairly.
+
+8. **[Challenge] Write an energy-source memo.** You need 500 MW of firm power by 2028. (1) Make a table comparing four options: on-site gas turbines or engines, a new grid connection, solar plus 4-hour batteries plus gas backup, and waiting for small modular reactors. (2) For each, estimate time to first power, carbon, cost risk and permitting risk, using Chapter 41 and this chapter. (3) Write a one-page recommendation. (4) Ask a chatbot to critique it as a skeptical utility regulator, then revise. **What you'll learn:** why gas wins the near term despite climate goals, and what would change that.
+
+9. **[Challenge] Napkin-design an orbital data center.** (1) In a spreadsheet, set chip power P (start with 1 MW = 1,000,000 W). (2) Radiator area = P ÷ (2 × 0.9 × 5.67e-8 × T^4), with T = 330 kelvin. (3) Solar area = P ÷ (1,361 × 0.25). (4) Repeat for 1 GW, and for a hotter radiator (T = 350 K) which needs hotter-running chips. (5) Assume a mass of 10 kg per square meter of panels and radiators, and a launch cost of $200 per kg; compute the launch bill and compare it with Epoch AI's estimate of about $38 billion for a 1 GW ground site. **What you'll learn:** how physics and launch costs, not just enthusiasm, decide whether space compute makes sense.
+
+10. **[Challenge] Budget the speed of light.** (1) Look up the driving distance between Mount Pleasant, Wisconsin and Atlanta, Georgia, and assume fiber is about 1.5 times the straight-line distance. (2) Compute the one-way latency at 5 microseconds per km. (3) If a training step takes 2 seconds, what fraction of it is one round trip across the link? (4) If GPUs must exchange data 1,000 times per step, what happens? (5) Write two sentences on which kinds of parallelism (Chapter 37) can cross the link and which can't. **What you'll learn:** why multi-site training works for some kinds of communication and not others.
+
+## Areas of opportunity
+
+- **Skilled trades.** Electricians, pipefitters, high-voltage lineworkers, controls technicians and fiber splicers are the most direct bottleneck in the buildout. Megaprojects pay large premiums and per diems, and registered apprenticeships are the fastest entry route.
+- **Site selection and land development.** Companies pay well for people who can find "powered land": sites with a realistic path to hundreds of megawatts. The skills are energy-market knowledge, GIS mapping, land law and patience with utilities.
+- **Permitting, community relations and public affairs.** Projects now succeed or fail on local approval. Developers and labs hire community engagement managers, environmental consultants and negotiators of community benefit agreements.
+- **Construction and project management.** Schedulers who can manage critical paths through long-lead gear, procurement managers who can secure transformers and turbines, and commissioning agents are all scarce.
+- **Bridge and behind-the-meter power.** Businesses that rent mobile turbines, engines, fuel cells or batteries to data centers waiting for the grid have customers lined up; so do microgrid developers.
+- **Electrical and cooling equipment manufacturing.** Domestic transformer, switchgear, CDU and 800 V DC power-shelf manufacturing is undersupplied, and governments offer incentives to build it.
+- **OSINT and infrastructure analytics.** Investors, journalists and policymakers pay for independent estimates of what is really being built, the kind of work Epoch AI does from satellite images and permits.
+- **Sovereign AI advisory.** Governments and national champions need help designing national compute programs, data-residency rules and deals with hyperscalers that satisfy export controls.
+- **Grid flexibility software.** Tools that let training jobs throttle smoothly on grid-stress days, and contracts that turn that flexibility into faster connections, are an open problem worth solving.
+- **Open problem: community-friendly design.** Quiet, water-free, low-emission campuses that pay their way in local taxes would remove one of the biggest brakes on the buildout.
+
+## Check your understanding
+
+1. Why do headline "gigawatt" numbers for a campus often differ from what is running today? Name the four quantities from Table 42.1.
+2. In a typical megaproject, which companies are involved besides the AI lab, and what does each do?
+3. Why has "speed to power" overtaken "cheap power" as the top site-selection factor?
+4. Why can a training campus sit far from cities, and why does distance matter less than you might think even for chatbot answers?
+5. What is the critical path of a large data center project today, and what three workarounds do builders use to shorten it?
+6. Name four bottlenecks outside the chip itself that limit how fast AI capacity can be built.
+7. What did xAI's Colossus show about the trade-off between speed and permits?
+8. Why is an orbital data center harder to cool than one on the ground, even though space is cold?
+
+<details><summary>Answers</summary>
+
+1. Planned capacity is the eventual maximum, sometimes years away; facility power includes cooling and overhead; IT power counts only the computing equipment; and "running today" is what is actually switched on. Campuses open in phases, so the gap between the planned figure and the running figure can be years and several gigawatts.
+2. Usually a cloud or neocloud (which signs the contract with the lab and runs the computers), a developer (which secures land, power and permits and builds the buildings), contractors and trades, equipment makers, the utility and grid operator, and financiers (banks, private credit, infrastructure and sovereign funds). Chipmakers supply the racks.
+3. Because new grid connections in major markets now take four years or more, while a building takes two to three. Power that is cheap but unavailable until 2031 is worthless to a builder who wants GPUs running in 2027.
+4. Training GPUs mostly talk to each other, not to users, so the site can be anywhere with power and fiber. Light in fiber adds only about 5 milliseconds per 1,000 km, so even 3,000 km adds about 30 ms round trip, tiny next to the seconds a chatbot takes to answer. Distance matters more for voice agents, chatty coding agents and data-residency rules.
+5. Power: the grid connection, which often takes four to seven years. Builders use on-site (behind-the-meter) gas generation and bridge power, batteries, and sites next to existing power plants or converted power-rich sites such as bitcoin mines. They also open in phases.
+6. Any four of: large power transformers and switchgear, gas turbines, chillers and CDUs, skilled electricians and pipefitters, HBM memory, advanced packaging, optical transceivers, transmission lines and interconnection queues, permits and community approval.
+7. That reusing a building and bringing your own power can cut build time to months (122 days for Colossus 1), but running dozens of gas turbines without permanent permits led to a Clean Air Act lawsuit and became a case study in environmental justice. Speed can carry long-lasting legal and community costs.
+8. Space is a vacuum, which insulates. Heat can leave only by radiation, so you need very large radiators (roughly 1,000 square meters per megawatt at about 57 °C), plus solar panels, all launched at high cost and impossible to service by hand.
+
+</details>
+
+## Going deeper
+
+- **Epoch AI, Data on AI Data Centers** (epoch.ai/data/data-centers). The best public tracker of large AI sites, with power, compute and satellite-based estimates updated regularly.
+- **Epoch AI, "OpenAI's Stargate: where the US sites stand"** (epoch.ai, April 2026). A site-by-site status report that shows how to read a megaproject announcement critically.
+- **Microsoft, "Inside the world's most powerful AI datacenter"** (blogs.microsoft.com, September 2025). A rare first-party description of a frontier AI campus, with construction quantities and cooling design.
+- **International Energy Agency, *Energy and AI*** (iea.org, 2025). The standard global reference on data center electricity use and forecasts.
+- **Lawrence Berkeley National Laboratory, *2024 United States Data Center Energy Usage Report*** (eta.lbl.gov). The most cited US numbers on data center electricity, past and projected.
+- **JLL, *Data Center Outlook*** (jll.com). An industry view of capacity, construction costs, grid wait times and financing through 2030.
+- **Google Research, "Exploring a space-based, scalable AI infrastructure system design"** (research.google, November 2025). The Project Suncatcher paper: a serious, numbers-first look at orbital compute and its unsolved problems.
+- **Data Center Watch report** (datacenterwatch.org). Documents local opposition to data centers across the US and what drives it.
+- **Gretchen Bakke, *The Grid*** (2016). A readable history of the US electric grid that explains why connecting new loads is so slow.
