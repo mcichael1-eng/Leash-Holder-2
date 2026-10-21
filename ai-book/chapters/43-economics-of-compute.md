@@ -85,7 +85,7 @@ Call it roughly **$10 to 18 million per MW** for the building and its electromec
 
 The chips cost several times more than the building. Prices are rarely published, but reported figures give the scale: an H100 reportedly sold for about $25,000 to $40,000, and a GB200 or GB300 NVL72 rack (72 GPUs plus CPUs, switches and cooling) reportedly for about $3 to 4 million. Third-party estimates (low confidence) put a Vera Rubin NVL72 rack at about $5 to 7 million.
 
-**Worked example: IT cost per MW.** A Blackwell-class GPU with its share of the server, network and storage draws a bit over 2 kW of IT power, so a megawatt holds roughly **450 GPU slots**. At about **$50,000 per slot** all-in, that is 450 × $50,000 ≈ **$22.5 million per MW**, more than the building.
+**Worked example: IT cost per MW.** A Blackwell-class GPU slot draws about 1.8 kW as its share of an NVL72 rack (Chapter 39). Add its share of the network switches, storage and other gear outside the rack, plus some headroom, and plan on about 2.2 kW of IT capacity per slot, so a megawatt holds roughly **450 GPU slots**. At about **$50,000 per slot** all-in, that is 450 × $50,000 ≈ **$22.5 million per MW**, more than the building.
 
 | Component | Cost per MW of IT (rough, 2025–26) | Lifespan |
 |---|---|---|
@@ -347,7 +347,7 @@ Now scale up from one GPU to a whole building. This model is the core of this ch
 | Input | Value | Reasoning |
 |---|---|---|
 | IT capacity | 100 MW | A large single hall or small campus |
-| GPU slots per MW | 450 | About 2.2 kW of IT power per Blackwell-class slot |
+| GPU slots per MW | 450 | About 2.2 kW of IT capacity per Blackwell-class slot, including gear outside the rack |
 | GPU slots | 45,000 | 100 × 450 |
 | Building and electromechanical cost | $15 million per MW, so $1.5 billion | Between JLL's and Cushman & Wakefield's figures |
 | IT cost | $50,000 per slot, so $2.25 billion | Reported chip and rack prices |
@@ -597,7 +597,7 @@ Abu Dhabi's MGX is a Stargate partner and invested in OpenAI's 2026 round; Singa
 
 > **Definition — Valuation (post-money):** The value investors assign to a whole company immediately after a funding round, based on the price they paid for a small slice. It is an agreed estimate of future value, not cash the company holds.
 
-Public markets opened too. SpaceX, which owns xAI, listed on June 12, 2026, raising about $75 billion; OpenAI and Anthropic both filed confidentially for IPOs in June 2026, and Anthropic was reported in October 2026 to be targeting a mid-November listing.
+Public markets opened too. SpaceX, which owns xAI, listed on June 12, 2026, raising about $75 billion; OpenAI and Anthropic both reportedly filed confidentially for IPOs in June 2026, and Anthropic was reported in October 2026 to be targeting a mid-November listing.
 
 > **Watch out:** "Up to" figures are maximums, not commitments. When a headline says a company will invest "up to $100 billion," look for the conditions, the timeline, and whether the money flows back to the investor as purchases. Several 2025 headline deals were later restructured or shelved.
 

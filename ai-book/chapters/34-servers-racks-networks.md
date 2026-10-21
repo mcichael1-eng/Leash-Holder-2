@@ -335,7 +335,7 @@ Now the payoff. Why does it matter that 72 GPUs act as one?
 
 - Over NVLink 5, rated 1.8 TB/s counting both directions, so 900 GB/s each way: 1 GB ÷ 900 GB/s ≈ 1.1 milliseconds.
 - Over an 800 Gb/s network card (which is 100 GB/s, see the Watch out below): 1 GB ÷ 100 GB/s = 10 milliseconds.
-- Over a PCIe 5.0 slot at about 64 GB/s: about 16 milliseconds.
+- Over a PCIe 5.0 slot at about 64 GB/s each way: about 16 milliseconds.
 
 The NVLink path is about 9 times faster than the network. Some kinds of work need such exchanges every single layer of the model, dozens of times per token. In particular, *tensor parallelism* (splitting each matrix multiplication across GPUs) and *expert parallelism* (spreading the experts of a mixture-of-experts model across GPUs, Chapter 17) generate constant, all-to-all traffic. Inside an NVL72, a giant mixture-of-experts model can spread its experts across 72 GPUs and route each token to the right expert at NVLink speed. Outside the rack, the same traffic would choke the network. NVIDIA's projected claims for Vera Rubin, such as training large mixture-of-experts models with a quarter of the GPUs needed on GB200, rest heavily on this.
 

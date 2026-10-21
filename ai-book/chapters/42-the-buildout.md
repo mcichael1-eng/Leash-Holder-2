@@ -84,7 +84,7 @@ When you read "OpenAI's data center in Texas," it is rarely true that OpenAI own
 The main players fall into five groups.
 
 1. **Hyperscalers** build their own campuses (self-build) and also lease from developers. Google and Meta self-build heavily; Microsoft, Amazon and Oracle do both.
-2. **Neoclouds** rent GPUs to AI labs and companies. CoreWeave, the largest, ran about 51 AI data centers in 2026 and reportedly earned about two-thirds of its 2025 revenue from one customer, Microsoft. Nebius signed a Microsoft contract reported at $17.4 billion (up to $19.4 billion) in September 2025, and has sites in Finland, New Jersey (a 300 MW site in Vineland), Kansas City and Birmingham, Alabama. Several former bitcoin miners (IREN, Cipher, TeraWulf, Core Scientific) converted their power-rich mining sites into AI data centers.
+2. **Neoclouds** rent GPUs to AI labs and companies. CoreWeave, the largest, reportedly ran about 51 AI data centers in 2026 and earned about two-thirds of its 2025 revenue from one customer, Microsoft. Nebius signed a Microsoft contract reported at $17.4 billion (up to $19.4 billion) in September 2025, and has sites in Finland, New Jersey (a 300 MW site in Vineland), Kansas City and Birmingham, Alabama. Several former bitcoin miners (IREN, Cipher, TeraWulf, Core Scientific) converted their power-rich mining sites into AI data centers.
 3. **Developers and landlords** (Equinix, Digital Realty, QTS, Vantage, Aligned, STACK, CyrusOne, Related Digital and others) build and lease. Crusoe is both a developer and a neocloud; it built Stargate's Abilene campus.
 4. **AI labs** (OpenAI, Anthropic, xAI, Google DeepMind, Meta's labs) are the end customers. Most sign multi-year compute contracts rather than owning buildings, though xAI built Colossus itself.
 5. **Suppliers and financiers**: chipmakers (NVIDIA, AMD, Broadcom), electrical and cooling equipment makers (Vertiv, Schneider Electric, Eaton, ABB, Siemens, GE Vernova, Hitachi Energy), utilities, and the banks, private-credit funds, infrastructure funds and sovereign wealth funds that lend the money.
@@ -464,7 +464,7 @@ Epoch projects **over 9 GW** across these sites by about 2029, with most new cap
 
 **Prometheus** in New Albany, Ohio was targeted at about 1 GW for 2026. Epoch AI lists about 471 MW of IT running in October 2026. On-site gas plants reportedly supplement the grid.
 
-**Hyperion** in Richland Parish, Louisiana is Meta's giant. The site covers 2,250 acres. On July 13, 2026, Meta said Hyperion will scale to **5 GW** with investment above $50 billion, with a first phase of about 2 GW by 2030 and full build-out around 2032. The local utility, Entergy, is building combined-cycle gas plants and has proposed 1.5 GW of new solar and solar-plus-storage on top of 3 GW previously approved; Meta funds the new transmission. Epoch projects Hyperion at about 3.7 million H100-equivalents by January 2028; because newer chips each count as several H100-equivalents, that projection is compatible with a site still growing toward its full gigawatts. Meta financed Hyperion through a joint venture with funds managed by Blue Owl, a structure Chapter 43 dissects.
+**Hyperion** in Richland Parish, Louisiana is Meta's giant. The site covers 2,250 acres. On July 13, 2026, Meta said Hyperion will scale to **5 GW** with investment above $50 billion, with a first phase of about 2 GW by 2030 and full build-out around 2032. The local utility, Entergy, is building combined-cycle gas plants and has proposed 1.5 GW of new solar and solar-plus-storage on top of 3 GW previously approved; Meta funds the new transmission. Epoch projects Hyperion at about 3.7 million H100-equivalents by January 2028; because newer chips each count as several H100-equivalents, that projection is compatible with a site still growing toward its full gigawatts. Meta reportedly financed Hyperion through a joint venture with funds managed by Blue Owl, a structure Chapter 43 dissects.
 
 > **Worked example:** How many homes is Hyperion? 5 GW ÷ 1.2 kW per average US home ≈ **4.2 million homes'** worth of average power. That is more than twice the number of households in the entire state of Louisiana, all drawn by one fenced campus at full build-out.
 
@@ -691,7 +691,7 @@ In November 2025, Google described **Project Suncatcher**: solar-powered satelli
 
 ### Under the sea and offshore
 
-Microsoft's **Project Natick** sank sealed data center pods off the coast of Scotland in trials from 2015 to 2020, then ended the program. China has deployed commercial underwater data center modules off Hainan. The appeal is free cooling from cold seawater; the drawbacks are maintenance (you can't walk in to replace a part), corrosion, permits and power cables. **Feasibility: niche.** Expect small deployments, not gigawatt campuses.
+Microsoft's **Project Natick** sank sealed data center pods off California and then off Scotland in trials from 2015 to 2020, then ended the program. China has deployed commercial underwater data center modules off Hainan. The appeal is free cooling from cold seawater; the drawbacks are maintenance (you can't walk in to replace a part), corrosion, permits and power cables. **Feasibility: niche.** Expect small deployments, not gigawatt campuses.
 
 ```mermaid
 quadrantChart

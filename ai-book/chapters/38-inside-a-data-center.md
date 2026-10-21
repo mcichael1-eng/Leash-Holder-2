@@ -254,7 +254,7 @@ Here is a simplified floor plan of one block of an AI data hall, as if you were 
 
 *Figure 38.4: A floor plan of one block of an AI data hall. Forty GPU racks at about 130 kW each make roughly 5 MW of IT load, fed by the electrical room on the left and cooled through the CDUs and mechanical room.*
 
-Forty racks at 130 kW is 5.2 MW, the average electricity use of about 4,000 American homes, in a space the size of a large classroom. The coolant distribution units at the row ends pass heat from the racks' liquid loop to the building's water loop (Chapter 40).
+Forty racks at 130 kW is 5.2 MW, the average electricity use of about 4,300 American homes, in a space the size of a large classroom. The coolant distribution units at the row ends pass heat from the racks' liquid loop to the building's water loop (Chapter 40).
 
 > **Definition — CDU (coolant distribution unit):** A cabinet of pumps and a heat exchanger that circulates clean coolant through the racks' cold plates and hands the heat to the building's facility water loop, while controlling flow, pressure and temperature.
 
@@ -430,7 +430,7 @@ Even a gigawatt campus is limited by how much power one location can get. So in 
 
 > **Definition — Scale-across (AI WAN):** Linking several data center campuses, often hundreds of kilometers apart, with high-capacity fiber so they can work on one training job. Microsoft calls its version an "AI WAN" (wide area network).
 
-Microsoft's second Fairwater site, in Atlanta, has been operating since October 2025 and is linked to the Wisconsin site over an AI WAN so that the two act as one system. Epoch AI lists the Atlanta site at about 636 MW of IT power. The trick is deciding what traffic can cross that long, slow link.
+Microsoft's second Fairwater site, in Atlanta, has been operating since October 2025 and is linked to the Wisconsin site over an AI WAN so that the two act as one system. As of October 2026, Epoch AI listed the Atlanta site at about 636 MW of IT power. The trick is deciding what traffic can cross that long, slow link.
 
 ```mermaid
 flowchart LR
@@ -502,7 +502,7 @@ The commonly quoted rule-of-thumb availabilities for the four Tiers convert into
 
 A bank's data center is usually built to Tier III or IV, because a few minutes of downtime can stop payments for millions of people. You might expect AI data centers, which cost tens of billions of dollars, to be even more paranoid. For *training* halls, the industry often goes the other way. Here is the reasoning.
 
-1. **Training jobs crash anyway.** During a 54-day stretch of Llama 3 training on 16,384 GPUs, Meta recorded 419 unexpected interruptions, mostly hardware. Training software is therefore built to save checkpoints often and restart quickly (Chapter 34).
+1. **Training jobs crash anyway.** During a 54-day stretch of Llama 3 training on 16,384 GPUs, Meta recorded 419 unexpected interruptions, mostly hardware. Training software is therefore built to save checkpoints often and restart quickly (Chapter 37).
 2. **Grid outages are rare by comparison.** Losing a few minutes of training and rolling back to the last checkpoint costs far less than doubling every transformer, UPS and switchboard.
 3. **Redundant gear competes for scarce equipment.** Every megawatt of spare electrical capacity is transformers and switchgear that could have fed more GPUs, and those parts are among the hardest to buy in 2026.
 
@@ -682,7 +682,7 @@ That is why AI labs sign multi-year, take-or-pay contracts instead: they get low
 Put the tour together and the frontier campus of 2026 is:
 
 - **Built fast.** xAI's first Colossus site in Memphis, a former Electrolux factory, reportedly reached about 100,000 H100s in 122 days in 2024. Amazon's Project Rainier site in Indiana came online in under a year with about 500,000 Trainium2 chips for Anthropic.
-- **Built huge.** Epoch AI lists the Anthropic–Amazon site at New Carlisle, Indiana at about 1,037 MW of IT power, the largest tracked site by power as of October 2026, and xAI's Colossus 2 at about 946 MW, the largest by compute (roughly 1.1 million H100-equivalents).
+- **Built huge.** Epoch AI lists the Anthropic–Amazon site at New Carlisle, Indiana at about 1,037 MW of IT power, the largest tracked site by power as of October 2026, and xAI's Colossus 2 at about 946 MW, the largest by compute (roughly 1.1 million H100-equivalents, a unit that counts computing power in multiples of one NVIDIA H100 GPU, so a newer chip that does three times the math counts as about three).
 - **Dense and joined up.** Microsoft's Wisconsin Fairwater site holds hundreds of thousands of GB200 GPUs, cools more than 90% of its capacity with a closed liquid loop filled once, and acts as one system with its Atlanta sibling.
 
 > **Key idea:** The unit of AI infrastructure has grown from the server to the rack to the building to the campus, and now to groups of campuses joined by fiber. The physical constraints at each level (weight, heat, power, distance) shape what AI companies can build and how fast.

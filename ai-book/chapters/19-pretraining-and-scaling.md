@@ -100,7 +100,7 @@ How many times? Suppose a run uses 15 trillion tokens with a batch of 8 million 
 
 A frontier pretraining corpus is a blend of many kinds of text:
 
-- **The public web.** The biggest source by far. Most labs start from **Common Crawl**, a nonprofit that has archived the web since 2008. Its August 2026 crawl alone captured 2.14 billion web pages, 360 TiB of uncompressed data, gathered over two weeks. Labs also run their own crawlers.
+- **The public web.** The biggest source by far. Most labs start from **Common Crawl**, a nonprofit that has archived the web since 2008. Its August 2026 crawl alone captured 2.14 billion web pages, 360 TiB (about 400 terabytes) of uncompressed data, gathered over two weeks. Labs also run their own crawlers.
 - **Code.** Public repositories, mostly from GitHub. Code teaches precise, logical structure, and many researchers believe it helps with step-by-step reasoning in general, not just programming.
 - **Books and academic papers.** Long, carefully edited text. Also the most legally contested (Chapter 11).
 - **Math.** Textbooks, worked solutions, competition problems and proofs.
@@ -454,7 +454,7 @@ Now turn FLOPs into time and money. Let's price a realistic mid-size run: a **70
 |---|---|---|
 | GPT-4 (2023) | about 2.1 × 10^25 FLOP | about $37 million |
 | Llama 3.1 405B (2024) | 3.8 × 10^25 FLOP | about $53 million |
-| Grok 3 (2025) | about 4 × 10^26 FLOP (Epoch estimates range from 3.5 to 4.6 × 10^26) | about $218 million |
+| Grok 3 (2025) | about 3.5 × 10^26 FLOP | about $218 million |
 | GPT-4.5 (2025) | about 3.8 × 10^26 FLOP | about $366 million |
 | Grok 4 (2025) | about 5 × 10^26 FLOP (speculative) | about $388 million (speculative) |
 | GPT-6 Astra (2026) | about 9.4 × 10^26 FLOP | no published estimate; about $0.4–1.1 billion by the back-of-envelope above |

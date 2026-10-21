@@ -135,7 +135,7 @@ Here is the leap. The model inside your chatbot is a function too. Its input is 
 
 > **Definition — Model:** In AI, the trained function itself: a fixed design (its architecture) plus all of its learned parameter values. "The model" is what actually turns your input into an output.
 
-> **Definition — Vocabulary:** The fixed list of every token a language model can read or write. Modern chatbots typically have vocabularies of roughly 100,000 to 250,000 tokens.
+> **Definition — Vocabulary:** The fixed list of every token a language model can read or write. Modern chatbots typically have vocabularies of roughly 100,000 to 260,000 tokens.
 
 The difference between our taxi function and a chatbot is the number of knobs. The taxi has 2 parameters. A chatbot model has billions or even trillions. Someone has to set all of those knobs, and no human could do it by hand. That is what training does.
 

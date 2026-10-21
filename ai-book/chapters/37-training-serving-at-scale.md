@@ -185,12 +185,13 @@ The standard trick is **activation checkpointing**: throw most activations away 
 ```
 Memory to train a 70B model (mixed precision, Adam)
 
-weights   BF16  ##                          140 GB
-gradients BF16  ##                          140 GB
-master+Adam FP32 ############               840 GB
-activations     ####...  (depends on batch and length)
-                |----|----|----|----|----|
-                0   250  500  750 1000 1250 GB
+weights      BF16  ###                       140 GB
+gradients    BF16  ###                       140 GB
+master+Adam  FP32  #################         840 GB
+activations        ####...  (depends on batch and length)
+                   |----|----|----|----|----|
+                   0   250  500  750 1000 1250 GB
+                   (each # is about 50 GB)
 
 one H100 = 80 GB   one B300 or Rubin = 288 GB
 ```
@@ -413,8 +414,8 @@ A tricky part of expert parallelism is balance. If the router sends too many tok
 
 Real training runs combine these strategies, and the key design rule is: **put the chattiest communication on the fastest links.**
 
-- **Tensor and expert parallelism** exchange large amounts of data in every layer, so they live inside a server or an NVLink domain, where links run at about 1 to 3.6 terabytes per second per GPU.
-- **Pipeline and context parallelism** send less, at stage boundaries or in overlappable rings, so they can cross between racks over InfiniBand or Ethernet, at roughly 50 to 200 gigabytes per second per GPU.
+- **Tensor and expert parallelism** exchange large amounts of data in every layer, so they live inside a server or an NVLink domain, where links run at about 1 to 3.6 terabytes per second per GPU (NVIDIA's figures, which count both directions together).
+- **Pipeline and context parallelism** send less, at stage boundaries or in overlappable rings, so they can cross between racks over InfiniBand or Ethernet, at roughly 50 to 200 gigabytes per second per GPU in each direction.
 - **Data parallelism and FSDP** synchronize once per step and can overlap with computation, so they span the whole cluster.
 
 > **Definition — Scale-up vs. scale-out network:** The scale-up network (such as NVLink) tightly links a small group of accelerators with very high bandwidth; the scale-out network (InfiniBand or Ethernet) connects many such groups across the cluster at lower bandwidth per chip.
@@ -554,7 +555,7 @@ Notice the beautiful property. Each GPU sent one chunk per step for 6 steps, so 
 **Worked example: how long does an all-reduce take?** Take a 70B model's BF16 gradients: 70 billion × 2 bytes = 140 GB. Each GPU must send about 2 × 140 GB = 280 GB.
 
 - Over a scale-out network at about 50 GB/s per GPU (400 Gb/s InfiniBand): 280 ÷ 50 ≈ 5.6 seconds.
-- Over Hopper's NVLink at 900 GB/s: 280 ÷ 900 ≈ 0.31 seconds.
+- Over Hopper's NVLink, rated 900 GB/s counting both directions, so about 450 GB/s each way: 280 ÷ 450 ≈ 0.62 seconds.
 
 A training step might take only a few seconds, so a 5.6-second sync would be a disaster unless it is hidden. That is why labs shard the model (so each data-parallel group syncs less), overlap gradient communication with the backward pass (sending each layer's gradients while the next layer is still computing), and keep the heaviest traffic on NVLink.
 
@@ -661,7 +662,7 @@ Chapter 32 introduced number formats as rulers with fewer tick marks. Fewer bits
 
 - **BF16** (16-bit) became the standard for training large models around 2020, with FP32 kept for master weights and optimizer state.
 - **FP8** (8-bit) arrived in hardware with NVIDIA's Hopper (2022). DeepSeek-V3 (December 2024) is the best-documented large FP8 training run: 2,048 H800 GPUs and about 2.8 million GPU-hours.
-- **FP4** (4-bit) is emerging with Blackwell and Rubin. Plain FP4 can represent only 16 distinct values, so it relies on **block scaling**: each small block of numbers shares its own scale factor. NVIDIA's NVFP4 uses blocks of 16 values with an FP8 scale; the open MXFP4 standard uses blocks of 32.
+- **FP4** (4-bit) is emerging with Blackwell and Rubin. Plain FP4 has only 16 possible bit patterns (15 distinct numbers), so it relies on **block scaling**: each small block of numbers shares its own scale factor. NVIDIA's NVFP4 uses blocks of 16 values with an FP8 scale; the open MXFP4 standard uses blocks of 32.
 
 > **Definition — FP8:** An 8-bit floating-point number format (variants E4M3 and E5M2) supported in hardware since NVIDIA's Hopper. It doubles math speed and halves memory compared with BF16.
 

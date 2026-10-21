@@ -145,15 +145,15 @@ Let's build one. Our training text is a tiny corpus of five words, each appearin
 ```
 Corpus: chat x6, chats x3, hat x4, that x5, cat x2
 
-Step  Pair merged  Count  All five words after this step
-----  -----------  -----  -----------------------------------------
- 0    (letters)       -   c h a t | c h a t s | h a t | t h a t | c a t
- 1    a + t          20   c h at | c h at s | h at | t h at | c at
- 2    h + at         18   c hat | c hat s | hat | t hat | c at
- 3    c + hat         9   chat | chat s | hat | t hat | c at
- 4    t + hat         5   chat | chat s | hat | that | c at
- 5    chat + s        3   chat | chats | hat | that | c at
- 6    c + at          2   chat | chats | hat | that | cat
+Step Merge      Count  All five words after this step
+---- ---------- -----  ---------------------------------------------
+ 0   (letters)      -  c h a t | c h a t s | h a t | t h a t | c a t
+ 1   a + t         20  c h at | c h at s | h at | t h at | c at
+ 2   h + at        18  c hat | c hat s | hat | t hat | c at
+ 3   c + hat        9  chat | chat s | hat | t hat | c at
+ 4   t + hat        5  chat | chat s | hat | that | c at
+ 5   chat + s       3  chat | chats | hat | that | c at
+ 6   c + at         2  chat | chats | hat | that | cat
 
 Final vocabulary: a c h s t + at hat chat that chats cat
 ```

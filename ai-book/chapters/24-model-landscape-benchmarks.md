@@ -218,6 +218,7 @@ Of hundreds of benchmarks, about a dozen families matter for following the front
 | Aggregate indices | Artificial Analysis Intelligence Index, Epoch Capabilities Index | Many benchmarks combined into one number | Opus 5.5 leads both as of October 2026 | One number hides an uneven profile |
 
 *Table 24.2: The benchmark zoo, as of October 2026. Scores marked "reports" are self-reported by the model's maker.*
+
 ### Knowledge tests: MMLU, MMLU-Pro and GPQA
 
 > **Definition — MMLU (Massive Multitask Language Understanding):** A 2020 benchmark of multiple-choice questions across 57 school and professional subjects, from law to medicine to mathematics. It was the standard knowledge test of the early chatbot era and is now saturated for frontier models.
@@ -303,8 +304,8 @@ On a log scale, where each step up means "twice as long," the trend looks like a
 
 32 h |
 16 h |                                     * *  Opus 4.6, Mythos
- 8 h |
- 4 h |                               *  **  GPT-5, Opus 4.5, GPT-5.2
+ 8 h |                                   *  GPT-5.2
+ 4 h |                               *  *  GPT-5, Opus 4.5
  2 h |                           *  o3
  1 h |
 30 m |                       *  o1
@@ -517,7 +518,7 @@ Model names change every few weeks, so treat this section as a dated snapshot an
 
 Anthropic's current API lineup has four models. **Claude Fable 5.1** ($10 per million input tokens and $50 per million output tokens) is the top tier. **Opus 5.5** ($4/$20) is the recommended default for most work. **Sonnet 5.5** ($2/$10) is the mid tier, and **Haiku 5.5** (from $0.10/$0.50) is the small, cheap tier. All four share a 1M-token context window, 128K maximum output, adaptive thinking steered by an effort setting, and a June 2026 knowledge cutoff. As of October 2026, Opus 5.5 led both the Artificial Analysis index and the Epoch Capabilities Index.
 
-Its 2026 pace shows how fast the frontier moves: Opus 4.6 (February 5), Mythos Preview (April 7), Opus 4.7 (April 16), Opus 4.8 (May 28), Fable 5 and Mythos 5 (June 9), Opus 5 (July 24), Fable 5.1 (September 1), Opus 5.5 (September 22), Sonnet 5.5 (September 28) and Haiku 5.5 (October 7), with Sonnet releases in between: roughly one significant release a month.
+Its 2026 pace shows how fast the frontier moves: Opus 4.6 (February 5), Mythos Preview (April 7), Opus 4.7 (April 16), Opus 4.8 (May 28), Fable 5 and Mythos 5 (June 9), Opus 5 (July 24), Fable 5.1 (September), Opus 5.5 (September 22), Sonnet 5.5 (September 28) and Haiku 5.5 (October 7), with Sonnet releases in between: roughly one significant release a month.
 
 > **At the frontier (2026):** Release cycles have shrunk to weeks. Between September 1 and October 13, 2026, Anthropic, OpenAI, Google and SpaceXSI all shipped new flagships or tiers. Any table of model names, including the ones in this chapter, dates within months; the method for judging them does not.
 
@@ -783,7 +784,7 @@ Now a harder job: a coding agent that fixes one bug, using about 2 million input
 
 The model that costs twice as much per attempt is cheaper per bug once human time is counted. This is why "cheapest per token" and "cheapest per result" are different questions.
 
-> **Watch out:** Per-token prices are not directly comparable across labs, because tokenizers differ. On the tokenizer Anthropic introduced with Claude Opus 4.7, 1 million tokens is about 555,000 English words, compared with about 750,000 words before. The same text produces about a third more tokens. Compare cost per task, measured on your own examples, not price per token.
+> **Watch out:** Per-token prices are not directly comparable across labs, because tokenizers differ. On the tokenizer Anthropic introduced with Claude Opus 4.7, 1 million tokens is about 555,000 English words, compared with about 750,000 words before. Anthropic says the same text produces roughly 30% more tokens. Compare cost per task, measured on your own examples, not price per token.
 
 > **Try it:** Pick a real task you do every week. Give the identical prompt to three chatbots, or to three tiers from one lab (for example a fast mode and a thinking mode). Score each answer from 1 to 5 before you look at which model wrote it. You have just run a tiny blind evaluation.
 

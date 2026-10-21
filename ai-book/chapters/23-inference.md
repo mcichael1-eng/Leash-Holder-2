@@ -371,9 +371,9 @@ A symmetric 4-bit integer format can hold whole numbers from −7 to +7. Take fo
  INT4 grid, scale 0.139 (each tick = 0.139)
  -7  -6  -5  -4  -3  -2  -1   0   1   2   3   4   5   6   7
   |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-              ^               ^       ^                   ^
-           -0.53            -0.08    0.12               0.97
-           snaps to -4    snaps to -1  snaps to 1     exactly 7
+              ^           ^       ^                       ^
+            -0.53       -0.08   0.12                    0.97
+            to -4       to -1   to 1                  exactly 7
 ```
 
 *Figure 23.7: Quantization snaps each weight to the nearest tick of a coarse ruler. One scale number sets the spacing of the ticks.*
@@ -631,7 +631,7 @@ Inference, Serving, Replica, Prefill, Decode, HBM (high-bandwidth memory), Memor
 
 3. **[Medium] Build a KV-cache calculator in a spreadsheet.** (1) Make columns for layers, KV heads, head size, bytes per number, and context length. (2) Bytes per token = 2 × layers × KV heads × head size × bytes. (3) Enter Llama 3 70B (80, 8, 128, 2) and Llama 3 8B (32, 8, 128, 2). (4) Compute total cache in GB at 8,000, 128,000 and 1,000,000 tokens. (5) Assuming 60 GB of free memory, compute how many simultaneous conversations fit at each length. (6) Change bytes to 1 (an 8-bit cache) and see what changes. **What you'll learn:** why long contexts are expensive and why attention designs that shrink the cache matter so much.
 
-4. **[Medium] When does prompt caching pay off?** (1) In a spreadsheet, set the input price to $4 per million, the cache-write price to 1.25 × input, and the cache-read price to 0.05 × input. (2) For a 50,000-token document, compute the input cost of asking 1, 2, 5, 10 and 50 questions with and without caching (ignore the short questions themselves). (3) Find the number of questions at which caching becomes cheaper. (4) Repeat with the cache-read price at 0.1 × input. **What you'll learn:** caching costs slightly more for a single use and pays off from the second reuse onward, so stable, reused prefixes should always come first.
+4. **[Medium] When does prompt caching pay off?** (1) In a spreadsheet, set the input price to $4 per million, the cache-write price to 1.25 × input, and the cache-read price to 0.05 × input. (2) For a 50,000-token document, compute the input cost of asking 1, 2, 5, 10 and 50 questions with and without caching (ignore the short questions themselves). (3) Find the number of questions at which caching becomes cheaper. (4) Repeat with the cache-read price at 0.1 × input. **What you'll learn:** caching costs slightly more for a single use and pays off as soon as the prefix is reused once, so stable, reused prefixes should always come first.
 
 5. **[Medium] Recreate the batching table.** (1) In a spreadsheet, set bandwidth = 4,800 GB/s, weights = 70 GB, KV per user = 1.31 GB, and GPU cost = $4 per hour. (2) For batch sizes 1, 2, 4, 8, 16, 32 and 45, compute bytes per step, steps per second (bandwidth ÷ bytes), total tokens per second (steps × batch size) and cost per million tokens ($4 ÷ (tokens per second × 3,600) × 1,000,000). (3) Now set KV per user to 10.5 GB (32,000-token conversations) and redo it, noting the largest batch that fits in 141 GB. (4) Chart speed per user against cost per million tokens. **What you'll learn:** the speed-versus-cost trade-off behind every price tier, and how long contexts limit batching.
 

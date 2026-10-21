@@ -554,7 +554,7 @@ An NVL72-class rack at 130 kW of IT power, running flat out:
 - Facility power: 130 × 1.2 = 156 kW
 - Energy: 156 kW × 8,760 h ≈ 1,367,000 kWh ≈ 1.37 GWh per year
 - Cost: 1,367,000 × $0.07 ≈ $96,000 per year
-- Homes' worth (average draw): 130 ÷ 1.2 ≈ 108 homes
+- Homes' worth: 1,367,000 ÷ 10,500 ≈ 130 homes (about 108 counting only the rack's own 130 kW, without cooling)
 - Current: about 180 A per wire on a 415 V three-phase feed, about 2,400 A on the 54 V DC busbar
 
 Such a rack reportedly sells for about $3–4 million. Five years of electricity at this price comes to about $480,000, a meaningful sum, but still well under the cost of the equipment it powers.

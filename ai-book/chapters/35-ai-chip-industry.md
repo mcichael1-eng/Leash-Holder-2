@@ -86,7 +86,7 @@ NVIDIA began in 1993 making graphics chips for video games. In the quarter that 
 
 - Total revenue of **$96.2 billion**, up 106% from a year earlier.
 - **Data center revenue of $89.0 billion**, up 117%.
-- A GAAP gross margin of **75.0%** and net income of $59.7 billion.
+- A GAAP gross margin (measured under standard US accounting rules) of **75.0%** and net income of $59.7 billion.
 - An outlook for the next quarter of $108 billion, plus or minus 2%, assuming *no* data-center compute revenue from China.
 
 At its March 2026 GTC conference, NVIDIA said combined purchase orders for Blackwell and Vera Rubin systems were aimed at about $1 trillion through 2027.
@@ -550,7 +550,7 @@ From September 2025 onward, AI labs signed chip deals measured not in chips but 
 
 > **Definition — Letter of intent:** A document stating that two parties plan to make a deal on certain terms, which is not yet a binding contract. Several headline AI compute "deals" began as letters of intent.
 
-**Worked example: translating a gigawatt deal.** A deal in gigawatts describes *power*, not chips. Using Chapter 34's rule of thumb (about 1.8 kW per GPU slot and a PUE of 1.2), one gigawatt holds roughly 460,000 accelerators.
+**Worked example: translating a gigawatt deal.** A deal in gigawatts describes *power*, not chips. Using Chapter 34's rule of thumb (about 1.8 kW per GPU slot and a PUE of 1.2, meaning the building uses 20% extra power for cooling and power conversion), one gigawatt holds roughly 460,000 accelerators.
 
 - OpenAI–Broadcom, 10 GW: about 10 × 460,000 ≈ **4.6 million** accelerator slots (fewer if each chip draws more power).
 - Cost: Epoch AI estimates about $38 billion of up-front spending per gigawatt of IT power for a whole site, and NVIDIA's CEO has reportedly cited roughly $50–60 billion per gigawatt including chips. Either way, 10 GW is on the order of **several hundred billion dollars** spread over years.
@@ -622,7 +622,7 @@ Divide the last by the second: if frontier training compute grows 5× a year and
 - **Power density.** Racks moving from 130 kW toward 600 kW and 1 MW push liquid cooling and 800 V DC (Chapters 34, 39 and 40).
 - **The memory wall.** Over about twenty years, peak compute grew roughly 3× every two years while DRAM bandwidth grew about 1.6× and interconnect about 1.4× (Gholami and colleagues, 2024). GPU memory bandwidth has grown about 28% a year since 2008.
 - **Interconnect energy.** Moving a bit across a board or a building costs far more energy than computing with it, which drives co-packaged optics and optical I/O.
-- **The precision floor.** FP4 can represent only 16 distinct values. Going lower than 4 bits for general training is an open research question.
+- **The precision floor.** FP4 has only 16 possible bit patterns (15 distinct numbers, since +0 and −0 are equal). Going lower than 4 bits for general training is an open research question.
 
 ### The bets
 

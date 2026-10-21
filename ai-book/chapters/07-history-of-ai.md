@@ -632,7 +632,7 @@ By 2026 the big labs were releasing new models roughly every month. Rather than 
 | Lab | January–June 2026 | July–October 2026 |
 |---|---|---|
 | Anthropic | Claude Opus 4.6 (Feb 5), Mythos Preview (Apr 7), Opus 4.7, Opus 4.8, Fable 5 and Mythos 5 (Jun 9), Sonnet 5 | Opus 5 (Jul 24), Fable and Mythos 5.1 (early to mid-September), Opus 5.5 (Sep 22), Sonnet 5.5, Haiku 5.5 (Oct 7) |
-| OpenAI | GPT-5.3-Codex, GPT-5.4, GPT-5.5 (Apr 23), GPT-5.6 | GPT-6 Astra (Sep 3), GPT-6 Sol and Luna (late September or October), GPT-6 for all ChatGPT users (Oct 7–8) |
+| OpenAI | GPT-5.3-Codex, GPT-5.4, GPT-5.5 (Apr 23), GPT-5.6 | GPT-6 Astra (Sep 3), GPT-6 Sol and Luna (Sep 22), GPT-6.1 Sol (Sep 29), GPT-6 for all ChatGPT users (Oct 7–8) |
 | Google DeepMind | Gemini 3.1 Pro preview (Feb 19), Gemma 4 open models, Gemini 3.5 family (May 19) | Gemini 3.6 to 3.8 Flash, Gemini 4 Argon (generally available in Google's API Oct 13, per Google's changelog) |
 | Open-weight leaders | DeepSeek-V4 preview (Apr 24) | Kimi K3 (Jul 16), DeepSeek-V4-Pro (August), Qwen3.8 (August) |
 
@@ -642,7 +642,7 @@ By 2026 the big labs were releasing new models roughly every month. Rather than 
 
 On April 7, 2026 Anthropic announced Claude Mythos Preview and Project Glasswing. Anthropic said the unreleased model, given only to defenders such as AWS, Apple, Google, Microsoft, NVIDIA and the Linux Foundation, had found thousands of high-severity security flaws across every major operating system and web browser, including a 27-year-old bug in OpenBSD. In June Anthropic released Fable 5 and Mythos 5, the same underlying model with different safeguards: Fable for the public, with classifiers that redirect risky requests, and Mythos for vetted partners.
 
-On September 3, 2026 OpenAI unveiled GPT-6 Astra. OpenAI described it as its largest training run by far and its first pretraining run on more than 100,000 GPUs, at the Stargate site in Abilene. Epoch AI estimates about 9.4 × 10^26 FLOP. It rolled out first to organizations in OpenAI's cybersecurity program, because, according to OpenAI and press coverage, it was the first OpenAI model at its internal "Critical" level for cybersecurity. Some commentary called it AGI; treat that as marketing or speculation, not a finding.
+On September 3, 2026 OpenAI unveiled GPT-6 Astra. OpenAI described it as its largest training run by far and its first pretraining run on more than 100,000 GPUs, at the Stargate site in Abilene. Epoch AI estimates about 9.4 × 10^26 FLOP. It rolled out first to organizations in OpenAI's cybersecurity program, because of its cyber capabilities. Press reports said it was the first OpenAI model rated at the company's internal "Critical" cybersecurity level, though no OpenAI page confirming that rating had been found as of October 2026. Some commentary called it AGI; treat that as marketing or speculation, not a finding.
 
 > **Definition — Restricted (trusted-access) model:** A model released only to vetted organizations, or in a safer public version with extra safeguards, because its full capabilities in areas like cyberattacks are judged too risky for open release.
 
@@ -674,7 +674,7 @@ A quick worked example of why gigawatts matter: a 1 GW campus running all year u
 
 ### The rules in 2026
 
-California's SB 53 and its companion-chatbot law SB 243 took effect on January 1. The International AI Safety Report 2026, chaired by Yoshua Bengio, appeared on February 3, and the India AI Impact Summit in New Delhi in February produced a declaration endorsed by about 86 to 89 countries, including the US. A White House framework in March urged Congress to preempt state rules on AI development; no such law had passed as of October 2026. The EU's "Digital Omnibus", in force from July 27, delayed many high-risk AI rules to December 2027, while the EU's enforcement powers over general-purpose models began on August 2. In copyright, a court gave final approval on July 20 to a $1.5 billion settlement between Anthropic and book authors (see Chapter 59).
+California's SB 53 and its companion-chatbot law SB 243 took effect on January 1. The International AI Safety Report 2026, chaired by Yoshua Bengio, appeared on February 3, and the India AI Impact Summit in New Delhi in February produced a declaration endorsed by about 86 to 89 countries, including the US. A White House framework in March urged Congress to preempt state rules on AI development; no such law had passed as of October 2026. The EU's "Digital Omnibus", in force from July 27, delayed many high-risk AI rules to December 2027, while the EU's enforcement powers over general-purpose models began on August 2. In copyright, a court gave final approval on July 20 to a $1.5 billion settlement between Anthropic and book authors (see Chapter 58).
 
 ```mermaid
 timeline
