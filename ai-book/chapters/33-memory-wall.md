@@ -190,6 +190,8 @@ Compound those rates over 20 years (ten two-year periods):
 
 Compute pulled ahead of memory bandwidth by a factor of about 500. Each new chip generation can do far more math per byte it can fetch. If the work does not reuse data heavily, the extra compute just sits idle.
 
+> **Watch out:** "More memory means a faster chip" mixes up capacity and bandwidth. A GPU with twice the gigabytes but the same TB/s can hold a bigger model or more users, but it does not stream any single model faster. Always check both numbers.
+
 > **Watch out:** "FLOPS is the number that matters" is the most common mistake in reading AI hardware news. For chatbot generation, memory bandwidth and capacity usually matter more. For big training runs, networking and reliability matter as much as raw FLOPS.
 
 ## Arithmetic intensity: how much math per byte
@@ -445,6 +447,8 @@ Now we can explain, and predict, the speed you see when a chatbot types.
 
 Notice what does not appear in this calculation: FLOPS. Doubling a chip's tensor-core speed would not change any row. Only more bandwidth, or fewer bytes per token, makes a single user's text appear faster.
 
+> **Key idea:** For one user, tokens per second ≈ memory bandwidth ÷ bytes read per token. Memory speed is typing speed.
+
 ```mermaid
 sequenceDiagram
   participant U as You
@@ -522,7 +526,7 @@ Take one H200 (141 GB, 4.8 TB/s) serving our 70B model in FP8 (70 GB), with ever
 
 Compare with one user alone: 70 + 2.68 ≈ 73 GB per step, about 15 ms, so about 66 tokens/s. Batching 26 users cut each person's speed roughly in half but multiplied the GPU's total output by about 13.
 
-Now translate to money using the research rule `$ per million tokens = $ per GPU-hour ÷ tokens per hour × 1,000,000`. RunPod listed the H200 at $3.59–5.29 per hour in October 2026. At 890 tokens/s (3.2 million tokens per hour), the GPU costs about $1.10–1.65 per million tokens generated. At 66 tokens/s (about 238,000 per hour), it costs about $15–22 per million. Same chip, same model, more than ten times the cost per token. This is why providers love big batches while users want speed, and why "fast modes" cost more (Chapter 23 and Chapter 43).
+Now translate to money with the standard formula `$ per million tokens = $ per GPU-hour ÷ tokens per hour × 1,000,000`. RunPod listed the H200 at $3.59–5.29 per hour in October 2026. At 890 tokens/s (3.2 million tokens per hour), the GPU costs about $1.10–1.65 per million tokens generated. At 66 tokens/s (about 238,000 per hour), it costs about $15–22 per million. Same chip, same model, more than ten times the cost per token. This is why providers love big batches while users want speed, and why "fast modes" cost more (Chapter 23 and Chapter 43).
 
 ```mermaid
 pie title H200 memory at 26 users with 8k-token contexts
@@ -533,6 +537,8 @@ pie title H200 memory at 26 users with 8k-token contexts
 *Figure 33.8: The H200's 141 GB at full batch. At long contexts, the KV cache weighs as much as the model itself.*
 
 Now give each user a 128,000-token document instead. Each needs 42 GB of KV cache, so only one such user fits beside the weights. Long contexts eat the memory that would otherwise serve dozens of people, which is why long-context requests are slower and pricier, and why so much research goes into shrinking the KV cache.
+
+> **Watch out:** Your chatbot's "memory" feature, which remembers your name and preferences across chats, is not this. Those saved facts are ordinary text stored in a database and pasted into your next conversation. The KV cache is short-lived working memory on the GPU that exists only while a conversation is being processed (or briefly cached to save cost).
 
 > **Definition — KV cache offloading:** Moving parts of the KV cache out of scarce HBM into larger, slower memory such as the CPU's DRAM or local SSDs, and bringing them back when needed. It trades some speed for much larger capacity.
 
@@ -647,3 +653,141 @@ Providers fight back by serving many users at once, which shares each read of th
 ## Key terms
 
 Von Neumann architecture, Von Neumann bottleneck, Memory capacity, Memory bandwidth, Memory latency, Memory hierarchy, Register, SRAM (static RAM), Cache, Shared memory, DRAM (dynamic RAM), HBM (High Bandwidth Memory), LPDDR and GDDR, Unified memory, SSD (solid-state drive), Picojoule (pJ), Tiling, Memory wall, Arithmetic intensity, Batching, Roofline model, Ridge point, Memory-bound, Compute-bound, TSV (through-silicon via), Base die (logic die), Interposer, CoWoS (Chip-on-Wafer-on-Substrate), JEDEC, Beachfront (shoreline), HBM3E / HBM4 / HBM4E, Prefill, Decode, Time to first token (TTFT), Tokens per second, Mixture of experts (MoE), KV cache, Grouped-query attention (GQA), Context window, KV cache offloading, Gradient, Optimizer state, Activations, Activation checkpointing, ZeRO / FSDP, Disaggregated serving, CXL (Compute Express Link), Processing-in-memory
+
+## Exercises
+
+1. **[Easy] The memory hierarchy at human scale.** Using Table 33.2's rule (1 nanosecond becomes 1 second), make your own version for an AI GPU. Use these rough figures: a register read about 0.5 ns, an HBM read about 500 ns, a hop to another GPU over NVLink about 1 µs, a read from a local SSD about 100 µs, a request to another building about 1 ms. Convert each to human time (seconds, minutes, hours, days) and write one sentence about what you could do in that time.
+   **What you'll learn:** An intuitive feel for why chips go to such lengths to avoid leaving the chip.
+
+2. **[Easy] Clock your chatbot.** Pick a chatbot you use daily.
+   1. Ask for a 400-word essay on any topic. With a stopwatch, measure the seconds from the first word appearing to the last. Estimate tokens as words × 1.3 and compute tokens per second.
+   2. Note the pause before the first word appeared (your time to first token).
+   3. Now paste a long document (several thousand words) and ask a short question about it. Measure the pause before the first word again.
+   4. If your chatbot offers a "fast" and a regular model, repeat with both.
+
+   **What you'll learn:** How prefill (the pause) and decode (the streaming speed) show up in your own daily use, and that they respond differently to a long prompt.
+
+3. **[Medium] Predict, then measure, your own computer's speed.** Install LM Studio (lmstudio.ai) or Ollama (ollama.com), both free and point-and-click.
+   1. Download a model of about 8 billion parameters in 4-bit quantization and note its file size (around 4–5 GB).
+   2. Look up your computer's memory bandwidth (Apple lists it on M-series spec pages, roughly 100–550 GB/s; typical DDR5 laptops have about 60–120 GB/s). If unsure, ask a chatbot with your exact model name.
+   3. Predict: tokens/s ≈ bandwidth ÷ file size. For example, 120 GB/s ÷ 4.7 GB ≈ 25 tokens/s.
+   4. Ask the model a question and read the tokens/s it reports. Then try a 1–3 billion parameter model and compare.
+
+   **What you'll learn:** Generation speed is set by how fast weights stream from memory. You have just measured the memory wall on your own machine.
+
+4. **[Medium] Draw two rooflines by hand.** On log-log graph paper (or a spreadsheet with log axes), draw the roofline for an H100 (989 TFLOPS BF16, 3.35 TB/s) and for a Rubin GPU (4 PFLOPS BF16 and 35 PFLOPS NVFP4, 19.2 TB/s).
+   1. Compute each ridge point (peak ÷ bandwidth).
+   2. Plot these jobs on both: decode at batch 1, 16 and 256 with BF16 weights (intensity = batch size); the same with FP4 weights on Rubin's FP4 roofline (intensity = 4 × batch size); and a 4,096 × 4,096 matrix multiply (intensity = 4,096 ÷ 3).
+   3. For each, write "memory-bound" or "compute-bound" and the attainable TFLOPS.
+
+   **What you'll learn:** How to read any chip against any job, and why newer, low-precision chips need ever larger batches to stay busy.
+
+5. **[Medium] Watch a roofline appear on a real GPU (Colab).** Open colab.research.google.com, start a new notebook, and choose **Runtime → Change runtime type → T4 GPU**. Paste and run this code. It imitates decoding: a fixed "weight matrix" multiplied by a growing batch of users' vectors.
+
+   ```python
+   import time, torch                     # a stopwatch, and the GPU library
+
+   N = 8192                               # the weight matrix is N x N
+   W = torch.randn(N, N, device="cuda", dtype=torch.float16)  # 134 MB of 16-bit "weights" on the GPU
+
+   print("batch  intensity  TFLOPS   GB/s")
+   for B in [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024]:
+       X = torch.randn(N, B, device="cuda", dtype=torch.float16)  # B users, one vector each
+       for _ in range(3):
+           Y = W @ X                      # warm-up runs, not timed
+       torch.cuda.synchronize()           # make sure the GPU is idle
+       t = time.time()
+       for _ in range(100):
+           Y = W @ X                      # 100 batched "decode steps"
+       torch.cuda.synchronize()           # wait until all 100 have finished
+       dt = (time.time() - t) / 100       # seconds per step
+       flop = 2 * N * N * B               # one multiply-add per weight per user
+       moved = 2 * (N * N + 2 * N * B)    # bytes: read W once, read X, write Y
+       print(f"{B:5d}  {flop / moved:9.1f}  {flop / dt / 1e12:6.2f}  {moved / dt / 1e9:6.0f}")
+   ```
+
+   1. Look at the GB/s column for small batches. Compare it with the T4's spec-sheet bandwidth of about 320 GB/s. That is the sloped part of the roof.
+   2. Look at the TFLOPS column. It should rise roughly in proportion to the batch at first, then level off. Where does it level off, and how does that compare with the T4's spec-sheet peak of about 65 TFLOPS (16-bit, tensor cores) and its ridge point of about 203 FLOP/byte?
+   3. Plot TFLOPS against intensity on log-log axes in a spreadsheet. You have drawn a real roofline.
+
+   **What you'll learn:** Batching turns a memory-bound job into a compute-bound one, and you can see the switch happen on real hardware.
+
+6. **[Medium] Build a KV cache calculator.** In a spreadsheet, make columns for layers, key-value heads, head size, bytes per number and tokens, and a result column with the formula `= 2 × layers × kv_heads × head_size × bytes × tokens ÷ 1,000,000,000` (in GB).
+   1. Llama-3-70B-style: 80 layers, 8 key-value heads, head size 128, 2 bytes. Fill in 1,000, 8,192, 32,768, 128,000 and 1,000,000 tokens.
+   2. Llama-3-8B-style: 32 layers, 8 key-value heads, head size 128, 2 bytes.
+   3. Repeat the 70B case without GQA (64 key-value heads), and with an FP8 cache (1 byte).
+   4. For each model, how many 8,192-token users fit in 100 GB of spare memory?
+
+   **What you'll learn:** Why long contexts and many users eat GPU memory, and how much GQA and cache quantization save.
+
+7. **[Medium] HBM arithmetic.** Use `bandwidth per stack = wires × gigabits per second per wire ÷ 8`.
+   1. An HBM3E stack with 1,024 wires at 9.6 Gb/s per wire: what is its bandwidth? How many such stacks give 8 TB/s?
+   2. An HBM4 stack with 2,048 wires at 10 Gb/s: what is its bandwidth? What do 8 stacks deliver?
+   3. A 16-high HBM4 stack of 4 GB dies: what capacity per stack, and for 8 stacks?
+   4. If each DRAM die is perfect with 98% probability, what fraction of 8-high, 12-high and 16-high stacks are perfect?
+
+   **What you'll learn:** Where HBM's headline numbers come from, and why taller stacks are harder to manufacture.
+
+8. **[Challenge] Plan a serving deployment.** You must serve a 70B model in FP8 (70 GB) to users with 8,192-token contexts (2.68 GB of BF16 KV cache each).
+   1. On one H200 (141 GB, 4.8 TB/s): how many users fit, what is the per-user speed, and what is total throughput? (Check: about 26 users, 34 tokens/s each, about 890 tokens/s.)
+   2. Repeat on one Rubin GPU (288 GB, 19.2 TB/s). (Check: about 81 users, about 67 tokens/s each, about 5,400 tokens/s.)
+   3. Repeat the H200 case with an FP8 KV cache (1.34 GB per user).
+   4. Using RunPod's October 2026 H200 price of $3.59–5.29 per hour, compute the cost per million tokens for each H200 case.
+
+   **What you'll learn:** How memory capacity, bandwidth and batch size together set both the speed you feel and the price you pay.
+
+9. **[Challenge] The training memory budget.** Using 16 bytes per parameter:
+   1. Compute the training state for 8B, 70B, 405B and 1-trillion-parameter models.
+   2. For each, find the minimum number of H100s (80 GB), B300s (288 GB) and Rubin GPUs (288 GB) just to hold that state.
+   3. Now suppose activations add 50% on top. Redo step 2.
+   4. Explain in two sentences why ZeRO/FSDP sharding is not optional for frontier models.
+
+   **What you'll learn:** Memory, not just speed, forces training onto many GPUs, and that is the doorway to Chapter 37.
+
+## Areas of opportunity
+
+- **Inference optimization engineer.** Companies serving models at scale need people who manage KV caches, batching, quantization, speculative decoding and disaggregated serving with engines such as vLLM, SGLang, TensorRT-LLM and NVIDIA Dynamo. Because decode is memory-bound, each improvement shows up directly in cost per token, so the value is easy to prove, and demand is growing as inference outgrows training.
+- **Kernel and performance engineering for memory-bound code.** Engineers who can profile where bytes go and write tiled, fused kernels (the FlashAttention style of thinking) save labs and clouds millions of dollars. Profilers such as NVIDIA Nsight and an understanding of rooflines are the core skills.
+- **Memory-system research.** The memory wall is one of the field's central open problems: HBM beyond HBM4E, custom HBM base dies, processing near memory, CXL memory pooling, SRAM-heavy designs and better KV-cache compression all need researchers and engineers, at memory makers, chip companies, hyperscalers and startups.
+- **Memory and packaging manufacturing.** SK hynix, Samsung and Micron, plus packaging houses, need process, test, TSV and stacking engineers and technicians. HBM supply directly caps how many AI accelerators the world can build, so these roles sit at a choke point of the industry.
+- **Optimization consultancies.** Many organizations run GPUs at low utilization or serve models at batch size one. A consultant who can apply batching, quantization, caching and the right GPU choice can often cut bills dramatically, and clients can measure the savings.
+- **KV-cache and long-context infrastructure.** Agents that work for hours with huge contexts need tiered KV storage, cache-aware routing and prompt-caching layers. Products that make long contexts cheaper have a large and growing market.
+- **Edge and on-device AI.** Phones and laptops are bandwidth-limited. Specialists who choose model sizes, quantization levels and memory layouts so that a model runs well on a given device are needed by app makers and device makers alike.
+- **Hardware market analysis and procurement.** Investors, cloud buyers and policy teams need people who understand that memory supply, not just chip design, determines who can ship accelerators, and who can read HBM and packaging news critically.
+
+## Check your understanding
+
+1. Explain the difference between memory capacity, bandwidth and latency. Which one mainly limits how fast one user's answer streams?
+2. Why can't a chip simply use SRAM for all of its memory?
+3. What is the arithmetic intensity of single-user decode with FP8 weights? Is it memory-bound on a chip whose ridge point is 600 FLOP/byte?
+4. A GPU has 10 TB/s of bandwidth and runs a 50 GB model for one user. What is the ceiling on tokens per second? What happens to that ceiling if the chip's FLOPS double?
+5. Why does batching raise a GPU's total throughput but lower each user's speed?
+6. A model has 40 layers, 8 key-value heads and a head size of 128, with a 16-bit KV cache. How big is the KV cache for one user at 32,000 tokens?
+7. Why are HBM stacks placed millimeters from the GPU on an interposer instead of on the circuit board like ordinary memory?
+8. Why does training with Adam need about 16 bytes per parameter, and how many 80 GB GPUs are needed just to hold the training state of a 30-billion-parameter model?
+
+<details><summary>Answers</summary>
+
+1. Capacity is how much the memory holds, bandwidth is how many bytes per second it delivers, and latency is how long one request takes to come back. For one user's streaming speed, bandwidth is the main limit, because every token needs all the weights read again.
+2. SRAM needs about six transistors per bit, so it takes far more chip area per byte than DRAM. Even a whole-wafer chip like Cerebras's WSE-3 holds only 44 GB of SRAM, while one GPU package carries hundreds of gigabytes of HBM.
+3. Each weight is 1 byte and is used for 2 operations, so intensity is about 2 FLOP/byte. That is far below 600, so the job is heavily memory-bound.
+4. 10,000 GB/s ÷ 50 GB = 200 tokens per second. Doubling the FLOPS does not change it, because single-user decode is limited by bandwidth, not math.
+5. With a batch, each read of the weights serves many users, so the GPU produces far more tokens per second in total. But each step also has to read every user's KV cache, so steps take longer and each user's tokens arrive more slowly.
+6. Per token: 2 × 40 × 8 × 128 × 2 = 163,840 bytes. Times 32,000 tokens ≈ 5.2 GB.
+7. To get terabytes per second you need thousands of wires per stack (1,024 or 2,048). Thousands of long wires cannot be routed across a circuit board, and long wires waste energy and limit speed, so the memory sits beside the processor on a silicon interposer with very fine, very short wiring.
+8. Two bytes each for BF16 weights and gradients, plus four bytes each for the FP32 master weights and Adam's two running averages: 2 + 2 + 4 + 4 + 4 = 16. For 30 billion parameters that is 480 GB, so at least 6 GPUs of 80 GB each, before activations.
+
+</details>
+
+## Going deeper
+
+- **Samuel Williams, Andrew Waterman and David Patterson, "Roofline: An Insightful Visual Performance Model for Multicore Architectures" (Communications of the ACM, 2009).** The original roofline paper, short and clear.
+- **Amir Gholami et al., "AI and Memory Wall" (2024, arxiv.org/abs/2403.14123).** The data on how compute outgrew memory and interconnect bandwidth, and what it means for AI models.
+- **William Wulf and Sally McKee, "Hitting the Memory Wall: Implications of the Obvious" (1995).** The two-page paper that named the memory wall.
+- **Mark Horowitz, "Computing's Energy Problem (and What We Can Do About It)" (ISSCC keynote, 2014).** The source of the famous energy-per-operation numbers showing that data movement dominates.
+- **Google DeepMind, "How to Scale Your Model" (online book, 2025, jax-ml.github.io/scaling-book).** Its chapters on rooflines and Transformer inference work through exactly the arithmetic of this chapter on real TPUs and GPUs.
+- **Reiner Pope et al., "Efficiently Scaling Transformer Inference" (2022).** Google's detailed analysis of memory, batching and latency trade-offs when serving large models.
+- **Tri Dao et al., "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness" (2022).** A landmark example of beating the memory wall with tiling.
+- **Woosuk Kwon et al., "Efficient Memory Management for Large Language Model Serving with PagedAttention" (2023).** The vLLM paper on managing KV-cache memory.
+- **Samyam Rajbhandari et al., "ZeRO: Memory Optimizations Toward Training Trillion Parameter Models" (2020).** How training state is sharded across GPUs.
+- **Wikipedia, "High Bandwidth Memory."** A well-maintained summary of HBM generations, standards and specifications.

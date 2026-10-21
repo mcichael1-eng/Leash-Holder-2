@@ -548,9 +548,10 @@ Most classifiers do not output yes or no. They output a probability or score, an
 
 Here are 20 emails scored by a spam model, with the truth alongside:
 
-| Spam (8 emails) | 0.95 | 0.90 | 0.85 | 0.80 | 0.70 | 0.55 | 0.45 | 0.30 | | | | |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| **Not spam (12 emails)** | 0.75 | 0.60 | 0.50 | 0.40 | 0.35 | 0.25 | 0.20 | 0.15 | 0.10 | 0.08 | 0.05 | 0.02 |
+| Truth | Model scores |
+|---|---|
+| Spam (8 emails) | 0.95, 0.90, 0.85, 0.80, 0.70, 0.55, 0.45, 0.30 |
+| Not spam (12 emails) | 0.75, 0.60, 0.50, 0.40, 0.35, 0.25, 0.20, 0.15, 0.10, 0.08, 0.05, 0.02 |
 
 *Table 9.9: Model scores for 20 emails. Most spam scores high and most normal mail scores low, but there is overlap in the middle.*
 
@@ -559,6 +560,7 @@ Flag as spam everything scoring at or above the threshold, and count:
 | Threshold | TP | FN | FP | TN | Precision | Recall | False positive rate |
 |---|---|---|---|---|---|---|---|
 | 0.1 | 8 | 0 | 9 | 3 | 47% | 100% | 75% |
+| 0.2 | 8 | 0 | 7 | 5 | 53% | 100% | 58% |
 | 0.3 | 8 | 0 | 5 | 7 | 62% | 100% | 42% |
 | 0.4 | 7 | 1 | 4 | 8 | 64% | 88% | 33% |
 | 0.5 | 6 | 2 | 3 | 9 | 67% | 75% | 25% |

@@ -70,6 +70,8 @@ A few terms organize this map.
 
 > **Definition — Fabless:** A chip company that designs chips but pays a foundry to manufacture them. NVIDIA, AMD, Broadcom, Qualcomm and Apple are all fabless.
 
+> **Analogy:** Fabless design is like being a book author who uses someone else's printing press. NVIDIA writes the book, TSMC prints it, and ASML builds the most advanced printing presses, which only ASML can make. Chapter 36 visits the print shop.
+
 > **Definition — ASIC (Application-Specific Integrated Circuit):** A chip designed for one job. AI ASICs such as Google's TPU, Amazon's Trainium and Microsoft's Maia give up a GPU's flexibility to do neural-network math more cheaply and efficiently.
 
 > **Definition — Hyperscaler:** One of the giant cloud and internet companies that operate data centers at enormous scale, chiefly Amazon, Microsoft, Google, Meta and Oracle. They buy most of the world's AI hardware.
@@ -276,6 +278,8 @@ AMD's 2026 flagship is not a chip but a rack. **Helios** combines 72 MI455X GPUs
 
 *Table 35.4: Two 72-GPU racks of 2026 compared using vendor figures. Formats differ slightly (AMD's FP4 versus NVIDIA's NVFP4).*
 
+> **Try it:** Open AMD's Instinct MI355X product page and NVIDIA's GB300 NVL72 page side by side. Write down memory per GPU, memory bandwidth and the FP4 figure for each, marking dense or sparse. You will see why AMD leads its marketing with memory, and how hard it is to line up two vendors' numbers.
+
 On paper the racks are close on compute and bandwidth, and AMD has about 50% more memory. That matters for serving huge mixture-of-experts models and long conversations, where the KV cache eats memory (Chapter 33). What the table cannot show is software maturity, real-world utilization and shipping dates, which is where AMD has historically lagged.
 
 > **Definition — ROCm:** AMD's open-source software platform for programming its GPUs, its answer to CUDA. It includes compilers, math libraries and the RCCL communication library.
@@ -355,6 +359,8 @@ Every hyperscaler now designs AI chips. The reasons:
 
 And the reasons it is hard: a leading-edge chip design costs several hundred million dollars, takes two to three years, needs a full software stack, and bets that today's model architectures will still matter when the chip ships.
 
+> **Analogy:** A restaurant chain that buys all its bread from one bakery charging a 75% markup eventually builds its own bakery. Not because it bakes better bread, but because it buys so much bread that even a decent bakery of its own saves a fortune, and because the outside bakery keeps selling out.
+
 **Worked example (illustrative).** Suppose a cloud company plans to spend $20 billion a year on AI accelerators. If its supplier's gross margin is 75%, about $15 billion of that is the supplier's gross profit. A custom-chip program costing, say, $1 billion a year in design, partner fees and software would pay for itself if it replaced even a modest fraction of those purchases at much lower unit cost. That logic, not technical pride, is why Google, Amazon, Microsoft, Meta and OpenAI all have chip programs. The numbers here are made up to show the shape of the decision; real figures are private.
 
 Most hyperscalers do not design every part of the chip themselves. They hire specialists.
@@ -426,6 +432,8 @@ Every chip so far follows the same basic recipe: a big compute die (or two) surr
 
 *Figure 35.4: SRAM-based designs trade capacity for speed. They need many chips (or wafers) to hold a big model, but each byte can be read much faster.*
 
+> **Analogy:** An HBM-based GPU is a chef with a big pantry next door: everything fits, but every trip to the pantry takes time. An SRAM-based chip is a chef with every ingredient already on the counter: instant, but the counter is tiny, so you need a line of 140 chefs, each holding part of the recipe and passing the dish along.
+
 This is the whole trade-off in one picture. SRAM designs can deliver thousands of tokens per second to a single user, which is why Cerebras is known for very fast inference. But they need many chips per model, leave little room for the KV cache of long conversations, and cost more per user served when demand is about cheap bulk throughput rather than speed. That is exactly why NVIDIA pairs its Groq-based LPX racks (fast weights) with Vera Rubin racks (big memory for the KV cache) instead of replacing one with the other.
 
 ### The startups, one by one
@@ -471,6 +479,8 @@ quadrantChart
 
 *Figure 35.5: A rough map of design bets. Positions are judgments for teaching, not measurements.*
 
+> **Key idea:** Every alternative architecture buys something (speed for one user, efficiency, openness, flexibility) by giving something up (memory capacity, generality, ecosystem). When a startup claims a big win, find the trade it made and ask whether your workload cares.
+
 ### Why startups struggle, and where the openings are
 
 The history of AI chip startups is full of good hardware that never found enough customers. The obstacles are the ones you have already met: the CUDA ecosystem; NVIDIA's yearly cadence, which moves the target before a startup's two-to-three-year design cycle finishes; competition for TSMC capacity, CoWoS packaging and HBM; and buyers' fear of betting billions on a small supplier. Then there is the specific risk of over-specializing: a chip tuned for 2024's models may arrive in a 2027 world of different architectures.
@@ -500,6 +510,10 @@ Your phone and laptop also contain AI accelerators, much smaller ones.
 > **Definition — Unified memory:** A design (Apple silicon, NVIDIA's GB10) in which the CPU and GPU share one pool of memory, so a large model can fit without being copied between separate memories.
 
 The limit on the edge is the same as in the data center, only tighter: memory. An 8-billion-parameter model at 4 bits needs about 4–5 GB. A typical laptop's memory moves about 60–120 GB/s, so the best-case speed is about 120 ÷ 4.7 ≈ 25 tokens per second. A 70-billion-parameter model at 4 bits needs about 35 GB, which only fits on machines with large unified memory, such as high-end Macs or a DGX Spark. Apple's own on-device foundation model is reportedly around 3 billion parameters. That is why your phone app usually sends your request to a data center, and only small tasks run fully on the device. Chapter 30 shows how to run models locally, and Chapter 53 covers edge AI applications.
+
+> **Analogy:** Edge versus cloud AI is a pocket calculator versus a phone call to a university math department. The calculator is private, instant and works offline, but it can only do so much; the department can answer almost anything, but you need a connection and you share your question.
+
+> **Try it:** Find out how much memory your own phone or laptop has (on a Mac, Apple menu, About This Mac; on Windows, Settings, System, About; on a phone, the settings' About screen). Halve it to leave room for everything else, then divide by about 0.5 GB per billion parameters at 4 bits. That is roughly the largest model your device could run locally.
 
 > **Watch out:** "My phone runs ChatGPT" is almost never true. The app sends your words to data-center GPUs. On-device models are a few billion parameters at most, limited by memory and battery.
 
@@ -543,6 +557,8 @@ From September 2025 onward, AI labs signed chip deals measured not in chips but 
 - Add up the gigawatts in Table 35.10 (roughly 35–40 GW, counting the reshaped OpenAI–NVIDIA plan) and multiply by $38–60 billion: well over a trillion dollars, several years of NVIDIA's current data-center sales of about $356 billion a year.
 
 > **Watch out:** Read the verbs. "Up to," "intends to," "letter of intent" and "multiple gigawatts" are not purchase orders. Deals are staged, depend on financing and power, and sometimes change shape (the OpenAI–NVIDIA plan reportedly did). Many also involve the chip seller investing in the buyer, a "circular" pattern Chapter 43 examines.
+
+> **Try it:** Search the news for any AI chip or compute deal announced this month. Copy the headline and first paragraph into a chatbot and ask it to list every hedge word ("up to," "plans," "intends," "could," "multi-year") and to say what is firmly committed. Then judge for yourself how big the deal really is.
 
 ```mermaid
 flowchart LR

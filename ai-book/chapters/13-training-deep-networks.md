@@ -401,3 +401,482 @@ Another surprise, **grokking** (reported in 2022), happens on some small, puzzle
 How does this apply to chatbots? Frontier language models are trained on so much text that they see most of it only about once, so classic overfitting is rarely the main problem in pretraining. But they do memorize passages that appear many times in their data, which raises copyright and privacy questions (Chapter 11 and Chapter 58). Fine-tuning a model on a small dataset is where overfitting returns in full force (Chapter 30).
 
 > **Watch out:** "Bigger models always overfit more" is the classical intuition, and in deep learning it is often wrong. Past a certain size, bigger networks frequently generalize better, as long as there is enough data and training is done well. The reasons are still debated, which makes generalization one of the deepest open questions in the field.
+
+## Normalization: keeping numbers in a sane range
+
+As data flows through dozens of layers, the numbers can drift. One layer's outputs might average around 0.001, another's around 500. Each layer then has to cope with inputs of a wildly changing scale, and every time earlier layers update, later layers see a shifted range and must re-adapt. A **normalization layer** fixes this by rescaling a group of numbers to a standard range before they move on.
+
+### Layer normalization, worked by hand
+
+Take one token's vector of four numbers: [2, 4, 6, 8].
+
+1. Find the mean: (2 + 4 + 6 + 8) ÷ 4 = 5.
+2. Find the spread (standard deviation): the squared distances from the mean are 9, 1, 1 and 9, which average to 5, and √5 ≈ 2.236.
+3. Subtract the mean and divide by the spread: [(2 − 5) ÷ 2.236, ...] = **[−1.342, −0.447, 0.447, 1.342]**.
+
+The result always has a mean of 0 and a spread of 1, whether the input was [2, 4, 6, 8] or [2,000, 4,000, 6,000, 8,000]. The layer then multiplies each position by a learned "gain" and adds a learned shift, so the network can still choose the scale it wants. That is **layer normalization**.
+
+**RMSNorm** is a simpler, cheaper version. It skips the mean and only divides by the root-mean-square (the square root of the average of the squares). For [2, 4, 6, 8]: the squares are 4, 16, 36 and 64, their average is 30, and √30 ≈ 5.477. Dividing gives **[0.365, 0.730, 1.095, 1.461]**. The sizes are tamed but the mean is not forced to zero, and in practice this works just as well with less computation.
+
+### The family of normalizations
+
+| Method | Year | What it averages over | Where it is used |
+|---|---|---|---|
+| Batch normalization | 2015 | Each feature, across the examples in the batch | Image networks (CNNs) |
+| Layer normalization | 2016 | All features of one example | Original Transformers, many models |
+| RMSNorm | 2019 | All features of one example, scale only | Llama, Qwen, DeepSeek and most open LLMs |
+| DyT (Dynamic Tanh) | 2025 | Nothing: a learned tanh squash replaces normalization | Research; matches normalized Transformers in many tests |
+
+**Batch normalization** (Sergey Ioffe and Christian Szegedy, 2015) was a breakthrough for image networks, but it depends on the other examples in the batch, which is awkward for text of varying lengths and for small batches. **Layer normalization** (Jimmy Ba, Jamie Kiros and Geoffrey Hinton, 2016) normalizes each example on its own and became the Transformer standard. **RMSNorm** (Biao Zhang and Rico Sennrich, 2019) simplified it and is now used in most open large language models.
+
+Where the normalization sits also matters. The original 2017 Transformer normalized *after* each sub-layer (**post-norm**). Later models such as GPT-2 moved it *before* each sub-layer (**pre-norm**), which trains much more stably in deep stacks and is the norm today. And in 2025, a paper titled "Transformers without Normalization" (CVPR 2025) showed that replacing normalization layers with a simple learned squash, tanh(α × x), called **DyT**, matches normalized Transformers in many settings, a reminder that even basic plumbing is still being rethought.
+
+> **Definition — Normalization layer:** A layer that rescales a group of numbers to a standard range (for example mean 0 and spread 1) before passing them on, so that training stays stable as values flow through many layers.
+
+> **Definition — Batch normalization:** A 2015 normalization method that rescales each feature using the average and spread across the examples in the current batch. It is a key ingredient of image networks.
+
+> **Definition — Layer normalization:** A 2016 normalization method that rescales all the features of a single example to mean 0 and spread 1, then applies a learned scale and shift. It became the standard in Transformers.
+
+> **Definition — RMSNorm:** A simpler, cheaper layer normalization (2019) that only divides by the root-mean-square of the values, without subtracting the mean. Most open large language models use it.
+
+> **Definition — Pre-norm and post-norm:** Two placements of normalization in a Transformer block: before each sub-layer (pre-norm, the modern standard, more stable in deep stacks) or after it (post-norm, as in the original 2017 design).
+
+> **Definition — DyT (Dynamic Tanh):** A 2025 proposal to replace normalization layers with a learned squashing function, tanh(α × x), which matched normalized Transformers in many experiments.
+
+> **Analogy:** Normalization is like a radio station's automatic volume leveler between songs. Some songs were recorded quietly, others loudly, but the leveler brings each to a standard volume, so nothing clips and nothing fades into silence. The learned gain is the DJ's knob for deliberately making one song a bit louder.
+
+## Vanishing and exploding gradients
+
+Chapter 12 showed that backpropagation multiplies local slopes along the path from the loss back to each weight. In a deep network the path is long, and repeated multiplication is dangerous.
+
+Consider the sigmoid activation. Its slope is at most 0.25 (at its center) and much smaller in its flat tails. Suppose blame passes back through 10 sigmoid layers, each multiplying it by at most 0.25:
+
+```
+0.25 × 0.25 × ... (10 times) = 0.25^10 ≈ 0.00000095
+```
+
+Even in the best case, the first layer receives less than one millionth of the learning signal that reached the last layer. Through 20 such layers, it is about one trillionth. The early layers effectively stop learning. That is the **vanishing gradient** problem, and it is a big part of why deep networks seemed untrainable before about 2010. If instead the factors are bigger than 1, say weights that are too large, the signal grows exponentially, the updates become enormous, and the numbers overflow: an **exploding gradient**. Recurrent networks, which apply the same weights again at every word of a sentence, suffered especially badly from both (Chapter 14).
+
+> **Definition — Vanishing gradient:** The problem that learning signals shrink as they are multiplied backward through many layers, so the early layers of a deep network barely learn.
+
+> **Definition — Exploding gradient:** The opposite problem: learning signals grow as they pass backward through many layers, causing huge updates, unstable training and often NaN values.
+
+> **Analogy:** It is the telephone game. Whisper a sentence down a line of 50 people and it arrives garbled or gone. Each person changes the message a little, and the changes compound. A deep network without safeguards loses or distorts its learning signal the same way.
+
+The fixes, most of which you have already met:
+
+1. **Better activations.** ReLU's slope is exactly 1 for positive inputs, so blame passes through active neurons undiminished.
+2. **Careful initialization.** Xavier and He scaling keep signal sizes roughly constant from layer to layer at the start.
+3. **Normalization layers.** They re-center the forward signals at every layer, which also keeps the backward signals well behaved.
+4. **Gradient clipping.** A safety cap on the total size of the gradient.
+5. **Residual connections.** The most important fix, with its own section below.
+
+**Gradient clipping** works like this. Measure the overall size of the gradient, its **norm**: the square root of the sum of all the squared slopes. If it is larger than a chosen limit, scale the whole gradient down so its norm equals the limit, keeping its direction. For example, a gradient of [30, 40] has a norm of √(900 + 1,600) = 50. With a limit of 1, divide by 50 to get [0.6, 0.8]: same direction, safe size. Large language model training runs commonly clip at a norm of 1.0, and the script at the end of this chapter does the same.
+
+> **Definition — Gradient norm:** A single number for the overall size of a gradient, computed as the square root of the sum of the squares of all its slopes. A sudden jump in it is an early warning of instability.
+
+> **Definition — Gradient clipping:** Capping the gradient norm at a chosen limit by scaling the whole gradient down when it is too large, which prevents one bad step from wrecking training.
+
+## Residual connections: the express elevator
+
+In 2015, Kaiming He and colleagues at Microsoft Research asked a puzzling question. If you take a working 20-layer image network and add 36 more layers, the deeper network should be at least as good: the extra layers could simply learn to pass their input through unchanged. Yet in practice the deeper network trained *worse*, even on its training data. Learning to "do nothing" turned out to be hard for a stack of layers.
+
+Their fix was almost embarrassingly simple. Instead of asking each block of layers to compute a new output from scratch, add the block's input back to its output:
+
+**output = input + f(input)**
+
+Here f is whatever the block computes (a couple of layers with activations). If the block has nothing useful to add, it only needs to learn f ≈ 0, which is easy, and the input passes straight through. If it has something useful, it adds a correction. This is a **residual connection** (or skip connection), and the network family built from it is **ResNet**. A 152-layer ResNet won the 2015 ImageNet competition, and residual connections have been in almost every deep network since.
+
+```mermaid
+flowchart TD
+  IN["Input x"] --> F1["Layer with weights<br/>and activation"]
+  F1 --> F2["Layer with weights"]
+  F2 --> ADD["Add: x + f of x"]
+  IN -- "skip connection<br/>passes x unchanged" --> ADD
+  ADD --> OUT["Output, to the next block"]
+```
+*Figure 13.7: A residual block. The input takes two routes: through the layers, which compute a correction f(x), and around them on a shortcut. The two are added.*
+
+Why does this fix vanishing gradients? Look at the backward pass. Addition passes blame to both of its inputs unchanged (Chapter 12). So blame arriving at the output of a block flows back along the shortcut with a slope of exactly 1, in addition to whatever flows through the layers. Through 100 blocks, there is always a route made entirely of shortcuts, and 1 × 1 × ... × 1 = 1. The learning signal can reach the very first layer at full strength.
+
+You can see the effect in Exercise 9 of this chapter. It builds two 30-layer networks of old-fashioned sigmoid layers, identical except that one has skip connections. In our test run, the learning signal at the first layer of the plain network was so small that the computer rounded it to zero, and after training it was still guessing at random (10% accuracy on ten digits). The network with skip connections received a healthy signal at its first layer and reached 93% accuracy in the same time.
+
+> **Definition — Residual connection (skip connection):** A shortcut that adds a block's input to its output (output = input + f(input)), giving signals and gradients an unobstructed path around the block. It made networks with 100 or more layers trainable.
+
+> **Definition — ResNet (residual network):** A family of image networks introduced in 2015 that stacks residual blocks; a 152-layer version won that year's ImageNet competition.
+
+> **Analogy:** A tall building has stairs between every floor and an express elevator that goes straight from top to bottom. Each floor (layer) can add something to the passenger's journey by sending them through its stairs, but the elevator always works. Blame from the top floor can ride the elevator straight to the ground floor without being lost on 100 flights of stairs.
+
+### The residual stream in your chatbot
+
+Every Transformer, including every chatbot model, is built around residual connections. Each token carries a vector through the whole network, and each block reads from it, computes something (attention or a feed-forward network), and adds its result back. Researchers call this running vector the **residual stream**: a shared whiteboard that every layer reads and writes to, with nobody erasing. Chapter 15 explains the blocks themselves; here is where normalization and residuals sit in a modern pre-norm block.
+
+```mermaid
+flowchart TD
+  A["Residual stream in"] --> N1["RMSNorm"]
+  N1 --> AT["Attention<br/>tokens exchange information"]
+  AT --> P1["Add back to the stream"]
+  A --> P1
+  P1 --> N2["RMSNorm"]
+  N2 --> M["Feed-forward MLP<br/>each token computes alone"]
+  M --> P2["Add back to the stream"]
+  P1 --> P2
+  P2 --> B["Residual stream out<br/>to the next block"]
+```
+*Figure 13.8: One block of a modern Transformer. Each sub-layer is normalized first (pre-norm) and its result is added back to the residual stream. Large models stack dozens to more than a hundred such blocks.*
+
+> **Definition — Residual stream:** In a Transformer, the running vector each token carries through all the layers; every layer reads it and adds its own contribution back, so information and gradients flow freely from bottom to top.
+
+> **Definition — Hyper-connections and mHC:** 2024–25 generalizations of residual connections that keep several parallel streams and learn how to mix them. DeepSeek's mHC (manifold-constrained hyper-connections, December 2025) restricts the mixing to keep training stable and is used in DeepSeek V4.
+
+> **At the frontier (2026):** The humble skip connection is being reinvented. DeepSeek's mHC, published at the end of December 2025 and used in DeepSeek V4, widens the single residual stream into several mixed streams while constraining the mixing so that training stays as stable as with a plain shortcut. One of the NeurIPS 2025 best papers, "1000 Layer Networks for Self-Supervised RL", showed reinforcement-learning networks scaling to 1,024 layers. Chapter 17 covers these designs, along with gated attention and other stability tricks.
+
+> **Watch out:** "Normalization, residuals and dropout are minor implementation details" is a common belief among newcomers. These plumbing choices are what made deep networks trainable at all. A model with a brilliant architecture but bad plumbing will not train, and frontier labs still publish important papers about the plumbing.
+
+## Why depth works: the theory in plain words
+
+Everything so far has been practical. Here are the main theoretical ideas, without equations.
+
+### Universal approximation: anything is possible, in principle
+
+In 1989 George Cybenko proved, and in 1991 Kurt Hornik extended, a result called the **universal approximation theorem**. It says that a network with just *one* hidden layer, if it has enough neurons, can approximate any reasonable function as closely as you like. Any curve, any decision boundary, any input-to-output relationship.
+
+That sounds like the end of the story. It is not, for three reasons. The theorem says suitable weights *exist*; it does not say gradient descent will *find* them. It does not say how many neurons you need, and for many functions the number is astronomically large. And it says nothing about whether the network will generalize to new data. It is a promise that the toolbox is not fundamentally limited, not a recipe.
+
+> **Definition — Universal approximation theorem:** A mathematical result (Cybenko 1989, Hornik 1991) that a neural network with one sufficiently wide hidden layer can approximate any reasonable function. It guarantees that good weights exist, not that training will find them or how many neurons are needed.
+
+> **Watch out:** "Universal approximation means neural networks can learn anything" is a misreading. The theorem is about what can be represented, not about what can be learned from limited data with limited compute. Those practical questions are where all the hard work is.
+
+### Why depth beats width
+
+If one wide layer is enough in principle, why build networks 100 layers deep? Because depth lets a network build features out of features, which can be exponentially more efficient.
+
+Here is a worked example. A layer with just two ReLU neurons can compute a "tent" shape on the numbers from 0 to 1: t(x) = 2 × ReLU(x) − 4 × ReLU(x − 0.5). Check it: t(0) = 0, t(0.25) = 0.5, t(0.5) = 1, t(0.75) = 2 × 0.75 − 4 × 0.25 = 0.5, and t(1) = 2 − 2 = 0. One tooth, made of 2 straight pieces.
+
+Now feed the output of the tent into a second copy of the same two-neuron layer. Since the first tent sweeps from 0 up to 1 and back down, the second tent is traced twice: two teeth, 4 straight pieces. A third layer gives four teeth and 8 pieces. Every extra layer of just two neurons doubles the number of pieces.
+
+```
+ one layer: t(x)                two layers: t(t(x))
+ 1 |         /\                 1 |     /\          /\
+   |       /    \                 |    /  \        /  \
+   |     /        \               |   /    \      /    \
+   |   /            \             |  /      \    /      \
+ 0 |_/________________\_        0 |_/________\__/________\_
+    0        0.5        1          0   0.25   0.5  0.75   1
+```
+*Figure 13.9: Composing a simple two-neuron "tent" layer with itself doubles the number of teeth. Ten layers give 512 teeth from just 20 neurons.*
+
+With 10 layers of 2 neurons, 20 neurons in total, the network draws 2^10 = 1,024 straight pieces. A network with a single hidden layer of ReLU neurons, working on one input, can only add one bend per neuron, so it would need at least 1,023 neurons to draw the same shape. Twenty neurons stacked deep do the work of a thousand spread wide. This result, published by Matus Telgarsky in 2016, is one clean example of a general pattern: depth lets networks reuse and compose simple pieces.
+
+Real networks exploit this constantly. In an image network, early layers detect edges, middle layers combine edges into textures and parts, and late layers combine parts into objects (Chapter 14). Each layer only has to learn something simple *relative to the layer below*.
+
+> **Analogy:** Fold a sheet of paper in half, then in half again, ten times. Cut a single notch through the folded stack, and when you unfold it there are hundreds of notches. Each ReLU layer is like a fold: it bends the space so that whatever later layers do is repeated many times over. A single layer can only make one cut per neuron.
+
+> **Key idea:** Depth helps because features are built from features. A deep network can represent some functions with exponentially fewer neurons than a shallow one, and residual connections and normalization are what make that depth trainable in practice.
+
+### Inductive biases: built-in assumptions
+
+Every architecture makes assumptions about the world, called **inductive biases**. A convolutional network (Chapter 14) assumes that nearby pixels belong together and that a pattern means the same thing wherever it appears in an image, so it reuses one small filter across the whole picture. A recurrent network assumes that order matters and processes words one at a time. A Transformer assumes very little: any token may relate to any other token.
+
+Strong assumptions help when data is scarce, because the network does not have to discover them. Weak assumptions win when data is abundant, because the network is free to discover patterns that the designers never imagined. That is why convolutional networks beat early Vision Transformers on small image datasets, while Transformers caught up and pulled ahead once trained on enormous ones (Chapter 15).
+
+> **Definition — Inductive bias:** An assumption built into a model's design that makes some solutions easier to learn than others, such as a convolutional network's assumption that nearby pixels belong together.
+
+> **Analogy:** Inductive biases are training wheels. When you are learning with little practice (little data), they keep you upright. Once you have ridden thousands of miles (huge data), they slow you down on corners, and taking them off lets you go further.
+
+### The Bitter Lesson
+
+In March 2019 Rich Sutton, a founder of reinforcement learning, published a short essay called "The Bitter Lesson". His argument: across 70 years of AI research, methods that cleverly encode human knowledge (hand-written chess strategy, hand-designed speech features, hand-built image detectors) have won in the short term, and then been overtaken by general methods that simply use more computation, through search and learning. It is "bitter" because researchers keep investing in their own cleverness, and keep losing to scale.
+
+The strongest case *for* the Bitter Lesson is the history of the field itself. Chess fell to massive search, Go to self-play learning, speech recognition and computer vision to deep networks trained on huge datasets, and language to Transformers trained on most of the public internet. The scaling laws of Chapter 19 turned this into a forecasting tool: loss falls predictably as compute, data and parameters grow.
+
+The strongest case for *qualifying* it is just as real. Clever design still decides how far a given budget goes: residual connections, normalization, Muon, mixture-of-experts layers (Chapter 17) and efficient attention are all human ingenuity, and together they multiply the value of every chip. Data quality often matters more than raw quantity (Chapter 11). Where data is scarce, as in medicine or robotics, inductive biases still earn their keep. And compute is not free: it costs energy, money and time (Part VII). The working consensus in 2026 is something like this: general methods that scale win the long game, but engineering cleverness decides who can afford to play it.
+
+> **Definition — The Bitter Lesson:** Rich Sutton's 2019 essay arguing that, over the long run, general methods that make use of growing computation (search and learning) beat approaches built on hand-crafted human knowledge.
+
+> **Definition — Scaling laws:** Empirical rules showing that a model's loss falls smoothly and predictably as its parameters, training data and compute grow. Chapter 19 covers them in detail.
+
+## Numbers on hardware: precision in brief
+
+Every weight, activation and gradient is stored in a fixed number of bits. More bits mean more precise numbers but more memory, more energy and slower arithmetic. Chapter 32 explains the hardware; here is what matters for training.
+
+| Format | Bits | Bytes per number | Typical role in 2026 |
+|---|---|---|---|
+| FP32 | 32 | 4 | Master copy of weights, optimizer state, sensitive sums |
+| BF16 | 16 | 2 | Standard format for training math and stored weights |
+| FP8 | 8 | 1 | Large-scale training and fast inference |
+| FP4 (such as NVFP4 and MXFP4) | 4 | 0.5 | Inference, and the first 4-bit pretraining runs |
+
+Training uses **mixed precision**: most of the heavy matrix multiplication happens in a low-precision format such as BF16 or FP8, while a few sensitive quantities, like a master copy of the weights and the optimizer's running averages, stay in FP32. Small updates would otherwise vanish when rounded to a coarse format: adding 0.0001 to a weight of 1.0 can round straight back to 1.0 in BF16, which only keeps about two to three decimal digits.
+
+This has a large effect on memory. A common accounting for training with Adam in mixed precision is about **16 bytes per parameter**: 2 for the BF16 weights, 2 for the BF16 gradients, 4 for the FP32 master weights, and 4 + 4 for Adam's two running averages. For a 70-billion-parameter model that is 70 billion × 16 bytes ≈ 1.1 terabytes, before counting the activations saved for backpropagation. A single top GPU of the H100 generation holds 80 gigabytes, so the model must be split across many chips just to fit (Chapter 33 and Chapter 37).
+
+> **Definition — Floating-point format:** A way of storing a number in a fixed number of bits as a sign, an exponent (rough size) and a fraction (fine detail), so the same bits can represent both very large and very small values. FP32, BF16, FP8 and FP4 are formats with 32, 16, 8 and 4 bits.
+
+> **Definition — BF16 (bfloat16):** A 16-bit number format created by Google that keeps the same range as 32-bit numbers but with less fine detail. It became the default for training large models.
+
+> **Definition — Mixed precision:** Doing most of the arithmetic in a low-precision format for speed and memory savings while keeping a few sensitive values, such as a master copy of the weights, in higher precision.
+
+> **Definition — Quantization:** Converting a model's numbers to fewer bits (for example from 16-bit to 4-bit) to make it smaller and faster, usually after training, at some cost in accuracy. Chapter 23 and Chapter 30 cover it.
+
+> **At the frontier (2026):** Training precision keeps dropping. DeepSeek-V3 (December 2024) was a widely studied public example of large-scale FP8 training. According to its model card, DeepSeek V4 uses FP4 for its expert weights and FP8 elsewhere. NVIDIA reported in March 2026 that Nemotron 3 Super was the first model in its family pre-trained in the 4-bit NVFP4 format. Each halving of bits roughly doubles how much math a chip can do per second, which is why the race to 4-bit training matters for the cost of every future model.
+
+## Frameworks: PyTorch, JAX and TensorFlow/Keras
+
+Nobody writes forward and backward passes by hand for real models, as you did in Chapter 12's NumPy exercise. They use a deep-learning **framework**, a software library that provides:
+
+- **Tensors** that can live on GPUs, with fast matrix multiplication.
+- **Automatic differentiation**: write the forward pass, and the framework computes all the gradients.
+- **Ready-made layers**, loss functions and optimizers (including AdamW and Muon).
+- **Data loaders** that shuffle and batch training data.
+- Tools for splitting a model across thousands of chips.
+
+| Framework | Origin | Style | Where it leads in 2026 |
+|---|---|---|---|
+| PyTorch | Meta, 2016; now run by the PyTorch Foundation | Python-first; runs code line by line, easy to debug | Research and most open frontier models |
+| JAX | Google, 2018 | Functional style; compiles whole computations | Google DeepMind's main research stack, Google TPUs |
+| TensorFlow | Google, 2015 | Originally graph-based; mature production tools | Large installed base in companies |
+| Keras 3 | François Chollet, 2015; version 3 in 2023 | High-level and beginner-friendly | Runs on top of TensorFlow, JAX or PyTorch |
+
+PyTorch dominates research and open-model development. Its 2.11 release on 23 March 2026 contained 2,723 commits from 432 contributors, and the project moved to a new release every two months in 2026. JAX is the research workhorse at Google DeepMind and is closely tied to Google's TPU chips. TensorFlow, which dominated the late 2010s, retains a large base in production systems, and Keras offers the gentlest on-ramp.
+
+Around the frameworks sits an ecosystem: **Hugging Face** hosts open models and datasets and provides the Transformers and Diffusers libraries; serving engines such as vLLM run trained models efficiently (Chapter 23); and **CUDA** and **Triton** let engineers write the low-level **kernels**, individual GPU routines, that make the math fast.
+
+> **Definition — Framework (deep-learning framework):** A software library that handles tensors on GPUs, automatic differentiation, ready-made layers, optimizers and data loading, so researchers can describe a model in a few lines instead of writing all the math by hand.
+
+> **Definition — PyTorch:** The most widely used deep-learning framework, originally developed at Meta and now governed by the PyTorch Foundation. It is Python-first and dominates research and open-model development.
+
+> **Definition — JAX:** Google's library for fast numerical computing with automatic differentiation and compilation, widely used at Google DeepMind and on Google's TPU chips.
+
+> **Definition — TensorFlow and Keras:** Google's deep-learning framework (2015), with a large production base, and Keras, a high-level, beginner-friendly interface for building networks that in version 3 runs on TensorFlow, JAX or PyTorch.
+
+> **Definition — CUDA, Triton and kernels:** CUDA is NVIDIA's platform for programming its GPUs; Triton is a Python-like language for writing GPU code; a kernel is one optimized routine that runs on the GPU, such as a fast matrix multiplication.
+
+> **Definition — Hugging Face:** The main online hub for sharing open models and datasets, which also maintains popular libraries such as Transformers and Diffusers.
+
+> **Analogy:** Frameworks are kitchen appliances. You could cook over an open fire, as you did with NumPy in Chapter 12, but an oven with a thermostat, a food processor and a timer let you produce a banquet. PyTorch is the busy restaurant kitchen most chefs train in; JAX is the specialist kitchen built around one company's custom ovens.
+
+## Anatomy of a training script
+
+Here is a complete PyTorch training script in 15 lines. It trains a small network to read handwritten digits, using a dataset of 1,797 tiny 8-by-8-pixel images that comes bundled with the scikit-learn library.
+
+```python
+import torch, torch.nn as nn
+from sklearn.datasets import load_digits
+X, y = load_digits(return_X_y=True)
+X, y = torch.tensor(X / 16, dtype=torch.float32), torch.tensor(y)
+model = nn.Sequential(nn.Linear(64, 64), nn.ReLU(), nn.Linear(64, 10))
+loss_fn = nn.CrossEntropyLoss()
+opt = torch.optim.AdamW(model.parameters(), lr=1e-3, weight_decay=0.01)
+for epoch in range(20):
+    for i in range(0, len(X), 64):
+        xb, yb = X[i:i + 64], y[i:i + 64]
+        loss = loss_fn(model(xb), yb)
+        opt.zero_grad()
+        loss.backward()
+        opt.step()
+    print(epoch, round(loss.item(), 3))
+```
+
+| Line | What it does, in Chapter 12 terms |
+|---|---|
+| 1 | Loads PyTorch and its library of ready-made layers (`nn`). |
+| 2 | Loads a helper that supplies the digit images. |
+| 3 | `X` holds the images (64 pixel values each) and `y` the right answers (0 to 9). |
+| 4 | Scales pixel values from 0–16 down to 0–1 and turns both into PyTorch tensors. |
+| 5 | Builds a 64 → 64 → 10 network: a dense layer, ReLU, and a dense output layer with one score (logit) per digit. That is 64×64 + 64 + 64×10 + 10 = 4,810 parameters. |
+| 6 | Chooses cross-entropy as the loss; PyTorch applies the softmax inside it. |
+| 7 | Creates the AdamW optimizer, hands it every parameter, and sets the learning rate (0.001) and weight decay (0.01). |
+| 8 | Repeats for 20 epochs. |
+| 9 | Walks through the data 64 examples at a time. |
+| 10 | Slices out one mini-batch of images and answers. |
+| 11 | Forward pass and loss in one line: `model(xb)` computes the logits, `loss_fn` compares them with the answers. |
+| 12 | Clears the gradients from the previous step (PyTorch adds new gradients to old ones unless told otherwise). |
+| 13 | Backpropagation: autograd computes the slope for all 4,810 parameters. |
+| 14 | The optimizer nudges every parameter using those slopes. |
+| 15 | Prints the epoch number and the last batch's loss so you can watch it fall. |
+
+Lines 11 to 14 are the training loop of Chapter 12, written in four lines. Every training run in the world, up to the largest frontier models, has those four steps at its core: forward, loss, backward, step. In our test, the printed loss fell from about 2.2 in the first epoch to about 0.06 by the twentieth.
+
+This short version has shortcuts that a real project should not take: it never shuffles the data, never holds out a test set, and has no learning-rate schedule. The full version below fixes all three.
+
+### A complete training script for Google Colab
+
+This script puts the whole chapter to work: shuffled mini-batches, a held-out test set, AdamW with weight decay, a warmup-plus-cosine learning-rate schedule, gradient clipping, evaluation after every epoch, and charts. To run it, open https://colab.research.google.com, sign in with a Google account, choose "New notebook", paste everything into one cell and press the play button. It needs no downloads beyond what Colab already has and runs in under a minute, even without a GPU.
+
+```python
+#-- Part 1: tools ------------------------------------------------------------
+import math                                   # for the cosine in the schedule
+import torch                                  # the PyTorch library
+import torch.nn as nn                         # ready-made layers and losses
+from torch.utils.data import TensorDataset, DataLoader   # batching helpers
+from sklearn.datasets import load_digits      # a small built-in digit dataset
+from sklearn.model_selection import train_test_split     # splits the data
+import matplotlib.pyplot as plt               # for drawing charts
+
+torch.manual_seed(0)                          # same "random" start every run
+device = "cuda" if torch.cuda.is_available() else "cpu"  # use a GPU if present
+print("Running on:", device)
+
+#-- Part 2: data -------------------------------------------------------------
+X, y = load_digits(return_X_y=True)           # 1,797 images of 8x8 pixels
+X = X / 16.0                                  # pixel values 0..16 -> 0..1
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=0, stratify=y)   # 80% study, 20% exam
+to_t = lambda a, dt: torch.tensor(a, dtype=dt)
+train_ds = TensorDataset(to_t(X_train, torch.float32), to_t(y_train, torch.long))
+test_ds = TensorDataset(to_t(X_test, torch.float32), to_t(y_test, torch.long))
+train_dl = DataLoader(train_ds, batch_size=64, shuffle=True)  # shuffled batches
+test_dl = DataLoader(test_ds, batch_size=256)
+
+#-- Part 3: the model --------------------------------------------------------
+model = nn.Sequential(
+    nn.Linear(64, 128), nn.ReLU(),            # hidden layer 1: 64 -> 128
+    nn.Linear(128, 128), nn.ReLU(),           # hidden layer 2: 128 -> 128
+    nn.Linear(128, 10),                       # output: one score per digit
+).to(device)
+n_params = sum(p.numel() for p in model.parameters())
+print(f"Parameters: {n_params:,}")
+
+#-- Part 4: loss, optimizer, learning-rate schedule --------------------------
+loss_fn = nn.CrossEntropyLoss()               # softmax + "surprise" in one
+EPOCHS = 30
+opt = torch.optim.AdamW(model.parameters(), lr=3e-3, weight_decay=0.01)
+total_steps = EPOCHS * len(train_dl)
+warmup = 50                                   # steps of gentle start
+def lr_factor(step):                          # multiplies the base lr
+    if step < warmup:
+        return (step + 1) / warmup            # ramp up: 2%, 4%, ... 100%
+    progress = (step - warmup) / (total_steps - warmup)
+    return 0.5 * (1 + math.cos(math.pi * progress))   # cosine glide to 0
+sched = torch.optim.lr_scheduler.LambdaLR(opt, lr_factor)
+
+#-- Part 5: a helper that measures the model on the test set -----------------
+def evaluate():
+    model.eval()                              # switch to "exam mode"
+    correct, total, loss_sum = 0, 0, 0.0
+    with torch.no_grad():                     # no gradients needed here
+        for xb, yb in test_dl:
+            xb, yb = xb.to(device), yb.to(device)
+            logits = model(xb)
+            loss_sum += loss_fn(logits, yb).item() * len(yb)
+            correct += (logits.argmax(dim=1) == yb).sum().item()
+            total += len(yb)
+    model.train()                             # back to "study mode"
+    return loss_sum / total, correct / total
+
+#-- Part 6: the training loop ------------------------------------------------
+train_hist, test_hist = [], []
+for epoch in range(1, EPOCHS + 1):
+    running = 0.0
+    for xb, yb in train_dl:                   # one mini-batch at a time
+        xb, yb = xb.to(device), yb.to(device)
+        logits = model(xb)                    # 1. forward pass
+        loss = loss_fn(logits, yb)            # 2. how wrong? (one number)
+        opt.zero_grad()                       # 3. clear old gradients
+        loss.backward()                       # 4. backprop: all gradients
+        torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)  # 5. safety cap
+        opt.step()                            # 6. nudge every weight
+        sched.step()                          # 7. update the learning rate
+        running += loss.item() * len(yb)
+    train_loss = running / len(train_ds)
+    test_loss, test_acc = evaluate()
+    train_hist.append(train_loss); test_hist.append(test_loss)
+    if epoch % 5 == 0 or epoch == 1:
+        print(f"epoch {epoch:2d}  train loss {train_loss:.3f}  "
+              f"test loss {test_loss:.3f}  test accuracy {test_acc:.1%}")
+
+#-- Part 7: look at the results ----------------------------------------------
+plt.plot(train_hist, label="training loss")
+plt.plot(test_hist, label="test loss")
+plt.xlabel("epoch"); plt.ylabel("loss"); plt.legend(); plt.show()
+
+model.eval()
+xb, yb = test_ds[:8]
+preds = model(xb.to(device)).argmax(dim=1).cpu()
+fig, axes = plt.subplots(1, 8, figsize=(12, 2))
+for ax, img, p, t in zip(axes, xb, preds, yb):
+    ax.imshow(img.reshape(8, 8), cmap="gray_r"); ax.axis("off")
+    ax.set_title(f"guess {p.item()}\ntrue {t.item()}")
+plt.show()
+```
+
+What each part does, in plain words:
+
+- **Part 1** loads the tools and fixes the random seed, so you get the same "random" starting weights every time. It also uses a GPU if Colab gave you one (Runtime menu, "Change runtime type"); for a network this small, the CPU is fine.
+- **Part 2** loads the 1,797 digit images, scales the pixels to 0–1, and splits them: 80% for training and 20% held back as a test set the network never learns from. `stratify=y` keeps the same mix of digits in both parts. The `DataLoader` serves shuffled mini-batches of 64.
+- **Part 3** builds a 64 → 128 → 128 → 10 network. PyTorch initializes the weights with a sensible random scheme automatically. The script prints the parameter count: 26,122.
+- **Part 4** chooses cross-entropy loss and AdamW, then builds the learning-rate schedule from this chapter: a 50-step linear warmup followed by cosine decay to zero.
+- **Part 5** defines the exam: switch the model to evaluation mode, turn off gradient tracking (it is not needed for a forward-only check), and measure test loss and accuracy.
+- **Part 6** is the training loop, with the seven numbered steps from this chapter: forward, loss, clear old gradients, backpropagate, clip, optimizer step, schedule step.
+- **Part 7** draws the training and test loss curves and shows eight test digits with the network's guesses.
+
+When we ran it, the output looked like this (yours may differ slightly):
+
+```
+Parameters: 26,122
+epoch  1  train loss 2.254  test loss 2.089  test accuracy 74.4%
+epoch  5  train loss 0.161  test loss 0.173  test accuracy 95.0%
+epoch 10  train loss 0.048  test loss 0.139  test accuracy 96.4%
+epoch 20  train loss 0.013  test loss 0.114  test accuracy 97.2%
+epoch 30  train loss 0.010  test loss 0.112  test accuracy 97.2%
+```
+
+Read it like a practitioner. Test accuracy climbs quickly and settles around 97%: the network correctly reads about 350 of the 360 test digits it has never seen. Training loss keeps falling towards zero, while test loss flattens out around 0.11. That gap between the two curves is the generalization gap from earlier in the chapter: the network has nearly memorized its training set, and further training no longer helps on new digits. Because the learning rate decays to zero, training settles calmly at the end instead of wandering. Exercise 7 suggests experiments that break each part on purpose.
+
+## The 2026 recipe at a glance
+
+Put the chapter together and you can read the "recipe card" of a modern model. Here is how the typical ingredients changed between a classic 2015 image network and a 2026 open-weight frontier language model.
+
+| Ingredient | Typical 2015 image network | Typical 2026 open frontier language model |
+|---|---|---|
+| Optimizer | SGD with momentum | AdamW, increasingly Muon for weight matrices plus AdamW for the rest |
+| Learning-rate schedule | Divide by 10 a few times when progress stalls | Warmup, then cosine decay or WSD |
+| Initialization | He initialization | Small random values, residual branches scaled down |
+| Normalization | Batch normalization | RMSNorm in pre-norm position, often extra norms inside attention (QK-norm) |
+| Shortcuts | Residual connections (ResNet) | Residual stream; some use hyper-connections such as DeepSeek's mHC |
+| Activation | ReLU | SwiGLU (a gated form of SiLU) |
+| Regularization | Dropout, data augmentation, weight decay | Weight decay; little or no dropout; enormous data seen about once |
+| Precision | FP32 | BF16 mixed precision, FP8, and the first FP4 runs |
+| Scale | Tens of millions of parameters, a few GPUs | Hundreds of billions to over a trillion parameters, thousands of chips |
+
+```mermaid
+timeline
+  title Tricks that made deep networks trainable
+  1986 : Backpropagation popularized
+  2010 : Xavier initialization
+       : ReLU activations spread
+  2012 : Dropout
+       : AlexNet trains a deep network on GPUs
+  2014 : Adam optimizer
+  2015 : Batch normalization
+       : He initialization
+       : ResNet and residual connections
+  2016 : Layer normalization
+  2017 : AdamW and the Transformer
+  2019 : RMSNorm
+       : The Bitter Lesson essay
+  2024 : Muon optimizer
+  2025 : DyT and mHC
+```
+*Figure 13.10: Most of the tricks that make deep learning work arrived between 2010 and 2017. The 2024–25 additions show the plumbing is still being improved.*
+
+> **At the frontier (2026):** Published open designs have converged on a recognizable recipe: mixture-of-experts layers with only a few percent of parameters active per token, attention that is cheaper than the original full version, million-token context windows, 4-to-8-bit number formats, stability tricks such as QK-norm, gated attention and mHC, Muon-family optimizers, and multi-token prediction. Chapter 17 covers the architecture side of this convergence. The closed frontier labs (OpenAI, Anthropic, Google) do not publish their recipes, so statements about how GPT, Claude or Gemini are trained internally are speculation unless the company has said so.
+
+## In plain English
+
+Chapter 12's training loop (forward, loss, backward, update) works beautifully on a nine-knob network. On a hundred-layer network with billions of knobs, it runs into trouble: it is slow, unstable, loses its learning signal in the depths, memorizes instead of learning, and eats memory. This chapter is the toolkit that fixes each problem.
+
+Smarter optimizers aim each step better. Momentum adds a rolling-ball velocity so progress builds up along consistent slopes. Adam gives every knob its own stride length. AdamW adds a gentle shrink towards zero. Muon, the 2024 newcomer now used by Kimi K2 and DeepSeek V4, balances each weight matrix's update so every direction learns.
+
+The learning rate, the size of each step, is the most important setting. Training warms it up gently, keeps it high, then lowers it at the end. Big runs save checkpoints so they can roll back when the loss suddenly spikes.
+
+Weights start as small random numbers, scaled to the size of each layer, so neurons differ and signals neither fade nor explode. Regularization (weight decay, dropout, data augmentation, early stopping) keeps the network from memorizing. Oddly, very large networks often generalize better, a puzzle called double descent.
+
+Normalization layers keep numbers in a sane range, and residual connections add each block's input to its output, giving the learning signal an express elevator through a hundred layers. Theory adds perspective: one wide layer can represent anything in principle, but depth builds features from features far more efficiently, and general methods that scale with compute tend to win.
+
+Finally, frameworks such as PyTorch do the calculus for you, so a complete, modern training loop fits in a few dozen lines that you can run today in Google Colab.
+
+## Key terms
+
+Optimizer, loss landscape, saddle point, momentum, Adam, optimizer state, weight decay, AdamW, curvature, Lion, Shampoo and SOAP, Muon, orthogonalization, Newton–Schulz iteration, NaN (Not a Number), learning-rate schedule, warmup, cosine decay, WSD (warmup–stable–decay), loss spike, checkpoint, symmetry breaking, initialization, Xavier (Glorot) initialization, He initialization, generalization, overfitting, underfitting, regularization, dropout, data augmentation, early stopping, double descent, grokking, normalization layer, batch normalization, layer normalization, RMSNorm, pre-norm and post-norm, DyT (Dynamic Tanh), vanishing gradient, exploding gradient, gradient norm, gradient clipping, residual connection (skip connection), ResNet, residual stream, hyper-connections and mHC, universal approximation theorem, inductive bias, the Bitter Lesson, scaling laws, floating-point format, BF16, mixed precision, quantization, framework, PyTorch, JAX, TensorFlow and Keras, CUDA, Triton and kernels, Hugging Face.

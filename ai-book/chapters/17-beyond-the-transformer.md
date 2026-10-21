@@ -12,7 +12,7 @@
 - The "plumbing" that keeps trillion-parameter training stable (mHC, QK-norm, gated attention, DyT), plus recursion and memory research, the 2026 convergence and open questions.
 
 ## Before you start
-You need Chapter 15 (The Transformer, Piece by Piece), especially attention, the feed-forward block, the residual stream and the KV cache. Chapter 13 (Training Deep Networks) introduced residual connections, normalization and the Muon optimizer, and Chapter 14 introduced RNNs and their hidden state. Chapter 5 gives the dot products, softmax-ready scores and the "2 × N operations per token" rule used here. Chapter 16 is helpful but not required.
+You need Chapter 15 (The Transformer, Piece by Piece), especially attention, the feed-forward block, the residual stream and the KV cache. Chapter 13 (Training Deep Networks) introduced residual connections, normalization and the Muon optimizer, and Chapter 14 introduced RNNs and their hidden state. Chapter 5 gives dot products and the "2 × N operations per token" rule, and Chapter 6 gives softmax. Chapter 16 is helpful but not required.
 
 ## Two bills every Transformer pays
 
@@ -154,9 +154,11 @@ Work through DeepSeek V4-Pro, the largest open model from DeepSeek as of late 20
 - **Training compute:** with the 6 × N × D rule (Chapter 19), using active parameters for N and about 33 trillion training tokens for D: 6 × 49e9 × 33e12 ≈ 9.7 × 10^24 operations, matching Epoch AI's estimate. A dense 1.6T model trained on the same data would need about 3.2 × 10^26, again about 33 times more.
 - **Memory:** all 1.6 trillion parameters must sit in fast memory. DeepSeek stores the expert weights in a 4-bit format (FP4) and most other weights in 8-bit (FP8). At half a byte per parameter, 1.6T is about 0.8 TB; at one byte, 1.6 TB. Either way, that is a multi-GPU server, not a laptop.
 
-Precision matters for MoE because the expert weights are most of the memory. OpenAI's open gpt-oss-120b stores its MoE weights in MXFP4, about 4.25 bits per number, which is how a 116.8-billion-parameter model fits on a single 80 GB GPU: 116.8 billion × 4.25 bits ÷ 8 ≈ 62 GB (Chapter 23 covers quantization).
+Precision matters for MoE because the expert weights are most of the memory. OpenAI's open gpt-oss-120b stores its MoE weights in MXFP4, about 4.25 bits per number, which is how a 116.8-billion-parameter model fits on a single 80 GB GPU. Roughly: 116.8 billion × 4.25 bits ÷ 8 ≈ 62 GB, if every weight used that format (Chapter 23 covers quantization).
 
 > **Definition — MXFP4 and NVFP4:** Four-bit number formats in which small blocks of numbers share a scale factor, so weights take about half a byte each. They are used to store and increasingly to train large MoE models.
+
+> **Key idea:** In an MoE, memory follows total parameters and compute follows active parameters. That split is why a 2.8-trillion-parameter model like Kimi K3 can cost, per token, roughly what a dense model of about 100 billion parameters costs, ignoring communication overhead.
 
 > **Watch out:** "A one-trillion-parameter MoE uses a trillion parameters for every word." Only the active parameters compute each token (32 billion for Kimi K2, 49 billion for DeepSeek V4-Pro), though all of them must be stored. When comparing models, ask for both numbers.
 
@@ -311,6 +313,8 @@ Chapter 15 introduced the first line of defense, which keeps attention but makes
 
 The more radical line of defense replaces most attention layers with layers that keep a fixed-size memory, no matter how long the text gets.
 
+> **Try it:** Paste a long document (50 pages or more) into your chatbot. Ask for one exact detail from the middle, such as a number in a table. Then ask a two-step question that links a fact near the start with a fact near the end. You are testing exact recall and multi-hop reasoning, the two abilities that cheaper memory designs can weaken.
+
 ## State-space models and linear attention: a notebook instead of a filing cabinet
 
 ### Back to recurrence, done right
@@ -333,7 +337,7 @@ The key upgrade is selectivity: let the token itself decide how much to keep and
 
 The modern line runs:
 - **S4 (2021).** Albert Gu and colleagues borrowed state-space equations from control engineering and found a way to train them in parallel like a convolution. S4 was strong on very long sequences but weak on language, because its update rule was the same for every token.
-- **Mamba (December 2023).** Gu and Tri Dao made the state updates selective (input-dependent), with a GPU-friendly algorithm to keep training fast. Mamba matched Transformers of similar size on language for the first time.
+- **Mamba (December 2023).** Gu and Tri Dao made the state updates selective (input-dependent), with a GPU-friendly algorithm to keep training fast. Mamba was among the first such models to match Transformers of similar size on language.
 - **Mamba-2 (2024).** A reformulation showing that SSMs and attention are mathematically close relatives, which made training much faster on GPUs.
 - **Mamba-3 (2026, an oral paper at ICLR 2026).** Adds a more expressive recurrence, complex-valued state updates and a "multi-input, multi-output" design. At 1.5 billion parameters it beat Gated DeltaNet on average downstream accuracy and matched Mamba-2's perplexity with half the state size.
 
@@ -354,7 +358,7 @@ A worked example with 2-number keys and values. The memory S starts as all zeros
 
 > **Definition — Delta rule:** An update rule for a memory matrix that first checks what the memory currently returns for a key and then writes only the difference from the new value, so outdated information is overwritten instead of piled up.
 
-This idea powers a family of layers. DeltaNet applies the delta rule. Gated DeltaNet (2024) adds a learned forget gate so the memory can also decay. Moonshot's Kimi Delta Attention (October 2025) gives each channel of the memory its own gate. Two community-driven designs pursue the same goal from the RNN side: RWKV (an open-source RNN family since 2023) and xLSTM (2024, a modernized LSTM from Sepp Hochreiter's group, who invented the LSTM).
+This idea powers a family of layers. DeltaNet applies the delta rule. Gated DeltaNet (2024) adds a learned forget gate so the memory can also decay. Moonshot's Kimi Delta Attention (October 2025) gives each channel of the memory its own gate. Two designs pursue the same goal from the RNN side: RWKV (an open-source recurrent family, published in 2023) and xLSTM (2024, a modernized LSTM from the group of Sepp Hochreiter, co-inventor of the LSTM).
 
 > **Definition — Gated DeltaNet:** A linear-attention layer that combines the delta rule with a learned forget gate, letting its fixed-size memory both overwrite and gradually fade old information. Used in Qwen3-Next and Qwen3.5.
 
@@ -428,6 +432,8 @@ What does the 3-to-1 ratio buy? Redo the memory math for our illustrative 60-lay
 
 Companies report big gains. Moonshot says Kimi Linear cuts KV cache by up to 75% and decodes up to 6 times faster at a 1-million-token context; critics noted its relatively small training budget and baselines, so treat these as company-reported. NVIDIA claims Nemotron 3 Super reaches up to 2.2 times the throughput of gpt-oss-120b.
 
+> **At the frontier (2026):** Moonshot's Kimi K3 (July 2026), one of the largest open models, is a hybrid: 69 of its 93 layers use Kimi Delta Attention and 24 use gated MLA, combined with an 896-expert MoE, a 1-million-token context and 4-bit MXFP4 weights trained with quantization-aware training. Qwen3.5 uses the same 3:1 pattern from its small dense variants (0.8 to 9 billion parameters) up to the 397B flagship. DeepSeek V4 takes the other road, keeping attention in every layer but compressing and sparsifying it.
+
 ### The counter-trend: going back to full attention
 
 Not everyone is convinced. In October 2025 MiniMax released MiniMax M2 with plain full attention, after earlier MiniMax models had used a hybrid "lightning attention." Its stated reasons: hybrids looked fine on benchmarks but degraded on multi-hop reasoning at scale, and full attention has far more mature kernels and serving tools.
@@ -488,7 +494,7 @@ A frontier pretraining run can occupy tens of thousands of chips for months. If 
 
 Several research directions question whether bigger stacks of fixed layers are the only way forward. Treat these as live research, not settled practice.
 
-- **Looped (recursive) models.** Instead of 100 different layers, run a smaller block many times, refining an answer with each pass. Samsung researchers' Tiny Recursive Model (October 2025) showed that a very small network, looping its reasoning, could compete with far larger language models on certain grid puzzles. Whether looping can substitute for scale on general tasks is open.
+- **Looped (recursive) models.** Instead of 100 different layers, run a smaller block many times, refining an answer with each pass. The Tiny Recursive Model (October 2025) reported that a network with only millions of parameters, looping its reasoning, could compete with far larger language models on certain grid puzzles. Whether looping can substitute for scale on general tasks is open.
 - **Test-time memory.** Google's Titans research gives a model a memory module whose weights keep updating while it reads, storing what surprised it. It is one approach to the bigger goal of models that keep learning after deployment (Chapter 24).
 - **Multi-token prediction.** Training a model to predict several upcoming tokens, not just the next one, gives a richer learning signal and can speed up generation through speculative decoding (Chapter 23). DeepSeek-V3 and NVIDIA's Nemotron 3 Super use it.
 - **Depth.** A NeurIPS 2025 best paper, "1000 Layer Networks for Self-Supervised RL," scaled networks for reinforcement learning to 1,024 layers, a reminder that how deep networks can usefully go is still being explored.
