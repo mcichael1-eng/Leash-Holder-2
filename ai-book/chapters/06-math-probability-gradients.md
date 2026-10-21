@@ -339,6 +339,8 @@ This is the single most important probability idea for understanding chatbots. A
 
 Given "The capital of France is", the probability of " Paris" is high. Given "My favorite city to visit is", the probability of " Paris" is lower, but still real. Given "2 + 2 =", it is nearly zero. Same token, different condition, completely different probability. Everything a chatbot "knows" is stored as its ability to compute these conditional probabilities well.
 
+> **Key idea:** A chatbot is a machine for one conditional probability, P(next token | everything so far), computed afresh for every token it writes. A better model is simply one that estimates this probability more accurately, especially for conversations it has never seen.
+
 > **Definition — Language model:** A model that assigns probabilities to sequences of text, usually by predicting the probability of each next token given all the previous ones. Chatbots are built on large language models.
 
 ### Chaining probabilities for a whole sentence
@@ -444,6 +446,8 @@ Bayesian thinking shows up in AI in three practical ways.
 - **Hallucination.** A 2025 paper by Adam Kalai and colleagues at OpenAI argued that models make things up partly because training and benchmarks reward guessing: a wrong guess usually costs no more than saying "I don't know", so guessing scores better on average. Chapter 18 and Chapter 55 return to this.
 
 > **Definition — Calibration:** How well a model's stated confidence matches how often it is actually right. A well-calibrated forecaster's "70% chance of rain" days see rain about 70% of the time.
+
+> **Key idea:** Evidence should move your beliefs, but how far it moves them depends on the base rate. A fluent, confident answer about something rare or obscure deserves a check, not extra trust.
 
 ## Descriptive statistics: summarizing a pile of numbers
 
