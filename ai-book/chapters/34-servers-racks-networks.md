@@ -403,7 +403,7 @@ At 1 MW per rack, even the 50-volt busbar runs into physics. Do the arithmetic w
 
 Fifteen times less current means far thinner copper and far less heat lost in the wires. NVIDIA says a 1 MW rack fed at 54 V could need about 200 kg of copper busbar, which is why it is moving to a new design.
 
-> **Definition — 800 V DC distribution:** NVIDIA's announced power architecture, planned for production alongside its Kyber racks in 2027, that delivers 800-volt direct current to racks. NVIDIA says it carries 85% more power through the same conductor than 415 V AC, cuts copper use by about 45% and improves end-to-end efficiency by up to 5%.
+> **Definition — 800 V DC distribution:** NVIDIA's announced power architecture, planned for production alongside its next-generation Kyber racks (NVIDIA's rack design for its Rubin Ultra chips, around 600 kW each) in 2027, that delivers 800-volt direct current to racks. NVIDIA says it carries 85% more power through the same conductor than 415 V AC, cuts copper use by about 45% and improves end-to-end efficiency by up to 5%.
 
 There is one more power problem unique to AI. In a training run, thousands of GPUs compute, then all pause to exchange numbers, then compute again, in lockstep. The whole site's power draw can swing by tens of megawatts within seconds; Meta reported exactly this during Llama 3 training. Designers now add capacitors near racks to absorb millisecond spikes and batteries at the facility to handle swings of seconds to minutes. Chapter 39 covers the full power chain and Chapter 40 the cooling.
 

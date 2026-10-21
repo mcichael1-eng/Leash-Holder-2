@@ -70,6 +70,12 @@ lines += [
     "checked every chapter against the style rules.",
     "4. **Editing.** One editor per Part re-checked worked calculations, facts, cross-references and consistency "
     "across chapters, and hedged anything the research could not confirm.",
+    "5. **Coverage audit.** Every one of the 832 topics in the research topic maps (including every skill and every "
+    "role) was traced to the chapter that teaches it. 819 were already fully taught, 13 were thin and none were "
+    "missing; the 13 were filled. The per-topic tables are in `planning/coverage/`.",
+    "6. **Beginner read-through.** A reader-test pass through ten chapters across the difficulty range, from the "
+    "point of view of someone with no computer-science background, fixed 65 places where that reader would get "
+    "lost (`planning/coverage/reader-test.md`).",
     "",
     "Facts about fast-moving areas (models, chips, data centers, prices, law) reflect sources available in October 2026 "
     "and will date. Figures from secondary sources are marked as reported; check the Going deeper lists for primary sources.",

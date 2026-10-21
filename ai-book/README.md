@@ -5,10 +5,10 @@
 A complete book for someone with almost no computer-science background who uses AI chatbots every day and wants to understand all of it: how computers work, the math, how machines learn, neural networks and Transformers, how frontier labs build large language models, how to build with AI, chips and compute, data centers and energy, every major branch of AI, safety, law and society, and the skills, careers and opportunities that come with it.
 
 - **10 parts, 66 chapters, 5 appendices**
-- **2,969 terms** in a searchable glossary (every term is defined where it first appears)
+- **2,982 terms** in a searchable glossary (every term is defined where it first appears)
 - **529 diagrams**, plus tables and hand-worked numeric examples
 - **659 exercises** from Easy to Challenge, none of which require prior coding experience
-- About **920,000 words**
+- About **930,000 words**
 
 ## How to read it
 
@@ -151,6 +151,8 @@ A complete book for someone with almost no computer-science background who uses 
 2. **Outline.** The findings became a 66-chapter outline with a brief for every chapter (`planning/OUTLINE.md`) and a house style (`planning/STYLE.md`).
 3. **Writing.** Writer agents drafted two chapters each from the research, then validated every diagram and checked every chapter against the style rules.
 4. **Editing.** One editor per Part re-checked worked calculations, facts, cross-references and consistency across chapters, and hedged anything the research could not confirm.
+5. **Coverage audit.** Every one of the 832 topics in the research topic maps (including every skill and every role) was traced to the chapter that teaches it. 819 were already fully taught, 13 were thin and none were missing; the 13 were filled. The per-topic tables are in `planning/coverage/`.
+6. **Beginner read-through.** A reader-test pass through ten chapters across the difficulty range, from the point of view of someone with no computer-science background, fixed 65 places where that reader would get lost (`planning/coverage/reader-test.md`).
 
 Facts about fast-moving areas (models, chips, data centers, prices, law) reflect sources available in October 2026 and will date. Figures from secondary sources are marked as reported; check the Going deeper lists for primary sources.
 

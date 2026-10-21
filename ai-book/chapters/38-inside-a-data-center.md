@@ -354,7 +354,7 @@ Here is the same comparison as numbers.
 
 *Table 38.1: Rack generations. "Homes" uses an average US home drawing about 1.2 kW averaged over a year.*
 
-NVIDIA says the jump from its Hopper generation to Blackwell alone raised rack density about 3.4 times, "from tens of kilowatts to well over 100". It is now designing for more than 1 MW per rack, with 800-volt DC power distribution entering production alongside its Kyber racks in 2027. Chapter 39 explains why the voltage has to rise.
+NVIDIA says the jump from its Hopper generation to Blackwell alone raised rack density about 3.4 times, "from tens of kilowatts to well over 100". It is now designing for more than 1 MW per rack, with 800-volt DC power distribution entering production alongside its next-generation Kyber racks (NVIDIA's rack design for its Rubin Ultra chips, around 600 kW each) in 2027. Chapter 39 explains why the voltage has to rise.
 
 What does such a rack produce? Microsoft says each 72-GPU rack in its Fairwater design can generate about 865,000 tokens per second: at roughly 0.75 words per token, several long novels' worth of text every second from one cabinet.
 
