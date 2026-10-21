@@ -85,7 +85,7 @@ The main players fall into five groups.
 
 1. **Hyperscalers** build their own campuses (self-build) and also lease from developers. Google and Meta self-build heavily; Microsoft, Amazon and Oracle do both.
 2. **Neoclouds** rent GPUs to AI labs and companies. CoreWeave, the largest, ran about 51 AI data centers in 2026 and reportedly earned about two-thirds of its 2025 revenue from one customer, Microsoft. Nebius signed a Microsoft contract reported at $17.4 billion (up to $19.4 billion) in September 2025, and has sites in Finland, New Jersey (a 300 MW site in Vineland), Kansas City and Birmingham, Alabama. Several former bitcoin miners (IREN, Cipher, TeraWulf, Core Scientific) converted their power-rich mining sites into AI data centers.
-3. **Developers and landlords** (Equinix, Digital Realty, QTS, Vantage, Aligned, STACK, CyrusOne, Related Digital and others) build and lease. Crusoe both develops and operates; it built Stargate's Abilene campus.
+3. **Developers and landlords** (Equinix, Digital Realty, QTS, Vantage, Aligned, STACK, CyrusOne, Related Digital and others) build and lease. Crusoe is both a developer and a neocloud; it built Stargate's Abilene campus.
 4. **AI labs** (OpenAI, Anthropic, xAI, Google DeepMind, Meta's labs) are the end customers. Most sign multi-year compute contracts rather than owning buildings, though xAI built Colossus itself.
 5. **Suppliers and financiers**: chipmakers (NVIDIA, AMD, Broadcom), electrical and cooling equipment makers (Vertiv, Schneider Electric, Eaton, ABB, Siemens, GE Vernova, Hitachi Energy), utilities, and the banks, private-credit funds, infrastructure funds and sovereign wealth funds that lend the money.
 
@@ -146,7 +146,7 @@ Here is what a site selector weighs, roughly in order of importance for an AI ca
 - **Fiber.** Diverse fiber routes to the internet and to the company's other campuses.
 - **Water and climate.** Cooler, drier climates allow more "free cooling." Evaporative cooling needs water; dry cooling needs more electricity on hot days (Chapter 40).
 - **Latency to users.** Matters for inference (answering users), much less for training.
-- **Taxes and incentives.** Sales-tax exemptions on equipment and property-tax deals can be worth hundreds of millions of dollars.
+- **Taxes and incentives.** Sales-tax exemptions on equipment and property-tax deals add up to large sums over a project's life, because the equipment is so expensive.
 - **Permitting speed and community attitude.** Some counties welcome data centers for their tax base; others pass moratoriums.
 - **Labor.** Thousands of electricians, pipefitters and other trades are needed during construction.
 - **Natural hazards.** Earthquakes, hurricanes, wildfires, floods.
@@ -427,7 +427,7 @@ Now the stories. For each, ask the same questions: who, where, how much power, w
 
 **The announcement.** On January 21, 2025, at the White House, OpenAI and partners announced "Stargate," a plan described as "up to $500 billion" and 10 GW of US AI infrastructure by 2029. The partners have included Oracle, SoftBank, MGX (an Abu Dhabi investment firm), Crusoe, Vantage, SB Energy, Related Digital and STACK.
 
-**Abilene, Texas: the flagship.** Crusoe built the campus; Oracle operates it for OpenAI. It is a 1.2 GW campus with eight buildings, filled with NVIDIA GPUs. As noted above, Epoch AI estimated about 200 MW of IT running in April 2026 with completion targeted for the fourth quarter of 2026, and Oracle reportedly reported six of eight buildings (about 618 MW) delivered by September 2026. A planned expansion to about 2.1 GW was cancelled; Microsoft later partnered with Crusoe on an adjacent site of about 900 MW.
+**Abilene, Texas: the flagship.** Crusoe built the campus; Oracle operates it for OpenAI. It is a 1.2 GW campus of eight buildings filled with NVIDIA GPUs, opening in phases as described above. A planned expansion to about 2.1 GW was cancelled; Microsoft later partnered with Crusoe on an adjacent site of about 900 MW.
 
 **The other US sites.** Epoch AI's April 2026 review listed:
 
@@ -675,7 +675,7 @@ If no single site can get enough power, train across several. Microsoft's two Fa
 
 ### Data centers in space
 
-In November 2025, Google described **Project Suncatcher**: solar-powered satellites carrying TPUs in a dawn-dusk sun-synchronous orbit (where the satellite almost always sees the Sun), linked to each other by laser beams. A bench demonstration of the laser links reached 1.6 terabits per second, and a Trillium TPU survived radiation tests well beyond the dose expected over five years. Google estimated that the economics roughly work only if launch costs fall below about $200 per kilogram in the mid-2030s, and planned two prototype satellites with Planet by early 2027. Separately, the NVIDIA-backed startup Starcloud flew an H100 in orbit in November 2025, and SpaceX, which now owns xAI, has publicly promoted orbital AI compute.
+In November 2025, Google described **Project Suncatcher**: solar-powered satellites carrying TPUs in a dawn-dusk sun-synchronous orbit (where the satellite almost always sees the Sun), linked to each other by laser beams. A bench demonstration of the laser links reached 1.6 terabits per second, and a Trillium TPU survived radiation tests well beyond the dose expected over five years. Google estimated that the economics roughly work only if launch costs fall below about $200 per kilogram in the mid-2030s, and planned two prototype satellites with Planet by early 2027. Separately, the NVIDIA-backed startup Starcloud reportedly flew an H100 in orbit in November 2025, and SpaceX, which now owns xAI, has publicly promoted orbital AI compute.
 
 > **Definition — Sun-synchronous orbit:** An orbit around Earth's poles that keeps a satellite at the same angle to the Sun. A "dawn-dusk" version rides the line between day and night, so the satellite's solar panels are almost always in sunlight.
 
@@ -733,7 +733,7 @@ Buildout, Gigawatt (GW), IT power (IT load), Facility power, H100-equivalent (H1
 
 1. **[Easy] How many homes is a gigawatt?** (1) Find your household's yearly electricity use on a bill, or use the US average of about 10,500 kWh per year. (2) Divide by 8,760 hours to get your average draw in kW. (3) Divide 1,000,000 kW (1 GW) by your number to get homes per gigawatt. (4) Repeat for Hyperion's 5 GW and Stargate's 10 GW plan. (5) Compare with the number of households in your city or state (search "[your state] number of households"). **What you'll learn:** what a gigawatt means in human terms, and that it measures a rate, not an amount.
 
-2. **[Easy] Spot a data center from the sky.** (1) Open Google Maps in satellite view, or a public map such as datacentermap.com. (2) Search for a data center near you or a famous one (try "Abilene Texas" and zoom to the campus north of town, or "New Albany Ohio data center"). (3) Find the substation (a fenced yard of transformers and wires), the generator yard (rows of identical boxes), the cooling yard (rows of fans on the roof or ground), and the buildings. (4) Estimate the roof area with the map's measuring tool. **What you'll learn:** to recognize the physical anatomy of an AI campus.
+2. **[Easy] Spot a data center from the sky.** (1) Open Google Maps in satellite view, or a public map such as datacentermap.com. (2) Search for a data center near you or a famous one (try searching for the Stargate campus in Abilene, Texas, or Meta's campus in New Albany, Ohio). (3) Find the substation (a fenced yard of transformers and wires), the generator yard (rows of identical boxes), the cooling yard (rows of fans on the roof or ground), and the buildings. (4) Estimate the roof area with the map's measuring tool. **What you'll learn:** to recognize the physical anatomy of an AI campus.
 
 3. **[Medium] Score three sites.** (1) Copy Table 42.2 into a spreadsheet with columns for factor, weight and three sites. (2) Pick three real counties (for example one in Texas, one in Virginia, one in Wyoming). (3) Score each factor from 1 to 5 using public sources: state electricity prices from the EIA, water stress from the WRI Aqueduct map, climate, local news for community attitudes, and state economic-development pages for tax incentives. (4) Compute the weighted score with `=SUMPRODUCT(weights, scores)/5`. (5) Change the weights twice (once for a company in a hurry, once for a company with strict carbon goals) and see whether the winner changes. **What you'll learn:** the multi-factor trade-off real site selectors make, and how weights drive the answer.
 
