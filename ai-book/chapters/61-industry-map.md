@@ -20,7 +20,7 @@ This chapter looks at the whole book from the money side. Chapter 4 (The Interne
 
 ## Your $20 and the machine behind it
 
-You pay about $20 a month for a chatbot plan (Claude Pro was $20 a month as of late 2026, and other labs have similar entry plans). You type a question, press Enter, and an answer streams back.
+You pay about $20 a month for a chatbot plan (Claude Pro and ChatGPT Plus both launched at $20 a month, and entry plans at the big labs have generally been priced around that level). You type a question, press Enter, and an answer streams back.
 
 Who got your $20? Not just "the AI company," but a chain of them. Part of your money pays for a chip designed in California, made in Taiwan, fitted with Korean memory, installed in a building in Texas or Indiana, and powered by a gas turbine or a nuclear plant.
 
@@ -94,7 +94,7 @@ Worked example. In late May 2026 Anthropic reportedly raised $65 billion at a $9
 
 > **Definition — Revenue multiple:** A company's valuation divided by its revenue or run-rate. It shows how many dollars investors pay for each dollar of sales, which reflects how fast they expect it to grow.
 
-The 2026 IPO wave put these words on front pages (all reported). SpaceX, which had absorbed xAI in February, listed on June 12, 2026 at $135 a share, raised about $75 billion and closed its first day near a $2.1 trillion value. OpenAI filed confidentially with the SEC on June 8 and was said to target a listing "by 2027." Anthropic filed confidentially on June 1 and, as of October 20, was reported to be aiming for mid-November, with valuation talk of about $1.5 trillion.
+The 2026 IPO wave put these words on front pages (all reported). SpaceX, which had absorbed xAI in February, listed on June 12, 2026 at $135 a share, raised about $75 billion and closed its first day near a $2.1 trillion value. OpenAI filed confidentially with the SEC (the US Securities and Exchange Commission, which regulates stock markets) on June 8 and was said to target a listing "by 2027." Anthropic filed confidentially on June 1 and, as of October 20, was reported to be aiming for mid-November, with valuation talk of about $1.5 trillion.
 
 > **Definition — Public benefit corporation (PBC):** A for-profit company legally required to weigh a stated public mission alongside profit. Anthropic is a PBC, and in October 2025 OpenAI's for-profit arm became OpenAI Group PBC, controlled by the nonprofit OpenAI Foundation (reported).
 
@@ -116,7 +116,7 @@ The 2026 IPO wave put these words on front pages (all reported). SpaceX, which h
 The AI industry can be drawn as seven layers stacked on top of each other, with customers at the top.
 
 ```mermaid
-flowchart TD
+flowchart BT
     U["Customers<br/>people, businesses, governments"]
     S["Layer 6: Services<br/>consultancies, integrators, agencies, FDE teams"]
     A["Layer 5: Applications<br/>ChatGPT, Claude, Gemini, Cursor, Harvey, Sierra"]
@@ -147,7 +147,7 @@ Every AI answer starts as electricity. Data centers worldwide used about 415 ter
 
 > **Definition — Powered land:** A site that already has a confirmed connection to enough electricity for a data center. Because new grid connections can take years, powered land became one of the scarcest assets in AI.
 
-This layer includes utilities, turbine and transformer makers, nuclear companies, builders, land developers and the skilled trades. JLL put the average cost of a data-center shell and core at about $10.7 million per megawatt in 2025, with AI fit-out pushing toward about $25 million per megawatt. Including chips, industry statements put a gigawatt of AI capacity at tens of billions of dollars; NVIDIA's chief executive has cited roughly $50–60 billion.
+This layer includes utilities, turbine and transformer makers, nuclear companies, builders, land developers and the skilled trades. The real-estate firm JLL put the average cost of a data-center shell and core at about $10.7 million per megawatt in 2025, and said AI tenant fit-out can add up to about $25 million per megawatt on top. Including chips, industry statements put a gigawatt of AI capacity at tens of billions of dollars; NVIDIA's chief executive has cited roughly $50–60 billion.
 
 Power has become the bottleneck: chips can be ordered in months, but a grid connection or power plant can take years. That is why Meta announced nuclear agreements for up to 6.6 GW by 2035 in January 2026, why some sites burn gas in on-site turbines, and why lab job boards now list electricians and community-engagement managers. Chapters 39 to 42 cover this layer in depth.
 
@@ -155,7 +155,7 @@ Power has become the bottleneck: chips can be ordered in months, but a grid conn
 
 ### Layer 1: chips and hardware
 
-The star of this layer is NVIDIA. In its fiscal quarter ending July 26, 2026, NVIDIA reported revenue of $96.2 billion, up 106% from a year earlier. Data Center revenue was $89.0 billion, about 92% of the total, and gross margin was 75.0%. It guided to about $108 billion for the next quarter, assuming no data-center compute sales to China. These figures come from NVIDIA's own SEC filing.
+The star of this layer is NVIDIA, whose GPUs (graphics processing units, the highly parallel chips that do most AI math; see Chapter 32) fill most AI data centers. In its fiscal quarter ending July 26, 2026, NVIDIA reported revenue of $96.2 billion, up 106% from a year earlier. Data Center revenue was $89.0 billion, about 92% of the total, and gross margin was 75.0%. It guided to about $108 billion for the next quarter, assuming no data-center compute sales to China. These figures come from NVIDIA's own SEC filing.
 
 > **Definition — Foundry:** A company that manufactures chips designed by others. TSMC in Taiwan manufactures most of the world's leading AI chips for "fabless" designers such as NVIDIA, AMD and Broadcom, which design chips but own no factories.
 
