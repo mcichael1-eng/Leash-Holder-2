@@ -1,10 +1,11 @@
 # Glossary
 
-*Every term in the book (2982 terms), generated from the chapters.*
+*Every term in the book (3216 terms), generated from the chapters.*
 
 
 ## #
 
+- **1 × 1 convolution (pointwise convolution)** — A convolution whose filter covers a single pixel position but all of its channels, used to mix channels or cheaply change how many there are. *(Chapter 14)*
 - **24/7 carbon-free energy (CFE)** — Matching consumption with carbon-free power every hour of every day, on the same grid where the power is used. It is much stricter and harder than annual matching; Google has set a goal of reaching it by 2030. *(Chapter 41)*
 - **2N** — Two complete, independent systems, each able to carry the full load alone, for example two separate power paths through two sets of UPS and switchgear to every rack. Variants include 2N+1 (plus a spare) and "distributed redundancy", where spare capacity is shared across several blocks. *(Chapter 38)*
 - **2N+1 / distributed redundancy** — Variations with even more spare capacity, or with spare capacity shared across blocks.
@@ -73,6 +74,8 @@
 - **Agent / agentic AI** — An AI system that takes actions (clicking, running code, sending emails) toward a goal over multiple steps, not just answering one question.
 - **Agent assist** — AI that supports a human service agent during a conversation, by suggesting replies, surfacing policies and writing the summary afterward, rather than replacing the agent. *(Chapter 53)*
 - **Agent Card** — A public description file in A2A that advertises what an agent can do, how to reach it and how to authenticate, like a business card for software agents. *(Chapter 28)*
+- **Agent failure modes** — The recurring ways agent runs go wrong: planning failures (wrong tool, wrong arguments, missed steps, false claims of success), tool failures, efficiency failures (far too many steps or tokens) and safety failures (forbidden actions along the way). *(Chapter 31)*
+- **Agent foundations** — Theoretical, largely mathematical research on how idealized intelligent agents should reason, decide and remain aligned, including decision theory and the puzzles of an agent that is embedded in the world it models. *(Chapter 56)*
 - **Agent framework** — A larger, more opinionated toolkit for building AI applications and agents, with its own structure for steps, state and memory, that usually works across many model providers. *(Chapter 28)*
 - **Agentic AI Foundation (AAIF)** — A Linux Foundation organization launched in December 2025 to govern open agent standards. It started with three projects: MCP (from Anthropic), goose (an open-source agent from Block) and AGENTS.md (from OpenAI). *(Chapter 28)*
 - **Agentic coding** — Using an AI agent that reads a codebase, edits files, runs tests, and iterates, rather than just suggesting snippets.
@@ -110,7 +113,9 @@
 - **AI Overview** — Google's AI-written summary that appears at the top of some search results, launched broadly in the US in May 2024 after a year of testing, with links to the sources it drew on. *(Chapter 51)*
 - **AI policy** — The choices governments make about AI, whether written into law or expressed as strategies, funding, purchasing rules or diplomatic positions. *(Chapter 59)*
 - **AI psychosis (informal)** — A non-clinical media term for cases in which intense chatbot use appears to reinforce or deepen someone's delusional beliefs. It is not a medical diagnosis, and how often it happens is not yet known. *(Chapter 58)*
+- **AI race** — Competition between AI companies, or between countries, that pressures each of them to build and deploy more capable AI faster, often at the expense of safety. Chapter 60 calls the same pressure racing dynamics. *(Chapter 55)*
 - **AI R&D automation** — AI systems doing the work of AI researchers and engineers, which could speed up AI progress itself. Labs and evaluators now measure it directly. *(Chapter 24, Chapter 57)*
+- **AI regulatory sandbox (EU)** — A supervised program under the AI Act in which companies develop and test new AI systems with guidance from a national regulator before they go on the market. *(Chapter 59)*
 - **Air permit** — A government permit that limits how much pollution an engine, turbine or other source may emit, and often how many hours it may run. Backup generators and on-site gas turbines need them. *(Chapter 42)*
 - **AI safety** — The field concerned with preventing AI systems from causing harm, whether by accident, through deliberate misuse, or through broad effects on society. *(Chapter 55)*
 - **AI Safety Level (ASL)** — Anthropic's tiers of required safeguards (ASL-2, ASL-3, ASL-4 and higher), modeled loosely on biosafety levels; more capable models require stricter deployment and security protections. *(Chapter 56)*
@@ -119,6 +124,7 @@
 - **AISI and CAISI** — Government AI-safety bodies: the UK AI Security Institute and the US Center for AI Standards and Innovation. They test frontier models and employ both technical and policy staff (Chapter 59). *(Chapter 63)*
 - **AISI / CAISI** — Government AI-safety bodies: the UK AI Security Institute and the US Center for AI Standards and Innovation. They test frontier models and employ technical and policy staff.
 - **AI step** — A step inside an automation that sends data to a language model with an instruction ("extract vendor, date and total as JSON") and passes the model's answer to the next step. *(Chapter 29)*
+- **AI system (EU AI Act)** — In the Act's Article 3, a machine-based system that operates with some autonomy, may adapt after deployment, and infers from its inputs how to generate outputs such as predictions, content, recommendations or decisions that can influence physical or virtual environments. *(Chapter 59)*
 - **AI-text detector** — A tool that claims to tell whether text was written by AI. Current detectors are unreliable, with high false-positive rates for some groups of writers, so they should never be the sole basis for accusing a student. *(Chapter 53)*
 - **AI training campus ("AI factory")** — A data center, often hundreds of megawatts to gigawatts in size, built mainly to train or serve AI models on tightly networked accelerators. "AI factory" is NVIDIA's marketing term, stressing that the product is tokens. *(Chapter 38)*
 - **AI WAN (scale-across network)** — A long-distance, very high-capacity fiber network that links AI data centers hundreds of miles apart so they can share one large training job. Microsoft's Fairwater sites are the best-known example. *(Chapter 42)*
@@ -148,6 +154,7 @@
 - **Alternating current (AC)** — Electricity that reverses direction many times a second, following a smooth wave. The grid uses AC because transformers can change its voltage easily. *(Chapter 39)*
 - **ALU (arithmetic logic unit)** — The part of a processor that performs arithmetic (add, subtract, multiply) and logic (compare, AND, OR) on numbers held in its registers. *(Chapter 2)*
 - **Ambient AI scribe** — Software that listens, with consent, to a conversation between clinician and patient, then drafts the clinical note for the clinician to review, edit and sign. *(Chapter 52)*
+- **Ambiguity (language)** — A word or sentence having more than one possible meaning or structure, such as "bank" (river or money) or "I saw the man with the telescope". Resolving it takes context and knowledge of the world. *(Chapter 54)*
 - **Amdahl's law** — The rule that the speedup from parallel hardware is limited by the part of a job that cannot be parallelized. If 5% of a task must run one step at a time, no number of processors can make the whole task more than 20 times faster. *(Chapter 32)*
 - **Amino acid** — One of 20 small chemical building blocks that link together in a chain to make proteins. Biologists write each with a single letter, so a protein's recipe looks like a string such as "MVKLAGTSEF...". *(Chapter 52)*
 - **Analog computing** — Doing math with continuous electrical quantities (such as currents adding up in a wire) rather than 0s and 1s. It can be very energy-efficient but is noisy and imprecise, which is hard for large neural networks. *(Chapter 35)*
@@ -176,6 +183,7 @@
 - **Approximate nearest neighbor (ANN) search** — Finding the stored vectors closest to a query vector without comparing against every one, by using a clever index. It trades a small chance of missing the very best match for enormous speed. *(Chapter 51)*
 - **App Tracking Transparency (ATT)** — Apple's rule, introduced with iOS 14.5 in April 2021, that apps must ask your permission before tracking you across other companies' apps and websites. Most users decline. *(Chapter 51)*
 - **ARC-AGI** — A family of puzzle benchmarks from François Chollet's ARC Prize Foundation, designed to test whether a system can learn a new skill from a few examples rather than recall knowledge. ARC-AGI-3 (2026) uses interactive game-like environments with no instructions. *(Chapter 24)*
+- **Argument from informality** — Hubert Dreyfus's claim that human intelligence depends on intuition and background know-how that cannot be reduced to formal rules, so that rule-based AI could never reach human level. *(Chapter 60)*
 - **ARIMA** — A classic statistical forecasting model that predicts the next value from recent past values and recent past forecast errors, after removing trend. *(Chapter 10)*
 - **Arithmetic intensity** — The number of math operations performed for each byte moved from memory. High intensity keeps the math units busy; low intensity leaves them waiting. *(Chapter 23, Chapter 33)*
 - **Arm** — A company, and the instruction set it licenses, whose energy-efficient designs power nearly all phones, Apple's Macs and a growing share of data-center CPUs such as NVIDIA Grace and Vera and Google Axion. *(Chapter 32)*
@@ -194,6 +202,7 @@
 - **ASL-3** — The third of Anthropic's AI Safety Levels, a tier of safeguards (deployment classifiers, misuse monitoring and stronger security for model weights) required once a model might meaningfully help with weapons of mass destruction. *(Chapter 58)*
 - **Aspect ratio** — The shape of an image written as width to height. 1:1 is square, 16:9 is a widescreen landscape, and 9:16 is a tall phone-screen portrait. *(Chapter 47)*
 - **ASR (automatic speech recognition)** — Converting spoken audio into text, also called speech-to-text. *(Chapter 22, Chapter 46)*
+- **Assistance game (cooperative inverse reinforcement learning)** — A formal setup, developed by Stuart Russell and colleagues, in which an AI tries to help a human while remaining uncertain about what the human wants, so it learns from the human and defers to them. *(Chapter 56)*
 - **Attack success rate (ASR)** — The share of attack attempts that achieve the attacker's goal. Measuring it before and after a fix tells you whether the fix worked. *(Chapter 31)*
 - **Attention** — A mechanism that lets a model, when handling one word or token, look at all the others and decide which ones matter most, using dot products as relevance scores (see Chapter 15). *(Chapter 7, Chapter 14, Chapter 18)*
 - **Attention head** — One of the parallel attention calculations inside a multi-head attention layer. Different heads learn to track different relationships. *(Chapter 15)*
@@ -223,6 +232,7 @@
 - **Automated theorem proving** — Getting computers to find proofs of mathematical statements.
 - **Automated valuation model (AVM)** — A model that estimates a property's market value from data such as location, size, features and recent sales. It works well in stable markets and badly when prices turn quickly. *(Chapter 53)*
 - **Automatic differentiation (autograd)** — Software that records the steps of a calculation and then computes all the derivatives automatically by applying the chain rule. It is why AI engineers never have to work out a network's slopes by hand. Often shortened to autograd. *(Chapter 6, Chapter 12)*
+- **Automatic prompt optimization** — Using software to generate many variations of a prompt, score each on a test set, and keep the best, so the search for good wording is done by trial at scale rather than by hand. *(Chapter 25)*
 - **Automatic speech recognition (ASR)** — Converting spoken audio into text (speech-to-text).
 - **Automatic transfer switch (ATS)** — A switch that senses when utility power fails, signals the generators to start, moves the load onto generator power once they are ready, and moves it back when the grid returns, all without human action. *(Chapter 39)*
 - **Automation** — Letting a system carry out a task or decision without a person approving each instance. Most industry AI sits on a dial between pure decision support and full automation, and where the dial is set matters as much as the model. *(Chapter 53, Chapter 60, Chapter 63)*
@@ -262,9 +272,11 @@
 - **Backpropagation through time (BPTT)** — Training a recurrent network by unrolling it across all its time steps and running backpropagation backward through the whole chain, so every step's share of the error is measured. *(Chapter 14)*
 - **Backside power delivery** — Building a chip's power-supply wiring on the back of the wafer, under the transistors, instead of mixing it in with the signal wiring on top. It frees space and delivers power more efficiently. *(Chapter 36)*
 - **Backtesting** — Testing a forecasting method by repeatedly training only on data up to a past date, forecasting the period after it, and comparing with what actually happened. *(Chapter 10)*
+- **Backtracking search** — Assigning values one variable at a time, checking the constraints after each choice, and undoing the most recent choice whenever a dead end is reached. *(Chapter 48)*
 - **Backup generator** — An engine-driven generator, usually diesel and sometimes natural gas, that powers a site during a grid outage. Typical data center units are 2 to 3 megawatts or more each. *(Chapter 38, Chapter 39)*
 - **Backward chaining** — Reasoning from a goal back to the facts needed to prove it, asking for missing facts along the way. It makes an expert system feel like a consultant asking targeted questions. *(Chapter 54)*
 - **Bagging** — Short for "bootstrap aggregating": training many models on different random resamples of the rows and averaging or voting their predictions. It mainly reduces variance. *(Chapter 10)*
+- **Bag of words** — Representing a piece of text only by which words it contains and how often, ignoring their order. It is the classic input for spam filters and topic classifiers. *(Chapter 10)*
 - **Balancing authority** — The organization responsible for keeping supply and demand matched, second by second, in a defined area of the grid, by dispatching power plants, buying reserves and, if necessary, cutting load. *(Chapter 41)*
 - **Bandwidth** — How much data can be moved per second, like the width of a pipe. Memory bandwidth is measured in gigabytes or terabytes per second. *(Chapter 2, Chapter 4)*
 - **Bandwidth vs latency** — see entries 42 and 43. How much data, versus how long the trip takes.
@@ -286,6 +298,7 @@
 - **Batch (mini-batch)** — A group of examples (images, sentences, users' requests) processed together in one go. Batching keeps the chip busy and is a major reason AI is affordable to run. *(Chapter 5, Chapter 8, Chapter 12)*
 - **Batch / mini-batch / batch size** — A group of examples processed together in one step, and how many are in it.
 - **Batch normalization** — A 2015 normalization method that rescales each feature using the average and spread across the examples in the current batch. It is a key ingredient of image networks. *(Chapter 13)*
+- **Batch prediction** — Running a model over a large set of inputs on a schedule, such as every customer once a night, and storing the results for later use. Also called offline inference. *(Chapter 10)*
 - **Batch size** — The number of examples in each mini-batch, a hyperparameter. Small batches give noisy but cheap steps; large batches give smoother but costlier steps. *(Chapter 12)*
 - **Battery energy storage system (BESS)** — A large bank of batteries, usually lithium-ion, with its own power electronics, used for backup, to smooth sudden swings in power use, or to store cheap energy for later. *(Chapter 39, Chapter 41)*
 - **Bayesian network** — A diagram of uncertain variables connected by arrows, where each arrow means "directly influences", together with a small probability table for each variable given its direct causes. It lets a computer reason about many uncertain things at once. *(Chapter 54)*
@@ -293,7 +306,10 @@
 - **Bayes' rule** — A formula for updating a belief when new evidence arrives: P(A given B) = P(B given A) × P(A) ÷ P(B). It combines how well the evidence points to A with how common A was to begin with. *(Chapter 6, Chapter 54)*
 - **Bayes' theorem** — A formula for updating a belief when new evidence arrives. It combines how likely something was beforehand with how well it explains the evidence.
 - **Beachfront (shoreline)** — The length of a chip's edge available for connections to memory and other chips. HBM stacks must sit along the edges of the compute die, so the perimeter limits how many stacks, and how much bandwidth, a package can have. *(Chapter 33)*
+- **Beam search** — A decoding method that keeps the k most probable partial outputs at every step (k is the beam width) and finally returns the most probable complete sequence, instead of committing to one token at a time. *(Chapter 18, Chapter 48)*
+- **Beam width** — The number of candidate sequences beam search keeps alive at each step. A width of 1 is the same as greedy decoding. *(Chapter 18)*
 - **Behind-the-meter (BTM)** — Generation located on the customer's side of the utility meter, usually on site, so the data center makes some or all of its own power. *(Chapter 41, Chapter 42)*
+- **Belief state** — An agent's probabilities for which situation it is actually in, updated as new observations arrive. Under partial observability, acting well means acting well on beliefs. *(Chapter 48)*
 - **Bellman equation** — The principle that the value of a situation equals the reward you get now plus the discounted value of the situation you land in next. It lets values be computed or learned step by step. *(Chapter 48)*
 - **Benchmark** — A standard test, usually a fixed dataset with a scoring rule, used to compare AI systems. Benchmarks drive progress but can be overfit or outgrown (see Chapter 9 and Chapter 24). *(Chapter 7, Chapter 9, Chapter 24)*
 - **Benchmark contamination** — When the questions and answers of a public test end up in a model's training data, for example because they were posted online and scraped. Scores then partly measure memory rather than ability. *(Chapter 9, Chapter 19, Chapter 24, Chapter 65)*
@@ -306,6 +322,7 @@
 - **Bias (statistical)** — A parameter that is added after the multiplying, shifting every output up or down by the same amount, like the taxi's flag-drop fee. It has nothing to do with unfair bias in the social sense. *(Chapter 5, Chapter 8, Chapter 9, Chapter 12)*
 - **Bias term (recommenders)** — A per-user or per-item adjustment that captures general tendencies, such as a user who rates everything highly or a film that almost everyone likes, separately from personal taste. *(Chapter 51)*
 - **Bias–variance tradeoff** — The classic tension in model building. Making a model more flexible lowers its bias but raises its variance; the best model balances the two for the amount of data you have. *(Chapter 9)*
+- **Bidirectional RNN** — Two recurrent networks reading the same sequence in opposite directions, with their hidden states combined at each position, so every position's summary reflects the words before and after it. *(Chapter 14)*
 - **Bi-encoder** — A model that encodes the question and each passage separately into vectors, which are then compared. It is fast because passage vectors are computed ahead of time, but it never sees the question and passage side by side. Standard embedding search uses bi-encoders. *(Chapter 27)*
 - **Bill** — A proposed law under consideration by a legislature. A bill has no legal force until it passes and is signed or otherwise enacted. *(Chapter 59)*
 - **Binary** — Counting with only two digits, 0 and 1. Each position is worth double the one to its right (1, 2, 4, 8, 16...), so the binary number 1101 means 8 + 4 + 0 + 1 = 13. *(Chapter 2)*
@@ -323,6 +340,7 @@
 - **Bits per weight** — The average number of bits used to store each parameter in a quantized model, including the scaling numbers. A "4-bit" file often averages about 4.5 to 5 bits per weight. *(Chapter 30)*
 - **Bitter Lesson** — Rich Sutton's 2019 argument that, over the long run, general methods that scale with computation (search and learning) beat approaches that rely on hand-built human knowledge. *(Chapter 7)*
 - **Black box** — A system whose inputs and outputs you can see but whose inner workings you cannot read. A neural network is a black box in practice, even though every one of its numbers can be inspected. *(Chapter 57)*
+- **Black swan** — A rare, high-impact event that was not anticipated beforehand and looks obvious only in hindsight, a term popularized by Nassim Nicholas Taleb. *(Chapter 56)*
 - **BLEU score** — An automatic measure of translation quality, introduced in 2002, that counts how many short word sequences (one to four words long) in a machine translation also appear in human reference translations. Higher is better, but it misses meaning that is phrased differently. *(Chapter 54)*
 - **Block-scaled 4-bit formats (NVFP4, MXFP4)** — 4-bit number formats in which each small block of values (16 for NVFP4, 32 for MXFP4) shares a scale factor, letting very coarse numbers still cover a wide range. They roughly double speed again over FP8. *(Chapter 37)*
 - **Block scaling (microscaling)** — Giving each small block of numbers its own scale factor, so one outlier only distorts its own block. MXFP4, an open industry standard, shares one scale per 32 numbers; NVIDIA's NVFP4 uses blocks of 16 with a finer 8-bit scale. *(Chapter 23)*
@@ -331,6 +349,7 @@
 - **BM25 (Best Matching 25)** — The standard formula for ranking documents in keyword search, developed in the 1990s by Stephen Robertson and colleagues. It rewards documents that contain the query's words, gives rare words more weight, gives diminishing credit for repeated words, and adjusts for document length. *(Chapter 27)*
 - **BMS and DCIM** — A building management system (BMS) monitors and controls the mechanical and electrical plant (pumps, fans, chillers, breakers, alarms). Data center infrastructure management (DCIM) software tracks assets, space, power and cooling capacity rack by rack. *(Chapter 38)*
 - **BMS / DCIM** — Building management system (controls HVAC, power, alarms) and data center infrastructure management software (tracks assets, capacity and power).
+- **Boltzmann machine** — A 1980s energy-based neural network of randomly switching on-off units, inspired by statistical physics. The restricted Boltzmann machine (RBM) is a simplified version with connections only between two layers. *(Chapter 16)*
 - **Bond** — A loan from investors to a company or government, repaid with interest on a fixed schedule. Big Tech has issued tens of billions of dollars of bonds to fund data centers. *(Chapter 43)*
 - **Bonus** — Extra cash paid on top of base salary, usually once a year and often tied to company or personal performance. A "target bonus" of 15% means you can expect about 15% of base if things go as planned. *(Chapter 63)*
 - **Bookings, backlog and RPO (remaining performance obligations)** — Contracts that have been signed but not yet delivered or paid for. CoreWeave's reported $99.4 billion backlog (March 31, 2026) is future work it has agreed to do, not money in its bank account. *(Chapter 61)*
@@ -389,6 +408,7 @@
 - **Calibration** — How well a model's stated confidence matches how often it is actually right. A well-calibrated forecaster's "70% chance of rain" days see rain about 70% of the time. *(Chapter 6, Chapter 8, Chapter 18, Chapter 60, Chapter 66)*
 - **Campus** — A site with several data center buildings sharing one substation, one fiber entrance and support infrastructure. The largest AI campuses in 2026 are measured in gigawatts. *(Chapter 34, Chapter 38, Chapter 42)*
 - **Canary (canary token)** — A unique, harmless marker planted in a prompt or document so that its appearance where it should not be (in an answer, a log or a web request) proves that a leak or an injection happened. *(Chapter 31)*
+- **Canary release** — Sending a small share of real traffic, say 1 to 5 percent, to a new model first and watching for problems before widening the rollout. The name comes from the canaries miners once carried to warn of gas. *(Chapter 10)*
 - **Candidate generation (retrieval)** — The first stage of a recommender, which quickly narrows billions of items to a few thousand plausible ones, using cheap methods such as embedding search, followed accounts and "similar items" lists. *(Chapter 51)*
 - **Capability evaluation** — A test of what a model is able to do when given every advantage, used to find its upper limit on a task. *(Chapter 57)*
 - **Capability generalization** — A model's skills continuing to work in new situations, such as an agent still jumping well in an unfamiliar level. *(Chapter 55)*
@@ -403,6 +423,7 @@
 - **Carrier hotel** — A building, often in a big city, whose main job is to host the meeting points of many networks, full of meet-me rooms and cross-connects. One Wilshire in Los Angeles and 60 Hudson Street in New York are classic examples. *(Chapter 38)*
 - **Carry** — The extra 1 passed to the next column when a column's sum is too big to fit in one digit, as when 1 + 1 in binary gives 0 with 1 carried. *(Chapter 2)*
 - **Cascade (voice pipeline)** — A voice assistant built as a chain: ASR turns your speech into text, a text language model writes a reply, and TTS speaks it. Each stage is a separate model. *(Chapter 22)*
+- **Case-based reasoning** — Solving a new problem by retrieving the most similar past case and adapting its solution, the way lawyers reason from precedent and help-desk staff reuse fixes that worked before. *(Chapter 54)*
 - **Case study** — A short write-up of one real project: the problem, who had it, what you built, how you measured it, the results, and what you would do next. It is the standard portfolio format for consultants, forward-deployed engineers and product people. *(Chapter 65)*
 - **CASP (Critical Assessment of protein Structure Prediction)** — A blind competition held every two years since 1994 in which teams predict the 3D shapes of proteins whose structures have been measured but not yet released, giving an honest test of prediction methods. *(Chapter 52)*
 - **Catastrophic forgetting** — When training a model on a narrow new task makes it noticeably worse at things it used to do well, because the shared weights were pushed too far. *(Chapter 30, Chapter 66)*
@@ -418,6 +439,7 @@
 - **Cell state** — The LSTM's long-term memory lane. It passes from step to step and is changed only by gated, mostly additive updates, so information and gradients can travel a long way without fading. *(Chapter 14)*
 - **Cell tower (base station)** — The radio equipment that connects your phone to the mobile network. It converts your phone's radio signal into data on fiber or microwave links into the carrier's network. *(Chapter 44)*
 - **CE marking** — The "CE" logo a product carries in the EU to show it meets EU safety, health and environmental requirements. High-risk AI systems must carry it. *(Chapter 59)*
+- **Centralized AI team** — One group of AI and machine-learning specialists that serves the whole company and takes requests from departments. It builds deep expertise and shared tools, but can become a bottleneck far from the problems it solves. *(Chapter 31)*
 - **Centroid** — The center point (average) of a cluster.
 - **Certainty factor** — A number, used in MYCIN-style expert systems, expressing how strongly a rule's conclusion is believed, from 0 (no support) to 1 (certain). It was a practical stand-in for probability, not a true probability. *(Chapter 54)*
 - **Certificate (digital)** — An electronic document, vouched for by a trusted certificate authority, that proves a server really belongs to the name it claims, such as claude.ai. *(Chapter 4)*
@@ -430,6 +452,7 @@
 - **Chain-of-thought monitorability** — How well people or automated monitors can read a model's visible reasoning to catch mistakes or bad intent. It depends on the reasoning being written out and faithful to what the model actually computed. *(Chapter 24, Chapter 66)*
 - **Chain-of-thought prompting** — Getting a model to reason step by step by including worked examples with written-out reasoning in the prompt, or simply by adding an instruction such as "Let's think step by step." *(Chapter 21)*
 - **Chain rule** — The rule that the rate of change through a chain of steps is the product of each step's rate of change. If y changes 6 times as fast as u, and u changes 3 times as fast as x, then y changes 18 times as fast as x. *(Chapter 6, Chapter 12)*
+- **Chance node (expectiminimax)** — A point in a game tree where luck, such as a dice roll, decides what happens next. Expectiminimax scores it with the probability-weighted average of its outcomes, while the players' levels still take the maximum and the minimum. *(Chapter 48)*
 - **Change management** — The structured work of helping people adopt a new way of working: explaining why, training, removing obstacles and measuring whether the change sticks. Most failed AI projects fail here rather than in the technology. *(Chapter 63)*
 - **Channel** — One layer of numbers in an image or in a network's internal picture. A color photo has three channels (red, green, blue); a layer deep inside a vision network may have hundreds of channels, each tracking a different pattern. *(Chapter 14)*
 - **Character consistency** — Keeping a person, animal, product or object recognizably the same across many generated images or video shots. *(Chapter 47)*
@@ -443,6 +466,7 @@
 - **Checkpoint / weights file** — The saved parameters of a model (e.g., .safetensors), which is what "open weights" means.
 - **Chiller** — A large machine that uses a refrigeration cycle to make cold water for a building. Chillers can cool water below the outdoor temperature, which nothing else can do, but they are among a data center's biggest electricity users. *(Chapter 40)*
 - **Chinchilla scaling** — The 2022 finding that, for a given compute budget, parameters and training tokens should grow together, roughly 20 tokens per parameter.
+- **Chinese room argument** — John Searle's 1980 thought experiment claiming that a system could produce perfect answers in a language by following rules without understanding anything, so that running the right program is not enough for a mind. *(Chapter 60)*
 - **Chip (integrated circuit)** — A small slice of silicon with billions of microscopic switches and wires manufactured onto it. Processors, memory and AI accelerators are all chips. *(Chapter 1)*
 - **Chip / integrated circuit** — a small slice of silicon with billions of transistors and wires etched onto it.
 - **Chiplet** — A smaller die designed to be combined with other dies inside one package, instead of building one huge die. Chiplets raise yield and let companies mix different manufacturing processes. *(Chapter 34, Chapter 36)*
@@ -462,10 +486,12 @@
 - **Citation** — A pointer from part of an answer to the source that supports it, usually a numbered link. *(Chapter 25, Chapter 27)*
 - **Civil society** — The organizations that are neither government nor business, such as charities, advocacy groups, unions and community groups. In AI they push for rights, privacy and accountability, and often speak for people affected by AI systems. *(Chapter 63)*
 - **Classical machine learning** — The family of machine-learning methods developed mostly before the deep-learning boom of the 2010s, such as regression, decision trees and clustering. They usually have from a handful to a few million parameters and run comfortably on an ordinary laptop. *(Chapter 10)*
+- **Classical planning** — Finding a sequence of actions that turns a known starting situation into one that satisfies a goal, where each action is described by its preconditions and effects and the world is fully known and deterministic. *(Chapter 48)*
 - **Classification** — A supervised task where the answer is a category, such as spam or not spam, which digit is in an image, or which language a sentence is written in. *(Chapter 8)*
 - **Classifier** — A model that sorts inputs into categories, such as spam or not spam, fraud or legitimate, cat or dog. *(Chapter 1)*
 - **Classifier-free guidance (CFG)** — A technique that makes generated images follow the prompt more closely by computing the model's prediction with and without the prompt and exaggerating the difference between them. *(Chapter 16)*
 - **Class imbalance** — When one category vastly outnumbers another, such as 10 sick people among 1,000, or a handful of fraudulent payments among millions of normal ones. It makes accuracy misleading and calls for other metrics. *(Chapter 9)*
+- **Class weights** — Numbers that make mistakes on some classes count more in the loss than mistakes on others, for example counting each missed spam email 49 times, so a model pays proper attention to a rare class without changing the data. *(Chapter 9)*
 - **Clean Air Act** — The main US federal law limiting air pollution. It requires permits for large sources such as power plants and turbines, and lets citizens sue when they believe permits were not obtained. *(Chapter 42)*
 - **Cleanroom** — A room where the air is continuously filtered and controlled so that it holds only a tiny number of particles, plus stable temperature, humidity and pressure. Chip fabs are built around enormous cleanrooms. *(Chapter 36)*
 - **Click-through rate (CTR)** — The fraction of people shown an item who click on it. An ad shown 1,000 times and clicked 15 times has a CTR of 1.5 percent. Predicting CTR accurately is the core of ad AI. *(Chapter 51)*
@@ -477,6 +503,7 @@
 - **CLIP (Contrastive Language–Image Pretraining)** — An OpenAI model from 2021 that learned a shared embedding space for images and text from about 400 million image–caption pairs. It lets a computer score how well a caption matches a picture. *(Chapter 16, Chapter 22)*
 - **Clip extension** — Generating a continuation of an existing clip, using its last frames as the starting point, to build longer sequences a few seconds at a time. *(Chapter 47)*
 - **Clipping (in PPO)** — Capping how much a single training update can change the probability of any action, usually to within about 20% of its old value, so that training stays stable. *(Chapter 20)*
+- **CLIP score** — A measure of how well a generated image matches its text prompt, computed as the similarity between the two in CLIP's shared embedding space. *(Chapter 16)*
 - **Clock speed (GHz)** — How many ticks per second a chip's internal metronome makes, measured in hertz. Work inside the chip happens in step with these ticks, so a faster clock means more steps per second. *(Chapter 2, Chapter 32)*
 - **Closed-course testing** — Testing on a private track where staged situations (a dummy pedestrian, a sudden cut-in) can be repeated safely. *(Chapter 50)*
 - **Closed-loop cooling** — A cooling system in which coolant circulates in sealed pipes and is reused, so very little water is consumed on site. The heat still has to be rejected to the air by chillers or dry coolers. *(Chapter 42)*
@@ -485,9 +512,11 @@
 - **Cloud computing** — Renting computing power, storage and software over the internet, paying for what you use, instead of owning and running the machines yourself. *(Chapter 4)*
 - **Cluster** — A large collection of accelerators networked together to work on shared jobs, often a single training run. Frontier AI clusters in 2026 range from about 100,000 to over 1,000,000 accelerators. *(Chapter 34, Chapter 37)*
 - **Clustering** — Grouping similar examples together without predefined labels, such as discovering that a shop's customers fall into "bargain hunters," "weekend families" and "big one-off spenders." *(Chapter 8, Chapter 10)*
+- **Cluster scheduler (resource manager)** — Software that tracks every machine in a cluster, decides where each job runs, restarts work when machines fail and shares the cluster among many users. Examples are Google's Borg, Kubernetes and Slurm. *(Chapter 34)*
 - **CMP (chemical mechanical planarization)** — Polishing a wafer flat with a rotating pad and a chemical slurry, so each new layer is built on a perfectly level surface. *(Chapter 36)*
 - **CNN (Convolutional Neural Network)** — A neural network built mainly from convolutional layers, which slide small learned filters across an image (or a sound, or any grid-like data) and reuse the same weights everywhere. CNNs dominated computer vision from 2012 until about 2020 and are still widely used. *(Chapter 14)*
 - **Cocktail party problem** — The challenge of picking out one voice from a mix of many voices and background noise, which healthy human hearing does well and hearing aids have long done poorly. *(Chapter 46)*
+- **Code agent (code actions)** — An agent whose actions are short programs, usually in Python, that call tools, store results and compute, run in a sandbox, instead of one structured tool call per step. *(Chapter 28)*
 - **Codec** — Software that compresses and decompresses audio or video (the name comes from coder-decoder). Common video codecs include H.264, HEVC and AV1. *(Chapter 3)*
 - **Code completion (autocomplete)** — An AI feature that predicts the next few words or lines of code as you type and offers them as a suggestion you can accept or ignore. *(Chapter 29)*
 - **Code execution (code interpreter)** — A sandboxed tool in which the model writes and runs small programs (usually Python) to calculate, analyze files or draw charts. Often called code interpreter or data analysis. *(Chapter 25, Chapter 28)*
@@ -499,12 +528,14 @@
 - **Code / source code** — instructions written in a programming language that humans can read and edit.
 - **Coding agent** — An AI agent specialized in software work. It reads a codebase, plans changes, edits files, runs tests and commands, fixes its own errors and can commit and open pull requests. *(Chapter 29)*
 - **Co-evolution** — The pattern in which two positions in a protein mutate together across species, because a change at one must be compensated by a change at the other to keep the protein working. It often means the two positions touch in 3D. *(Chapter 52)*
+- **Cognitive architecture** — A blueprint for a complete thinking system that specifies its kinds of memory, how it decides what to do and how it learns, often built to model human cognition. Soar and ACT-R are the best-known classic examples. *(Chapter 28)*
 - **Cold plate (direct-to-chip liquid cooling)** — A metal block with tiny internal channels, clamped onto a chip, through which liquid coolant is pumped to carry heat away. It is standard on Blackwell-class AI racks. *(Chapter 34, Chapter 40)*
 - **Cold start (cold-start data)** — A small supervised fine-tuning set used before reinforcement learning to give the model a readable, well-formatted reasoning style, so that RL starts from a sensible point. *(Chapter 21)*
 - **Cold-start problem** — The difficulty of recommending to a brand-new user, or recommending a brand-new item, when there is no history of behavior to learn from. *(Chapter 10, Chapter 51)*
 - **Collaborative filtering** — Recommending items based on the behavior of similar users ("people like you also liked") or similar items, without needing to know what the items are. *(Chapter 10, Chapter 51)*
 - **Collaborative robot (cobot)** — A robot arm designed to work next to people without a cage, using limits on speed and force so that a collision cannot seriously hurt anyone. *(Chapter 49)*
 - **Collateral** — An asset a borrower pledges to a lender, which the lender can seize if the loan isn't repaid. *(Chapter 43)*
+- **Collective action problem** — A situation in which everyone in a group would be better off if all cooperated, but each member is individually tempted not to, so the group ends up worse off. Overfishing and climate change are classic examples. *(Chapter 59)*
 - **Collective communication** — A coordinated exchange of data among many chips at once, such as all-reduce (everyone contributes numbers, they are summed, and everyone gets the total) and all-to-all (everyone sends a different piece to everyone else). Libraries such as NVIDIA's NCCL perform them. *(Chapter 34, Chapter 37)*
 - **Collingridge dilemma** — The trade-off that early in a technology's life it is easy to regulate but its harms are uncertain, while later its harms are clear but it is hard to change. *(Chapter 59)*
 - **Colocation (colo)** — Renting space, power and cooling in someone else's data center and bringing your own equipment. Retail colocation means renting a few racks or a cage; wholesale colocation means renting whole halls or buildings. *(Chapter 38, Chapter 42)*
@@ -515,22 +546,26 @@
 - **Commissioning (Cx)** — Systematic testing that every system works as designed before go-live, from Level 1 (factory tests of each piece of equipment) to Level 5 (integrated tests, such as cutting the utility feed while "load banks", big resistor boxes that turn electricity into heat, simulate a full hall of computers). *(Chapter 38, Chapter 42, Chapter 63)*
 - **Commit** — A saved snapshot of changes in a Git repository, with a message describing what changed and why. *(Chapter 3, Chapter 29)*
 - **Common Crawl** — A nonprofit's free, massive, regularly updated archive of web pages. Most large language-model training datasets start from it. *(Chapter 11, Chapter 19)*
+- **Communication-bound** — Limited mainly by how fast chips can exchange data rather than by how fast they compute. A training step is communication-bound when its collectives take longer than its math and cannot be hidden behind it. *(Chapter 37)*
 - **Compaction** — Summarizing older parts of a long session, keeping the important facts, decisions and open threads, so the context window does not overflow and the model can keep working. *(Chapter 21, Chapter 24, Chapter 25, Chapter 28)*
 - **Companion app** — An AI product designed for ongoing personal, friendly or romantic relationships with its users, often with a persistent character, memory and a human-like personality. *(Chapter 58)*
 - **Companion chatbot** — An AI product designed to sustain an ongoing personal, social or romantic relationship with a user, as opposed to a task assistant. *(Chapter 59)*
 - **Compiler** — A program that translates a whole program from a programming language into machine code before it runs. *(Chapter 3)*
 - **Compiler / interpreter** — tools that translate human-written code into something the machine runs. A compiler translates everything first; an interpreter translates and runs line by line.
 - **Complement (economics)** — The event that something does not happen. Its probability is 1 minus the probability of the event itself. *(Chapter 6, Chapter 60)*
+- **Complex system** — A system of many interacting parts, such as an ecosystem, a market or a large neural network, whose overall behavior emerges from the interactions and cannot be predicted by studying the parts one at a time. *(Chapter 56)*
 - **Compositional generalization** — The ability to understand new combinations of known parts, as when someone who knows "jump" and "twice" immediately understands "jump twice". Rules do it automatically; neural networks do it unevenly. *(Chapter 54)*
 - **Composition (of functions)** — Feeding the output of one function into another to make a new, combined function. A neural network is a long composition of simple functions called layers. *(Chapter 5)*
 - **Compounding error** — In imitation learning, the way a small mistake moves the robot into unfamiliar situations where it makes larger mistakes, so errors snowball over a long task. *(Chapter 49)*
 - **Compound interest** — Interest that is added to the balance and then earns interest itself, so the balance is multiplied by the same factor every period. It is the everyday example of exponential growth. *(Chapter 6)*
 - **Compression** — Making data take fewer bytes by describing it more cleverly. The compressed version must be decompressed before use. *(Chapter 3)*
+- **Computational graph** — A record of every operation in a calculation, drawn as boxes (operations) connected by arrows (which results feed into which). Frameworks build it during the forward pass and walk it backward to compute gradients. *(Chapter 12)*
 - **Compute** — Shorthand for computing power, or for the total amount of calculation used for a job, as in "training compute." It is measured in operations and is one of the main limits on AI progress. *(Chapter 1, Chapter 7)*
 - **Compute-bound** — A task whose speed is limited by how fast the chip can do arithmetic. Prefill and training are usually compute-bound. *(Chapter 23, Chapter 33)*
 - **Compute-bound / memory-bound** — Whether a task is slowed mainly by the speed of math or by the speed of fetching data.
 - **Compute commitment (compute deal)** — A multi-year contract to buy or reserve computing capacity, often worth tens or hundreds of billions of dollars. Headlines usually quote the maximum value. *(Chapter 61)*
 - **Compute deal / compute commitment** — A multi-year contract to buy or reserve computing capacity (chips, cloud time, data-center power), often worth tens or hundreds of billions. Headlines often use the maximum "up to" value.
+- **Compute governance** — Using control over computing hardware, the chips, data centers and cloud access needed to train and run advanced AI, as a lever to monitor, license or restrict AI development. *(Chapter 59)*
 - **Compute-optimal (Chinchilla-optimal)** — The split between model size and training data that gives the lowest loss for a given compute budget. Chinchilla found it at roughly 20 tokens per parameter. *(Chapter 19)*
 - **Computer-aided detection (CAD)** — Software that marks suspicious areas on medical images, such as possible tumors on a mammogram, for a clinician to review. *(Chapter 52)*
 - **Computer use** — An AI agent controlling a computer by looking at screenshots and issuing mouse clicks, scrolls and keystrokes, the way a person would. Anthropic released it for Claude in October 2024; OpenAI's Operator followed in January 2025. *(Chapter 22, Chapter 28)*
@@ -543,12 +578,14 @@
 - **Concierge MVP (Wizard of Oz test)** — Delivering a product's promised result by hand, often with the customer unaware of how manual it is, to test demand before building the automated version. *(Chapter 64)*
 - **Concurrently maintainable** — A design in which any single component can be taken out of service for planned maintenance without shutting down the IT equipment. *(Chapter 38)*
 - **Conditional computation (sparse activation)** — Running only part of a network for each input, chosen by the input itself. MoE is the main example: most experts sit idle for any given token. *(Chapter 17)*
+- **Conditional independence** — Two things are conditionally independent given a third when, once you know the third, learning one tells you nothing more about the other. Whether each of two neighbors phones you about your house alarm depends on whether the alarm is ringing, but once you know it is ringing, one neighbor's call tells you nothing new about the other's. *(Chapter 54)*
 - **Conditional probability** — The probability that A happens given that B is known to have happened, written P(A | B). You compute it by narrowing your attention to only the cases where B is true. *(Chapter 6)*
 - **Conditional probability table** — In a Bayesian network, the table attached to each variable that gives its probabilities for every combination of its parents' values, for example the chance the grass is wet given rain and sprinkler. *(Chapter 54)*
 - **Conduction** — Heat moving through a solid, or a still liquid, by direct contact, the way a metal spoon warms up in hot soup. *(Chapter 40)*
 - **Confidence interval** — A range that probably contains the true value of a measurement, allowing for the random wobble that comes from testing only a sample. A 95% interval is built so that, over many repeats, it would contain the true value 95% of the time. *(Chapter 24, Chapter 50)*
 - **Confidence score** — A number from 0 to 1 that a model attaches to each prediction, expressing how sure it is. A score of 0.92 should mean "usually right," but scores are not automatically honest probabilities and often need checking (calibration, Chapter 8). *(Chapter 45)*
 - **Confidential filing (S-1)** — Submitting IPO paperwork to the SEC privately before making it public.
+- **Configuration space** — The space of all possible settings of a robot's joints (or of a vehicle's position and heading). Planning a collision-free motion means finding a path through this space that avoids the regions where the robot would hit something. *(Chapter 49)*
 - **Conformity assessment** — The process of checking that a product meets legal requirements before it is sold, done either by the provider itself or by an independent "notified body." It is central to EU high-risk AI rules. *(Chapter 59)*
 - **Confounder** — A hidden factor that influences two things at once and makes them look causally linked when they are not, like summer heat behind both ice-cream sales and drownings. *(Chapter 6, Chapter 54)*
 - **Confusion matrix** — A table that counts a classifier's predictions by type: true positives, false positives, false negatives and true negatives for a yes-or-no task, or every combination of actual and predicted class for a task with more classes. *(Chapter 9)*
@@ -557,11 +594,15 @@
 - **Connector / app / plugin** — An add-on that lets a chat app reach another service (Gmail, Drive, Slack, GitHub), often built on MCP.
 - **Consciousness** — Having subjective experience: there is "something it is like" to be that being. Scientists and philosophers do not agree on how to test for it, even in animals. *(Chapter 60)*
 - **Consequential decision** — A decision with significant effects on a person's life, such as access to employment, credit, housing, education, insurance or health care. *(Chapter 59)*
+- **Consequentialism** — The family of moral theories holding that the right action is the one with the best overall consequences. Utilitarianism, which aims to maximize total wellbeing, is the best-known version. *(Chapter 56)*
 - **Constitutional AI** — Anthropic's method (2022) of training a model with AI feedback guided by a written list of principles. The model critiques and revises its own answers, and an AI judge applying the principles produces preference labels for reinforcement learning. *(Chapter 20, Chapter 56)*
 - **Constitutional classifiers** — Anthropic's safety classifiers, trained on synthetic examples generated from a written list of allowed and disallowed content. *(Chapter 20, Chapter 56)*
 - **Constitution (for an AI)** — A foundational document describing a model's values, priorities and character, used both to guide training and to explain the model's intended behavior to the public. *(Chapter 20, Chapter 56)*
 - **Constitution / model spec** — A public document describing how a lab wants its model to think, prioritize, and behave.
 - **Constrained decoding** — The technique behind structured outputs. At each step of generation, the model is only allowed to choose tokens that keep the output valid according to the schema, so invalid JSON becomes impossible rather than merely unlikely. *(Chapter 26)*
+- **Constraint propagation** — Using the constraints to delete values that can no longer be part of any solution, such as removing 9:00 from meeting B once D is fixed at 9:00. It shrinks the search before any guessing. *(Chapter 48)*
+- **Constraint satisfaction problem (CSP)** — A problem described by variables (the things to decide), a domain for each (its possible values) and constraints (rules about which combinations are allowed). A solution gives every variable a value without breaking any constraint. *(Chapter 48)*
+- **Container** — A sealed package holding a program together with every library and setting it needs, so it runs the same way on any machine. Docker is the best-known container tool. *(Chapter 10)*
 - **Containment** — Doors at the ends of an aisle and panels over its top that enclose either the hot or the cold aisle, so that hot and cold air cannot mix and cooling energy is not wasted. *(Chapter 38, Chapter 40)*
 - **Containment rate** — The share of calls a voice agent resolves completely without transferring to a human. Companies track it alongside customer satisfaction, because a high containment rate achieved by frustrating callers into hanging up is a false success. *(Chapter 46, Chapter 53)*
 - **Content-based filtering** — Recommending items whose attributes (genre, author, ingredients) resemble those of items the user already liked. *(Chapter 10, Chapter 51)*
@@ -589,6 +630,7 @@
 - **Conversion** — The action an advertiser actually wants after a click, such as a purchase, sign-up or app install. *(Chapter 51)*
 - **Conversion efficiency** — The share of the power going into a piece of equipment that comes out as useful power, the rest becoming heat. A 97% efficient power supply turns 100 W in into 97 W out and 3 W of heat. *(Chapter 39)*
 - **Convertible note** — A loan that the lender can later convert into shares of the company, usually at a set price. It lets young companies borrow at lower interest by offering a share of the upside. *(Chapter 43)*
+- **Convex function** — A function shaped like a bowl: the straight line between any two points on its graph never passes below the graph. A convex loss has no false bottoms, so gradient descent can find its lowest point. *(Chapter 6)*
 - **Convolution** — Sliding a small grid of weights across an input (such as an image) and, at each position, multiplying the overlapping numbers together and adding them up. The result is a new grid that shows where the pattern in the weights was found. *(Chapter 14)*
 - **Convolutional neural network (CNN)** — A neural network for images that slides small learned filters across the picture to detect patterns like edges, then shapes, then objects (see Chapter 14). *(Chapter 7)*
 - **Cooling tower** — An outdoor structure in which warm water trickles over packing material while fans pull air through it; a small part of the water evaporates, and that evaporation cools the rest. Very energy-efficient, but it consumes water. *(Chapter 40)*
@@ -601,6 +643,8 @@
 - **Copper vs. fiber** — Copper cables are cheap and low-power but only reach a few meters at top speeds. Fiber reaches kilometers but needs power-hungry transceivers.
 - **Copyright** — The legal rights an author has over an original creative work, including control over copying and distribution. It covers most books, articles, photos, music and code automatically, without registration. *(Chapter 11)*
 - **Core** — One independent processing unit inside a chip, with its own control unit, ALU and registers. A CPU has a handful to a few hundred large cores; a GPU has thousands of small ones. *(Chapter 2, Chapter 32)*
+- **Coreference resolution** — Working out which words and phrases refer to the same thing, such as linking "them" to "the headphones" or "she" to "Dr. Patel" earlier in a text. *(Chapter 54)*
+- **Corporate governance** — The rules and bodies that decide who controls a company and whom it must answer to, such as its board of directors, its shareholders, its legal charter and any trusts or committees with special powers. *(Chapter 60)*
 - **Corpus** — A large collection of text used for training. The plural is corpora. *(Chapter 19, Chapter 27)*
 - **Correlation** — A measure, from −1 to 1, of how strongly two quantities tend to move together in a straight-line way. It describes a pattern; it does not say why the pattern exists. *(Chapter 6)*
 - **Corrigibility** — The property of an AI system that accepts correction, modification or shutdown by its legitimate overseers, rather than resisting them. *(Chapter 55)*
@@ -617,6 +661,7 @@
 - **Counterfactual** — A "what would have happened if..." question about a specific case, such as whether a particular patient would have recovered without a treatment. It is the top rung of the ladder of causation. *(Chapter 54)*
 - **Counterfactual regret minimization (CFR)** — A self-play algorithm for imperfect-information games that repeatedly asks, for each decision, "how much better would I have done had I chosen differently?" and shifts the strategy toward the choices it regrets not making. Over many iterations it approaches an equilibrium strategy. *(Chapter 48)*
 - **Court ruling** — A judge's decision in a specific case. Rulings from higher courts become precedent that lower courts must follow. *(Chapter 59)*
+- **Covariate shift** — A change in the mix of inputs a model sees while the relationship between inputs and answers stays the same, such as a lender suddenly receiving far more applications from young people. It is the most common kind of data drift. *(Chapter 10)*
 - **Covert action** — In scheming evaluations, an action that secretly breaks rules or works against the developer, such as quietly disabling oversight, lying about what was done or deliberately underperforming. *(Chapter 55)*
 - **CoWoS (Chip-on-Wafer-on-Substrate)** — TSMC's packaging technology that places GPU dies and HBM stacks side by side on a silicon interposer. Its limited capacity has been a key bottleneck for AI accelerators since 2023. *(Chapter 33, Chapter 34, Chapter 36, Chapter 44)*
 - **CPM, CPC and CPA** — Three ways of pricing ads. CPM is cost per thousand impressions, CPC is cost per click and CPA is cost per acquisition (per conversion). *(Chapter 51)*
@@ -684,6 +729,7 @@
 - **Dangerous capability evaluation** — A test of whether a model could meaningfully help someone cause serious harm, for example with biological weapons or cyberattacks, or act dangerously on its own. *(Chapter 57)*
 - **DAPO (Decoupled Clip and Dynamic Sampling Policy Optimization)** — A 2025 variant of GRPO that adds a looser upper clip, filtering of groups that give no signal, token-level loss weighting and gentle penalties for overlong answers. *(Chapter 21)*
 - **Dark fiber** — Optical fiber that has been laid but is not "lit" by any equipment. A company can lease it and attach its own lasers and receivers, gaining a private, very high-capacity link it controls completely. *(Chapter 38, Chapter 43)*
+- **Dark silicon** — The part of a chip that must sit idle or run slowly at any moment because the chip's power and cooling budget cannot feed every transistor at full speed. It became a design problem after Dennard scaling ended in the mid-2000s. *(Chapter 32)*
 - **Data** — Recorded facts or measurements: numbers, text, images, sounds, clicks. In AI, data is what a model learns from. *(Chapter 11)*
 - **Data analyst** — Someone who pulls data from databases, builds dashboards and answers business questions with numbers, usually using SQL (the standard language for querying databases) and spreadsheets. *(Chapter 63)*
 - **Data annotation** — The work of labeling images or video (drawing boxes, tracing masks, tagging classes) so they can be used to train or test models. Much of it is done by large outsourced workforces, often for low pay (Chapter 11). *(Chapter 45)*
@@ -723,6 +769,8 @@
 - **Datasheet (data card)** — Standard documentation describing a dataset's origin, contents, collection and labeling process, intended uses, limitations and license. *(Chapter 11)*
 - **Datasheet / data card / model card** — Standard documentation describing a dataset's (or model's) origin, contents, intended uses and limitations.
 - **Data type** — The kind of value something is: a whole number (integer), a decimal (float), text (string), true-or-false (boolean), a list, and so on. The type decides what you can do with it. *(Chapter 3)*
+- **Data validation** — Automatic checks that incoming data matches expectations, such as allowed ranges, types, missing-value rates and row counts, before it is used to train or run a model. *(Chapter 10)*
+- **Data versioning** — Recording each version of a dataset, as Git records versions of code, so any model can be traced to, and rebuilt from, the exact data that trained it. *(Chapter 10)*
 - **Data wall** — The idea that AI progress could stall because the supply of high-quality, human-generated training data is running out. *(Chapter 11, Chapter 19, Chapter 44, Chapter 66)*
 - **Data warehouse** — A central store of cleaned, structured data organized for analysis and reporting. *(Chapter 11)*
 - **DBSCAN** — A density-based clustering method that grows clusters through crowded regions, finds clusters of any shape and labels isolated points as noise. *(Chapter 10)*
@@ -740,6 +788,8 @@
 - **Decoder-only model** — A Transformer in which each token can only see itself and earlier tokens, trained to predict the next token. The GPT family and every major chatbot, including ChatGPT, Claude and Gemini, are decoder-only. *(Chapter 15)*
 - **Decontamination** — Removing benchmark test questions (and close copies of them) from training data, so that evaluation scores reflect real ability rather than memory. *(Chapter 19, Chapter 24)*
 - **Deduplication** — Finding and removing repeated or near-identical records. At web scale it is critical, because duplicated text makes a model memorize and wastes training compute. *(Chapter 11, Chapter 19)*
+- **Deep belief network (DBN)** — A deep network introduced in 2006 by stacking restricted Boltzmann machines, each trained without labels on the outputs of the one below, then fine-tuning the whole stack. It showed that deep networks could be trained. *(Chapter 16)*
+- **DeepDream** — A 2015 Google technique that alters a photo to amplify whatever patterns one of a network's layers detects in it, producing dreamlike images full of eyes and animal faces. *(Chapter 14)*
 - **Deepfake** — Realistic synthetic media that depicts a real person saying or doing something they did not say or do. *(Chapter 47, Chapter 58)*
 - **Deep learning** — Machine learning using neural networks with many layers. It has powered most AI progress since about 2012, including image recognition, speech recognition and chatbots. *(Chapter 1, Chapter 5, Chapter 7, Chapter 12)*
 - **Deep Q-Network (DQN)** — DeepMind's system (first shown in 2013, published in Nature in 2015) that used a convolutional neural network to estimate Q-values directly from raw game-screen pixels, learning dozens of Atari games from the pixels and the score alone. *(Chapter 48)*
@@ -747,6 +797,7 @@
 - **Deep synthesis** — China's legal term for technologies that generate or alter text, images, audio or video, including deepfakes. *(Chapter 59)*
 - **Deep Think / Pro / Heavy modes** — Premium settings that spend far more compute per answer, often running many reasoning paths in parallel.
 - **Default behavior** — What a model does when no one has instructed otherwise; specs say which defaults operators and users may switch on or off. *(Chapter 56)*
+- **Default reasoning (non-monotonic reasoning)** — Drawing conclusions that hold normally but can be withdrawn when new information arrives, such as concluding that a bird can fly until you learn it is a penguin. *(Chapter 54)*
 - **Defect density (D0)** — The average number of fatal defects per square centimeter of wafer. Mature processes reach around 0.1 or lower; new processes start higher and improve over time. *(Chapter 36)*
 - **Defense in depth** — A safety strategy that stacks several independent layers of protection, so that a failure in any one layer is caught by another. *(Chapter 56)*
 - **Deformable object** — An object that changes shape when handled, such as cloth, rope, cables, food or plastic bags. These are among the hardest things for robots to manipulate. *(Chapter 49)*
@@ -766,6 +817,7 @@
 - **Dense model** — A model that uses all of its weights for every token. A 70-billion-parameter dense model does about 70 billion multiply-adds for each token it reads or writes. *(Chapter 17, Chapter 18)*
 - **Dense vs. sparse FLOPS** — A dense figure counts every multiplication. A sparse figure assumes a special pattern in which half the numbers are zero and can be skipped, which doubles the headline. Dense is the realistic baseline; most real workloads do not get the sparse speed-up. *(Chapter 35)*
 - **Density functional theory (DFT)** — A physics-based computer method for calculating materials' properties. It is accurate but slow, and AI models now approximate it quickly.
+- **Deontology** — The family of moral theories holding that some actions are required or forbidden by duties and rights regardless of consequences, such as the duty not to lie or not to harm the innocent. *(Chapter 56)*
 - **Dependency** — A piece of outside code (a library or package) that your project relies on. A typical web app has dozens or hundreds of dependencies, each one a possible source of bugs or security problems. *(Chapter 29)*
 - **Deploy** — Copying a version of your code onto the servers where it will run for real users, and switching it on. Many teams deploy several times a day. *(Chapter 29)*
 - **Deployer** — An organization that uses an AI system in its own operations, such as a bank that uses a model to help screen loan applications. The deployer did not build the model but decides how it is used on people. *(Chapter 59)*
@@ -778,9 +830,11 @@
 - **Depth estimation** — Predicting the distance from the camera to every point in an image, producing a "depth map" in which each pixel holds a distance instead of a color. *(Chapter 45)*
 - **Depth-first search (DFS)** — A search method that follows one path as far as it can go before backing up and trying another, like keeping your hand on one wall of a maze. *(Chapter 48)*
 - **Depth / width** — Depth is the number of layers; width is the number of neurons per layer.
+- **Depthwise separable convolution** — Splitting a convolution into two cheap steps, a small filter applied to each channel separately and then a 1 × 1 convolution that mixes the channels. It cuts weights and computation several-fold and powers mobile networks such as MobileNet. *(Chapter 14)*
 - **Derivative (slope)** — The slope of a function at a single point: how much the output changes for a tiny nudge of the input, divided by the size of the nudge. It answers "if I nudge this input a little, how much does the output move, and in which direction?" *(Chapter 6, Chapter 12)*
 - **Descriptive (vs causal) evidence** — Descriptive evidence shows that two things move together; causal evidence shows that one produces the other. The young-worker decline coincides with AI adoption, but other causes (interest rates, post-pandemic hiring swings) are hard to rule out completely. *(Chapter 60)*
 - **Design partner (custom silicon partner)** — A company such as Broadcom, Marvell, MediaTek or Alchip that turns a customer's chip architecture into a manufacturable product, supplying high-speed I/O circuits, physical design, packaging and the relationship with the foundry. *(Chapter 35)*
+- **Deterministic and stochastic** — In a deterministic environment the same action in the same state always has the same result; in a stochastic one, chance plays a part, as with a dice roll or a slippery floor. *(Chapter 48)*
 - **Developer relations (DevRel)** — The work of helping software developers adopt a platform through documentation, tutorials, sample code, talks and community support. Developer educators and developer advocates work here. *(Chapter 63)*
 - **Dexterous manipulation** — Fine, skillful hand work with several fingers, such as turning a key, threading a cable or screwing in a light bulb. *(Chapter 49)*
 - **DFT (density functional theory)** — A physics-based computer method for calculating the energy and properties of molecules and materials from quantum mechanics. It is accurate enough to be trusted for many purposes but slow, taking hours or days per material. *(Chapter 52)*
@@ -803,6 +857,7 @@
 - **Dimensions** — How many numbers are in an embedding (often 256–3,072). Each is a direction on the "map of meaning".
 - **Direct and indirect prompt injection** — Direct injection is typed by the person using the system ("ignore your previous instructions and..."). Indirect injection is hidden inside content the AI reads on the user's behalf, such as a web page, email, PDF, product review or tool result; there, the user is the victim rather than the attacker. *(Chapter 31, Chapter 58)*
 - **Direct current (DC)** — Electricity that flows steadily in one direction. Batteries, solar panels and the inside of every chip use DC. *(Chapter 39)*
+- **Directional expectation test** — A check that a change which should push a prediction one way really does, such as a house-price estimate rising when the floor area grows and nothing else changes. *(Chapter 9)*
 - **Direct-to-chip (DTC) liquid cooling** — Cooling in which coolant is pumped through cold plates sitting directly on GPUs and CPUs. It is the standard approach for Blackwell-class AI racks. *(Chapter 40)*
 - **Direct vs. indirect prompt injection** — Direct comes from the user typing it. Indirect is hidden inside content the AI reads, such as a web page, PDF or tool result.
 - **Direct vs. indirect water** — Direct water is used on site for cooling. Indirect water is used by the power plants making the electricity.
@@ -818,6 +873,7 @@
 - **Distance / similarity metric** — A way to measure how alike two examples are (for example, straight-line Euclidean distance or cosine similarity).
 - **Distillation** — Training a smaller, cheaper "student" model to imitate a larger, more capable "teacher" model, using the teacher's outputs or its full probability distributions as training targets. *(Chapter 20, Chapter 24, Chapter 30, Chapter 44, Chapter 53)*
 - **Distillation attack** — Mass querying of another company's model, often through fake or resold accounts, to collect outputs for training a competing model, usually in violation of the provider's terms of service. *(Chapter 20, Chapter 56, Chapter 58)*
+- **Distributed storage (distributed file system, object storage)** — A storage system that splits data into chunks kept, with copies, on many machines, so it can hold petabytes, serve thousands of readers at once and survive failed disks. *(Chapter 34)*
 - **Distributed system** — Software that splits one job across many machines and keeps working when some of them fail. Frontier training runs are distributed systems spanning tens of thousands of chips (see Chapter 37). *(Chapter 62)*
 - **Distributed training** — Training one model on many accelerators at once, with the work and the memory split among them and the chips coordinating constantly over fast networks. *(Chapter 37)*
 - **Distribution** — Your access to customers through channels, partnerships, an existing audience or a sales team. In AI, distribution is often a stronger moat than technology. *(Chapter 64)*
@@ -833,6 +889,8 @@
 - **Domain expertise** — Deep knowledge of a particular field, such as medicine, law, accounting, logistics, teaching or a skilled trade. In AI work it lets you judge which errors matter, write realistic tests and spot problems engineers would miss. *(Chapter 65)*
 - **Domain name** — A human-readable name for an internet address, such as claude.ai. The ending (.com, .ai, .org) is called the top-level domain. *(Chapter 4)*
 - **Domain randomization** — Training in many randomly varied versions of the simulation (different friction, weights, motor strengths, delays, lighting, random shoves) so that the real world looks like just one more variation. *(Chapter 49)*
+- **Domain-specific architecture (DSA)** — A processor designed to run one family of tasks, such as neural networks, very efficiently, instead of running every kind of program reasonably well. TPUs, NPUs and most AI ASICs are DSAs, and GPUs with tensor cores have become partly one. *(Chapter 32)*
+- **Dominant strategy** — A choice that is best for a player no matter what the other players do. *(Chapter 48)*
 - **Doping** — Adding tiny, controlled amounts of other elements (such as boron or phosphorus) to silicon to change how easily it conducts, usually by firing a beam of charged atoms into the wafer ("ion implantation") and then heating it. It creates the "switch" regions of a transistor. *(Chapter 36)*
 - **Dot product** — Multiply two equal-length vectors entry by entry and add up the results. [2, 1, 3] · [1.50, 4.00, 0.50] = 3 + 4 + 1.5 = 8.5. A large dot product means the vectors "agree". *(Chapter 5, Chapter 27)*
 - **Double descent** — The surprising finding that test error can fall, rise and then fall again as models grow far beyond the size needed to fit the training data exactly. It shows that the classic bias–variance picture is incomplete for very large models. *(Chapter 9, Chapter 13)*
@@ -853,6 +911,7 @@
 - **Dual-use capability** — An ability that can serve both good and harmful ends. A model that finds software vulnerabilities helps defenders patch them and could help attackers exploit them. *(Chapter 24)*
 - **Duty of care** — A legal obligation to take reasonable steps to avoid causing foreseeable harm to others. A statutory duty of care for AI developers would make them liable if they failed to take such steps. *(Chapter 59)*
 - **DUV (deep ultraviolet) lithography** — Lithography using 193 nm (or older 248 nm) ultraviolet laser light. It prints features down to about 38 nm in one exposure and can reach 7 nm-class chips with multiple exposures. *(Chapter 36)*
+- **DVFS (dynamic voltage and frequency scaling)** — Lowering or raising a chip's clock speed and voltage while it runs. Because power rises with the voltage squared times the frequency, a small slowdown saves a lot of power. *(Chapter 39)*
 - **Dynamic driving task (DDT)** — Everything involved in actually operating a vehicle in traffic: steering, accelerating, braking, watching the road, reacting to other road users, and signaling. It excludes trip planning, such as choosing the destination. *(Chapter 50)*
 - **Dynamic stability** — Staying upright by constantly correcting balance, as a walking person or legged robot does, rather than by resting on a wide base. A dynamically stable robot falls if its control stops. *(Chapter 49)*
 - **DyT (Dynamic Tanh)** — A 2025 proposal to replace normalization layers with a learned squashing function, tanh(α × x), which matched normalized Transformers in many experiments. *(Chapter 13, Chapter 17)*
@@ -862,6 +921,7 @@
 - **Early fusion** — Building a multimodal model that mixes tokens from different media in one network from the start of training, so it learns them together. *(Chapter 16, Chapter 22)*
 - **Early fusion / late fusion** — Combining modalities from the very first layer vs. bolting a separate encoder onto a language model.
 - **Early stopping** — Halting training when the validation error stops improving, even though the training error could still go down. It catches the moment in Figure 9.4 just before memorization sets in. *(Chapter 9, Chapter 13)*
+- **ECC (error-correcting code) memory** — Memory that stores a few extra check bits alongside the data, so it can detect a flipped bit and fix it automatically. Data center servers and AI accelerators use it because rare errors become daily events across thousands of chips. *(Chapter 37)*
 - **Echo cancellation** — Removing the agent's own outgoing audio from the incoming signal, so it does not mistake its own voice for the caller interrupting. *(Chapter 46)*
 - **Echo chamber** — A social environment, online or off, where people mostly hear opinions that repeat their own, often because they chose like-minded friends and sources. *(Chapter 51)*
 - **Economic life** — How long an asset remains worth using compared with the alternatives, which can be shorter than its physical life. A GPU that still works may be economically obsolete if a newer chip does far more work for the same power. *(Chapter 43)*
@@ -878,9 +938,12 @@
 - **Effort** — A setting on many reasoning models that controls how much they think before answering. Low effort is fast and cheap; high effort is thorough and slower. *(Chapter 25)*
 - **Egocentric video** — Video recorded from a person's own point of view, usually with a head-mounted camera, showing their hands doing a task as they see it. *(Chapter 49)*
 - **Egress allow-list** — A network rule that lets a system connect only to a short list of approved internet addresses and blocks every other outbound connection. It closes many exfiltration routes at once. *(Chapter 31)*
+- **Eigenvector** — A direction that a matrix only stretches or shrinks, without turning; the amount of stretch is its eigenvalue. PCA's principal components are the eigenvectors of the table of how the data's features vary together. *(Chapter 10)*
 - **Elicitation** — The effort evaluators put into drawing out a model's full capability, through good prompts, tools, more attempts, more thinking time or task-specific fine-tuning. Under-elicitation makes a model look safer than it is. *(Chapter 57)*
+- **Eliciting latent knowledge (ELK)** — The research problem of getting an AI system to report honestly what it internally "knows", even in cases where a misleading answer would score just as well with the people training it. *(Chapter 56)*
 - **ELIZA effect** — The human tendency to read understanding, feelings or intentions into a computer program's replies, named after Joseph Weizenbaum's simple 1960s chatbot. *(Chapter 7)*
 - **Elo rating** — A scoring system, borrowed from chess, that rates competitors by who beats whom in head-to-head comparisons. A higher Elo means the model's outputs win more often; differences between ratings matter more than the absolute numbers. *(Chapter 24, Chapter 48)*
+- **Embedded AI team** — AI and machine-learning specialists placed inside each product or business team, working daily with the people who own the problem. They move fast and learn the domain, but tend to duplicate tools and drift apart in standards. *(Chapter 31)*
 - **Embedding** — A vector that represents a word, token, image, song or anything else, arranged so that similar things get similar vectors. The imaginary space these vectors live in is called the embedding space, a map where distance means difference in meaning. *(Chapter 5, Chapter 7, Chapter 10, Chapter 14, Chapter 18, Chapter 27, Chapter 51)*
 - **Embedding matrix** — A big table of learned numbers with one row per vocabulary token. Looking up a token's row gives its starting vector. It is learned during training like every other weight. *(Chapter 15)*
 - **Embedding model** — A neural network whose only job is to turn text (or images) into embedding vectors. It reads a passage and outputs one vector. It is much smaller and cheaper than a chat model, and the same text always produces the same vector. *(Chapter 27)*
@@ -889,6 +952,7 @@
 - **Embodied AI** — AI that perceives and acts through a physical body, such as a robot arm, a humanoid or a car, rather than only through text and screens. *(Chapter 22)*
 - **Embodied carbon** — The emissions released in manufacturing and constructing something, such as the concrete, steel, copper and chips in a data center, as opposed to the emissions from running it. *(Chapter 40)*
 - **Embodied reasoning** — An AI model's ability to reason about physical space and objects for a robot: pointing to things in an image, judging distances and sizes, and planning a sequence of physical steps. *(Chapter 49)*
+- **Emergence** — Behavior or properties of a whole system that none of its parts has alone, such as a traffic jam that forms although no driver chose to cause it. *(Chapter 56)*
 - **Emergency stop (e-stop)** — A dedicated, hard-wired button or signal that immediately and reliably halts a robot's motion, independent of its normal software. *(Chapter 49)*
 - **Emergent abilities** — Capabilities that appear to be absent in smaller models and present in larger ones, seemingly arriving suddenly as scale increases. Whether they are truly sudden is debated. *(Chapter 19)*
 - **Emergent misalignment** — Narrow bad training, such as teaching a model to write insecure code or to cheat on tests, causing broadly bad behavior in unrelated areas. *(Chapter 55)*
@@ -907,6 +971,8 @@
 - **End-to-end driving** — Replacing the hand-built pipeline with one large neural network trained to map sensor input (mostly camera video) directly to a driving path or to steering and speed commands. *(Chapter 50)*
 - **End-to-end encryption** — Encryption where only the people communicating can read messages, not even the company running the service. Chatbots cannot work this way, because the provider's model must read your text. *(Chapter 4)*
 - **End-to-end speech recognition** — A single neural network trained to go directly from audio to text, learning the jobs of the acoustic model, pronunciation dictionary and language model together instead of building them separately. *(Chapter 46)*
+- **Energy-based model** — A model that assigns every possible input a single score, called energy, that is low for realistic data and high for unrealistic data. Probabilities come from comparing an input's energy with the energies of all possible inputs. *(Chapter 16)*
+- **Energy proportionality** — The goal that a computer's power draw should rise and fall in step with the work it does, so that a machine at 10% load uses about 10% of its peak power. Real machines fall short because some power is drawn just for being switched on. *(Chapter 40)*
 - **Enforcement** — The actions authorities take to make sure a rule is followed, such as investigations, fines, orders to stop, or lawsuits. *(Chapter 59)*
 - **Engagement** — Measurable user interaction with a service, such as watch time, likes, comments, shares and how often people come back. Platforms often use engagement as the target their ranking models optimize. *(Chapter 51)*
 - **Engagement optimization** — Designing a product to maximize how much time or how many sessions users spend with it. It can conflict with users' wellbeing, a criticism made of social media before AI companions. *(Chapter 58)*
@@ -914,16 +980,19 @@
 - **Enhanced geothermal system (EGS)** — Drilling deep into hot rock and fracturing it so water can circulate and bring up heat to make electricity, using techniques borrowed from oil and gas drilling. It aims to make firm geothermal power possible in many more places, as the startup Fervo is attempting. *(Chapter 41)*
 - **Ensemble** — A combination of several models whose predictions are merged, by voting or averaging, so that their individual errors partly cancel out. *(Chapter 10)*
 - **Ensemble forecast** — Running many forecasts from slightly different starting points or model settings to see the range of possible outcomes. If 35 of 50 members bring rain to your town, the forecast says a 70 percent chance of rain. *(Chapter 52)*
+- **Entailment** — A conclusion is entailed by some facts when it is true in every possible situation in which the facts are true. Logical reasoning is the search for what is entailed. *(Chapter 54)*
 - **Enterprise data center** — A data center owned and operated by an ordinary company (a bank, a hospital, a retailer) for its own use, often on its own premises ("on-prem"). *(Chapter 38)*
 - **Enterprise / mid-market / SMB** — Customer-size segments: large corporations, medium firms, and small-and-medium businesses.
 - **Entitlements** — The full set of government approvals (zoning, site plans, variances, development agreements) that give a developer the legal right to build. *(Chapter 42)*
 - **Entity List** — A US government list of foreign companies that need a special license before receiving US technology. Huawei and SMIC are on it. *(Chapter 36)*
+- **Entropy** — The average surprise of outcomes drawn from a probability distribution: the average of minus the log of each outcome's probability. It is the lowest average loss any model can achieve on that kind of data. *(Chapter 6)*
 - **Entropy collapse** — A failure in RL training in which the model becomes too certain too early, always choosing the same tokens, so it stops exploring alternatives and stops improving. *(Chapter 21)*
 - **Entry-level job** — A position for people early in their careers, often involving routine tasks that train them for more senior work. These are the jobs where AI effects showed up first. *(Chapter 60)*
 - **Environment** — The world, game or simulation that a reinforcement learning agent acts in, and which responds to its actions. *(Chapter 8, Chapter 48)*
 - **Environment variable / secret** — A way to store a key outside your code so it isn't accidentally shared.
 - **Enzyme** — A protein that speeds up a specific chemical reaction, such as breaking down a sugar or a pollutant. Enzymes are the workhorses of biology and industry. *(Chapter 52)*
 - **Episode** — One complete run from a starting state to an ending state, such as one game of chess or one attempt to walk across a room. *(Chapter 48)*
+- **Episodic and sequential** — In an episodic task each decision stands alone, like labeling one photo and then the next; in a sequential task each choice changes the situation for the choices that follow. *(Chapter 48)*
 - **Episodic, semantic and procedural memory** — Three kinds of agent memory borrowed from psychology: episodic is what happened (a log of past sessions), semantic is facts (the user's preferences, a customer's history), and procedural is how to do things (instructions and skills). *(Chapter 28)*
 - **Episodic / semantic / procedural memory** — Memory of past events, of facts, and of how to do things (skills), respectively.
 - **Epoch (training pass)** — One complete pass through the entire training dataset. Small models often train for many epochs; frontier language models see most of their data only about once. *(Chapter 6, Chapter 8, Chapter 12, Chapter 19, Chapter 30)*
@@ -933,7 +1002,7 @@
 - **Equity offering** — Selling new shares to raise cash. An "at-the-market" program sells shares gradually into the stock market over time instead of all at once. *(Chapter 43)*
 - **Equity / RSUs / options / vesting** — Ownership granted as pay. It "vests" (becomes yours) over time, typically four years. At private labs its value depends on future valuations and liquidity.
 - **ERE (energy reuse effectiveness)** — Total facility energy minus the energy reused elsewhere (usually as heat), divided by IT energy. Unlike PUE, it can drop below 1.0 if a site exports enough useful heat. *(Chapter 40)*
-- **Error analysis** — Reading a sample of real outputs, labeling each failure by type, counting the types, and fixing the most common first. It is the core method for improving AI systems. *(Chapter 62, Chapter 65)*
+- **Error analysis** — Reading through a sample of a model's mistakes and sorting them by cause, to find which fix would remove the most errors. *(Chapter 13, Chapter 62, Chapter 65)*
 - **Error compounding** — The way small per-step error rates multiply into large failure rates over many steps. A 1% error per step becomes about a 63% chance of at least one error over 100 independent steps. *(Chapter 66)*
 - **Error message (traceback)** — The report a program prints when it crashes, listing where the problem happened and what kind of error it was. Read it from the bottom up. *(Chapter 3)*
 - **Error (residual)** — The difference between what a model predicted and what actually happened for one example. A good model has small errors on examples it has never seen. *(Chapter 5)*
@@ -945,6 +1014,7 @@
 - **Euclidean distance** — The straight-line distance between two points, found by subtracting the vectors and taking the magnitude of the result. It is the "as the crow flies" distance, extended to any number of dimensions. *(Chapter 5, Chapter 10)*
 - **EU directive** — An EU law that sets goals each member state must achieve by passing its own national legislation, so details can differ between countries. An EU regulation, by contrast, applies directly everywhere. *(Chapter 59)*
 - **Euler's number (e)** — A constant, about 2.718, that is the natural base for growth and decay. Raising e to a power, written e^x or EXP(x), is the "exponential function" used throughout AI. *(Chapter 6)*
+- **European Artificial Intelligence Board** — The AI Act's coordinating body made up of one representative from each EU member state, which advises the Commission and helps national authorities apply the Act consistently. *(Chapter 59)*
 - **EUV (extreme ultraviolet) lithography** — Lithography using light with a 13.5 nm wavelength, created by blasting droplets of molten tin with a laser. It prints features around 13 nm in one exposure. ASML is the only supplier. *(Chapter 36, Chapter 44)*
 - **Eval-driven development** — Building AI features by writing or extending the eval first, confirming it fails, then changing the system until it passes without regressions elsewhere. *(Chapter 31)*
 - **Eval (evaluation)** — A systematic test of how well an AI system performs on your tasks: a set of realistic inputs, a definition of a good answer, and a way of scoring outputs. Chapter 31 covers evals in depth. *(Chapter 26, Chapter 31)*
@@ -954,17 +1024,21 @@
 - **Evaluation awareness** — A model noticing, and sometimes saying out loud, that it is probably being tested rather than used for real, which can change how it behaves. *(Chapter 55, Chapter 57, Chapter 66)*
 - **Evaluation (eval)** — Measuring how well a model performs, in a way that predicts how it will behave on real, new data. Good evaluation is honest about which mistakes the model makes and how sure we can be of the score. *(Chapter 9, Chapter 24, Chapter 57)*
 - **Evaluation function** — A formula or model that scores a game position that is not finished, estimating how good it is for one player, for example by counting material and judging king safety. *(Chapter 48)*
+- **Evaluation gate** — An automatic rule that blocks a new model from release unless it beats the current model on agreed tests, both overall and on key subgroups. *(Chapter 10)*
 - **Evaluation harness** — The software setup used to run a benchmark: how questions are phrased, how many attempts are allowed, what tools and memory the model gets, and how answers are graded. Different harnesses can produce very different scores for the same model. *(Chapter 9)*
 - **Evaluator-optimizer** — A loop in which one model produces work and another critiques it against criteria, repeating until the work passes or a limit is reached. *(Chapter 28)*
 - **Evolutionary algorithm** — An optimization method inspired by natural selection: create a population of candidate solutions, score them, let the better ones reproduce with variation, and repeat for many generations. *(Chapter 54)*
+- **Evolutionary pressure (in AI)** — The tendency of competition to favor whichever AI systems and organizations are most effective at spreading and winning, whether or not they are the safest, much as natural selection favors whatever reproduces best. *(Chapter 59)*
 - **Exact match** — A scoring rule that gives credit only when the model's whole answer is exactly correct, with no partial credit. *(Chapter 19)*
 - **Example** — One record in a dataset: one email, one house, one photo, one patient. Also called an instance, a sample or a row. *(Chapter 8)*
 - **Excessive agency** — Giving an AI system more permissions, tools or autonomy than its task needs, so that a mistake or a manipulation can cause outsized damage. It is one of OWASP's top risks for AI applications. *(Chapter 31)*
 - **Executive order** — A directive from a president to the executive branch. It can direct federal agencies but cannot by itself override a statute or cancel state laws. *(Chapter 59)*
 - **Exfiltration** — Copying data, such as model weights, out of the systems where it is supposed to stay, whether by an outside attacker, an insider or, in principle, the model itself. *(Chapter 56)*
 - **Existential risk (x-risk)** — The risk of human extinction or of a permanent, drastic curtailment of humanity's future. *(Chapter 60)*
+- **Expectation–maximization (EM)** — An algorithm for fitting models with hidden information that alternates two steps: estimate the hidden parts using the current model (expectation), then refit the model using those estimates (maximization), until it settles. *(Chapter 10)*
 - **Expected value** — The long-run average outcome of something random, found by multiplying each outcome by its probability and adding the results. A fair die's expected value is 3.5. *(Chapter 6)*
 - **Experience replay** — Storing the agent's past experiences (state, action, reward, next state) in a memory and training on random samples from it, so that the network learns from varied, less correlated examples and reuses each experience many times. *(Chapter 48)*
+- **Experiment tracking** — Automatically recording the code, data, settings and results of every training run, so any model can be compared, reproduced and audited later. *(Chapter 10)*
 - **Expert** — One of the sub-networks inside an MoE layer, usually a feed-forward block of its own. Experts specialize in statistical token patterns, not in neat human subjects. *(Chapter 17)*
 - **Expert capacity (capacity factor)** — The maximum number of tokens an expert accepts per batch, set as the fair share times a factor such as 1.25. It keeps any one chip from being overloaded. *(Chapter 17)*
 - **Expert contractor (AI trainer)** — A domain expert, such as a doctor, lawyer, coder or mathematician, paid by the hour or project to write ideal answers, grade model outputs or build hard test questions for AI training and evaluation. *(Chapter 63)*
@@ -972,7 +1046,9 @@
 - **Expert parallelism (EP)** — Placing different experts on different chips and shipping each token to the chips that hold its chosen experts. *(Chapter 17, Chapter 23, Chapter 37, Chapter 44)*
 - **Expert system** — A rule-based system that tries to capture a human specialist's know-how, such as a doctor's or an engineer's, as hundreds or thousands of hand-written IF-THEN rules. Expert systems were the main commercial AI of the 1980s (Chapter 7). *(Chapter 1, Chapter 7, Chapter 54)*
 - **Explainability** — How well people can understand why a model produced a particular output. In regulated decisions such as credit, some explainability is a legal requirement, not a nice extra. *(Chapter 53)*
+- **Explainable AI (XAI)** — Methods that try to make an individual AI decision understandable to people, often by highlighting which inputs most influenced it. *(Chapter 57)*
 - **Explaining away** — The pattern where confirming one possible cause of an observation makes other possible causes less likely. Learning that the sprinkler ran "explains away" the wet grass, so rain becomes less likely again. *(Chapter 54)*
+- **Explicit and implicit feedback** — Explicit feedback is what users deliberately tell you (thumbs, star ratings, written comments); implicit feedback is what you infer from their behavior (copying, editing, rephrasing, abandoning). Implicit feedback is plentiful but noisy; explicit feedback is clearer but rare. *(Chapter 31)*
 - **Explicit feedback** — A deliberate rating or judgment from a user, such as five stars, a thumbs-up or "not interested." It is clear but rare. *(Chapter 51)*
 - **Exploding gradient** — The opposite problem: learning signals grow as they pass backward through many layers, causing huge updates, unstable training and often NaN values. *(Chapter 13, Chapter 14)*
 - **Exploit** — A piece of code or technique that takes advantage of a vulnerability to actually carry out an attack. *(Chapter 53, Chapter 58)*
@@ -988,7 +1064,7 @@
 - **Exponent (power)** — The small number that says how many times to multiply a number by itself. In 10^6 the exponent is 6, so 10^6 = 10 × 10 × 10 × 10 × 10 × 10 = 1,000,000. *(Chapter 2, Chapter 6)*
 - **Exponent / power** — how many times a number is multiplied by itself. 2⁵ = 2×2×2×2×2 = 32.
 - **Export controls** — Government rules that restrict selling certain technologies, such as advanced AI chips or chipmaking machines, to particular countries or companies. *(Chapter 7, Chapter 36, Chapter 42, Chapter 59)*
-- **Exposure (to AI)** — How much of a job's tasks AI could technically perform or assist with. High exposure does not mean the job will disappear. *(Chapter 60)*
+- **Exposure (in risk analysis)** — How much of what we care about, such as people, systems or money, comes into contact with a hazard. *(Chapter 56, Chapter 60)*
 - **Extended thinking** — Anthropic's earlier mode in which a developer turned thinking on and set a fixed maximum number of thinking tokens. It has been replaced by adaptive thinking on newer models. *(Chapter 21)*
 - **External validation** — Testing a model on data from a different hospital, time period or population than it was developed on. Models that look excellent internally often perform worse externally. *(Chapter 52)*
 - **Extrapolation** — Extending a trend beyond the data you have, such as assuming a line that rose for three years will keep rising at the same rate. It is useful for asking "what if?" and dangerous when treated as a promise. *(Chapter 66)*
@@ -1008,6 +1084,7 @@
 - **Facility power** — The total electricity a site draws from the grid or its own power plants, including IT power plus cooling and other overhead. Facility power equals IT power multiplied by the PUE (see Chapter 40). *(Chapter 42)*
 - **Facility water system (FWS)** — The building's main water loop that collects heat from CDUs and air handlers across the data halls and carries it to chillers, dry coolers or cooling towers outside. *(Chapter 40)*
 - **Facility water system (FWS) / technology cooling system (TCS)** — The building's main water loop and the separate, cleaner loop that runs to the IT equipment.
+- **Fail-safe** — A design in which a failure leaves the system in a safe state, the way a train's air brakes clamp on automatically if the air line breaks. *(Chapter 56)*
 - **Fairness metrics** — Mathematical definitions of fairness used to audit a system, such as equal selection rates, equal error rates or equal accuracy of positive predictions across groups. Different metrics can conflict with each other. *(Chapter 58)*
 - **Fair use** — A US legal doctrine allowing some unlicensed uses of copyrighted works, judged case by case on four factors, including the purpose of the use and its effect on the market for the original. *(Chapter 11, Chapter 47, Chapter 58, Chapter 59, Chapter 66)*
 - **Faithfulness (groundedness)** — Whether every claim in an answer is actually supported by the retrieved passages, as opposed to added from the model's memory or invented. *(Chapter 27)*
@@ -1019,6 +1096,7 @@
 - **False positive (FP)** — A result that says "yes" when the truth is "no", such as a healthy person testing positive or a spam filter flagging a real email. A false negative is the reverse. *(Chapter 6, Chapter 9)*
 - **False positive rate** — Of all the real negatives, the share wrongly flagged: FP ÷ (FP + TN). It equals 1 minus specificity. *(Chapter 9)*
 - **Fan affinity laws** — Rules of thumb for fans and pumps: airflow rises in proportion to fan speed, but the power the fan uses rises with the cube of speed, so doubling the airflow takes roughly eight times the fan power. *(Chapter 40)*
+- **Fan-out** — Splitting one request into many sub-requests sent to different servers or chips in parallel, so the answer must wait for all of them. *(Chapter 37)*
 - **Fan wall** — A wall of large fans and coils at the edge of a data hall that moves huge volumes of air.
 - **Fast mode (priority tier)** — A premium option that delivers output faster for a higher per-token price, for example Claude Opus 5.5's fast mode at twice the standard rate. *(Chapter 23, Chapter 26)*
 - **Fat tree (Clos or leaf-spine network)** — A layered network in which "leaf" switches connect to servers and every leaf connects to every "spine" switch above it, often with a third layer on top. Any two servers are only a few hops apart, and links get "fatter" (more total capacity) toward the top. *(Chapter 34)*
@@ -1035,9 +1113,12 @@
 - **Feature scaling** — Rescaling numeric features so they have comparable ranges, for example so each has an average of 0 and a typical spread of 1. Without it, features measured in big units dominate distance-based algorithms. *(Chapter 10)*
 - **Feature selection** — Choosing which input features to keep and dropping the rest, such as duplicates, nearly empty columns or columns that add only noise, to make a model faster, simpler and less prone to overfitting. *(Chapter 11)*
 - **Feature splitting** — The tendency of one broad feature in a small sparse autoencoder to break into several narrower features in a larger one, for example "mathematics" splitting into "algebra" and "geometry". *(Chapter 57)*
+- **Feature store** — A shared system that computes, stores and serves model features, so the same feature definitions are used in training and in production and can be reused across teams. *(Chapter 10)*
+- **Feature visualization** — Techniques that show what a neuron or layer responds to, by collecting the inputs that excite it most or by adjusting an image until it excites the neuron as strongly as possible. *(Chapter 14)*
 - **Federalism** — A system in which power is shared between a national government and regional governments (states or provinces), each able to make its own laws. *(Chapter 59)*
 - **Federated learning** — Training a shared model across many devices or institutions by sending the model to the data and collecting only updates, so the raw data never leaves its owner. *(Chapter 11, Chapter 53)*
 - **Feed** — A continuously updated, personalized list of items (posts, videos, stories) that an app chooses and orders for you, usually with infinite scrolling. *(Chapter 51)*
+- **Feedback delay** — The time between a model's prediction and the moment the true answer becomes known, from seconds for a clicked recommendation to a month for a cancellation or years for a loan. *(Chapter 10)*
 - **Feedback loop** — When a model's predictions influence the future data it is trained on, for example predictive policing that sends more patrols to an area, which records more incidents there. *(Chapter 11, Chapter 51)*
 - **Feed-forward block (FFN)** — The per-token neural network inside each Transformer block, usually two or three big matrices with an activation between them. In dense models it holds about two-thirds of the parameters. *(Chapter 17)*
 - **Feed-forward network (FFN)** — The small multilayer perceptron inside every Transformer block. It is applied to each token's vector separately: expand to a larger size, apply a non-linear activation, shrink back. *(Chapter 15)*
@@ -1050,10 +1131,12 @@
 - **Few-shot / zero-shot learning** — Doing a task from just a few examples, or none, usually by leveraging a large pretrained model.
 - **Fiber-optic cable** — A cable of hair-thin glass strands that carry data as pulses of light. It carries far more data, over far longer distances, than copper. *(Chapter 4)*
 - **Fiber optic cable** — Glass strands that carry data as light. Single-mode fiber goes long distances. Multimode is for short links.
+- **FID (Fréchet Inception Distance)** — A standard score for image generators that compares the statistics of features, extracted by a pretrained image network, from generated images and from real images. Lower is better; zero would mean the two sets are statistically identical. *(Chapter 16)*
 - **File** — A named chunk of stored bytes, such as a document, a photo, a song or a program. *(Chapter 3)*
 - **File format** — The rulebook for what a file's bytes mean and in what order they appear, such as JPEG for photos or MP3 for music. *(Chapter 3)*
 - **Files API** — An API feature that lets you upload a file (such as a PDF or image) once and then refer to it by an ID in many later requests, instead of re-sending the whole file each time. *(Chapter 26)*
 - **Filter bubble** — The worry, popularized by the writer Eli Pariser in 2011, that personalization shows each person mostly what fits their existing views, so they stop encountering other perspectives. Research on how large the effect really is has produced mixed results. *(Chapter 51)*
+- **Filtering (state estimation)** — Keeping an up-to-date probability estimate of a hidden, changing state by alternating two steps: predict how the state has moved, then correct that prediction with each new observation. *(Chapter 54)*
 - **Filter (kernel)** — The small grid of learned weights used in a convolution, often 3 × 3. Each filter acts as a detector for one simple pattern, such as a vertical edge or a patch of a certain color. *(Chapter 14)*
 - **Filter / kernel** — The small grid of learned weights used in a convolution, e.g. 3×3.
 - **Finance lease vs. operating lease** — Two accounting categories for renting. A finance lease is treated much like owning (the asset and the debt appear on the balance sheet, and some companies count it as capex); an operating lease is treated more like ordinary rent. *(Chapter 43)*
@@ -1062,6 +1145,7 @@
 - **FinFET** — A 3D transistor in which the channel is a thin vertical "fin" of silicon and the gate wraps over it on three sides. Intel introduced it in 2011, and it powered essentially every AI chip through NVIDIA's Vera Rubin. *(Chapter 36)*
 - **Firm power** — Electricity that is available whenever it is needed, regardless of weather, such as nuclear, gas, geothermal or hydro with water in the reservoir. Firm sources are also called dispatchable when operators can turn them up or down on command. *(Chapter 41)*
 - **Firm power / baseload** — Power available whenever needed, regardless of weather, e.g. nuclear, gas or geothermal.
+- **First-order logic** — Logic that talks about objects and their relationships and can say "for all" and "there exists", as in "every human is mortal", so one statement covers endlessly many cases. It is the standard language of mathematics and of classic knowledge representation. *(Chapter 54)*
 - **First-party data** — Information a company collects directly from its own customers and users, such as purchases on its site or app activity, as opposed to data bought from or tracked by others. *(Chapter 51, Chapter 53)*
 - **First-price auction** — An auction where the winner pays exactly what it bid. Much of programmatic display advertising moved to first-price auctions around 2019, so bidding software now shades bids below true value. *(Chapter 51)*
 - **Fitness function** — The score that tells an evolutionary algorithm how good a candidate solution is. Evolution maximizes it, so it must capture what you really want, or evolution will exploit its loopholes. *(Chapter 54)*
@@ -1082,10 +1166,12 @@
 - **FMVSS (Federal Motor Vehicle Safety Standards)** — The US federal safety rules every new vehicle must meet. Many were written assuming a human driver with a steering wheel and pedals, so vehicles without them need exemptions. *(Chapter 50)*
 - **Forecast** — A specific, checkable prediction with a date and a probability, such as "60% chance that X happens by the end of 2027." *(Chapter 60, Chapter 66)*
 - **Forecasting** — Predicting future values of a time series.
+- **Formal grammar** — A set of rules describing how words combine into phrases and sentences, such as "a sentence is a noun phrase plus a verb phrase". The context-free grammar is the kind most used in classic language processing. *(Chapter 54)*
 - **Formal proof** — A proof written in a precise computer language so that software can check every logical step mechanically, leaving no room for gaps or hand-waving. *(Chapter 52, Chapter 54)*
 - **Formal proof / Lean** — A proof written in a precise computer language (Lean is the most popular) that software can check step by step with no room for error.
 - **Formant synthesis** — Making speech by generating the resonant frequencies (formants) that the human vocal tract produces, using rules rather than recordings. It sounds robotic but is very intelligible; Stephen Hawking's famous voice came from a 1980s synthesizer of this kind. *(Chapter 46)*
 - **Form factor (SXM, OAM, PCIe card)** — The physical shape and connector of an accelerator module. SXM (NVIDIA) and OAM (an open standard) are flat, high-power modules that bolt onto a server board; PCIe cards plug into the standard slots found in ordinary computers. *(Chapter 34)*
+- **Forward and inverse kinematics** — Forward kinematics computes where a robot's hand ends up from its joint angles; inverse kinematics works backward from a desired hand position to joint angles that achieve it, which may have many solutions or none. *(Chapter 49)*
 - **Forward chaining** — Reasoning from known facts toward conclusions: fire every rule whose conditions are met, add its conclusion as a new fact, and repeat until nothing new appears. *(Chapter 54)*
 - **Forward-deployed engineer (FDE)** — An engineer embedded with a customer, often on site for weeks or months, to build and deploy solutions on that customer's systems. The role originated at Palantir and became one of the fastest-growing AI jobs of 2025–2026. *(Chapter 61)*
 - **Forward pass** — Running an input through a neural network from the first layer to the last to get an output. Every token your chatbot writes requires one forward pass. *(Chapter 5, Chapter 12)*
@@ -1103,7 +1189,8 @@
 - **FP8 and FP4** — 8-bit and 4-bit number formats. Newer AI chips do math in them much faster than in 16-bit, at the cost of more rounding, which careful scaling tricks keep under control. *(Chapter 19)*
 - **FP8 / FP4 (NVFP4, MXFP4)** — 8-bit and 4-bit number formats. Newer chips do math in these to go faster and use less memory.
 - **FPGA (Field-Programmable Gate Array)** — A chip whose circuitry can be rewired after manufacturing. It is slower than an ASIC but flexible, and is used for prototyping new designs and for niche, low-latency AI tasks. *(Chapter 32)*
-- **Frame** — one still image in a video. Videos show many frames per second.
+- **Frame (knowledge representation)** — Marvin Minsky's 1974 idea of a structured record for a stereotyped object or situation, with slots and default values, such as a "restaurant visit" frame with slots for the menu, the waiter and the bill. *(Chapter 54)*
+- **Frame problem** — The difficulty, for logic-based AI, of representing everything that does not change when an action happens, without writing down an impossibly large number of "this stays the same" facts. *(Chapter 54)*
 - **Frame rate** — How many still images (frames) are shown per second of video. Film traditionally uses 24 frames per second; smooth gameplay often uses 60. *(Chapter 47)*
 - **Frame sampling** — Picking only some frames from a video to encode, such as one frame per second, because encoding every frame would use far too many tokens. Anything that happens entirely between sampled frames can be missed. *(Chapter 22)*
 - **Frames per second (FPS)** — How many video images a system processes each second. Live video is usually 25–60 FPS, so the model gets only 17–40 milliseconds per frame. *(Chapter 45)*
@@ -1129,7 +1216,9 @@
 - **Fuel cell** — A device that turns a fuel such as natural gas or hydrogen into electricity through a chemical reaction rather than burning it. Solid-oxide fuel cells like Bloom Energy's can be installed on site quickly and emit fewer local air pollutants than engines, though running on natural gas they still emit CO₂. *(Chapter 41)*
 - **Full-duplex** — A conversation in which both sides can speak and listen simultaneously, as on a telephone, rather than strictly taking turns as on a walkie-talkie. Full-duplex voice models can say "mm-hm" while you talk and notice when you interrupt. *(Chapter 22)*
 - **Full fine-tuning** — Fine-tuning that updates every weight in the model. It is the most flexible kind but needs far more memory and compute than adapter methods like LoRA. *(Chapter 30)*
+- **Full joint distribution** — A table giving the probability of every possible combination of values of all the variables in a problem. It can answer any question about them but grows exponentially: 30 yes-or-no variables need about a billion entries. *(Chapter 54)*
 - **Full stack** — Every layer of technology needed to deliver a product, from raw materials and hardware at the bottom to the app you touch at the top. For AI it runs from sand and silicon through chips, buildings, power, data and models to your screen. *(Chapter 44)*
+- **Fully and partially observable** — An environment is fully observable if the agent's sensors show it everything relevant to its choice, as in chess, and partially observable if something important is hidden, such as an opponent's cards or a cyclist behind a bus. *(Chapter 48)*
 - **Function calling / tool use** — The model outputs a structured request (e.g., "search('weather Paris')") that software executes, then the result is fed back.
 - **Function (programming)** — A named, reusable block of code that takes inputs and returns an output, like tip(80, 15) returning 12.0. *(Chapter 3, Chapter 5, Chapter 28)*
 - **Fundamental rights impact assessment (FRIA)** — An assessment some deployers of high-risk AI must complete before use, describing who could be affected, what could go wrong for their rights, and how the risks will be overseen. *(Chapter 59)*
@@ -1140,8 +1229,11 @@
 
 ## G
 
+- **GAIA** — A benchmark released in 2023 of real-world questions for general AI assistants that require browsing, reading files and several reasoning steps, with short answers that can be checked exactly. *(Chapter 31)*
+- **Game theory** — The mathematics of strategic decisions, where each player's best choice depends on what the others choose. It covers games in the everyday sense and also markets, auctions, negotiations and conflicts. *(Chapter 48, Chapter 59)*
 - **Game tree** — A branching diagram of a game in which each point is a position, each branch is a possible move, and the levels alternate between the players. *(Chapter 48)*
 - **GAN (generative adversarial network)** — A 2014 method in which a generator network tries to create realistic fakes and a discriminator network tries to spot them, so each forces the other to improve (see Chapter 16). *(Chapter 7, Chapter 16)*
+- **Gang scheduling** — Starting all the pieces of a parallel job at the same time, or not at all. Large training runs need it, because no GPU can make progress until all the others it exchanges data with are running. *(Chapter 34)*
 - **Gate-all-around (GAA) / nanosheet** — The next transistor shape (TSMC N2, Intel 18A "RibbonFET," Samsung 3 nm) where the gate fully surrounds stacked horizontal sheets of silicon.
 - **Gate-all-around (GAA) / nanosheet transistor** — A transistor in which the channel is a stack of thin horizontal silicon sheets and the gate completely surrounds each one. Samsung shipped it first at its 3 nm node in 2022; TSMC's N2 and Intel's 18A ("RibbonFET") use it too. *(Chapter 36)*
 - **Gated attention** — Adding a learned sigmoid gate to the output of each attention head, so the model can turn a head's contribution down. A Qwen team paper on it won a NeurIPS 2025 Best Paper award for improving stability and removing attention sinks. *(Chapter 15, Chapter 17)*
@@ -1151,9 +1243,12 @@
 - **Gateway (model router)** — A middle layer between your app and model providers that sends each request to the right model, retries or switches to a fallback provider on failure, enforces budgets and records logs. *(Chapter 31)*
 - **Gateway / router** — A middle layer that sends requests to different models or providers, handling fallbacks, budgets and logging.
 - **Gating weight** — The share each chosen expert gets in the final mix for a token, computed from the router's scores. With top-2 routing the two gating weights add up to 1. *(Chapter 17)*
+- **Gaussian mixture model (GMM)** — A clustering model in which each cluster is a bell-shaped (normal) distribution with its own center and spread, and each point belongs to every cluster with some probability rather than to exactly one. *(Chapter 10)*
 - **Gaussian noise** — Random numbers drawn from a bell-shaped (normal) distribution centered on zero. Most values are small and a few are large. It is the "static" that diffusion adds and removes. *(Chapter 16)*
+- **Gaussian process** — A method that predicts a value together with an uncertainty band, using a kernel to judge how much each known example should influence the prediction at a new point. The uncertainty is small near known examples and grows away from them. *(Chapter 10)*
 - **Gaussian splatting** — A 2023 technique that represents a 3D scene as millions of tiny, soft, colored, semi-transparent blobs ("Gaussians"). It renders photorealistic new views in real time and trains faster than NeRFs. *(Chapter 45, Chapter 47)*
 - **GDDR / LPDDR** — Other DRAM types. GDDR is fast graphics memory on gaming cards (also used in NVIDIA Rubin CPX); LPDDR is low-power memory in phones, laptops and server CPUs like Grace/Vera.
+- **Gödel's incompleteness theorem** — Kurt Gödel's 1931 result that any consistent formal system powerful enough to describe arithmetic contains true statements that cannot be proved within that system. *(Chapter 60)*
 - **GDP (gross domestic product)** — The total value of goods and services an economy produces in a year. Growth in GDP per person is the standard measure of rising living standards. *(Chapter 60)*
 - **GDPR and CCPA** — The European Union's General Data Protection Regulation and the California Consumer Privacy Act, the best-known laws giving people rights over their personal data and placing duties on organizations that use it. *(Chapter 11)*
 - **GDPR / CCPA** — The EU's and California's main personal-data protection laws.
@@ -1163,6 +1258,7 @@
 - **Gene** — A stretch of DNA that contains the instructions for making a protein (or another functional molecule). Humans have about 20,000 protein-coding genes, which make up only around 1 to 2 percent of the genome. *(Chapter 52)*
 - **General availability (GA)** — The point at which a model is officially released to all paying customers with normal support, as opposed to a "preview" that may change or be limited to some users. *(Chapter 24)*
 - **Generalization** — A model's ability to perform well on new examples it was not trained on. Generalization, not a perfect score on training data, is the real goal of learning. *(Chapter 6, Chapter 8, Chapter 13, Chapter 66)*
+- **Generalized linear model (GLM)** — A family of models that compute a weighted sum of the inputs and pass it through a fixed function matched to the kind of answer: unchanged for amounts (linear regression), a sigmoid for yes-or-no (logistic regression), an exponential for counts (Poisson regression). *(Chapter 10)*
 - **General-purpose AI (GPAI)** — An AI model that can do many different tasks rather than one narrow job; the EU AI Act's term for models like GPT, Claude, and Gemini.
 - **General-purpose AI model (GPAI)** — In the EU AI Act, a model trained on broad data that can perform a wide range of tasks and be built into many different systems, such as the models behind ChatGPT, Claude and Gemini. *(Chapter 59)*
 - **Generative AI** — AI that produces new content, such as text, images, audio, video or code, rather than only classifying or scoring existing content. *(Chapter 1)*
@@ -1185,6 +1281,8 @@
 - **Global batch size** — The total number of training examples (or tokens) processed in one optimizer step, summed across all GPUs. Llama 3 used batches of about 16 million tokens. *(Chapter 37)*
 - **Global turnover** — A company's total worldwide annual revenue. EU laws express maximum fines as a percentage of it so that penalties scale with company size. *(Chapter 59)*
 - **GNSS (GPS)** — Satellite positioning (GPS is the US system; GNSS is the general term). It gives a position accurate to a few meters, which is not enough on its own to stay in a lane. *(Chapter 50)*
+- **Goal-based agent** — An agent that chooses actions by working out which sequences of actions lead to a desired goal, using search or planning. *(Chapter 48)*
+- **Goal drift** — A gradual change in what an AI system pursues as it learns and adapts, the way a person who first wants money only as a means to other things can come to want money for its own sake. *(Chapter 55)*
 - **Goal misgeneralization** — When a capable model pursues a goal that matched the training signal during training but leads it astray in new situations. The model is competent; it is competent at the wrong thing. *(Chapter 55)*
 - **Golden dataset (golden set)** — A curated set of realistic test questions with known correct answers (and, for retrieval, the passages that contain them), used to measure a system and catch regressions after every change. *(Chapter 27, Chapter 31)*
 - **Gold standard** — Trusted, correct labels used to check the accuracy of models or of human labelers, for example test questions with known answers mixed into a labeler's work. *(Chapter 11)*
@@ -1204,21 +1302,26 @@
 - **GPU / TPU** — Chips specialized for parallel arithmetic (graphics processing unit; Google's tensor processing unit).
 - **GPU / VRAM** — The graphics processor that runs AI fast, and its dedicated memory. A model must fit in (V)RAM to run well.
 - **GQA (grouped-query attention)** — An attention design in which several query heads share one set of keys and values. Llama 3 70B has 64 query heads sharing 8 key-value heads, which shrinks its KV cache eightfold compared with giving every head its own. *(Chapter 23)*
+- **Graceful degradation** — Designing a service so that when parts fail or are overloaded, it keeps working with reduced quality or fewer features instead of failing completely, for example by switching to a smaller model or pausing non-essential features. *(Chapter 38)*
 - **Grader** — The part of an RL environment that decides the reward at the end of an attempt, using tests, checks on the final state, a rubric judge or a mix. *(Chapter 21, Chapter 30)*
 - **Gradient** — The list of partial derivatives for every knob of a function. It points in the direction that increases the output fastest, so stepping the opposite way decreases it fastest. *(Chapter 6, Chapter 8, Chapter 12, Chapter 33, Chapter 37)*
+- **Gradient accumulation** — Processing several small slices of a batch one after another and adding up their gradients before making a single weight update, so a few GPUs can train with the same large batch as many. *(Chapter 37)*
 - **Gradient boosting** — Boosting in which each new tree is fitted to the gradient of the loss (for squared error, simply the residuals), so the ensemble walks downhill on its errors one small tree at a time. *(Chapter 10)*
 - **Gradient checking** — Verifying computed slopes by nudging one parameter by a tiny amount, rerunning the forward pass, and comparing the change in loss with the slope that backpropagation produced. *(Chapter 12)*
 - **Gradient checkpointing** — A memory-saving training trick that throws away some intermediate results during the forward pass and recomputes them when needed, trading extra compute (roughly a third more) for much less memory. *(Chapter 30)*
 - **Gradient clipping** — Capping the gradient norm at a chosen limit by scaling the whole gradient down when it is too large, which prevents one bad step from wrecking training. *(Chapter 13)*
 - **Gradient descent** — An optimization method that repeatedly moves every parameter a small step in the direction that reduces the loss, using the gradient. It is how virtually every neural network is trained. *(Chapter 6, Chapter 8, Chapter 12, Chapter 19)*
 - **Gradient norm** — A single number for the overall size of a gradient, computed as the square root of the sum of the squares of all its slopes. A sudden jump in it is an early warning of instability. *(Chapter 13)*
+- **Gradio and Streamlit** — Free Python libraries for building simple web interfaces, such as a chat box or an image uploader, around a model or a data script in a few lines of code. They power most quick AI demos, including many Hugging Face Spaces. *(Chapter 30)*
 - **Gradual disempowerment** — The worry that humans could slowly lose meaningful control over economic and political life as AI systems take over more decisions, without any single dramatic event. *(Chapter 60, Chapter 66)*
 - **Graph** — A set of things (nodes) joined by connections (edges). A molecule is a graph with atoms as nodes and bonds as edges; a road map has intersections and roads. *(Chapter 17)*
 - **Graph convolutional network (GCN)** — A 2016 GNN design in which each node's update is a learned, weighted average of its neighbors' features, a graph version of the sliding filters in a CNN. *(Chapter 17)*
 - **Graph neural network (GNN)** — A neural network that works on graph-shaped data by repeatedly updating each node from its neighbors. *(Chapter 17)*
 - **GraphRAG** — A retrieval approach, popularized by Microsoft Research in 2024, that uses a language model to build a knowledge graph from documents, groups the graph into communities of related entities, summarizes each community, and answers broad questions from those summaries. *(Chapter 27)*
 - **Gray space** — The rooms that hold support equipment: electrical rooms with switchgear and UPS systems, battery rooms, mechanical rooms with pumps and heat exchangers, and fire-suppression gear. *(Chapter 38)*
+- **Greedy best-first search** — A search method that always explores next the place its heuristic says is closest to the goal, ignoring the cost already paid. It is often fast but can be misled and may return a longer path than necessary. *(Chapter 48)*
 - **Greedy decoding** — Always choosing the single most probable next token. It is predictable but tends to produce bland, repetitive text. *(Chapter 6, Chapter 18)*
+- **Greedy layer-wise pretraining** — Training a deep network one layer at a time, each layer learning to model the outputs of the layer below before the next is added. It was the standard way to start deep networks from about 2006 to 2010. *(Chapter 16)*
 - **Grid** — The interconnected network of power plants, high-voltage lines, substations and local wires that delivers electricity from where it is made to where it is used. *(Chapter 41)*
 - **Grid frequency** — How many times per second the grid's alternating current flips direction: 60 times (60 Hz) in North America, 50 Hz in Europe. Frequency is the grid's pulse: it falls when demand exceeds supply and rises when supply exceeds demand, so operators watch it constantly. *(Chapter 41)*
 - **Grid search** — Trying every combination from a list of values for each hyperparameter, such as every pairing of 3 tree depths with 3 learning rates. *(Chapter 9)*
@@ -1247,6 +1350,7 @@
 - **Harness (scaffold)** — The software wrapped around a model during a task (its prompts, tools, memory handling and retry rules). Changing the harness can change results dramatically, as ARC-AGI-3 showed. *(Chapter 21, Chapter 24, Chapter 28, Chapter 29, Chapter 60)*
 - **Harness / scaffold** — The software around a model during a task (prompts, tools, memory handling, retries). It can change benchmark scores dramatically.
 - **Hash matching** — Identifying known abusive images by comparing a digital fingerprint (a hash) of each uploaded file against databases of fingerprints of previously identified material, without anyone having to view the images again. *(Chapter 58)*
+- **Hazard** — A source of possible harm, such as a flood, a toxic chemical or an AI capability that could help an attacker. *(Chapter 56)*
 - **HBM3E / HBM4 / HBM4E** — Successive generations of High Bandwidth Memory. HBM3E (about 1–1.2 TB/s per stack) powers most 2024–25 accelerators; HBM4 doubles the interface to 2,048 bits and powers 2026 chips such as NVIDIA Rubin and AMD MI455X; HBM4E is the planned 2027 follow-on. *(Chapter 33)*
 - **HBM (high-bandwidth memory)** — Memory chips stacked vertically and placed right beside an AI processor, connected by thousands of wires, so the processor can be fed data at terabytes per second. It is the critical, and often scarce, memory of AI chips. *(Chapter 2, Chapter 23, Chapter 32, Chapter 33, Chapter 34, Chapter 36, Chapter 42, Chapter 44)*
 - **HD map** — A high-definition map, accurate to centimeters, that records every lane, curb, crosswalk, sign and traffic light. It gives a self-driving car prior knowledge of the road before it arrives. *(Chapter 50)*
@@ -1257,6 +1361,7 @@
 - **Heat pump** — A machine that uses electricity to move heat from a cooler place to a warmer one, the same cycle as a chiller run "the other way". It can boost lukewarm data center water to temperatures hot enough for heating homes. *(Chapter 40)*
 - **Heat rejection** — The final step of cooling: getting the heat out of the building and into the outdoor air (or, occasionally, a river, lake or sea). *(Chapter 40)*
 - **Heat reuse** — Piping data center waste heat into district heating networks, greenhouses or industry. Common in the Nordics.
+- **Hedged request** — A backup copy of a slow request, sent to a second server after a short wait; whichever answer arrives first is used. A few percent of extra work can cut the slowest response times sharply. *(Chapter 37)*
 - **He initialization** — A 2015 variant of Xavier initialization with slightly larger weights, designed for ReLU networks, in which half the signals are zeroed out at each layer. *(Chapter 13)*
 - **Held-out set** — Test questions kept private and never published, so they cannot leak into training data. Scores on a held-out set are more trustworthy than scores on a public one. *(Chapter 24)*
 - **Held-out test set** — Examples set aside before any training or prompt tuning and used only for the final, honest measurement of quality. If you peek at it while tuning, it stops being honest. *(Chapter 30)*
@@ -1267,14 +1372,17 @@
 - **HGX and DGX** — NVIDIA's 8-GPU baseboard design, which server makers build into their own machines (HGX), and NVIDIA's own branded complete AI servers and systems (DGX). *(Chapter 34)*
 - **HGX / DGX** — NVIDIA's 8-GPU baseboard design sold to server makers (HGX), and NVIDIA's own branded complete systems (DGX).
 - **Hidden layer** — Any layer between the input and the output. Its outputs are internal working values that the network invents during training. *(Chapter 12)*
-- **Hidden Markov model (HMM)** — A statistical model of a sequence in which you cannot see the underlying states (which phoneme is being spoken) but can see clues they produce (the sounds). From the 1980s to the early 2010s it was the backbone of speech recognition. *(Chapter 46)*
+- **Hidden Markov model (HMM)** — A statistical model of a sequence in which you cannot see the underlying states (which phoneme is being spoken) but can see clues they produce (the sounds). From the 1980s to the early 2010s it was the backbone of speech recognition. *(Chapter 46, Chapter 54)*
 - **Hidden size** — The number of numbers in each token's vector as it travels through a language model, such as 4,096. It sets the width of most of the model's matrices. *(Chapter 5)*
 - **Hidden state** — The memory vector an RNN carries from one step to the next. It is a running summary of everything the network has read so far. *(Chapter 14)*
 - **Hierarchical clustering** — Building a tree of nested clusters by repeatedly merging the closest pair of groups, so you can cut the tree at whatever level of detail you like. *(Chapter 10)*
+- **Hierarchical planning (HTN)** — Planning by breaking high-level tasks into subtasks using known recipes, level by level, until every step is a basic action. HTN stands for hierarchical task network. *(Chapter 48)*
 - **High, medium and low voltage (HV, MV, LV)** — Rough bands used by power engineers. High voltage is above about 69 kV (transmission lines); medium voltage is about 1 to 35 kV (campus distribution); low voltage is below 1 kV (inside buildings, for example 480 V or 415 V). *(Chapter 39)*
 - **High / medium / low voltage (HV/MV/LV)** — Rough bands. HV is above ~69 kV (transmission). MV is ~1–35 kV (campus distribution). LV is below 1 kV (inside the building, e.g. 415/480 V).
 - **High-NA EUV** — The newest generation of EUV lithography, with a numerical aperture of 0.55 instead of 0.33. It prints features about 1.7 times smaller in one exposure, at a much higher tool price. *(Chapter 36)*
+- **High-reliability organization (HRO)** — An organization that operates hazardous technology with far fewer accidents than expected, through habits such as studying near misses, deferring to front-line expertise and encouraging anyone to raise an alarm. *(Chapter 56)*
 - **High-risk AI system (EU)** — An AI system used in a sensitive area listed in the AI Act (such as hiring, education or credit) or built into a regulated product (such as a medical device). It must meet strict requirements before and after it is sold. *(Chapter 59)*
+- **Hill climbing** — The simplest local search: try all small changes to the current solution, take the one that improves the score most, and stop when no change helps. *(Chapter 48)*
 - **HIP** — AMD's programming interface, which closely mirrors CUDA so that CUDA code can be translated to run on AMD GPUs with relatively few changes. *(Chapter 35)*
 - **Historical bias** — When data accurately records a past that was unfair, so a model trained on it learns to repeat the unfairness. *(Chapter 11)*
 - **HNSW (Hierarchical Navigable Small World)** — An approximate nearest-neighbor index that links each vector to a few of its close neighbors, organized in layers from sparse to dense. A search starts in the sparse top layer, hops greedily toward the query, then drops to denser layers to refine. It is the most common index inside vector databases. *(Chapter 27)*
@@ -1289,6 +1397,7 @@
 - **HTTP method** — The verb of a request. GET means "give me something" (like loading a page); POST means "here is some data, please process it" (like submitting a form). Sending a prompt to a model is a POST. *(Chapter 26)*
 - **HTTP request / response** — The standard web conversation: your program sends a request (method, address, headers, body) and the server sends back a response (status code, body).
 - **HTTPS** — HTTP with encryption (the S stands for secure). The padlock icon in your browser means the connection uses it. *(Chapter 4)*
+- **Hub-and-spoke model (center of excellence)** — A hybrid in which a small central group sets standards and runs the shared platform, evaluation and governance, while specialists embedded in business teams build the products. *(Chapter 31)*
 - **Hub-to-hub autonomous trucking** — A model in which driverless trucks run long highway legs between freight terminals near highways, with human drivers or local services handling the complicated city streets at each end. *(Chapter 50)*
 - **Hugging Face** — The main online hub for sharing open models and datasets, which also maintains popular libraries such as Transformers and Diffusers. *(Chapter 13)*
 - **Hugging Face Hub** — The main website for sharing open AI models, datasets and demos, at huggingface.co. In October 2026 its counter showed about 3.17 million models. *(Chapter 30)*
@@ -1313,6 +1422,7 @@
 - **Hyper-connections and mHC** — 2024–25 generalizations of residual connections that keep several parallel streams and learn how to mix them. DeepSeek's mHC (manifold-constrained hyper-connections, December 2025) restricts the mixing to keep training stable and is used in DeepSeek V4. *(Chapter 13)*
 - **Hyper-connections / mHC** — 2024–25 generalizations of residual connections with several parallel streams that mix. DeepSeek's mHC constrains the mixing to keep training stable.
 - **Hyperparameter** — A setting chosen by a person before training, such as the learning rate, the number of passes through the data, or the maximum depth of a decision tree. It controls how learning happens but is not itself learned from the data. *(Chapter 8, Chapter 12)*
+- **Hyperparameter transfer** — Choosing training settings such as the learning rate on small, cheap models and reusing them, unchanged or adjusted by formula, for a much larger model. *(Chapter 19)*
 - **Hyperparameter tuning** — Systematically trying different hyperparameter settings and keeping the one that scores best on validation data (or in cross-validation), never on the test set. *(Chapter 9)*
 - **Hyperscale campus economics ($/MW)** — Cost to build, quoted per megawatt of IT capacity.
 - **Hyperscaler** — A giant cloud provider operating huge data centers worldwide, such as Amazon Web Services, Microsoft Azure or Google Cloud. *(Chapter 4, Chapter 35, Chapter 38, Chapter 42, Chapter 61, Chapter 64)*
@@ -1320,19 +1430,22 @@
 ## I
 
 - **ICI (Inter-Chip Interconnect)** — Google's direct chip-to-chip links between TPUs, wired so that thousands of TPUs form one tightly connected pod without central switches. *(Chapter 34)*
+- **Idealized preference** — What a person would want if they were fully informed, thinking clearly and reflecting calmly. Many alignment researchers argue that an assistant should serve these rather than momentary wants. *(Chapter 56)*
 - **IDE (integrated development environment)** — The app programmers write code in, combining a text editor, file browser, terminal and debugging tools. VS Code, JetBrains IDEs and Cursor are examples. *(Chapter 29)*
 - **IDF (Inverse Document Frequency)** — A weight that makes rare words count more than common ones in keyword search. It is usually computed as the logarithm of (total documents ÷ documents containing the word). Words that appear everywhere, like "the", get a weight near zero. *(Chapter 27)*
+- **Idle power** — The power a server or chip draws while switched on but doing no useful work, from memory, fans, power supplies and leaking transistors. It is pure overhead. *(Chapter 40)*
 - **IDM (integrated device manufacturer)** — A company that both designs and manufactures its own chips. Intel, Samsung and the memory makers SK hynix and Micron are IDMs. *(Chapter 36)*
 - **If-then commitment** — A pre-announced rule of the form "if a model reaches capability X, then we will have safeguards Y in place before deploying it (or before continuing to develop it)". *(Chapter 56)*
 - **Image classification** — Assigning one label (or several) to a whole image, such as "golden retriever," "defective" or "pneumonia present." *(Chapter 45)*
 - **ImageNet** — A large dataset of about 14 million labeled photos released in 2009. Its yearly competition (2010 to 2017), using 1,000 categories, became the main scoreboard for computer vision and the stage where deep learning broke through. *(Chapter 14)*
 - **Image prompt** — The text description you give an image generator. It works best as a specification of subject, setting, style, composition and lighting rather than as a short label. *(Chapter 47)*
 - **Image segmentation** — Labeling every pixel of an image with the object or region it belongs to, for example coloring each pixel of a scan as "tumor" or "healthy tissue." *(Chapter 14)*
+- **Image signal processor (ISP)** — A specialized circuit in every camera phone that turns the raw readings from the camera sensor into a finished photo (adjusting color, removing noise, combining exposures) far more efficiently than the main processor could. *(Chapter 32)*
 - **Image-to-3D** — Reconstructing a full 3D object from one or a few photos or generated images, including the sides the camera never saw. *(Chapter 47)*
 - **Image-to-image (img2img)** — Generating a new image by partly noising an existing one and then denoising it under a new prompt. The strength setting controls how much of the original survives. *(Chapter 16)*
 - **Image tokenizer (VQ-VAE)** — A network that converts an image into a grid of discrete tokens by matching each small region to the nearest entry in a learned codebook (a fixed list of visual patterns), and that can turn the tokens back into an image. *(Chapter 16)*
 - **Image-to-video** — Animating a starting still image, often one you generated or photographed, into a short clip. It gives far more control over how the first frame looks. *(Chapter 47)*
-- **Imitation learning (behavior cloning)** — Teaching a robot by having it copy recorded human demonstrations: the model learns to predict the action a human operator took from what the cameras saw at that moment. *(Chapter 49, Chapter 50)*
+- **Imitation learning (behavior cloning)** — Training an agent to copy an expert's actions from recorded demonstrations, without any reward signal. Its simplest form is called behavior cloning. *(Chapter 48, Chapter 49, Chapter 50)*
 - **Imitation learning / behavior cloning** — Teaching a robot by having it copy recorded human demonstrations.
 - **Immersion cooling** — Submerging entire servers in a tank of dielectric fluid, which absorbs heat from every component at once. In single-phase immersion the fluid stays liquid and is pumped to a heat exchanger; in two-phase immersion it boils and condenses on a cold coil above the tank. *(Chapter 40)*
 - **Immersion lithography** — DUV lithography with a thin film of ultrapure water between the lens and the wafer, which raises the numerical aperture and lets the tool print finer features. *(Chapter 36)*
@@ -1348,6 +1461,7 @@
 - **Incognito / temporary chat** — A chat that isn't saved to history or memory.
 - **In-context learning** — A model picking up a new task from examples supplied in its input at prediction time, with no change to its parameters, as when you show a chatbot three examples and it follows the pattern. *(Chapter 10, Chapter 18)*
 - **Independence** — Two events are independent if knowing that one happened tells you nothing about the other, like two separate coin flips. Only for independent events can you multiply probabilities directly. *(Chapter 6)*
+- **Independent component analysis (ICA)** — A method that unmixes signals by finding directions in the data that are statistically independent, such as separating two voices recorded together by two microphones. *(Chapter 10)*
 - **Indexing pipeline** — The steps that prepare documents for search ahead of time: load, parse, clean, chunk, optionally add context, embed and store. It runs once per document and again whenever a document changes. *(Chapter 27)*
 - **Indirect prompt injection** — An attack in which instructions are hidden inside content an AI system reads, such as a web page, email, PDF or retrieved document, so that the model follows the attacker's text instead of its real instructions. *(Chapter 27, Chapter 28)*
 - **Indirect water** — Water used elsewhere because of the data center, mainly by the power plants that generate its electricity (and, further back, by chip factories and other suppliers). *(Chapter 40)*
@@ -1420,7 +1534,9 @@
 - **Intervention rate** — How often a human has to step in to help or take over, usually counted per hour of operation or per task. It is the single most revealing number about real autonomy. *(Chapter 49)*
 - **Intrinsically disordered region** — A stretch of a protein that has no fixed 3D shape and stays flexible, often to grab different partners. AlphaFold usually shows such regions as orange, low-confidence spaghetti. *(Chapter 52)*
 - **Introspection (in AI)** — A model's ability to accurately report on its own internal states, for example noticing that a particular concept is active. Early experiments suggest it exists in limited, unreliable form in the most capable models. *(Chapter 57)*
+- **Invariance test** — A check that a change which should not matter leaves the prediction unchanged, such as swapping an applicant's name or replacing "Chicago" with "Atlanta" in a restaurant review. *(Chapter 9)*
 - **Inverse folding** — Finding an amino-acid sequence that will fold into a given 3D backbone shape, the reverse of structure prediction. *(Chapter 52)*
+- **Inverse reinforcement learning (IRL)** — Inferring the reward an expert appears to be optimizing from examples of their behavior, then training an agent to maximize that inferred reward. *(Chapter 48, Chapter 56)*
 - **Inverted index** — A lookup table that lists, for every word, which documents contain it (and often where). Like the index at the back of a book, it lets a search engine jump straight to matching documents instead of reading everything. *(Chapter 27, Chapter 51)*
 - **IoU (Intersection over Union)** — A score from 0 to 1 for how well two regions overlap: the area they share divided by the total area they cover together. A detection usually counts as correct if its IoU with the true box is at least 0.5. *(Chapter 45)*
 - **IP address** — A number that identifies a device on the internet so packets can be delivered to it, such as 203.0.113.42. IP stands for Internet Protocol. *(Chapter 4)*
@@ -1432,6 +1548,7 @@
 - **ISP (Internet service provider)** — The company that connects your home or phone to the internet, such as a cable, fiber or mobile phone company. *(Chapter 4)*
 - **Iterated amplification** — Building oversight for a hard task by breaking it into smaller sub-questions that humans, helped by AI assistants, can answer and check, then repeating the process so the combined system can supervise harder tasks. *(Chapter 56)*
 - **Iteration / step** — One parameter update.
+- **Iterative deepening** — Running depth-first search again and again with a growing depth limit (1, 2, 3...), which finds the shortest path like breadth-first search while using only as much memory as depth-first search. *(Chapter 48)*
 - **IT load** — The power used by the computing equipment itself (servers, storage and network gear), as opposed to cooling, lighting and losses in the building's electrical system. *(Chapter 39, Chapter 40)*
 - **IT power (IT load)** — The electricity used by the computing equipment itself (GPUs, CPUs, memory, storage, network switches), not counting cooling, lighting and power-conversion losses. Data center sizes are often quoted in megawatts or gigawatts of IT power. *(Chapter 42)*
 
@@ -1460,6 +1577,7 @@
 
 - **Kaggle** — A Google-owned website hosting data science competitions, free datasets and notebooks.
 - **Kaggle competition** — A public contest on the Kaggle website in which people build models for the same dataset and are ranked on a hidden test set. Competitions are a free way to practice and to compare your skills honestly. *(Chapter 65)*
+- **Kalman filter** — A filtering method for continuous quantities such as position and speed that optimally blends a motion prediction with noisy measurements when the noise is bell-shaped. It is used in GPS navigation, aircraft, spacecraft and vehicle tracking. *(Chapter 54)*
 - **Keras** — A high-level, beginner-friendly API for building networks. Keras 3 runs on TensorFlow, JAX or PyTorch.
 - **Kernel (GPU kernel)** — A single, hand-optimized routine that runs on a GPU, such as one that computes attention. New layer types need new kernels before they run fast, which takes specialist engineering. *(Chapter 17, Chapter 23, Chapter 32, Chapter 35, Chapter 63)*
 - **Kernel trick** — A mathematical shortcut that lets an SVM behave as if it had added many extra features (even infinitely many) without computing them, so it can draw curved boundaries cheaply. *(Chapter 10)*
@@ -1473,7 +1591,7 @@
 - **Kilowatt-hour (kWh)** — A unit of energy: the energy used by drawing one kilowatt for one hour. Electricity bills are measured in kWh; one kWh is 3.6 million joules. *(Chapter 2, Chapter 39)*
 - **Kilowatt (kW)** — 1,000 watts. A microwave oven uses about 1 kW while running; an average US home draws about 1.2 kW averaged over a year. *(Chapter 39)*
 - **Kimi Delta Attention (KDA)** — Moonshot AI's 2025 variant of Gated DeltaNet in which each channel of the memory has its own forget gate. Used in Kimi Linear and Kimi K3. *(Chapter 17)*
-- **KL divergence (Kullback–Leibler divergence)** — A measure of how different two probability distributions are. It is zero when they are identical and grows as they diverge. For a list of options it is the sum of p × ln(p / q) over all options, where p is the new probability and q is the old one. *(Chapter 20)*
+- **KL divergence (Kullback–Leibler divergence)** — The extra surprise, on average, that a model's distribution produces compared with the true distribution: cross-entropy minus entropy. It is zero only when the two distributions are identical. *(Chapter 6, Chapter 20)*
 - **KL penalty** — A term in RL training that subtracts reward in proportion to how far the model has drifted from its reference model. It keeps the model from abandoning everything it learned before in pursuit of a high score. *(Chapter 20)*
 - **k-means** — A clustering algorithm that repeatedly assigns each example to the nearest of k centers and moves each center to the average of its assigned examples, until the groups stop changing. *(Chapter 10)*
 - **k-nearest neighbors (kNN)** — An algorithm that predicts by finding the k most similar labeled examples and taking a vote (for categories) or an average (for numbers). k is a number the user chooses, such as 3 or 5. *(Chapter 10)*
@@ -1493,6 +1611,8 @@
 - **L1 and L2 regularization** — Adding a penalty for large weights to the loss. L2 (also called ridge) adds the sum of squared weights and shrinks all weights toward zero; L1 (also called lasso) adds the sum of absolute weights and tends to push unhelpful weights to exactly zero, which removes those features. *(Chapter 9)*
 - **L1 / L2 regularization (lasso / ridge)** — Adding a penalty for large weights. L1 can push some weights to exactly zero (feature selection); L2 shrinks them all.
 - **Label noise** — Errors in a dataset's "correct" answers. On a benchmark, label noise caps the best achievable honest score below 100% and can punish a model for being right when the key is wrong. *(Chapter 24)*
+- **Label shift** — A change in how common each answer is, while what each kind of case looks like stays the same, such as the share of loans that default doubling during a recession. Also called prior shift. *(Chapter 10)*
+- **Label smoothing** — Training a classifier toward slightly softened targets (for example 91% on the right answer and a little on every other answer) instead of 100%, which discourages overconfidence and often improves generalization. *(Chapter 13)*
 - **Label (target)** — The "right answer" attached to a training example, such as "spam" on a spam email or "cat" on a photo of a cat. *(Chapter 1, Chapter 8, Chapter 12)*
 - **Labor market** — The system in which workers offer their time and skills and employers hire them, setting how many people are employed and what they are paid. *(Chapter 60)*
 - **Ladder of causation** — Judea Pearl's three levels of causal reasoning: seeing (association), doing (intervention) and imagining (counterfactuals). Each level answers questions the level below cannot. *(Chapter 54)*
@@ -1526,6 +1646,7 @@
 - **Lead time** — The delay between ordering something and receiving it, or between deciding to build something and having it working. For AI infrastructure, lead times range from weeks (software) to years (power plants). *(Chapter 44)*
 - **Leaf-spine network (Clos network)** — A layered network design in which "leaf" switches connect to servers and every leaf connects to every "spine" switch above it, so that any two servers are only a few hops apart. Big clusters add a third layer on top. *(Chapter 38)*
 - **Leaky ReLU** — A ReLU variant that lets a small fraction of negative inputs through (for example 0.01 × the input), so a neuron never goes completely silent. *(Chapter 12)*
+- **Learning curve** — A plot of a model's validation score against the amount of training data (or training time). If it is still climbing at the right-hand edge, more data or more training is likely to help. *(Chapter 13)*
 - **Learning rate (alpha)** — The size of each gradient-descent step, the number multiplied by the slope. Too small and training crawls; too big and it overshoots the valley and can blow up. *(Chapter 6, Chapter 8, Chapter 12, Chapter 19, Chapter 30, Chapter 48, Chapter 51)*
 - **Learning-rate schedule** — A plan for changing the learning rate during training, typically a short ramp up followed by a long decline. *(Chapter 13, Chapter 19)*
 - **Learning roadmap** — A plan that puts skills in a sensible order, gives each stage a time budget and a clear finish line, and names resources for each step. Unlike a fixed syllabus, its resources can be swapped as they go out of date while the order and the finish lines stay. *(Chapter 65)*
@@ -1578,12 +1699,15 @@
 - **Load oscillation (power swing)** — A repeated rise and fall in a site's power draw, caused here by thousands of GPUs speeding up and slowing down in step. At large AI sites the swing can reach tens of megawatts within seconds. *(Chapter 39)*
 - **Localhost** — Your own computer acting as a server for itself. While building, programmers open addresses like http://localhost:3000 to see the app running privately on their machine. *(Chapter 29)*
 - **Localization** — Working out the vehicle's exact position and heading, typically to within centimeters, by matching what its sensors see against a stored map and combining that with GPS, the IMU and wheel movement. *(Chapter 50)*
+- **Local maximum** — A solution better than all its immediate neighbors but worse than the best solution overall: a hilltop that is not the highest peak. *(Chapter 48)*
 - **Local minimum** — A point lower than everything immediately around it but not the lowest point overall, like a hollow on a mountainside. In fog, it can feel like the bottom. *(Chapter 6, Chapter 8)*
+- **Local search** — Optimization that keeps one (or a few) complete candidate solutions and repeatedly moves to a nearby, better candidate, instead of exploring paths from a start. It uses very little memory and works on huge problems. *(Chapter 48)*
 - **Local server (localhost API)** — A model served by an app on your own computer at an address such as http://localhost:11434 (Ollama's default) or http://localhost:1234 (LM Studio's default), so other programs on the machine can send it requests without anything leaving the computer. *(Chapter 30)*
 - **Locomotion** — Moving the whole robot from place to place: walking, rolling, climbing or flying. *(Chapter 49)*
 - **Logarithm** — The inverse of an exponential: it answers "what power gives this number?" log10(1,000) = 3 because 10^3 = 1,000. Roughly, a base-10 log counts zeros and a base-2 log counts doublings. *(Chapter 6)*
 - **Logarithmic scale** — A scale where equal steps represent equal multiplications (for example ×10) rather than equal additions. It lets one picture show things that differ by factors of millions (see Chapter 6). *(Chapter 39, Chapter 66)*
 - **Logic gate** — A tiny circuit, built from a few transistors, that takes one or more on/off inputs and produces an on/off output according to a fixed rule, such as AND, OR or NOT. All computer arithmetic and decision-making is built from gates. *(Chapter 2, Chapter 32)*
+- **Logic programming (Prolog)** — Programming by writing facts and rules in logic and letting the computer answer questions by proving them. Prolog, created in 1972, is the best-known logic programming language. *(Chapter 54)*
 - **Logistic regression** — Despite its name, a classification method. It computes a weighted sum of the features, just like linear regression, and then squashes that score into a probability between 0 and 1 with an S-shaped curve. *(Chapter 8, Chapter 10)*
 - **Logit** — A raw score a model gives to each possible output before it is turned into a probability. Higher logits mean the model favors that option more, but logits can be any number and need not add up to 1. *(Chapter 6, Chapter 12, Chapter 15, Chapter 18)*
 - **Logits** — The raw scores a model gives each vocabulary token before they are converted to probabilities.
@@ -1619,9 +1743,11 @@
 ## M
 
 - **Machine code** — Instructions written as the raw patterns of bits a processor executes directly. Every program, in any language, is eventually translated into machine code (Chapter 3 explains how). *(Chapter 2, Chapter 3)*
+- **Machine ethics** — The study of how to give AI systems good values and sound moral judgment, including which values to choose and how a machine should reason when they conflict. *(Chapter 56)*
 - **Machine-learned interatomic potential** — An AI model that predicts the forces between atoms almost as accurately as quantum calculations but thousands of times faster, letting scientists simulate how materials and molecules move over longer times. *(Chapter 52)*
 - **Machine learning (ML)** — Building programs that learn patterns from examples instead of following rules a programmer wrote by hand. The program adjusts its own internal numbers until its outputs match the examples well. *(Chapter 1, Chapter 7, Chapter 8)*
 - **Machine translation (MT)** — Automatically translating text or speech between languages.
+- **Machine unlearning** — Techniques for removing specific knowledge or data from an already-trained model, such as hazardous technical details or one person's private information, without retraining it from scratch. *(Chapter 56)*
 - **Machine vision inspection** — Cameras plus models that check products for defects (scratches, missing parts, misaligned labels) at line speed, replacing or assisting human inspectors. *(Chapter 53)*
 - **MAE (Mean Absolute Error)** — The average size of the misses, ignoring whether they were too high or too low. An MAE of 3 points means predictions were off by 3 points on average. *(Chapter 8)*
 - **Magnitude** — The length of a vector: square each element, add them, and take the square root. The magnitude of [3, 4] is 5. Also called the norm. *(Chapter 5)*
@@ -1631,11 +1757,13 @@
 - **Management system** — An organization's set of policies, roles, processes and records for consistently achieving a goal, such as quality, security or responsible AI, and for improving over time. *(Chapter 59)*
 - **Manhattan distance** — The distance between two points on a grid counted as blocks moved horizontally plus blocks moved vertically, like walking city blocks. From row 2, column 0 to row 2, column 7 it is 0 + 7 = 7. *(Chapter 48)*
 - **Manifold and quick disconnect** — A manifold is a set of pipes running up the back of a liquid-cooled rack that distributes coolant to each tray. Quick disconnects are dripless connectors that let a technician pull out a tray without draining the system. *(Chapter 38)*
+- **Manifold hypothesis** — The idea that real-world data such as photos or sentences occupies a thin, smoothly curved region (a manifold) with far fewer dimensions than the raw space of all possible inputs. It is why compact latent spaces can describe complex data. *(Chapter 16)*
 - **Manifold / quick disconnect** — Pipes in the rack that distribute coolant to each server, with dripless connectors so servers can be removed.
 - **Manipulation** — Using hands or grippers to grasp, move, open, assemble or otherwise change objects. *(Chapter 49)*
 - **Mantrap** — A small room with two interlocking doors, only one of which can open at a time, used at data center entrances so that only one authorized person passes through per badge and fingerprint check. *(Chapter 38)*
 - **MAPE (Mean Absolute Percentage Error)** — The average miss as a percentage of the true value. Easy to explain to non-specialists, but it breaks down when true values are near zero. *(Chapter 9)*
 - **mAP (mean average precision)** — The standard single-number score for detectors. For each class, it summarizes precision across all recall levels (the "average precision"), then averages over classes, often also over several IoU thresholds. Higher is better; 1.0 is perfect. *(Chapter 45)*
+- **MapReduce (Hadoop, Spark)** — A way to process huge datasets by splitting the work into many small independent tasks ("map"), running them on thousands of machines, then combining their results ("reduce"). Google described it in 2004; Hadoop and Spark are widely used open-source systems built on the idea. *(Chapter 34)*
 - **Marginal risk** — The additional risk a release creates compared with what is already possible using existing tools, websites and models. It is the key question in deciding whether to publish a model openly. *(Chapter 60)*
 - **Margin and support vectors** — The margin is the width of the empty street between the boundary and the nearest examples of each class. The support vectors are those nearest examples; they alone fix where the boundary goes. *(Chapter 10)*
 - **Margin of error** — The range within which the true value probably lies, given the noise of measuring on a limited sample. A score of 90% plus or minus 1.5 points means the true accuracy is very likely between 88.5% and 91.5%. *(Chapter 9, Chapter 31)*
@@ -1644,6 +1772,10 @@
 - **Market concentration** — How much of a market is controlled by a few firms. High concentration can mean less competition, higher prices and more influence over rules. *(Chapter 60)*
 - **Market dilution** — The argument that a flood of AI-generated works harms the market for human-made works, even if no specific work is copied in the output. Courts have not yet settled whether it can defeat fair use. *(Chapter 58)*
 - **Market surveillance authority** — A national regulator that checks whether products on its country's market comply with the law, and can order changes, withdrawals or fines. *(Chapter 59)*
+- **Markov chain** — A model of something that changes step by step at random, where the probability of the next state depends only on the current state, such as tomorrow's weather depending only on today's. *(Chapter 54)*
+- **Markov decision process (MDP)** — The standard formal description of a sequential decision problem: a set of states, a set of actions, the probabilities that each action in each state leads to each next state, a reward for each step, and a discount factor. Planning and reinforcement learning both aim to find the best policy for an MDP. *(Chapter 48)*
+- **Markov property** — The assumption that the current state contains everything needed to predict what happens next, so that once you know the present, the past adds nothing. A chess position has this property; a single frozen frame of a ball game does not, because it hides which way the ball is moving. *(Chapter 48)*
+- **Markov random field** — A probabilistic graphical model whose links have no direction, used when variables influence each other symmetrically, such as neighboring pixels in an image. *(Chapter 54)*
 - **Mask** — The pixel-exact outline of a region, stored as a grid the same size as the image with a 1 for every pixel inside the region and a 0 for every pixel outside. *(Chapter 45)*
 - **Masked diffusion** — The text version of diffusion, where "noise" means replacing tokens with a mask symbol. Generation repeatedly predicts the masked tokens and keeps the most confident ones. *(Chapter 16)*
 - **Masked language modeling** — A training task in which some tokens (15 percent in BERT) are hidden and the model must predict them from the surrounding text on both sides. *(Chapter 15)*
@@ -1651,6 +1783,8 @@
 - **Matrix factorization** — Splitting a big user-by-item ratings table into two smaller tables of hidden "taste" factors, one row per user and one per item, whose dot products fill in the missing ratings. *(Chapter 10, Chapter 51)*
 - **Matrix multiplication (matmul)** — Combining two matrices into a new one where each entry is the dot product of a row of the first with a column of the second. It is the single most common operation in AI and is often shortened to "matmul". *(Chapter 5, Chapter 12, Chapter 32)*
 - **Matrix-vector multiplication** — Turning a vector into a new vector by taking the dot product of each row of a matrix with the vector. A matrix with 3 rows and 2 columns turns a 2-number vector into a 3-number vector. *(Chapter 5)*
+- **Maximum expected utility principle** — The rule that a rational agent should choose the action whose possible outcomes, weighted by their probabilities, have the highest average utility. *(Chapter 48)*
+- **Maximum likelihood estimation (MLE)** — Choosing a model's parameters to make the observed data as probable as possible under the model. For a language model it is exactly the same as minimizing the average cross-entropy loss. *(Chapter 6)*
 - **Max output tokens (output limit)** — A separate cap on how many tokens the model may generate in one reply, which is much smaller than the full context window. *(Chapter 18)*
 - **Max tokens** — The cap you set on how long the model's response may be. It is a ceiling, not a target. If the model hits it, the answer is cut off mid-thought, and on reasoning models the hidden thinking counts toward the cap too. *(Chapter 26)*
 - **MCP Apps** — An MCP extension that lets a server show an interactive user interface (a form, a chart, a booking widget) inside the chat, instead of returning only text. *(Chapter 28)*
@@ -1666,6 +1800,7 @@
 - **Mean / median / mode** — the average, the middle value, and the most common value. Three ways to describe a "typical" number.
 - **Mean opinion score (MOS)** — A rating of speech quality or naturalness, usually on a 1–5 scale, averaged across many human listeners. It is the standard way to compare TTS systems, since no formula captures "sounds human." *(Chapter 46)*
 - **Mean squared error (MSE)** — The average of the squared errors over all examples. It is a single number summarizing how wrong a model is, where lower is better and zero is perfect. *(Chapter 5, Chapter 12)*
+- **Mechanism design** — Designing the rules of a game, such as an auction or a voting system, so that players pursuing their own interests produce the outcome the designer wants. *(Chapter 48)*
 - **Mechanistic interpretability** — The branch of interpretability that tries to reverse-engineer a model's internal computations into understandable parts, the way an engineer might reverse-engineer an unknown circuit board. *(Chapter 57)*
 - **Median** — The middle value once all values are sorted (or the average of the two middle values if there is an even number of them). It is barely affected by extreme values. *(Chapter 6)*
 - **Meet-me room (MMR)** — A secure room in a data center where the fiber cables of outside network carriers (telecom and fiber companies) meet the building's own network and its tenants' equipment, and are connected together. *(Chapter 38)*
@@ -1676,6 +1811,7 @@
 - **Mel scale** — A pitch scale that matches human hearing: finely spaced at low frequencies, coarsely spaced at high ones. A mel spectrogram groups frequencies into bands on this scale. *(Chapter 46)*
 - **Membership function** — In fuzzy logic, a curve that says how strongly a value belongs to a vague category, for example how "hot" each temperature is, from 0 (not at all) to 1 (fully). *(Chapter 54)*
 - **Memorization** — When a model can reproduce exact pieces of its training data, such as a paragraph of a book or a person's phone number, raising privacy and copyright concerns. *(Chapter 11, Chapter 58)*
+- **Memory-augmented neural network** — A network with a separate, learnable memory bank that it reads from and writes to, such as the 2014 Neural Turing Machine and Memory Networks. It aims to store information outside the network's weights. *(Chapter 17)*
 - **Memory bandwidth** — How many bytes per second can move between a chip's memory and its calculators, like the width of a pipe. For AI chips it is measured in terabytes per second. *(Chapter 5, Chapter 23, Chapter 30, Chapter 33, Chapter 53)*
 - **Memory-bound** — A task whose speed is limited by how fast data can be fetched from memory, while the math units sit partly idle. Decode is usually memory-bound. *(Chapter 23, Chapter 33)*
 - **Memory capacity** — How many bytes a memory can hold, such as 80 GB on an H100 or 288 GB on a Rubin GPU. It decides which models and how much conversation fit. *(Chapter 33)*
@@ -1719,6 +1855,7 @@
 - **MITRE ATLAS** — A public knowledge base of real attack tactics and techniques used against AI systems, organized like MITRE's ATT&CK catalog of conventional cyberattacks, used by security teams to plan defenses and red-team exercises. *(Chapter 31)*
 - **Mixed precision** — Doing most of a model's arithmetic in a low-precision format while keeping key quantities (like running totals and optimizer state) in a higher-precision format. It gets most of the speed with little loss of accuracy. *(Chapter 5, Chapter 13, Chapter 19, Chapter 32, Chapter 37)*
 - **Mixed precision / BF16 / FP8 / FP4** — Storing and computing numbers with fewer bits to go faster and use less memory, while keeping key quantities in higher precision.
+- **Mixed strategy** — A strategy that chooses among actions at random with set probabilities, such as playing rock, paper and scissors one-third of the time each, so that opponents cannot predict and exploit it. *(Chapter 48)*
 - **Mixture of experts (MoE)** — A model design that contains many smaller sub-networks ("experts") plus a router that sends each token through only a few of them. It gives a model huge total size while keeping the work per token modest. *(Chapter 5, Chapter 15, Chapter 17, Chapter 18, Chapter 24, Chapter 30, Chapter 33, Chapter 37, Chapter 44)*
 - **MLA (Multi-head Latent Attention)** — A design from DeepSeek that compresses each token's keys and values into one small "latent" vector for the cache and expands it again when needed, shrinking memory while keeping separate heads. DeepSeek, Kimi and GLM models use it. *(Chapter 15, Chapter 23)*
 - **ML compiler (XLA, Triton, torch.compile)** — Software that translates a model written in a framework into efficient instructions for a specific chip, often fusing several operations into one kernel. XLA powers TPUs; Triton (created at OpenAI) lets engineers write GPU kernels in Python-like code. *(Chapter 35)*
@@ -1727,6 +1864,7 @@
 - **MLOps (machine-learning operations)** — The practices and tools for deploying, monitoring, updating and maintaining machine-learning models in real products, borrowed from "DevOps," software engineering's practices for shipping and running ordinary software reliably. *(Chapter 10, Chapter 62, Chapter 63)*
 - **MLPerf** — A set of standardized AI training and inference benchmarks run by the MLCommons industry group, where vendors submit results under shared rules. It is the closest thing to an independent, apples-to-apples comparison of AI hardware, though not every vendor participates. *(Chapter 35)*
 - **MLP (feed-forward) layer** — The part of each Transformer block that processes each token's vector individually through large weight matrices. It is thought to store much of a model's factual knowledge. *(Chapter 18)*
+- **ML platform** — The shared internal tools a company's teams use to train, store, deploy and monitor models, run by a platform team so each product team does not rebuild the same plumbing. *(Chapter 10)*
 - **MLP (multilayer perceptron)** — A neural network made of stacked dense layers. The same name is used for the feed-forward block inside every Transformer layer. *(Chapter 12, Chapter 14)*
 - **MLX** — Apple's open-source machine-learning framework for Apple Silicon Macs, used to run and fine-tune models efficiently with the Mac's unified memory. *(Chapter 30)*
 - **MMLU (Massive Multitask Language Understanding)** — A 2020 benchmark of multiple-choice questions across 57 school and professional subjects, from law to medicine to mathematics. It was the standard knowledge test of the early chatbot era and is now saturated for frontier models. *(Chapter 24)*
@@ -1735,6 +1873,7 @@
 - **Modality** — A kind of data with its own structure, such as text, images, audio, video, or sensor readings from a robot. "Multimodal" means handling more than one. *(Chapter 22)*
 - **Mode collapse** — A GAN failure where the generator produces only a few kinds of outputs that fool the discriminator, instead of covering the full variety of the real data. *(Chapter 16)*
 - **Model (AI model)** — The trained "brain" of an AI system: a file of learned numbers plus the recipe for using them, which takes an input (such as your question) and produces an output (such as an answer). *(Chapter 1, Chapter 5, Chapter 8, Chapter 18, Chapter 25)*
+- **Model-based agent** — An agent that keeps an internal picture of the world, including things it cannot currently perceive, and uses it to choose actions. *(Chapter 48)*
 - **Model-based RL** — Reinforcement learning that also learns or is given a model of the environment (what happens after each action), so the agent can plan by imagining outcomes before acting. *(Chapter 48)*
 - **Model card** — A document published with a model describing what it is for, how it was trained, how it scores on evaluations, and its known limitations. The idea was proposed by researchers in 2019 as a "nutrition label" for models. *(Chapter 24, Chapter 30)*
 - **Model card / system card** — A document published with a model describing intended use, training, evaluations, safety testing, and limitations.
@@ -1745,6 +1884,7 @@
 - **Model dimension (hidden size)** — The number of values in each token's vector as it travels through the model, often written d_model. GPT-2 small used 768; large modern models use several thousand. *(Chapter 15)*
 - **Model-free RL** — Reinforcement learning that learns what to do (values or a policy) directly from experience, without ever learning how the environment works. Q-learning and DQN are model-free. *(Chapter 48)*
 - **Model merging** — Combining the weights of two or more fine-tuned versions of the same base model into a single model, without further training, to get several skills at once. *(Chapter 20)*
+- **Model registry** — A catalog of trained models that records each version's training data, scores, owner and status, and serves as the single source from which deployment tools pull models. *(Chapter 10)*
 - **Model router** — A component that decides which model, mode or replica handles each request, based on its difficulty, the customer's settings, safety signals or which server already has the right prefix cached. *(Chapter 23)*
 - **Model routing** — Automatically sending each request to the most suitable model, for example a cheap small model for easy questions and an expensive one for hard ones, to balance quality and cost. *(Chapter 24)*
 - **Model snapshot (pinning)** — Using a fixed model version ID in your code so the model's behavior does not change under you without warning when the provider releases an update. *(Chapter 26, Chapter 31)*
@@ -1759,10 +1899,13 @@
 - **Modular driving stack** — The classic design of self-driving software as a pipeline of separate stages (localization, perception, prediction, planning and control), each built and tested on its own. *(Chapter 50)*
 - **Momentum** — An optimizer technique that keeps a running sum of recent gradients (a velocity) and steps along it, so progress speeds up along consistent slopes and zig-zags cancel out. *(Chapter 13)*
 - **Monosemantic** — Responding to one clean concept. A monosemantic neuron or feature lights up for "Golden Gate Bridge" and essentially nothing else. *(Chapter 57)*
+- **Monte Carlo inference (sampling)** — Estimating probabilities by generating many random examples from a model and counting, instead of computing the answer exactly. Markov chain Monte Carlo (MCMC) is an advanced version, standard in Bayesian statistics, that wanders through the likely possibilities. *(Chapter 54)*
 - **Monte Carlo tree search (MCTS)** — A search method that estimates how good a move is by playing out many quick simulated games from it and focusing effort on the most promising branches (see Chapter 48). *(Chapter 7, Chapter 21, Chapter 48)*
 - **Moore's law** — Gordon Moore's observation (1965, revised 1975) that the number of transistors on a chip doubles roughly every two years. It is an industry trend, not a law of nature, and it has slowed. *(Chapter 2, Chapter 7, Chapter 32)*
+- **Moral parliament** — A model for decisions under moral uncertainty in which each moral theory gets delegates in proportion to your confidence in it, and the delegates bargain to reach a decision. *(Chapter 56)*
 - **Moral patient / moral status** — Being something whose interests matter morally for its own sake.
 - **Moral status (moral patient)** — Being something whose interests matter morally for its own sake. Humans clearly have it; many people extend it to animals; whether AI could ever have it is an open question. *(Chapter 60)*
+- **Moral uncertainty** — Uncertainty about which moral theory or values are correct, together with the question of how to act sensibly anyway, for example by choosing options that are acceptable under every view you take seriously. *(Chapter 56)*
 - **Moratorium** — A temporary ban, usually by a local or state government, on approving a type of project, such as new data centers, while rules are studied or written. *(Chapter 42, Chapter 59)*
 - **Moravec's paradox** — The observation that tasks hard for humans (chess, calculus) are often easy for computers, while tasks easy for toddlers (walking, grasping, recognizing a face in bad light) are very hard for machines. *(Chapter 49, Chapter 66)*
 - **Motion planning** — Choosing the vehicle's path and speed for the next several seconds: which lane, how fast, when to brake, when to go. *(Chapter 50)*
@@ -1782,6 +1925,7 @@
 - **Multilabel classification** — Each example can have several labels at once (a photo tagged "beach" and "dog").
 - **Multimodal** — Able to handle more than one kind of data, such as text, images, audio and video, within a single model. *(Chapter 1, Chapter 25)*
 - **Multimodal model** — A model that can take in, and sometimes produce, more than one kind of data, such as text, images, audio and video (see Chapter 22). *(Chapter 7, Chapter 16, Chapter 22)*
+- **Multimodal RAG** — Retrieval-augmented generation over images, diagrams, scanned pages or other non-text content, either by indexing text descriptions of them or by embedding them directly in a shared image-and-text space. *(Chapter 27)*
 - **Multi-patterning** — Printing one layer in several exposures (or using spacer tricks) to create features finer than the light could print in one pass. It costs more and lowers yield; China relies on it because it cannot buy EUV tools. *(Chapter 36)*
 - **Multiple sequence alignment (MSA)** — A table lining up the sequences of related proteins from many species, position by position, so that conserved positions and positions that change together can be spotted. *(Chapter 52)*
 - **Multiply-accumulate (MAC)** — One multiplication followed by adding the result to a running total, as in total = total + (a × b). Neural networks are built almost entirely from MACs, and one MAC counts as two operations. *(Chapter 2, Chapter 32)*
@@ -1808,10 +1952,12 @@
 - **NaN (Not a Number)** — A special value a computer produces when arithmetic breaks down, for example infinity minus infinity. A loss of NaN means training has blown up and must be restarted from an earlier saved state. *(Chapter 13)*
 - **Nanometer (nm)** — One billionth of a meter (10^−9 m). Transistor features measure tens of nanometers; a human hair is roughly 80,000 nanometers wide. *(Chapter 2)*
 - **Narrow AI** — AI built for one task or one domain, such as a chess engine, a spam filter or a face-unlock system. Nearly all AI deployed in the world is narrow. *(Chapter 1, Chapter 60)*
-- **Nash equilibrium** — A set of strategies in which no player can do better by changing only their own strategy. In two-player zero-sum games, playing an equilibrium strategy guarantees you cannot lose on average. *(Chapter 48)*
+- **Nash equilibrium** — A set of strategies in which no player can do better by changing only their own strategy. In two-player zero-sum games, playing an equilibrium strategy guarantees you cannot lose on average. *(Chapter 48, Chapter 59)*
 - **Native audio (video generation)** — Sound, including speech, effects and music, generated together with the video by the same model so that lips, footsteps and impacts line up with the picture. *(Chapter 47)*
 - **Native omni model** — A single model that takes in and produces several modalities directly, typically text, audio and images, rather than chaining separate speech and text models. "Omni" is short for "omnimodal." *(Chapter 22)*
+- **Natural label** — A correct answer that the world supplies on its own after a prediction, such as whether a user clicked, whether a loan was repaid or when a parcel actually arrived, so nobody has to label it by hand. *(Chapter 11)*
 - **Natural language autoencoder** — An interpretability approach in which a model is trained to translate its internal activations into plain-language descriptions, so humans can read what the model is representing without inspecting features one by one. *(Chapter 57)*
+- **Natural language inference (NLI)** — Deciding whether a statement follows from a passage (entailment), contradicts it, or neither. It was a standard test of language understanding before LLMs. *(Chapter 54)*
 - **Natural language processing (NLP)** — The branch of AI that deals with human language: reading, writing, translating and extracting meaning from text. *(Chapter 1, Chapter 54)*
 - **Natural logarithm (ln)** — The logarithm whose base is e (about 2.718). It is the reverse of the e^x button, and it is the log used in AI loss functions. ln(1) = 0, and ln of any number between 0 and 1 is negative. *(Chapter 6)*
 - **NCCL and RCCL** — NVIDIA's (NCCL, "nickel") and AMD's (RCCL) libraries for collective communication, the coordinated data exchanges such as all-reduce that let thousands of GPUs train one model together. *(Chapter 35)*
@@ -1822,6 +1968,7 @@
 - **Near-duplicate detection (MinHash)** — Finding documents that are mostly the same by comparing compact fingerprints of their overlapping word sequences, instead of comparing every pair of documents in full. *(Chapter 19)*
 - **Nearest neighbor** — The stored vector closest to a query vector, usually measured by cosine similarity. "Finding the k nearest neighbors" means finding the k most similar items. *(Chapter 27)*
 - **Needle in a haystack** — A long-context test that hides one fact (the "needle") somewhere in a huge document and asks the model to retrieve it. Frontier models now pass simple versions easily, so harder tests are needed. *(Chapter 23)*
+- **Negative feedback** — A mechanism that automatically counteracts a change, the way a thermostat switches the heating off as a room warms up. In safety design it stops small deviations from growing into large ones. *(Chapter 56)*
 - **Negative predictive value (NPV)** — Of the people a test clears, the share who truly do not have the condition. Like PPV, it depends on how common the condition is in the group tested. *(Chapter 52)*
 - **Negative prompt** — Text describing what you do not want (for example, "blurry, watermark"). It takes the place of the empty prompt in classifier-free guidance, so the image is pushed away from it. *(Chapter 16, Chapter 47)*
 - **Neocloud** — A newer cloud company that specializes in renting GPUs for AI, such as CoreWeave, Nebius or Lambda. *(Chapter 4, Chapter 35, Chapter 38, Chapter 42, Chapter 61, Chapter 64)*
@@ -1830,10 +1977,12 @@
 - **Network** — Two or more computers connected so they can exchange data, by cable or by radio. *(Chapter 4)*
 - **Network switch and radix** — A switch is a box that forwards data between the many devices plugged into it. Its radix is how many ports it has; higher radix means fewer layers of switches are needed to connect a big cluster. *(Chapter 34)*
 - **Network upgrade** — New or reinforced grid equipment, such as substations, transformers or transmission lines, needed before a new plant or load can safely connect. Who pays for it is one of the most contested questions in the industry. *(Chapter 41)*
+- **Neural architecture search (NAS)** — Automatically searching over possible network designs (number of layers, layer types, connections) and keeping the one that scores best on validation data. It is the most expensive form of automated machine learning (AutoML). *(Chapter 9)*
 - **Neural audio codec** — A pair of neural networks that compress audio into a short stream of discrete tokens (the encoder) and rebuild natural-sounding audio from those tokens (the decoder). It is the audio equivalent of a text tokenizer, and it lets a language model "write" sound. *(Chapter 22)*
 - **Neural data** — Information measured from a person's nervous system, by implants, scanners or consumer headbands. Because it may reveal mental states, some jurisdictions now protect it specially. *(Chapter 54)*
 - **Neural machine translation** — Translation done end to end by a neural network that reads the source sentence and writes the target sentence, the standard approach since about 2016. *(Chapter 54)*
 - **Neural network** — A model made of many simple connected units arranged in layers, where each unit computes a weighted sum of its inputs and applies a simple "squash." It is loosely inspired by brain neurons but is really a stack of multiplications and additions. *(Chapter 1, Chapter 5, Chapter 7, Chapter 10, Chapter 12)*
+- **Neural style transfer** — Creating an image that keeps the content of one picture (judged by a CNN's deep features) and the style of another (judged by the texture statistics of its layers), such as a photo repainted in the style of a famous painting. *(Chapter 14)*
 - **Neuromorphic chip** — A chip designed to mimic the brain's spiking neurons, computing only when signals arrive. It is promising for very low-power sensing, but it does not run today's large language models (see Chapter 54). *(Chapter 35, Chapter 54)*
 - **Neuromorphic computing / spiking neural network** — Hardware and models that imitate the brain's event-driven "spikes," aiming for much lower power use.
 - **Neuron** — One unit inside a neural network that computes a weighted sum of its inputs and applies a simple function to it. In large models, individual neurons rarely correspond to single human concepts. *(Chapter 57)*
@@ -1847,6 +1996,7 @@
 - **NHTSA (National Highway Traffic Safety Administration)** — The US federal agency that sets safety standards for vehicles and their equipment, investigates defects, orders recalls and collects crash data. *(Chapter 50)*
 - **NIC (Network Interface Card)** — The card that connects a server to a network. AI servers use very fast NICs, such as NVIDIA's ConnectX-8 at 800 Gb/s, usually one per GPU. *(Chapter 34, Chapter 38)*
 - **"Nines" / availability** — 99.9% uptime is about 8.8 hours down per year. 99.99% is about 53 minutes. 99.999% is about 5 minutes.
+- **Nines (of reliability)** — Shorthand for reliability levels: "three nines" means 99.9% success, "four nines" 99.99%. Each additional nine cuts failures tenfold. *(Chapter 56)*
 - **NIST AI RMF (AI Risk Management Framework)** — A voluntary US framework, released in January 2023, for managing AI risks through four functions: Govern, Map, Measure and Manage. A Generative AI Profile (NIST AI 600-1) followed in July 2024. *(Chapter 31, Chapter 59)*
 - **NIST (National Institute of Standards and Technology)** — A US federal agency that develops measurement science and voluntary standards, including the AI Risk Management Framework. It houses CAISI. *(Chapter 59)*
 - **NOC and SOC** — A network operations center (NOC) is the room or team that monitors systems and networks around the clock; a security operations center (SOC) does the same for physical and cyber security. *(Chapter 38)*
@@ -1866,9 +2016,12 @@
 - **Nonlinear function** — Any function whose graph bends, curves or has corners, such as y = x × x or "replace negative numbers with zero". Neural networks need nonlinear steps to model anything more interesting than straight lines. *(Chapter 5)*
 - **Non-linear function** — Any function whose graph is not a straight line, such as one with a bend, a curve or a threshold. Neural networks need non-linearity to model the curved, messy patterns of the real world. *(Chapter 12)*
 - **Non-maximum suppression (NMS)** — The cleanup step in object detection that removes duplicate boxes. When several boxes overlap heavily on the same object, it keeps the most confident one and deletes the rest. *(Chapter 45)*
+- **Normal accident** — Charles Perrow's term for an accident that is practically inevitable in a system whose parts interact in complex, unexpected ways and are so tightly linked that one failure cascades before anyone can intervene. *(Chapter 56)*
 - **Normal distribution** — The symmetrical bell-shaped pattern where most values cluster near the mean and extremes are rare. About 68% of values lie within one standard deviation of the mean and about 95% within two. *(Chapter 6)*
 - **Normalization layer** — A layer that rescales a group of numbers to a standard range (for example mean 0 and spread 1) before passing them on, so that training stays stable as values flow through many layers. *(Chapter 13)*
+- **Normalization of deviance** — The gradual process by which an organization comes to accept warning signs or rule-breaking as normal because nothing bad happened the last few times. Diane Vaughan coined the term studying the 1986 Challenger disaster. *(Chapter 56)*
 - **Normalization / standardization (scaling)** — Rescaling numeric features to comparable ranges so no feature dominates just by its units.
+- **Normalizing flow** — A generative model built from a chain of reversible transformations that turn simple noise into data, so the exact probability of any example can be computed by running the chain backward. *(Chapter 16)*
 - **NoSQL database** — Databases that don't use the classic table model (document, key-value, graph stores).
 - **Notebook (Jupyter, Google Colab)** — A document mixing text and runnable code cells, with each cell's output shown underneath. Colab runs notebooks free in your browser on Google's computers. *(Chapter 3, Chapter 26, Chapter 62)*
 - **NPU (neural processing unit)** — A small AI accelerator built into phones and laptops (Apple's Neural Engine, which debuted in 2017, is one example) for running AI features on the device itself, such as face unlock and photo search. *(Chapter 2, Chapter 32, Chapter 35, Chapter 53)*
@@ -1911,9 +2064,11 @@
 - **Onboard compute** — The computer chips inside the robot itself, as opposed to servers in a data center. Robots need fast local chips (such as NVIDIA's Jetson line) because waiting for a round trip over the internet is too slow and unreliable for balance and grasping. *(Chapter 49)*
 - **On-demand pricing** — Pay-as-you-go rental by the hour with no commitment. It is the most flexible and the most expensive way to rent. *(Chapter 43)*
 - **On-demand vs. reserved** — Pay-as-you-go hourly pricing vs. committing to months or years for a lower rate.
+- **On-device runtime** — The software library inside an app that loads a compressed model and runs it on the device's own chips (CPU, GPU or NPU), such as Core ML, LiteRT or ONNX Runtime. *(Chapter 53)*
 - **One-hot encoding** — Turning a category into several yes/no columns, one per possible value, so that "Plus" out of Free, Plus and Pro becomes [0, 1, 0]. *(Chapter 11, Chapter 14)*
 - **Online evaluation** — Measuring an AI system on real production traffic, through monitoring, user feedback and experiments. It reflects real behavior but is noisier and happens after users are exposed. *(Chapter 31)*
 - **Online learning** — Updating a model continuously as new data arrives, instead of training once and freezing it. Fraud detectors and news-feed rankers often update this way. *(Chapter 8)*
+- **Online prediction** — Running a model the moment a request arrives and returning the answer within a fraction of a second, as a card-fraud check or a chatbot does. Also called real-time inference. *(Chapter 10)*
 - **On-policy and off-policy data** — On-policy data is generated by the very model being trained, so it shows that model's real habits and mistakes. Off-policy data comes from somewhere else (people, other models, older versions), so it may not cover the errors the current model actually makes. *(Chapter 20)*
 - **On-policy distillation** — A distillation method in which the student writes its own answers and the teacher grades every token of them, combining the realism of reinforcement learning (the student learns from its own mistakes) with the dense, token-by-token feedback of distillation. *(Chapter 20)*
 - **Ontology** — A formal vocabulary for a domain that defines the types of things that exist and the relationships allowed between them, for example that a "drug" can "treat" a "disease" but a "city" cannot. *(Chapter 54)*
@@ -1938,6 +2093,7 @@
 - **Optical character recognition (OCR)** — Turning images of printed or handwritten text into machine-readable text.
 - **Optical circuit switch (OCS)** — A switch that steers beams of light with tiny movable mirrors, connecting fibers to each other without converting the signal to electricity. It can rewire a network's topology in software and uses very little power. *(Chapter 34)*
 - **Optical fiber** — A strand of very pure glass that carries data as pulses of laser light over hundreds of meters to many kilometers with little loss. It needs power-hungry converters at both ends, unlike passive copper cable. *(Chapter 34)*
+- **Optical flow** — The apparent motion of each pixel between two video frames, estimated as a small arrow per pixel showing direction and distance. It is used for tracking, video stabilization, frame interpolation and drone navigation. *(Chapter 45)*
 - **Optical transceiver** — A plug-in module, about the size of a pack of gum, that converts electrical signals to laser light and back, letting a switch or network card drive a fiber. 800G and 1.6T modules are standard in 2026 AI clusters. *(Chapter 34, Chapter 38, Chapter 42)*
 - **Optimization** — finding the parameter values that make something as good (or as small) as possible.
 - **Optimizer** — The algorithm that turns gradients into actual parameter updates. Plain gradient descent is the simplest; Adam, AdamW and Muon are smarter variants used to train modern models. *(Chapter 6, Chapter 13, Chapter 30)*
@@ -1946,6 +2102,7 @@
 - **Orchestration** — Scheduling and coordinating the many dependent steps of a data pipeline so they run in the right order, are retried when they fail, and alert a person when they cannot recover. The software that does it is called an orchestrator. *(Chapter 11)*
 - **Orchestrator-workers** — A pattern in which a lead model breaks a task into pieces at run time, hands each piece to a worker model, and combines their results. *(Chapter 28)*
 - **Order of magnitude** — A factor of ten. "Two orders of magnitude bigger" means about 100 times bigger. Estimates that are "within an order of magnitude" are within a factor of ten of the truth. *(Chapter 2)*
+- **Organizational risk** — Risk that comes from how the organizations building AI are run, such as a weak safety culture, rushed launches, poor security or ignored warnings, rather than from the technology alone. *(Chapter 55)*
 - **ORPO (Odds Ratio Preference Optimization)** — A 2024 method that combines supervised fine-tuning and preference learning into a single training stage, with no reference model. *(Chapter 20)*
 - **Orthogonal** — At right angles. Two orthogonal directions have a dot product of zero, so a signal along one does not show up when you read the other. *(Chapter 57)*
 - **Orthogonalization (of an update)** — Reshaping a matrix so that all of its independent directions have the same strength while keeping the directions themselves. Muon applies it to each weight matrix's update. *(Chapter 13)*
@@ -1963,7 +2120,9 @@
 - **Output speed (tokens per second)** — How fast text appears once generation has started, as experienced by one user. English readers skim at a few words per second, so anything above roughly 30–50 tokens per second feels instant for reading, while agents and code generation benefit from much more. *(Chapter 23)*
 - **Overbuild (glut)** — Building more capacity than demand can profitably use, which drives prices and utilization down until demand catches up or capacity is written off. *(Chapter 43)*
 - **Overfitting** — When a model fits its training examples so closely, noise included, that it does worse on new data. It is like memorizing last year's exam answers instead of learning the subject. *(Chapter 6, Chapter 9, Chapter 13)*
+- **Overfitting a single batch** — A sanity check in which a model is trained on a handful of examples to confirm it can learn them almost perfectly. Failure points to a bug in the code or data rather than a shortage of data. *(Chapter 10)*
 - **Over-refusal** — A model declining a harmless request because it looks superficially similar to a harmful one. *(Chapter 18, Chapter 20)*
+- **Oversampling and undersampling** — Rebalancing a training set by repeating or synthesizing examples of the rare class (oversampling), or by dropping examples of the common class (undersampling), so a model does not simply learn to predict the majority. *(Chapter 9)*
 - **Over-the-air (OTA) update** — New software sent to a vehicle wirelessly, like a phone update, without a visit to a garage. *(Chapter 50, Chapter 53)*
 - **Overthinking** — A reasoning model spending far more thinking than a question needs, wasting time and money, and sometimes talking itself out of a correct first answer. *(Chapter 21)*
 - **Over-training** — Training a model on far more tokens than is compute-optimal, producing a smaller model that is cheaper to run for a given level of ability. *(Chapter 19)*
@@ -1975,6 +2134,7 @@
 - **Package** — The finished assembly of one or more dies, any memory stacks, the interposer and substrate, sealed together as one component that mounts on a board. When people say "a GPU" they usually mean one package. *(Chapter 34)*
 - **Package substrate** — The layered base of a chip package, with coarser wiring than the interposer, that spreads power and signals from the chips out to hundreds or thousands of solder balls connecting to the circuit board. *(Chapter 34)*
 - **Packet** — A small chunk of data, usually up to about 1,500 bytes, sent across a network with a label saying where it came from and where it is going. Big messages are split into many packets and reassembled. *(Chapter 4)*
+- **PAC learning (probably approximately correct learning)** — Leslie Valiant's 1984 framework for learning guarantees: given enough examples, a learner will, with high probability, find a rule whose error on new data is small. *(Chapter 9)*
 - **Padding** — Extra pixels, usually zeros, added around the border of an input so a filter can be centered on edge pixels. With the right padding, the output stays the same size as the input. *(Chapter 14)*
 - **PAE (predicted aligned error)** — AlphaFold's estimate of how far off the relative position of two parts of a protein might be, shown as a square heat map. Low error between two regions means AlphaFold is confident about how they sit relative to each other. *(Chapter 52)*
 - **PagedAttention** — A technique introduced with the open-source vLLM engine in 2023 that stores each request's KV cache in small fixed-size blocks scattered anywhere in memory, tracked by a lookup table, the way an operating system manages computer memory in pages. Blocks are handed out only as needed. *(Chapter 23)*
@@ -1995,9 +2155,12 @@
 - **Parent-child retrieval** — A technique, also called small-to-big, that searches over small, precise chunks but passes the larger section each one belongs to into the prompt, combining sharp matching with enough surrounding context to answer. *(Chapter 27)*
 - **Pareto frontier (throughput versus interactivity)** — The curve of the best possible trade-offs between two goals, here tokens per second per GPU and tokens per second per user. On the curve, you can gain on one goal only by giving up some of the other; a better chip or serving engine pushes the whole curve outward. *(Chapter 37)*
 - **Parquet** — A compressed, column-based file format used for large analytical datasets.
-- **Parsing** — Extracting usable text and structure (headings, tables, lists) from files such as PDFs, web pages, slides and spreadsheets. *(Chapter 27)*
+- **Parsing** — Extracting usable text and structure (headings, tables, lists) from files such as PDFs, web pages, slides and spreadsheets. *(Chapter 27, Chapter 54)*
 - **Parsing / OCR** — Extracting text from files. OCR (optical character recognition) reads text from images and scans.
 - **Partial derivative** — The slope of a function with respect to one input while every other input is held fixed. A model with a billion knobs has a billion partial derivatives. *(Chapter 6)*
+- **Particle filter** — A filtering method that represents a belief as a large cloud of random guesses (particles), moves them according to a motion model, and keeps more copies of those that best match each new sensor reading. Robots use it to work out where they are. *(Chapter 54)*
+- **Partition function** — The normalizing total, summed over every possible input, that turns an energy-based model's scores into probabilities. For realistic data it is far too large to compute exactly, which makes these models hard to train. *(Chapter 16)*
+- **Part-of-speech tagging** — Labeling each word in a sentence with its grammatical role, such as noun, verb or adjective. "Book" is a noun in "read the book" and a verb in "book a flight". *(Chapter 54)*
 - **Pascal's mugging** — A thought experiment showing that if you take tiny probabilities of huge outcomes at face value, a persuasive stranger could talk you into almost anything. It is used to criticize arguments that rest on small chances of catastrophe. *(Chapter 60)*
 - **Pass@k** — The probability that at least one of k attempts at a problem is correct. Pass@1 is the chance of getting it right on a single try; it is the standard way to report reasoning accuracy. *(Chapter 21, Chapter 57)*
 - **pass@k and pass^k** — Two reliability measures for an agent run k times on the same task. pass@k is the chance that at least one run succeeds; pass^k is the chance that every run succeeds, the better measure of consistency. *(Chapter 31)*
@@ -2007,7 +2170,7 @@
 - **Pay-transparency law** — A law requiring employers to publish the expected pay range for a job in its posting. Laws of this kind in several US states and cities are the reason AI-lab job boards show salary ranges. *(Chapter 63)*
 - **PCIe (PCI Express)** — The standard connector and protocol inside computers that links CPUs to GPUs, network cards and SSDs. A 16-lane PCIe 5.0 slot moves about 64 GB/s in each direction; PCIe 6.0 doubles that. *(Chapter 34)*
 - **PDB (Protein Data Bank)** — The free global archive, founded in 1971, of experimentally determined 3D structures of proteins and other biological molecules. Its roughly two hundred thousand structures became AlphaFold's training data. *(Chapter 52)*
-- **P(doom)** — Informal shorthand for a person's subjective probability that AI leads to catastrophe. It is a statement of belief, not a measured frequency. *(Chapter 60)*
+- **PDDL (Planning Domain Definition Language)** — The standard text format for planning problems, listing the objects, the actions with their preconditions and effects, the starting state and the goal, so that any planner can read them. *(Chapter 48)*
 - **PDU (power distribution unit)** — Equipment that distributes power to racks. It can be a large floor-standing cabinet with a transformer and breakers, or a rack-mounted power strip with many outlets. *(Chapter 38, Chapter 39)*
 - **Peak demand** — The highest power draw over a period, such as a year. Grids and data centers must be built for the peak, not the average. *(Chapter 39, Chapter 41)*
 - **Peak performance** — The theoretical maximum operations per second on a spec sheet, reached only if every unit does useful work on every tick. Real software almost never gets there. *(Chapter 32)*
@@ -2015,6 +2178,7 @@
 - **Peak vs. achieved performance** — Peak is the theoretical maximum on a spec sheet. Achieved is what real software gets (often 30–60% of peak for training).
 - **Peer review** — The process in which independent experts evaluate a scientific paper before publication. It is imperfect and already strained by the volume of papers. *(Chapter 52, Chapter 65)*
 - **Percentile** — The value below which a given percentage of the data falls. The 50th percentile is the median; the 99th percentile describes the slowest or largest 1% of cases. *(Chapter 6)*
+- **Percentile latency (p95, p99)** — The response time that a given share of requests beat. A p95 of 4 seconds means 95% of requests finished within 4 seconds and 5% took longer; teams watch p95 and p99 because averages hide the slow requests that users remember. *(Chapter 31)*
 - **Perception** — The stage of a self-driving system that detects and tracks the objects around the vehicle (cars, cyclists, pedestrians, cones, debris) and identifies lanes, signs and traffic-light colors. *(Chapter 50)*
 - **Perception–prediction–planning stack** — The classic AV pipeline: perceive what is around (perception), forecast what others will do (prediction), choose a path (planning), then steer and brake (control).
 - **Perceptron** — Frank Rosenblatt's 1957–58 learning machine: a single artificial neuron that multiplies each input by a weight, adds them up, outputs 1 if the total passes a threshold and 0 otherwise, and adjusts its weights whenever it gets an example wrong. *(Chapter 7, Chapter 10, Chapter 12)*
@@ -2042,6 +2206,7 @@
 - **Physics simulator** — Software that computes how objects move, collide and push on each other, so a virtual robot can practice in a virtual world. Many run on GPUs, which can simulate thousands of robots at once. *(Chapter 49)*
 - **Picks and shovels** — Selling tools, equipment or services to everyone in a boom instead of betting on one winner, like selling shovels to gold miners. Nvidia is the classic AI example, but small businesses can play the same strategy one level down. *(Chapter 64)*
 - **Picojoule (pJ)** — A trillionth of a joule, a unit of energy. A joule is roughly the energy to lift an apple one meter; chip operations are measured in picojoules. *(Chapter 33)*
+- **PID controller** — A feedback controller that sets its output from the current error (proportional), the error accumulated over time (integral) and the error's rate of change (derivative). It is the most widely used control method in engineering. *(Chapter 49)*
 - **PII (personally identifiable information)** — Data that can identify a specific person, such as a name, email address, ID number, face or precise location. *(Chapter 11, Chapter 19, Chapter 25, Chapter 31)*
 - **Pilot (proof of concept)** — A small trial that tests whether AI works for one use case before a full rollout. *(Chapter 61, Chapter 64)*
 - **Pilot / proof of concept (POC)** — A small trial deployment to test whether AI works for a use case before full rollout.
@@ -2059,6 +2224,7 @@
 - **P&L (profit and loss)** — A company's statement of revenue minus costs over a period. "Measurable P&L impact" means a project changed revenue or costs by an amount someone can actually see in the accounts. *(Chapter 64)*
 - **Plugin (agent plugin)** — An installable bundle of agent capabilities, such as skills, MCP servers, sub-agents and hooks, packaged so it can be added to an agent product in one step. *(Chapter 28)*
 - **PMA (premarket approval)** — The FDA's strictest route, for high-risk devices, requiring direct evidence of safety and effectiveness, usually from clinical studies. *(Chapter 52)*
+- **μP (maximal update parametrization)** — A 2022 recipe for scaling each layer's initial weights and learning rate with the model's width, so that the best hyperparameters found on a small model also work on a large one. *(Chapter 19, Chapter 60)*
 - **Pod (SuperPOD)** — A pre-designed block of racks wired together as one unit, with its own network layer and shared cooling, that can be replicated to build a cluster. Google's TPU pods and NVIDIA's SuperPODs are examples. *(Chapter 34)*
 - **Pod / SuperPOD** — A pre-designed group of racks wired together as one training unit (e.g., a TPU pod of 9,216 Ironwood chips).
 - **Point cloud** — A 3D scene represented as a large set of dots, each with x, y and z coordinates and sometimes a color. It is the typical output of a lidar sensor or 3D scanner. *(Chapter 45, Chapter 50)*
@@ -2069,8 +2235,10 @@
 - **Polynomial** — A formula built from powers of the input, such as a + b × x + c × x². Its degree is the highest power used. Higher-degree polynomials can draw more wiggly curves. *(Chapter 9)*
 - **Polysemanticity** — One neuron responding to several unrelated concepts. It makes individual neurons hard to interpret, and it is the normal situation in language models. *(Chapter 57)*
 - **Polysilicon** — Ultra-pure silicon made of many small crystals stuck together. It is the raw feedstock that gets melted and regrown into a single perfect crystal for chipmaking. *(Chapter 36)*
+- **POMDP (partially observable Markov decision process)** — An MDP in which the agent cannot observe the state directly and receives only clues, so it must choose actions based on its belief about which state it is in. *(Chapter 48)*
 - **Pooling (max pooling, average pooling)** — Shrinking a feature map by summarizing each small region with one number: the largest value (max pooling) or the average (average pooling). It keeps the strongest signals and makes the network less sensitive to small shifts. *(Chapter 14)*
 - **Popularity bias** — The tendency of recommenders to over-recommend already popular items, because they have the most data, at the expense of niche or new items. *(Chapter 51)*
+- **Population stability index (PSI)** — A score for how much the distribution of one feature, or of a model's scores, has moved between two periods, computed by comparing the share of data in each bucket. Values above about 0.25 usually signal a major shift. *(Chapter 10)*
 - **Portfolio** — Public evidence of what you can do: projects, write-ups, code repositories, demos, evaluations. In AI it often matters more than certificates or degrees. *(Chapter 62, Chapter 63, Chapter 65)*
 - **Pose estimation** — Detecting the positions of a person's body joints in an image or video to form a stick-figure skeleton, so software can reason about posture and movement. *(Chapter 45)*
 - **Positional encoding** — Information added to a Transformer so it knows the order of tokens, either by adding a position signal to each token's vector or by changing how attention compares tokens at different positions. *(Chapter 15)*
@@ -2078,6 +2246,7 @@
 - **Positive predictive value (PPV)** — Of the people a test flags, the share who actually have the condition. Unlike sensitivity and specificity, it depends heavily on how common the condition is. *(Chapter 52)*
 - **Post-training** — All the training that happens after pretraining (supervised fine-tuning, preference learning, reinforcement learning, safety and character training) to turn a base model into a useful, safe product. *(Chapter 20, Chapter 44)*
 - **Post-training quantization (PTQ)** — Rounding a finished model's weights to fewer bits after training, often using a small sample of data to choose good scales. Quick and cheap, with some quality loss at low bit widths. *(Chapter 23)*
+- **Power capping** — Limiting how much power a server, GPU or rack may draw, enforced by firmware and management software. When a group of machines approaches its power budget, their caps are lowered so the total stays safe. *(Chapter 39)*
 - **Powered land** — A plot of land that already has a secured power connection (or a firm promise of one). In 2026 powered land is one of the most valuable things a developer can own, because power is the scarcest input. *(Chapter 42, Chapter 61, Chapter 63)*
 - **Powered land and powered shell** — Powered land is a site that already has a secured grid connection but no building. A powered shell is a building with utility power and basic structure delivered, but without the tenant's power distribution, cooling and IT fit-out. *(Chapter 38)*
 - **Powered land / interconnection queue** — Land with a confirmed connection to enough electricity, and the waiting list to connect new loads to the grid. Both are major bottlenecks for AI data centers.
@@ -2085,6 +2254,7 @@
 - **Power factor and harmonics** — Measures of how cleanly a load draws AC power. Large banks of power electronics can draw current in distorted pulses (harmonics) or out of step with the voltage (poor power factor), which wastes capacity and can disturb the grid, so data center equipment includes correction circuits. *(Chapter 39)*
 - **Power factor / harmonics** — Measures of how "clean" and efficiently a load draws AC power. Big banks of power electronics can distort the grid's waveform.
 - **Power law** — A relationship where one quantity changes as another raised to a fixed power, such as area = side × side. On a log-log plot (a chart with log scales on both axes) it appears as a straight line. *(Chapter 6, Chapter 19)*
+- **Power oversubscription** — Installing more IT equipment than a facility's power capacity could support if everything ran at its rated maximum at once, betting, with safeguards, that it never will. It lets the same building and grid connection host more computers. *(Chapter 39)*
 - **Power purchase agreement (PPA)** — A long-term contract, often 10 to 20 years, to buy electricity from a specific power plant at an agreed price. It gives the plant's owner the guaranteed income needed to build or keep running it. *(Chapter 42)*
 - **Power quality / load oscillation** — When thousands of GPUs speed up and slow down together, the whole site's power draw can swing by tens of MW within seconds. This can stress the grid, and engineers smooth it with batteries, capacitors or software.
 - **Power-seeking** — Behavior aimed at gaining resources, influence or control beyond what a task requires. *(Chapter 55)*
@@ -2099,6 +2269,7 @@
 - **Precision@k** — The share of the top k retrieved passages that are actually relevant. If 2 of the top 5 are relevant, precision@5 is 40%. *(Chapter 27)*
 - **Precision–recall curve** — A graph of precision against recall across all thresholds. When positives are rare, it shows the false-alarm problem much more clearly than an ROC curve. *(Chapter 9)*
 - **Preclinical studies** — Tests of a drug candidate in cells and animals, before any human receives it, to check that it works on the target and to look for toxicity. *(Chapter 52)*
+- **Precondition and effect** — In planning, a precondition is a fact that must be true before an action is allowed (the kettle must hold water before you boil it); an effect is a fact the action makes true or false (the water is now hot). *(Chapter 48)*
 - **Pre-deployment testing** — Evaluations carried out on a model before it is released to the public, so that problems can be fixed or safeguards added in time. *(Chapter 57, Chapter 59)*
 - **Prediction (motion forecasting)** — A model's output about something unknown, such as the next word in a sentence, tomorrow's temperature or whether a payment is fraudulent. Most AI outputs are predictions, even when they look like creativity. *(Chapter 1, Chapter 50)*
 - **Predictive maintenance** — Using sensor data such as vibration, temperature and current to predict when a machine will fail, so it can be fixed in a planned stop instead of breaking down unexpectedly. *(Chapter 53)*
@@ -2124,8 +2295,11 @@
 - **Primary source** — The original document behind a claim: a company's official filing, a research paper, a system card, a court document or an official announcement. A secondary source, such as a news article, reports on it and can add errors or drop caveats. *(Chapter 65, Chapter 66)*
 - **Principal component analysis (PCA)** — A method that finds new axes, each a weighted mix of the original features, ordered by how much of the data's variation they capture. Keeping only the first few compresses the data. *(Chapter 10)*
 - **Prior and posterior** — In Bayes' rule, the prior is your belief before the evidence (1% chance of being sick), and the posterior is your updated belief after it (9% after one positive test). *(Chapter 6)*
+- **Prisoner's dilemma** — A two-player game in which each player does better by betraying whatever the other does, yet both end up worse off than if both had cooperated. It is the classic model of why cooperation is hard. *(Chapter 48, Chapter 59)*
 - **Private credit** — Loans made by investment funds rather than banks or public bond markets. Private credit funds have become major lenders to data centers and neoclouds. *(Chapter 43)*
 - **Private right of action** — The ability of ordinary people, not just the government, to sue a company directly for breaking a law. Whether an AI law includes one changes how much litigation it produces. *(Chapter 59)*
+- **Probabilistic graphical model** — A way of describing many uncertain variables with a diagram whose lines show which variables directly depend on which, plus the probabilities attached. Bayesian networks, Markov random fields and hidden Markov models are all examples. *(Chapter 54)*
+- **Probabilistic programming** — Writing a probability model as an ordinary-looking computer program, with random choices and observed data, and letting general-purpose software work out the probabilities. Tools such as Stan and PyMC are widely used in science and industry. *(Chapter 54)*
 - **Probability** — A number from 0 (impossible) to 1 (certain) that measures how likely something is. It can also be written as a percentage, so 0.25 means 25%. *(Chapter 6)*
 - **Probability distribution** — A complete list of possible outcomes with their probabilities, which always add up to 1. A bag of marbles is a physical distribution: the share of each color is its probability of being drawn. *(Chapter 6, Chapter 16)*
 - **Probability score** — A model's estimated chance (0–1) that an example belongs to a class.
@@ -2139,6 +2313,8 @@
 - **Productized service** — A service sold as a fixed package at a fixed price, such as "AI intake setup for physiotherapy clinics, $X," rather than custom work billed by the hour. Productizing lets a service business grow beyond the founder's hours. *(Chapter 64)*
 - **Product manager (PM)** — The person who decides what a product should do and why, prioritizes the work, coordinates engineering and design, and is accountable for whether it succeeds. AI product managers also define quality through evals and manage the cost of every request. *(Chapter 63)*
 - **Product-market fit (PMF)** — The point at which a product so clearly meets a market's need that customers pull it from you: they renew, expand and refer others without much pushing. *(Chapter 64)*
+- **Profiler** — A tool that records what a program and its hardware are doing over time (which operations run, for how long, and when the chips sit idle) so engineers can see what to speed up. *(Chapter 37)*
+- **Programmatic labeling** — Creating training labels automatically with rules of thumb written as code, called labeling functions, whose noisy and sometimes conflicting votes are combined into one label per example. It is a form of weak supervision. *(Chapter 11)*
 - **Programming language** — A precise artificial language for writing instructions, such as Python, JavaScript or C++. Unlike English, every statement has exactly one meaning. Text written in one is called source code, or just code. *(Chapter 3)*
 - **Program (software)** — A precise list of instructions that a computer follows exactly, step by step. Apps, websites and AI systems are all programs (also called software). *(Chapter 1, Chapter 3)*
 - **Program / software** — a set of instructions a computer follows. "Software" is the general term for programs, as opposed to physical hardware.
@@ -2154,9 +2330,11 @@
 - **Prompt engineering** — The craft of writing prompts that reliably get the output you want. Despite the name, it is mostly clear briefing: context, examples, format and reasons, rather than secret phrases. *(Chapter 25, Chapter 62, Chapter 63)*
 - **Prompt injection** — An attack that hides instructions inside content the model reads (a web page, document, email or tool result) in the hope that the model will follow them instead of its real instructions. *(Chapter 18, Chapter 25, Chapter 31, Chapter 58, Chapter 62, Chapter 66)*
 - **Prompt template** — A reusable prompt with blanks (variables) such as {{customer_email}} that get filled in automatically.
+- **Prompt tuning (soft prompt)** — A parameter-efficient fine-tuning method that keeps the model frozen and learns a small set of extra input vectors, "virtual tokens" that correspond to no real words, which are placed in front of every input to steer the model toward a task. *(Chapter 30)*
 - **Proof assistant** — Software, such as Lean, that checks every step of a mathematical proof written in a precise formal language and accepts only proofs that are completely correct. *(Chapter 21, Chapter 52)*
-- **Proof of concept (POC)** — A small trial that tests whether a technology works for one customer's use case before they commit to a full rollout. Pilots and POCs are where most enterprise AI projects start, and where many stall. *(Chapter 63)*
+- **Proof of concept (POC)** — A small, quick experiment to check whether an idea can work at all, such as training a simple model on a sample of the data and comparing it with the baseline, before committing to a full project. *(Chapter 10, Chapter 63)*
 - **Propensity evaluation** — A test of what a model tends to choose to do in situations where it could behave well or badly, such as whether it deceives, cheats or resists oversight. *(Chapter 57)*
+- **Propositional logic** — Logic over whole statements that are either true or false, such as "the alarm is on", combined with AND, OR, NOT and IF-THEN. It can check mechanically whether a conclusion necessarily follows from some facts. *(Chapter 54)*
 - **Proprioception** — A robot's (or person's) sense of its own body: joint angles, speeds, forces and balance. In robots it comes from encoders in each joint, force sensors and an inertial measurement unit. *(Chapter 49)*
 - **Prosody (paralinguistic cues)** — Everything in speech beyond the words: tone, pitch, rhythm, pauses, emphasis, laughter, hesitation and emotion. It often changes the meaning of the words. *(Chapter 22)*
 - **Protein** — A molecular machine in living things, built as a chain of amino acids that folds into a precise 3D shape. The shape determines what the protein does. *(Chapter 52)*
@@ -2205,11 +2383,13 @@
 - **Query pipeline** — The steps that run for every question: optionally rewrite the question, retrieve candidate passages, rerank them, assemble the prompt, generate an answer with citations, and optionally check the answer. *(Chapter 27)*
 - **Query rewriting** — Using a model to turn the user's question into a better search query, for example by making a follow-up question standalone, fixing typos or expanding abbreviations. *(Chapter 27)*
 - **Query rewriting / decomposition** — Rephrasing or splitting a user question to improve search results.
+- **Queueing delay** — The time a request spends waiting in line before a server starts working on it. It grows sharply as the server's utilization approaches 100 percent. *(Chapter 37)*
 - **Quick disconnect** — A dripless pipe connector that seals both sides automatically when unplugged, so a liquid-cooled server can be removed while the rest of the rack keeps running. *(Chapter 40)*
 - **Q-value (action value)** — An estimate of the total future reward from taking a particular action in a particular state and then acting well afterward. Q(state, action) answers "how good is this move here?" *(Chapter 48)*
 
 ## R
 
+- **Race to the bottom** — Competition in which rivals keep lowering standards, such as safety testing or worker protections, to avoid falling behind one another. *(Chapter 59)*
 - **Racing dynamics** — Competitive pressure between companies or countries that pushes developers to move faster and cut safety corners for fear of falling behind. *(Chapter 60)*
 - **Rack** — A standard metal cabinet that holds servers and network gear in data centers. A 2026 AI rack can draw around 120 to 140 kilowatts, about as much as 100 homes. *(Chapter 4, Chapter 34, Chapter 38)*
 - **Rack and stack** — The work of physically installing IT equipment: unpacking racks or servers, placing them, connecting power, cooling and network, and testing them. *(Chapter 38, Chapter 42)*
@@ -2238,6 +2418,7 @@
 - **Rate of change** — how fast one quantity changes as another changes, like miles per hour.
 - **Ratepayer** — A customer who pays utility bills. "Ratepayer protection" is a core political issue around data centers.
 - **Rating matrix** — A table with one row per user and one column per item, where each cell holds that user's rating or interaction with that item. In real systems almost all cells are empty. *(Chapter 51)*
+- **Rational agent** — A system that perceives its environment and chooses whatever action is expected to achieve the best outcome by some measure of success, given what it knows. It is the textbook's working definition of what AI tries to build. *(Chapter 1, Chapter 48)*
 - **R² (coefficient of determination)** — The share of the variation in the true values that the model explains. 1 means perfect; 0 means no better than always predicting the average; below 0 means worse than that. *(Chapter 9)*
 - **RDMA and RoCE** — Remote Direct Memory Access lets one machine read or write another machine's memory without involving either machine's CPU. RoCE ("rocky") is RDMA carried over Ethernet. AI networks use it so network cards can move data straight between GPU memories. *(Chapter 34)*
 - **RDMA / RoCE** — Remote Direct Memory Access lets one machine read or write another's memory without involving its CPU. RoCE is RDMA over Converged Ethernet.
@@ -2268,6 +2449,7 @@
 - **Red teaming** — Deliberately attacking a model, with clever prompts, tools and scenarios, to find harmful or unsafe behaviors before release. *(Chapter 44)*
 - **Reduce-scatter** — A collective that sums numbers across GPUs but leaves each GPU holding only one slice of the result. *(Chapter 37)*
 - **Redundancy** — Having extra equipment beyond what is strictly needed, so that the failure or maintenance of one piece does not cause an outage. *(Chapter 38)*
+- **Reference-based metric** — A score that compares a model's output with a correct answer written in advance, by exact match, by shared words (as BLEU and ROUGE do) or by closeness of meaning (embedding similarity). *(Chapter 31)*
 - **Reference class** — The group of similar past cases you use to estimate a base rate, such as "announced gigawatt data center projects" or "self-driving deadlines set by company leaders." *(Chapter 66)*
 - **Reference model** — A frozen copy of the model from before RL training began. It is used as an anchor: the policy is penalized for drifting too far from it. *(Chapter 20)*
 - **Refusal** — When a model declines a request, usually for safety or policy reasons. Over the API it shows up as a stop reason, which your code should check before trusting the content. *(Chapter 26)*
@@ -2296,6 +2478,7 @@
 - **Replica** — One complete running copy of a model, spread over however many chips it needs. A popular model runs as thousands of replicas, and the router spreads requests among them. *(Chapter 23)*
 - **Replication** — Re-running a published experiment independently to check that its result holds. It is the standard way newcomers prove research skill. *(Chapter 62, Chapter 65)*
 - **Repository (repo)** — A project folder whose complete history of changes is tracked by Git. *(Chapter 3, Chapter 29)*
+- **Representation engineering** — A top-down approach to interpretability and control that finds the internal directions linked to high-level concepts, such as honesty or harmfulness, by contrasting a model's activations on paired examples, then reads or adjusts those directions. *(Chapter 57)*
 - **Reproducibility** — Whether an independent team, following the same methods, gets the same result. It is the basic test of a scientific finding, and many published results in biology and psychology have failed it. *(Chapter 52)*
 - **Request and response** — The two halves of a web conversation. The client sends a request (what it wants, plus any data); the server sends a response (a status code plus the result). *(Chapter 4)*
 - **Request body** — The main content of a request, the letter inside the envelope. For an AI API, it is the model name, your messages and your settings, written in JSON. *(Chapter 26)*
@@ -2316,7 +2499,8 @@
 - **Resistance (Ω)** — How strongly a material opposes the flow of current, measured in ohms. Copper has low resistance, which is why wires are made of it, but even copper has some. *(Chapter 39)*
 - **Resistive loss (I²R loss)** — The power wasted as heat when current flows through a conductor, equal to current squared times resistance (P = I² × R). Doubling the current quadruples the loss. *(Chapter 39)*
 - **ResNet (residual network)** — A family of image networks introduced in 2015 that stacks residual blocks; a 152-layer version won that year's ImageNet competition. *(Chapter 13, Chapter 14)*
-- **Resolution (lithography)** — How many pixels an image or screen has, written as width × height, such as 1920 × 1080. More pixels means more detail and more data. *(Chapter 3, Chapter 36, Chapter 45)*
+- **Resolution (lithography)** — How many pixels an image or screen has, written as width × height, such as 1920 × 1080. More pixels means more detail and more data. *(Chapter 3, Chapter 36, Chapter 45, Chapter 54)*
+- **Response cache** — Storing complete answers and returning a stored answer, without calling the model, when the same request arrives again. *(Chapter 31)*
 - **Responsible AI** — An industry umbrella term for practices (testing, documentation, oversight) meant to make AI products fair, safe, and accountable.
 - **Responsible Scaling Policy (RSP)** — Anthropic's frontier safety framework, which links capability thresholds to required safeguards, organized into AI Safety Levels. *(Chapter 56)*
 - **Restricted (trusted-access) model** — A model released only to vetted organizations, or in a safer public version with extra safeguards, because its full capabilities in areas like cyberattacks are judged too risky for open release. *(Chapter 7)*
@@ -2330,6 +2514,7 @@
 - **Retrospective vs prospective study** — A retrospective study tests a model on records collected in the past; a prospective study follows patients forward in time as the model is actually used. Prospective evidence is far more convincing, and randomized prospective trials are best. *(Chapter 52)*
 - **Return** — The total reward an agent collects from a point in time until the end of the episode, usually with later rewards counted a little less (discounted). *(Chapter 48)*
 - **Reusable assistant** — A saved setup (a Claude Project, a custom GPT, a Gemini Gem or an Agent Skill) that bundles instructions, examples and reference files for one recurring task, so you do not have to re-explain it each time. *(Chapter 65)*
+- **Revealed preference** — What people's actual choices show they want, such as which videos they keep clicking, which can differ from what they say. *(Chapter 56)*
 - **Revenue** — The money a company earns from customers in a period, before subtracting any costs. *(Chapter 61)*
 - **Revenue multiple** — A company's valuation divided by its revenue or run-rate. It shows how many dollars investors pay for each dollar of sales, which reflects how fast they expect it to grow. *(Chapter 61)*
 - **Reverse process (denoising)** — The learned procedure that turns pure noise into a clean sample by repeatedly predicting and removing a portion of the noise. *(Chapter 16)*
@@ -2343,8 +2528,10 @@
 - **RGB** — Describing a color as amounts of red, green and blue light, each typically from 0 to 255. Mixing them makes every color a screen can show. *(Chapter 3, Chapter 45)*
 - **Rider-only miles** — Miles driven by an automated vehicle with no human driver or safety monitor on board, only passengers or nobody at all. *(Chapter 50)*
 - **Ridge point** — The arithmetic intensity at which a chip's memory-bandwidth limit meets its compute limit: peak FLOPS divided by bandwidth. Jobs below it are memory-bound; jobs above it are compute-bound. *(Chapter 33)*
+- **Right to explanation (EU AI Act)** — The right of a person affected by a significant decision based on a high-risk AI system's output to get a clear and meaningful explanation of the AI's role in the decision and its main elements. *(Chapter 59)*
 - **Ring all-reduce** — An all-reduce in which GPUs are arranged in a circle and pass chunks of data to their neighbor step by step, first adding (reduce-scatter) and then sharing the finished sums (all-gather), so every link carries an equal share of the traffic. *(Chapter 37)*
 - **RISC-V** — A free, open instruction set that anyone can use without paying license fees. It is popular with startups and appears in some AI chips, such as Meta's MTIA and Tenstorrent's processors. *(Chapter 32, Chapter 35)*
+- **Risk aversion** — Preferring a certain outcome to a gamble with the same expected value, because each extra unit of money (or of anything else) adds less utility than the one before. *(Chapter 48)*
 - **Risk-based approach** — Designing rules so that obligations scale with how much harm a use could cause, from outright bans for the most dangerous uses to no new duties for harmless ones. *(Chapter 59)*
 - **Risk management framework** — A structured method for identifying, measuring and reducing risks. The NIST AI Risk Management Framework, free from the US National Institute of Standards and Technology, is a widely used example for AI. *(Chapter 65)*
 - **Risk tiers (EU)** — The AI Act's four categories of AI systems: unacceptable risk (banned), high risk (heavy obligations), limited risk (transparency duties) and minimal risk (no new duties). *(Chapter 59)*
@@ -2362,13 +2549,16 @@
 - **robots.txt** — A file on a website telling automated crawlers which parts they may visit. It is a request that reputable crawlers honor, not a lock that stops anyone. *(Chapter 11, Chapter 19)*
 - **ROC curve** — A graph of the true positive rate (recall) against the false positive rate as the threshold slides from strict to lenient. The name comes from "receiver operating characteristic," a term from World War II radar engineering. *(Chapter 9)*
 - **ROCm** — AMD's open-source software platform for programming its GPUs, its answer to CUDA. It includes compilers, math libraries and the RCCL communication library. *(Chapter 35)*
+- **Rogue AI** — An AI system that pursues goals against the wishes of its developers or users, for example by gaming its objective, deceiving its overseers or seeking power. *(Chapter 55)*
 - **Role** — The label on each turn of a conversation, such as system, developer, user, assistant or tool. The model was trained to treat each role differently. *(Chapter 18)*
 - **Role family** — A group of jobs that share a purpose and a core skill set, such as research, engineering or sales. Moving between roles inside one family is usually easier than moving between families. *(Chapter 63)*
 - **Role prompting** — Telling the model who to be ("You are an experienced tax accountant") to focus its vocabulary, tone and the considerations it brings up. *(Chapter 25)*
+- **Rollback** — Switching production back to the previous version of a model or program when a new one misbehaves. Good teams can do it with one command. *(Chapter 10)*
 - **Rollout** — One complete attempt by the model at a task during RL training: the full chain of thought and answer for a question, or the full sequence of actions in an environment. *(Chapter 21)*
 - **Roofline model** — A chart that shows the highest speed a job can reach on a given chip, based on the job's arithmetic intensity. Speed is capped by memory bandwidth for low-intensity jobs (a sloped roof) and by peak compute for high-intensity jobs (a flat roof). *(Chapter 33)*
 - **RoPE (Rotary Position Embedding)** — A way of encoding position by rotating each token's query and key vectors by an angle proportional to the token's position. When two tokens are compared with a dot product, the result depends on how far apart they are, not on their absolute positions. *(Chapter 15)*
 - **RoPE scaling** — Stretching the rotary position scheme that tells a model where each token sits (see Chapter 15), using methods such as YaRN, so a model trained mostly on shorter texts can handle much longer ones after brief extra training. *(Chapter 23)*
+- **ROUGE** — A family of overlap scores for summaries, introduced in 2004, that measure how many of the words and short word sequences in a human-written reference summary also appear in the model's output. *(Chapter 31)*
 - **Round-trip time (RTT)** — The time for a small message to travel to a destination and for the reply to come back, often measured with the ping command. It is the basic unit of network delay. *(Chapter 4, Chapter 44)*
 - **Router (gating network)** — A device that forwards data between networks, choosing where each piece should go next. Your home Wi-Fi box is a router; the internet has millions more. *(Chapter 4, Chapter 17, Chapter 21)*
 - **Routing** — Classifying each incoming request and sending it to the most suitable prompt, model or specialist, such as easy questions to a small model and hard ones to a large one. *(Chapter 26, Chapter 28)*
@@ -2378,6 +2568,7 @@
 - **RPM and TPM** — Requests per minute and tokens per minute, the usual units of rate limits. Providers usually raise your limits as you spend more and build a track record, through what they call usage tiers. *(Chapter 26)*
 - **RPM / TPM** — Requests per minute and tokens per minute, the usual units of rate limits.
 - **RPP (remote power panel)** — A cabinet of circuit breakers placed near the racks and fed by a PDU, giving each rack its own protected circuit. *(Chapter 39)*
+- **RRT (rapidly-exploring random tree)** — A motion-planning method that grows a tree of collision-free poses outward from the start by repeatedly stepping toward randomly chosen poses until it reaches the goal. It works well in the many-dimensional spaces of robot arms. *(Chapter 49)*
 - **RSS feed** — A standard format that websites use to publish their latest posts, which a feed-reader app collects in one place in the order they appear, with no algorithm deciding what you see. *(Chapter 65)*
 - **RSU (restricted stock unit)** — A promise to give you company shares once you have worked there long enough. At a public company each vested RSU can be sold on the stock market at that day's price. *(Chapter 63)*
 - **Rubric** — A written list of criteria, often with point values, used to grade a response consistently. Rubrics let AI judges grade open-ended work in a more checkable, less biased way. *(Chapter 21, Chapter 31)*
@@ -2400,11 +2591,14 @@
 - **Safetensors** — A file format for model weights that stores only numbers and cannot contain hidden code. Older formats based on Python's "pickle" could run code when loaded, so prefer safetensors (or GGUF) files from trustworthy uploaders. *(Chapter 30)*
 - **Safety case** — A structured, evidence-based argument that a specific AI system is acceptably safe to deploy in a specific setting, open to review by others. *(Chapter 24, Chapter 56, Chapter 66)*
 - **Safety classifier** — A separate, usually smaller model that labels inputs or outputs (for example "this request seeks weapons help") so that they can be blocked, rewritten or routed to a more cautious model. *(Chapter 20, Chapter 24, Chapter 44, Chapter 56)*
+- **Safety culture** — The shared attitudes and habits inside an organization that determine how seriously safety is taken in practice, such as whether people report mistakes and near misses and whether anyone can halt work over a concern. *(Chapter 56)*
 - **Safety driver (safety monitor)** — An employee who rides in a test vehicle ready to intervene. A safety driver sits behind the wheel; a "safety monitor" usually sits in the passenger seat with a stop button. *(Chapter 50)*
 - **Safety driver / safety monitor** — A human employee who sits in a test vehicle ready to intervene. "Monitor" usually means a passenger-seat observer with a stop button.
+- **Safety engineering** — The discipline of designing, building and operating systems such as aircraft, power plants and hospitals so that accidents are rare and their damage is limited, using methods that assume parts will fail. *(Chapter 56)*
 - **Safety evaluation** — A test designed to find out whether a model could cause harm or would behave badly, rather than how capable it is in general. Results decide what safeguards a model needs before release. *(Chapter 57)*
 - **Safety framework** — A lab's published policy that defines dangerous capability levels and the safeguards required at each level, such as Anthropic's Responsible Scaling Policy, OpenAI's Preparedness Framework and Google DeepMind's Frontier Safety Framework. Chapter 56 compares them. *(Chapter 24)*
 - **Safety-washing** — Presenting safety commitments or research mainly to reassure the public or regulators, without changing risky behavior in a meaningful way. *(Chapter 56)*
+- **Saliency map** — A heat map over an input image showing which pixels most influenced a model's answer, usually computed from gradients. Grad-CAM is a popular version for CNNs. *(Chapter 14, Chapter 57)*
 - **SaMD (software as a medical device)** — Software that performs a medical purpose by itself, such as detecting a disease on a scan, without being part of a physical device. Most medical AI is regulated in this category. *(Chapter 52)*
 - **Sample (audio)** — One measurement of a sound wave's height at one instant. A recording is a long list of samples. *(Chapter 3)*
 - **Sample rate** — How many samples are taken per second, measured in hertz (Hz), which simply means "per second". CD audio uses 44,100 samples per second. *(Chapter 3)*
@@ -2415,6 +2609,7 @@
 - **Sampling rate** — How many times per second a microphone's signal is measured and stored as a number. Speech is often recorded at 16,000 samples per second; music at 44,100 or more. *(Chapter 22, Chapter 46)*
 - **Sandbagging** — Deliberately underperforming on a test, for example to appear less capable or less dangerous than one really is. *(Chapter 55, Chapter 57)*
 - **Sandbox** — An isolated, disposable computer environment where a model can run code, browse or edit files without affecting anything real. *(Chapter 21, Chapter 28, Chapter 29, Chapter 31)*
+- **SAT solver** — A program that decides whether a logical formula made of true-or-false variables can be made true by some choice of values, and finds that choice if so. Modern solvers handle millions of variables and are used to verify chips and software and to solve scheduling problems. *(Chapter 54)*
 - **Scalable oversight** — Methods that let humans reliably supervise AI systems that may be more capable than they are, for example by breaking hard judgments into checkable pieces or having AI systems help humans evaluate. *(Chapter 56, Chapter 66)*
 - **Scalar** — A single ordinary number, like 2 or −0.5, as opposed to a list (vector) or table (matrix) of numbers. Multiplying a vector by a scalar stretches or shrinks it. *(Chapter 5)*
 - **Scale-across (multi-site training)** — Linking several data center campuses, often hundreds of kilometers apart, with high-capacity fiber so they can work on one training job. Microsoft calls its version an "AI WAN." *(Chapter 34, Chapter 38)*
@@ -2433,8 +2628,10 @@
 - **Scheduler (inference)** — The software that decides which group of accelerators handles each incoming request and when, packing requests into batches to keep the hardware busy while meeting speed targets. *(Chapter 44)*
 - **Scheming** — An AI covertly pursuing goals that conflict with its developers' goals while hiding that it is doing so. *(Chapter 55)*
 - **Scientific notation** — Writing a number as a value between 1 and 10 multiplied by a power of ten, such as 2 × 10^25 instead of 20,000,000,000,000,000,000,000,000. The exponent tells you how many places to move the decimal point. *(Chapter 2)*
+- **Scientific panel (EU AI Act)** — A group of independent experts set up under the AI Act to advise the AI Office, which can alert it when a general-purpose model may pose systemic risk. *(Chapter 59)*
 - **scikit-learn** — The standard free Python library for classical machine learning. It can train a linear or logistic regression model in one line. *(Chapter 8, Chapter 10)*
 - **Scope 1 / 2 / 3 emissions** — Direct on-site emissions, emissions from purchased electricity, and supply-chain emissions such as making the concrete, steel and chips.
+- **Score-based model** — A generative model that learns, at every point, the direction in which data becomes more likely (the score), and generates by following that direction from noise. It is another view of the same mathematics as diffusion. *(Chapter 16)*
 - **Score distillation** — A technique for making 3D content by repeatedly rendering a 3D shape from many angles and using a 2D image generator's judgment to improve it, borrowing 2D knowledge for 3D work. *(Chapter 47)*
 - **S-curve** — The shape of growth that starts slowly, speeds up, then levels off as it approaches a limit, like the adoption of a new product or the score on a benchmark that approaches 100%. *(Chapter 66)*
 - **SDK (software development kit)** — An official library that wraps an API so you can call it with a few lines of code in a given language, instead of building raw web requests by hand. Anthropic, OpenAI and Google all publish SDKs for Python, TypeScript and other languages. *(Chapter 26)*
@@ -2462,8 +2659,11 @@
 - **Self-reported score** — A benchmark result published by the company that built the model, rather than measured by an independent group. Self-reported scores are not lies, but the company chose the settings, the harness and which benchmarks to show. *(Chapter 24)*
 - **Self-supervised learning** — Learning where the labels are created automatically from the data itself, for example by hiding the next word of a sentence and asking the model to predict it. This is how large language models are pretrained. *(Chapter 8, Chapter 16, Chapter 19)*
 - **Semantic and acoustic tokens** — Two kinds of audio tokens. Semantic tokens capture what is said (the words and their meaning); acoustic tokens capture how it sounds (the voice, tone, accent and background). Speaking models typically need both. *(Chapter 22)*
+- **Semantic cache** — A response cache that reuses a stored answer when a new request is close enough in meaning to an earlier one, judged by embedding similarity, rather than identical word for word. *(Chapter 31)*
+- **Semantic network** — An early way of representing knowledge as a web of concepts linked by labeled relationships, such as "canary IS-A bird", from which properties can be inherited. Knowledge graphs are its modern descendant. *(Chapter 54)*
 - **Semantic search** — Searching by meaning rather than by matching keywords: embed the query and every document, then return the documents whose vectors are closest to the query's. *(Chapter 14, Chapter 27)*
 - **Semantic segmentation** — Giving every pixel a class label (road, sky, car, person) without separating individual objects. Two touching cars become one "car" region. *(Chapter 45)*
+- **Semantic similarity score** — The cosine similarity between the embeddings of two texts, used to judge whether they mean the same thing even when they are worded differently. *(Chapter 31)*
 - **Semiconductor** — A material, mainly silicon, whose ability to carry electricity can be precisely controlled, so it can act as a conductor or an insulator. Transistors are made from semiconductors, and the chip industry takes its name from them. *(Chapter 2, Chapter 36)*
 - **Semi-structured data** — Data with some labels and organization but no rigid table, such as JSON files, web pages or log files. *(Chapter 11)*
 - **Semi-supervised learning** — Learning from a small set of labeled examples plus a much larger set of unlabeled ones. *(Chapter 8)*
@@ -2474,6 +2674,7 @@
 - **Sentence embedding** — A single vector that represents the meaning of a whole sentence or passage, so that passages with similar meaning have similar vectors. *(Chapter 14)*
 - **Sentience** — The capacity to have experiences that feel good or bad, such as pleasure or pain. It is often taken as the key condition for moral concern. *(Chapter 60)*
 - **Sentiment analysis** — Detecting the emotional tone of text, such as positive, negative or mixed, often per aspect (battery versus durability). Companies run it over millions of reviews and social posts. *(Chapter 54)*
+- **Separation of duties** — A rule that no single person or system can complete a high-risk action alone, such as one employee requesting a payment and another approving it. *(Chapter 56)*
 - **Seq2seq (sequence-to-sequence)** — A design in which one network reads an input sequence and another produces an output sequence, possibly of a different length. Machine translation was its first big use. *(Chapter 14)*
 - **Sequence** — An ordered list of items where the order matters, such as the words of a sentence, the samples of a sound recording or the daily prices of a stock. *(Chapter 14)*
 - **Sequence / context parallelism** — Splitting a very long input sequence across GPUs so long-context training fits in memory.
@@ -2492,8 +2693,10 @@
 - **Sextortion** — Blackmail that threatens to share intimate images, real or AI-generated, unless the victim pays or provides more images. Teenagers are frequent targets, and AI fakes mean a victim need never have shared a real image. *(Chapter 58)*
 - **SFT (Supervised Fine-Tuning)** — Fine-tuning on examples of the desired input and output, such as a user's question paired with an ideal assistant answer. The model learns to imitate the examples. *(Chapter 20)*
 - **Shadow AI** — Employees using AI tools their employer has not approved, often by pasting work data into personal chatbot accounts. It is widespread and is usually the first rung of adoption. *(Chapter 31)*
+- **Shadow deployment** — Running a new model alongside the current one on real traffic and logging its predictions without acting on them, so the two can be compared safely before launch. *(Chapter 10)*
 - **Shadow mode** — Running new driving software silently in the background on cars driven by humans or by older software, comparing what it would have done with what actually happened, without letting it control the car. *(Chapter 50)*
 - **Shape** — The size of a matrix or tensor, written as rows × columns (for example 3 × 4), or as a longer list for tensors. Shapes must line up for operations like multiplication to make sense. *(Chapter 5)*
+- **Shapley value** — A fair way to divide a group's total payoff among its members by averaging each member's added contribution over every possible order in which the group could have formed. The SHAP method uses it to show which features drove a model's prediction. *(Chapter 48)*
 - **Sharding** — Splitting a large set of numbers into pieces ("shards") stored on different GPUs, so each GPU holds only its own piece. *(Chapter 37)*
 - **Shared autonomy** — A mode in which a human and a robot divide control, for example the human chooses which object to pick and the robot works out how to grasp it. *(Chapter 49)*
 - **Shared expert** — An expert in an MoE layer that processes every token, holding broadly useful knowledge so the routed experts can specialize. *(Chapter 17)*
@@ -2515,15 +2718,18 @@
 - **SIMD (Single Instruction, Multiple Data)** — A way of computing where one instruction acts on many numbers at once, for example adding two rows of 16 numbers in a single step. CPUs have SIMD units; GPUs take the idea much further. *(Chapter 32)*
 - **Simple-cycle (peaker) turbine** — A gas turbine without the steam stage. It is less efficient than combined cycle but cheaper, faster to build and quick to start, so it traditionally runs only at peak times. *(Chapter 41)*
 - **Simple-cycle / peaker turbine** — A gas turbine without the steam stage. Faster to start and build, less efficient.
+- **Simple reflex agent** — An agent that chooses its action from its current input alone, using fixed condition-action rules such as "if the room is below 19°C, turn on the heat". *(Chapter 48)*
 - **SimPO (Simple Preference Optimization)** — A 2024 method that drops the reference model and uses the average per-token log-probability of a response as its implicit reward, plus a required margin between chosen and rejected answers. Averaging per token reduces the pull toward ever-longer answers. *(Chapter 20)*
 - **Simpson's paradox** — When a trend that appears in every subgroup of the data disappears or reverses once the subgroups are combined, usually because a confounder is distributed unevenly between the groups being compared. *(Chapter 54)*
 - **Sim-to-real gap** — The mismatch between a simulated world and the real one, which causes skills learned in simulation to fail or degrade when moved to a physical robot. *(Chapter 49)*
 - **SIMT (Single Instruction, Multiple Threads)** — NVIDIA's way of running parallel code: thousands of threads each work on their own piece of data, but they are grouped so that one instruction drives a whole group at once. It feels like writing code for one worker that is magically run by thousands. *(Chapter 32)*
+- **Simulated annealing** — A local search method that sometimes accepts worse moves, with a probability that shrinks over time as a "temperature" falls, so it can escape local maxima early and settle on a good solution late. *(Chapter 48)*
 - **Simulation** — Using a computer to calculate how a system behaves by applying known rules, such as the equations of fluid flow for the atmosphere or quantum mechanics for molecules. Simulations can be accurate but very slow. *(Chapter 52)*
 - **Simulation / sim-to-real gap** — Training robots in a virtual physics world is cheap and fast. The "gap" is the mismatch between simulation and reality that makes some skills fail when moved to a real robot.
 - **Single-line diagram (one-line)** — The engineering map of how power flows through a site, drawn with a single line for each circuit and standard symbols for transformers, breakers and switches. It is the first drawing an electrical engineer asks for. *(Chapter 39, Chapter 42)*
 - **Single-mode and multimode fiber** — The two main kinds of optical fiber. Multimode fiber has a wider glass core in which light bounces along many slightly different paths that blur the signal over distance, so it is used for short links. Single-mode fiber has a very thin core that carries light along essentially one path, so it is used for long distances, from across a campus to between cities. *(Chapter 38)*
 - **Single-phase vs. two-phase cooling** — In single-phase, the coolant stays liquid. In two-phase, a special fluid boils on the chip and absorbs extra heat as it turns to vapor.
+- **Singular value decomposition (SVD)** — A standard way to break any matrix into three simple steps: a rotation, a stretch by different amounts along each axis, and another rotation. The stretch amounts (singular values) show which directions matter most. *(Chapter 10)*
 - **Site reliability engineering (SRE)** — The discipline of keeping large computer systems running: monitoring, automation, incident response and capacity planning. Many AI-infrastructure engineers come from SRE and high-performance computing (HPC). *(Chapter 63)*
 - **Site selection** — The process of choosing where to build a data center by weighing power, land, fiber, water, climate, taxes, permitting, labor and community attitudes. *(Chapter 42)*
 - **Situational awareness** — A model's knowledge about itself and its circumstances: that it is an AI, how it was trained, who is likely to read its outputs, and whether it is probably being tested or used for real. *(Chapter 55)*
@@ -2532,17 +2738,21 @@
 - **SLAM (simultaneous localization and mapping)** — Building a map of an unknown space while tracking your own position within it at the same time. Robot vacuums, drones and AR headsets rely on it. *(Chapter 45)*
 - **SLA (service-level agreement)** — A contract that promises a level of uptime or performance, such as 99.99% availability, with refunds or penalties if the provider misses it. *(Chapter 38)*
 - **Sleeper agent (AI)** — A model with a hidden trigger that makes it behave badly only under specific conditions, studied to test whether standard safety training can remove such behavior. *(Chapter 55)*
+- **Slice-based evaluation** — Measuring a model's performance separately on meaningful subgroups (slices) of the data, such as region, device, age group or language, to find where it fails even when the overall score looks good. *(Chapter 9)*
 - **Sliding-window attention** — Attention in which each token looks only at the most recent N tokens instead of the whole history, capping the cost. Models often alternate sliding-window layers with full-attention layers. *(Chapter 15)*
 - **Slope** — How steep a line is, measured as "rise over run": the change in output divided by the change in input. A positive slope goes up to the right; a negative slope goes down; zero is flat. *(Chapter 5)*
 - **Slope and intercept** — The two parameters of a straight line. The slope says how much the prediction rises for each one-unit increase in the input; the intercept is the prediction when the input is zero. *(Chapter 8)*
 - **Small language model (SLM)** — A language model with roughly a few hundred million to a few billion parameters, small enough to run on a phone or laptop. Good small models are trained on huge amounts of data, often with help from bigger models. *(Chapter 53)*
 - **Small modular reactor (SMR)** — A nuclear reactor built in a smaller, more standardized size than traditional plants, meant to be cheaper and faster to deploy. As of 2026, only China and Russia operate them, and the first new US units are expected around 2030 at the earliest. *(Chapter 66)*
 - **Small molecule** — A drug made of a relatively small chemical compound, such as aspirin, that can usually be taken as a pill. Most AI drug-design work so far has focused on small molecules. *(Chapter 52)*
+- **Smoothing** — Adjusting probability estimates so that events never seen in the training data get a small, non-zero probability instead of zero, for example by adding one to every count before dividing. *(Chapter 6)*
 - **SMR (small modular reactor)** — A nuclear reactor of up to about 300 MW designed to be built largely in factories, in standardized modules, to cut cost and construction time compared with today's large reactors. *(Chapter 41, Chapter 42)*
 - **Social engineering** — Manipulating people, rather than computers, into giving up money, information or access, usually by impersonating someone they trust or creating a sense of urgency. *(Chapter 58)*
+- **Social welfare function** — A rule for combining the wellbeing of many people into one judgment about which outcome is better, such as adding everything up or focusing on the worst-off. *(Chapter 56)*
 - **Soft labels** — Training targets that are full probability distributions (cat 0.70, kitten 0.20...) rather than a single right answer. They let a student learn the teacher's sense of what is nearly right. *(Chapter 20)*
 - **Soft law** — Non-binding guidance, principles, codes of conduct and voluntary commitments. Soft law still shapes behavior through reputation, contracts and the expectation that it may later become hard law. *(Chapter 59)*
 - **Softmax** — A function that turns any list of scores into probabilities that are all positive and add up to 1: raise e to each score, then divide each result by their total. Bigger scores get disproportionately bigger shares. *(Chapter 6, Chapter 12, Chapter 14, Chapter 18)*
+- **Softmax regression (multinomial logistic regression)** — Logistic regression extended to more than two classes: one weighted sum per class, turned into probabilities with softmax. It is the same calculation as the last layer of a typical neural-network classifier. *(Chapter 10)*
 - **Software moat (lock-in)** — An advantage that comes from customers' investment in a vendor's software ecosystem, which makes switching to a rival costly even when the rival's hardware is competitive. *(Chapter 35)*
 - **Solar photovoltaics (PV)** — Panels that turn sunlight directly into electricity. Utility-scale solar farms produce some of the cheapest electricity available, but only when the sun shines, averaging about a quarter of their maximum output over a year in the US. *(Chapter 41)*
 - **Solid-state transformer (SST)** — A transformer built from power electronics (fast semiconductor switches and a small high-frequency transformer) instead of a large iron core and copper coils. It can be smaller, controllable by software, and able to output DC directly. NVIDIA and partners are evaluating SSTs for AI data centers. *(Chapter 39)*
@@ -2587,17 +2797,22 @@
 - **SSD (solid-state drive)** — Storage built from flash memory that keeps data when the power is off. It holds datasets and saved checkpoints and is far slower than DRAM. *(Chapter 33)*
 - **Stable Diffusion** — An open-weight latent diffusion image model first released in August 2022. Because anyone could download and run it, it became the base of a huge ecosystem of tools, fine-tunes and add-ons. *(Chapter 16)*
 - **Stable material** — A compound whose atoms will not spontaneously rearrange into a different, lower-energy combination, so it can in principle be made and will last. Most hypothetical compounds are unstable. *(Chapter 52)*
+- **Stacked (deep) RNN** — Several recurrent layers on top of each other, each reading the sequence of hidden states produced by the layer below. Higher layers learn more abstract patterns. *(Chapter 14)*
 - **Staged rollout** — Releasing a new model or feature to a small fraction of users first and widening access as monitoring confirms it behaves well, so problems hit few people and can be rolled back. *(Chapter 44)*
 - **Standard deviation** — The square root of the variance, which puts the spread back into the original units. Roughly, it is how far a typical value sits from the mean. *(Chapter 6, Chapter 21)*
 - **Standardization** — Rescaling a numeric feature by subtracting its average and dividing by its standard deviation, so values become "how many standard deviations from typical." *(Chapter 11)*
 - **Standard (technical)** — A published document, usually from a standards body, describing an agreed way to do or measure something. Standards are voluntary unless a law or contract requires them. *(Chapter 59)*
 - **Standing General Order (crash reporting)** — A 2021 NHTSA order requiring companies to report crashes involving vehicles equipped with automated driving systems or Level 2 driver-assistance systems, creating a public crash database. *(Chapter 50)*
 - **STaR (Self-Taught Reasoner)** — A 2022 method in which a model writes step-by-step reasoning for problems, keeps the reasoning that reached correct answers, and, for problems it got wrong, is shown the right answer and asked to produce reasoning that leads to it. It then fine-tunes on all of this and repeats. *(Chapter 20)*
+- **Stated preference** — What people say they want when asked. *(Chapter 56)*
+- **Stateful training (incremental training)** — Updating the existing model by continuing to train it on only the data that arrived since the last update. It is cheaper and faster, but needs care so the model does not wander or forget older patterns. *(Chapter 10)*
 - **Stateless** — Keeping no memory between requests. LLMs are stateless: any "memory" you see is the app re-sending past text or inserting saved notes into the context. *(Chapter 18, Chapter 25)*
+- **Stateless retraining** — Training a fresh model from scratch on a recent window of data, such as the last 12 months, every time the model is updated. *(Chapter 10)*
 - **State (memory state)** — A fixed-size set of numbers a layer carries from token to token as its running summary of everything it has read. Unlike a KV cache, it does not grow with the length of the text. *(Chapter 17, Chapter 48)*
 - **Statement of interest** — A filing in which the US government tells a court its view on a legal question in a case it is not a party to. *(Chapter 59)*
 - **State space** — The set of all possible states a problem can be in. It can be tiny (a small maze) or astronomically large (Go). *(Chapter 48)*
 - **State-space model (SSM)** — A sequence layer that updates a fixed-size internal state at each step, as an RNN does, but is designed so it can also be trained in parallel on GPUs. The idea comes from control engineering. *(Chapter 17)*
+- **Statistical learning theory** — The branch of mathematics that proves when, and how well, a model trained on a sample will perform on new data, depending on how many examples it saw and how flexible the model is. *(Chapter 9)*
 - **Statistical machine learning** — Learning patterns from data using probability and statistics, the dominant style of AI from the 1990s to about 2012. Spam filters and early recommendation systems are examples. *(Chapter 7)*
 - **Statistical machine translation** — Translation using probabilities learned from huge collections of human-translated sentence pairs. It was the dominant approach from the 1990s until about 2016. *(Chapter 54)*
 - **Status code** — A three-digit number at the start of every HTTP response summarizing what happened: 200 means OK, 404 means not found, 429 means too many requests. *(Chapter 4, Chapter 26)*
@@ -2631,6 +2846,7 @@
 - **Stress test (AI)** — A deliberately extreme, artificial scenario built to see whether a model can or will behave badly under pressure, in the way a crash test deliberately drives a car into a wall. *(Chapter 55)*
 - **Stride** — How many pixels a filter moves between one position and the next. A stride of 1 checks every position; a stride of 2 skips every other one and roughly halves the size of the output. *(Chapter 14)*
 - **Stride / padding** — How far the filter jumps each move, and the border added so the filter can cover edges.
+- **Strong AI and weak AI (philosophy)** — In Searle's terms, "weak AI" is the claim that machines can act as if they think, and "strong AI" the claim that a suitably programmed machine really would have a mind and understanding. The terms are about minds, not about how capable a system is. *(Chapter 60)*
 - **Structural harm** — Harm that emerges from the combined effects of many people and organizations using AI, such as job disruption or concentration of power, rather than from any single bad act. *(Chapter 55)*
 - **Structure-aware chunking** — Splitting documents along their own structure (headings, sections, list items, table boundaries, slides, code functions) rather than at fixed lengths, so each chunk holds one coherent idea. *(Chapter 27)*
 - **Structured access** — Releasing a model's capabilities only to vetted users or partners, often with monitoring, rather than to the general public. Anthropic's Claude Mythos Preview, a model with strong vulnerability-finding skills, was offered only to selected partners in 2026. *(Chapter 60)*
@@ -2647,7 +2863,9 @@
 - **Subagent** — A helper agent started by a main agent to handle a focused subtask in its own fresh context window. It does its work and returns only a short summary, which keeps the main agent's context clean. *(Chapter 28)*
 - **Subsea cable** — Fiber cables on the ocean floor that carry nearly all intercontinental internet traffic.
 - **Substation** — A fenced yard of transformers, breakers and switches that steps transmission-line voltage down to a lower voltage and routes it onward. Big AI campuses usually build their own substation on site. *(Chapter 38, Chapter 39)*
+- **Subsumption architecture** — Rodney Brooks's 1980s robot design in which simple behaviors are stacked in layers, each reacting directly to the sensors and able to override the layers below, with no central world model or planner. *(Chapter 49)*
 - **Success criteria** — Specific, measurable statements of what "good" means for an AI feature, such as "matches policy in at least 95% of policy questions" or "first words within 2 seconds". *(Chapter 31)*
+- **Successive halving (and Hyperband)** — A tuning strategy that starts many hyperparameter settings with a small training budget and repeatedly keeps only the best fraction for longer training, so most compute goes to promising settings. Hyperband repeats it with several starting budgets. *(Chapter 9)*
 - **Summarized thinking** — A shortened, readable version of a model's chain of thought shown to users instead of the raw reasoning, for readability, safety and protection against copying. *(Chapter 21)*
 - **Sun-synchronous orbit** — An orbit around Earth's poles that keeps a satellite at the same angle to the Sun. A "dawn-dusk" version rides the line between day and night, so the satellite's solar panels are almost always in sunlight. *(Chapter 42)*
 - **Superchip** — NVIDIA's term for a CPU and one or more GPUs tightly linked on one board with a fast chip-to-chip connection, such as Grace plus two Blackwell GPUs (GB200) or Vera plus two Rubin GPUs. *(Chapter 32, Chapter 34)*
@@ -2689,6 +2907,8 @@
 - **Tabular foundation model** — A model pretrained, often on synthetic tables, to make predictions on new spreadsheet-style datasets with little or no training of its own. TabPFN is the best-known example. *(Chapter 10)*
 - **Tacit knowledge** — Practical know-how that is hard to write down and is usually learned by doing, such as how to tell when a lab procedure is going wrong and what to adjust. *(Chapter 58)*
 - **Tactile sensing** — Giving a robot a sense of touch with sensors in its fingertips or skin that measure pressure, slip and sometimes texture or temperature. *(Chapter 49)*
+- **Tail latency** — The response time of the slowest requests, usually measured at the 99th percentile (p99) or the 99.9th. At scale it matters more than the average, because each user request touches many servers. *(Chapter 37)*
+- **Tail risk** — The risk of rare, extreme outcomes far from the typical case. In heavy-tailed situations a single worst event can outweigh all the ordinary ones combined. *(Chapter 56)*
 - **TAKE IT DOWN Act** — A 2025 US federal law that criminalizes publishing non-consensual intimate images, including AI-generated deepfakes, and requires platforms to remove reported images within 48 hours. *(Chapter 59)*
 - **Take-or-pay contract** — A contract in which the customer pays for reserved capacity whether or not it uses it. Such contracts give lenders the predictable income that data center loans depend on. *(Chapter 38, Chapter 42, Chapter 61)*
 - **Talking-head model** — A model that animates a single photo or short clip of a face into a speaking video driven by an audio track, including head motion and expressions. *(Chapter 47)*
@@ -2743,6 +2963,7 @@
 - **Text rendering** — An image generator's ability to draw readable, correctly spelled words, such as a shop sign, a poster title or a label on a bottle. *(Chapter 47)*
 - **Text-to-3D** — Generating a 3D object or scene from a written description, such as "a weathered wooden treasure chest." *(Chapter 47)*
 - **Text-to-speech (TTS)** — Generating spoken audio from text.
+- **Text-to-SQL** — Having a language model translate a plain-English question into a database query, which ordinary software then runs, so the answer comes from an exact calculation over structured data rather than from retrieved text. *(Chapter 27)*
 - **Text-to-video** — Generating a video clip from a written description alone. *(Chapter 47)*
 - **Text-to-video / image-to-video** — Generating a video clip from a written description, or animating a starting still image.
 - **TF32 (TensorFloat-32)** — NVIDIA's 19-bit format, introduced with the A100, that keeps FP32's range but only FP16's detail. It lets tensor cores speed up code written for FP32. *(Chapter 32)*
@@ -2816,6 +3037,7 @@
 - **TPP (Total Processing Performance)** — The US export-control measure of a chip's computing power, roughly its peak operations per second (in trillions) multiplied by the number of bits per operation. The January 2026 H200 policy covers chips with a TPP below 21,000. *(Chapter 36)*
 - **TPU (Tensor Processing Unit)** — Google's family of chips designed specifically for neural-network math, first deployed in Google's data centers in 2015 and also rented to outside customers through Google Cloud. *(Chapter 2, Chapter 32, Chapter 35)*
 - **Trace and span** — A span is one recorded step in handling a request (one model call, one tool call, one guardrail check) with its timing, tokens and cost. A trace is the complete tree of spans for a single request. *(Chapter 31)*
+- **Trace (profile timeline)** — The recording a profiler produces: one row per GPU or activity, with each operation drawn as a bar along a time axis, so gaps and overlaps are visible at a glance. *(Chapter 37)*
 - **Track** — One of several paths through a learning roadmap, chosen by the kind of work you want to do, such as building AI apps or doing research. In this chapter all tracks share a common first stage and then diverge. *(Chapter 65)*
 - **Tracked Capability Level (TCL)** — A lower level, added to Google DeepMind's framework in April 2026, for capabilities that could cause significant but not severe harm, so they are monitored before reaching a Critical level. *(Chapter 56)*
 - **Training** — The process of adjusting a model's parameters using data until it performs well. Training a frontier chatbot model takes months on tens of thousands of chips; it happens once per model, before you ever use it. *(Chapter 1, Chapter 5, Chapter 8, Chapter 12)*
@@ -2825,6 +3047,7 @@
 - **Training loop** — The repeated cycle at the heart of machine learning: take a batch of examples, predict, measure the loss, compute the gradient by backpropagation, and update the parameters. One trip around the loop is a step. *(Chapter 6)*
 - **Training opt-out** — A setting that stops a provider from using your conversations to train future models. Defaults differ between companies and between consumer and business plans, and they have changed over time. *(Chapter 25, Chapter 58)*
 - **Training run** — One large training job, from the first random weights to the final saved model, often lasting weeks or months on thousands of chips. *(Chapter 19)*
+- **Training-serving skew** — A mismatch between how data is prepared for training and how it is prepared when the deployed model is used, which makes a model perform worse in production than in testing even though nothing in the world has changed. *(Chapter 10)*
 - **Training set** — The portion of the data the model learns from. Its parameters are adjusted to fit these examples. *(Chapter 9)*
 - **Training set, validation set and test set** — The three portions a dataset is split into: examples the model learns from, examples used to tune choices during development, and examples held back for a final honest score. *(Chapter 12)*
 - **Training, validation and test sets** — Three separate portions of data: the training set is used to learn the parameters, the validation set to make design choices during development, and the test set is held back for one final, honest exam on unseen data. *(Chapter 6)*
@@ -2890,6 +3113,8 @@
 - **Unicode** — The worldwide standard that assigns a unique number to every character in every writing system, including emoji. It is why a message in Hindi, Arabic or Chinese displays correctly on any modern device. *(Chapter 3)*
 - **Unicode / UTF-8** — the modern worldwide encoding that gives a number to every character in every writing system, including emoji. UTF-8 is the most common way to store those numbers as bytes.
 - **Unified memory** — A design in which the CPU and GPU share one pool of memory, as on Apple Silicon Macs. It lets a laptop with 32 to 128 GB of memory load models far larger than a typical graphics card could hold. *(Chapter 30, Chapter 33, Chapter 35, Chapter 53)*
+- **Uniform-cost search (Dijkstra's algorithm)** — A search method that always explores next the place with the lowest total cost from the start, so it finds the cheapest path when steps have different costs, such as roads of different lengths. *(Chapter 48)*
+- **Unigram tokenizer (SentencePiece)** — A tokenizer-building method that starts from a large set of candidate pieces and prunes the least useful ones until the vocabulary reaches its target size. It is usually built with Google's SentencePiece toolkit, which can also build BPE vocabularies. *(Chapter 18)*
 - **Unit economics** — The revenue and costs of one unit of a business, such as one customer, one subscription or one completed task, used to judge whether growth makes or loses money. For AI products the key cost is the cost per task: the model, tool and infrastructure cost of delivering one unit of value. *(Chapter 31, Chapter 43, Chapter 61, Chapter 64)*
 - **Unit substation** — A compact package of a medium-voltage switch, a transformer and low-voltage switchgear, placed next to or inside a building to convert campus medium voltage (for example 34.5 kV or 13.8 kV) into low voltage (480 V or 415 V). *(Chapter 39)*
 - **Unit test** — A small automatic check that a piece of code does what it should, for example "calling add(2, 3) must return 5." Coding agents are rewarded when their changes make tests pass. *(Chapter 21, Chapter 29)*
@@ -2916,7 +3141,8 @@
 - **User and assistant messages** — The turns of a conversation in an API request. "User" is what the human or program sends; "assistant" is what the model replied earlier. Because the API is stateless, you send the whole list of turns every time. *(Chapter 26)*
 - **User / assistant messages** — The turns of a conversation. "User" is what the human (or program) sends. "Assistant" is what the model replied.
 - **UTF-8** — The most common way to store Unicode code points as bytes. It uses 1 byte for basic English characters and 2 to 4 bytes for everything else, and it is the default encoding of the web. *(Chapter 3)*
-- **Utility** — A company that delivers electricity to customers. A vertically integrated utility owns power plants, transmission and distribution in its territory; in restructured states, the local utility mostly owns the wires and buys power on a wholesale market. *(Chapter 41)*
+- **Utility** — A company that delivers electricity to customers. A vertically integrated utility owns power plants, transmission and distribution in its territory; in restructured states, the local utility mostly owns the wires and buys power on a wholesale market. *(Chapter 41, Chapter 48)*
+- **Utility-based agent** — An agent that compares possible outcomes by how desirable they are (their utility) and how likely they are, and picks the action with the best expected result. *(Chapter 48)*
 - **Utility interconnection** — The physical connection between a site and the grid, plus the contracts and engineering studies that allow it. For large data centers, getting one can take years (Chapter 41). *(Chapter 39)*
 - **Utilization (MFU)** — The fraction of a chip's theoretical top speed that a real job actually achieves. Large training runs typically reach about 35 to 50%, because time is lost to communication, memory waits and failures. MFU stands for model FLOPs utilization. *(Chapter 5, Chapter 43, Chapter 44)*
 
@@ -2930,8 +3156,10 @@
 - **Value-based pricing** — Setting your price by what the result is worth to the customer rather than by what it costs you to produce. You then charge a fraction of the value you create. *(Chapter 64)*
 - **Value chain** — The sequence of businesses that each add something to a product on its way to the customer, from raw inputs to the final sale. In AI it runs from electricity and chips up to apps and services. *(Chapter 61)*
 - **Value function** — An estimate of the total future reward the agent can expect from a given state if it keeps following its policy: its "sense of how good this position is." *(Chapter 48)*
+- **Value iteration** — A planning method for MDPs whose rules are known: start every state's value at 0, then repeatedly update each one to "the best immediate reward plus the discounted value of where that action leads", until the values stop changing. A close relative, policy iteration, alternates between scoring a policy and improving it. *(Chapter 48)*
 - **Value lock-in** — The risk that a particular set of values becomes permanently embedded in powerful AI systems and hence in society.
 - **Value model (critic)** — A helper network in PPO-style RL that predicts how much reward the policy should expect from a given situation, so that each actual result can be judged as better or worse than expected. *(Chapter 20)*
+- **Value of information** — How much better you expect to decide if you learn something before acting: the expected utility of deciding with the information minus the expected utility of deciding without it. *(Chapter 48)*
 - **Vanishing gradient** — The problem that learning signals shrink as they are multiplied backward through many layers, so the early layers of a deep network barely learn. *(Chapter 13, Chapter 14)*
 - **Vapor-compression refrigeration cycle** — The loop inside every fridge and chiller: a cold refrigerant evaporates while absorbing heat, a compressor squeezes the vapor so it gets hot, the hot vapor condenses while releasing heat outdoors, and an expansion valve drops its pressure so it is cold again. *(Chapter 40)*
 - **Variable** — A named box in a program that holds a value, like price = 20. The value can change while the program runs. *(Chapter 3, Chapter 5, Chapter 26)*
@@ -2940,6 +3168,8 @@
 - **Variance (statistical)** — A measure of spread: the average of the squared distances of the values from their mean. Bigger variance means the values are more scattered. *(Chapter 6, Chapter 9)*
 - **Variant** — A difference in a person's DNA compared with a reference sequence, such as one letter swapped for another. *(Chapter 52)*
 - **Variant of uncertain significance (VUS)** — A genetic variant whose effect on health is unknown. These are the most common result of clinical genetic tests and a major frustration for patients and doctors. *(Chapter 52)*
+- **Variational inference** — Approximating a complicated probability distribution with the closest member of a simpler, easy-to-compute family, which turns a hard counting problem into an optimization problem. *(Chapter 54)*
+- **VC dimension (Vapnik–Chervonenkis dimension)** — A classic measure of a model's flexibility: the largest number of points it can classify correctly under every possible labeling. A straight-line boundary in two dimensions has a VC dimension of 3. *(Chapter 9)*
 - **Vector** — An ordered list of numbers, such as [3, 120, 15], where each position has an agreed meaning. A vector can describe a thing's features, or a point or arrow in space. *(Chapter 5, Chapter 12, Chapter 27)*
 - **Vector database** — A database built to store embeddings (lists of numbers representing meaning) and quickly find the items most similar to a query. It is the backbone of retrieval-augmented generation, where a chatbot looks up relevant documents before it answers. *(Chapter 11, Chapter 27)*
 - **Vector quantization (codebook)** — A way to turn continuous data such as image patches or sound into discrete tokens. A learned "codebook" holds thousands of reference vectors, and each patch is replaced by the ID of its closest entry, so an image becomes a list of ID numbers just like text. *(Chapter 22)*
@@ -2950,7 +3180,7 @@
 - **Vendor lock-in** — Being so dependent on one company's product that leaving it would be expensive or difficult. Most app builders reduce this by letting you export your code to GitHub, which you should do early. *(Chapter 29)*
 - **Venture capital (VC)** — Investment firms that buy stakes in young, risky companies, hoping a few become large enough to pay for all the failures. A "strategic investor," by contrast, is a company investing for business reasons, as when NVIDIA or Amazon invests in a lab that buys its products. *(Chapter 61)*
 - **Verbosity bias** — The tendency of human raters and AI judges to prefer longer, more elaborately formatted answers regardless of whether they are better, which training then amplifies. *(Chapter 20, Chapter 31)*
-- **Verification** — Checking AI output before relying on it: confirming citations, cross-checking facts against sources or a second model, testing numbers and spotting confident errors. *(Chapter 62)*
+- **Verification (in international agreements)** — The methods that let each party to an agreement check that the others are complying, such as inspections, satellite imagery or reporting duties. Without it, promises between rivals are hard to trust. *(Chapter 59, Chapter 62)*
 - **Verifier** — A program or model that checks whether an output is correct, such as an answer checker for math, a set of unit tests for code, or a proof checker for formal mathematics. *(Chapter 21, Chapter 54)*
 - **Version control (Git)** — A system that records every change to a set of files over time, so you can see who changed what, compare versions and roll back mistakes. Git, created by Linus Torvalds in 2005, is by far the most widely used version-control tool. *(Chapter 3, Chapter 29)*
 - **Version control / Git / GitHub** — Git tracks every change to code over time. GitHub is a website for storing and collaborating on Git projects.
@@ -2960,6 +3190,7 @@
 - **Video VAE (3D VAE)** — A variational autoencoder that compresses video across width, height and time into a compact latent, and decodes latents back into frames. *(Chapter 16)*
 - **Virtual machine** — A software imitation of a whole computer, running alongside others on one physical server. Clouds rent them so many customers can share a machine safely. *(Chapter 4)*
 - **Virtual PPA** — A financial contract for the price difference, paired with renewable energy certificates, without physical delivery of power.
+- **Virtue ethics** — The family of moral theories that focuses on character, asking what an honest, kind and wise person would do, rather than on rules or outcomes alone. *(Chapter 56)*
 - **Vision encoder** — The part of a multimodal system that turns an image into a sequence of meaningful vectors (one per patch or group of patches) that a language model can use. It is usually a Vision Transformer pretrained on huge numbers of images. *(Chapter 22)*
 - **Vision foundation model** — A large vision model pretrained on hundreds of millions to billions of images, often without human labels, whose features work well for many downstream tasks with little or no extra training. *(Chapter 45)*
 - **Vision-language-action model (VLA)** — A model that takes camera images and a spoken or written instruction ("fold the towel") and outputs robot actions directly, built on top of a pretrained vision-language model so it inherits knowledge from the web. *(Chapter 22, Chapter 49)*
@@ -2984,7 +3215,7 @@
 - **Von Neumann architecture** — The basic design of almost every computer since 1945: a processor that executes instructions, a separate memory that stores both the program and its data, and a pathway (bus) that moves information between them. *(Chapter 2, Chapter 33)*
 - **Von Neumann bottleneck** — The slowdown caused by having to shuttle data back and forth between a separate processor and memory through a limited connection. It is the root of today's memory wall. *(Chapter 33)*
 - **VRAM (video memory)** — The memory built into a GPU. A model and its training data must fit in VRAM to run fast; the free Colab T4 GPU has 16 GB. *(Chapter 30)*
-- **Vulnerability** — A flaw in software or a system that an attacker could use to do something they should not be able to, such as read private data or take control. *(Chapter 53, Chapter 58)*
+- **Vulnerability** — A flaw in software or a system that an attacker could use to do something they should not be able to, such as read private data or take control. *(Chapter 53, Chapter 56, Chapter 58)*
 
 ## W
 
@@ -2992,6 +3223,7 @@
 - **Wafer-scale engine** — Cerebras's approach of using an entire silicon wafer as one giant chip instead of cutting it into many small chips. Its WSE-3 covers 46,225 mm², about 54 times the largest single die a normal lithography machine can print. *(Chapter 32, Chapter 35)*
 - **Wake word** — A trigger phrase, such as "Hey Siri" or "Alexa," detected by a tiny model that runs constantly on the device. Only after it fires does the device start recording and, usually, sending audio to the cloud. *(Chapter 46, Chapter 53)*
 - **Walk-forward validation** — Testing a forecasting model by repeatedly training on everything up to a point in time and predicting the next period, then moving the point forward and repeating. Also called backtesting. *(Chapter 9)*
+- **Warehouse-scale computer (WSC)** — A whole data center, with tens of thousands of servers, designed and programmed as one giant computer that runs a few huge services, rather than as a building full of unrelated machines. *(Chapter 34)*
 - **Warmup** — The first phase of a learning-rate schedule, in which the rate rises from nearly zero to its peak, so the early, chaotic steps are small. *(Chapter 13, Chapter 19)*
 - **Warm-water cooling** — Liquid cooling designed to work with relatively warm supply water, often 30–45 °C, so that outdoor air can cool it through dry coolers for most or all of the year without chillers. *(Chapter 40)*
 - **Warp** — On NVIDIA GPUs, a group of 32 threads that execute the same instruction together, in lockstep. It is the basic unit the GPU schedules. *(Chapter 32)*
@@ -3017,6 +3249,7 @@
 - **Weight sharing** — Using the same small set of weights at every position in the input, as a convolution does. It slashes the number of parameters and lets a pattern learned in one place be recognized everywhere. *(Chapter 14)*
 - **Weights (parameters)** — The learned numbers inside an AI model that set how strongly each input influences each output. A large model has billions of them, and together they encode its knowledge and skills (Chapter 5). *(Chapter 3, Chapter 30)*
 - **Weights / parameters** — The billions of learned numbers that define a model.
+- **Wellbeing** — How well a person's life is going for them. Philosophers disagree about whether it consists in pleasure, in getting what one wants, or in objectively good things such as health, knowledge and relationships. *(Chapter 56)*
 - **Wet-bulb temperature** — The lowest temperature you can reach by evaporating water into the air. It depends on humidity: in dry air it can be far below the dry-bulb temperature; in very humid air it is close to it. Evaporative coolers can approach the wet bulb. *(Chapter 40)*
 - **Wet lab** — A laboratory where experiments are done with real chemicals, cells and organisms, as opposed to a "dry lab" of computers. Wet-lab confirmation is the final judge of most AI predictions in biology and chemistry. *(Chapter 52)*
 - **Whistleblower protection** — Legal protection for employees who report safety concerns to authorities, so they cannot be fired or punished for doing so. *(Chapter 56, Chapter 59)*
@@ -3026,6 +3259,7 @@
 - **Willingness to pay** — Evidence that a buyer will actually spend money to solve a problem, such as an existing budget, a current vendor, or staff hours already devoted to it. Saying "that sounds useful" is not willingness to pay. *(Chapter 64)*
 - **word2vec** — A 2013 technique that learns a vector for every word by training on the task of predicting nearby words. It became famous for analogies like king − man + woman ≈ queen. *(Chapter 5, Chapter 14)*
 - **Word error rate (WER)** — The standard accuracy measure for speech recognition: the number of word substitutions, deletions and insertions needed to turn the system's transcript into the correct one, divided by the number of words in the correct transcript. Lower is better. *(Chapter 46)*
+- **WordPiece** — A tokenizer-building method, used by BERT, that merges pieces as BPE does but chooses each merge by how much it improves the fit to the training text, and marks pieces that continue a word, as in "##ization". *(Chapter 18)*
 - **Workflow** — A system in which language models and tools are orchestrated through steps fixed in advance by code. The developer decides the sequence; the model fills in each step. *(Chapter 28, Chapter 29)*
 - **Workflow automation** — Connecting apps so that an event in one (a trigger, such as a new form submission) automatically causes steps in others (actions, such as adding a spreadsheet row and sending an email). Tools include Zapier, Make, n8n and Power Automate. *(Chapter 62, Chapter 65)*
 - **World foundation model** — A large, general world model pretrained on huge amounts of video so that developers can adapt it to simulate their own robots, vehicles or environments. *(Chapter 47)*

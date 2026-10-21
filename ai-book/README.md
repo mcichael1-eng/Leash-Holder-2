@@ -5,10 +5,10 @@
 A complete book for someone with almost no computer-science background who uses AI chatbots every day and wants to understand all of it: how computers work, the math, how machines learn, neural networks and Transformers, how frontier labs build large language models, how to build with AI, chips and compute, data centers and energy, every major branch of AI, safety, law and society, and the skills, careers and opportunities that come with it.
 
 - **10 parts, 66 chapters, 5 appendices**
-- **2,982 terms** in a searchable glossary (every term is defined where it first appears)
-- **529 diagrams**, plus tables and hand-worked numeric examples
+- **3,216 terms** in a searchable glossary (every term is defined where it first appears)
+- **530 diagrams**, plus tables and hand-worked numeric examples
 - **659 exercises** from Easy to Challenge, none of which require prior coding experience
-- About **930,000 words**
+- About **960,000 words**
 
 ## How to read it
 
@@ -153,6 +153,7 @@ A complete book for someone with almost no computer-science background who uses 
 4. **Editing.** One editor per Part re-checked worked calculations, facts, cross-references and consistency across chapters, and hedged anything the research could not confirm.
 5. **Coverage audit.** Every one of the 832 topics in the research topic maps (including every skill and every role) was traced to the chapter that teaches it. 819 were already fully taught, 13 were thin and none were missing; the 13 were filled. The per-topic tables are in `planning/coverage/`.
 6. **Beginner read-through.** A reader-test pass through ten chapters across the difficulty range, from the point of view of someone with no computer-science background, fixed 65 places where that reader would get lost (`planning/coverage/reader-test.md`).
+7. **External-standard audit.** The book was then checked against 15 outside references: Russell & Norvig's *Artificial Intelligence: A Modern Approach*, the ACM/IEEE CS2023 AI curriculum, Goodfellow et al.'s *Deep Learning*, *Dive into Deep Learning*, Stanford CS229, CS231n, CS224n and CS336, Chip Huyen's *AI Engineering* and *Designing Machine Learning Systems*, the Hugging Face LLM and Agents courses, Full Stack Deep Learning, *The Datacenter as a Computer*, Hennessy & Patterson on domain-specific architectures, *How to Scale Your Model*, Hendrycks' *AI Safety, Ethics, and Society*, BlueDot's alignment course and the EU AI Act. Of 878 topics, 819 are in scope for this reader (the rest are graduate-level mathematics, named where the reader will meet them). The book taught 541 of the 819 before the audit and teaches all 819 after it. Per-standard tables are in `planning/coverage/external-*.md`; the tables of contents were reconstructed from the auditors' knowledge because web access was unavailable.
 
 Facts about fast-moving areas (models, chips, data centers, prices, law) reflect sources available in October 2026 and will date. Figures from secondary sources are marked as reported; check the Going deeper lists for primary sources.
 
