@@ -21,7 +21,7 @@ The exponent counts zeros: `10^9` is a 1 followed by nine zeros. "Billion" and "
 | `10^15` | quadrillion | peta | P | | One H100 does about `10^15` operations per second in BF16 |
 | `10^18` | quintillion | exa | E | | One GB300 NVL72 rack: about 1.1 exaFLOPS of dense FP4 |
 | `10^21` | sextillion | zetta | Z | | A 100,000-GPU Blackwell Ultra cluster: about 1.5 zettaFLOPS of dense FP4 |
-| `10^24` | septillion | yotta | Y | | GPT-3's training run used about `3 × 10^23` operations |
+| `10^24` | septillion | yotta | Y | | GPT-3's training run used about `3 × 10^23` operations, about a third of a yotta |
 | `10^25` to `10^27` | | | | | GPT-4 about `2 × 10^25`; 2026 frontier runs about `10^26` to `10^27` (estimates) |
 
 *Table A.1: Powers of ten with everyday and AI anchors.*
@@ -227,12 +227,12 @@ Power (watts) is a rate, like speed. Energy (watt-hours) is an amount, like dist
 | One average ChatGPT query | about 0.34 Wh | OpenAI's chief executive, June 2025 |
 | One typical GPT-4o query | about 0.3 Wh | Epoch AI, February 2025 |
 | A query with 10,000 / 100,000 input tokens | about 2.5 Wh / about 40 Wh | Epoch AI, February 2025, on that era's hardware |
-| A long reasoning request with a document and a search | about 1 Wh | Chapter 44's estimate |
+| A long reasoning request with a document and a search | about 1.2 Wh | Chapter 44's estimate |
 | Boiling a kettle | about 100 Wh | |
 | A 10-mile electric-car drive | about 3 kWh | |
 | An average US home for a year | about 10,500 kWh | |
 | One H100 chip | 700 W | Chip rating |
-| One AI GPU with its share of server, network and cooling | about 1.2–2 kW | H100 about 1.2–1.5 kW; GB300-class about 1.8 kW |
+| One AI GPU with its share of server, network and cooling | about 1.2–2.2 kW | H100 about 1.2–1.5 kW (Epoch AI uses 1.5 kW); GB300-class about 1.8 kW of IT power as a share of its rack, about 2.2 kW once cooling is added |
 | A 2015 enterprise rack | about 5–10 kW | |
 | A GB200 or GB300 NVL72 rack | about 120–140 kW | About 100 homes in one cabinet |
 | US data centers, 2023 | 176 TWh, about 4.4% of US electricity | Lawrence Berkeley National Laboratory |
@@ -321,7 +321,7 @@ All prices in US dollars, dated and approximate. List prices are what anyone can
 | Training GPU-hours = FLOP ÷ (peak FLOPS × utilization × 3,600) | Llama 3.1 405B at 40% of H100 peak: about 26.7 million GPU-hours, about $67 million at $2.50 per hour |
 | Electricity per GPU-hour | 1.5 kW × 1 hour × $0.08 per kWh = $0.12, small next to a $2–8 rental price |
 | Electricity per MW-year | 8,760 MWh × $70–80 per MWh ≈ $0.6–0.7 million |
-| A 100 MW site for a year at full load | about 876 GWh, about $61–70 million at 7–8 cents per kWh |
+| A site drawing 100 MW for a year at full load | about 876 GWh, about $61–70 million at 7–8 cents per kWh; a site with 100 MW of IT at PUE 1.2 draws 120 MW: about 1,051 GWh and $74–84 million (Chapter 39) |
 
 *Table A.22: Cost formulas with worked examples.*
 
