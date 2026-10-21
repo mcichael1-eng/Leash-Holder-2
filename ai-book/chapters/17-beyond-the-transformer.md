@@ -204,7 +204,7 @@ A worked example: 16 tokens with top-2 routing make 32 expert slots. Spread even
                      --
                      32   (fair share: 4 each)
 ```
-*Figure 17.4: An unbalanced router. Ten of 32 slots are dropped, and five experts are underused.*
+*Figure 17.4: An unbalanced router. Ten of 32 slots are dropped, and the other six experts all get less than their fair share.*
 
 Three fixes are common:
 1. **Auxiliary loss.** Add a penalty to the training loss that grows when some experts receive a bigger share of tokens and router probability than others. The Switch Transformer used this. It works, but the extra loss term pulls slightly against the main goal of predicting text.
@@ -420,13 +420,13 @@ flowchart TD
 
 *Table 17.2: Hybrid architectures, 2024–2026.*
 
-What does the 3-to-1 ratio buy? Redo the memory math for our illustrative 60-layer model with only 15 full-attention layers. The KV cache drops to a quarter: about 61 KB per token, so roughly 61 GB at 1 million tokens instead of 245 GB. The 45 linear layers add only a fixed state, around 256 KB per layer in a typical setup (about 15 MB in total), the same at 1,000 tokens or 1,000,000.
+What does the 3-to-1 ratio buy? Redo the memory math for our illustrative 60-layer model with only 15 full-attention layers. The KV cache drops to a quarter: about 61 KB per token, so roughly 61 GB at 1 million tokens instead of 245 GB. The 45 linear layers add only a fixed state, around 256 KB per layer in a typical setup (about 12 MB in total), the same at 1,000 tokens or 1,000,000.
 
 | Context length | All 60 layers full attention | Hybrid 3:1 (15 attention layers) | Linear or SSM layers alone |
 |---|---|---|---|
-| 10,000 tokens | ~2.5 GB | ~0.6 GB | fixed, ~15 MB |
-| 100,000 tokens | ~25 GB | ~6 GB | fixed, ~15 MB |
-| 1,000,000 tokens | ~245 GB | ~61 GB | fixed, ~15 MB |
+| 10,000 tokens | ~2.5 GB | ~0.6 GB | fixed, ~12 MB |
+| 100,000 tokens | ~25 GB | ~6 GB | fixed, ~12 MB |
+| 1,000,000 tokens | ~245 GB | ~61 GB | fixed, ~12 MB |
 
 *Table 17.3: Memory for one conversation in an illustrative 60-layer model. The numbers are worked from this chapter's assumptions, not measured from a specific product.*
 

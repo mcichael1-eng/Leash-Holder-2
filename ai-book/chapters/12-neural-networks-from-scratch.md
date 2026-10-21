@@ -361,7 +361,7 @@ The jump from the third row to the fourth explains a lot about modern AI. A lang
 
 > **Try it:** Count the parameters of a 10 → 20 → 20 → 5 network with pencil and paper (answer: 220 + 420 + 105 = 745). Then ask your chatbot: "How many parameters does a dense neural network with layer sizes 10, 20, 20, 5 have? Show the calculation." Check that its arithmetic matches yours.
 
-> **At the frontier (2026):** The largest open-weight models are now counted in trillions of parameters. DeepSeek V4-Pro has about 1.6 trillion parameters in total, and Kimi K2 has about 1 trillion. Both are "mixture of experts" models that only use a fraction of their parameters for each token (about 49 billion and 32 billion respectively), a design explained in Chapter 17. The closed frontier labs (OpenAI, Anthropic, Google) do not publish the sizes or architectures of their flagship models, so any number you see for them is a guess.
+> **At the frontier (2026):** The largest open-weight models (models whose trained weights anyone can download, Chapter 3) are now counted in trillions of parameters. DeepSeek V4-Pro has about 1.6 trillion parameters in total, and Kimi K2 has about 1 trillion. Both are "mixture of experts" models that only use a fraction of their parameters for each token (about 49 billion and 32 billion respectively), a design explained in Chapter 17. The closed frontier labs (OpenAI, Anthropic, Google) do not publish the sizes or architectures of their flagship models, so any number you see for them is a guess.
 
 ## The forward pass: a layer is one matrix multiplication
 

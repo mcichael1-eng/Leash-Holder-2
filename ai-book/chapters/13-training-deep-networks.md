@@ -241,7 +241,7 @@ A worked example: a run of 10,000 steps with a peak learning rate of 0.001 and 1
 | 1,000 | Peak | 0.001 | 0.001 |
 | 5,500 | Halfway through decay | 0.0005 | 0.001 |
 | 7,750 | Three-quarters through decay | about 0.00015 | 0.001 |
-| 9,500 | Near the end | about 0.00001 | 0.0005 |
+| 9,500 | Near the end | about 0.000008 | 0.0005 |
 | 10,000 | End | 0 | 0 |
 
 ```
@@ -914,7 +914,7 @@ Optimizer, loss landscape, saddle point, momentum, Adam, optimizer state, weight
    2. Row 2 is step 0: A2 = 0 (step), B2 = 0 (plain w), C2 = 0 (momentum w), D2 = 0 (velocity).
    3. Row 3: A3: =A2+1. B3: =B2-$H$1*2*(B2-3). D3: =$H$2*D2+2*(C2-3). C3: =C2-$H$1*D3.
    4. Copy row 3 down to row 62 and chart columns B and C against A.
-   5. Check: at step 10, plain w ≈ 0.55 and momentum w ≈ 2.08; momentum overshoots past 3 around step 20, then settles. Now try H2 = 0.5 and H2 = 0.99.
+   5. Check: at step 10, plain w ≈ 0.55 and momentum w ≈ 2.08; momentum passes 3 at about step 15, peaks near 3.9 around step 22, then settles. Now try H2 = 0.5 and H2 = 0.99.
 
    **What you'll learn:** how momentum speeds up progress, why it overshoots, and how the momentum factor controls that trade-off.
 
