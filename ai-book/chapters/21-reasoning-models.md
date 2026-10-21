@@ -228,7 +228,7 @@ The model writes eight attempts. Here are their final lines and the verifier's v
 | 3 | "Each pencil costs 1/3 dollar, 12 × 1/3 = 4. Answer: 4" | Yes | 1 |
 | 4 | "Answer: $3" | No | 0 |
 | 5 | "12 ÷ 3 = 4 cents each. Answer: $0.48" | No | 0 |
-| 6 | "Four groups of three. Answer: 4 dollars" | Yes | 1 |
+| 6 | "Four groups of three, so $4. Answer: $4.00" | Yes | 1 |
 | 7 | "Answer: $4.33" | No | 0 |
 | 8 | "$1 × 12. Answer: $12" | No | 0 |
 
@@ -297,7 +297,7 @@ Once GRPO became popular, researchers found its rough edges and published fixes.
 
 > **Definition — Entropy collapse:** A failure in RL training in which the model becomes too certain too early, always choosing the same tokens, so it stops exploring alternatives and stops improving.
 
-**DAPO** (2025, from ByteDance Seed and Tsinghua University) made four changes:
+**DAPO** (2025, from ByteDance Seed with academic collaborators) made four changes:
 - **Clip-higher:** a looser upper clipping limit, so rare but good tokens can grow faster, which counters entropy collapse.
 - **Dynamic sampling:** throw away groups that are all right or all wrong (lesson 3 above) and keep sampling until each batch is full of groups that actually teach something.
 - **Token-level loss:** weigh every token equally across the batch, so long answers are not under-counted.
