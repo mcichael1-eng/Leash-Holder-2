@@ -5,12 +5,12 @@
 ## What you'll learn
 - How to define "good" for an AI feature and test it with a golden dataset, code checks, an AI judge and human review, including a 20-item spreadsheet eval you can build today.
 - How many test cases you need before a difference is real, and how to evaluate agents that take many steps.
-- What LLMOps means: tracing every call, pinning versions, switching providers, and surviving model upgrades.
+- What LLMOps means: tracing every call, pinning versions, switching providers, watching dashboards for drift, and surviving model upgrades.
 - How guardrails check inputs, outputs and actions, and why none of them is complete on its own.
 - How prompt injection, jailbreaks, data exfiltration, poisoned tools and over-powerful agents work, and the layered defenses builders use, including the "lethal trifecta" rule.
 - How to trade off cost, speed and quality, with a worked comparison of three model tiers and the unit economics of an AI product.
 - Product design patterns that build the right amount of trust: copilot versus autopilot, confirmations, sources, undo.
-- How organizations actually adopt AI, and when to buy rather than build.
+- How organizations actually adopt AI, how they shape their AI teams, and when to buy rather than build.
 
 ## Before you start
 This chapter closes Part V and uses almost everything before it. Chapter 25 (Mastering the Chat Interface: Prompting and Context Engineering) gives you prompts and system prompts. Chapter 26 (APIs: Talking to Models With Code) gives you tokens, prices, caching and batch jobs. Chapter 27 (Retrieval: Giving AI Your Knowledge) and Chapter 28 (Tools and Agents: From Function Calling to MCP) describe the systems we will now test and defend. Chapter 9 (Is the Model Any Good? Evaluation, Overfitting and Metrics) introduced test sets and metrics, Chapter 18 (How a Large Language Model Works) explained why models hallucinate, and Chapter 23 (Inference: Making Models Fast and Cheap) explained latency. You can read this chapter without writing code; one optional exercise uses Google Colab.
@@ -129,6 +129,14 @@ A grader decides whether each output passes. There are three kinds, and good eva
 **Code graders** are simple rules a computer checks instantly. Does the answer contain "free"? Is it under 300 characters? Is it valid JSON (Chapter 26)? Did the model call `get_order` with 10482? Many use regular expressions, a pattern language for matching text such as "any dollar amount". They are cheap, fast and perfectly consistent, so use them wherever a rule can capture what matters.
 
 > **Definition — Code grader:** An automatic check written as a simple rule or program, such as exact match, "contains this word", a length limit, valid JSON or tests passing. It is fast and consistent but can only check what a rule can express.
+
+One family of code graders has its own name. When a golden-set item comes with a model answer written by a person, **reference-based metrics** score how close the system's output is to it. Exact match asks whether the two are identical, which suits short answers such as a category, a date or a number. Overlap scores count shared words: BLEU for translation (Chapter 54) and ROUGE, its counterpart for summaries. Semantic similarity turns both texts into embeddings (Chapter 27) and compares them with cosine similarity, so different wording with the same meaning still scores high. Take the reference "Unopened accessories can be returned within 30 days." The reply "You can send back unused pots up to a month after you buy them" shares almost no words with it, so ROUGE scores it near zero, while an embedding model rates the two as close in meaning. The failure also runs the other way: "Unopened accessories can be returned within 60 days" shares nearly every word and scores high on both measures, yet it is wrong. Use reference-based metrics for short, tightly constrained outputs and as a cheap first filter; for open-ended replies a rubric-guided judge usually tracks quality better.
+
+> **Definition — Reference-based metric:** A score that compares a model's output with a correct answer written in advance, by exact match, by shared words (as BLEU and ROUGE do) or by closeness of meaning (embedding similarity).
+
+> **Definition — ROUGE:** A family of overlap scores for summaries, introduced in 2004, that measure how many of the words and short word sequences in a human-written reference summary also appear in the model's output.
+
+> **Definition — Semantic similarity score:** The cosine similarity between the embeddings of two texts, used to judge whether they mean the same thing even when they are worded differently.
 
 **Model graders**, usually called LLM-as-judge, give the question, the answer and a rubric to a language model and ask for a verdict. They can grade what no simple rule captures ("is this reply calm, and does it offer a human?") at a tiny fraction of a person's cost, but they are themselves models, with biases you must measure.
 
@@ -267,6 +275,10 @@ Online signals include thumbs up and down, how often users edit a draft before s
 
 > **Watch out:** Thumbs-up rate measures what users like right now, not whether answers were true or good for them. Pair satisfaction signals with offline correctness evals so that pleasing people and helping them do not drift apart.
 
+How you ask for feedback shapes what you get. Most users never press a feedback button, and those who do lean toward the delighted and the furious, so ratings come from an unrepresentative few. Make feedback cheap and well timed: one click, offered right after an answer is used or rejected, with an optional "what went wrong?" menu on a thumbs-down (wrong facts, ignored my instructions, too long, unsafe), because a categorized complaint is far more useful than a bare score. Lean on the behavior every user produces anyway: copying an answer, accepting or rewriting a draft, abandoning the chat, asking the same thing again. And treat every signal as a lead rather than a grade: read the conversations behind it before you change anything.
+
+> **Definition — Explicit and implicit feedback:** Explicit feedback is what users deliberately tell you (thumbs, star ratings, written comments); implicit feedback is what you infer from their behavior (copying, editing, rephrasing, abandoning). Implicit feedback is plentiful but noisy; explicit feedback is clearer but rare.
+
 The two kinds of evaluation feed each other in a loop sometimes called the eval flywheel: failures spotted in production become new golden-set items, so the offline suite steadily grows to cover the real world.
 
 ```mermaid
@@ -298,7 +310,20 @@ Reliability needs its own math, because agents compound errors. Two measures mat
 
 Long tasks compound per-step errors too. If each step goes right 99% of the time, a 50-step task succeeds about 0.99^50 ≈ 61% of the time, and a 100-step task only about 37%. Raise per-step reliability to 99.9% and the 100-step task succeeds about 90% of the time. This arithmetic is why agent builders obsess over small per-step improvements, and why METR's finding that the length of tasks frontier agents can complete with 50% reliability has been doubling roughly every 4 to 7 months (about every 4 months since 2023) is so closely watched (see Chapter 28 and Chapter 57).
 
-Public agent benchmarks such as SWE-bench (fixing real software bugs), Terminal-Bench (command-line tasks), tau-bench (customer service with tools) and OSWorld (operating a computer) are useful reference points (Chapter 24), but they are not your task. Build a small agent eval of your own, with realistic tasks, a sandboxed copy of your tools and checks of the final state.
+When an agent run fails, its trace (later in this chapter) shows where, and failures fall into a few recurring families. Sorting your failures into them tells you what to fix:
+
+- **Planning failures.** The agent calls a tool that does not exist or the wrong one, passes wrong or invented arguments (an order number it guessed), skips a required step, or stops before the goal is met while reporting success. Fix the prompt, the tool descriptions (Chapter 28's tool-design rules) or the model.
+- **Tool failures.** The agent chose well, but the tool returned an error, stale data or a wrong answer, or its output was garbled on the way back. Fix the tool's code and its error messages.
+- **Efficiency failures.** It got there in the end, but took 40 steps and $3 for a job that needs 5 steps and 20 cents, often by looping on an error. Fix step limits, caching and the instructions.
+- **Safety failures.** It reached the goal by a forbidden route, such as reading data it had no reason to read. Fix permissions and action checks (the guardrails section below).
+
+> **Definition — Agent failure modes:** The recurring ways agent runs go wrong: planning failures (wrong tool, wrong arguments, missed steps, false claims of success), tool failures, efficiency failures (far too many steps or tokens) and safety failures (forbidden actions along the way).
+
+Public agent benchmarks such as SWE-bench (fixing real software bugs), Terminal-Bench (command-line tasks), tau-bench (customer service with tools) and OSWorld (operating a computer) are useful reference points (Chapter 24). An older one you will meet in courses is GAIA (2023), whose questions look simple to people but need web browsing, reading files and several steps; at launch, human respondents answered about 92% correctly and GPT-4 with plugins about 15%.
+
+> **Definition — GAIA:** A benchmark released in 2023 of real-world questions for general AI assistants that require browsing, reading files and several reasoning steps, with short answers that can be checked exactly.
+
+Benchmarks like these are not your task, though. Build a small agent eval of your own, with realistic tasks, a sandboxed copy of your tools and checks of the final state.
 
 > **At the frontier (2026):** The labs grade agents much as this section describes, at enormous scale: thousands of simulated environments with programmatic checks of the final state where answers can be verified, and rubric-guided AI judges where they cannot (Chapter 21 explains how these graders double as training signals). As of late 2026, evaluating long, open-ended agent work, where there is no single right answer and runs last hours, remains one of the hardest open problems in the field.
 
@@ -362,6 +387,12 @@ Replacements behave differently in ways that break things. Two examples from Ant
 > **Definition — Gateway (model router):** A middle layer between your app and model providers that sends each request to the right model, retries or switches to a fallback provider on failure, enforces budgets and records logs.
 
 Providers have outages and rate limits (Chapter 26), so serious products keep a fallback model that has passed the same golden set and switch to it automatically when the main one fails. Budgets matter just as much: set hard monthly spending caps with the provider, per-user limits in your app, and alerts when daily cost jumps. Without them, a bug that loops an agent, or a malicious user sending enormous inputs, can run up a bill in hours. OWASP's list of top AI application risks (later in this chapter) calls this "unbounded consumption".
+
+### Dashboards and drift
+
+Traces explain single requests; dashboards show trends. A small team can start with a handful of daily numbers: request volume, cost per request, latency (the median and the 95th percentile, because averages hide the slow tail), error and timeout rates, how often each guardrail fires, how often users ask for a human, and the pass rate of an AI judge run on a random sample of live conversations, say 100 a day. A sudden jump usually means something changed on your side: a new prompt, a new document, a tool that started failing, or a provider update to an unpinned model. A slow trend usually means the world changed. The drift of Chapter 10 has an LLM version: users start asking about things your prompt and documents never covered, such as a new product line, a holiday rush or a complaint that went viral. Group a sample of each week's questions by topic (a model can do the grouping) and watch for topics that grow or appear. Each is a candidate for new documents and new golden-set items.
+
+> **Definition — Percentile latency (p95, p99):** The response time that a given share of requests beat. A p95 of 4 seconds means 95% of requests finished within 4 seconds and 5% took longer; teams watch p95 and p99 because averages hide the slow requests that users remember.
 
 ## Guardrails: checks around the model
 
@@ -726,6 +757,12 @@ Two levers worked through. **Caching:** Juni's 2,500-token system prompt and pol
 
 Speed works in the other direction. As of October 2026, Anthropic's fast mode for Claude Opus 5.5 costs $8 / $40 per million tokens against the standard $4 / $20, and OpenAI renamed its priority tier "Fast mode" in July 2026. Pay for speed only where users actually wait.
 
+A different kind of caching skips the model entirely. If two customers ask exactly the same question, a response cache stores the first answer and hands it to the second instantly, at no model cost. Exact repeats are rarer than you might think ("do u ship to canada" and "Do you ship to Canada?" are different strings), so some systems use a semantic cache instead: embed each incoming question (Chapter 27), and if it is close enough in meaning to one already answered, reuse that answer. Suppose 25% of Juni's 100,000 monthly questions hit the cache. At the uncached mid-tier price of $0.0085 per reply that saves 25,000 × $0.0085 ≈ $212 a month, minus a tiny embedding cost, and those customers get answers in milliseconds. The danger is a false match: "Where is order 10482?" and "Where is order 10483?" look almost identical to an embedding model and have completely different answers. Cache only answers that do not depend on the person, the account or the date (policies, shipping rules, plant-care tips), set a strict similarity threshold, clear entries when your documents change, and include cache hits in your evals like any other component.
+
+> **Definition — Response cache:** Storing complete answers and returning a stored answer, without calling the model, when the same request arrives again.
+
+> **Definition — Semantic cache:** A response cache that reuses a stored answer when a new request is close enough in meaning to an earlier one, judged by embedding similarity, rather than identical word for word.
+
 > **Watch out:** Different tokenizers split the same text into different numbers of tokens; Anthropic notes that its newer tokenizer produces about 30% more tokens for the same text than its old one. A model with a lower price per token can cost more per task. Always compare cost per task, measured on your own inputs.
 
 ### Cascades and routing
@@ -856,6 +893,18 @@ Organizations that climb the ladder put a few things in place: a written AI use 
 
 The harder part is people. Organizations that report real value train staff, recruit internal champions, measure outcomes in money and quality rather than guessed "hours saved", and redesign workflows instead of bolting a chatbot onto an unchanged process.
 
+### Who builds it: team shapes
+
+Someone has to own all this work, and companies tend to organize it in one of three shapes, inherited from how they organized data science and machine learning in the 2010s.
+
+> **Definition — Centralized AI team:** One group of AI and machine-learning specialists that serves the whole company and takes requests from departments. It builds deep expertise and shared tools, but can become a bottleneck far from the problems it solves.
+
+> **Definition — Embedded AI team:** AI and machine-learning specialists placed inside each product or business team, working daily with the people who own the problem. They move fast and learn the domain, but tend to duplicate tools and drift apart in standards.
+
+> **Definition — Hub-and-spoke model (center of excellence):** A hybrid in which a small central group sets standards and runs the shared platform, evaluation and governance, while specialists embedded in business teams build the products.
+
+Many organizations start centralized because they have only a few experts, move toward hub-and-spoke as demand spreads, and keep a central platform team even when product work is fully embedded (Chapter 10 describes what an ML platform contains). Two lessons from the machine-learning era carry over to any shape. First, the people who understand the problem, such as support leads, clinicians or underwriters, belong on the team rather than being consulted once, because they decide what "correct" means and help write the golden set. Second, the riskiest moment is the handoff from prototype to production: a team that builds a model and "throws it over the wall" to engineers who did not build it tends to ship late and break often. That is one reason the AI engineer role (Chapter 63) combines building a system with running it.
+
 > **At the frontier (2026):** As of late 2026 the most advanced deployments embed agents in core processes, using shared plumbing: MCP for tools, the A2A protocol for handoffs between agents from different vendors, and Agent Skills for packaged know-how, with MCP and A2A both governed under Linux Foundation projects. The bottleneck has moved from model capability to identity and permissions for agents (whom is this agent acting for, with which permissions, and how are they revoked?), to evaluating long-running work, and to helping people work alongside agents.
 
 ## A launch checklist
@@ -888,7 +937,7 @@ Security is special because the attacks are written in plain English. A hidden s
 Money matters too. A small model can cost a hundredth of a large one, but the cheapest model is not always the cheapest system once you count the cost of mistakes. Caching, batching and routing easy requests to small models do most of the saving. Finally, good AI products set autonomy action by action, show sources, ask before acting, make undo easy and admit what they cannot do.
 
 ## Key terms
-Production, Nondeterministic, Eval (evaluation), Success criteria, Rubric, Golden dataset (golden set), Edge case, Adversarial input, Canary (canary token), Code grader, LLM-as-judge, Position bias, Verbosity bias, Self-preference bias, Margin of error, Offline evaluation, Online evaluation, A/B test, Regression, pass@k and pass^k, Eval-driven development, LLMOps, Observability, Trace and span, Model snapshot (pinning), Deprecation, Gateway (model router), Guardrails, PII (personally identifiable information), Moderation classifier, Groundedness check, SQL injection, Jailbreak, Prompt injection, Direct and indirect prompt injection, Data exfiltration, Lethal trifecta, Supply-chain attack, Tool poisoning, CVE (Common Vulnerabilities and Exposures), Excessive agency, Least privilege, Sandbox, Egress allow-list, Human-in-the-loop (HITL), Red-teaming, Attack success rate (ASR), OWASP Top 10 for LLM Applications, NIST AI RMF (AI Risk Management Framework), MITRE ATLAS, Latency, TTFT (time to first token), Model tier, Model cascade, Unit economics, Gross margin, Copilot and autopilot, Automation bias, Generative UI, Shadow AI.
+Production, Nondeterministic, Eval (evaluation), Success criteria, Rubric, Golden dataset (golden set), Edge case, Adversarial input, Canary (canary token), Code grader, Reference-based metric, ROUGE, Semantic similarity score, LLM-as-judge, Position bias, Verbosity bias, Self-preference bias, Margin of error, Offline evaluation, Online evaluation, A/B test, Explicit and implicit feedback, Regression, pass@k and pass^k, Agent failure modes, GAIA, Eval-driven development, LLMOps, Observability, Trace and span, Model snapshot (pinning), Deprecation, Gateway (model router), Percentile latency (p95, p99), Guardrails, PII (personally identifiable information), Moderation classifier, Groundedness check, SQL injection, Jailbreak, Prompt injection, Direct and indirect prompt injection, Data exfiltration, Lethal trifecta, Supply-chain attack, Tool poisoning, CVE (Common Vulnerabilities and Exposures), Excessive agency, Least privilege, Sandbox, Egress allow-list, Human-in-the-loop (HITL), Red-teaming, Attack success rate (ASR), OWASP Top 10 for LLM Applications, NIST AI RMF (AI Risk Management Framework), MITRE ATLAS, Latency, TTFT (time to first token), Model tier, Response cache, Semantic cache, Model cascade, Unit economics, Gross margin, Copilot and autopilot, Automation bias, Generative UI, Shadow AI, Centralized AI team, Embedded AI team, Hub-and-spoke model (center of excellence).
 
 ## Exercises
 

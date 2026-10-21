@@ -518,6 +518,16 @@ So training halls often use leaner designs, for example N+1 rather than 2N in pl
 
 > **Try it:** Ask your chatbot: "If a 100,000-GPU training cluster loses power for 10 minutes and its last checkpoint was 20 minutes earlier, roughly how many GPU-hours of work are lost?" Check its arithmetic: 100,000 GPUs × (30 minutes ÷ 60) = 50,000 GPU-hours, plus restart time. Then ask what the same outage would cost a payment processor, and compare the reasoning.
 
+### What actually takes services down
+
+Redundant power and cooling protect against the failures you can see in the building. They are not where most service outages come from. In *The Datacenter as a Computer*, Google's engineers reported that at their scale hardware breaks constantly but is mostly hidden by software that routes around broken machines. The disruptions that users actually noticed came far more often from software bugs, mistaken configuration changes and human error; hardware was a small minority of the causes. The same logic applies to an AI service: a faulty software release can take a chatbot down inside a perfectly healthy building.
+
+That is why operators release changes gradually (a staged rollout, Chapter 44), watch closely and roll back fast, and why they design services to bend rather than break.
+
+> **Definition — Graceful degradation:** Designing a service so that when parts fail or are overloaded, it keeps working with reduced quality or fewer features instead of failing completely, for example by switching to a smaller model or pausing non-essential features.
+
+> **Watch out:** "A Tier IV building means a service that never goes down." The Tier rating covers the building's power and cooling only. Software, configuration, networks and the model itself can fail too, and a service that needs all of its parts is only as available as their product: three parts at 99.9% each give 0.999 × 0.999 × 0.999 ≈ 99.7%.
+
 ## Running the place: operations
 
 A finished data center is not a building you lock and walk away from. It is a living machine watched every second.
@@ -707,7 +717,7 @@ Data centers are joined by fiber, and light needs about 5 microseconds per kilom
 
 ## Key terms
 
-Data center, Campus, Megawatt (MW) and gigawatt (GW), Substation, Transformer, Backup generator, White space, Gray space, Data hall, Stranded capacity, Raised floor, Slab-on-grade, Rack, Rack unit (U), Row, pod and cluster (data center layout), Hot aisle and cold aisle, Containment, CDU (coolant distribution unit), Cable tray (ladder rack), Busway (busbar trunking), Structured cabling, Optical transceiver, Single-mode and multimode fiber, Meet-me room (MMR), Cross-connect, Carrier hotel, Internet exchange point (IXP), Rack density, PDU (power distribution unit), Rack power shelf, Manifold and quick disconnect, NIC (network interface card), Leaf-spine network (Clos network), Non-blocking network, Scale-up, scale-out and front-end networks, Out-of-band management network, Dark fiber, DCI (data center interconnect), Scale-across (AI WAN), Redundancy, N and N+1, 2N, Concurrently maintainable, Fault tolerant, Uptime Institute Tiers (I to IV), Availability ("the nines"), SLA (service-level agreement), BMS and DCIM, NOC and SOC, Remote hands, Rack and stack, Commissioning (Cx), Mantrap, Enterprise data center, Colocation (colo), Hyperscaler, AI training campus ("AI factory"), Edge data center, Neocloud, Powered land and powered shell, Build-to-suit and turnkey, GPU-as-a-service, Take-or-pay contract
+Data center, Campus, Megawatt (MW) and gigawatt (GW), Substation, Transformer, Backup generator, White space, Gray space, Data hall, Stranded capacity, Raised floor, Slab-on-grade, Rack, Rack unit (U), Row, pod and cluster (data center layout), Hot aisle and cold aisle, Containment, CDU (coolant distribution unit), Cable tray (ladder rack), Busway (busbar trunking), Structured cabling, Optical transceiver, Single-mode and multimode fiber, Meet-me room (MMR), Cross-connect, Carrier hotel, Internet exchange point (IXP), Rack density, PDU (power distribution unit), Rack power shelf, Manifold and quick disconnect, NIC (network interface card), Leaf-spine network (Clos network), Non-blocking network, Scale-up, scale-out and front-end networks, Out-of-band management network, Dark fiber, DCI (data center interconnect), Scale-across (AI WAN), Redundancy, N and N+1, 2N, Concurrently maintainable, Fault tolerant, Uptime Institute Tiers (I to IV), Availability ("the nines"), SLA (service-level agreement), BMS and DCIM, NOC and SOC, Remote hands, Rack and stack, Commissioning (Cx), Mantrap, Enterprise data center, Colocation (colo), Hyperscaler, AI training campus ("AI factory"), Edge data center, Neocloud, Powered land and powered shell, Build-to-suit and turnkey, GPU-as-a-service, Take-or-pay contract, Graceful degradation
 
 ## Exercises
 

@@ -10,6 +10,7 @@
 - Why boosted trees still rule spreadsheet-style data, and how 2025–26 "foundation models" for tables and time series are challenging them.
 - How the humble perceptron connects all of this to the neural network behind your chatbot.
 - How to pick an algorithm, run a project from question to monitoring, and use the standard free tools.
+- How a model lives in production: batch versus real-time serving, staged rollouts, drift monitoring, retraining and the platform tools that support them.
 - Where classical machine learning fits in a world of large language models.
 
 ## Before you start
@@ -168,6 +169,12 @@ The real attraction is that you can read the weights. Each extra weekly hour low
 > **Definition — Interpretability:** How easily a person can understand why a model made a particular prediction. A regression with five readable weights is highly interpretable; a forest of 500 trees much less so.
 
 The decision boundary is where the score is zero, which rearranges to months = 9 − 1.2 × hours: a straight line on Figure 10.3 from 9 months at zero hours down to zero months at 7.5 hours. Everyone below it is predicted to cancel. That straightness is the strength and the weakness. These models are fast, stable, hard to overfit with a little regularization (Chapter 9), and usually give well-calibrated probabilities. But if the true pattern curves, or depends on combinations ("light users cancel only if they are also new"), a straight line misses it unless a human adds features such as hours × months.
+
+Linear and logistic regression are the best-known members of a family statisticians call generalized linear models: compute a weighted sum of the inputs, then pass it through a fixed function suited to what you are predicting. An amount uses the sum as it is (linear regression). A yes-or-no uses the sigmoid (logistic regression). A count, such as the number of insurance claims a driver files in a year, uses the exponential, which keeps the prediction positive (Poisson regression). For more than two classes, softmax (Chapter 6) replaces the sigmoid, giving softmax regression, which is exactly the calculation in the final layer of most neural-network classifiers.
+
+> **Definition — Generalized linear model (GLM):** A family of models that compute a weighted sum of the inputs and pass it through a fixed function matched to the kind of answer: unchanged for amounts (linear regression), a sigmoid for yes-or-no (logistic regression), an exponential for counts (Poisson regression).
+
+> **Definition — Softmax regression (multinomial logistic regression):** Logistic regression extended to more than two classes: one weighted sum per class, turned into probabilities with softmax. It is the same calculation as the last layer of a typical neural-network classifier.
 
 > **Key idea:** When a bank must explain to a regulator, or a doctor to a patient, why the model said what it said, a regression with a few readable weights is often the right tool even if a more complex model scores slightly higher.
 
@@ -347,6 +354,10 @@ SVMs dominated the 2000s, in handwriting recognition, text classification and bi
 
 > **Analogy:** An SVM is a town planner drawing the widest possible road between two neighborhoods. The houses right at the roadside are the support vectors; move any other house and the road stays put.
 
+Kernels power another classic method you may hear about. A Gaussian process predicts a number together with an honest error bar. Close to the examples it has seen, it is confident; far from them, its error bar widens. The kernel decides how similar two inputs are, and so how much each known example should sway a guess about a new one. Gaussian processes suit small datasets where knowing your uncertainty matters, such as deciding which experiment to run next, and they are the usual engine inside the Bayesian optimization of hyperparameters (Chapter 9). Their cost grows with the cube of the number of examples, so they struggle beyond tens of thousands of data points.
+
+> **Definition — Gaussian process:** A method that predicts a value together with an uncertainty band, using a kernel to judge how much each known example should influence the prediction at a new point. The uncertainty is small near known examples and grows away from them.
+
 ## Clustering: finding groups without answers
 
 So far we had a "Cancelled?" column to learn from. Often you have no labels, just a pile of customers or articles, and want to know whether they fall into natural groups.
@@ -386,6 +397,14 @@ Bad starts can trap k-means, so software runs it several times and keeps the bes
 
 > **Analogy:** k-means is placing ice-cream trucks in a park. Put three trucks down anywhere, let everyone walk to the nearest one, move each truck to the middle of its crowd, and repeat until no one switches.
 
+A softer cousin of k-means gives every point a probability of belonging to each group instead of an all-or-nothing assignment. In a Gaussian mixture model, each cluster is a bell curve (a normal distribution, Chapter 6) with its own center, spread and share of the data. Take our subscribers, with two bell curves centered at 2 and 11 hours, each with a spread (standard deviation) of 2.5 hours and an equal share. A subscriber who uses the product 6 hours a week sits 4 hours from the first center and 5 from the second. The heights of the two bell curves at that point are proportional to e^(−4² ÷ (2 × 2.5²)) = e^(−1.28) ≈ 0.278 and e^(−5² ÷ (2 × 2.5²)) = e^(−2) ≈ 0.135, so she is 0.278 ÷ (0.278 + 0.135) ≈ 67% "light user" and 33% "heavy user."
+
+The model is fitted with the expectation–maximization (EM) algorithm, which is k-means with soft edges. The E step computes every point's membership probabilities, as we just did. The M step moves each bell curve's center, spread and share to fit its members, each counted in proportion to its membership. Repeat until nothing changes. EM is a general recipe for learning when part of the picture is hidden (here, each point's true group), and it is how the hidden Markov models of classic speech recognition were trained (Chapter 46).
+
+> **Definition — Gaussian mixture model (GMM):** A clustering model in which each cluster is a bell-shaped (normal) distribution with its own center and spread, and each point belongs to every cluster with some probability rather than to exactly one.
+
+> **Definition — Expectation–maximization (EM):** An algorithm for fitting models with hidden information that alternates two steps: estimate the hidden parts using the current model (expectation), then refit the model using those estimates (maximization), until it settles.
+
 > **Watch out:** Clusters are not facts about the world. k-means always returns exactly k groups, even from random noise. Humans decide whether the groups mean anything.
 
 ## Shrinking many columns into a few: PCA, t-SNE and UMAP
@@ -401,6 +420,14 @@ Principal component analysis (PCA) looks for the directions along which the data
 PCA tells you how much you keep. In the Colab exercise you will squash handwritten-digit images, 64 pixel values each, to just 2 components. Those keep about 28.5 percent of the variation, yet the plot already shows the digits forming recognizable neighborhoods.
 
 > **Analogy:** PCA is finding the best camera angle. Photograph a long, flat sculpture end-on and you see a blob; from the side, its shape is obvious.
+
+Two names travel with PCA. Its directions are the **eigenvectors** of a table recording how every pair of features varies together, and software usually finds them with **singular value decomposition (SVD)**, a standard routine that breaks any matrix into a rotation, a stretch along each axis and another rotation. The stretch factors, called singular values, rank the directions by importance. You will meet the idea again: LoRA (Chapter 30) bets that a fine-tuning change can be captured by a few such directions, and the Muon optimizer (Chapter 13) evens out the singular values of its updates. A cousin of PCA, independent component analysis (ICA), looks for directions that are statistically independent rather than widely spread; its textbook use is unmixing several voices recorded by several microphones in the same room.
+
+> **Definition — Eigenvector:** A direction that a matrix only stretches or shrinks, without turning; the amount of stretch is its eigenvalue. PCA's principal components are the eigenvectors of the table of how the data's features vary together.
+
+> **Definition — Singular value decomposition (SVD):** A standard way to break any matrix into three simple steps: a rotation, a stretch by different amounts along each axis, and another rotation. The stretch amounts (singular values) show which directions matter most.
+
+> **Definition — Independent component analysis (ICA):** A method that unmixes signals by finding directions in the data that are statistically independent, such as separating two voices recorded together by two microphones.
 
 PCA only rotates and squashes in straight lines. For pictures of complex data, t-SNE (2008) and UMAP (2018) are more popular: both keep each point's close neighbors close in a 2-D map, producing striking "islands" of similar items.
 
@@ -587,6 +614,12 @@ Walk our churn project through it. **Frame the question:** if the plan is to off
 
 **Clean and build features** such as "change in usage last month" (Chapter 11). **Baseline:** "nobody cancels." **Train and tune** a few algorithms with cross-validation. **Final test:** open the sealed test set once. **Deploy**, perhaps as a nightly scoring job. **Monitor and retrain** as the world changes.
 
+Machine-learning projects are also unusually hard to schedule. In ordinary software, a feature that is half built is roughly half done. In machine learning you often cannot know whether the goal is reachable until you try: the first week might lift accuracy from a 70 percent baseline to 85 percent, and the next two months might add one point, or none, because the information simply is not in the data. Experienced teams therefore plan in stages with a go-or-stop decision after each: a feasibility check against the baseline in days, a prototype in weeks, a pilot with a few real users, and only then full production. They state expected results as ranges rather than promises, and they stop projects early when the data cannot support them, which is cheaper than stopping late.
+
+> **Definition — Proof of concept:** A small, quick experiment to check whether an idea can work at all, such as training a simple model on a sample of the data and comparing it with the baseline, before committing to a full project.
+
+The work also needs several kinds of people: data scientists who explore data and build models, data engineers who build the pipelines (Chapter 11), machine-learning engineers who train and deploy at scale, platform engineers who run the shared tools described later in this chapter, a product manager, and domain experts who know what a prediction means for a customer. Chapter 63 describes each role, and Chapter 31 shows how companies arrange them into teams.
+
 > **Watch out:** Newcomers think the job is choosing clever algorithms. Practitioners say it is mostly framing the question, getting and cleaning the right data, and explaining results. The often-quoted "80 percent of the time goes on data work" is folklore, not a measured statistic, but most practitioners recognize its spirit.
 
 ## The toolbox
@@ -655,6 +688,140 @@ Good MLOps also means experiment tracking: recording which data, code and settin
 
 > **Analogy:** A deployed model is a printed map. It was accurate the day it was printed, but roads change. MLOps is the surveying team that notices new roads and reprints the map before drivers get lost.
 
+### Serving a model: batch or real time
+
+Before a model can be monitored, it has to be put somewhere useful. There are two basic ways.
+
+> **Definition — Batch prediction:** Running a model over a large set of inputs on a schedule, such as every customer once a night, and storing the results for later use. Also called offline inference.
+
+> **Definition — Online prediction:** Running a model the moment a request arrives and returning the answer within a fraction of a second, as a card-fraud check or a chatbot does. Also called real-time inference.
+
+Our churn model is a natural batch job. At 2 a.m. a script scores all 200,000 subscribers, a few minutes' work for an ordinary server, and writes a "risk" column into the database; the retention team's dashboard reads it at 9 a.m. Nobody is waiting, and if the job fails it is simply rerun. A fraud model cannot work that way: the payment terminal needs an answer in well under a second, so the model runs as a small web service behind an API (Chapter 26), answering one request at a time, around the clock. Online prediction is harder: the service must stay up, stay fast during traffic spikes, and compute its features from fresh data in milliseconds. A good rule is to use batch whenever the answer can be a few hours old, and online only when it cannot.
+
+Engineers usually package a model service in a container, so it runs identically on a laptop, a test server and the cloud, and let a cluster manager such as Kubernetes (Chapter 62) start extra copies when traffic rises.
+
+> **Definition — Container:** A sealed package holding a program together with every library and setting it needs, so it runs the same way on any machine. Docker is the best-known container tool.
+
+One trap deserves its own name. Suppose the training data computed "average spend over the last 30 days" in a data scientist's notebook, and the live service computes it with code an engineer wrote later, which rounds differently and skips refunds. The model now sees slightly different numbers in production than it learned from, and quietly gets worse.
+
+> **Definition — Training-serving skew:** A mismatch between how data is prepared for training and how it is prepared when the deployed model is used, which makes a model perform worse in production than in testing even though nothing in the world has changed.
+
+### Rolling out a new model safely
+
+A retrained model that scores better on the test set is a candidate, not a winner. Live traffic differs from any test set, so teams release new models in stages, exposing more users only when the previous stage looks healthy.
+
+> **Definition — Shadow deployment:** Running a new model alongside the current one on real traffic and logging its predictions without acting on them, so the two can be compared safely before launch.
+
+> **Definition — Canary release:** Sending a small share of real traffic, say 1 to 5 percent, to a new model first and watching for problems before widening the rollout. The name comes from the canaries miners once carried to warn of gas.
+
+> **Definition — Rollback:** Switching production back to the previous version of a model or program when a new one misbehaves. Good teams can do it with one command.
+
+```mermaid
+flowchart LR
+    A["Offline test:<br/>beats current model"] --> B["Shadow:<br/>logged, not used"]
+    B --> C["Canary:<br/>5 percent of traffic"]
+    C --> D["A/B test:<br/>half and half"]
+    D --> E["Full rollout"]
+    B -->|"problems"| R["Roll back<br/>and investigate"]
+    C -->|"problems"| R
+    D -->|"no real gain"| R
+```
+
+*Figure 10.13: A staged rollout. Each stage exposes more users only if the previous one looked healthy, and every stage can roll back.*
+
+The numbers show why each stage exists. Suppose a fraud service checks 1 million payments a day. In shadow mode the new model scores all 1 million, but its verdicts are only logged; perhaps it disagrees with the old model on 3,000 payments, and analysts inspect a sample of those by hand. As a 5 percent canary it decides 50,000 real payments a day, so a serious bug hurts 50,000 customers instead of a million, and alerts fire within hours. Only then does an A/B test (Chapter 31) split traffic evenly to measure whether the new model really catches more fraud and blocks fewer honest customers, the business outcomes an offline test can only estimate. Recommenders often use interleaving instead, mixing two models' suggestions into a single list and counting whose items people choose, which detects differences with far fewer users. And when several versions compete, bandit methods (Chapter 51) shift traffic toward the winner as evidence builds rather than waiting for a fixed test to end.
+
+### Monitoring: what to watch and how to spot drift
+
+Drift comes in three flavors that call for different responses. Picture a model that predicts whether a loan applicant will repay.
+
+> **Definition — Covariate shift:** A change in the mix of inputs a model sees while the relationship between inputs and answers stays the same, such as a lender suddenly receiving far more applications from young people. It is the most common kind of data drift.
+
+> **Definition — Label shift:** A change in how common each answer is, while what each kind of case looks like stays the same, such as the share of loans that default doubling during a recession. Also called prior shift.
+
+Concept drift, defined above, is the third: the same kind of applicant now behaves differently, perhaps because a new law changed how debts are collected. Covariate shift may do no harm if the model already handled young applicants well. Label shift leaves the model's ranking of applicants roughly right but makes its probabilities too optimistic or too pessimistic. Concept drift breaks the model outright and calls for retraining on recent data.
+
+What to watch, from cheapest to most valuable:
+
+| Layer | Examples | Catches |
+|---|---|---|
+| System health | Requests per minute, errors, response time | Crashes, outages, slowness |
+| Inputs | Missing values, ranges, the mix of each feature | Broken pipelines, covariate shift |
+| Predictions | Share predicted "will cancel", average score | Many problems, early and without labels |
+| Outcomes | Accuracy once the true answers arrive | What actually matters, but late |
+
+The last row is the hard one, because the true answer often arrives long after the prediction.
+
+> **Definition — Feedback delay:** The time between a model's prediction and the moment the true answer becomes known, from seconds for a clicked recommendation to a month for a cancellation or years for a loan.
+
+So teams treat the earlier rows as early warnings. A common score for "has this column moved?" is the population stability index. Split the feature into buckets, then for each bucket multiply (this week's share − training share) by ln(this week's share ÷ training share), and add up the results. Here is the customer age mix of our subscription app after a campaign aimed at students:
+
+| Age group | Training share | This week | Difference | ln(this week ÷ training) | Product |
+|---|---|---|---|---|---|
+| Under 30 | 0.30 | 0.45 | +0.15 | ln(1.50) = 0.405 | 0.061 |
+| 30 to 49 | 0.50 | 0.40 | −0.10 | ln(0.80) = −0.223 | 0.022 |
+| 50 and over | 0.20 | 0.15 | −0.05 | ln(0.75) = −0.288 | 0.014 |
+
+The products add up to about 0.10. A widely used rule of thumb reads under 0.1 as stable, 0.1 to 0.25 as worth a look, and over 0.25 as a major shift, so this campaign sits right at the "take a look" line: check whether the model is as accurate for under-30s as for everyone else.
+
+> **Definition — Population stability index (PSI):** A score for how much the distribution of one feature, or of a model's scores, has moved between two periods, computed by comparing the share of data in each bucket. Values above about 0.25 usually signal a major shift.
+
+Formal statistical tests such as the Kolmogorov–Smirnov test do the same job with a yes-or-no verdict, though on millions of rows they flag even trivial, harmless changes as "significant".
+
+> **Watch out:** Most alarms are not the world changing. When Google engineers reviewed close to a hundred outages of one large machine-learning pipeline, most had ordinary software and data causes rather than anything specific to machine learning. A column renamed, a price switched from dollars to cents, a sensor sending zeros, a join that silently dropped half the rows: check the plumbing before blaming drift. And tune alerts with care, because a monitor that fires every day teaches people to ignore it.
+
+### Retraining: how often, and how
+
+When monitoring shows the model slipping, or simply on a schedule, you retrain. There are two ways to do it.
+
+> **Definition — Stateless retraining:** Training a fresh model from scratch on a recent window of data, such as the last 12 months, every time the model is updated.
+
+> **Definition — Stateful training (incremental training):** Updating the existing model by continuing to train it on only the data that arrived since the last update. It is cheaper and faster, but needs care so the model does not wander or forget older patterns.
+
+Most teams start with a calendar, retraining monthly from scratch, then automate the whole chain (pull the data, train, evaluate, and if the new model wins, start a staged rollout) so it runs without anyone remembering to do it. Mature teams add triggers that retrain when drift or a drop in accuracy is detected, and some move to frequent stateful updates: ad-click and fraud models at large companies may update daily or even hourly, which is the online learning of Chapter 8.
+
+How often is often enough? Measure it. Train a model on January to June data and test it separately on July, August, September and October. If accuracy goes 0.85, 0.84, 0.82, 0.79, the model loses six points in a quarter and needs at least monthly updates. If it holds steady for a year, monthly retraining is wasted effort. This "value of freshness" experiment turns a guess into a schedule.
+
+> **Key idea:** A model in production is never finished. Serving, rollout, monitoring and retraining form a loop, and the teams that do well automate that loop so a fresh model can ship safely every week rather than every year.
+
+### Testing a machine-learning system
+
+Ordinary software has unit tests (Chapter 29). A machine-learning system needs those plus three kinds of check of its own.
+
+- **Data tests** run whenever new data arrives, before training or scoring: ages between 0 and 120, no more than 1 percent of emails missing, every customer ID unique, today's row count within 20 percent of yesterday's. Open-source tools such as Great Expectations let you write these as rules. They catch the broken pipelines from the warning above before a model learns from them.
+- **Training tests** check the training code. The most useful is to train on a tiny sample, say 10 examples, and confirm the model can memorize it almost perfectly. A model that cannot even overfit 10 examples has a bug, such as labels shuffled out of line with their rows, a wrong loss or a learning rate of zero, and more data will not fix it.
+- **Evaluation gates** run automatically before any release: the candidate must beat the current model on the test set without getting worse on important slices of the data or on behavioral tests (both explained in Chapter 9).
+
+> **Definition — Data validation:** Automatic checks that incoming data matches expectations, such as allowed ranges, types, missing-value rates and row counts, before it is used to train or run a model.
+
+> **Definition — Overfitting a single batch:** A sanity check in which a model is trained on a handful of examples to confirm it can learn them almost perfectly. Failure points to a bug in the code or data rather than a shortage of data.
+
+> **Definition — Evaluation gate:** An automatic rule that blocks a new model from release unless it beats the current model on agreed tests, both overall and on key subgroups.
+
+### The ML platform: tracking, registries and feature stores
+
+For one model, a few scripts and a careful person suffice. For fifty models, companies build or buy a shared platform so each team does not reinvent the plumbing.
+
+> **Definition — ML platform:** The shared internal tools a company's teams use to train, store, deploy and monitor models, run by a platform team so each product team does not rebuild the same plumbing.
+
+The usual pieces:
+
+- **Experiment tracking.** Every training run logs its code version, data version, settings and scores to a shared dashboard, so "which model was that?" always has an answer. MLflow and Weights & Biases are widely used.
+- **Data versioning.** Datasets get version numbers just as code does with Git (Chapter 3), using tools such as DVC, so any model can be rebuilt from exactly the data that made it.
+- **Model registry.** A catalog of trained models with their versions, scores, owners and status (testing, production, retired), and the one place deployment tools fetch models from.
+- **Feature store.** A shared library of features, such as "spend in the last 30 days", computed by one piece of code and served both to training jobs and to live models. It is the standard cure for training-serving skew, and it lets ten teams reuse one feature instead of writing it ten slightly different ways. Feast is a popular open-source example.
+- **Pipelines and compute.** Orchestrators such as Airflow (Chapter 11) run the steps in order, on clusters scheduled by systems such as Kubernetes.
+
+> **Definition — Experiment tracking:** Automatically recording the code, data, settings and results of every training run, so any model can be compared, reproduced and audited later.
+
+> **Definition — Data versioning:** Recording each version of a dataset, as Git records versions of code, so any model can be traced to, and rebuilt from, the exact data that trained it.
+
+> **Definition — Model registry:** A catalog of trained models that records each version's training data, scores, owner and status, and serves as the single source from which deployment tools pull models.
+
+> **Definition — Feature store:** A shared system that computes, stores and serves model features, so the same feature definitions are used in training and in production and can be reused across teams.
+
+The big clouds sell the whole kit as managed services, such as Amazon SageMaker, Google Vertex AI, Azure Machine Learning and Databricks. The buy-or-build rule from Chapter 31 applies here too: buy the plumbing, and build only what makes your models better than a competitor's.
+
 ## Classical machine learning in the age of LLMs
 
 In 2026 LLMs and classical models work together in four ways. **As labelers:** an LLM labels 10,000 support tickets, humans check a sample, and a small, fast classical model trains on the result. **As feature makers:** an embedding model turns each customer message into numbers that capture its meaning, which a boosted tree uses alongside ordinary columns. **As coding assistants:** pandas and scikit-learn code is drafted in seconds; the scarce skill is knowing whether it is right. **As analysts:** chat apps run Python on a spreadsheet you upload and fit models from a plain-English request.
@@ -677,7 +844,7 @@ The perceptron, a weighted sum with a yes/no cutoff, is the seed of the neural n
 
 ## Key terms
 
-Classical machine learning, inductive bias, tabular data, churn, k-nearest neighbors (kNN), Euclidean distance, feature scaling, linear regression, logistic regression, interpretability, naive Bayes, decision tree, node, leaf, depth, Gini impurity, ensemble, bagging, random forest, feature importance, boosting, residual, gradient boosting, XGBoost, LightGBM, CatBoost, in-context learning, tabular foundation model, support vector machine (SVM), margin, support vectors, kernel trick, clustering, k-means, hierarchical clustering, DBSCAN, dimensionality reduction, principal component analysis (PCA), t-SNE, UMAP, embedding, anomaly detection, z-score, isolation forest, recommender system, content-based filtering, collaborative filtering, matrix factorization, cold-start problem, time series, trend, seasonality, naive forecast, exponential smoothing, ARIMA, lag feature, backtesting, time-series foundation model, perceptron, neural network, exploratory data analysis (EDA), pandas, scikit-learn, MLOps, data drift, concept drift.
+Classical machine learning, inductive bias, tabular data, churn, k-nearest neighbors (kNN), Euclidean distance, feature scaling, linear regression, logistic regression, interpretability, generalized linear model (GLM), softmax regression (multinomial logistic regression), naive Bayes, decision tree, node, leaf, depth, Gini impurity, ensemble, bagging, random forest, feature importance, boosting, residual, gradient boosting, XGBoost, LightGBM, CatBoost, in-context learning, tabular foundation model, support vector machine (SVM), margin, support vectors, kernel trick, Gaussian process, clustering, k-means, hierarchical clustering, DBSCAN, Gaussian mixture model (GMM), expectation–maximization (EM), dimensionality reduction, principal component analysis (PCA), eigenvector, singular value decomposition (SVD), independent component analysis (ICA), t-SNE, UMAP, embedding, anomaly detection, z-score, isolation forest, recommender system, content-based filtering, collaborative filtering, matrix factorization, cold-start problem, time series, trend, seasonality, naive forecast, exponential smoothing, ARIMA, lag feature, backtesting, time-series foundation model, perceptron, neural network, exploratory data analysis (EDA), proof of concept, pandas, scikit-learn, MLOps, data drift, concept drift, batch prediction, online prediction, container, training-serving skew, shadow deployment, canary release, rollback, covariate shift, label shift, feedback delay, population stability index (PSI), stateless retraining, stateful training (incremental training), data validation, overfitting a single batch, evaluation gate, ML platform, experiment tracking, data versioning, model registry, feature store.
 
 ## Exercises
 

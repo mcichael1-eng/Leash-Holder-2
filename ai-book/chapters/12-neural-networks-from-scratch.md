@@ -682,6 +682,10 @@ Nobody computes these slopes by hand in practice. Deep-learning frameworks such 
 
 > **Definition — Automatic differentiation (autograd):** Software that records the steps of a forward computation and then computes every gradient automatically by applying the chain rule backward. It is why researchers never derive gradients by hand.
 
+The record a framework keeps is called a computational graph: every multiply, add and activation becomes a box, with arrows showing which numbers fed into which, much like the ice-cream network diagram above but with billions of boxes. The forward pass builds the graph; the backward pass walks it in reverse, multiplying local slopes exactly as you did by hand.
+
+> **Definition — Computational graph:** A record of every operation in a calculation, drawn as boxes (operations) connected by arrows (which results feed into which). Frameworks build it during the forward pass and walk it backward to compute gradients.
+
 > **Watch out:** "Backpropagation is how the network learns" is only half right. Backprop computes the gradient: who is to blame and by how much. A separate piece, the **optimizer**, decides how to change the weights given that blame. Plain gradient descent (new = old − learning rate × slope) is the simplest optimizer. Chapter 13 covers smarter ones, from momentum and Adam to the 2024 newcomer Muon.
 
 > **Key idea:** Backpropagation is the chain rule applied backward through a network. Each simple step passes blame to its inputs by multiplying by its local slope, and the whole gradient arrives for about the cost of two extra forward passes. Without it, training large networks would be impossible.
@@ -810,7 +814,7 @@ Your chatbot was built with exactly this loop, with trillions of tokens instead 
 
 ## Key terms
 
-Neural network, weight, parameter, training, inference, deep learning, vector, matrix, tensor, artificial neuron, weighted sum, bias (in a neuron), sigmoid, perceptron, step function, decision boundary, XOR (exclusive or), linear function, non-linear function, activation function, tanh, ReLU (Rectified Linear Unit), Leaky ReLU, GELU (Gaussian Error Linear Unit), SiLU (Swish), logit, softmax, layer, input layer, hidden layer, output layer, dense layer (fully connected layer), MLP (multilayer perceptron), width, depth, hyperparameter, label (target), forward pass, matrix multiplication (matmul), GPU (Graphics Processing Unit), FLOP (floating-point operation), loss function, mean squared error (MSE), cross-entropy loss, perplexity, derivative (slope), gradient, gradient descent, learning rate, chain rule, backpropagation (backprop), gradient checking, automatic differentiation (autograd), batch (mini-batch), batch size, step (iteration), epoch, stochastic gradient descent (SGD), training set, validation set and test set, feature (learned).
+Neural network, weight, parameter, training, inference, deep learning, vector, matrix, tensor, artificial neuron, weighted sum, bias (in a neuron), sigmoid, perceptron, step function, decision boundary, XOR (exclusive or), linear function, non-linear function, activation function, tanh, ReLU (Rectified Linear Unit), Leaky ReLU, GELU (Gaussian Error Linear Unit), SiLU (Swish), logit, softmax, layer, input layer, hidden layer, output layer, dense layer (fully connected layer), MLP (multilayer perceptron), width, depth, hyperparameter, label (target), forward pass, matrix multiplication (matmul), GPU (Graphics Processing Unit), FLOP (floating-point operation), loss function, mean squared error (MSE), cross-entropy loss, perplexity, derivative (slope), gradient, gradient descent, learning rate, chain rule, backpropagation (backprop), gradient checking, automatic differentiation (autograd), computational graph, batch (mini-batch), batch size, step (iteration), epoch, stochastic gradient descent (SGD), training set, validation set and test set, feature (learned).
 
 ## Exercises
 

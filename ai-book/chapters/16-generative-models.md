@@ -43,6 +43,10 @@ What does it mean to "learn what data looks like"? Suppose you measured the heig
 
 A generative image model does the same thing with a far bigger object. A small 512 × 512 color image is 512 × 512 × 3 = 786,432 numbers (Chapter 3 explained how pixels become numbers). Every possible image of that size is a point in a space with 786,432 dimensions. Almost all of those points are meaningless static. Real photographs of faces, foxes and kitchens occupy a tiny, oddly shaped island inside that ocean of noise. Learning the distribution means learning the shape of that island well enough to land on it at a spot nobody has visited before.
 
+Researchers call this picture the manifold hypothesis: real data lies on or near a thin, smoothly curved surface (a manifold) with far fewer dimensions than the space around it. A face can vary in pose, lighting, age and expression, a few hundred independent ways at most, not 786,432. That is why the short lists of numbers in the next section can describe it.
+
+> **Definition — Manifold hypothesis:** The idea that real-world data such as photos or sentences occupies a thin, smoothly curved region (a manifold) with far fewer dimensions than the raw space of all possible inputs. It is why compact latent spaces can describe complex data.
+
 > **Key idea:** A generative model does not store pictures and paste them together. It learns where "realistic" lives in a huge space of possible outputs, then picks a new point inside that region.
 
 Your chatbot is a generative model too: it samples each token of its reply from a distribution over its vocabulary (Chapter 18). Image, video and audio generators use different machinery toward the same goal.
@@ -550,6 +554,51 @@ Diffusion LMs are fast and can revise earlier parts of an answer, which suits co
 > **Definition — World model:** A model that predicts how an environment will change, especially in response to actions, sometimes rendering it as interactive video.
 
 > **Definition — JEPA (joint-embedding predictive architecture):** Yann LeCun's approach of training a model to predict missing or future parts of its input in embedding space (the meaning) rather than pixel by pixel.
+
+## Other families you will hear about, and how generators are graded
+
+The families above dominate 2026 products, but three older or more mathematical ones still come up in papers, histories and even Nobel Prize citations.
+
+### Energy-based models and Boltzmann machines
+
+An energy-based model gives every possible input a single score, its "energy": low for realistic data, high for nonsense, like a landscape in which real photos sit in the valleys. To turn energies into probabilities, you must divide by a total taken over every possible input, a normalizing sum called the partition function. For a 786,432-number image, that sum has vastly more terms than there are atoms in the universe, so these models need clever approximations to train and to sample, the main reason they lost ground to the methods above.
+
+The most famous energy-based networks are the Boltzmann machines of David Ackley, Geoffrey Hinton and Terrence Sejnowski (1985): networks of randomly flipping on-off units borrowed from statistical physics, and part of the work cited in Hinton's 2024 Nobel Prize in Physics (Chapter 7). A simplified version, the restricted Boltzmann machine (RBM), became the building block of the 2006 deep belief network. Hinton's group trained a deep network one layer at a time without labels, each layer an RBM learning to model the layer below, and then fine-tuned the whole stack. This greedy layer-wise pretraining was how deep networks were first trained successfully, until ReLU activations, better initialization and GPUs made it unnecessary around 2010 to 2012 (Chapter 13). The energy idea is not dead: Yann LeCun frames his JEPA approach as an energy-based model.
+
+> **Definition — Energy-based model:** A model that assigns every possible input a single score, called energy, that is low for realistic data and high for unrealistic data. Probabilities come from comparing an input's energy with the energies of all possible inputs.
+
+> **Definition — Partition function:** The normalizing total, summed over every possible input, that turns an energy-based model's scores into probabilities. For realistic data it is far too large to compute exactly, which makes these models hard to train.
+
+> **Definition — Boltzmann machine:** A 1980s energy-based neural network of randomly switching on-off units, inspired by statistical physics. The restricted Boltzmann machine (RBM) is a simplified version with connections only between two layers.
+
+> **Definition — Deep belief network (DBN):** A deep network introduced in 2006 by stacking restricted Boltzmann machines, each trained without labels on the outputs of the one below, then fine-tuning the whole stack. It showed that deep networks could be trained.
+
+> **Definition — Greedy layer-wise pretraining:** Training a deep network one layer at a time, each layer learning to model the outputs of the layer below before the next is added. It was the standard way to start deep networks from about 2006 to 2010.
+
+### Normalizing flows
+
+A normalizing flow builds a generator from steps that can be run exactly backward. Start with simple random noise, apply a chain of reversible transformations, and you get data; run the chain in reverse and any real image maps back to the noise that would have produced it. Because every step can be undone, the model can calculate the exact probability of any image, something a GAN cannot do at all. OpenAI's Glow (2018) produced sharp faces this way, but the reversibility rule limits how powerful each step can be, and flows were overtaken by diffusion. Flow matching, earlier in this chapter, grew out of a continuous version of normalizing flows: it keeps the idea of a smooth path from noise to data while making training far simpler.
+
+> **Definition — Normalizing flow:** A generative model built from a chain of reversible transformations that turn simple noise into data, so the exact probability of any example can be computed by running the chain backward.
+
+### Score-based models: diffusion's twin
+
+In 2019 Yang Song and Stefano Ermon trained a network to estimate, at any point in image space, the direction in which the data becomes more likely, a quantity called the score. Sampling then means starting from noise and repeatedly stepping along the score, with a little added randomness, toward realistic images. Predicting the score and predicting the noise, the diffusion recipe of this chapter, turned out to be two views of the same thing, and in 2021 Song and colleagues unified them in one framework. When a paper says "score-based" or "score matching," it means this family.
+
+> **Definition — Score-based model:** A generative model that learns, at every point, the direction in which data becomes more likely (the score), and generates by following that direction from noise. It is another view of the same mathematics as diffusion.
+
+### How do you grade a generator?
+
+A classifier is graded against an answer key. A generator has none: there is no single correct picture of "a watercolor fox reading a book." Researchers use several imperfect yardsticks together:
+
+- **Likelihood.** How probable real, held-out examples are under the model, the generative version of Chapter 6's cross-entropy. Only some families (autoregressive models, flows, and VAEs approximately) can compute it, and a good score does not guarantee good-looking samples.
+- **FID (Fréchet Inception Distance, 2017).** Run thousands of real and generated images through a pretrained image network and compare the statistics of the features it extracts. Lower is better. It rewards realism and variety but says nothing about whether an image follows its prompt.
+- **CLIP score.** How closely each image matches its prompt in CLIP's shared space (earlier in this chapter). It inherits CLIP's blind spots, such as counting.
+- **Human preference.** People see two outputs side by side and pick the better one. It is slow and costly, but it measures what users actually care about, and it is how public image and video leaderboards rank models, the same idea as the chatbot arenas of Chapter 24.
+
+> **Definition — FID (Fréchet Inception Distance):** A standard score for image generators that compares the statistics of features, extracted by a pretrained image network, from generated images and from real images. Lower is better; zero would mean the two sets are statistically identical.
+
+> **Definition — CLIP score:** A measure of how well a generated image matches its text prompt, computed as the similarity between the two in CLIP's shared embedding space.
 
 ## Generative models in 2026: the family tree
 

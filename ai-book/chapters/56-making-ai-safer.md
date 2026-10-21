@@ -65,6 +65,75 @@ That is 12 times worse than the 5 in 1,000 the independent estimate gives at the
 
 > **Key idea:** Defense in depth works by multiplying small failure rates, but only to the extent the layers fail for different reasons. Diversity of defenses matters more than the strength of any one.
 
+### What other safety-critical industries learned
+
+Aviation, nuclear power, chemical plants and hospitals have spent decades learning how to keep complicated, dangerous systems safe. The Swiss cheese model comes from that body of knowledge, and AI safety borrows several more of its ideas.
+
+> **Definition — Safety engineering:** The discipline of designing, building and operating systems such as aircraft, power plants and hospitals so that accidents are rare and their damage is limited, using methods that assume parts will fail.
+
+**Break risk into factors you can act on.** Disaster planners often describe risk as the product of three things: risk ≈ hazard × exposure × vulnerability. Because the factors multiply, shrinking any one of them shrinks the whole.
+
+> **Definition — Hazard:** A source of possible harm, such as a flood, a toxic chemical or an AI capability that could help an attacker.
+
+> **Definition — Exposure (in risk analysis):** How much of what we care about, such as people, systems or money, comes into contact with a hazard.
+
+> **Definition — Vulnerability:** How easily the exposed people or systems are harmed when a hazard strikes, which depends on their defenses and their ability to cope.
+
+**Worked example.** A company with 1,000 employees faces AI-written phishing emails that are fluent, personal and cheap to produce. That hazard is outside the company's control. Suppose 20,000 such emails reach inboxes in a year (exposure) and 2% are clicked (vulnerability): 20,000 × 0.02 = 400 harmful clicks a year. A better mail filter halves exposure to 10,000. Training plus a one-click "report phishing" button halves the click rate to 1%. Now 10,000 × 0.01 = 100 clicks, a fourfold cut without touching the hazard at all. AI labs reason the same way: they cannot un-invent a capability, but access tiers reduce exposure and classifiers, monitoring and patching reduce vulnerability.
+
+**Use proven design principles.** Safety engineers rely on a short list of principles that apply directly to AI products and agents.
+
+| Principle | What it means | AI example |
+|---|---|---|
+| Redundancy | More than one component can catch a failure | Two independently trained classifiers screen the same output |
+| Separation of duties | No single person or system can complete a risky action alone | The agent that writes code cannot also approve and deploy it |
+| Least privilege | Each part gets only the access it needs (Chapter 28) | A research agent gets read-only access to company files |
+| Fail-safe default | When something breaks, the system falls into a safe state | If the safety monitor goes offline, the agent pauses instead of carrying on unwatched |
+| Negative feedback | Automatic checks push back when activity drifts | Spending caps and rate limits halt an agent with unusual activity |
+| Transparency | The system's state is visible to its overseers | Every tool call an agent makes is logged and reviewable |
+
+> **Definition — Separation of duties:** A rule that no single person or system can complete a high-risk action alone, such as one employee requesting a payment and another approving it.
+
+> **Definition — Fail-safe:** A design in which a failure leaves the system in a safe state, the way a train's air brakes clamp on automatically if the air line breaks.
+
+> **Definition — Negative feedback:** A mechanism that automatically counteracts a change, the way a thermostat switches the heating off as a room warms up. In safety design it stops small deviations from growing into large ones.
+
+**Count the nines.** Reliability engineers describe performance in "nines": 99% is two nines, 99.9% three, 99.99% four (Chapter 38 uses the same language for data-center uptime). Each extra nine means ten times fewer failures, and each is usually much harder to earn than the last. An agent that takes 1 million actions a day at two nines fails 10,000 times a day; at four nines, 100 times. A headline benchmark score of 90% is only one nine, while commercial aviation has well under one fatal accident per million flights, six nines and more. That gap is one reason AI agents are still kept away from many high-stakes jobs.
+
+> **Definition — Nines (of reliability):** Shorthand for reliability levels: "three nines" means 99.9% success, "four nines" 99.99%. Each additional nine cuts failures tenfold.
+
+### When nothing is broken: systemic accidents
+
+The Swiss cheese model pictures an accident as a row of failed parts. Some of the worst accidents in history are better explained by how parts, people and organizations interacted than by any one failure, and safety researchers drew three further lessons from them.
+
+**Some accidents are normal.** The sociologist Charles Perrow, studying the 1979 Three Mile Island nuclear accident, argued in his book *Normal Accidents* (1984) that in systems that are both complex (parts interact in unexpected ways) and tightly coupled (one event triggers the next faster than people can step in), occasional accidents are practically inevitable, however good each component is. The 2010 Flash Crash, when automated trading programs reacting to one another briefly wiped nearly 1,000 points off the Dow Jones index (Chapter 53), is the classic example from automated software. AI agents wired to email, code repositories, payment systems and to each other are moving toward exactly this kind of system.
+
+> **Definition — Normal accident:** Charles Perrow's term for an accident that is practically inevitable in a system whose parts interact in complex, unexpected ways and are so tightly linked that one failure cascades before anyone can intervene.
+
+**Organizations drift.** The Space Shuttle Challenger was destroyed in 1986 when a seal called an O-ring failed. Engineers had seen the seals erode on earlier flights. The sociologist Diane Vaughan showed how each erosion that did not cause disaster came to be treated as acceptable, step by reasonable-looking step, under schedule pressure. The AI version is easy to picture: a model that showed a worrying behavior in testing ships anyway, because the previous model had a similar quirk and nothing bad happened, and the launch date is fixed.
+
+> **Definition — Normalization of deviance:** The gradual process by which an organization comes to accept warning signs or rule-breaking as normal because nothing bad happened the last few times. Diane Vaughan coined the term studying the 1986 Challenger disaster.
+
+**Culture is a safety layer.** The hopeful counterexample is a group of organizations that run hazardous operations, such as aircraft carriers, air-traffic control and some nuclear plants, with far fewer accidents than you would expect. Researchers call them high-reliability organizations. They obsess over near misses instead of celebrating luck, resist simple explanations, defer to whoever knows the situation best rather than to rank, and let anyone stop the work over a concern without punishment. This is why incident reporting and whistleblower protections, later in this chapter, matter as much as any training technique.
+
+> **Definition — Safety culture:** The shared attitudes and habits inside an organization that determine how seriously safety is taken in practice, such as whether people report mistakes and near misses and whether anyone can halt work over a concern.
+
+> **Definition — High-reliability organization (HRO):** An organization that operates hazardous technology with far fewer accidents than expected, through habits such as studying near misses, deferring to front-line expertise and encouraging anyone to raise an alarm.
+
+**AI lives inside complex systems.** Behind all three lessons is a broader idea. A large neural network, the company that trains it and the society that uses it are each complex systems: many interacting parts whose overall behavior emerges from the interactions. That has practical consequences. You cannot predict the whole by studying the parts one at a time, which is why abilities can seem to appear suddenly with scale (Chapter 19). Feedback loops let outputs reshape their own inputs, as when recommenders shape the tastes they then measure (Chapter 51) or models train on text written by earlier models (Chapter 11). Fixes have side effects: training chatbots to please raters produced sycophancy (Chapter 55). And the behavior of the whole can differ from the wishes of every part: no lab says it wants a reckless race, yet racing pressure is real (Chapter 59 explains why).
+
+> **Definition — Complex system:** A system of many interacting parts, such as an ecosystem, a market or a large neural network, whose overall behavior emerges from the interactions and cannot be predicted by studying the parts one at a time.
+
+> **Definition — Emergence:** Behavior or properties of a whole system that none of its parts has alone, such as a traffic jam that forms although no driver chose to cause it.
+
+Complex systems also produce rare, extreme events. Floods, market crashes and pandemics follow heavy-tailed patterns in which the single worst event can dwarf all the ordinary ones put together. The writer Nassim Nicholas Taleb popularized the name "black swan" for such events when nobody saw them coming. The lesson for AI is uncomfortable: a clean track record says little about the tail, so good safety plans include defenses that work against whole classes of failure, such as the ability to pause a deployment or shut a system down, and not only defenses tuned to past incidents.
+
+> **Definition — Tail risk:** The risk of rare, extreme outcomes far from the typical case. In heavy-tailed situations a single worst event can outweigh all the ordinary ones combined.
+
+> **Definition — Black swan:** A rare, high-impact event that was not anticipated beforehand and looks obvious only in hindsight, a term popularized by Nassim Nicholas Taleb.
+
+> **Key idea:** In complex systems, many serious accidents come from interactions, incentives and organizational habits rather than from one broken part. That is why the layers in this chapter include company processes, outside accountability and the ability to stop, not only better-trained models.
+
 The rest of this chapter goes through the layers in order.
 
 ## Layer 1: Training the model to want the right things
@@ -199,6 +268,64 @@ Character matters for safety in a way that may not be obvious. A model with a st
 
 > **At the frontier (2026):** Labs increasingly try to measure and steer character directly. In August 2025 Anthropic described "persona vectors", internal directions in a model associated with traits such as sycophancy or malice, which can be used to monitor whether a trait is strengthening during training and to prevent unwanted shifts. Chapter 57 explains how such internal directions are found.
 
+### Which values? Machine ethics and moral uncertainty
+
+"Train the model to want the right things" hides a hard question: right by whose standard? The field that studies it is older than chatbots.
+
+> **Definition — Machine ethics:** The study of how to give AI systems good values and sound moral judgment, including which values to choose and how a machine should reason when they conflict.
+
+Three tempting shortcuts each fail on their own.
+
+**"Just follow the law."** Laws are public and made through legitimate processes, so obeying them is a sensible floor, and model specs require it. But the law is silent on most of what matters in a conversation: flattering a user, telling a white lie or encouraging an unhealthy habit are all legal. Laws also differ between countries, lag years behind technology (Chapter 59) and have sometimes been unjust. Law is a floor, not a full guide.
+
+**"Just give people what they want."** "What they want" has at least three meanings. At 1 a.m. you keep clicking "next video"; asked, you say you want to sleep; on calm reflection you would want to be rested for tomorrow's job interview. A system that serves the first, as engagement-driven recommenders can (Chapter 51), treats you worse than one that serves the third. Sycophancy is the chatbot version: satisfying the momentary wish to be agreed with. And getting what you want is not obviously the same as doing well. Philosophers disagree about whether a good life consists in pleasure, in having your desires satisfied, or in objectively good things such as health, knowledge and close relationships.
+
+> **Definition — Stated preference:** What people say they want when asked.
+
+> **Definition — Revealed preference:** What people's actual choices show they want, such as which videos they keep clicking, which can differ from what they say.
+
+> **Definition — Idealized preference:** What a person would want if they were fully informed, thinking clearly and reflecting calmly. Many alignment researchers argue that an assistant should serve these rather than momentary wants.
+
+> **Definition — Wellbeing:** How well a person's life is going for them. Philosophers disagree about whether it consists in pleasure, in getting what one wants, or in objectively good things such as health, knowledge and relationships.
+
+**"Just pick the correct moral theory."** Moral philosophy offers three main families of theory, and after more than two thousand years none has won.
+
+| Family | Core question | Strength | Classic worry |
+|---|---|---|---|
+| Consequentialism (for example, utilitarianism) | Which action leads to the best overall outcome? | Counts everyone's welfare, and counts numbers | Can justify terrible acts when the sums come out right, such as sacrificing one person to benefit five |
+| Deontology | Which duties and rights apply, whatever the outcome? | Protects individuals: no lying, no using people as tools | Rigid: it seems to forbid lying even to a murderer asking where your friend is hiding |
+| Virtue ethics | What would a person of good character do? | Flexible and close to how people actually reason | Vague: people disagree about what good character requires in hard cases |
+
+> **Definition — Consequentialism:** The family of moral theories holding that the right action is the one with the best overall consequences. Utilitarianism, which aims to maximize total wellbeing, is the best-known version.
+
+> **Definition — Deontology:** The family of moral theories holding that some actions are required or forbidden by duties and rights regardless of consequences, such as the duty not to lie or not to harm the innocent.
+
+> **Definition — Virtue ethics:** The family of moral theories that focuses on character, asking what an honest, kind and wise person would do, rather than on rules or outcomes alone.
+
+Hard-coding any single theory into a powerful optimizer is risky for the same reason any proxy is (Chapter 55): pushed to its extremes, every theory produces conclusions almost everyone finds monstrous.
+
+**Adding up across people.** Even with a theory chosen, a system that affects many people must combine their interests. Economists call a rule for doing that a social welfare function, and the choice of rule changes the answer. Suppose two policies give three people these wellbeing scores out of 10:
+
+```
+              Person 1   Person 2   Person 3   Total   Worst-off
+Policy A          9          9          0        18        0
+Policy B          5          5          5        15        5
+```
+
+A utilitarian rule (maximize the total) picks A, because 18 beats 15. A maximin rule (make the worst-off person as well off as possible, an idea associated with the philosopher John Rawls) picks B, because 5 beats 0. A prioritarian rule gives extra weight to gains for people who are worse off; one simple version adds up square roots, giving A = 3 + 3 + 0 = 6 and B = 2.24 + 2.24 + 2.24 ≈ 6.7, so it also picks B. Same facts, three rules, two different "right" answers.
+
+> **Definition — Social welfare function:** A rule for combining the wellbeing of many people into one judgment about which outcome is better, such as adding everything up or focusing on the worst-off.
+
+**Acting under moral uncertainty.** If thoughtful people still disagree, perhaps an AI, like a careful person, should not bet everything on one theory. Philosophers such as William MacAskill and Toby Ord treat ethics the way a forecaster treats an uncertain fact: spread your confidence across the views you take seriously, prefer actions that are acceptable under all of them, and avoid anything a serious view regards as gravely wrong. One picture of this, from the philosopher Nick Bostrom, is a moral parliament in which each theory gets delegates in proportion to your confidence in it and the delegates bargain to a decision.
+
+> **Definition — Moral uncertainty:** Uncertainty about which moral theory or values are correct, together with the question of how to act sensibly anyway, for example by choosing options that are acceptable under every view you take seriously.
+
+> **Definition — Moral parliament:** A model for decisions under moral uncertainty in which each moral theory gets delegates in proportion to your confidence in it, and the delegates bargain to reach a decision.
+
+The model specs described earlier can be read as a practical answer of this kind: a legal floor, a few bright-line hard constraints that nearly every moral view endorses, and trained judgment to weigh several values in everything else.
+
+> **Key idea:** There is no agreed moral theory to install in an AI. What labs can do is choose a defensible mix of law, bright-line rules and trained judgment, aim at people's considered interests rather than their momentary clicks, and publish the choices so that others can criticize them.
+
 ## Layer 2: Safeguards around the model
 
 Training is the inner layer. Every frontier lab also wraps its deployed models in additional systems that do not depend on the model behaving well.
@@ -324,6 +451,28 @@ flowchart LR
 *Figure 56.5: The weak-to-strong question. Today humans are the strong supervisors; one day they may be the weak ones.*
 
 > **Key idea:** All scalable oversight bets try to keep human judgment in charge without requiring humans to check everything themselves. None is yet proven to work for systems far more capable than us, which is why the remaining layers in this chapter assume oversight may fail.
+
+## Other research bets you will hear about
+
+Scalable oversight is one research program among several. Four more names come up again and again in alignment courses and papers. Each is an open research area, not a finished safeguard.
+
+**Machine unlearning.** Instead of training a model to refuse dangerous requests, remove the dangerous knowledge itself. In 2024 the Center for AI Safety and collaborators released WMDP (the Weapons of Mass Destruction Proxy benchmark), thousands of multiple-choice questions that measure hazardous knowledge in biosecurity, cybersecurity and chemistry without themselves giving it away, together with an unlearning method that lowered scores on it while mostly preserving general ability. The catch is proof: it is hard to show that knowledge is gone rather than merely hidden, and modest fine-tuning can sometimes bring it back. The same tools interest privacy lawyers, who would like to delete one person's data from a trained model (Chapter 11).
+
+> **Definition — Machine unlearning:** Techniques for removing specific knowledge or data from an already-trained model, such as hazardous technical details or one person's private information, without retraining it from scratch.
+
+**Learning values by watching.** Ordinary reinforcement learning starts from a reward and learns behavior. Inverse reinforcement learning runs the other way: watch a driver slow down near every school and infer that they care about children's safety. Stuart Russell's book *Human Compatible* (2019) builds a research program on this idea: an AI that is uncertain about what humans want and treats their behavior as evidence. In the "off-switch game" that Russell and colleagues analyzed, such a machine has a reason to let a person switch it off, because the person's decision is itself evidence that the machine was about to do something unwanted. That is one proposed route to the corrigibility described in Chapter 55. The weakness is that human behavior is inconsistent and sometimes self-defeating, so values inferred from it can be wrong.
+
+> **Definition — Inverse reinforcement learning (IRL):** Inferring the goal or reward that best explains observed behavior, the reverse of ordinary reinforcement learning, which starts from a reward and learns behavior.
+
+> **Definition — Assistance game (cooperative inverse reinforcement learning):** A formal setup, developed by Stuart Russell and colleagues, in which an AI tries to help a human while remaining uncertain about what the human wants, so it learns from the human and defers to them.
+
+**Eliciting latent knowledge.** A model may internally "know" something, for example that a security camera's feed has been tampered with, that its answers do not reveal, because training only rewarded what humans could check. The Alignment Research Center posed this as a formal problem in 2021: how do you reliably get a model to report what it actually believes? The probes in Chapter 57 that detect when a model is handling a false statement are partial, practical attempts at it.
+
+> **Definition — Eliciting latent knowledge (ELK):** The research problem of getting an AI system to report honestly what it internally "knows", even in cases where a misleading answer would score just as well with the people training it.
+
+**Agent foundations.** A more mathematical tradition, associated especially with the Machine Intelligence Research Institute (MIRI), studies idealized agents: how an agent that is part of the world it reasons about should make decisions, model itself and keep its goals stable while it changes itself. It is far from today's chatbots and mostly of interest to specialists, but you will see the name.
+
+> **Definition — Agent foundations:** Theoretical, largely mathematical research on how idealized intelligent agents should reason, decide and remain aligned, including decision theory and the puzzles of an agent that is embedded in the world it models.
 
 ## If-then commitments: deciding in advance
 
@@ -634,7 +783,7 @@ Finally, labs plan for failure. AI control watches a possibly untrustworthy mode
 
 ## Key terms
 
-Alignment technique, Safeguards (mitigations), Defense in depth, RLHF (Reinforcement Learning from Human Feedback), Scalable oversight, RLAIF (Reinforcement Learning from AI Feedback), Constitutional AI, Model spec, Constitution (for an AI), Chain of command (principal hierarchy), Operator, System prompt, Default behavior, Hard constraint, Deliberative alignment, Character training, Safety classifier, Jailbreak, Constitutional classifiers, Bug bounty, Trusted access (access tier), KYC (know your customer), Abuse monitoring, Debate (AI safety via debate), Iterated amplification, Recursive reward modeling, Critique model, Weak-to-strong generalization, Performance gap recovered (PGR), If-then commitment, Capability threshold, Uplift, CBRN, Frontier safety framework, Frontier model, Responsible Scaling Policy (RSP), AI Safety Level (ASL), Preparedness Framework, Frontier Safety Framework (FSF), Critical Capability Level (CCL), Tracked Capability Level (TCL), Safety-washing, Safety case, Inability argument, AI control, Trusted monitoring, Untrusted monitoring, Resampling (defer to trusted), Audit budget, Model weights, Exfiltration, Insider threat, RAND security levels (SL1–SL5), Distillation attack, Incident reporting, Whistleblower protection
+Alignment technique, Safeguards (mitigations), Defense in depth, Safety engineering, Hazard, Exposure (in risk analysis), Vulnerability, Separation of duties, Fail-safe, Negative feedback, Nines (of reliability), Normal accident, Normalization of deviance, Safety culture, High-reliability organization (HRO), Complex system, Emergence, Tail risk, Black swan, RLHF (Reinforcement Learning from Human Feedback), Scalable oversight, RLAIF (Reinforcement Learning from AI Feedback), Constitutional AI, Model spec, Constitution (for an AI), Chain of command (principal hierarchy), Operator, System prompt, Default behavior, Hard constraint, Deliberative alignment, Character training, Machine ethics, Stated preference, Revealed preference, Idealized preference, Wellbeing, Consequentialism, Deontology, Virtue ethics, Social welfare function, Moral uncertainty, Moral parliament, Safety classifier, Jailbreak, Constitutional classifiers, Bug bounty, Trusted access (access tier), KYC (know your customer), Abuse monitoring, Debate (AI safety via debate), Iterated amplification, Recursive reward modeling, Critique model, Weak-to-strong generalization, Performance gap recovered (PGR), Machine unlearning, Inverse reinforcement learning (IRL), Assistance game (cooperative inverse reinforcement learning), Eliciting latent knowledge (ELK), Agent foundations, If-then commitment, Capability threshold, Uplift, CBRN, Frontier safety framework, Frontier model, Responsible Scaling Policy (RSP), AI Safety Level (ASL), Preparedness Framework, Frontier Safety Framework (FSF), Critical Capability Level (CCL), Tracked Capability Level (TCL), Safety-washing, Safety case, Inability argument, AI control, Trusted monitoring, Untrusted monitoring, Resampling (defer to trusted), Audit budget, Model weights, Exfiltration, Insider threat, RAND security levels (SL1–SL5), Distillation attack, Incident reporting, Whistleblower protection
 
 ## Exercises
 

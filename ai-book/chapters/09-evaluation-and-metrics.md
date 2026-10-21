@@ -11,6 +11,7 @@
 - How regularization and cross-validation keep you honest.
 - How to build a confusion matrix and compute accuracy, precision, recall, specificity and F1 by hand, using a medical test and a real cancer dataset.
 - How thresholds, ROC curves and AUC work, and how to measure models that predict numbers.
+- How to train on rare classes, and how slice-based evaluation and behavioral tests find failures that one overall score hides.
 - Why you should always beat a dumb baseline, how to tune settings without cheating, and why benchmarks stop working once everyone aims at them (Goodhart's law).
 
 ## Before you start
@@ -272,6 +273,14 @@ The amount of data matters a lot. With 8 training days, a degree-7 curve is hope
 
 > **Watch out:** "Bias" now has three different meanings in this book. In Chapter 8 it was a parameter (the intercept of a line). Here it is statistical bias: systematic error. In Chapter 11 and Chapter 58 it is social bias: unfair treatment of groups of people. Always check which one a writer means.
 
+The mathematics behind "it depends on how much data you have" is called statistical learning theory. Its classic results, from Vladimir Vapnik and Alexey Chervonenkis in the Soviet Union in the late 1960s and 1970s, and from Leslie Valiant's "probably approximately correct" (PAC) framework of 1984, put a number on a model's flexibility and prove that, with enough examples relative to that flexibility, the training score is guaranteed to be close to the score on new data. Guarantees like these are why the U-shaped curve was trusted for decades. They also explain why the next discovery came as a shock: modern neural networks are so flexible that the classic guarantees say nothing useful about them, yet they generalize anyway.
+
+> **Definition — Statistical learning theory:** The branch of mathematics that proves when, and how well, a model trained on a sample will perform on new data, depending on how many examples it saw and how flexible the model is.
+
+> **Definition — VC dimension (Vapnik–Chervonenkis dimension):** A classic measure of a model's flexibility: the largest number of points it can classify correctly under every possible labeling. A straight-line boundary in two dimensions has a VC dimension of 3.
+
+> **Definition — PAC learning (probably approximately correct learning):** Leslie Valiant's 1984 framework for learning guarantees: given enough examples, a learner will, with high probability, find a rule whose error on new data is small.
+
 ### A twist: double descent
 
 For decades the U-shaped curve of Figure 9.4 was the whole story. Then deep learning broke it. Modern neural networks often have far more parameters than training examples, enough to memorize the training set completely, and yet they generalize well.
@@ -476,6 +485,12 @@ F1 = 2 × 0.153 × 0.90 ÷ (0.153 + 0.90) = 0.275 ÷ 1.053 = **0.26**. A plain a
 *Table 9.6: Every standard classification metric for the screening test, next to the useless always-healthy "test." Only accuracy is fooled.*
 
 > **Key idea:** With rare events, accuracy lies. Always ask for the confusion matrix, or at least for precision and recall, before trusting a classifier.
+
+Rare classes cause trouble during training too, not only in scoring. A spam filter trained on 9,800 normal emails and 200 spam emails sees normal mail 49 times as often, and it can push its loss down by mostly answering "normal". There are three standard fixes. You can oversample the rare class, repeating or slightly varying the 200 spam emails so they make up a bigger share. You can undersample the common class, training on, say, 2,000 of the 9,800 normal emails. Or you can keep the data as it is and use class weights: tell the loss to count every spam mistake as 49 times as costly as a normal-email mistake (9,800 ÷ 200 = 49), so the two classes pull equally hard on the model. Each fix shifts the model's raw probabilities, so recheck calibration (Chapter 8) and choose the threshold afterward on untouched validation data. Never rebalance the validation or test sets: they must keep the real-world mix, or your precision numbers will describe a world that does not exist.
+
+> **Definition — Oversampling and undersampling:** Rebalancing a training set by repeating or synthesizing examples of the rare class (oversampling), or by dropping examples of the common class (undersampling), so a model does not simply learn to predict the majority.
+
+> **Definition — Class weights:** Numbers that make mistakes on some classes count more in the loss than mistakes on others, for example counting each missed spam email 49 times, so a model pays proper attention to a rare class without changing the data.
 
 ### Precision or recall: which matters more?
 
@@ -702,6 +717,10 @@ There are three main strategies.
 
 The cost adds up quickly. A grid of 3 depths × 3 learning rates is 9 combinations. With 5-fold cross-validation, that is 9 × 5 = 45 training runs. Add two more hyperparameters with 5 values each and the grid has 3 × 3 × 5 × 5 = 225 combinations, or 1,125 runs. This is why random search, popularized in a 2012 paper by James Bergstra and Yoshua Bengio, is often preferred: with a fixed budget of, say, 60 runs, you sample the space broadly instead of exhaustively.
 
+Neural networks add a fourth trick, because a single training run can take hours or days: stop the losers early. In **successive halving**, you start many settings on a small budget and repeatedly promote only the best fraction to a bigger one. Worked example: start 27 settings for 1 epoch each, keep the best 9 and train them to 3 epochs, keep the best 3 and train them to 9 epochs, then train the single winner to the full 27. Even if every round restarted from scratch, that is 27 + 27 + 27 + 27 = 108 epochs of training, against 27 × 27 = 729 epochs to train all 27 settings fully. Hyperband runs several such tournaments with different starting budgets, in case a slow starter would have won in the end.
+
+> **Definition — Successive halving (and Hyperband):** A tuning strategy that starts many hyperparameter settings with a small training budget and repeatedly keeps only the best fraction for longer training, so most compute goes to promising settings. Hyperband repeats it with several starting budgets.
+
 ```mermaid
 flowchart TD
   Q["Frame the question:<br/>which mistakes are costly?"] --> S["Split: train, validation, test<br/>or cross-validation plus test"]
@@ -716,6 +735,32 @@ flowchart TD
 *Figure 9.12: An honest evaluation workflow. Every choice happens before the test set is opened, and monitoring continues after launch.*
 
 > **Watch out:** The most common way to accidentally cheat is to tune on the test set: try something, check the test score, adjust, check again. After a dozen rounds, your test set has become a second validation set, and your final score is optimistic. If you have peeked, be honest about it, or collect a fresh test set.
+
+## Beyond one number: slices and behavioral tests
+
+A single overall score can hide a model that fails a whole group of people. Suppose a loan-approval model is right about 90% of 10,000 test applicants. Now split the test set by how people applied:
+
+| Slice | Applicants | Correct | Accuracy |
+|---|---|---|---|
+| Applied on the website | 9,000 | 8,370 | 93% |
+| Applied by phone (typed in by staff, more blank fields) | 1,000 | 630 | 63% |
+| Everyone | 10,000 | 9,000 | 90% |
+
+*Table 9.14: One overall score, two very different experiences.*
+
+The average looks healthy, yet one applicant in ten gets a decision barely better than a coin toss. Nothing in the overall number warned you.
+
+> **Definition — Slice-based evaluation:** Measuring a model's performance separately on meaningful subgroups (slices) of the data, such as region, device, age group or language, to find where it fails even when the overall score looks good.
+
+Good slices come from the problem: the customer groups the business cares about, groups protected by law (Chapter 58 covers fairness), and groups whose data looks different, such as the phone applicants with their blank fields. Watch the sizes, though. A slice of 40 examples carries a wide margin of error (see "How sure is the score?" earlier), so a bad-looking small slice is a lead to investigate, not yet a verdict.
+
+A second idea comes from software testing: write down behaviors you expect in advance and check them, often without needing any labeled data.
+
+> **Definition — Invariance test:** A check that a change which should not matter leaves the prediction unchanged, such as swapping an applicant's name or replacing "Chicago" with "Atlanta" in a restaurant review.
+
+> **Definition — Directional expectation test:** A check that a change which should push a prediction one way really does, such as a house-price estimate rising when the floor area grows and nothing else changes.
+
+For a review-sentiment model: "The food was great" and "The food was great, said Maria" should get the same label (invariance); adding "but the service was terrible" should make the score less positive (direction); and "The food was not great" must not come out as positive, a basic capability check. In 2020 Marco Tulio Ribeiro and colleagues ran tests like these, a method they called CheckList, on commercial sentiment models and research models that scored well on standard benchmarks, and found many simple failures that the benchmarks had never revealed. Behavioral tests are cheap to write, and they turn vague worries ("is it sensitive to names?") into pass rates you can track from one model version to the next. The same idea, under the name of evals, is how teams test language-model products (Chapter 31).
 
 ## When the world changes: distribution shift
 
@@ -886,7 +931,7 @@ Finally, always compare against a dumb baseline, never tune on the test set, and
 
 ## Key terms
 
-Evaluation, Training set, Validation set, Test set, Stratified sampling, Margin of error, Data leakage, Target leakage, Benchmark contamination, Shortcut learning, Overfitting, Underfitting, Noise, Polynomial, Model complexity, Bias (statistical), Variance (statistical), Bias–variance tradeoff, Double descent, Regularization, L1 and L2 regularization, Early stopping, Dropout, Data augmentation, Cross-validation (k-fold), Walk-forward validation, True positive (TP), False positive (FP), False negative (FN), True negative (TN), Confusion matrix, Accuracy, Class imbalance, Precision, Recall, Specificity, False positive rate, F1 score, ROC curve, AUC (Area Under the ROC Curve), Precision–recall curve, RMSE (Root Mean Squared Error), R² (coefficient of determination), MAPE (Mean Absolute Percentage Error), Baseline, Hyperparameter tuning, Grid search, Random search, Bayesian optimization, Distribution shift, Benchmark, Leaderboard, Goodhart's law, Benchmark saturation, Evaluation harness
+Evaluation, Training set, Validation set, Test set, Stratified sampling, Margin of error, Data leakage, Target leakage, Benchmark contamination, Shortcut learning, Overfitting, Underfitting, Noise, Polynomial, Model complexity, Bias (statistical), Variance (statistical), Bias–variance tradeoff, Statistical learning theory, VC dimension (Vapnik–Chervonenkis dimension), PAC learning (probably approximately correct learning), Double descent, Regularization, L1 and L2 regularization, Early stopping, Dropout, Data augmentation, Cross-validation (k-fold), Walk-forward validation, True positive (TP), False positive (FP), False negative (FN), True negative (TN), Confusion matrix, Accuracy, Class imbalance, Oversampling and undersampling, Class weights, Precision, Recall, Specificity, False positive rate, F1 score, ROC curve, AUC (Area Under the ROC Curve), Precision–recall curve, RMSE (Root Mean Squared Error), R² (coefficient of determination), MAPE (Mean Absolute Percentage Error), Baseline, Hyperparameter tuning, Grid search, Random search, Bayesian optimization, Successive halving (and Hyperband), Slice-based evaluation, Invariance test, Directional expectation test, Distribution shift, Benchmark, Leaderboard, Goodhart's law, Benchmark saturation, Evaluation harness
 
 ## Exercises
 

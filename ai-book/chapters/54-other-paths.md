@@ -5,12 +5,13 @@
 ## What you'll learn
 
 - How a rule-based expert system reasons, by running a small rule chain by hand with certainty factors, and why such systems were brittle.
-- How knowledge graphs store facts as triples, and how Wikidata and search engines use them.
-- How a Bayesian network reasons under uncertainty, worked with real numbers including the surprising effect called "explaining away", and what fuzzy logic is good for.
+- What formal logic adds to rules (propositional and first-order logic, resolution, Prolog and the SAT solvers that verify chips), and where it runs out.
+- How knowledge graphs store facts as triples, how Wikidata and search engines use them, and the older puzzles of defaults and the frame problem.
+- How a Bayesian network reasons under uncertainty, worked with real numbers including the surprising effect called "explaining away"; how filters track a hidden state over time, from a worked umbrella example to Kalman and particle filters; and what fuzzy logic is good for.
 - How a genetic algorithm evolves solutions, through one complete generation on paper.
 - Why correlations mislead, with a worked confounder that reverses a conclusion, and how A/B tests and Pearl's ladder of causation fix it.
 - What neuro-symbolic AI is, from AlphaGeometry to AlphaProof, and the live debate over whether the future needs symbols at all.
-- The four eras of language AI, the classic language-processing tasks, and the long history of machine translation.
+- The four eras of language AI, the classic language-processing tasks including grammar and parsing, and the long history of machine translation.
 - How real neurons differ from artificial ones, and what neuromorphic chips, brain-computer interfaces and brain scanners can and cannot do.
 
 ## Before you start
@@ -25,7 +26,9 @@ In his 2015 book *The Master Algorithm*, the computer scientist Pedro Domingos s
 - **Connectionists** build networks of simple neuron-like units and adjust their connections. Your chatbot is their triumph.
 - **Evolutionaries** breed solutions the way nature breeds organisms.
 - **Bayesians** treat all knowledge as probabilities, updated as evidence arrives.
-- **Analogizers** reason by similarity: this case resembles that one, so treat it the same way (the nearest-neighbor methods of Chapter 10).
+- **Analogizers** reason by similarity: this case resembles that one, so treat it the same way (the nearest-neighbor methods of Chapter 10, and case-based reasoning systems that solve a new problem by adapting the solution to the most similar past case).
+
+> **Definition — Case-based reasoning:** Solving a new problem by retrieving the most similar past case and adapting its solution, the way lawyers reason from precedent and help-desk staff reuse fixes that worked before.
 
 The connectionists won the last decade so decisively that it is easy to think the other tribes vanished. They did not. Rule engines calculate your taxes. A knowledge graph answers when you search "How tall is the Eiffel Tower?" Probabilistic models filter spam and diagnose faults. Evolutionary search has designed antennas that flew in space. Randomized experiments decide which features ship in every app on your phone. And at the 2026 frontier, labs are borrowing from all of them: proof checkers to verify a model's mathematics, evolutionary loops wrapped around language models, and causal reasoning to test whether an AI's findings are real.
 
@@ -150,6 +153,32 @@ Rules survive wherever exactness, auditability and guarantees matter more than f
 
 > **Key idea:** Rules are exact, transparent and auditable, but they do not learn and they break outside the world they describe. Neural networks learn and generalize, but are opaque and imprecise. Much of this chapter is about attempts to get the best of both.
 
+### Logic: the mathematics underneath the rules
+
+Behind IF-THEN rules sits an older and more rigorous tradition: formal logic, the mathematics of valid reasoning, which goes back to Aristotle and was made precise by mathematicians in the 19th and early 20th centuries. The founders of AI hoped it could be the language of thought for machines, and the Logic Theorist of 1956 (Chapter 7) proved theorems in it.
+
+The simplest version, propositional logic, works with whole statements that are either true or false, joined by AND, OR, NOT and IF-THEN. Its central question is what must follow from what you already know.
+
+> **Definition — Propositional logic:** Logic over whole statements that are either true or false, such as "the alarm is on", combined with AND, OR, NOT and IF-THEN. It can check mechanically whether a conclusion necessarily follows from some facts.
+
+> **Definition — Entailment:** A conclusion is entailed by some facts when it is true in every possible situation in which the facts are true. Logical reasoning is the search for what is entailed.
+
+**Worked example.** Facts: (1) IF the alarm is on THEN the door is locked. (2) The alarm is on OR the guard is present. (3) The guard is NOT present. Is the door locked? A computer can check by brute force: three true-or-false statements give 2 × 2 × 2 = 8 possible situations, and in the only one where all three facts hold (guard absent, alarm on, door locked), the door is locked. So "the door is locked" is entailed. Brute force doubles with every new statement, so real reasoners use inference rules instead. The most famous, resolution (1965), rewrites every fact as an OR statement and cancels opposites: from "alarm OR guard" and "NOT guard" it derives "alarm" in one step, and from "NOT alarm OR locked" (which is what fact 1 means) and "alarm" it derives "locked".
+
+> **Definition — Resolution:** A single inference rule that combines two OR statements containing a fact and its opposite, cancelling the pair to produce a new statement. Applied systematically it can establish anything that logically follows from a set of facts, which made it the basis of automated theorem proving.
+
+Propositional logic needs a separate statement for every person, car and policy. First-order logic adds objects, relationships and the words "every" and "some": "Every person who owns a car needs insurance. Maria owns a car. Therefore Maria needs insurance." One rule now covers millions of people.
+
+> **Definition — First-order logic:** Logic that talks about objects and their relationships and can say "for all" and "there exists", as in "every human is mortal", so one statement covers endlessly many cases. It is the standard language of mathematics and of classic knowledge representation.
+
+Two practical descendants matter today. Prolog, created in 1972 by Alain Colmerauer and colleagues, is a programming language in which a program is a set of logical facts and rules, and running it means asking a question that the computer answers by backward chaining. It was the flagship of Japan's Fifth Generation computer project in the 1980s. And SAT solvers, programs that decide whether a huge true-or-false formula can be satisfied, improved so dramatically from the 1990s on that formulas with millions of variables became routine. Chip makers use them to verify that a processor design does what its specification says, software tools use them to hunt bugs and to work out which versions of software packages fit together, and schedulers use them alongside the constraint solvers of Chapter 48.
+
+> **Definition — Logic programming (Prolog):** Programming by writing facts and rules in logic and letting the computer answer questions by proving them. Prolog, created in 1972, is the best-known logic programming language.
+
+> **Definition — SAT solver:** A program that decides whether a logical formula made of true-or-false variables can be made true by some choice of values, and finds that choice if so. Modern solvers handle millions of variables and are used to verify chips and software and to solve scheduling problems.
+
+Pure logic has the limits you saw with the flooded car. It is only as good as the facts and rules you give it; it has no notion of "probably", because every statement is simply true or false; and working out everything that follows from a large knowledge base can take astronomically long. Much of the rest of this chapter, from Bayesian networks to neuro-symbolic systems, answers one of those three problems, and the proof assistants of the neuro-symbolic section are logic's great modern success.
+
 ## Knowledge graphs: facts as a web of triples
 
 ### Subject, relation, object
@@ -187,6 +216,20 @@ flowchart LR
 Now questions become walks along arrows. "Was Marie Curie born in a capital city?" Follow "born in" to Warsaw, then check whether Warsaw has a "capital of" arrow: yes. "Did she share a prize with her husband?" Follow "spouse" to Pierre, collect both people's awards, and compare: both have the 1903 Physics prize. No language model is needed, and the answer is exact, traceable and instantly updatable: if a fact changes, you edit one triple.
 
 > **Definition — Ontology:** A formal vocabulary for a domain that defines the types of things that exist and the relationships allowed between them, for example that a "drug" can "treat" a "disease" but a "city" cannot.
+
+### Ancestors, defaults and the frame problem
+
+Knowledge graphs have older ancestors. In the 1960s researchers drew semantic networks: concepts linked by labeled arrows such as "a canary IS-A bird" and "a bird HAS wings". In 1974 Marvin Minsky proposed frames, structured records for stereotyped things and situations; a "restaurant visit" frame has slots for the menu, the waiter and the bill, each with a default. Both rely on inheritance: a canary inherits "has wings" from "bird" without anyone writing it down. Formal versions of these ideas, called description logics, underlie OWL, the Web Ontology Language, used for large medical and scientific vocabularies.
+
+> **Definition — Semantic network:** An early way of representing knowledge as a web of concepts linked by labeled relationships, such as "canary IS-A bird", from which properties can be inherited. Knowledge graphs are its modern descendant.
+
+> **Definition — Frame (knowledge representation):** Marvin Minsky's 1974 idea of a structured record for a stereotyped object or situation, with slots and default values, such as a "restaurant visit" frame with slots for the menu, the waiter and the bill.
+
+Inheritance raises a famous problem. "Birds fly" is a sensible default, but penguins do not. A reasoner should conclude that Tweety flies, then withdraw that conclusion on learning that Tweety is a penguin. Ordinary logic cannot do that: in it, adding facts never removes a conclusion. Default reasoning was invented to handle exceptions, and everyday knowledge is mostly exceptions. A related puzzle, the frame problem, asks how a reasoner can know what does not change when something happens. If you paint the kitchen, your address, your cat's name and millions of other facts stay the same, and writing all of that down by hand is hopeless. Puzzles like these, more than a shortage of computing power, are why hand-built common sense never scaled. Language models absorb defaults and exceptions from vast amounts of text and handle everyday common sense far better, though without any guarantees.
+
+> **Definition — Default reasoning (non-monotonic reasoning):** Drawing conclusions that hold normally but can be withdrawn when new information arrives, such as concluding that a bird can fly until you learn it is a penguin.
+
+> **Definition — Frame problem:** The difficulty, for logic-based AI, of representing everything that does not change when an action happens, without writing down an impossibly large number of "this stays the same" facts.
 
 ### Wikidata and Google's Knowledge Graph
 
@@ -267,9 +310,53 @@ Explaining away is natural for people (if you know your friend is late because h
 
 **The compression.** Our network needed 1 number for rain, 1 for the sprinkler and 4 for wet grass: 6 numbers. Writing out every combination of three yes-or-no variables directly needs 2^3 − 1 = 7. A tiny saving here, but enormous at scale: 30 variables with at most three parents each need at most 30 × 2^3 = 240 numbers instead of about a billion. Most things in the world directly depend on only a few others, and Bayesian networks exploit that.
 
+Two named ideas hide in that paragraph. The giant table of every combination is called the full joint distribution, and it grows exponentially. A Bayesian network avoids it by assuming conditional independence: once you know a variable's direct causes, nothing further upstream tells you anything more about it.
+
+> **Definition — Full joint distribution:** A table giving the probability of every possible combination of values of all the variables in a problem. It can answer any question about them but grows exponentially: 30 yes-or-no variables need about a billion entries.
+
+> **Definition — Conditional independence:** Two things are conditionally independent given a third when, once you know the third, learning one tells you nothing more about the other. Whether each of two neighbors phones you about your house alarm depends on whether the alarm is ringing, but once you know it is ringing, one neighbor's call tells you nothing new about the other's.
+
+For big networks, even clever exact methods can be too slow, so software estimates answers by simulation, in the spirit of our 1,000 imagined mornings: generate many random mornings from the network's tables, keep only the ones where the grass is wet, and count how often it rained. With 100,000 simulated mornings, the estimate usually lands within about half a percentage point of the exact 46%. A more refined version of this idea, Markov chain Monte Carlo (MCMC), is the workhorse of modern Bayesian statistics.
+
+> **Definition — Monte Carlo inference (sampling):** Estimating probabilities by generating many random examples from a model and counting, instead of computing the answer exactly. Markov chain Monte Carlo (MCMC) is an advanced version, standard in Bayesian statistics, that wanders through the likely possibilities.
+
 > **Analogy:** A Bayesian network is a detective's corkboard. Each card is a possibility, each string says what can cause what, and every new clue (the sprinkler log, the alibi) shifts suspicion across the whole board at once, sometimes away from suspects you were never directly asking about.
 
 **Where they are used.** In the late 1980s a Bayesian network called Pathfinder helped pathologists diagnose lymph-node diseases. Microsoft research on Bayesian user modeling in the 1990s fed into the Office Assistant ("Clippy") and into Windows troubleshooting wizards. The naive Bayes spam filter of Chapter 10 is the simplest Bayesian network of all. Today their descendants, probabilistic programming tools, model risk in insurance, epidemics in public health, faults in jet engines and uncertainty in scientific measurements. Pearl's later work, on causal diagrams, comes up again in the causality section.
+
+> **Definition — Probabilistic programming:** Writing a probability model as an ordinary-looking computer program, with random choices and observed data, and letting general-purpose software work out the probabilities. Tools such as Stan and PyMC are widely used in science and industry.
+
+### Reasoning over time: hidden states and filters
+
+Many uncertain things change over time, and we see only clues. A doctor sees today's symptoms, not the infection itself; a self-driving car sees noisy radar returns, not the cyclist's true position; a speech recognizer hears sounds, not words. The tool for this is a Bayesian network repeated once per time step: a hidden state that evolves (the weather, the cyclist's position) and, at each step, an observation that the state produces.
+
+> **Definition — Markov chain:** A model of something that changes step by step at random, where the probability of the next state depends only on the current state, such as tomorrow's weather depending only on today's.
+
+> **Definition — Hidden Markov model (HMM):** A Markov chain whose states cannot be seen directly; each hidden state produces observable clues. Speech recognition used HMMs for decades (Chapter 46).
+
+**Worked example: the umbrella detective.** You work in a windowless office and want to know whether it is raining outside. Your only clue is whether your colleague arrives carrying an umbrella. From experience: if it rained yesterday, it rains today 70% of the time; if it was dry, 30%. When it rains she carries an umbrella 90% of the time, and when it is dry, 20% of the time (she is cautious).
+
+Day 1. You start at 50/50, and she arrives with an umbrella.
+
+- **Predict.** With no clue yet, today is still 50/50: 0.5 × 0.7 + 0.5 × 0.3 = 0.5.
+- **Correct.** Imagine 100 such days: 50 rainy, of which 90% bring an umbrella, 45 days; 50 dry, of which 20% bring one, 10 days. P(rain) = 45 ÷ 55 ≈ 0.82.
+
+Day 2. She brings the umbrella again.
+
+- **Predict.** Rain tends to continue: 0.82 × 0.7 + 0.18 × 0.3 = 0.574 + 0.054 ≈ 0.63.
+- **Correct.** Rainy with umbrella: 0.63 × 0.9 ≈ 0.567. Dry with umbrella: 0.37 × 0.2 = 0.074. P(rain) = 0.567 ÷ (0.567 + 0.074) ≈ 0.88.
+
+Every day repeats the same two moves: predict how the hidden state has probably changed, then correct the prediction with the new clue. That loop is called filtering, and it runs everywhere: in your phone's navigation, in every self-driving car (Chapter 50), in robot vacuums working out where they are (Chapter 49), and in aircraft tracking.
+
+> **Definition — Filtering (state estimation):** Keeping an up-to-date probability estimate of a hidden, changing state by alternating two steps: predict how the state has moved, then correct that prediction with each new observation.
+
+Two famous filters do this for different kinds of state. When the state is a quantity such as position and speed and the noise is bell-shaped, the Kalman filter (1960) does the predict-and-correct arithmetic exactly; it helped navigate the Apollo spacecraft to the Moon and runs inside navigation systems to this day. When the situation is messier, such as a robot that could be in any of several rooms that look alike, a particle filter represents the belief as thousands of guesses ("particles"), moves them all according to how the robot moved, then keeps more copies of the guesses that best match what the sensors now see.
+
+> **Definition — Kalman filter:** A filtering method for continuous quantities such as position and speed that optimally blends a motion prediction with noisy measurements when the noise is bell-shaped. It is used in GPS navigation, aircraft, spacecraft and vehicle tracking.
+
+> **Definition — Particle filter:** A filtering method that represents a belief as a large cloud of random guesses (particles), moves them according to a motion model, and keeps more copies of those that best match each new sensor reading. Robots use it to work out where they are.
+
+The same machinery answers other questions. Smoothing looks back and revises estimates of past states in light of later evidence (was it really raining on Monday?), and the Viterbi algorithm finds the single most likely sequence of hidden states, which is how HMM speech recognizers chose the most likely words.
 
 ### Fuzzy logic: degrees of truth
 
@@ -629,6 +716,35 @@ A single LLM prompt now does all six tasks at once. So why do specialized small 
 
 A common 2026 pattern combines both: use a large model to label a few thousand examples, then train a small model on those labels (distillation, Chapter 30) to do the volume work.
 
+### Grammar, parsing and ambiguity
+
+Two classic tasks sat underneath all the others. Part-of-speech tagging labels each word as a noun, verb, adjective and so on. Parsing works out a sentence's grammatical structure: which words group into phrases, and what modifies what. Following the linguist Noam Chomsky's work in the 1950s, researchers described that structure with formal grammars, sets of rules such as "a sentence is a noun phrase followed by a verb phrase".
+
+> **Definition — Part-of-speech tagging:** Labeling each word in a sentence with its grammatical role, such as noun, verb or adjective. "Book" is a noun in "read the book" and a verb in "book a flight".
+
+> **Definition — Formal grammar:** A set of rules describing how words combine into phrases and sentences, such as "a sentence is a noun phrase plus a verb phrase". The context-free grammar is the kind most used in classic language processing.
+
+> **Definition — Parsing:** Working out the grammatical structure of a sentence, usually drawn as a tree that shows which words form phrases and which phrases attach to which.
+
+Parsing exposes ambiguity that people barely notice. "I saw the man with the telescope" has two correct parse trees:
+
+```
+Reading 1: I used the telescope      Reading 2: the man had it
+S                                    S
++- NP: I                             +- NP: I
++- VP                                +- VP
+   +- V: saw                            +- V: saw
+   +- NP: the man                       +- NP
+   +- PP: with the telescope               +- NP: the man
+                                           +- PP: with the telescope
+```
+
+*Figure 54.11: Two parse trees for one sentence (S is the sentence, NP a noun phrase, VP a verb phrase, V a verb, PP a prepositional phrase). In the first, "with the telescope" attaches to the verb and says how I saw; in the second it attaches to "the man" and says which man.*
+
+> **Definition — Ambiguity (language):** A word or sentence having more than one possible meaning or structure, such as "bank" (river or money) or "I saw the man with the telescope". Resolving it takes context and knowledge of the world.
+
+Grammar alone cannot choose between the readings; knowledge of the world must. Long sentences can have hundreds or even thousands of grammatically possible parses. Statistical parsers of the 1990s and 2000s attached probabilities to grammar rules, learned them from hand-parsed collections of sentences called treebanks (the Penn Treebank of Wall Street Journal text was the famous one), and picked the most probable tree. Later dependency parsers drew an arrow from each word to the word it modifies instead of building phrases. Language models never build such trees explicitly, yet researchers using probes (Chapter 57) have found that much of this grammatical structure is encoded inside them.
+
 ## Brains and machines
 
 ### Real neurons and artificial ones
@@ -647,7 +763,7 @@ timing of spikes carries meaning     one number per step, no timing
 learns by local chemical changes     learns by backpropagation
 ```
 
-*Figure 54.11: A biological neuron and an artificial neuron side by side. The artificial version keeps the idea of weighted inputs and a threshold and drops almost everything else.*
+*Figure 54.12: A biological neuron and an artificial neuron side by side. The artificial version keeps the idea of weighted inputs and a threshold and drops almost everything else.*
 
 > **Definition — Synapse:** The junction where one neuron passes a signal to another. Its strength can change with experience, which is how brains learn. Weights in an artificial network are a loose analogy.
 
@@ -696,7 +812,7 @@ flowchart LR
     F --> A
 ```
 
-*Figure 54.12: A brain-computer interface is a closed loop: the user sees the result and adjusts, while the decoder is calibrated to that user's brain.*
+*Figure 54.13: A brain-computer interface is a closed loop: the user sees the result and adjusts, while the decoder is calibrated to that user's brain.*
 
 | Approach | How electrodes get there | Signal quality | Examples |
 |---|---|---|---|
@@ -739,7 +855,7 @@ Neuro-symbolic AI combines neural intuition with symbolic rigor, as in AlphaGeom
 
 ## Key terms
 
-Symbolic AI (GOFAI), Production rule, Expert system, Knowledge base, Inference engine, Certainty factor, Forward chaining, Backward chaining, Brittleness, Knowledge acquisition bottleneck, Knowledge graph, Triple, Ontology, Bayes' rule, Bayesian network, Conditional probability table, Explaining away, Fuzzy logic, Membership function, Evolutionary algorithm, Genetic algorithm, Fitness function, Crossover, Mutation, Swarm intelligence, Causal inference, Confounder, Simpson's paradox, Causal diagram, Randomized controlled trial (RCT), A/B test, Intervention, Counterfactual, Ladder of causation, Distribution shift, Neuro-symbolic AI, Formal proof, Verifier, Symbolic deduction engine, Compositional generalization, Natural language processing (NLP), Statistical machine translation, Parallel corpus, Neural machine translation, BLEU score, Sentiment analysis, Named entity recognition (NER), Information extraction, Synapse, Action potential (spike), Reward prediction error, Spiking neural network, Neuromorphic chip, Brain-computer interface (BCI), EEG (electroencephalography), Neuroprosthesis, fMRI (functional magnetic resonance imaging), Neural data
+Case-based reasoning, Symbolic AI (GOFAI), Production rule, Expert system, Knowledge base, Inference engine, Certainty factor, Forward chaining, Backward chaining, Brittleness, Knowledge acquisition bottleneck, Propositional logic, Entailment, Resolution, First-order logic, Logic programming (Prolog), SAT solver, Knowledge graph, Triple, Ontology, Semantic network, Frame (knowledge representation), Default reasoning (non-monotonic reasoning), Frame problem, Bayes' rule, Bayesian network, Conditional probability table, Explaining away, Full joint distribution, Conditional independence, Monte Carlo inference (sampling), Probabilistic programming, Markov chain, Hidden Markov model (HMM), Filtering (state estimation), Kalman filter, Particle filter, Fuzzy logic, Membership function, Evolutionary algorithm, Genetic algorithm, Fitness function, Crossover, Mutation, Swarm intelligence, Causal inference, Confounder, Simpson's paradox, Causal diagram, Randomized controlled trial (RCT), A/B test, Intervention, Counterfactual, Ladder of causation, Distribution shift, Neuro-symbolic AI, Formal proof, Verifier, Symbolic deduction engine, Compositional generalization, Natural language processing (NLP), Statistical machine translation, Parallel corpus, Neural machine translation, BLEU score, Sentiment analysis, Named entity recognition (NER), Information extraction, Part-of-speech tagging, Formal grammar, Parsing, Ambiguity (language), Synapse, Action potential (spike), Reward prediction error, Spiking neural network, Neuromorphic chip, Brain-computer interface (BCI), EEG (electroencephalography), Neuroprosthesis, fMRI (functional magnetic resonance imaging), Neural data
 
 ## Exercises
 

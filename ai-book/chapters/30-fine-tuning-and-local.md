@@ -252,6 +252,10 @@ Two more settings appear in every LoRA recipe. **Alpha** scales how strongly the
 
 > **Analogy:** LoRA is a clip-on lens. The camera (the base model) stays exactly as it was; the lens changes what you see. Clip on the "legal summaries" lens or the "pirate voice" lens as needed, and take it off to get the original camera back.
 
+LoRA is the most popular member of a larger family called parameter-efficient fine-tuning, methods that train a tiny add-on instead of the whole model, and one cousin is worth knowing by name. Prompt tuning freezes the entire model and trains only a few dozen extra token embeddings that are placed in front of every input: a "soft prompt" made of numbers rather than words, which no person could type. In a model shaped like Llama 3 8B, each token embedding holds 4,096 numbers, so 20 virtual tokens are 20 × 4,096 = 81,920 trainable numbers, about one five-hundredth of the 42 million in the LoRA example above. The catch is quality: soft prompts work best on very large models and narrow tasks, and LoRA usually does better, which is why LoRA became the default.
+
+> **Definition — Prompt tuning (soft prompt):** A parameter-efficient fine-tuning method that keeps the model frozen and learns a small set of extra input vectors, "virtual tokens" that correspond to no real words, which are placed in front of every input to steer the model toward a task.
+
 ## QLoRA: fine-tuning on one GPU
 
 LoRA shrank the trainable part, but the frozen base model still has to sit in GPU memory at 16 bits: 16 GB for an 8B model. In 2023, Tim Dettmers and colleagues combined LoRA with aggressive compression of the frozen base.
@@ -418,6 +422,10 @@ Every model has a page. The parts that matter:
 > **Definition — Gated model:** A model on Hugging Face that you can only download after signing in and accepting its license terms on the model page.
 
 > **Definition — Space:** A small hosted demo app on Hugging Face where you can try a model in the browser without downloading it.
+
+Most Spaces are built with Gradio or Streamlit, free Python libraries that wrap a model in a web page with a text box, an upload button or a chat window in a few lines of code. They are the standard way to put a quick prototype in front of colleagues or test users before anyone builds a real product around it.
+
+> **Definition — Gradio and Streamlit:** Free Python libraries for building simple web interfaces, such as a chat box or an image uploader, around a model or a data script in a few lines of code. They power most quick AI demos, including many Hugging Face Spaces.
 
 > **Try it:** Go to huggingface.co/models. Filter by a task such as "Text Generation", sort by "Trending", and open the top model. Find its parameter count, license and context length on the card, then click "Files and versions" and add up the sizes of the weight files. Divide the total gigabytes by the billions of parameters: about 2 means 16-bit weights; about 1 means 8-bit; about 0.5 to 0.6 means 4-bit.
 
@@ -652,7 +660,7 @@ Open-weight models from DeepSeek, Alibaba, Moonshot, Google, OpenAI, Mistral and
 
 ## Key terms
 
-Weights (parameters), fine-tuning, supervised fine-tuning (SFT), training example, JSONL, preference tuning, DPO, reinforcement fine-tuning (RFT), grader, distillation, full fine-tuning, epoch, learning rate, validation set, catastrophic forgetting, optimizer, LoRA, low-rank matrix, rank, adapter, target modules, merging an adapter, QLoRA, NF4, VRAM, gradient checkpointing, held-out test set, synthetic data, Hugging Face TRL and PEFT, open-weight model, open-source AI, license, permissive license, acceptable use policy, mixture of experts, instruct model, Hugging Face Hub, model card, safetensors, gated model, Space, KV cache, unified memory, memory bandwidth, tokens per second, quantization, bits per weight, GGUF, quantization level, quantization-aware training, inference engine, llama.cpp, Ollama, LM Studio, MLX, vLLM, local server, OpenAI-compatible API.
+Weights (parameters), fine-tuning, supervised fine-tuning (SFT), training example, JSONL, preference tuning, DPO, reinforcement fine-tuning (RFT), grader, distillation, full fine-tuning, epoch, learning rate, validation set, catastrophic forgetting, optimizer, LoRA, low-rank matrix, rank, adapter, target modules, merging an adapter, prompt tuning (soft prompt), QLoRA, NF4, VRAM, gradient checkpointing, held-out test set, synthetic data, Hugging Face TRL and PEFT, open-weight model, open-source AI, license, permissive license, acceptable use policy, mixture of experts, instruct model, Hugging Face Hub, model card, safetensors, gated model, Space, Gradio and Streamlit, KV cache, unified memory, memory bandwidth, tokens per second, quantization, bits per weight, GGUF, quantization level, quantization-aware training, inference engine, llama.cpp, Ollama, LM Studio, MLX, vLLM, local server, OpenAI-compatible API.
 
 ## Exercises
 

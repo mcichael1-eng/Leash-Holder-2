@@ -719,6 +719,20 @@ Cross-entropy has a friendlier cousin. Raise e to the power of the average loss 
 
 > **Definition — Perplexity:** e raised to the average cross-entropy loss, read as "the number of equally likely choices the model is effectively picking between at each token". Lower is better.
 
+### Maximum likelihood, entropy and KL divergence
+
+Why cross-entropy, and not some other score? Because minimizing it is the same as a principle statisticians have used for about a century: maximum likelihood. Picture every possible setting of the model's knobs. For each setting, ask: if the world really worked like this model, how probable would the text we actually observed be? That probability is called the likelihood. Maximum likelihood picks the setting under which the real data looks least surprising. The likelihood of a whole text is the product of the probabilities of its tokens (the chain from earlier in this chapter), and taking minus the log turns that product into a sum of per-token losses. So "maximize the likelihood" and "minimize the average cross-entropy" are one instruction written two ways.
+
+> **Definition — Maximum likelihood estimation (MLE):** Choosing a model's parameters to make the observed data as probable as possible under the model. For a language model it is exactly the same as minimizing the average cross-entropy loss.
+
+Two more quantities from information theory complete the picture. **Entropy** is the average surprise of the truth itself: how unpredictable the data is even to a perfect model. A fair coin has an entropy of ln 2 ≈ 0.693 (exactly 1 bit). No model can average less surprise than that on fair coin flips, and the same logic explains why a language model's loss never reaches zero: some of what comes next in real text is genuinely unpredictable.
+
+> **Definition — Entropy:** The average surprise of outcomes drawn from a probability distribution: the average of minus the log of each outcome's probability. It is the lowest average loss any model can achieve on that kind of data.
+
+**KL divergence** is the extra surprise you pay for believing the wrong distribution: cross-entropy minus entropy. Worked with the fair coin: a model that wrongly believes heads comes up 90% of the time has a cross-entropy of 0.5 × (−ln 0.9) + 0.5 × (−ln 0.1) = 0.5 × 0.105 + 0.5 × 2.303 = 1.204. Subtract the entropy of 0.693 and the KL divergence is 0.511, the price of the model's misplaced confidence. Training pushes this gap toward zero. Chapter 20 uses KL divergence as a leash that stops a fine-tuned model from drifting too far from where it started.
+
+> **Definition — KL divergence (Kullback–Leibler divergence):** The extra surprise, on average, that a model's distribution produces compared with the true distribution: cross-entropy minus entropy. It is zero only when the two distributions are identical.
+
 > **Key idea:** A chatbot's pretraining is nothing more than adjusting billions of knobs to make the average surprise at the real next token as small as possible, across trillions of tokens of text.
 
 ## Gradient descent: walking downhill in fog
@@ -793,6 +807,10 @@ Real training lives with this trade-off at enormous scale. A learning rate that 
 Real loss landscapes are not tidy bowls. They have small dips that feel like the bottom in the fog (local minima), long flat plateaus where the slope is nearly zero and progress stalls, and narrow ravines where the walker zig-zags. In practice, for very large networks, getting stuck in a bad local minimum turns out to be less of a problem than early researchers feared, and why that is so is still an active research question.
 
 > **Definition — Local minimum:** A point lower than everything immediately around it but not the lowest point overall, like a hollow on a mountainside. In fog, it can feel like the bottom.
+
+The friendliest landscape of all is a single smooth bowl with no false bottoms. Mathematicians call such a function convex, and on a convex landscape the foggy walk, with a sensible stride, is guaranteed to reach the true lowest point. The losses of linear regression (with squared error) and logistic regression (Chapter 8) are convex: wherever you start, walking downhill ends at the same best answer. A neural network's loss is non-convex, full of dips, ridges and flat stretches, so there is no such guarantee, and where the walk ends depends on where it started.
+
+> **Definition — Convex function:** A function shaped like a bowl: the straight line between any two points on its graph never passes below the graph. A convex loss has no false bottoms, so gradient descent can find its lowest point.
 
 Two practical improvements are used everywhere. First, computing the exact gradient over trillions of training tokens before every single step would be absurdly slow. Instead, each step uses a small random handful of examples.
 
@@ -918,7 +936,7 @@ Learning works by slopes. A loss function gives one number for how wrong the mod
 
 ## Key terms
 
-Exponent, Exponential growth, Doubling time, Compound interest, Exponential decay, Euler's number (e), Logarithm, Natural logarithm (ln), Log scale, Power law, Scaling laws, Probability, Complement, Independence, Expected value, Law of large numbers, Probability distribution, Logit, Softmax, Greedy decoding, Sampling, Temperature, Top-p sampling, Conditional probability, Language model, Log-probability, N-gram model, Base rate, False positive, Bayes' rule, Prior and posterior, Calibration, Mean, Median, Outlier, Range (statistics), Variance, Standard deviation, Percentile, Normal distribution, Noise, Random initialization, Correlation, Confounder, Sampling bias, Training, validation and test sets, Overfitting, Generalization, Derivative, Partial derivative, Gradient, Loss landscape, Chain rule, Backpropagation, Automatic differentiation, Loss function, Cross-entropy, Perplexity, Gradient descent, Learning rate, Local minimum, Stochastic gradient descent (SGD), Mini-batch, Optimizer, Training loop, Epoch
+Exponent, Exponential growth, Doubling time, Compound interest, Exponential decay, Euler's number (e), Logarithm, Natural logarithm (ln), Log scale, Power law, Scaling laws, Probability, Complement, Independence, Expected value, Law of large numbers, Probability distribution, Logit, Softmax, Greedy decoding, Sampling, Temperature, Top-p sampling, Conditional probability, Language model, Log-probability, N-gram model, Base rate, False positive, Bayes' rule, Prior and posterior, Calibration, Mean, Median, Outlier, Range (statistics), Variance, Standard deviation, Percentile, Normal distribution, Noise, Random initialization, Correlation, Confounder, Sampling bias, Training, validation and test sets, Overfitting, Generalization, Derivative, Partial derivative, Gradient, Loss landscape, Chain rule, Backpropagation, Automatic differentiation, Loss function, Cross-entropy, Perplexity, Maximum likelihood estimation (MLE), Entropy, KL divergence (Kullback–Leibler divergence), Gradient descent, Learning rate, Local minimum, Convex function, Stochastic gradient descent (SGD), Mini-batch, Optimizer, Training loop, Epoch
 
 ## Exercises
 

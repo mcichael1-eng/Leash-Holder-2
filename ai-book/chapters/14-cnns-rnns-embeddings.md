@@ -201,6 +201,25 @@ flowchart LR
 
 Training works exactly as in Chapter 12: forward pass, cross-entropy loss, backpropagation, nudge every filter weight. The filters start as random noise and end up as edge detectors and color blobs, because those turn out to be the most useful building blocks. To see one working, the CNN Explainer website from a Georgia Tech research group runs a small network called TinyVGG in your browser (Exercise 2).
 
+### Looking inside a trained CNN
+
+How did researchers confirm the edges-to-objects hierarchy, and how do engineers check what a trained network is really looking at? Four techniques became famous, and you may have seen their pictures online.
+
+- **Feature visualization.** Collect the image patches that make one neuron fire hardest, or start from gray noise and adjust the pixels, step by step, until the neuron fires as strongly as possible. Matthew Zeiler and Rob Fergus's 2013 gallery of what each layer of an AlexNet-style network responds to was the first famous example: edges in layer 1, textures in the middle, dog faces and wheels near the top.
+- **Saliency maps.** Ask which pixels the answer depends on most, by measuring how much the "cat" score changes when each pixel is nudged (its gradient, Chapter 6), and paint the result as a heat map over the photo. Grad-CAM (2017) made coarser, cleaner heat maps from the last convolutional layer. Explanation tools like these are how shortcut learning, such as a classifier that decides "wolf" by looking at snow, gets caught (Chapter 45).
+- **DeepDream** (Google, 2015). Run feature visualization on a whole photo: tweak it so whatever a layer already faintly sees, it sees more. Clouds sprout dog heads and eyes, the hallucinatory images that briefly flooded the internet.
+- **Neural style transfer** (Leon Gatys and colleagues, 2015). Optimize a new image so that its deep-layer features match a content photo while its texture statistics match a painting: your holiday snapshot, repainted as if by Van Gogh.
+
+> **Definition — Feature visualization:** Techniques that show what a neuron or layer responds to, by collecting the inputs that excite it most or by adjusting an image until it excites the neuron as strongly as possible.
+
+> **Definition — Saliency map:** A heat map over an input image showing which pixels most influenced a model's answer, usually computed from gradients. Grad-CAM is a popular version for CNNs.
+
+> **Definition — DeepDream:** A 2015 Google technique that alters a photo to amplify whatever patterns one of a network's layers detects in it, producing dreamlike images full of eyes and animal faces.
+
+> **Definition — Neural style transfer:** Creating an image that keeps the content of one picture (judged by a CNN's deep features) and the style of another (judged by the texture statistics of its layers), such as a photo repainted in the style of a famous painting.
+
+The same questions, asked of language models instead of image networks, grew into the field of interpretability (Chapter 57).
+
 ## The deep learning boom: a short history of CNNs
 
 The ideas above are old. The story of CNNs is the story of how ideas, data and compute finally came together.
@@ -288,6 +307,14 @@ timeline
     2017 : The Transformer drops recurrence entirely
 ```
 *Figure 14.6: The milestones covered in this chapter. Each one fixed a weakness of the one before, and the last one opens Chapter 15.*
+
+### After ResNet: smaller, faster CNNs
+
+Once accuracy was good enough, attention turned to cost, because many CNNs run on phones and cameras. The key tool is the **1 × 1 convolution**, a filter that looks at a single pixel position but across all of its channels, mixing channels without looking at neighbors. GoogLeNet used it to shrink channel counts cheaply. Google's MobileNet (2017) went further with **depthwise separable convolutions**: first one small 3 × 3 filter per channel looks at the neighborhood, then a 1 × 1 convolution mixes the channels. Worked example: an ordinary 3 × 3 layer from 256 channels to 256 channels needs 3 × 3 × 256 × 256 = 589,824 weights. The separable version needs 3 × 3 × 256 = 2,304 weights for the per-channel filters plus 256 × 256 = 65,536 for the mixing, 67,840 in all: about 8.7 times fewer, for a small loss in accuracy. DenseNet (2017) connected every layer to every later layer, and EfficientNet (2019) showed how to grow a network's depth, width and image resolution together in balance. Designs like these still power much of the vision AI on your phone (Chapter 53).
+
+> **Definition — 1 × 1 convolution (pointwise convolution):** A convolution whose filter covers a single pixel position but all of its channels, used to mix channels or cheaply change how many there are.
+
+> **Definition — Depthwise separable convolution:** Splitting a convolution into two cheap steps, a small filter applied to each channel separately and then a 1 × 1 convolution that mixes the channels. It cuts weights and computation several-fold and powers mobile networks such as MobileNet.
 
 ## Transfer learning: borrowing a trained eye
 
@@ -448,6 +475,16 @@ In 2014, Kyunghyun Cho and colleagues introduced a simpler cousin, the GRU.
 LSTMs had a glorious decade. Around 2015 and 2016 they powered speech recognition, handwriting recognition, character-by-character text generators and Google's neural machine translation system, launched in September 2016 with stacks of LSTM layers plus attention. But gates only slow the forgetting, and they do nothing for the one-step-at-a-time speed problem.
 
 > **Watch out:** "LSTMs solved long-term memory." They improved it greatly, from a handful of steps to a few hundred. But a 300-page document is hundreds of thousands of words, and the whole document still has to squeeze through one fixed-size memory, one step at a time.
+
+### Stacking layers and reading both ways
+
+Two upgrades made recurrent networks much stronger in practice. The first is depth. Feed the hidden states of one recurrent layer, step by step, into a second recurrent layer, and those into a third. As in a CNN, higher layers build more abstract summaries. Google's 2016 translation system stacked 8 LSTM layers in its encoder and 8 in its decoder.
+
+The second is reading both ways. In "Teddy bears are on sale" and "Teddy Roosevelt was president," you cannot tell whether "Teddy" is a toy or a person until you read the words after it, but a left-to-right RNN at "Teddy" has seen nothing yet. A bidirectional RNN runs two RNNs over the sentence, one forward and one backward, and joins their two hidden states at every word, so each word's summary reflects both sides of its context. That only works when the whole input is available, as when you tag, classify or translate a finished sentence. It cannot write text, because the words to the right do not exist yet. ELMo's contextual embeddings (later in this chapter) came from bidirectional LSTMs, and BERT, whose B stands for "Bidirectional," brought the same idea to Transformers (Chapter 15).
+
+> **Definition — Stacked (deep) RNN:** Several recurrent layers on top of each other, each reading the sequence of hidden states produced by the layer below. Higher layers learn more abstract patterns.
+
+> **Definition — Bidirectional RNN:** Two recurrent networks reading the same sequence in opposite directions, with their hidden states combined at each position, so every position's summary reflects the words before and after it.
 
 ## Sequence to sequence: translation and its bottleneck
 
@@ -657,7 +694,7 @@ Language comes in order, so researchers built recurrent networks that read one w
 Meanwhile, embeddings turned words into points on a map where similar meanings sit close together, first with one fixed point per word (word2vec), then with context-dependent points (BERT). That is how semantic search works today. In 2017, researchers kept the attention, threw away the slow step-by-step reading, and created the Transformer.
 
 ## Key terms
-Pixel, Channel, MNIST, MLP (Multilayer Perceptron), Inductive bias, Convolution, Filter (kernel), Feature map, Weight sharing, Translation invariance, Stride, Padding, ReLU (Rectified Linear Unit), Pooling (max pooling, average pooling), Receptive field, CNN (Convolutional Neural Network), Softmax, ImageNet, Top-5 error, AlexNet, GPU (Graphics Processing Unit), Data augmentation, Dropout, Residual connection (skip connection), ResNet, Image segmentation, U-Net, Transfer learning, Pretrained model, Fine-tuning, Sequence, RNN (Recurrent Neural Network), Hidden state, Tanh, Unrolling, Backpropagation through time (BPTT), Vanishing gradient, Exploding gradient, LSTM (Long Short-Term Memory), Cell state, Gate, GRU (Gated Recurrent Unit), Seq2seq (sequence-to-sequence), Encoder, Decoder, Context vector, Bottleneck (information bottleneck), Attention, Alignment, Vocabulary, One-hot encoding, Embedding, Embedding space (vector space), Cosine similarity, Embedding table (embedding matrix), Distributional hypothesis, word2vec, Contextual embedding, Sentence embedding, Semantic search
+Pixel, Channel, MNIST, MLP (Multilayer Perceptron), Inductive bias, Convolution, Filter (kernel), Feature map, Weight sharing, Translation invariance, Stride, Padding, ReLU (Rectified Linear Unit), Pooling (max pooling, average pooling), Receptive field, CNN (Convolutional Neural Network), Softmax, Feature visualization, Saliency map, DeepDream, Neural style transfer, ImageNet, Top-5 error, AlexNet, GPU (Graphics Processing Unit), Data augmentation, Dropout, Residual connection (skip connection), ResNet, Image segmentation, U-Net, 1 × 1 convolution (pointwise convolution), Depthwise separable convolution, Transfer learning, Pretrained model, Fine-tuning, Sequence, RNN (Recurrent Neural Network), Hidden state, Tanh, Unrolling, Backpropagation through time (BPTT), Vanishing gradient, Exploding gradient, LSTM (Long Short-Term Memory), Cell state, Gate, GRU (Gated Recurrent Unit), Stacked (deep) RNN, Bidirectional RNN, Seq2seq (sequence-to-sequence), Encoder, Decoder, Context vector, Bottleneck (information bottleneck), Attention, Alignment, Vocabulary, One-hot encoding, Embedding, Embedding space (vector space), Cosine similarity, Embedding table (embedding matrix), Distributional hypothesis, word2vec, Contextual embedding, Sentence embedding, Semantic search
 
 ## Exercises
 

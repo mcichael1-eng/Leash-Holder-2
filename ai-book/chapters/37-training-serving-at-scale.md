@@ -62,6 +62,8 @@ For a mixture-of-experts (MoE) model, only some of the weights are used for each
 
 > **Definition — Active parameters:** In a mixture-of-experts model, the parameters actually used to process each token, as opposed to the total stored. DeepSeek-V4-Pro has 1.6 trillion total but only 49 billion active parameters.
 
+The rule also leaves out attention's own arithmetic, the step in which each token is compared with every earlier token (Chapter 15). That work grows with the length of the training sequences, not with the parameter count. For a large model it adds only a few percent when sequences are a few thousand tokens long, but at around 100,000 tokens it can rival all the rest, which is one reason long-context training costs more than 6 × N × D suggests.
+
 ### Worked examples
 
 | Model | N (active params) | D (tokens) | 6 × N × D | Published estimate |
@@ -234,6 +236,10 @@ flowchart TD
 *Figure 37.3: Data parallelism. Same model, different data, then the gradients are averaged.*
 
 Data parallelism scales easily, but it has two limits. Every GPU must hold the whole model (impossible past a few billion parameters, as we just saw). And the global batch can't grow forever: past a certain size, bigger batches stop speeding up learning, so you can't just add more data-parallel copies indefinitely.
+
+The opposite problem, too few GPUs for the batch you want, has a simple fix. Each GPU processes several slices one after another, adds up their gradients, and only then joins the all-reduce and updates the weights. The result is mathematically the same step, just slower.
+
+> **Definition — Gradient accumulation:** Processing several small slices of a batch one after another and adding up their gradients before making a single weight update, so a few GPUs can train with the same large batch as many.
 
 ### ZeRO and FSDP: sharding the memory
 
@@ -559,6 +565,18 @@ Notice the beautiful property. Each GPU sent one chunk per step for 6 steps, so 
 
 A training step might take only a few seconds, so a 5.6-second sync would be a disaster unless it is hidden. That is why labs shard the model (so each data-parallel group syncs less), overlap gradient communication with the backward pass (sending each layer's gradients while the next layer is still computing), and keep the heaviest traffic on NVLink.
 
+**Worked example: when does the network become the bottleneck?** The roofline idea from Chapter 33 works for networks too. Instead of counting FLOP per byte read from memory, count FLOP per byte a GPU must send, and compare one training step's compute time with its communication time.
+
+- **Compute.** A GPU that handles B tokens per step does 6 × N × B FLOP. At about 400 trillion FLOP/s achieved on an H100 (roughly 40% of peak), that takes 6 × N × B ÷ (400 × `10^12`) seconds.
+- **Communication.** With BF16 gradients, the ring all-reduce sends about 2 × 2 × N = 4 × N bytes per GPU. At 50 GB/s that takes 4 × N ÷ (50 × `10^9`) seconds.
+- **The ratio.** Divide the second by the first and the model size N cancels: communication ÷ compute ≈ (4 ÷ 6) × (400 × `10^12` ÷ 50 × `10^9`) ÷ B = (2 ÷ 3) × 8,000 ÷ B ≈ 5,300 ÷ B.
+
+So each GPU must process at least about 5,300 tokens per step, or it spends longer talking than computing. Now check Llama 3. Its batch of about 16 million tokens spread over 16,384 GPUs is only about 1,000 tokens per GPU. With plain data parallelism over InfiniBand (even if the model fit), each GPU would spend about five times longer communicating than computing. The layout described earlier fixes this. With tensor parallelism of 8 and pipeline parallelism of 16, groups of 128 GPUs share one copy of the model, so each copy processes 16 million ÷ 128 = 125,000 tokens per step, and each GPU syncs only its 1/128 slice of the gradients. Communication drops to about 5,300 ÷ 125,000 ≈ 4% of compute time, easy to hide behind the backward pass.
+
+> **Definition — Communication-bound:** Limited mainly by how fast chips can exchange data rather than by how fast they compute. A training step is communication-bound when its collectives take longer than its math and cannot be hidden behind it.
+
+This is the arithmetic behind every parallelism layout: give each chip enough math for every byte it must send, and keep the chattiest exchanges on the fastest links.
+
 Rings have one weakness: the number of steps grows with the number of GPUs, and every step pays a fixed startup delay (latency). For thousands of GPUs and small messages, **tree** algorithms, which add numbers up a branching tree, finish in far fewer steps. Real libraries choose between rings, trees and hierarchical combinations automatically, for example summing within each NVLink group first and then across groups.
 
 > **Definition — NCCL / RCCL:** NVIDIA's Collective Communications Library (and AMD's version, RCCL), the software that runs all-reduce, all-gather and other collectives efficiently over NVLink and networks. Most training frameworks call it under the hood.
@@ -602,6 +620,33 @@ pie title Illustrative only - where a training cluster's peak capacity goes
 - **Load imbalance.** In MoE models, popular experts make some GPUs wait for others.
 - **Failures and stragglers.** The next section.
 
+### Finding the lost time: profiling
+
+How do engineers know where the time goes? They run a profiler on a few training steps. It records what every GPU was doing, microsecond by microsecond, and draws the result as a timeline. Common tools include NVIDIA's Nsight Systems, the profiler built into PyTorch, and Google's profiler for JAX programs on TPUs, viewed in TensorBoard. Reading these timelines is the daily work of performance engineers.
+
+> **Definition — Profiler:** A tool that records what a program and its hardware are doing over time (which operations run, for how long, and when the chips sit idle) so engineers can see what to speed up.
+
+> **Definition — Trace (profile timeline):** The recording a profiler produces: one row per GPU or activity, with each operation drawn as a bar along a time axis, so gaps and overlaps are visible at a glance.
+
+```
+One training step on one GPU, illustrative
+
+ms    0         200       400       600       800       1000
+      |---------|---------|---------|---------|---------|
+math  FFFFFFFFFFFFFFFBBBBBBBBBBBBBBBBBBBBBBBBBBBB.....OO
+net   ..aa....aa........rrr.....rrr.....rrr...rrrrrrrr..
+
+F = forward pass   B = backward pass   O = optimizer update
+a = all-gather of weights   r = reduce-scatter of gradients
+. = nothing running         each character = 20 ms
+```
+
+*Figure 37.14: An illustrative profiler trace of one training step. Most network transfers hide under the math, but the last gradient sync runs 100 ms past the end of the backward pass and leaves the GPU idle.*
+
+Read it like an engineer. The math row is busy for 900 of the 1,000 ms. Most of the network transfers run underneath the math, which is the overlap this chapter keeps mentioning. But the last reduce-scatter runs on after the backward pass has finished, and the GPU sits idle for 100 ms waiting for it: exposed communication, a 10% loss you can spot at a glance. The fix might be to start that transfer earlier, split it into smaller pieces or move it onto faster links. A second kind of loss hides inside the bars. A busy bar can still run far below peak speed if its operation is memory-bound, so profilers also report each kernel's FLOP/s and bytes moved, which lets engineers place it on the roofline from Chapter 33.
+
+> **Analogy:** A trace is a time-lapse video of a restaurant kitchen during dinner service. Watching it, you can see which cook was chopping, who stood waiting for the oven, and the moment every order stalled because one pan was not ready.
+
 > **Watch out:** "Twice the GPUs means twice as fast" is wrong at scale. Communication grows, stragglers multiply, failures become more frequent and batch sizes hit their limits. Scaling is sub-linear, which is why MFU and goodput are tracked as closely as raw chip counts.
 
 ## When things break: failures, checkpointing and goodput
@@ -631,7 +676,7 @@ stateDiagram-v2
     Restarting --> Training : reload last checkpoint
 ```
 
-*Figure 37.14: The life cycle of a large training job. Failures are normal; what matters is how little work is lost and how fast the job restarts.*
+*Figure 37.15: The life cycle of a large training job. Failures are normal; what matters is how little work is lost and how fast the job restarts.*
 
 How often should you checkpoint? Too rarely, and each failure throws away a lot of work. Too often, and you waste time writing snapshots. Suppose a failure every 180 minutes, 10 minutes to restart, and 1 minute to write each checkpoint while training pauses:
 
@@ -651,6 +696,10 @@ A classic rule of thumb (Young's formula) puts the best interval at about √(2 
 Big operators also keep **hot spares** (idle servers ready to replace a failed one in minutes), run health checks to catch failing parts before they crash a job, and watch for **silent data corruption**: a chip that keeps running but returns subtly wrong numbers, which can poison a run without any error message. Power is another hazard. When tens of thousands of GPUs pause for a checkpoint or a collective at the same instant, the site's power draw can swing by tens of megawatts in seconds, as Meta reported, which stresses the electrical grid (Chapter 39).
 
 > **Definition — Silent data corruption:** A hardware fault in which a chip produces wrong results without crashing or reporting an error. At large scale it is rare per chip but common in total, and hard to detect.
+
+Memory has a built-in defense against the simplest faults. A bit stored in memory can occasionally flip, from electrical noise or even a cosmic-ray particle, and at fleet scale this is routine: a 2009 study of Google's servers found that more than 8 percent of memory modules saw errors in a year. Data center memory, including the HBM on AI chips, therefore stores extra check bits that correct such flips on the fly and raise an alarm when a module starts failing. Without them, many of those flips would become silent data corruption.
+
+> **Definition — ECC (error-correcting code) memory:** Memory that stores a few extra check bits alongside the data, so it can detect a flipped bit and fix it automatically. Data center servers and AI accelerators use it because rare errors become daily events across thousands of chips.
 
 > **Analogy:** Checkpointing is saving your video game before the boss fight. With 100,000 players in one shared game, somebody's console crashes every half hour, so the game had better save often, save quickly and reload fast.
 
@@ -709,7 +758,7 @@ sequenceDiagram
     end
 ```
 
-*Figure 37.15: Prefill reads the whole prompt at once; decode then produces one token per step, re-reading the weights every time.*
+*Figure 37.16: Prefill reads the whole prompt at once; decode then produces one token per step, re-reading the weights every time.*
 
 **Worked example: why the two phases cost so differently.** Take a 70B dense model stored in FP8 (1 byte per parameter, 70 GB) on an H200 (141 GB of HBM at 4.8 TB/s; about 1,979 dense FP8 TFLOPS).
 
@@ -767,7 +816,7 @@ flowchart LR
     DC -.- LPX["Example: Groq 3 LPX<br/>for fast token generation"]
 ```
 
-*Figure 37.16: Disaggregated serving gives prefill and decode their own hardware.*
+*Figure 37.17: Disaggregated serving gives prefill and decode their own hardware.*
 
 That split is now shaping chip design. As of late 2026:
 
@@ -783,6 +832,42 @@ That split is now shaping chip design. As of late 2026:
 *Table 37.10: Specialized inference silicon in 2026. Vendor claims are marked as such.*
 
 Notice the theme: big on-chip SRAM (hundreds of megabytes) and extreme bandwidth, aimed at the decode bottleneck. Google even split its eighth-generation TPU into a training chip (8t) and an inference chip (8i). In late December 2025, NVIDIA reportedly paid about $20 billion for a non-exclusive license to Groq's inference technology, a sign of how much the decode problem is worth.
+
+### Tail latency: why the slowest server sets your wait
+
+Averages hide the experience people remember. Engineers track response times by percentile (Chapter 6): p50 is the typical request, p99 the slowest 1 percent. Chapter 32 showed how a 99th-percentile deadline shaped Google's first TPU.
+
+> **Definition — Tail latency:** The response time of the slowest requests, usually measured at the 99th percentile (p99) or the 99.9th. At scale it matters more than the average, because each user request touches many servers.
+
+The trouble is fan-out. In a 2013 paper called "The Tail at Scale," Google's Jeffrey Dean and Luiz André Barroso showed that a request needing answers from many servers is only as fast as the slowest of them.
+
+> **Definition — Fan-out:** Splitting one request into many sub-requests sent to different servers or chips in parallel, so the answer must wait for all of them.
+
+**Worked example.** Suppose each server is slow (a second instead of a few milliseconds) on 1 request in 100. A request that touches one server is slow 1% of the time. A request that must wait for 100 servers is fast only if all 100 are fast: 0.99^100 ≈ 0.37, so it is slow 63% of the time. One machine's rare hiccup becomes the user's normal experience.
+
+AI fans out everywhere. Each decode step of a large mixture-of-experts model waits for the slowest GPU holding its experts; each training step waits for the slowest of thousands (the stragglers from earlier in this chapter); and an agent that makes 30 model and tool calls in a row hits at least one p99 delay with probability 1 − 0.99^30 ≈ 26%.
+
+There are two classic defenses. The first is to hedge.
+
+> **Definition — Hedged request:** A backup copy of a slow request, sent to a second server after a short wait; whichever answer arrives first is used. A few percent of extra work can cut the slowest response times sharply.
+
+In one Google benchmark from that paper, sending a hedged request after 10 milliseconds cut the 99.9th-percentile time to fetch 1,000 stored values from 1,800 ms to 74 ms, while adding only 2% more requests. The second defense is headroom: never run servers close to full. Queueing theory gives a simple rule of thumb. If requests arrive at random, the average time spent waiting in line grows like busy ÷ (1 − busy), measured in units of the time one request takes to serve.
+
+> **Definition — Queueing delay:** The time a request spends waiting in line before a server starts working on it. It grows sharply as the server's utilization approaches 100 percent.
+
+| How busy the server is | Average wait in line, in service times |
+|---|---|
+| 50% | 0.5 ÷ 0.5 = 1 |
+| 80% | 0.8 ÷ 0.2 = 4 |
+| 90% | 0.9 ÷ 0.1 = 9 |
+| 95% | 0.95 ÷ 0.05 = 19 |
+| 99% | 0.99 ÷ 0.01 = 99 |
+
+*Table 37.11: Waiting time explodes as a server approaches full load, in the simplest queueing model with random arrivals. Real serving systems are more complicated, but the shape holds.*
+
+That is why a chatbot slows down at peak hours well before its provider runs out of GPUs, and why operators keep spare capacity for live traffic while filling the gaps with batch jobs that don't mind waiting (Chapter 43).
+
+> **Key idea:** At scale, the slowest 1 percent of anything becomes everybody's problem. Large systems are built to tolerate the tail, with backup requests, spare machines and headroom, because they cannot eliminate it.
 
 ### From dollars per GPU-hour to dollars per million tokens
 
@@ -804,7 +889,7 @@ flowchart LR
     D --> C["Cost per<br/>million tokens"]
 ```
 
-*Figure 37.17: How a cost per million tokens is built up from the cost of a GPU-hour.*
+*Figure 37.18: How a cost per million tokens is built up from the cost of a GPU-hour.*
 
 **Worked examples.**
 
@@ -842,7 +927,7 @@ Serving you is a different game. Reading your prompt is fast and parallel; writi
 
 ## Key terms
 
-Distributed training, Accelerator, Cluster, FLOP (floating-point operation), FLOP/s (FLOPS), Parameter, Token, 6ND rule, Active parameters, GPU-hour, PUE (power usage effectiveness), H100-equivalent (H100e), Gradient, Optimizer state, Mixed precision, Activations, Activation checkpointing (recomputation), Data parallelism (DP), Global batch size, Sharding, ZeRO / FSDP, Tensor parallelism (TP), Pipeline parallelism (PP), Microbatch, Pipeline bubble, Context parallelism (CP), Mixture of experts (MoE), Expert parallelism (EP), All-to-all, Scale-up vs. scale-out network, Collective communication, All-reduce, Reduce-scatter, All-gather, Ring all-reduce, NCCL / RCCL, Straggler, MFU (model FLOPs utilization), HFU (hardware FLOPs utilization), MTBF (mean time between failures), Checkpoint, Goodput, Silent data corruption, FP8, Block-scaled 4-bit formats (NVFP4, MXFP4), Loss spike, Prefill, Decode, KV cache, TTFT (time to first token), Batching (continuous batching), Throughput, Interactivity (tokens per second per user), Pareto frontier (throughput versus interactivity), Disaggregated serving, Cost per million tokens, TCO (total cost of ownership), Jevons paradox
+Distributed training, Accelerator, Cluster, FLOP (floating-point operation), FLOP/s (FLOPS), Parameter, Token, 6ND rule, Active parameters, GPU-hour, PUE (power usage effectiveness), H100-equivalent (H100e), Gradient, Optimizer state, Mixed precision, Activations, Activation checkpointing (recomputation), Data parallelism (DP), Global batch size, Sharding, ZeRO / FSDP, Tensor parallelism (TP), Pipeline parallelism (PP), Microbatch, Pipeline bubble, Context parallelism (CP), Mixture of experts (MoE), Expert parallelism (EP), All-to-all, Scale-up vs. scale-out network, Collective communication, All-reduce, Reduce-scatter, All-gather, Ring all-reduce, NCCL / RCCL, Straggler, MFU (model FLOPs utilization), HFU (hardware FLOPs utilization), MTBF (mean time between failures), Checkpoint, Goodput, Silent data corruption, FP8, Block-scaled 4-bit formats (NVFP4, MXFP4), Loss spike, Prefill, Decode, KV cache, TTFT (time to first token), Batching (continuous batching), Throughput, Interactivity (tokens per second per user), Pareto frontier (throughput versus interactivity), Disaggregated serving, Cost per million tokens, TCO (total cost of ownership), Jevons paradox, Gradient accumulation, Communication-bound, Profiler, Trace (profile timeline), ECC (error-correcting code) memory, Tail latency, Fan-out, Hedged request, Queueing delay
 
 ## Exercises
 

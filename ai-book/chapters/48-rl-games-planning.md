@@ -3,12 +3,14 @@
 *This chapter teaches you how machines decide what to do: how they search ahead like a chess player, how they learn from rewards like a dog learning tricks, how those two ideas beat world champions at chess, Go, poker and video games, and how the same ideas now make your chatbot "think."*
 
 ## What you'll learn
-- How AI searches for good plans: mazes, A* route-finding, game trees, minimax (worked by hand on a tic-tac-toe position), alpha-beta pruning and Monte Carlo tree search.
-- Reinforcement learning from scratch: agent, environment, state, action, reward, return, policy and value.
+- How textbooks describe any decision problem (rational agents and the kinds of environments they face), and how to make a single decision under uncertainty with expected utility and the value of information.
+- How AI searches for good plans: mazes, A* route-finding, local search, constraint satisfaction (a meeting schedule solved by hand), classical planning with actions and goals, game trees, minimax (worked by hand on a tic-tac-toe position), alpha-beta pruning, dice games and Monte Carlo tree search.
+- Reinforcement learning from scratch: agent, environment, state, action, reward, return, policy and value, and the Markov decision process that ties them together.
 - Exploration versus exploitation, and the credit-assignment problem.
 - Q-learning, worked step by step with real numbers, and how Deep Q-Networks scaled it to Atari.
 - Policy gradients and actor-critic methods, in plain words.
 - The great game milestones, from TD-Gammon and Deep Blue to AlphaGo's Move 37, AlphaZero, MuZero, OpenAI Five, AlphaStar, Pluribus and CICERO, and why self-play works.
+- The core ideas of game theory: the prisoner's dilemma, dominant and mixed strategies, mechanism design and the Shapley value.
 - Where reinforcement learning is used outside games, and how game-playing ideas became the "thinking" in 2026's reasoning models.
 
 ## Before you start
@@ -30,6 +32,68 @@ There are two great families of tools for deciding.
 The most famous systems combine the two: AlphaGo used learned intuition to suggest moves and search to check them, and your chatbot's reasoning mode does something similar with words (Chapter 21).
 
 > **Key idea:** Search means thinking ahead with a model of the world. Reinforcement learning means learning from trial and error. The strongest decision-making systems use learning to guide search and search to improve learning.
+
+### What kind of world is the agent in?
+
+Before choosing a method, describe the problem. The most widely used AI textbook, Stuart Russell and Peter Norvig's *Artificial Intelligence: A Modern Approach*, frames the whole field as building agents that act well in some environment, and it summarizes any task by four things, abbreviated PEAS: the Performance measure (what counts as doing well), the Environment, the Actuators (how the agent acts) and the Sensors (what it can perceive). For a robot vacuum: a clean floor in little time without bumping the cat; your home; wheels and brushes; a camera, bump sensors and a dirt detector.
+
+> **Definition — Rational agent:** An agent that, in every situation, chooses the action expected to do best on its performance measure (the score its designer cares about), given everything it has perceived so far. "Rational" here means "does the right thing by that score", not "thinks like a person".
+
+Environments are then sorted by a handful of questions. The answers decide which tools from this chapter fit.
+
+| Question | Easy end | Hard end | Example of the hard end |
+|---|---|---|---|
+| Can the agent see everything that matters? | Fully observable (chess) | Partially observable | Poker's hidden cards, a pedestrian behind a truck |
+| Does an action always have the same result? | Deterministic (a sliding puzzle) | Stochastic (chance involved) | Dice in backgammon, a wheel slipping on ice |
+| Does each choice affect later ones? | Episodic (labeling photos one at a time) | Sequential | Chess, driving, a multi-step coding task |
+| Does the world wait while the agent thinks? | Static (a crossword) | Dynamic | Traffic, a live video game |
+| Are the states and actions distinct steps? | Discrete (board games) | Continuous | Steering angles, robot joint positions |
+| Is anyone else acting? | Single agent (a maze) | Multiagent | Opponents, teammates, other drivers |
+
+*Table 48.1: The questions that describe an agent's environment. Driving a taxi sits at the hard end of every row, which is one reason self-driving took so long (Chapter 50).*
+
+> **Definition — Fully and partially observable:** An environment is fully observable if the agent's sensors show it everything relevant to its choice, as in chess, and partially observable if something important is hidden, such as an opponent's cards or a cyclist behind a bus.
+
+> **Definition — Deterministic and stochastic:** In a deterministic environment the same action in the same state always has the same result; in a stochastic one, chance plays a part, as with a dice roll or a slippery floor.
+
+> **Definition — Episodic and sequential:** In an episodic task each decision stands alone, like labeling one photo and then the next; in a sequential task each choice changes the situation for the choices that follow.
+
+Agents themselves come in a ladder of sophistication. A **simple reflex agent** reacts to what it senses right now. A **model-based agent** also keeps track of what it cannot currently see. A **goal-based agent** imagines where its actions lead and picks ones that reach a goal, which is where search and planning come in. A **utility-based agent** weighs how good each possible outcome is and how likely, the subject of the next section. And any of these can be a **learning agent**, with a part that improves its behavior from experience, which is where reinforcement learning comes in. A thermostat is a reflex agent; a robot vacuum that maps your rooms is model-based; your map app's router is goal-based; a self-driving car that trades off speed, comfort and safety is utility-based.
+
+> **Definition — Simple reflex agent:** An agent that chooses its action from its current input alone, using fixed condition-action rules such as "if the room is below 19°C, turn on the heat".
+
+> **Definition — Model-based agent:** An agent that keeps an internal picture of the world, including things it cannot currently perceive, and uses it to choose actions.
+
+> **Definition — Goal-based agent:** An agent that chooses actions by working out which sequences of actions lead to a desired goal, using search or planning.
+
+> **Definition — Utility-based agent:** An agent that compares possible outcomes by how desirable they are (their utility) and how likely they are, and picks the action with the best expected result.
+
+### Deciding when you are not sure: expected utility
+
+The simplest decision is a single choice under uncertainty. Should you take an umbrella? The forecast says a 30% chance of rain. Decision theory, the mathematics of choosing, gives a recipe: score each possible outcome by how much you like it, multiply each score by its probability, add them up, and pick the action with the highest total. Chapter 6 called such a sum an expected value; when the scores measure how much you like an outcome rather than dollars, it is called expected utility.
+
+> **Definition — Utility:** A number expressing how desirable an outcome is to a particular person or agent, where higher is better. Utilities put very different outcomes, such as getting soaked and carrying a bag all day, on one scale.
+
+> **Definition — Maximum expected utility principle:** The rule that a rational agent should choose the action whose possible outcomes, weighted by their probabilities, have the highest average utility.
+
+**Worked example.** Score the outcomes from 0 to 100: dry without carrying anything, 100; dry but carrying an umbrella, 80; caught in the rain without one, 0.
+
+- Take the umbrella: you stay dry whatever happens, so 80.
+- Leave it: 0.7 × 100 + 0.3 × 0 = 70.
+
+Take it. If the forecast said 10%, leaving it would be worth 0.9 × 100 = 90, and you should leave it. The break-even point is a 20% chance of rain, where leaving it is worth 0.8 × 100 = 80, the same as taking it.
+
+Information has a value you can calculate too. Suppose a radar app could tell you for certain whether it will rain. Then you would carry the umbrella only on rainy days: 0.3 × 80 + 0.7 × 100 = 24 + 70 = 94. Without the app your best was 80, so the information is worth 94 − 80 = 14 points to you. Information that could not change your choice is worth nothing.
+
+> **Definition — Value of information:** How much better you expect to decide if you learn something before acting: the expected utility of deciding with the information minus the expected utility of deciding without it.
+
+This is why a good doctor orders a test only if its result could change the treatment, and why a well-designed AI agent asks you a clarifying question only when your answer could change what it does.
+
+Utility is not the same as money. Most people prefer a sure $1,000 to a coin flip for $2,000, although both have an expected value of $1,000, because the second thousand dollars matters less to them than the first. The same reasoning explains why people buy insurance, which loses money on average.
+
+> **Definition — Risk aversion:** Preferring a certain outcome to a gamble with the same expected value, because each extra unit of money (or of anything else) adds less utility than the one before.
+
+> **Key idea:** A rational decision weighs how good each outcome would be by how likely it is. The rest of this chapter applies that one idea to long chains of decisions, where the reward of reinforcement learning plays the part of utility.
 
 ## Search: thinking before you act
 
@@ -54,6 +118,12 @@ The simplest search strategies have no sense of direction.
 > **Definition — Breadth-first search (BFS):** A search method that explores all places one step away, then all places two steps away, and so on, like ripples spreading in a pond. It always finds the shortest path when every step costs the same, but it can be slow.
 
 > **Definition — Depth-first search (DFS):** A search method that follows one path as far as it can go before backing up and trying another, like keeping your hand on one wall of a maze.
+
+Two refinements fix their worst habits. Breadth-first search counts steps, but on a road map one step might be 200 meters and the next 20 kilometers. Uniform-cost search, best known as Dijkstra's algorithm (1959), always expands the place with the smallest total distance traveled so far, so it finds the cheapest route even when steps cost different amounts. Depth-first search needs little memory but can wander down an endless path; iterative deepening runs depth-first search with a depth limit of 1, then 2, then 3 and so on, gaining breadth-first's guarantee of a shortest path while keeping depth-first's small memory. Redoing the shallow levels each round costs little, because most of a search tree's places are in its deepest level.
+
+> **Definition — Uniform-cost search (Dijkstra's algorithm):** A search method that always explores next the place with the lowest total cost from the start, so it finds the cheapest path when steps have different costs, such as roads of different lengths.
+
+> **Definition — Iterative deepening:** Running depth-first search again and again with a growing depth limit (1, 2, 3...), which finds the shortest path like breadth-first search while using only as much memory as depth-first search.
 
 Blind search is fine for a placemat maze. It collapses on big problems because state spaces explode. A Rubik's cube has about 43 quintillion (4.3 × 10^19) arrangements. Checking a billion per second would take more than a thousand years to visit them all. Real problems need a sense of direction.
 
@@ -98,13 +168,95 @@ From S, A* compares its neighbors:
 | Above S (row 1, col 0) | 1 | 1 + 7 = 8 | 9 |
 | Below S (row 3, col 0) | 1 | 1 + 7 = 8 | 9 |
 
-*Table 48.1: The first choice A* makes. The square heading toward the goal has the lowest f, so A* explores it first.*
+*Table 48.2: The first choice A* makes. The square heading toward the goal has the lowest f, so A* explores it first.*
 
 A* marches right while f stays at 7. At row 2, column 3, the wall blocks the way. The squares above and below now score f = 4 + 5 = 9, the same as the squares it skipped near the start, so the search widens a little, slips around the top of the wall and reaches G in 9 steps. In one run of this example, breadth-first search examined 44 squares before reaching the goal, while A* examined 19 (exact counts depend on how ties are broken). On a city-sized map the savings are enormous.
 
 > **Analogy:** Breadth-first search is a search party fanning out in every direction from the trailhead. A* is the same party with a compass pointing at the destination: they still check side paths when the direct way is blocked, but they do not waste hours walking away from the goal.
 
 Real navigation apps add heavy precomputation and live traffic to relatives of A*, but the core idea is the same: combine what you know (distance so far) with a good guess (distance left).
+
+Drop the "distance so far" and follow the guess alone, and you get greedy best-first search. It rushes toward whatever looks closest to the goal, which is often fast, but it can be lured into dead ends and does not promise the shortest route. A* balances the two numbers, which is why it gets both speed and the guarantee.
+
+> **Definition — Greedy best-first search:** A search method that always explores next the place its heuristic says is closest to the goal, ignoring the cost already paid. It is often fast but can be misled and may return a longer path than necessary.
+
+### Local search: improving one solution at a time
+
+Sometimes the path does not matter, only the destination. A school timetable, the layout of a warehouse, eight queens placed on a chessboard so that none attacks another: you want a good final arrangement, not the route to it. For such problems AI often uses local search: start with a complete solution, however bad, and keep making small changes that improve it.
+
+> **Definition — Local search:** Optimization that keeps one (or a few) complete candidate solutions and repeatedly moves to a nearby, better candidate, instead of exploring paths from a start. It uses very little memory and works on huge problems.
+
+> **Definition — Hill climbing:** The simplest local search: try all small changes to the current solution, take the one that improves the score most, and stop when no change helps.
+
+Hill climbing is the step-by-step cousin of gradient descent (Chapter 6), walking uphill in fog instead of downhill, and it has the same trap. Picture the scores of positions along a trail: 3, 5, 7, 6, 4, 8, 12, 9. Start at the 3 and climb: 5, then 7. Both neighbors of the 7 (5 and 6) are lower, so you stop, never seeing the 12 that lies beyond the dip.
+
+> **Definition — Local maximum:** A solution better than all its immediate neighbors but worse than the best solution overall: a hilltop that is not the highest peak.
+
+There are two classic escapes. Random restarts run hill climbing many times from random starting points and keep the best result. Simulated annealing, named after metalworking (hot metal cooled slowly settles into a strong structure), sometimes accepts a worse move on purpose: often at first, while the "temperature" is high, and more and more rarely as it cools. Early on it can walk down from the 7 through the dip and find the 12; by the end it behaves like plain hill climbing.
+
+> **Definition — Simulated annealing:** A local search method that sometimes accepts worse moves, with a probability that shrinks over time as a "temperature" falls, so it can escape local maxima early and settle on a good solution late.
+
+Simulated annealing has been used to place the components of computer chips since the 1980s. Population-based relatives keep many candidates at once: genetic algorithms breed them (Chapter 54), and beam search keeps only the best few partial solutions at every step. Beam search is how many translation systems choose a high-probability sentence: keep the best few beginnings, extend each by one word, keep the best few again, and repeat. (Chatbots usually sample instead, as Chapter 18 explains.)
+
+> **Definition — Beam search:** A search that, at each step, extends every candidate it is keeping and then keeps only the best k of them (k is the "beam width"), trading the guarantee of finding the very best answer for speed and low memory.
+
+### Constraint satisfaction: puzzles, timetables and schedules
+
+Many real problems are about filling in blanks without breaking rules: a sudoku, a meeting schedule, a wedding seating plan, which crew flies which plane. AI treats them all the same way.
+
+> **Definition — Constraint satisfaction problem (CSP):** A problem described by variables (the things to decide), a domain for each (its possible values) and constraints (rules about which combinations are allowed). A solution gives every variable a value without breaking any constraint.
+
+**Worked example: four meetings, three time slots.** Meetings A, B, C and D must each go at 9:00, 10:00 or 11:00. Meetings that share people cannot overlap: A shares people with B and C, and B shares people with C and D. D includes the CEO, who is free only at 9:00.
+
+- Variables: A, B, C, D. Domains: {9, 10, 11} for A, B and C; just {9} for D.
+- Constraints: A ≠ B, A ≠ C, B ≠ C, B ≠ D.
+
+Blind search would try all 3 × 3 × 3 × 1 = 27 combinations. A constraint solver combines two moves instead.
+
+**Constraint propagation** uses the rules to shrink domains before guessing. D must be 9 and B ≠ D, so B loses 9: B is now {10, 11}.
+
+**Backtracking search** assigns variables one at a time, choosing first the variable with the fewest values left (a heuristic that exposes dead ends early), and propagates again after each choice:
+
+1. B has the fewest values left. Try B = 10. Propagate: A ≠ 10 and C ≠ 10, so A is {9, 11} and C is {9, 11}.
+2. Try A = 9. Propagate: C ≠ 9, so C must be 11.
+3. Check every rule: A at 9, B at 10, C at 11, D at 9. A and D share the 9:00 slot, which is fine because they share no people. Solved, with no dead ends.
+
+Had a choice emptied some variable's domain, the solver would undo its most recent choice and try the next value, which is what "backtracking" means.
+
+> **Definition — Constraint propagation:** Using the constraints to delete values that can no longer be part of any solution, such as removing 9:00 from meeting B once D is fixed at 9:00. It shrinks the search before any guessing.
+
+> **Definition — Backtracking search:** Assigning values one variable at a time, checking the constraints after each choice, and undoing the most recent choice whenever a dead end is reached.
+
+A sudoku is the same kind of problem: 81 variables, domains 1 to 9, and "no repeats in any row, column or box" as the constraints. Propagation alone solves most newspaper puzzles; hard ones need some backtracking. For very large problems, solvers also use local search: start from a complete but flawed schedule and repeatedly change whichever variable is involved in the most broken rules (the "min-conflicts" heuristic). Industrial constraint solvers schedule airline crews, sports leagues, factory lines and computing jobs in data centers, and a close relative, the SAT solver, verifies computer chips (Chapter 54).
+
+### Planning with actions: from Shakey to PDDL
+
+Search needs a description of what actions do. For Shakey, the SRI robot that gave us A*, researchers invented a simple and influential way to write one, called STRIPS (1971). Each action is a recipe card listing its preconditions (what must be true before) and its effects (what becomes true or false after). A planner searches for a sequence of cards that turns the starting situation into one where the goal is true.
+
+> **Definition — Classical planning:** Finding a sequence of actions that turns a known starting situation into one that satisfies a goal, where each action is described by its preconditions and effects and the world is fully known and deterministic.
+
+> **Definition — Precondition and effect:** In planning, a precondition is a fact that must be true before an action is allowed (the kettle must hold water before you boil it); an effect is a fact the action makes true or false (the water is now hot).
+
+| Action | Preconditions | Effects |
+|---|---|---|
+| Fill kettle | Kettle empty | Kettle has water; kettle no longer empty |
+| Boil water | Kettle has water | Water hot |
+| Put teabag in cup | Have teabag | Teabag in cup; no longer have teabag |
+| Pour | Water hot; teabag in cup | Tea made |
+
+*Table 48.3: A tiny planning problem written in the style of STRIPS.*
+
+Start: kettle empty, have teabag. Goal: tea made. Working backward from the goal, a planner sees that Pour needs "water hot" and "teabag in cup"; "water hot" needs Boil, which needs "kettle has water", which needs Fill. One valid plan: Fill, Boil, Put teabag in cup, Pour. A good planner also notices that the teabag can go in at any point before Pour and keeps that freedom instead of fixing an arbitrary order, which is called partial-order planning.
+
+The standard language for writing such problems today is PDDL, introduced in 1998 for the international planning competitions. Planners find long plans in huge problems by searching with heuristics they compute automatically, for example by solving an easier, "relaxed" version of the problem in which no action ever undoes anything, just as Manhattan distance is the exact answer to a relaxed maze with no walls.
+
+> **Definition — PDDL (Planning Domain Definition Language):** The standard text format for planning problems, listing the objects, the actions with their preconditions and effects, the starting state and the goal, so that any planner can read them.
+
+Big tasks are planned in layers. "Make dinner" breaks into "make pasta" and "make salad", and each of those breaks into smaller steps, until every step is a basic action.
+
+> **Definition — Hierarchical planning (HTN):** Planning by breaking high-level tasks into subtasks using known recipes, level by level, until every step is a basic action. HTN stands for hierarchical task network.
+
+Classical planners work in places you might not expect. NASA's Remote Agent planned and carried out spacecraft operations on board the Deep Space 1 probe in 1999. Logistics companies plan deliveries with them, and many video games plan the actions of their computer-controlled characters this way, for example the enemy soldiers of the 2005 game *F.E.A.R.*. Real-world planning also has to handle time, deadlines and shared resources, which turns it into scheduling, a constraint problem, and surprises, which call for watching the plan as it runs and replanning when a step fails. That plan, act, observe, replan loop is exactly what a coding agent does with its to-do list (Chapter 28). The difference is that the agent writes its "recipe cards" in plain language rather than PDDL, which makes it far more flexible but gives none of a classical planner's guarantees that every precondition has been checked.
 
 ### Game trees: when the world fights back
 
@@ -125,7 +277,7 @@ Chess and Go are also games of perfect information: both players see the whole b
 | Chess | about 35 | about 10^44 legal positions; about 35^80 ≈ 10^123 possible 80-ply games |
 | Go (19 × 19) | about 250 | about 2 × 10^170 legal positions; about 250^150 ≈ 10^360 possible 150-move games |
 
-*Table 48.2: How big game trees get. For comparison, the observable universe holds roughly 10^80 atoms.*
+*Table 48.4: How big game trees get. For comparison, the observable universe holds roughly 10^80 atoms.*
 
 Tic-tac-toe is small enough to search completely, which is why it is the perfect place to learn the key idea.
 
@@ -200,6 +352,16 @@ This is exactly how IBM's Deep Blue beat world champion Garry Kasparov in May 19
 Modern engines kept the search but changed the evaluation: since 2020 the leading open engine, Stockfish, has used a small neural network to judge positions.
 
 > **Watch out:** "Deep Blue was a learning machine." It was mostly brute-force search plus human-written knowledge. The learning revolution in games came later, starting with backgammon in 1992 and exploding with Go in 2016.
+
+### Games with dice: chance nodes
+
+In backgammon you cannot even list your opponent's next moves until the dice decide which moves exist. So the game tree gets a third kind of level, a chance node, where luck "moves". At a chance node you cannot take a maximum or a minimum; you take the average of the outcomes, weighted by their probabilities.
+
+**Worked example.** Two dice give 36 equally likely rolls. Move 1 leads to a position you win (+1) only if the next roll is double six (1 roll in 36) and that is otherwise even (0): worth 1/36 ≈ 0.03. Move 2 leads to a position you win if the roll contains at least one six (11 rolls in 36), lose (−1) on double ones (1 roll in 36), and that is otherwise even: worth 11/36 − 1/36 = 10/36 ≈ 0.28. Move 2 is better, even though it can lose and Move 1 cannot. Players' levels still take the maximum and minimum; only nature's levels average.
+
+> **Definition — Chance node (expectiminimax):** A point in a game tree where luck, such as a dice roll, decides what happens next. Expectiminimax scores it with the probability-weighted average of its outcomes, while the players' levels still take the maximum and the minimum.
+
+Cards add something harder than luck: hidden information, where you must also reason about what the other player might hold. Poker, later in this chapter, needed new methods for that.
 
 ### Monte Carlo tree search
 
@@ -297,6 +459,32 @@ Values obey a beautifully simple relationship, worked out by the mathematician R
 
 > **Definition — Bellman equation:** The principle that the value of a situation equals the reward you get now plus the discounted value of the situation you land in next. It lets values be computed or learned step by step.
 
+### Markov decision processes: the formal frame
+
+Researchers write this whole setup down as one mathematical object, which is the common language of planning under uncertainty and of reinforcement learning.
+
+> **Definition — Markov decision process (MDP):** The standard formal description of a sequential decision problem: a set of states, a set of actions, the probabilities that each action in each state leads to each next state, a reward for each step, and a discount factor. Planning and reinforcement learning both aim to find the best policy for an MDP.
+
+> **Definition — Markov property:** The assumption that the current state contains everything needed to predict what happens next, so that once you know the present, the past adds nothing. A chess position has this property; a single frozen frame of a ball game does not, because it hides which way the ball is moving.
+
+If you know the rules of the MDP (where each action leads and with what probability), you do not need trial and error at all. You can compute the values directly, by applying the Bellman equation to every state over and over until the numbers stop changing. That is value iteration, and it is planning, not learning.
+
+> **Definition — Value iteration:** A planning method for MDPs whose rules are known: start every state's value at 0, then repeatedly update each one to "the best immediate reward plus the discounted value of where that action leads", until the values stop changing. A close relative, policy iteration, alternates between scoring a policy and improving it.
+
+**Worked example.** Look ahead to the corridor world of Figure 48.6: squares A, B and C, then a goal that pays +10, with γ = 0.9. Since the rules are known, sweep through all the squares at once, each time using the values from the previous sweep:
+
+- Sweep 1: C is one step from the +10, so C = 10. A and B still see only zeros next door: 0.
+- Sweep 2: B = 0 + 0.9 × 10 = 9.
+- Sweep 3: A = 0 + 0.9 × 9 = 8.1.
+
+Three sweeps give the exact values. Q-learning, which is not told the rules, needs many episodes of wandering to approach the same numbers (Table 48.5). Knowing how the world works is a huge shortcut; the catch is that the real world rarely hands you its rulebook.
+
+When the agent cannot see the true state, the problem becomes a partially observable MDP. The agent must act on a belief, a set of probabilities for which state it might be in, and update that belief with Bayes' rule (Chapter 6) after every observation. A poker player's estimate of an opponent's cards and a robot's estimate of which identical-looking corridor it is in are beliefs. Solving such problems exactly is notoriously hard, so practical systems approximate, and Chapter 54 shows how beliefs are tracked over time.
+
+> **Definition — POMDP (partially observable Markov decision process):** An MDP in which the agent cannot observe the state directly and receives only clues, so it must choose actions based on its belief about which state it is in.
+
+> **Definition — Belief state:** An agent's probabilities for which situation it is actually in, updated as new observations arrive. Under partial observability, acting well means acting well on beliefs.
+
 ### Exploration versus exploitation
 
 Every evening you choose where to eat. Your favorite place reliably earns a 7 out of 10. A new place opened down the street. It might be a 9, or it might be a 4. Do you go back to the favorite (exploit) or try the new one (explore)?
@@ -378,7 +566,7 @@ After one episode the agent has learned only that the last step is good. Nothing
 | 7 | 6.26 | 8.44 | 9.92 |
 | Many | 8.1 | 9 | 10 |
 
-*Table 48.3: Q-values in the corridor. The reward at the goal seeps backward one square per episode, like water flowing upstream.*
+*Table 48.5: Q-values in the corridor. The reward at the goal seeps backward one square per episode, like water flowing upstream.*
 
 The final values make sense. From C, one step earns 10. From B, the 10 is one step further away: 0.9 × 10 = 9. From A: 0.9 × 9 = 8.1. Once learned, the policy is simple: in each square, take the action with the highest Q-value. Every "right" beats every "left" (which stays near 0), so the agent walks straight to the goal.
 
@@ -415,7 +603,7 @@ The intuition fits in one example. A policy starts out choosing left or right 50
 | 3 | Right | 8 |
 | 4 | Left | 4 |
 
-*Table 48.4: Four episodes from a 50/50 policy. Their average return, 6, serves as the baseline.*
+*Table 48.6: Four episodes from a 50/50 policy. Their average return, 6, serves as the baseline.*
 
 The average return is (10 + 2 + 8 + 4) ÷ 4 = 6. Subtract that baseline from each episode's return to get its **advantage**: +4, −4, +2 and −2. The update nudges the probability of "right" up in proportion to the positive advantages and "left" down in proportion to the negative ones, for instance from 50% right to 60% right after a small step. Repeat thousands of times and the policy drifts toward what works.
 
@@ -446,6 +634,12 @@ An RL agent optimizes exactly the reward you wrote down, not the one you meant. 
 > **Definition — Reward hacking (specification gaming):** When an agent finds a loophole that earns high reward without doing what the designer intended, like a boat that circles for points instead of finishing the race, or a coding model that edits the tests so they pass.
 
 This is not just a curiosity. Chatbots trained with RL can learn to flatter (sycophancy) when human raters reward agreeable answers, and coding models can learn to special-case tests. Chapter 55 treats reward hacking as one of the central problems of AI safety.
+
+If writing down the right reward is so hard, can an agent learn the reward instead? Two ideas try. Imitation learning skips rewards altogether and copies an expert's actions from recorded demonstrations; Chapter 49 shows robots learning this way and Chapter 50 shows driving systems learning from human drivers. Inverse reinforcement learning goes one level deeper: watch an expert, work out what reward they seem to be maximizing, then optimize that reward, which can generalize better than copying moves because it captures why the expert acted. The reward models of Chapter 20, trained on people's choices between pairs of answers, are a close cousin: they learn what people want from their behavior instead of having it written down.
+
+> **Definition — Imitation learning:** Training an agent to copy an expert's actions from recorded demonstrations, without any reward signal. Its simplest form is called behavior cloning.
+
+> **Definition — Inverse reinforcement learning:** Inferring the reward an expert appears to be optimizing from examples of their behavior, then training an agent to maximize that inferred reward.
 
 > **Watch out:** "RL means robots learning by themselves in the real world." Most RL happens in simulations and games, because real-world trial and error is slow, expensive and risky: a robot that needs a million falls to learn walking would break long before it learned. Real-world RL on physical robots is a recent frontier (Chapter 49).
 
@@ -543,7 +737,7 @@ Carnegie Mellon's Noam Brown and Tuomas Sandholm built Libratus, which beat four
 | 2020 | MuZero | Board games and Atari | Learned its own model of the rules |
 | 2022 | CICERO | Diplomacy | Language model plus strategic planning |
 
-*Table 48.5: What each game milestone added.*
+*Table 48.7: What each game milestone added.*
 
 ## Why games matter, and the power of self-play
 
@@ -596,6 +790,41 @@ quadrantChart
 
 > **Watch out:** "If AI is superhuman at Go, it is superhuman at thinking." Game-playing systems are narrow. AlphaZero could not hold a conversation or fold a towel. In 2023, researchers even showed that amateur humans could beat top Go programs using a strange strategy discovered by another program, a reminder that superhuman in-distribution play can hide blind spots.
 
+### A short course in game theory
+
+Board games are a narrow slice of a much bigger subject. Game theory, founded by John von Neumann and Oskar Morgenstern in their 1944 book *Theory of Games and Economic Behavior*, studies every situation in which several decision-makers' outcomes depend on each other's choices: prices, negotiations, auctions, arms races and, increasingly, AI agents dealing with other AI agents.
+
+> **Definition — Game theory:** The mathematics of strategic decisions, where each player's best choice depends on what the others choose. It covers games in the everyday sense and also markets, auctions, negotiations and conflicts.
+
+The most famous example is the prisoner's dilemma. Two suspects are questioned in separate rooms. Each can stay silent or betray the other. The years in prison are:
+
+| | Partner stays silent | Partner betrays |
+|---|---|---|
+| **You stay silent** | You 1, partner 1 | You 10, partner 0 |
+| **You betray** | You 0, partner 10 | You 5, partner 5 |
+
+*Table 48.8: The prisoner's dilemma, in years of prison for each player.*
+
+Reason from your side. If your partner stays silent, betraying gets you 0 years instead of 1. If your partner betrays, betraying gets you 5 instead of 10. Either way betraying is better for you, so it is a dominant strategy. Your partner reasons the same way, so both betray and serve 5 years each. That outcome is the Nash equilibrium (no one gains by changing alone), even though both staying silent, 1 year each, was better for both. Choices that are sensible for each player can add up to a bad result for all, the same logic as price wars, overfishing and, many argue, the racing dynamics between AI labs and countries (Chapter 60).
+
+> **Definition — Prisoner's dilemma:** A two-player game in which each player does better by betraying whatever the other does, yet both end up worse off than if both had cooperated. It is the classic model of why cooperation is hard.
+
+> **Definition — Dominant strategy:** A choice that is best for a player no matter what the other players do.
+
+Three more ideas complete the toolkit.
+
+- **Repetition changes everything.** When the same players meet again and again, cooperation can pay. In Robert Axelrod's computer tournaments around 1980, the winning strategy for the repeated prisoner's dilemma was one of the simplest entered: tit-for-tat, which cooperates first and then copies whatever the other player did last time.
+- **Randomness can be the best strategy.** In rock-paper-scissors any predictable choice can be exploited, and the equilibrium is to play each option one-third of the time at random. Poker programs bluff at carefully computed random frequencies for the same reason.
+- **You can design the game.** Mechanism design works backward from the outcome you want to rules that produce it. In a sealed-bid second-price auction for one item, where the highest bidder wins but pays the second-highest bid, bidding exactly what the item is worth to you is your best strategy whatever the others do, so the rules themselves reward honesty. The ad auctions of Chapter 51 borrow this idea, though selling many ad slots at once only approximates it.
+
+> **Definition — Mixed strategy:** A strategy that chooses among actions at random with set probabilities, such as playing rock, paper and scissors one-third of the time each, so that opponents cannot predict and exploit it.
+
+> **Definition — Mechanism design:** Designing the rules of a game, such as an auction or a voting system, so that players pursuing their own interests produce the outcome the designer wants.
+
+Game theory also has a cooperative branch, about how a group should share what it earns together. Its best-known tool, the Shapley value (Lloyd Shapley, 1953), pays each member their average added contribution over every order in which the group could have formed. Suppose Alice alone can earn 60, Bob alone 20, and together 100. If Alice joins first, she adds 60 and Bob adds the remaining 40; if Bob joins first, he adds 20 and Alice adds 80. Averaging the two orders, Alice gets (60 + 80) ÷ 2 = 70 and Bob gets (40 + 20) ÷ 2 = 30, which adds up to the 100. The idea has a second life in AI: the popular SHAP method explains a single prediction by treating the input features as players and splitting the prediction among them with Shapley values.
+
+> **Definition — Shapley value:** A fair way to divide a group's total payoff among its members by averaging each member's added contribution over every possible order in which the group could have formed. The SHAP method uses it to show which features drove a model's prediction.
+
 ## Reinforcement learning leaves the arcade
 
 Since the mid-2010s, RL has moved into real systems wherever decisions are sequential, outcomes can be measured, and a simulator or safe testing ground exists.
@@ -609,7 +838,7 @@ Since the mid-2010s, RL has moved into real systems wherever decisions are seque
 | Robot walking | Physics simulation with randomized conditions | Joint motor commands | Moving forward without falling |
 | Chatbots | Conversations, math problems, code repositories | Choosing the next tokens | Human preference, correct answers, passing tests |
 
-*Table 48.6: The same agent-environment-reward loop applied far from games.*
+*Table 48.9: The same agent-environment-reward loop applied far from games.*
 
 **Cooling.** In 2016 DeepMind reported that a learning system cut the energy Google's data centers used for cooling by up to 40% in tests (a company figure); Chapter 40 explains why cooling matters so much.
 
@@ -658,7 +887,7 @@ The second is reinforcement learning: learn from rewards. An agent acts, the wor
 Games were the perfect lab. TD-Gammon, Deep Blue, DQN, AlphaGo, AlphaZero, MuZero, OpenAI Five, AlphaStar, Pluribus and CICERO each added an ingredient, and self-play let programs surpass every human teacher. Then RL left the arcade: cooling data centers, steering fusion plasma, racing drones, teaching robots to walk, and shaping your chatbot. When your chatbot "thinks" before answering, it is using ideas born in game-playing AI: a policy, a reward, and a search for the best path.
 
 ## Key terms
-Sequential decision-making, Planning, State, Action, State space, Search (AI sense), Breadth-first search (BFS), Depth-first search (DFS), Heuristic, A* search, Manhattan distance, Admissible heuristic, Game tree, Branching factor, Zero-sum game, Minimax, Alpha-beta pruning, Evaluation function, Playout (rollout), Monte Carlo tree search (MCTS), UCB (upper confidence bound), Reinforcement learning (RL), Agent, Environment, Reward, Episode, Return, Discount factor (gamma), Policy, Value function, Q-value (action value), Bellman equation, Exploration versus exploitation, Multi-armed bandit, Epsilon-greedy, Credit assignment problem, Sparse reward, Reward shaping, Temporal-difference (TD) learning, Q-learning, Learning rate (alpha), Deep Q-Network (DQN), Experience replay, Target network, Policy gradient method, Advantage, Actor-critic method, PPO (proximal policy optimization), Model-free RL, Model-based RL, Reward hacking (specification gaming), Imperfect-information game, Nash equilibrium, Counterfactual regret minimization (CFR), Self-play, Elo rating, RLHF (reinforcement learning from human feedback), RL environment (for language models), Test-time search
+Sequential decision-making, Planning, Rational agent, Fully and partially observable, Deterministic and stochastic, Episodic and sequential, Simple reflex agent, Model-based agent, Goal-based agent, Utility-based agent, Utility, Maximum expected utility principle, Value of information, Risk aversion, State, Action, State space, Search (AI sense), Breadth-first search (BFS), Depth-first search (DFS), Uniform-cost search (Dijkstra's algorithm), Iterative deepening, Heuristic, A* search, Manhattan distance, Admissible heuristic, Greedy best-first search, Local search, Hill climbing, Local maximum, Simulated annealing, Beam search, Constraint satisfaction problem (CSP), Constraint propagation, Backtracking search, Classical planning, Precondition and effect, PDDL (Planning Domain Definition Language), Hierarchical planning (HTN), Game tree, Branching factor, Zero-sum game, Minimax, Alpha-beta pruning, Evaluation function, Chance node (expectiminimax), Playout (rollout), Monte Carlo tree search (MCTS), UCB (upper confidence bound), Reinforcement learning (RL), Agent, Environment, Reward, Episode, Return, Discount factor (gamma), Policy, Value function, Q-value (action value), Bellman equation, Markov decision process (MDP), Markov property, Value iteration, POMDP (partially observable Markov decision process), Belief state, Exploration versus exploitation, Multi-armed bandit, Epsilon-greedy, Credit assignment problem, Sparse reward, Reward shaping, Temporal-difference (TD) learning, Q-learning, Learning rate (alpha), Deep Q-Network (DQN), Experience replay, Target network, Policy gradient method, Advantage, Actor-critic method, PPO (proximal policy optimization), Model-free RL, Model-based RL, Reward hacking (specification gaming), Imitation learning, Inverse reinforcement learning, Imperfect-information game, Nash equilibrium, Counterfactual regret minimization (CFR), Self-play, Elo rating, Game theory, Prisoner's dilemma, Dominant strategy, Mixed strategy, Mechanism design, Shapley value, RLHF (reinforcement learning from human feedback), RL environment (for language models), Test-time search
 
 ## Exercises
 
@@ -677,7 +906,7 @@ Sequential decision-making, Planning, State, Action, State space, Search (AI sen
    5. Play again exploring only when you roll a 6 on the die instead of two heads, and compare.
    **What you'll learn:** Why a little exploration is needed to find the best option, and what it costs.
 
-3. **[Medium] Q-learning in a spreadsheet.** Reproduce Table 48.3 and watch value flow backward.
+3. **[Medium] Q-learning in a spreadsheet.** Reproduce Table 48.5 and watch value flow backward.
    1. Put α = 0.5 in cell B1 and γ = 0.9 in cell B2.
    2. In row 5, write headers: Episode, Q(A), Q(B), Q(C). In row 6, put 0, 0, 0, 0.
    3. In row 7: A7 = A6+1. Use these formulas: D7 = D6 + $B$1*(10 - D6). C7 = C6 + $B$1*($B$2*D6 - C6). B7 = B6 + $B$1*($B$2*C6 - B6).

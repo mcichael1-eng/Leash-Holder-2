@@ -603,7 +603,9 @@ Storage before: 8 × 16 bits = 128 bits. After: 8 × 4 bits plus one 16-bit scal
 
 > **Definition — Distillation:** Training a smaller "student" model to imitate a larger "teacher" model's outputs, so the student gets much of the teacher's quality at a fraction of the size and cost.
 
-**4. Efficient design and compiling.** Architectures built for devices, plus compilers that convert a model into the exact instructions a particular NPU runs fastest.
+**4. Efficient design and compiling.** Architectures built for devices, plus compilers that convert a model into the exact instructions a particular NPU runs fastest. In practice a developer exports the trained model to an on-device runtime: Core ML on Apple devices, Google's LiteRT (formerly TensorFlow Lite) on Android and microcontrollers, ExecuTorch for PyTorch models, or ONNX Runtime, which reads the vendor-neutral ONNX model format and runs on many kinds of hardware, including inside a web browser. The runtime, guided by the developer's settings, decides which parts of the model run on the CPU, the GPU or the NPU.
+
+> **Definition — On-device runtime:** The software library inside an app that loads a compressed model and runs it on the device's own chips (CPU, GPU or NPU), such as Core ML, LiteRT or ONNX Runtime.
 
 ```mermaid
 flowchart LR
@@ -734,7 +736,7 @@ Some AI runs on your own device instead of in a data center: face unlock, wake w
 
 ## Key terms
 
-Use case, Decision support, Automation, Fraud detection, Anti-money laundering (AML), Know your customer (KYC), Credit scoring, Algorithmic trading, Explainability, E-discovery, Technology-assisted review (TAR), Intelligent tutoring system, Effect size, AI-text detector, Containment rate, Agent assist, Outcome-based pricing, First-party data, Creative testing, Generative engine optimization (GEO), Machine vision inspection, Predictive maintenance, Digital twin, Operations research, Vehicle routing problem, Operational technology (OT), Precision agriculture, NDVI (Normalized Difference Vegetation Index), Lethal autonomous weapon system (LAWS), Human in the loop, Terminal guidance, Automation bias, Meaningful human control, Dual-use, Vulnerability, Exploit, Zero-day, Fuzzing, Phishing, Security operations center (SOC), Automated valuation model (AVM), Bias audit, Edge AI, Internet of Things (IoT), Latency, NPU (Neural Processing Unit), TOPS (Tera Operations Per Second), System on a chip (SoC), Memory bandwidth, Unified memory, Small language model (SLM), Quantization, Pruning, Distillation, Microcontroller, TinyML, Wake word, Federated learning, Secure aggregation, Over-the-air (OTA) update
+Use case, Decision support, Automation, Fraud detection, Anti-money laundering (AML), Know your customer (KYC), Credit scoring, Algorithmic trading, Explainability, E-discovery, Technology-assisted review (TAR), Intelligent tutoring system, Effect size, AI-text detector, Containment rate, Agent assist, Outcome-based pricing, First-party data, Creative testing, Generative engine optimization (GEO), Machine vision inspection, Predictive maintenance, Digital twin, Operations research, Vehicle routing problem, Operational technology (OT), Precision agriculture, NDVI (Normalized Difference Vegetation Index), Lethal autonomous weapon system (LAWS), Human in the loop, Terminal guidance, Automation bias, Meaningful human control, Dual-use, Vulnerability, Exploit, Zero-day, Fuzzing, Phishing, Security operations center (SOC), Automated valuation model (AVM), Bias audit, Edge AI, Internet of Things (IoT), Latency, NPU (Neural Processing Unit), TOPS (Tera Operations Per Second), System on a chip (SoC), Memory bandwidth, Unified memory, Small language model (SLM), Quantization, Pruning, Distillation, On-device runtime, Microcontroller, TinyML, Wake word, Federated learning, Secure aggregation, Over-the-air (OTA) update
 
 ## Exercises
 

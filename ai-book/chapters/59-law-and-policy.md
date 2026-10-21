@@ -35,7 +35,7 @@ None of these came from one "AI law." They came from legislatures, agencies, pre
 
 ## Why governing AI is hard
 
-Governments regulate cars, medicines and banks. Why is AI harder? Four reasons come up again and again.
+Governments regulate cars, medicines and banks. Why is AI harder? Five reasons come up again and again.
 
 **It moves faster than lawmaking.** A major law can take two to four years from proposal to application. In that time, AI went from chatbots that fumbled arithmetic to agents that work on tasks for hours (Chapter 28). Rules written for one generation of technology can miss the next.
 
@@ -54,6 +54,33 @@ A related idea is older. In 1980 the scholar David Collingridge pointed out that
 > **Definition — Jurisdiction:** The territory or subject area over which a government or court has legal authority. An AI company operating globally falls under many jurisdictions at the same time.
 
 **Experts disagree about the risks.** Some researchers think the biggest dangers are today's bias and fraud. Others worry most about future systems escaping human control. Others think both worries are overblown (Chapter 60 lays out these debates). A law requires a judgment about which risks matter most, and there is no consensus to lean on.
+
+**Nobody can slow down alone.** Many people at AI companies, and in governments, say privately that a slower, more careful pace would be safer for everyone. Yet each fears that if it slows down and its rivals do not, it will lose customers, talent, investment or military advantage, and the less careful rival will set the pace anyway. This is a collective action problem, and a branch of mathematics called game theory explains why it is so stubborn.
+
+> **Definition — Collective action problem:** A situation in which everyone in a group would be better off if all cooperated, but each member is individually tempted not to, so the group ends up worse off. Overfishing and climate change are classic examples.
+
+> **Definition — Game theory:** The study of how people, companies or countries make choices when each one's best move depends on what the others do.
+
+**Worked example: the racing game.** Two labs each choose to be Careful (test thoroughly, delay launches when in doubt) or Fast. The table gives each lab's payoff on an illustrative scale of 0 to 10, Lab A's score first.
+
+| | Lab B careful | Lab B fast |
+|---|---|---|
+| **Lab A careful** | A 7, B 7: both safer, market shared | A 1, B 9: A loses the market |
+| **Lab A fast** | A 9, B 1: B loses the market | A 3, B 3: a race with higher accident risk for all |
+
+Think like Lab A. If B is careful, going fast earns 9 instead of 7. If B is fast, going fast earns 3 instead of 1. Whatever B does, fast pays more, and B reasons the same way. So both go fast and each scores 3, although both would prefer the 7 they would get by both being careful. Game theorists call this structure a prisoner's dilemma, and the outcome where both go fast is its Nash equilibrium (Chapter 48): neither lab can do better by changing only its own choice.
+
+> **Definition — Prisoner's dilemma:** A two-player game in which each player does better by not cooperating whatever the other does, so both end up not cooperating, even though both would be better off if both cooperated.
+
+> **Definition — Nash equilibrium:** A combination of choices in which no player can do better by changing only their own choice. In a prisoner's dilemma, the equilibrium is the outcome everyone dislikes.
+
+> **Definition — Race to the bottom:** Competition in which rivals keep lowering standards, such as safety testing or worker protections, to avoid falling behind one another.
+
+The same table shows the four standard ways out, and they are the tools the rest of this chapter describes. **Change the payoffs:** a law that fines unsafe launches makes "fast" less attractive for everyone at once. **Make promises binding and checkable:** an agreement each side can verify, such as a published safety framework that a statute requires a company to follow. **Repeat the game:** players who deal with each other again and again can reward cooperation and punish defection, which is one reason regular summits and reputations matter. **Add a referee:** regulators and, perhaps one day, international bodies that monitor and enforce. Real life is messier than a two-by-two table (labs talk to each other, safety can be a selling point, and nobody knows the true payoffs), but the table explains why one player's voluntary restraint rarely lasts.
+
+Game theory adds two further worries. First, competition can act like natural selection. Companies and countries that hand more decisions to fast, lightly supervised AI systems may outcompete those that keep humans in the loop, so the systems that spread are the most competitive ones rather than the most controllable, without anyone choosing that outcome. Dan Hendrycks made this argument in a 2023 paper titled "Natural Selection Favors AIs over Humans". Second, a rapid shift in power, such as one country pulling far ahead in AI, can make conflict more likely, because the side falling behind may prefer to act before its position worsens.
+
+> **Definition — Evolutionary pressure (in AI):** The tendency of competition to favor whichever AI systems and organizations are most effective at spreading and winning, whether or not they are the safest, much as natural selection favors whatever reproduces best.
 
 > **Key idea:** Every AI rule answers three questions. What is regulated (chips, data, models, uses or outputs)? Who must comply (developers, businesses that deploy AI, platforms, users)? How binding is it (a criminal law, a fine, a voluntary pledge)? Ask those three questions and any AI policy becomes readable.
 
@@ -244,6 +271,12 @@ The Act is built like EU product-safety law, the same family of rules that gover
 
 > **Definition — Extraterritorial reach:** When a law applies to companies outside the country or bloc that passed it, because they sell to or affect people inside it. The EU AI Act and EU privacy law both reach non-EU companies this way.
 
+What counts as an "AI system" in the first place? The Act's definition, in Article 3, is deliberately broad: a machine-based system that operates with some degree of autonomy, may adapt after deployment, and infers from its inputs how to produce outputs such as predictions, content, recommendations or decisions that can affect the physical or digital world. The key word is "infers". A model that learned its behavior from data is covered; a simple program that only follows rules a person wrote out by hand generally is not.
+
+> **Definition — AI system (EU AI Act):** In the Act's Article 3, a machine-based system that operates with some autonomy, may adapt after deployment, and infers from its inputs how to generate outputs such as predictions, content, recommendations or decisions that can influence physical or virtual environments.
+
+The Act also leaves deliberate gaps. It does not apply to AI used exclusively for military, defense or national-security purposes, to AI developed and used solely for scientific research, or to people using AI for purely personal, non-professional purposes. Free and open-source releases get lighter treatment, but not when they are used for a banned or high-risk purpose or fall under the transparency duties, and the most capable open general-purpose models still owe the systemic-risk duties described below.
+
 ### The four risk tiers
 
 Figure 59.3 shows the tiers with their dates after the 2026 amendments.
@@ -368,12 +401,27 @@ Enforcement is split. Each member state names national market surveillance autho
 
 > **Definition — Market surveillance authority:** A national regulator that checks whether products on its country's market comply with the law, and can order changes, withdrawals or fines.
 
+Three further bodies sit around them. The European Artificial Intelligence Board brings together one representative from each member state to coordinate how national authorities apply the Act. A scientific panel of independent experts advises the AI Office and can send it a formal alert when it believes a general-purpose model poses systemic risk. An advisory forum gives businesses, civil society and academics a channel for input. And a public EU database lists registered high-risk systems, so anyone can see what has been declared.
+
+> **Definition — European Artificial Intelligence Board:** The AI Act's coordinating body made up of one representative from each EU member state, which advises the Commission and helps national authorities apply the Act consistently.
+
+> **Definition — Scientific panel (EU AI Act):** A group of independent experts set up under the AI Act to advise the AI Office, which can alert it when a general-purpose model may pose systemic risk.
+
 Fines are tied to global turnover, so they bite large companies:
 
 - Prohibited practices: up to €35 million or 7% of worldwide annual turnover, whichever is higher.
 - Most other violations: up to €15 million or 3%.
-- Supplying incorrect information to authorities: lower amounts again.
+- Supplying incorrect, incomplete or misleading information to authorities: up to €7.5 million or 1%.
+- Providers of general-purpose AI models: up to €15 million or 3%, imposed by the Commission itself, with these fines applicable from August 2, 2026.
 - For small and medium-sized firms, the lower of the two figures applies instead of the higher.
+
+The Act gives individuals something too. Anyone who believes the Act has been broken can complain to a market surveillance authority. A person affected by a significant decision based on the output of an Annex III high-risk system, such as a rejected loan or job application, has a right to a clear explanation of the AI system's role in that decision. People who report breaches from inside a company are covered by EU whistleblower protections.
+
+> **Definition — Right to explanation (EU AI Act):** The right of a person affected by a significant decision based on a high-risk AI system's output to get a clear and meaningful explanation of the AI's role in the decision and its main elements.
+
+To keep the rules from smothering small firms, the Act also requires each member state to set up at least one AI regulatory sandbox and allows supervised testing of high-risk systems in real-world conditions, with priority access at little or no cost for small and medium-sized companies.
+
+> **Definition — AI regulatory sandbox (EU):** A supervised program under the AI Act in which companies develop and test new AI systems with guidance from a national regulator before they go on the market.
 
 > **Definition — Global turnover:** A company's total worldwide annual revenue. EU laws express maximum fines as a percentage of it so that penalties scale with company size.
 
@@ -769,6 +817,14 @@ At the **United Nations**, the General Assembly reportedly established an Indepe
 
 > **Key idea:** International AI governance in 2026 is mostly soft law: declarations, scientific reports and voluntary company commitments. The binding rules are national or regional, and major countries openly disagree about whether global governance of AI is even desirable.
 
+What would stronger cooperation look like? Researchers and diplomats keep returning to three models borrowed from other technologies. An inspection agency like the International Atomic Energy Agency (IAEA), which checks that nuclear material is not diverted to weapons, could check large training runs or data centers. A shared laboratory like CERN, the particle-physics lab funded by many countries, could pool the cost of frontier or safety research. And a scientific body like the Intergovernmental Panel on Climate Change could build a shared picture of the evidence; the International AI Safety Report and the UN's scientific panel are steps in that direction.
+
+Any binding deal runs into the racing game from earlier in this chapter: how would each side know the other is keeping its word? That is the problem of verification, and it is why compute keeps coming up. Unlike algorithms or data, frontier compute is hard to hide (a large training cluster draws tens to hundreds of megawatts), countable (chips are numbered physical objects) and made by a handful of companies, so it can be tracked, licensed or withheld. Proposals range from registries of large chip clusters, to cloud providers checking who rents enough compute for a frontier training run, to features built into chips that could show where a chip is located. None of these operates as an international system; export controls, next, are the main form of compute governance practiced today.
+
+> **Definition — Verification (in international agreements):** The methods that let each party to an agreement check that the others are complying, such as inspections, satellite imagery or reporting duties. Without it, promises between rivals are hard to trust.
+
+> **Definition — Compute governance:** Using control over computing hardware, the chips, data centers and cloud access needed to train and run advanced AI, as a lever to monitor, license or restrict AI development.
+
 ## Export controls: governing AI through chips
 
 The most powerful AI policy tool the US has used is not an AI law at all. It is control over chips. Frontier training needs tens of thousands of advanced accelerators (Chapter 35 and Chapter 37), and nearly all of them depend on US designs and software, Dutch lithography machines and Taiwanese factories (Chapter 36). Limiting who can buy them limits who can build frontier models.
@@ -904,7 +960,7 @@ The UK relies on existing regulators and a strong testing institute. China issue
 When you read an AI policy headline, ask: is it a bill or a law, is it in effect, who must comply, and who enforces it?
 
 ## Key terms
-AI governance, AI policy, Pacing problem, Collingridge dilemma, Dual-use, Jurisdiction, Statute, Bill, Regulation (agency rule), Executive order, Court ruling, Precedent, Standard (technical), Voluntary commitment, Hard law, Soft law, Preemption, Federalism, Moratorium, EU directive, Enforcement, Attorney general (AG), Private right of action, Liability, Provider (developer), Deployer, FLOP (floating-point operation), Compute threshold, Frontier model, EU AI Act, Risk-based approach, Extraterritorial reach, Risk tiers (EU), Prohibited practice (EU), High-risk AI system (EU), Annex III, Conformity assessment, CE marking, Fundamental rights impact assessment (FRIA), Harmonised standard, Transparency obligation (Article 50), General-purpose AI model (GPAI), Systemic risk (EU GPAI), Text and data mining (TDM) exception, Code of practice (GPAI), AI Office, Market surveillance authority, Global turnover, Digital Omnibus (on AI), AI literacy, Brussels effect, GDPR (General Data Protection Regulation), FTC (Federal Trade Commission), TAKE IT DOWN Act, NIST (National Institute of Standards and Technology), CAISI (Center for AI Standards and Innovation), Regulatory sandbox, Age assurance, Intervention (in a lawsuit), Duty of care, Statement of interest, Frontier AI framework, Transparency report, Critical safety incident, Whistleblower protection, Companion chatbot, Algorithmic discrimination, ADMT (automated decision-making technology), Consequential decision, AI Security Institute (UK AISI), Pre-deployment testing, CAC (Cyberspace Administration of China), Algorithm filing (registry), Deep synthesis, Treaty (convention), Declaration (international), International AI Safety Report, Export controls, AI Diffusion rule, NIST AI RMF (AI Risk Management Framework), ISO/IEC 42001, Management system, C2PA (Coalition for Content Provenance and Authenticity), Fair use, Injunction
+AI governance, AI policy, Pacing problem, Collingridge dilemma, Dual-use, Jurisdiction, Collective action problem, Game theory, Prisoner's dilemma, Nash equilibrium, Race to the bottom, Evolutionary pressure (in AI), Statute, Bill, Regulation (agency rule), Executive order, Court ruling, Precedent, Standard (technical), Voluntary commitment, Hard law, Soft law, Preemption, Federalism, Moratorium, EU directive, Enforcement, Attorney general (AG), Private right of action, Liability, Provider (developer), Deployer, FLOP (floating-point operation), Compute threshold, Frontier model, EU AI Act, Risk-based approach, Extraterritorial reach, AI system (EU AI Act), Risk tiers (EU), Prohibited practice (EU), High-risk AI system (EU), Annex III, Conformity assessment, CE marking, Fundamental rights impact assessment (FRIA), Harmonised standard, Transparency obligation (Article 50), General-purpose AI model (GPAI), Systemic risk (EU GPAI), Text and data mining (TDM) exception, Code of practice (GPAI), AI Office, Market surveillance authority, European Artificial Intelligence Board, Scientific panel (EU AI Act), Global turnover, Right to explanation (EU AI Act), AI regulatory sandbox (EU), Digital Omnibus (on AI), AI literacy, Brussels effect, GDPR (General Data Protection Regulation), FTC (Federal Trade Commission), TAKE IT DOWN Act, NIST (National Institute of Standards and Technology), CAISI (Center for AI Standards and Innovation), Regulatory sandbox, Age assurance, Intervention (in a lawsuit), Duty of care, Statement of interest, Frontier AI framework, Transparency report, Critical safety incident, Whistleblower protection, Companion chatbot, Algorithmic discrimination, ADMT (automated decision-making technology), Consequential decision, AI Security Institute (UK AISI), Pre-deployment testing, CAC (Cyberspace Administration of China), Algorithm filing (registry), Deep synthesis, Treaty (convention), Declaration (international), International AI Safety Report, Verification (in international agreements), Compute governance, Export controls, AI Diffusion rule, NIST AI RMF (AI Risk Management Framework), ISO/IEC 42001, Management system, C2PA (Coalition for Content Provenance and Authenticity), Fair use, Injunction
 
 ## Exercises
 

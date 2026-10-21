@@ -177,6 +177,12 @@ The tokenizer handled a word it had never seen by falling back to smaller pieces
 
 Why not an even bigger vocabulary? Each extra token needs its own learned numbers, and very rare tokens are seen too few times to learn well. Designers pick a balance.
 
+BPE is the most common recipe, but you will meet two others in courses and model documentation. Google's BERT (2018) used WordPiece, which also merges pairs but picks the merge that most improves how well the vocabulary explains the training text, rather than simply the most frequent pair, and marks pieces that continue a word with "##", so "tokenization" might become "token" and "##ization". Unigram works in the opposite direction: it starts with a huge list of candidate pieces and repeatedly deletes the pieces whose removal hurts the fit least, until the vocabulary reaches its target size. Google's SentencePiece toolkit builds both Unigram and BPE vocabularies and treats the space as an ordinary symbol, which suits languages such as Japanese that do not separate words with spaces; T5 and Meta's first Llama models were tokenized with it. Whatever the recipe, most tokenizers first normalize the text (for example, making different encodings of the same accented letter identical) and pre-split it at spaces and punctuation, so merges never cross word boundaries.
+
+> **Definition — WordPiece:** A tokenizer-building method, used by BERT, that merges pieces as BPE does but chooses each merge by how much it improves the fit to the training text, and marks pieces that continue a word, as in "##ization".
+
+> **Definition — Unigram tokenizer (SentencePiece):** A tokenizer-building method that starts from a large set of candidate pieces and prunes the least useful ones until the vocabulary reaches its target size. It is usually built with Google's SentencePiece toolkit, which can also build BPE vocabularies.
+
 ### What tokens explain about your chatbot
 
 Once you know that a model sees token IDs and not letters, many puzzling behaviors make sense.
@@ -698,7 +704,7 @@ Finally, models produce plausible text, not looked-up facts. Rare facts, guess-r
 
 ## Key terms
 
-Large language model (LLM), Model (AI model), Chatbot app, API (Application Programming Interface), Inference, Next-token prediction, Autoregressive generation, Stop token (end-of-turn token), Base model, Token, Tokenizer, Vocabulary, Token ID, BPE (Byte-Pair Encoding), Logit, Softmax, Temperature, Greedy decoding, Sampling, Top-k sampling, Top-p sampling (nucleus sampling), Min-p sampling, Floating-point number, Context window, Stateless, Max output tokens (output limit), Prompt caching, Lost in the middle, Chat template, Special token, Role, System prompt, Instruction hierarchy, Prompt injection, Jailbreak, Parameter (weight), BF16 (bfloat16), Quantization, FLOP (floating-point operation), Dense model, Mixture of experts (MoE), Total parameters, Active parameters, Embedding, Transformer, Attention, MLP (feed-forward) layer, Residual stream, Unembedding, KV cache, Parametric knowledge, In-context learning, Knowledge cutoff, Hallucination, Calibration, Abstention, Grounding, RAG (Retrieval-Augmented Generation), Sycophancy, Over-refusal.
+Large language model (LLM), Model (AI model), Chatbot app, API (Application Programming Interface), Inference, Next-token prediction, Autoregressive generation, Stop token (end-of-turn token), Base model, Token, Tokenizer, Vocabulary, Token ID, BPE (Byte-Pair Encoding), WordPiece, Unigram tokenizer (SentencePiece), Logit, Softmax, Temperature, Greedy decoding, Sampling, Top-k sampling, Top-p sampling (nucleus sampling), Min-p sampling, Floating-point number, Context window, Stateless, Max output tokens (output limit), Prompt caching, Lost in the middle, Chat template, Special token, Role, System prompt, Instruction hierarchy, Prompt injection, Jailbreak, Parameter (weight), BF16 (bfloat16), Quantization, FLOP (floating-point operation), Dense model, Mixture of experts (MoE), Total parameters, Active parameters, Embedding, Transformer, Attention, MLP (feed-forward) layer, Residual stream, Unembedding, KV cache, Parametric knowledge, In-context learning, Knowledge cutoff, Hallucination, Calibration, Abstention, Grounding, RAG (Retrieval-Augmented Generation), Sycophancy, Over-refusal.
 
 ## Exercises
 

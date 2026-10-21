@@ -375,6 +375,10 @@ Any technique that reduces overfitting is called **regularization**. Four are st
 
 > **Definition — Early stopping:** Ending training at the point where performance on validation data stops improving, before the model starts to memorize its training set.
 
+Two more regularizers turn up in many recipes. **Label smoothing** stops a classifier from becoming absurdly sure of itself by softening the answer key. Instead of training toward 100% on the correct class and 0% on every other, with 10 classes and a smoothing of 0.1 the target becomes 91% on the correct class and 1% on each of the other nine (0.91 + 9 × 0.01 = 1). **Multi-task learning**, training one network on several related jobs at once, also regularizes, because features that must serve every job cannot overfit to any single one; the ranking models behind social feeds are the classic case (Chapter 51).
+
+> **Definition — Label smoothing:** Training a classifier toward slightly softened targets (for example 91% on the right answer and a little on every other answer) instead of 100%, which discourages overconfidence and often improves generalization.
+
 ### Double descent and other surprises
 
 Classical statistics says that as a model grows more flexible, its test error first falls (it can capture the pattern) and then rises (it starts fitting noise): a U-shaped curve. Deep learning broke this picture. Around 2019, researchers (Mikhail Belkin and colleagues, then Preetum Nakkiran and colleagues at Harvard and OpenAI) documented **double descent**: as models grow, test error falls, rises to a peak at the size where the model can only just fit the training data exactly, and then *falls again* as the model grows even bigger. Very large models can fit their training data perfectly and still generalize well.
@@ -828,6 +832,23 @@ epoch 30  train loss 0.010  test loss 0.112  test accuracy 97.2%
 
 Read it like a practitioner. Test accuracy climbs quickly and settles around 97%: the network correctly reads about 350 of the 360 test digits it has never seen. Training loss keeps falling towards zero, while test loss flattens out around 0.11. That gap between the two curves is the generalization gap from earlier in the chapter: the network has nearly memorized its training set, and further training no longer helps on new digits. Because the learning rate decays to zero, training settles calmly at the end instead of wandering. Exercise 7 suggests experiments that break each part on purpose.
 
+### When a network will not learn: a debugging checklist
+
+Training runs fail quietly far more often than they crash. The loss still goes down a little, the code still runs, and the model is simply worse than it should be. Practitioners work through a standard checklist, much of it popularized by Andrej Karpathy's "A Recipe for Training Neural Networks" (see Going deeper):
+
+1. **Look at the data.** Print some examples with their labels. Mislabeled, duplicated or wrongly scaled data causes more failures than any choice of model.
+2. **Score a dumb baseline first** (Chapter 9), so you know what "better" means.
+3. **Check the starting loss.** An untrained classifier should be equally unsure of every class, so with 10 classes its cross-entropy should start near ln 10 = 2.30. The script's first-epoch average of 2.254 sits just below that, as it should. A starting loss of 15 means something is broken before learning has even begun.
+4. **Overfit one tiny batch.** Train on 10 examples only. A correct network should drive their loss close to zero within a few hundred steps. If it cannot, you have a bug, not a shortage of data.
+5. **Find the learning rate.** Try values ten times apart (0.1, 0.01, 0.001) for short runs and keep the largest one that falls fast without blowing up.
+6. **Read the two curves** (Figure 13.5). Both high: underfitting, so use a bigger model or train longer. Training low but validation high: overfitting, so get more data, augment or regularize. More data is worth collecting when the validation score is still improving as the training set grows.
+7. **Study the mistakes.** Sort the validation errors and read 50 of them. One fixable cause, such as blurry photos or a confusing label, often sits behind many errors.
+8. **Change one thing at a time** and keep notes. Removing one component to see what it was worth is called an ablation (Chapter 19).
+
+> **Definition — Learning curve:** A plot of a model's validation score against the amount of training data (or training time). If it is still climbing at the right-hand edge, more data or more training is likely to help.
+
+> **Definition — Error analysis:** Reading through a sample of a model's mistakes and sorting them by cause, to find which fix would remove the most errors.
+
 ## The 2026 recipe at a glance
 
 Put the chapter together and you can read the "recipe card" of a modern model. Here is how the typical ingredients changed between a classic 2015 image network and a 2026 open-weight frontier language model.
@@ -883,7 +904,7 @@ Finally, frameworks such as PyTorch do the calculus for you, so a complete, mode
 
 ## Key terms
 
-Optimizer, loss landscape, saddle point, momentum, Adam, optimizer state, weight decay, AdamW, Lion, Shampoo and SOAP, Muon, orthogonalization, Newton–Schulz iteration, NaN (Not a Number), learning-rate schedule, warmup, cosine decay, WSD (warmup–stable–decay), loss spike, checkpoint, symmetry breaking, initialization, Xavier (Glorot) initialization, He initialization, generalization, overfitting, underfitting, regularization, dropout, data augmentation, early stopping, double descent, grokking, normalization layer, batch normalization, layer normalization, RMSNorm, pre-norm and post-norm, DyT (Dynamic Tanh), vanishing gradient, exploding gradient, gradient norm, gradient clipping, residual connection (skip connection), ResNet, residual stream, hyper-connections and mHC, universal approximation theorem, inductive bias, the Bitter Lesson, scaling laws, floating-point format, BF16, mixed precision, quantization, framework, PyTorch, JAX, TensorFlow and Keras, CUDA, Triton and kernels, Hugging Face.
+Optimizer, loss landscape, saddle point, momentum, Adam, optimizer state, weight decay, AdamW, Lion, Shampoo and SOAP, Muon, orthogonalization, Newton–Schulz iteration, NaN (Not a Number), learning-rate schedule, warmup, cosine decay, WSD (warmup–stable–decay), loss spike, checkpoint, symmetry breaking, initialization, Xavier (Glorot) initialization, He initialization, generalization, overfitting, underfitting, regularization, dropout, data augmentation, early stopping, label smoothing, double descent, grokking, normalization layer, batch normalization, layer normalization, RMSNorm, pre-norm and post-norm, DyT (Dynamic Tanh), vanishing gradient, exploding gradient, gradient norm, gradient clipping, residual connection (skip connection), ResNet, residual stream, hyper-connections and mHC, universal approximation theorem, inductive bias, the Bitter Lesson, scaling laws, floating-point format, BF16, mixed precision, quantization, framework, PyTorch, JAX, TensorFlow and Keras, CUDA, Triton and kernels, Hugging Face, learning curve, error analysis.
 
 ## Exercises
 

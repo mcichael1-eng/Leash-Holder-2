@@ -58,6 +58,25 @@ Real incidents often mix the families. A voice-cloning scam is misuse, but it is
 | Misuse | A person using the system | Scam emails | Help with cyberattacks or weapons | Chapter 58 |
 | Structural | No one in particular | Students skipping all their own writing practice | Job disruption, concentration of power | Chapter 60 |
 
+You will meet other maps of the same territory. An influential 2023 overview by Dan Hendrycks, Mantas Mazeika and Thomas Woodside of the Center for AI Safety, later expanded into Hendrycks's textbook *Introduction to AI Safety, Ethics, and Society* (2024), sorts the most serious risks by where they come from, into four sources instead of three families.
+
+> **Definition — AI race:** Competition between AI companies, or between countries, that pressures each of them to build and deploy more capable AI faster, often at the expense of safety. Chapter 60 calls the same pressure racing dynamics.
+
+> **Definition — Organizational risk:** Risk that comes from how the organizations building AI are run, such as a weak safety culture, rushed launches, poor security or ignored warnings, rather than from the technology alone.
+
+> **Definition — Rogue AI:** An AI system that pursues goals against the wishes of its developers or users, for example by gaming its objective, deceiving its overseers or seeking power.
+
+> **Definition — Goal drift:** A gradual change in what an AI system pursues as it learns and adapts, the way a person who first wants money only as a means to other things can come to want money for its own sake.
+
+| Source of risk (Hendrycks and colleagues) | What it means | Closest family above | Where this book covers it |
+|---|---|---|---|
+| Malicious use | A person aims AI at harm: bioweapons, mass propaganda, grabs for power | Misuse | Chapter 58 |
+| AI race | Competition pushes companies and countries to move fast, cut corners and hand ever more decisions, including military ones, to machines | Structural | Chapters 59 and 60 |
+| Organizational risks | How labs are run: rushed testing, leaked weights, warnings ignored, safety teams overruled | Accidents with structural causes | Chapter 56 |
+| Rogue AIs | Systems pursue goals their makers did not intend, through proxy gaming, goal drift, power-seeking or deception | Accidents | This chapter, Chapters 56 and 57 |
+
+The four-way map adds two ideas the three-way split can hide. First, many accidents are really organizational failures: the model misbehaved, but a compressed test schedule or an ignored warning is what let it ship. Chapter 56 shows what aviation and other safety-critical industries learned about this. Second, competition is a risk factor in its own right, because it changes how carefully everyone else behaves; Chapter 59 explains why races are so hard to stop, using a little game theory.
+
 This chapter is about accidents, and especially about their deepest source, which researchers call the alignment problem.
 
 > **Definition — Alignment:** Making an AI system reliably pursue the goals and values its developers and users actually intend, including being honest and avoiding harm.
@@ -658,7 +677,7 @@ Finally, there is a long-standing argument that almost any goal gives a capable 
 
 ## Key terms
 
-AI safety, Accident (in AI safety), Misuse, Structural harm, Alignment, Misalignment, Base rate, Pretraining, Fine-tuning, Reinforcement learning (RL), Reward model, Distribution shift, Hallucination, Reliability, Agent, Jagged frontier, Sycophancy, Objective (reward function), Proxy, Goodhart's law, Specification gaming, Reward hacking, Outer alignment, Inner alignment, Mesa-optimizer, Goal misgeneralization, Capability generalization, Situational awareness, Evaluation awareness, Sandbagging, Deceptive alignment, Backdoor, Sleeper agent (AI), Alignment faking, Scheming, Covert action, Stress test (AI), Instrumental convergence, Power-seeking, Shutdown resistance, Corrigibility, Emergent misalignment, Persona, Inoculation prompting, System card, Chain of thought (CoT), CoT monitoring
+AI safety, Accident (in AI safety), Misuse, Structural harm, AI race, Organizational risk, Rogue AI, Goal drift, Alignment, Misalignment, Base rate, Pretraining, Fine-tuning, Reinforcement learning (RL), Reward model, Distribution shift, Hallucination, Reliability, Agent, Jagged frontier, Sycophancy, Objective (reward function), Proxy, Goodhart's law, Specification gaming, Reward hacking, Outer alignment, Inner alignment, Mesa-optimizer, Goal misgeneralization, Capability generalization, Situational awareness, Evaluation awareness, Sandbagging, Deceptive alignment, Backdoor, Sleeper agent (AI), Alignment faking, Scheming, Covert action, Stress test (AI), Instrumental convergence, Power-seeking, Shutdown resistance, Corrigibility, Emergent misalignment, Persona, Inoculation prompting, System card, Chain of thought (CoT), CoT monitoring
 
 ## Exercises
 

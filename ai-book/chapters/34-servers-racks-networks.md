@@ -695,6 +695,34 @@ More parts means more breakdowns. If one GPU fails on average once every five ye
 
 > **Analogy:** Running a 100,000-GPU training job is like a 100,000-player online game where the match pauses whenever any one player's console crashes. You save the game often (checkpoints), keep spare consoles ready (hot spares), and build the network so one bad cable does not freeze everyone.
 
+### The software that turns a cluster into one computer
+
+Hardware alone does not make 100,000 GPUs behave like one machine. In 2009, Google engineers Luiz André Barroso and Urs Hölzle wrote a short book whose title states the idea: *The Datacenter as a Computer*. If you treat a whole building as a single computer, it needs the equivalent of an operating system.
+
+> **Definition — Warehouse-scale computer (WSC):** A whole data center, with tens of thousands of servers, designed and programmed as one giant computer that runs a few huge services, rather than as a building full of unrelated machines.
+
+Three layers of software do most of that job.
+
+**A cluster scheduler** decides which job runs on which machines. Google's internal system, Borg, has done this since the mid-2000s; its open-source descendant Kubernetes (2014) runs much of the cloud, and Slurm, born in the supercomputing world, runs many training clusters. A training job is a demanding customer: it needs thousands of healthy GPUs at the same moment, ideally inside the same NVLink domains and network rails, and it must be restarted elsewhere when one of them dies.
+
+> **Definition — Cluster scheduler (resource manager):** Software that tracks every machine in a cluster, decides where each job runs, restarts work when machines fail and shares the cluster among many users. Examples are Google's Borg, Kubernetes and Slurm.
+
+> **Definition — Gang scheduling:** Starting all the pieces of a parallel job at the same time, or not at all. Large training runs need it, because no GPU can make progress until all the others it exchanges data with are running.
+
+**A distributed storage system** holds files too big or too important for one machine. It cuts each file into chunks and spreads them, with copies, across many servers, so reads and writes happen in parallel and a dead disk loses nothing. Google's GFS (described in 2003), its successor Colossus, and cloud object stores such as Amazon S3 work this way. Training data streams out of such systems, and checkpoints stream back in.
+
+> **Definition — Distributed storage (distributed file system, object storage):** A storage system that splits data into chunks kept, with copies, on many machines, so it can hold petabytes, serve thousands of readers at once and survive failed disks.
+
+**Batch-processing frameworks** let engineers run one job over thousands of machines without writing the plumbing themselves. They are how data teams filter and deduplicate web-scale text before pretraining (Chapter 19).
+
+> **Definition — MapReduce (Hadoop, Spark):** A way to process huge datasets by splitting the work into many small independent tasks ("map"), running them on thousands of machines, then combining their results ("reduce"). Google described it in 2004; Hadoop and Spark are widely used open-source systems built on the idea.
+
+Underneath all three sits monitoring: health checks on every GPU, link, fan and power shelf, feeding the scheduler so it can fence off a bad machine before it crashes a job (Chapter 38 follows one failure from alarm to repair).
+
+**Worked example: why checkpoints need parallel storage.** A checkpoint of a 405B model holds the weights plus the optimizer state, roughly 12 to 16 bytes per parameter (Chapter 37), so about 405 billion × 14 bytes ≈ 5.7 TB. To save it in one minute, storage must absorb 5,700 GB ÷ 60 s ≈ 95 GB/s, the combined speed of dozens of fast SSDs or hundreds of hard drives writing at once. Only storage spread over many servers and network links can do that.
+
+> **Key idea:** A warehouse-scale computer is hardware plus software. The scheduler, the storage system and the monitoring are what let a building full of machines run one job, survive constant failures and be shared by many teams.
+
 ## Reading a rack spec sheet like a detective
 
 Everything in this chapter comes together when you read an announcement. Run every number through these questions:
@@ -722,7 +750,7 @@ Along the way, three physical limits keep showing up: power (racks heading from 
 
 ## Key terms
 
-Die, Reticle limit, Chiplet, UCIe (Universal Chiplet Interconnect Express), HBM (High Bandwidth Memory), Interposer, CoWoS (Chip-on-Wafer-on-Substrate), Package substrate, Package, Voltage regulator (VRM), Form factor (SXM, OAM, PCIe card), PCIe (PCI Express), HGX and DGX, NIC (Network Interface Card), DPU (Data Processing Unit) and SuperNIC, Superchip, NVLink-C2C, Compute tray, Cold plate (direct-to-chip liquid cooling), Busbar, Rack, Scale-up vs. scale-out, NVLink, NVSwitch, NVLink domain (scale-up domain), ICI (Inter-Chip Interconnect), UALink (Ultra Accelerator Link), NVLink Fusion, 800 V DC distribution, Back-end vs. front-end network, InfiniBand, Ethernet, RDMA and RoCE, Ultra Ethernet (UEC), Network switch and radix, Topology, Fat tree (Clos or leaf-spine network), Non-blocking network, Bisection bandwidth, Rail-optimized network, Torus, Dragonfly, Collective communication, SerDes (serializer/deserializer), Lane, Optical fiber, Optical transceiver, Co-packaged optics (CPO), Optical circuit switch (OCS), Pod (SuperPOD), Cluster, H100-equivalent (H100e), Campus, AI factory, Scale-across (multi-site training)
+Die, Reticle limit, Chiplet, UCIe (Universal Chiplet Interconnect Express), HBM (High Bandwidth Memory), Interposer, CoWoS (Chip-on-Wafer-on-Substrate), Package substrate, Package, Voltage regulator (VRM), Form factor (SXM, OAM, PCIe card), PCIe (PCI Express), HGX and DGX, NIC (Network Interface Card), DPU (Data Processing Unit) and SuperNIC, Superchip, NVLink-C2C, Compute tray, Cold plate (direct-to-chip liquid cooling), Busbar, Rack, Scale-up vs. scale-out, NVLink, NVSwitch, NVLink domain (scale-up domain), ICI (Inter-Chip Interconnect), UALink (Ultra Accelerator Link), NVLink Fusion, 800 V DC distribution, Back-end vs. front-end network, InfiniBand, Ethernet, RDMA and RoCE, Ultra Ethernet (UEC), Network switch and radix, Topology, Fat tree (Clos or leaf-spine network), Non-blocking network, Bisection bandwidth, Rail-optimized network, Torus, Dragonfly, Collective communication, SerDes (serializer/deserializer), Lane, Optical fiber, Optical transceiver, Co-packaged optics (CPO), Optical circuit switch (OCS), Pod (SuperPOD), Cluster, H100-equivalent (H100e), Campus, AI factory, Scale-across (multi-site training), Warehouse-scale computer (WSC), Cluster scheduler (resource manager), Gang scheduling, Distributed storage (distributed file system, object storage), MapReduce (Hadoop, Spark)
 
 ## Exercises
 

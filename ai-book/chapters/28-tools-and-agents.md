@@ -72,6 +72,8 @@ Here is a tool definition in the format Anthropic's API uses (OpenAI's and Googl
 
 Read it line by line. The name is what the model will write when it wants this tool. The description is a little prompt: it tells the model what the tool does and *when* to reach for it. The input schema says the tool takes one input, `city`, which must be text and is required.
 
+Models are not born knowing how to do this. During post-training they are fine-tuned on many example conversations in which the right reply is a tool call, written in the chat template's special tokens (Chapter 18 and Chapter 20). That is also how builders teach a small open model to call their own tools reliably: fine-tune it on a few hundred to a few thousand examples of correct calls (Chapter 30).
+
 ### The round trip
 
 **Step 1.** Your app sends the model your question plus the list of tool definitions.
@@ -310,6 +312,21 @@ if we got here: stop and report "step limit reached"
 Everything that makes production agents better (planning, memory, permissions, compaction, sub-agents) is built around this loop.
 
 > **Key idea:** An agent is a model calling tools in a loop, deciding its own next step. The model supplies judgment; the loop, the tools and the limits around it are ordinary software that people write.
+
+### Actions written as code
+
+In the trace above, each action is one structured tool call: a tool name plus arguments in JSON (Chapter 26). A popular alternative lets the model write its actions as a short program instead. Given the Lisbon and Oslo question, such an agent might reply with this, all in one step:
+
+```python
+lisbon = get_weather(city="Lisbon")    # first tool call; the result is kept in a variable
+oslo = get_weather(city="Oslo")        # second tool call
+gap = lisbon["temp_c"] - oslo["temp_c"]  # exact arithmetic in code, no calculator tool needed
+print("Lisbon minus Oslo:", round(gap, 1), "degrees")  # this printout is what the model reads next
+```
+
+The application runs the program in a sandbox (defined earlier in this chapter) and sends back whatever it printed. Because code can call several tools, loop over a list, keep results in variables and do exact math in a single step, code agents often finish multi-tool tasks in fewer model calls. A 2024 research paper called CodeAct reported higher success rates on multi-tool tasks this way, and Hugging Face's open-source smolagents library is built around the idea. The price is safety: model-written code can do anything its environment allows, so code agents belong only in a locked-down sandbox with tightly limited permissions and network access.
+
+> **Definition — Code agent (code actions):** An agent whose actions are short programs, usually in Python, that call tools, store results and compute, run in a sandbox, instead of one structured tool call per step.
 
 ## Planning, memory and knowing when to stop
 
@@ -726,7 +743,7 @@ Put that in a loop and you have an agent: the model looks at the goal, picks an 
 MCP is the standard plug that lets any AI app connect to any tool or data source: hosts create clients, clients talk to servers, and servers offer tools, resources and prompts, locally or over the internet with OAuth sign-in. Around it sit A2A for agent-to-agent work, Agent Skills for playbooks loaded only when needed, AGENTS.md files for house rules, and plugins that bundle it all. Computer-use and browser agents can operate any software by looking at screenshots, but every web page they read could contain hidden instructions, so give agents the least access they need and approve anything you cannot undo.
 
 ## Key terms
-Function, Tool, Tool use (function calling), Tool definition, JSON Schema, Tool call, Stop reason, Tool result, Tool choice, Parallel tool calls, Client-side tool, Server-side tool, Code execution (code interpreter), Sandbox, Workflow, Agent, Prompt chaining, Routing, Parallelization, Orchestrator-workers, Evaluator-optimizer, Agent loop, ReAct, Planning (agents), Short-term memory (agents), Long-term memory (agents), Episodic, semantic and procedural memory, Compaction, Stop condition, Human-in-the-loop, Multi-agent system, Subagent, Handoff, Critic agent, Multi-agent debate, Harness (scaffold), Background agent, Time horizon (METR), MCP (Model Context Protocol), MCP host, client and server, MCP tools, resources and prompts, JSON-RPC, Transport (stdio and Streamable HTTP), OAuth, Connector, MCP Apps, Tool poisoning, A2A (Agent2Agent protocol), Agent Card, Agent Skill, Progressive disclosure, AGENTS.md (and CLAUDE.md), Plugin (agent plugin), Agentic AI Foundation (AAIF), Computer use, Browser agent, Indirect prompt injection, Lethal trifecta, Least privilege, Agent SDK, Agent framework
+Function, Tool, Tool use (function calling), Tool definition, JSON Schema, Tool call, Stop reason, Tool result, Tool choice, Parallel tool calls, Client-side tool, Server-side tool, Code execution (code interpreter), Sandbox, Workflow, Agent, Prompt chaining, Routing, Parallelization, Orchestrator-workers, Evaluator-optimizer, Agent loop, ReAct, Code agent (code actions), Planning (agents), Short-term memory (agents), Long-term memory (agents), Episodic, semantic and procedural memory, Compaction, Stop condition, Human-in-the-loop, Multi-agent system, Subagent, Handoff, Critic agent, Multi-agent debate, Harness (scaffold), Background agent, Time horizon (METR), MCP (Model Context Protocol), MCP host, client and server, MCP tools, resources and prompts, JSON-RPC, Transport (stdio and Streamable HTTP), OAuth, Connector, MCP Apps, Tool poisoning, A2A (Agent2Agent protocol), Agent Card, Agent Skill, Progressive disclosure, AGENTS.md (and CLAUDE.md), Plugin (agent plugin), Agentic AI Foundation (AAIF), Computer use, Browser agent, Indirect prompt injection, Lethal trifecta, Least privilege, Agent SDK, Agent framework
 
 ## Exercises
 

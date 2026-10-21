@@ -760,6 +760,38 @@ quadrantChart
 
 > **Watch out:** "Google's and Amazon's chips will make NVIDIA irrelevant soon" overstates it. Custom ASICs are growing fast (TPUs for Anthropic, Trainium, Maia, MTIA), but NVIDIA reported $89.0 billion of data-center revenue in a single quarter (the one ending July 26, 2026) and remained supply-constrained. The market is growing fast enough for several winners.
 
+### The recipe behind the zoo: five rules for domain-specific chips
+
+Every chip in the zoo except the CPU follows the same basic recipe. John Hennessy and David Patterson, the Turing Award winners who wrote the standard computer-architecture textbook, boiled it down to five guidelines for what they call domain-specific architectures.
+
+> **Definition — Domain-specific architecture (DSA):** A processor designed to run one family of tasks, such as neural networks, very efficiently, instead of running every kind of program reasonably well. TPUs, NPUs and most AI ASICs are DSAs, and GPUs with tensor cores have become partly one.
+
+Why did this become the path forward? Once Dennard scaling ended (earlier in this chapter), a chip could no longer run all of its transistors at full speed at once without overheating.
+
+> **Definition — Dark silicon:** The part of a chip that must sit idle or run slowly at any moment because the chip's power and cooling budget cannot feed every transistor at full speed. It became a design problem after Dennard scaling ended in the mid-2000s.
+
+If many transistors must rest anyway, the best use for them is specialized circuits that do one job with far less energy per operation. Here are the five rules, checked against Google's first TPU, the chip the textbook uses as its main example.
+
+| Rule | What TPU v1 (2015) did | The same rule in 2026 |
+|---|---|---|
+| 1. Keep dedicated memory right next to the math | 28 MiB of on-chip memory, managed by software rather than by caches | TPU 8i's 384 MB and Groq's ~500 MB of on-chip SRAM |
+| 2. Spend the transistors you save on more math or more memory | No caches, branch prediction or out-of-order tricks; instead 65,536 multiply-add units | Groq's LPU drops runtime scheduling entirely; its compiler plans every step in advance |
+| 3. Use the simplest kind of parallelism that fits | One instruction drives the whole 256 × 256 systolic array in lockstep | MXUs and tensor cores still march in lockstep |
+| 4. Use the smallest number format that works | 8-bit integers for inference | FP8 and block-scaled FP4 (NVFP4, MXFP4) |
+| 5. Program it through a domain-specific language | TensorFlow models compiled for the chip | JAX and PyTorch, compiled by XLA, Triton or torch.compile |
+
+*Table 32.8: Hennessy and Patterson's five guidelines for domain-specific architectures, applied to Google's first TPU and to 2026 chips.*
+
+**What the recipe bought.** In Google's 2017 paper, TPU v1 ran Google's own inference workloads about 15 to 30 times faster than the server CPU and GPU of its day, with 30 to 80 times better performance per watt. It had about 25 times as many multiply-add units as the GPU it was compared with, and it went from first design to running in data centers in about 15 months. Latency taught a further lesson. Google's services had to answer within a deadline measured at the 99th percentile (the slowest 1% of requests; Chapter 6 explains percentiles), about 7 milliseconds for one key workload. Caches and the other clever features of CPUs and GPUs make timing unpredictable, so those chips had to shrink their batches to stay inside the deadline and lost much of their throughput. The TPU's simple, predictable timing let it keep large batches under the same deadline. Chapter 37 shows why the slowest requests matter so much at scale.
+
+The textbook's other examples show how far the recipe stretches. Microsoft's **Project Catapult** put an FPGA into servers across large parts of its data centers from the mid-2010s, first to speed up Bing's search ranking and later for networking and neural-network inference: less efficient than an ASIC, but reprogrammable as the algorithms changed. Google's **Pixel Visual Core** (2017) was a small programmable DSA inside Pixel phones for camera processing, such as building HDR+ photos from several exposures, programmed in an image-processing language called Halide and using far less power than the phone's main processor.
+
+> **Definition — Image signal processor (ISP):** A specialized circuit in every camera phone that turns the raw readings from the camera sensor into a finished photo (adjusting color, removing noise, combining exposures) far more efficiently than the main processor could.
+
+> **Key idea:** A domain-specific chip wins by doing less: it drops general-purpose machinery, keeps data close, uses small numbers and lets a compiler plan the work. The price is flexibility, so the bet pays only when the domain, like neural networks, is huge and stable.
+
+> **Watch out:** "Chip A does more inferences per second than chip B, so it is faster" can mislead. Hennessy and Patterson list "inferences per second is a fair summary metric" as a fallacy: a chip can post a huge number with batches so large that real users would wait too long. Always ask what response time the number was measured at (Chapter 37 draws this trade-off as a curve).
+
 ## Putting it together: one token's journey through the silicon
 
 Let us follow one token of your chatbot's reply through an H100-class GPU, using everything in this chapter.
@@ -808,7 +840,7 @@ Finally, the chips have become so fast at math that they spend most of their tim
 
 ## Key terms
 
-Accelerator, Transistor, Logic gate, Multiply-accumulate (MAC), Clock speed (GHz), Die, CPU (Central Processing Unit), Core, Thread, Cache, Instruction set architecture (ISA), x86, Arm, RISC-V, SIMD (Single Instruction, Multiple Data), Moore's law, Dennard scaling, Power wall, Multicore processor, Matrix multiplication (GEMM), Tensor, FLOP (floating-point operation), FLOPS (FLOP/s), Peak performance, MFU (Model FLOPs Utilization), Structured sparsity (2:4), TOPS (Tera Operations Per Second), Parallelism, SIMT (Single Instruction, Multiple Threads), Warp, Latency, Throughput, Amdahl's law, GPU (Graphics Processing Unit), CUDA, Kernel (GPU kernel), HBM (High Bandwidth Memory), Streaming multiprocessor (SM), CUDA core, Tensor core, Systolic array, Floating point, Precision, FP32, TF32 (TensorFloat-32), FP16 (half precision), BF16 (bfloat16), FP8, FP4, INT8 / INT4, Microscaling (MX) formats, NVFP4, Mixed precision, Quantization, ASIC (Application-Specific Integrated Circuit), TPU (Tensor Processing Unit), LPU (Language Processing Unit), Wafer-scale engine, NPU (Neural Processing Unit), FPGA (Field-Programmable Gate Array), Superchip
+Accelerator, Transistor, Logic gate, Multiply-accumulate (MAC), Clock speed (GHz), Die, CPU (Central Processing Unit), Core, Thread, Cache, Instruction set architecture (ISA), x86, Arm, RISC-V, SIMD (Single Instruction, Multiple Data), Moore's law, Dennard scaling, Power wall, Multicore processor, Matrix multiplication (GEMM), Tensor, FLOP (floating-point operation), FLOPS (FLOP/s), Peak performance, MFU (Model FLOPs Utilization), Structured sparsity (2:4), TOPS (Tera Operations Per Second), Parallelism, SIMT (Single Instruction, Multiple Threads), Warp, Latency, Throughput, Amdahl's law, GPU (Graphics Processing Unit), CUDA, Kernel (GPU kernel), HBM (High Bandwidth Memory), Streaming multiprocessor (SM), CUDA core, Tensor core, Systolic array, Floating point, Precision, FP32, TF32 (TensorFloat-32), FP16 (half precision), BF16 (bfloat16), FP8, FP4, INT8 / INT4, Microscaling (MX) formats, NVFP4, Mixed precision, Quantization, ASIC (Application-Specific Integrated Circuit), TPU (Tensor Processing Unit), LPU (Language Processing Unit), Wafer-scale engine, NPU (Neural Processing Unit), FPGA (Field-Programmable Gate Array), Superchip, Domain-specific architecture (DSA), Dark silicon, Image signal processor (ISP)
 
 ## Exercises
 
