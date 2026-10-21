@@ -341,3 +341,482 @@ A base model also knows a great deal, including things it should not repeat. It 
 > **Analogy:** A base model is a brilliant improv actor who will play whatever scene you set up. A chat model is the same actor after training as a dependable customer-service representative: equally talented, but now reliably on task.
 
 > **Try it:** If you want to meet a base model, Exercise 8 at the end of this chapter has copy-paste code that asks the same question to a small open base model and its chat version, side by side.
+
+## Scaling laws: the recipe for a bigger loaf
+
+### Kaplan 2020: loss falls on a straight line
+
+Why do companies spend billions on ever-larger training runs? Because of a discovery that made AI progress unusually predictable. In 2020, a team at OpenAI led by Jared Kaplan trained many language models of different sizes on different amounts of data and plotted the final loss. The loss fell as a smooth **power law** in model size, data and compute, with some trends holding across more than seven orders of magnitude (a factor of more than ten million).
+
+> **Definition — Scaling law:** An empirical formula showing how a model's loss falls predictably as training compute, data and parameters grow.
+
+> **Definition — Power law:** A relationship where one quantity changes as a fixed power of another, such as "every 10 times more compute cuts the remaining error by the same fraction." On a log-log plot it appears as a straight line.
+
+> **Definition — Log-log plot:** A chart in which both axes use logarithmic scales, so each step along an axis multiplies the value by the same factor (for example 10). Power laws appear as straight lines on it.
+
+> **Definition — Training compute:** The total number of arithmetic operations (FLOPs) used to train a model, the main measure of how much effort went into it.
+
+The practical meaning was enormous. You could train a series of small, cheap models, draw the line through their results, and extend it to predict how well a model 100 or 1,000 times bigger would do, before spending the money. OpenAI's GPT-4 technical report (2023) said it predicted GPT-4's final loss from models trained with at most one ten-thousandth of the compute.
+
+### Chinchilla 2022: feed the model more data
+
+Kaplan's fits suggested that when you get more compute, you should spend most of it on a bigger model and only a little on more data. GPT-3 (2020) reflected that thinking: 175 billion parameters but only about 300 billion training tokens, under 2 tokens per parameter. DeepMind's Gopher (2021) went further: 280 billion parameters on 300 billion tokens.
+
+In 2022, a DeepMind team led by Jordan Hoffmann retested the question more carefully, training over 400 models from 70 million to over 16 billion parameters on 5 to 500 billion tokens. Their answer: for a fixed compute budget, grow parameters and data **together**, at roughly **20 training tokens per parameter**. To prove it, they trained **Chinchilla**: 70 billion parameters on 1.4 trillion tokens, about the same compute as Gopher. Chinchilla, four times smaller, beat Gopher on most tests, and its small size made it cheaper to run.
+
+> **Definition — Compute-optimal (Chinchilla-optimal):** The split between model size and training data that gives the lowest loss for a given compute budget. Chinchilla found it at roughly 20 tokens per parameter.
+
+**Worked example: Chinchilla versus Gopher.** The Chinchilla paper fitted a formula for loss (in its own units, for its own data):
+
+loss ≈ 1.69 + 406.4 ÷ N^0.34 + 410.7 ÷ D^0.28
+
+where N is parameters and D is training tokens. The 1.69 is the floor that no model can beat on that data (natural randomness in text). The second term shrinks as the model grows; the third as the data grows.
+
+- **Gopher** (N = 280 billion, D = 300 billion): 406.4 ÷ (280 × 10^9)^0.34 ≈ 0.052, and 410.7 ÷ (300 × 10^9)^0.28 ≈ 0.251. Loss ≈ 1.69 + 0.052 + 0.251 = 1.993.
+- **Chinchilla** (N = 70 billion, D = 1.4 trillion): model term ≈ 0.084, data term ≈ 0.163. Loss ≈ 1.69 + 0.084 + 0.163 = 1.937.
+
+(The powers need a calculator; type 280e9^0.34 into any spreadsheet.) Gopher's data term, 0.251, gives it away: it was starved of data. Chinchilla balanced the two terms and ended up lower. A 2024 replication by Epoch AI found problems with this particular fitted formula, but its reanalysis still supported a compute-optimal ratio of roughly 20 tokens per parameter.
+
+**Worked example: sizing a compute-optimal model.** Training compute is about 6 × N × D (explained in the next section). If D = 20 × N, then compute C = 6 × N × 20 × N = 120 × N². So the optimal size is N = √(C ÷ 120), and D = 20 × N. For a budget of 10^24 FLOP: 10^24 ÷ 120 = 8.3 × 10^21, whose square root is about 9.1 × 10^10, so N ≈ 91 billion parameters and D ≈ 1.8 trillion tokens.
+
+| Compute budget (FLOP) | Compute-optimal parameters | Compute-optimal tokens | Chinchilla-formula loss above the 1.69 floor |
+|---|---|---|---|
+| 10^22 | 9.1 billion | 183 billion | 0.46 |
+| 10^23 | 29 billion | 577 billion | 0.32 |
+| 10^24 | 91 billion | 1.8 trillion | 0.23 |
+| 10^25 | 289 billion | 5.8 trillion | 0.16 |
+| 10^26 | 913 billion | 18 trillion | 0.11 |
+| 10^27 | 2.9 trillion | 58 trillion | 0.08 |
+
+Look at the last column. Every 10 times more compute removes about 30% of the remaining reducible loss. Progress never stops, but each step costs ten times as much as the last. That is the power law in action.
+
+```
+reducible loss
+(log scale)
+ 0.64 |o
+ 0.46 |        o
+ 0.32 |                o
+ 0.23 |                        o
+ 0.16 |                                o
+ 0.11 |                                        o
+ 0.08 |                                                o
+      +-------+-------+-------+-------+-------+-------+---> compute
+     1e21    1e22    1e23    1e24    1e25    1e26    1e27  (FLOP)
+```
+*Figure 19.7: The loss that more compute can still remove, for compute-optimal models, from the Chinchilla formula. On log-log axes the power law is a straight line. (1e24 is shorthand for 10^24.)*
+
+> **Analogy:** Scaling laws are a baker's recipe chart that tells you how much flour and water a bigger loaf needs. Chinchilla's discovery was that earlier bakers had been using too little water (data) for the amount of flour (parameters).
+
+> **Key idea:** Loss falls smoothly and predictably as a power law in compute, as long as model size and data grow together. That predictability is why labs can justify billion-dollar runs, and why each further improvement costs about ten times more than the last.
+
+## The 6ND rule and what a training run costs
+
+### Where the 6 comes from
+
+Chapter 5 gave a rule of thumb: training compute ≈ 6 × N × D FLOPs, where N is the number of parameters and D the number of training tokens. The 6 comes from counting arithmetic. For each token, the forward pass does about one multiply and one add per parameter: 2 FLOPs. The backward pass, which works out the gradients, costs about twice the forward pass: 4 more. Total: 6 FLOPs per parameter per token. For mixture-of-experts models, use the **active** parameters, since only those do work for each token. The rule ignores some extra costs (such as attention over very long sequences), but it is close enough for planning.
+
+> **Definition — 6ND rule:** A rule of thumb that training a Transformer takes about 6 × N × D floating-point operations, where N is the number of (active) parameters and D is the number of training tokens.
+
+**Worked examples, checked against published figures:**
+
+- **GPT-3:** 6 × 175 × 10^9 × 300 × 10^9 = 3.15 × 10^23 FLOP.
+- **Llama 3.1 405B:** 6 × 405 × 10^9 × 15.6 × 10^12 ≈ 3.8 × 10^25 FLOP, matching Meta's own figure.
+- **DeepSeek-V4-Pro** (mixture of experts, 49 billion active parameters): 6 × 49 × 10^9 × 33 × 10^12 ≈ 9.7 × 10^24 FLOP, matching Epoch AI's estimate. Despite having 1.6 trillion total parameters, it took about a quarter of Llama 3.1 405B's compute.
+
+### From FLOPs to dollars
+
+Now turn FLOPs into time and money. Let's price a realistic mid-size run: a **70-billion-parameter dense model trained on 15 trillion tokens** (the scale of Meta's Llama 3 70B) on NVIDIA H100 GPUs.
+
+1. **Total compute.** 6 × 70 × 10^9 × 15 × 10^12 = 6.3 × 10^24 FLOP.
+2. **What one GPU really delivers.** An H100's peak dense BF16 speed is about 989 trillion FLOP per second (989 × 10^12). Real training achieves only part of that; assume a good MFU of 40%. Effective speed: 989 × 10^12 × 0.40 ≈ 3.96 × 10^14 FLOP per second per GPU.
+3. **GPU-seconds.** 6.3 × 10^24 ÷ 3.96 × 10^14 ≈ 1.59 × 10^10 GPU-seconds.
+4. **GPU-hours.** Divide by 3,600: about 4.4 million GPU-hours.
+5. **Wall-clock time.** On 8,192 GPUs: 4.4 million ÷ 8,192 ≈ 540 hours ≈ 22.5 days. On 4,096 GPUs, about 45 days.
+6. **Cost.** At $2.50 per GPU-hour (a plausible contract rate): 4.4 million × $2.50 ≈ $11 million. At an October 2026 on-demand list price of about $4 per H100-hour from a cloud such as Lambda: about $18 million.
+
+> **Definition — H100:** NVIDIA's flagship data-center GPU of 2022–2024, with 80 GB of memory and about 989 trillion 16-bit operations per second at peak. It is the workhorse behind many 2023–2025 training runs.
+
+**Reality check with Llama 3.1 405B.** The same method gives 3.8 × 10^25 ÷ (989 × 10^12 × 0.40) ≈ 26.7 million GPU-hours, or about 68 days on 16,384 GPUs, and about $67 million at $2.50 per hour. Meta's model card reports about 30.8 million GPU-hours for the 405B model. The gap of about 15% is exactly what you would expect from failures, restarts and an achieved utilization a bit below 40%. Epoch AI's own estimate of the compute cost, in 2023 dollars, is about $53 million.
+
+**The 2026 frontier.** Epoch AI's estimate for GPT-6 Astra assumes about 100,000 GB200 GPUs for about 90 days. That is 100,000 × 90 × 24 = 216 million GPU-hours. At $2 to $5 per GPU-hour, the final run alone would cost roughly $0.4 to $1.1 billion. That is a back-of-envelope estimate, not a published figure.
+
+| Model | Estimated training compute | Estimated compute cost (Epoch AI, 2023 dollars) |
+|---|---|---|
+| GPT-4 (2023) | about 2.1 × 10^25 FLOP | about $37 million |
+| Llama 3.1 405B (2024) | 3.8 × 10^25 FLOP | about $53 million |
+| Grok 3 (2025) | about 4 × 10^26 FLOP (Epoch estimates range from 3.5 to 4.6 × 10^26) | about $218 million |
+| GPT-4.5 (2025) | about 3.8 × 10^26 FLOP | about $366 million |
+| Grok 4 (2025) | about 5 × 10^26 FLOP (speculative) | about $388 million (speculative) |
+| GPT-6 Astra (2026) | about 9.4 × 10^26 FLOP | no published estimate; about $0.4–1.1 billion by the back-of-envelope above |
+
+*Table 19.1: Outside estimates of training compute and cost. Labs rarely disclose these numbers; Epoch AI has no public estimates for most 2026 Claude and Gemini models.*
+
+> **Watch out:** "DeepSeek trained a frontier model for $5.6 million" is a misreading. DeepSeek's V3 paper reported 2.788 million H800 GPU-hours for the final training run and priced them at an assumed $2 per hour: 2.788 million × $2 ≈ $5.6 million. That covers only renting the GPUs for the final run. It excludes buying the cluster, research, earlier experiments, failed runs, data and salaries. The same caution applies to every number in Table 19.1: the final run's compute is usually a minority of what a model really costs. (DeepSeek separately reported that the reasoning-RL stage of R1 cost about $294,000.)
+
+### Over-training: why labs train small models far past "optimal"
+
+Chinchilla answers one question: what gives the lowest loss for a fixed **training** budget? But a model is trained once and then used billions of times. Every token it ever generates costs about 2 × N FLOPs. A smaller model is cheaper forever.
+
+So labs now deliberately **over-train**: they take a model smaller than Chinchilla would suggest and train it on far more tokens. Meta trained Llama 3 8B on about 15 trillion tokens, roughly 1,900 tokens per parameter, almost 100 times the Chinchilla ratio. A 2023 analysis called "Beyond Chinchilla-Optimal" made the logic formal: once you count expected inference, the best model is smaller and trained longer.
+
+> **Definition — Over-training:** Training a model on far more tokens than is compute-optimal, producing a smaller model that is cheaper to run for a given level of ability.
+
+> **Definition — Inference-aware scaling:** Choosing model size and training data to minimize the total cost of training plus all expected future use, rather than training cost alone.
+
+**Worked example: two ways to spend a budget.** Use the Chinchilla formula again (taking it at face value, which is a stretch far beyond the range it was fitted on):
+
+| | Option A: Chinchilla-optimal | Option B: over-trained |
+|---|---|---|
+| Parameters, tokens | 70 billion, 1.4 trillion | 8 billion, 15 trillion |
+| Training compute (6ND) | 5.9 × 10^23 FLOP | 7.2 × 10^23 FLOP |
+| Predicted loss | 1.937 | 1.949 |
+| Inference cost per token (2N) | 140 billion FLOP | 16 billion FLOP |
+
+Option B costs about 22% more to train and lands at nearly the same predicted loss, but every token it generates is almost 9 times cheaper. If the model will serve 10 trillion tokens over its life, Option A spends 1.4 × 10^25 FLOP on inference... wait, 2 × 70 × 10^9 × 10^13 = 1.4 × 10^24 FLOP, more than twice its training cost, while Option B spends only 1.6 × 10^23. For a model used by hundreds of millions of people, the over-trained option wins easily.
+
+```mermaid
+quadrantChart
+  title Model size versus training tokens per parameter
+  x-axis Few tokens per parameter --> Many tokens per parameter
+  y-axis Smaller model --> Larger model
+  quadrant-1 Large and data-rich
+  quadrant-2 Large but data-starved
+  quadrant-3 Small and data-starved
+  quadrant-4 Small and over-trained
+  Gopher 2021: [0.06, 0.88]
+  GPT-3 2020: [0.12, 0.79]
+  Chinchilla 2022: [0.41, 0.61]
+  Llama 3.1 405B: [0.48, 0.96]
+  Llama 3 70B: [0.68, 0.64]
+  Llama 3 8B: [0.94, 0.18]
+```
+*Figure 19.8: Both axes use log scales. Models moved right over time: from GPT-3's under 2 tokens per parameter, to Chinchilla's 20, to Llama 3 8B's roughly 1,900.*
+
+## Emergent abilities: sudden leaps or smooth progress?
+
+### The case for emergence
+
+In 2022, a team led by Jason Wei at Google described **emergent abilities**: skills such as multi-step arithmetic or certain reasoning tasks on which small models scored near zero, and then, past some scale, performance jumped sharply. Plotted against model size, the curve looked flat and then shot up. If true, that has big implications: new capabilities, including dangerous ones, might appear suddenly and unpredictably as models grow.
+
+> **Definition — Emergent abilities:** Capabilities that appear to be absent in smaller models and present in larger ones, seemingly arriving suddenly as scale increases. Whether they are truly sudden is debated.
+
+### The case against: the metric makes the cliff
+
+In 2023, Rylan Schaeffer and colleagues at Stanford argued that many such jumps are artifacts of how the tasks were scored. Many emergence plots used all-or-nothing metrics such as **exact match**: the answer counts only if every token is right.
+
+> **Definition — Exact match:** A scoring rule that gives credit only when the model's whole answer is exactly correct, with no partial credit.
+
+**Worked example.** Suppose a task's answer is 10 tokens long, and a model gets each token right with probability p, independently. Its chance of getting all 10 right is p^10. Now let p improve smoothly as models grow:
+
+```
+Per-token accuracy p:  50%   60%   70%   80%   90%   95%   99%
+Exact match (p^10):   0.1%  0.6%  2.8%  10.7% 34.9% 59.9% 90.4%
+
+Exact match on a 10-token answer (each # = 4 points)
+ p = 0.50  |                          0.1%
+ p = 0.60  |                          0.6%
+ p = 0.70  |#                         2.8%
+ p = 0.80  |###                      10.7%
+ p = 0.90  |#########                34.9%
+ p = 0.95  |###############          59.9%
+ p = 0.99  |#######################  90.4%
+```
+*Figure 19.9: A smoothly improving per-token accuracy looks like a sudden leap when scored all-or-nothing.*
+
+Per-token accuracy rose steadily from 50% to 99%. But exact match sat near zero until p passed about 80%, then shot up. Nothing sudden happened inside the model; the cliff came from the ruler. Schaeffer's team showed that switching to smoother metrics made many "emergent" curves smooth.
+
+### The strongest version of each side, and today's view
+
+Defenders of emergence answer that not every jump disappears under a smoother metric, and, more importantly, that all-or-nothing is often what matters in the real world. A program that almost compiles does not run. An agent with 90% reliability per step completes a 20-step task only 0.9^20 ≈ 12% of the time; at 99% per step it succeeds 0.99^20 ≈ 82% of the time. For the person relying on it, that is a leap from useless to useful, even though the per-step improvement was smooth.
+
+Skeptics answer that this is exactly why we should measure smoothly: if you track the underlying per-step reliability, you can forecast the jump instead of being surprised by it.
+
+The modern view combines both: capabilities are mostly smooth and predictable in the loss and in well-chosen metrics, but practical usefulness can still arrive sharply, because many real tasks are long chains where one error ruins everything. For safety work this matters a lot. It is why evaluators track gradual trends, such as METR's measurements of how long a task AI agents can complete (Chapter 57), rather than waiting for a single dramatic jump.
+
+## Compute and cost trends
+
+Epoch AI, a research group that tracks AI progress, estimates that the training compute of frontier models has grown about **5 times per year** since 2020, doubling roughly every 5.2 months. The cost of those runs has grown more slowly, about **3.5 times per year**, because AI chips keep getting cheaper per FLOP (Epoch measures about 1.5 times per year). Check: 5 ÷ 3.5 ≈ 1.4, close to that chip improvement.
+
+What does 5 times per year compound to? Over four years, 5 × 5 × 5 × 5 = 625 times. As of June 2025, Epoch counted more than 30 publicly known models trained with over 10^25 FLOP, from 12 different developers.
+
+```mermaid
+timeline
+  title Estimated training compute of landmark models
+  2020 : GPT-3 about 3e23 FLOP
+  2023 : GPT-4 about 2e25 FLOP
+  2024 : Llama 3.1 405B about 4e25 FLOP
+  2025 : GPT-4.5 about 4e26 FLOP
+       : Grok 4 about 5e26 FLOP, speculative
+  2026 : GPT-6 Astra about 9e26 FLOP
+```
+*Figure 19.10: Outside estimates of training compute, mostly from Epoch AI. 3e23 means 3 × 10^23. Six years took the frontier up roughly 3,000-fold.*
+
+The hardware behind this is growing just as fast. Epoch lists xAI's Colossus 2 site in Memphis as the largest known AI data center, at about 1.1 million H100-equivalents, and estimates that a gigawatt-scale site costs about $38 billion up front per gigawatt. Part VII of this book covers the buildings and the power, and Chapter 43 the economics.
+
+> **At the frontier (2026):** GPT-6 Astra, released in September 2026, is the first publicly described pretraining run on more than 100,000 GPUs. Labs rarely disclose compute any more, so outside estimates like Epoch's are the main public window. Most labs now describe pretraining as one of several large compute sinks, alongside reinforcement learning (Chapter 21) and, above all, serving models to users (Chapter 23).
+
+## The data wall and how labs climb it
+
+### Will we run out of text?
+
+Compute grows 5 times a year. Does the supply of good human-written text keep up? In 2024, Epoch AI estimated the stock of high-quality public human text at about **300 trillion tokens** (with a wide 90% range of 100 trillion to 1,000 trillion), and projected that it would be fully used sometime **between 2026 and 2032**: around 2028 under compute-optimal scaling, earlier with heavy over-training. In December 2024, Ilya Sutskever, OpenAI's former chief scientist, told the NeurIPS conference that pretraining "as we know it will end" because "we have but one internet", calling data the "fossil fuel of AI".
+
+> **Definition — Data wall:** The point at which the supply of new, high-quality human-written training text runs out relative to what ever-larger models would need.
+
+**Worked example: when does the wall bite?** Use the compute-optimal formula from earlier, D = 20 × √(C ÷ 120):
+
+- At 10^27 FLOP (roughly the 2026 frontier): about 58 trillion tokens. Fine.
+- At 10^28 FLOP: about 183 trillion tokens. Most of the estimated stock.
+- At 10^29 FLOP: about 577 trillion tokens. Nearly twice the central estimate.
+
+At 5 times growth per year, going from 10^27 to 10^29 takes only about 2.9 years (5^2.9 ≈ 100). That is the arithmetic behind the worry.
+
+### The escape routes
+
+The strongest version of the optimist case is that labs have many ways around the wall:
+
+- **Synthetic data.** Models generate text, and verifiers or filters keep the good parts: textbooks, worked problems, code that passes its tests. Qwen3 already used synthetic textbooks and question-answer pairs.
+- **Reinforcement learning on verifiable tasks.** Instead of reading more text, models practice on problems with checkable answers: math, code with tests, simulated software environments. Industry commentary in 2025–26 calls RL environments "the new training data", and DeepSeek described large-scale synthetic task generation for its agent training. Chapter 21 covers this.
+- **Other modalities.** Video, audio and images hold vast amounts of information about the world.
+- **Private and licensed data.** Books, archives, company data and paid expert-written material (Chapter 11).
+- **Repeating data.** A 2023 study of data-limited training found that repeating data for up to about four passes was almost as good as fresh data.
+- **Better data efficiency.** Better filtering, mixtures and architectures squeeze more learning out of each token.
+
+The strongest version of the pessimist case: synthetic data is only as good as the model that made it and the filter that checked it; text that no human wrote may lack the diversity and surprise of real writing; and a 2024 study in Nature showed that models trained recursively on their own unfiltered outputs degrade, losing the rare "tails" of the data first, a failure called **model collapse**. RL works best where answers can be checked automatically, which leaves out much of what people value.
+
+> **Definition — Model collapse:** The degradation that occurs when models are trained, generation after generation, on data produced by earlier models without enough fresh human data, so that rare patterns vanish and errors compound.
+
+As of late 2026 the debate is live, but the industry's direction is clear: labs still pretrain on tens of trillions of tokens, while shifting more of their effort and compute into curated synthetic data, expert-written data and reinforcement learning.
+
+## Mid-training and annealing
+
+The last stretch of pretraining has become a stage of its own. Late in the run, or just after it, labs switch to a smaller, higher-quality mix: carefully filtered math and code, reasoning traces, instruction-like data, and long documents to stretch the context window. At the same time they lower the learning rate toward zero, which "settles" the model into a good final state. This bridge stage is called **mid-training**. The Allen Institute for AI's open OLMo 2 models document their mid-training data and recipe publicly, which is one reason researchers study them.
+
+> **Definition — Mid-training:** An intermediate stage between bulk pretraining and post-training that continues training on curated high-quality, long-context or reasoning-heavy data.
+
+> **Definition — Annealing:** Lowering the learning rate toward zero near the end of training, often while switching to the best data, so the model settles into a good final state.
+
+> **Definition — Context extension:** Training a model late in pretraining on longer documents, often with adjusted position encodings, so it can handle much longer inputs than it was mostly trained on.
+
+Why save the best data for the end? Because what a model sees while its learning rate is falling has an outsized effect on its final behavior, a bit like a student's last weeks of revision before an exam. Mid-training is also where many models gain their long context: most of pretraining uses fairly short sequences because long ones are expensive, and only near the end does the model practice on long documents (Chapters 15 and 23 explain the position-encoding tricks involved).
+
+> **At the frontier (2026):** The lines between pretraining, mid-training and post-training have blurred. Frontier labs now feed large amounts of synthetic reasoning data and agent-style trajectories during mid-training, so that the model arrives at post-training already good at step-by-step work. Most closed labs say little about this stage; open-weight labs such as Ai2, DeepSeek and Moonshot describe more of it in their technical reports.
+
+## In plain English
+
+Before a chatbot can chat, it is pretrained. Engineers collect a huge pile of text: web pages from crawls like Common Crawl, code, books, papers, math and text in many languages, plus some text written by other models. They throw most of the raw web away: menus, spam, duplicates, junk, personal data and copies of test questions. What is left is tens of trillions of tokens. Llama 3 used about 15.6 trillion; DeepSeek-V4-Pro about 33 trillion.
+
+Then the model reads it all, predicting each next token, measuring its surprise, and nudging its billions of weights to be a bit less surprised, about a million times, on thousands to more than 100,000 GPUs for weeks or months. Chips fail every few hours, so the run saves checkpoints and restarts. Out comes a base model: hugely knowledgeable, but it continues documents instead of answering you.
+
+Scaling laws say the loss falls smoothly as compute grows, if model size and data grow together, about 20 tokens per parameter for the lowest training cost. Because a model is used billions of times, labs now train smaller models on far more data, which makes them cheaper to run.
+
+Training compute is about 6 × parameters × tokens. Divide by what a GPU really delivers and you get GPU-hours; multiply by the hourly price and you get dollars: millions for mid-size models, hundreds of millions for 2025 frontier runs, perhaps around a billion for the largest 2026 run.
+
+Abilities that seem to appear suddenly are often smooth improvements seen through all-or-nothing scoring, though real usefulness can still jump. And good human text is running out, so labs are turning to synthetic data, reinforcement learning and a final high-quality "mid-training" stage.
+
+## Key terms
+
+Pretraining, Training run, Corpus, Self-supervised learning, Loss, Cross-entropy loss, Perplexity, Gradient descent, Learning rate, Batch and step, Common Crawl, Web crawler, Synthetic data, robots.txt, Data curation, Text extraction (boilerplate removal), Language identification, Deduplication, Near-duplicate detection (MinHash), Heuristic filter, Quality classifier, PII (Personally Identifiable Information), Decontamination, Benchmark contamination, Data mixture, Upsampling, Epoch (training pass), Proxy model, Ablation, GPU-hour, Parallelism (distributed training), Learning-rate schedule, Warmup, Loss spike, Checkpoint, MFU (Model FLOPs Utilization), Goodput, FP8 and FP4, Mixed precision, Few-shot prompting, Scaling law, Power law, Log-log plot, Training compute, Compute-optimal (Chinchilla-optimal), 6ND rule, H100, Over-training, Inference-aware scaling, Emergent abilities, Exact match, Data wall, Model collapse, Mid-training, Annealing, Context extension.
+
+## Exercises
+
+1. **[Easy] Read the web's "please don't" signs.** Choose five websites you use (a news site, a forum, a shop, an encyclopedia, a blog).
+   1. Visit each one's robots.txt file by adding /robots.txt to the main address, for example nytimes.com/robots.txt.
+   2. Search each file (Ctrl+F or Cmd+F) for GPTBot, ClaudeBot, CCBot and Google-Extended.
+   3. Make a small table: which sites block which AI crawlers, and which block none.
+   **What you'll learn:** how opt-outs work in practice, and how unevenly the web has responded to AI training.
+
+2. **[Easy] Be the quality classifier.** Open ten web pages of very different kinds: a recipe blog, a forum thread, a news article, a product page, an encyclopedia article, a spammy "top 10" list, and four more.
+   1. Score each from 0 to 5 for "how useful would this be for teaching a student about the world?"
+   2. Paste the text of three of them into a chatbot with the same rubric and ask it to score them, explaining its reasoning.
+   3. Compare your scores with the chatbot's and note where you disagree.
+   **What you'll learn:** how model-based quality filters such as FineWeb-Edu work, and how a rubric's wording shapes what a model ends up learning.
+
+3. **[Easy] Browse a real pretraining dataset.** On Hugging Face, open the dataset pages for FineWeb (huggingface.co/datasets/HuggingFaceFW/fineweb) and FineWeb-Edu (huggingface.co/datasets/HuggingFaceFW/fineweb-edu). Both have a "Dataset Viewer" that shows rows in your browser.
+   1. Read 15 rows of each.
+   2. Count how many rows you would call junk, average or genuinely educational.
+   3. Note anything surprising: languages, topics, leftover menus or ads, personal information.
+   **What you'll learn:** what web-scale training text actually looks like after cleaning, and what a quality filter changes.
+
+4. **[Medium] Price a training run with 6ND.** In a spreadsheet, make columns for: parameters (N), tokens (D), FLOP (=6*N*D), GPU peak FLOP/s, MFU, effective FLOP/s per GPU (=peak*MFU), GPU-hours (=FLOP/effective/3600), number of GPUs, days (=GPU-hours/GPUs/24), price per GPU-hour, and cost (=GPU-hours*price).
+   1. Reproduce the chapter's 70B-on-15T example (H100 peak 9.89E14, MFU 0.4, $2.50 per hour). You should get about 4.4 million GPU-hours and $11 million.
+   2. Add rows for Llama 3.1 405B (405E9, 15.6E12, 16,384 GPUs) and DeepSeek-V4-Pro (49E9 active, 33E12).
+   3. Try MFU of 0.3 and 0.5, and prices of $2 and $4. Which change matters most?
+   **What you'll learn:** exactly where "hundred-million-dollar training run" headlines come from, and which assumptions drive them.
+
+5. **[Medium] Build a Chinchilla calculator.** In a spreadsheet, put compute budgets of 1E21 through 1E28 in column A.
+   1. In column B, compute the optimal parameters with =SQRT(A2/120). In column C, tokens with =20*B2.
+   2. In column D, compute the Chinchilla-formula loss with =1.69+406.4/B2^0.34+410.7/C2^0.28.
+   3. Check your 1E24 row against the chapter: about 91 billion parameters, 1.8 trillion tokens.
+   4. Add a row for an over-trained 8-billion-parameter model on 15 trillion tokens and compare its loss and its compute (6*N*D) with the 70-billion-parameter Chinchilla model.
+   **What you'll learn:** how scaling laws turn a compute budget into a model design, and why over-training is attractive.
+
+6. **[Medium] Is emergence a mirage?** In a spreadsheet, list per-token accuracies from 0.50 to 0.99 in steps of 0.01 in column A.
+   1. In columns B, C and D compute =A2^1, =A2^10 and =A2^50 (answers of 1, 10 and 50 tokens).
+   2. Chart all three columns against column A.
+   3. Write two sentences: why does the 50-token curve look "emergent"? When would all-or-nothing scoring still be the right measure?
+   **What you'll learn:** how the choice of metric can create or hide a sudden jump, and why both sides of the emergence debate have a point.
+
+7. **[Medium] Watch the data wall approach.** In a spreadsheet, start with 1E27 FLOP in 2026 and multiply by 5 for each following year up to 2032.
+   1. For each year, compute compute-optimal tokens with =20*SQRT(A2/120).
+   2. Mark the year each run would need more than 100 trillion, 300 trillion and 1,000 trillion tokens (Epoch's low, central and high estimates of the stock).
+   3. Repeat assuming labs over-train at 200 tokens per parameter instead of 20. Hint: with D = 200 × N, N = SQRT(C/1200).
+   **What you'll learn:** why the data wall is a live debate, and how sensitive its timing is to assumptions.
+
+8. **[Challenge] Meet a base model.** Open Google Colab (colab.research.google.com), start a new notebook, choose Runtime, then Change runtime type, and pick a GPU if available (the code also runs, more slowly, without one). Paste this into a cell and run it. It downloads two small open models of about 1 GB each.
+
+    ```python
+    # Install the library that loads open models
+    !pip -q install transformers torch
+    from transformers import AutoTokenizer, AutoModelForCausalLM
+
+    question = "What is the capital of Japan?"
+
+    # 1. The BASE model: give it raw text and let it continue
+    name = "Qwen/Qwen3-0.6B-Base"
+    tok = AutoTokenizer.from_pretrained(name)
+    model = AutoModelForCausalLM.from_pretrained(name)
+    ids = tok(question, return_tensors="pt")
+    out = model.generate(**ids, max_new_tokens=60, do_sample=False)
+    print("BASE MODEL:\n", tok.decode(out[0]), "\n")
+
+    # 2. The CHAT model: wrap the question in its chat template first
+    name = "Qwen/Qwen3-0.6B"
+    tok = AutoTokenizer.from_pretrained(name)
+    model = AutoModelForCausalLM.from_pretrained(name)
+    text = tok.apply_chat_template(
+        [{"role": "user", "content": question}],
+        tokenize=False, add_generation_prompt=True,
+        enable_thinking=False)            # turn off this model's thinking mode
+    print("THE HIDDEN TEMPLATE:\n", text)  # the special tokens from Chapter 18
+    ids = tok(text, return_tensors="pt")
+    out = model.generate(**ids, max_new_tokens=60, do_sample=False)
+    print("CHAT MODEL:\n", tok.decode(out[0]))
+    ```
+
+    1. Compare the two outputs. Does the base model answer, or continue as if writing a quiz or a web page?
+    2. Change the question to "Dear hiring manager," and run again.
+    3. Give the base model a few-shot prompt: "Q: What is the capital of France? A: Paris. Q: What is the capital of Japan? A:" and see whether it now answers.
+    **What you'll learn:** what pretraining alone produces, and what post-training and chat templates add.
+
+9. **[Challenge] Pretrain a tiny language model yourself.** In a new Colab notebook with a GPU runtime, paste and run the code below. It downloads about 1 MB of Shakespeare, builds a character-level tokenizer, and trains a small Transformer for a few minutes, printing the loss and a sample every 500 steps.
+
+    ```python
+    import torch, torch.nn as nn, urllib.request
+
+    # 1. Data: about 1 MB of Shakespeare, one token per character
+    url = "https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt"
+    text = urllib.request.urlopen(url).read().decode("utf-8")
+    chars = sorted(set(text))                     # the vocabulary: every character used
+    stoi = {c: i for i, c in enumerate(chars)}    # character -> token ID
+    itos = {i: c for c, i in stoi.items()}        # token ID -> character
+    data = torch.tensor([stoi[c] for c in text])  # the whole text as token IDs
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+
+    # 2. A tiny decoder-only Transformer
+    V, T, D = len(chars), 64, 128                 # vocabulary, context length, vector size
+    class TinyLM(nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.tok = nn.Embedding(V, D)         # token embeddings
+            self.pos = nn.Embedding(T, D)         # position embeddings
+            layer = nn.TransformerEncoderLayer(D, nhead=4, dim_feedforward=4 * D,
+                                               batch_first=True)
+            self.blocks = nn.TransformerEncoder(layer, num_layers=4)
+            self.out = nn.Linear(D, V)            # unembedding: vector -> logits
+        def forward(self, x):
+            t = x.shape[1]
+            h = self.tok(x) + self.pos(torch.arange(t, device=x.device))
+            mask = nn.Transformer.generate_square_subsequent_mask(t).to(x.device)
+            return self.out(self.blocks(h, mask=mask))   # mask = no peeking ahead
+
+    model = TinyLM().to(device)
+    opt = torch.optim.AdamW(model.parameters(), lr=1e-3)
+
+    def get_batch(n=32):                          # n random snippets of T characters
+        i = torch.randint(len(data) - T - 1, (n,))
+        x = torch.stack([data[j:j + T] for j in i])
+        y = torch.stack([data[j + 1:j + T + 1] for j in i])  # targets: shifted by one
+        return x.to(device), y.to(device)
+
+    @torch.no_grad()
+    def sample(n=200, temperature=1.0):           # generate text, one token at a time
+        model.eval()
+        x = torch.tensor([[stoi["\n"]]], device=device)
+        for _ in range(n):
+            logits = model(x[:, -T:])[0, -1] / temperature
+            nxt = torch.multinomial(torch.softmax(logits, -1), 1)
+            x = torch.cat([x, nxt.view(1, 1)], dim=1)
+        model.train()
+        return "".join(itos[int(i)] for i in x[0])
+
+    # 3. The pretraining loop: predict, measure surprise, nudge, repeat
+    for step in range(3001):
+        x, y = get_batch()
+        logits = model(x)
+        loss = nn.functional.cross_entropy(logits.reshape(-1, V), y.reshape(-1))
+        opt.zero_grad(); loss.backward(); opt.step()
+        if step % 500 == 0:
+            print(f"step {step}  loss {loss.item():.2f}")
+            print(sample(150), "\n----")
+    ```
+
+    1. Watch the loss: it starts near 4.2 (about −ln of 1 ÷ 65, a random guess among roughly 65 characters) and falls.
+    2. Compare the samples at steps 0, 1,500 and 3,000: random letters, then word shapes, then Shakespeare-like lines.
+    3. Use the 6ND rule: count parameters with sum(p.numel() for p in model.parameters()), estimate tokens seen (3,000 steps × 32 × 64), and compute the training FLOPs. Compare with GPT-3's 3.15 × 10^23.
+    **What you'll learn:** pretraining in miniature, with the same loop, loss and sampling as a frontier model, just about a billion billion times smaller.
+
+10. **[Challenge] Read a technical report like an analyst.** Open DeepSeek's V3 technical report (arxiv.org/abs/2412.19437) or Meta's "The Llama 3 Herd of Models" (arxiv.org/abs/2407.21783). You can paste sections into a chatbot and ask it to explain them, but check its claims against the text.
+    1. Find the number of parameters (total and active), training tokens, number of GPUs and GPU-hours.
+    2. Recompute the training FLOPs with 6ND and compare with any figure the report gives.
+    3. Find the cost or GPU-hour figure and list what it includes and excludes.
+    4. Find one passage about data curation or the data mixture and summarize it in three sentences.
+    **What you'll learn:** how to extract and sanity-check the numbers behind AI headlines.
+
+## Areas of opportunity
+
+- **Pretraining data engineer.** Labs and open-model groups need people who build crawling, extraction, deduplication and filtering pipelines at petabyte scale. Curation quality is a main source of advantage, so this work is well paid and in demand.
+- **Content licensing for AI.** With crawlers blocked by default on much of the web and standards such as RSL and Pay Per Crawl emerging, publishers, archives and platforms need people who can package, price and negotiate data licenses. Labs, in turn, need buyers who can judge what a dataset is worth.
+- **Expert data and synthetic data with verifiers.** As the supply of public human text tightens, labs pay domain experts (doctors, lawyers, engineers, scientists) to write and check hard material, and pay engineers to build generators and verifiers that make synthetic data trustworthy. This is a realistic entry point for professionals without computer-science backgrounds.
+- **Multilingual and low-resource language data.** Most of the web is in a handful of languages. Governments, regional AI efforts and labs need clean text, speech and evaluations in under-served languages, and local organizations are best placed to supply them.
+- **Training reliability and efficiency engineering.** Every point of MFU or goodput on a 100,000-GPU run is worth millions of dollars. Engineers who understand failures, checkpointing, low-precision training and parallelism (Chapter 37) are among the most sought after in the industry.
+- **Compute and cost analysis.** Investors, governments, journalists and companies need people who can turn announcements into FLOPs, GPU-hours, dollars and megawatts with the methods in this chapter, and spot claims like the "$5.6 million model" for what they are.
+- **Evaluation integrity and decontamination.** As benchmarks leak into training data, companies need clean, private test sets and tools that detect contamination. Evaluation services that can show their tests were never trained on are increasingly valuable.
+- **Training-data documentation and compliance.** The EU AI Act's training-content summaries, transparency laws and lawsuits create demand for people who can document data sources, licenses and opt-outs accurately for model providers.
+- **Small, domain-specific pretrained models.** Open datasets such as FineWeb and Common Pile (an 8 TB collection of public-domain and openly licensed text) make it feasible for well-funded organizations to pretrain smaller models on clean, licensed data for specific industries, an option some regulated sectors prefer.
+
+## Check your understanding
+
+1. Why is pretraining called self-supervised, and how many "quizzes" does a 15-trillion-token corpus contain?
+2. A model gave the correct next token a probability of 0.25. What is its cross-entropy loss for that token (use ln(0.25) ≈ −1.39), and what would the loss be if it had given probability 1?
+3. Name five stages of a pretraining curation pipeline and explain why deduplication matters.
+4. Using 6ND, estimate the training compute for a 10-billion-parameter dense model trained on 2 trillion tokens. Then estimate the GPU-hours on H100s at 40% MFU (about 3.96 × 10^14 effective FLOP per second per GPU) and the cost at $2.50 per GPU-hour.
+5. What did Chinchilla show about Gopher, and what is the compute-optimal model size for a budget of 10^24 FLOP?
+6. Why did Meta train Llama 3 8B on about 1,900 tokens per parameter instead of about 20?
+7. A task needs a 10-token answer to be exactly right. If per-token accuracy rises from 0.9 to 0.95, what happens to the exact-match score? What does each side of the emergence debate conclude from this?
+8. Why is the "DeepSeek trained a frontier model for $5.6 million" claim misleading?
+
+<details><summary>Answers</summary>
+
+1. The training text supplies its own answers: hide each next token and the model must predict it, so no human labels are needed. A 15-trillion-token corpus contains about 15 trillion such prediction quizzes.
+2. Loss = −ln(0.25) ≈ 1.39. With probability 1 the loss would be −ln(1) = 0, meaning no surprise.
+3. Any five of: text extraction, language identification, URL filtering and opt-outs, deduplication, heuristic filters, model-based quality filtering, personal-data and toxicity filtering, decontamination. Deduplication matters because repeated text wastes compute and makes the model memorize repeated passages word for word.
+4. 6 × 10 × 10^9 × 2 × 10^12 = 1.2 × 10^23 FLOP. GPU-seconds ≈ 1.2 × 10^23 ÷ 3.96 × 10^14 ≈ 3.0 × 10^8; GPU-hours ≈ 84,000; cost ≈ 84,000 × $2.50 ≈ $210,000.
+5. Gopher (280 billion parameters, 300 billion tokens) was too big and starved of data; Chinchilla (70 billion parameters, 1.4 trillion tokens), using about the same compute, did better. For 10^24 FLOP: N = √(10^24 ÷ 120) ≈ 91 billion parameters, trained on about 1.8 trillion tokens.
+6. A model is trained once but used billions of times. A smaller model costs less for every token it ever generates (about 2 × N FLOPs per token), so training a small model far past the compute-optimal point gives a cheaper model to serve at similar quality.
+7. Exact match rises from 0.9^10 ≈ 35% to 0.95^10 ≈ 60%. Skeptics say the "jump" is created by all-or-nothing scoring of a smoothly improving skill, so measure smoothly and the change becomes predictable. Defenders say all-or-nothing is often what matters in practice, so usefulness really can arrive suddenly.
+8. The $5.6 million was DeepSeek-V3's final training run only: 2.788 million H800 GPU-hours priced at an assumed $2 per hour. It excludes buying the hardware, research, earlier experiments and failed runs, data, and staff, which together cost far more.
+
+</details>
+
+## Going deeper
+
+- **Kaplan and colleagues, "Scaling Laws for Neural Language Models" (arXiv 2001.08361, 2020).** The paper that showed loss falling as a power law; its figures are readable even if the math is not.
+- **Hoffmann and colleagues, "Training Compute-Optimal Large Language Models" (arXiv 2203.15556, 2022).** The Chinchilla paper and the source of the 20-tokens-per-parameter rule.
+- **Penedo and colleagues, "The FineWeb Datasets" (arXiv 2406.17557, 2024), and Hugging Face's FineWeb blog post.** The clearest public walk-through of a modern web-data curation pipeline, with experiments for every filter.
+- **Meta, "The Llama 3 Herd of Models" (arXiv 2407.21783, 2024).** The most detailed public account of a frontier-scale pretraining run, including the data mix and the failure statistics used in this chapter.
+- **DeepSeek, "DeepSeek-V3 Technical Report" (arXiv 2412.19437, 2024).** A model of efficient training with FP8 and mixture of experts, and the real source of the "$5.6 million" figure.
+- **Wei and colleagues, "Emergent Abilities of Large Language Models" (arXiv 2206.07682, 2022), and Schaeffer and colleagues, "Are Emergent Abilities of Large Language Models a Mirage?" (arXiv 2304.15004, 2023).** Read them as a pair for both sides of the debate.
+- **Epoch AI's Trends page (epoch.ai/trends) and its essay "Will we run out of data?".** Regularly updated estimates of training compute, cost and data stocks.
+- **Andrej Karpathy, "Let's build GPT: from scratch, in code, spelled out" (YouTube, 2023) and his nanoGPT code on GitHub.** The best hands-on companion to Exercise 9.
+- **Ilya Sutskever's NeurIPS 2024 test-of-time talk (video).** A short, influential statement of the data-wall argument from one of the field's founders.

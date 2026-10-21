@@ -111,7 +111,7 @@ Here is one. How much text have you typed into chatbots in the past year, compar
 2. Over a year: 800 × 365 = 292,000 words.
 3. Tokens are about three-quarters of a word, so words ÷ 0.75 gives about 390,000 tokens. Call it 4 × 10^5.
 4. Meta's Llama 3 was trained on about 15.6 trillion tokens, or 1.56 × 10^13.
-5. Ratio: 1.56 × 10^13 ÷ 4 × 10^5 ≈ 4 × 10^7.
+5. Ratio: 1.56 × 10^13 ÷ (4 × 10^5) ≈ 4 × 10^7.
 
 So the model read roughly 40 million times as much text as you typed to chatbots all year. Even if each guess were off by a factor of two, the answer would still be "tens of millions," and that is the insight: no human reads in a lifetime what a model reads in training.
 
@@ -152,7 +152,7 @@ One bit gives two patterns. Each extra bit doubles the number of patterns, becau
 | 32 | about 4.3 billion | 2^32 | every address in the original internet addressing scheme (IPv4) |
 | 64 | about 1.8 × 10^19 | 2^64 | about 18 quintillion values |
 
-Notice two things. First, combinations of bits grow explosively: 64 bits is not 64 options but about 18 quintillion. Second, the 4-bit row matters for AI. Some of the newest AI chips store model numbers in 4 bits to save memory and energy, which means each such number can take only 16 distinct values. Chapter 5 and Chapter 32 explain how models still work with such coarse numbers.
+Combinations of bits grow explosively: 64 bits is not 64 options but about 18 quintillion. The 4-bit row matters for AI: the newest AI chips can store model numbers in 4 bits to save memory and energy, so each such number takes only 16 distinct values (Chapter 5 and Chapter 32 explain how models still work).
 
 > **Analogy:** Bits are light switches. One switch can show two patterns (off, on). A row of eight switches can show 256 patterns, enough to give every key on your keyboard its own pattern. A computer is, at bottom, an enormous panel of switches that flip billions of times per second.
 
@@ -266,7 +266,7 @@ So far, bits have been abstract 0s and 1s. Inside a chip, each bit is controlled
 
 > **Definition — Transistor:** A microscopic switch, made of silicon, that lets electric current flow or blocks it depending on a small voltage applied to its control terminal, called the gate. It has no moving parts and can switch billions of times per second.
 
-A transistor has three connections. Current can flow between two of them, the source and the drain, through a narrow region called the channel. The third connection, the gate, sits over the channel. Put a small voltage on the gate and the channel conducts, so current flows: the switch is on. Remove the voltage and the channel blocks current: the switch is off.
+A transistor has three connections. Current can flow between two of them, the source and the drain, through a narrow channel. The third, the gate, sits over the channel. Put a small voltage on the gate and the channel conducts: the switch is on. Remove it and the channel blocks current: the switch is off.
 
 ```
               gate  (the "handle")
@@ -318,7 +318,7 @@ The behavior of a gate is described by a truth table, which lists every possible
 
 > **Definition — Truth table:** A table listing every possible combination of a circuit's inputs alongside the output it produces. It completely describes what a logic gate or circuit does.
 
-Here are the four gates we need, with a security-door example for each.
+Here are the four gates we need, each with an everyday example.
 
 | A | B | NOT A | A AND B | A OR B | A XOR B |
 |---|---|---|---|---|---|
@@ -520,7 +520,7 @@ Let us trace a tiny program that adds two numbers stored in memory. Suppose memo
 
 Four instructions to add 7 and 5: every action, however trivial, is spelled out. Modern CPUs overlap the steps of several instructions like an assembly line and apply one instruction to several numbers at once, but the loop is the same.
 
-### Cores and threads
+### Cores
 
 Since the mid-2000s, processors have contained several complete copies of this machinery, called cores, each running its own instructions: a laptop might have 8 to 16, a data-center CPU well over a hundred.
 
@@ -611,6 +611,8 @@ The answer AI chip designers found is to put the memory as close to the processo
 
 NVIDIA's B200, for example, surrounds its processor dies with 192 GB of HBM delivering about 8 terabytes per second, more than fifty times a typical laptop's memory bandwidth. Chapter 33 tells the full story of the memory wall and HBM.
 
+> **Try it:** Ask your chatbot: "A model file is 4.7 GB and my laptop's memory delivers 100 GB per second. What is the most tokens per second it could generate for one user? Show the arithmetic." Check its answer against this section, then ask it why batching many users together helps a data center but not your laptop.
+
 > **Key idea:** For AI, the question is often not "how fast can the chip do math?" but "how fast can the chip get the numbers it needs?" Memory bandwidth, not raw arithmetic speed, usually sets how fast your chatbot types.
 
 ## GPUs and accelerators: thousands of simple workers
@@ -622,7 +624,7 @@ A CPU is built for flexibility: a few powerful cores that can handle anything, i
 > **Definition — GPU (graphics processing unit):** A chip with thousands of small, simple cores that apply the same operation to many pieces of data at once. Built for video-game graphics, GPUs turned out to be ideal for the repetitive multiply-and-add math of neural networks.
 
 ```
-CPU: a few big, clever cores         GPU: thousands of small, simple cores
+CPU: a few big, clever cores         GPU: thousands of small cores
 
 +--------+ +--------+                ::::::::::::::::::::::::::::::::
 | core 1 | | core 2 |                ::::::::::::::::::::::::::::::::
@@ -655,6 +657,8 @@ Since 2017 NVIDIA's chips have included tensor cores, circuits that multiply a w
 
 > **Analogy:** A CPU versus a GPU is one brilliant professor versus a stadium full of students with calculators. For a tricky proof, the professor wins; for a million simple multiplications, the stadium wins easily.
 
+> **Try it:** Watch your own GPU work. On Windows, open Task Manager, then Performance, then GPU; on a Mac, open Activity Monitor and choose Window, then GPU History. Play a high-resolution video or spin a 3D globe in an online map and watch the graph climb while the CPU stays calmer.
+
 > **Watch out:** "A GPU is just a faster CPU" is wrong. It is a different design, excellent at one kind of work and poor at others. Every AI server still pairs CPUs, which run the operating system and feed the work, with GPUs or other accelerators.
 
 ## Power and heat
@@ -672,6 +676,8 @@ Power is a rate, like speed; energy is the total, like distance. Here is the lad
 - **The largest AI data centers** are approaching 1 gigawatt, roughly the electricity of 800,000 to a million US homes.
 
 All of that electricity becomes heat that must be carried away by air or liquid cooling (Chapter 40). The International Energy Agency estimated that data centers of all kinds used about 415 terawatt-hours in 2024, about 1.5% of the world's electricity, and projected about 945 TWh by 2030. Per prompt the energy is small; in aggregate it is reshaping electricity grids (Part VII).
+
+> **At the frontier (2026):** Power per rack is still climbing. NVIDIA's published roadmap plans racks of roughly 600 kW for its Rubin Ultra generation (planned for 2027), several times today's 120 to 140 kW, and Epoch AI lists the largest AI site, xAI's Colossus 2 in Memphis, at roughly 1.1 million H100-equivalents of compute. Liquid cooling, once exotic, is now standard for the densest AI racks.
 
 > **Key idea:** Computation is physical. Every operation costs energy and makes heat, which is why the AI boom is also a boom in power plants, transmission lines and cooling systems.
 
@@ -707,7 +713,7 @@ Read spec numbers with three questions. **Which precision?** The rack and the su
 **One training run.** Training costs about 6 × (parameters) × (training tokens) FLOP. Meta's Llama 3.1 405B had 405 billion parameters trained on about 15.6 trillion tokens:
 
 - 6 × 4.05 × 10^11 × 1.56 × 10^13 ≈ 3.8 × 10^25 FLOP.
-- On a single H100 at 9.89 × 10^14 FLOP/s, running perfectly: 3.8 × 10^25 ÷ 9.89 × 10^14 ≈ 3.8 × 10^10 seconds, about **1,200 years**.
+- On a single H100 at 9.89 × 10^14 FLOP/s, running perfectly: 3.8 × 10^25 ÷ (9.89 × 10^14) ≈ 3.8 × 10^10 seconds, about **1,200 years**.
 - Meta used 16,384 H100s, achieving roughly 40% of peak: 3.8 × 10^25 ÷ (16,384 × 9.89 × 10^14 × 0.4) ≈ 5.9 × 10^6 seconds, about **68 days**.
 
 That is why frontier training needs tens of thousands of chips running for months. Epoch AI estimates that the compute used to train frontier models has grown about 5 times per year since 2020, and 2026 frontier runs are believed to be in the range of 10^26 to 10^27 FLOP, though labs rarely disclose them. Chapters 19 and 37 work through these numbers in detail.

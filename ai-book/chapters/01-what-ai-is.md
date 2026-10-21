@@ -19,7 +19,7 @@ Nothing. Start here. This chapter assumes only that you have typed a question in
 
 ## Start with what you already know
 
-You have used a chatbot almost every day for more than a year. You type a question, press Enter, and after a short pause the answer streams onto your screen a few words at a time. You have seen it write a cover letter in seconds and then confidently invent a book that does not exist. You are in good company: ChatGPT alone reached about 900 million weekly users by February 2026, and the 2026 Stanford AI Index reported that generative AI reached 53% of the population within three years of ChatGPT's launch.
+You have used a chatbot almost every day for more than a year. You type a question, press Enter, and after a short pause the answer streams onto your screen a few words at a time. You have seen it write a cover letter in seconds and then confidently invent a book that does not exist. You are in good company: ChatGPT alone reached about 900 million weekly users by February 2026, and the 2026 Stanford AI Index reported that generative AI reached 53% population adoption within just three years.
 
 What you probably do not know is what happens underneath. That is what this book is for. We will use your own chatbot as the running example from the first page to the last, and keep asking one question: what is really happening when I press Enter?
 

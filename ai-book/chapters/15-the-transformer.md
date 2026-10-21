@@ -366,3 +366,275 @@ flowchart LR
 > **At the frontier (2026):** Nobody agrees on one attention design anymore. Sebastian Raschka's LLM Architecture Gallery, surveying 111 recent models in 2026, found grouped-query attention in about 65 percent, sliding-window patterns in about 31 percent, MLA-style attention in about 23 percent, linear-attention hybrids in about 14 percent, and classic full multi-head attention in only about 4 percent. (A model can use several, so the shares overlap.)
 
 The KV cache is a big reason why long chats cost more and why providers price "cached" input differently. Chapters 23 and 33 work through the serving economics.
+
+## Step 6: The feed-forward block, where each token thinks alone
+
+Attention lets tokens share information. The second half of every block lets each token process what it has gathered, on its own, with a small two-layer neural network (an MLP, from Chapters 12 and 14).
+
+> **Definition — Feed-forward network (FFN):** The small multilayer perceptron inside every Transformer block. It is applied to each token's vector separately: expand to a larger size, apply a non-linear activation, shrink back.
+
+In the 2017 design, the FFN expanded each vector to 4 times its size and back. In GPT-2 small, 768 numbers grow to 3,072 and return to 768, which takes 2 × 768 × 3,072 ≈ 4.7 million weights per layer, twice the 2.36 million of the attention part. So in a classic dense Transformer, roughly two-thirds of the parameters sit in feed-forward blocks. Interpretability research suggests these blocks store much of a model's factual associations, acting a bit like a giant lookup table: the pattern "capital of France" switches on hidden units that push the vector toward "Paris."
+
+> **Analogy:** Attention is a meeting where everyone shares notes. The feed-forward block is each person going back to their desk to think about what they just heard, using everything they already know.
+
+Most models now use a gated version called SwiGLU.
+
+> **Definition — SwiGLU:** A gated feed-forward design used in most current LLMs. The input is projected two ways; one branch goes through the smooth Swish activation and then multiplies the other branch number by number, acting as a learned volume knob, before a third matrix projects the result back down.
+
+Here is one hidden unit at work. Swish of a number a is a × sigmoid(a). Suppose the gate branch gives a = 2: Swish(2) = 2 × 0.881 = 1.762. If the other branch gives 0.5, the unit outputs 1.762 × 0.5 = 0.881. If instead the gate gives a = −2, Swish(−2) = −0.238, and the output shrinks to −0.119: the gate has nearly closed. SwiGLU uses three weight matrices instead of two, so designers shrink the hidden size to about 8/3 of the model dimension to keep the parameter count similar.
+
+In many 2026 models, this block is replaced by a mixture of experts: many separate feed-forward networks, with a small router that sends each token to only a few of them.
+
+> **Definition — Mixture of experts (MoE):** A design that replaces one feed-forward block with many "expert" blocks plus a router that picks a few experts for each token, so a model can store a huge number of parameters while using only a small fraction of them per token. Chapter 17 covers it in depth.
+
+## Step 7: The residual stream and one full block
+
+Now assemble the pieces. Every block follows the same two-part recipe, and both parts use the residual connection from Chapters 13 and 14: compute something, then add it back to the token's running vector.
+
+> **Definition — Residual stream:** The running vector each token carries through all the layers of a Transformer. Every attention and feed-forward sub-layer reads from it and adds its result back, so it acts as a shared workspace that accumulates information.
+
+Before each sub-layer, the vector is normalized, rescaled so its numbers stay in a sensible range.
+
+> **Definition — RMSNorm:** A normalization step that divides a vector by the root-mean-square of its numbers (and multiplies by learned scales), keeping values in a stable range. Modern Transformers apply it before each sub-layer ("pre-norm"), which trains more stably than the original "after" placement.
+
+So one block computes, for every token:
+
+`x = x + Attention(RMSNorm(x))`
+`x = x + FeedForward(RMSNorm(x))`
+
+> **Definition — Transformer block:** One repeating unit of a Transformer: a normalization, a self-attention sub-layer and a residual add, followed by a normalization, a feed-forward sub-layer and a residual add. Models stack dozens of identical-looking blocks, each with its own weights.
+
+```mermaid
+flowchart TD
+    IN["Residual stream in<br/>one vector per token"] --> N1["RMSNorm<br/>rescale the vector"]
+    N1 --> ATT["Masked multi-head self-attention<br/>RoPE applied to queries and keys<br/>tokens share information"]
+    ATT --> ADD1["Add result back<br/>into the stream"]
+    IN -->|"skip connection"| ADD1
+    ADD1 --> N2["RMSNorm"]
+    N2 --> FFN["Feed-forward block<br/>SwiGLU MLP or mixture of experts<br/>each token processed alone"]
+    FFN --> ADD2["Add result back<br/>into the stream"]
+    ADD1 -->|"skip connection"| ADD2
+    ADD2 --> OUT["Residual stream out<br/>to the next block"]
+```
+*Figure 15.7: One full Transformer block as used in modern decoder-only models. The two skip connections mean each sub-layer only writes a correction onto the stream. Stack 30 to 120 of these.*
+
+> **Analogy:** The residual stream is a shared whiteboard that travels up through the building. On each floor, two specialists read it: the attention specialist adds notes gathered from other tokens, and the feed-forward specialist adds what it knows. Nobody erases; everyone adds.
+
+Stacking is where depth comes from. GPT-2 small has 12 blocks, GPT-3 has 96, Llama 3 70B has 80 and Kimi K3 has 93. Early blocks tend to handle local grammar and word pieces; middle blocks build up meaning and facts; late blocks prepare the prediction. Chapter 57 shows how interpretability researchers read the residual stream to find features such as "this is French" or "this is a bug in code."
+
+You can now count a model's size. Per block, attention has about 4 × d² weights and the 4× feed-forward block about 8 × d², so a block is about 12 × d². For GPT-3, with d = 12,288 and 96 blocks: 12 × 96 × 12,288² ≈ 174 billion. Add the embedding table (50,257 × 12,288 ≈ 0.6 billion) and you get GPT-3's famous 175 billion parameters. Exercise 7 has you check GPT-2 the same way.
+
+> **Key idea:** A Transformer is one block, repeated. Each block lets tokens exchange information (attention), then lets each token process it (feed-forward), and both write their results onto a running stream that flows from the first layer to the last.
+
+## Step 8: Encoders, decoders and the causal mask
+
+The 2017 Transformer had two halves, like the seq2seq translators of Chapter 14: an encoder that read the source sentence and a decoder that wrote the translation. The decoder used cross-attention to look at the encoder's output.
+
+> **Definition — Cross-attention:** Attention in which one sequence's queries look at another sequence's keys and values, for example a translation decoder looking at the encoded source sentence, or an image generator looking at the text prompt.
+
+Researchers soon found that each half was useful alone.
+
+> **Definition — Encoder-only model:** A Transformer whose tokens can all see each other in both directions, built to understand text rather than generate it. It is used for classification, search and embeddings; BERT is the classic example.
+
+> **Definition — BERT:** A 2018 encoder-only Transformer from Google, trained by hiding words and predicting them from both sides. It transformed language understanding tasks and was added to Google Search in 2019.
+
+> **Definition — Masked language modeling:** A training task in which some tokens (15 percent in BERT) are hidden and the model must predict them from the surrounding text on both sides.
+
+> **Definition — Decoder-only model:** A Transformer in which each token can only see itself and earlier tokens, trained to predict the next token. The GPT family and every major chatbot, including ChatGPT, Claude and Gemini, are decoder-only.
+
+> **Definition — Encoder-decoder model:** A Transformer with both halves: an encoder reads the input fully, and a decoder generates the output while attending to it through cross-attention. The original Transformer, Google's T5 and OpenAI's Whisper speech recognizer use this layout.
+
+A decoder-only model must never see the future during training. If it is learning to predict the word after "The capital of France is," and it can peek at the next position, it will simply copy " Paris" and learn nothing. The causal mask prevents this.
+
+> **Definition — Causal mask:** A rule applied inside attention that blocks each token from seeing tokens that come after it. Future scores are set to minus infinity before softmax, so their weights become exactly zero.
+
+You saw the effect in Figure 15.5: the upper-right triangle of the attention matrix is blank. Mechanically, the scores for future positions are replaced with minus infinity, and e to the minus infinity is 0, so softmax gives them zero weight and spreads all the weight over the past.
+
+> **Analogy:** The causal mask is reading a mystery novel with a rule against peeking ahead. To guess the next word, you may only use pages you have already read.
+
+| Layout | Who can see whom | Trained to | Good for | Examples |
+|---|---|---|---|---|
+| Encoder-only | every token sees every token | fill in hidden words | classification, search, embeddings | BERT (2018) |
+| Decoder-only | each token sees only the past | predict the next token | generating text, chat, code | GPT series, Claude, Gemini, Llama, DeepSeek, Qwen |
+| Encoder-decoder | encoder sees all; decoder sees the past plus the encoder | turn input into output | translation, speech to text | original Transformer, T5, Whisper |
+
+*Table 15.5: The three Transformer layouts.*
+
+Why did decoder-only win for chatbots? It is the simplest design, every token of every document provides a training example, generation falls out naturally, and the KV cache makes it efficient. One recipe, scaled up, turned out to handle translation, summarizing, coding and conversation all at once.
+
+## Step 9: From vectors back to words
+
+After the last block, each token's vector is normalized one final time. Only the vector at the last position matters for choosing the next token: it is multiplied by one more big matrix with one column per vocabulary token.
+
+> **Definition — Unembedding:** The final matrix that turns a token's vector into one score for every token in the vocabulary. Many models reuse the embedding matrix for this, a trick called weight tying.
+
+> **Definition — Logit:** A raw score the model gives a possible next token, before softmax. A higher logit means the model favors that token more.
+
+Suppose that after "The capital of France is," four candidates get these logits (a real model scores all 100,000-plus tokens; we keep four so you can do it by hand): " Paris" 9.0, " a" 6.5, " the" 6.0, " located" 5.0. Subtract the largest: 0, −2.5, −3.0, −4.0. Exponentiate: 1, 0.082, 0.050, 0.018. The total is 1.150, so the probabilities are **Paris 0.869, a 0.071, the 0.043, located 0.016.**
+
+> **Definition — Temperature:** A sampling setting that divides every logit by a number before softmax. Below 1 it sharpens the distribution toward the top choice; above 1 it flattens it, giving unlikely tokens more chance.
+
+Divide the logits by a temperature of 0.5 (doubling the gaps) and " Paris" rises to 0.991. Use a temperature of 2 (halving the gaps) and it falls to 0.608, with " a" at 0.174. A sampler then picks one token at random according to these probabilities, or always the top one ("greedy"). Chapter 18 compares the sampling methods (top-k, top-p, min-p) and explains why temperature 0 is still not perfectly repeatable.
+
+Then the chosen token is appended to the text and the whole process repeats, one token at a time, until the model produces an "end" token.
+
+> **Definition — Autoregressive generation:** Producing output one token at a time, where each new token is chosen using everything before it, then fed back in as input for the next step.
+
+```mermaid
+sequenceDiagram
+    participant U as You
+    participant T as Tokenizer
+    participant M as Model
+    participant C as KV cache
+    participant S as Sampler
+    U->>T: The capital of France is
+    T->>M: five token IDs
+    M->>C: store keys and values for all five tokens
+    M->>S: probabilities for token six
+    S->>U: Paris
+    S->>M: feed Paris back in as token six
+    M->>C: read five cached tokens, add one new
+    M->>S: probabilities for token seven
+    S->>U: a period, then an end token
+```
+*Figure 15.8: Generating a reply. The prompt is processed once, its keys and values are cached, and each new token only needs a small amount of fresh work before reading the cache.*
+
+This is why replies stream onto your screen word by word, and why the first word takes longer than the rest: the model must first process your whole prompt (called prefill), then generates each new token cheaply using the cache (called decode). Chapter 23 explains how serving systems exploit this.
+
+## Step 10: How a Transformer learns
+
+Training uses the same loop as every network in Chapters 12 and 13: forward pass, loss, backpropagation, update. The task for a decoder-only model is next-token prediction.
+
+> **Definition — Next-token prediction:** The training task of predicting each token from all the tokens before it. Applied to trillions of tokens of text, it is how every base language model learns.
+
+The causal mask makes this remarkably efficient. In a single forward pass over a 4,000-token document, position 1 predicts token 2, position 2 predicts token 3, and so on, all at once, because each position can only see its own past. One document gives 3,999 training examples in one go. During training, the model always sees the real previous tokens, not its own guesses.
+
+> **Definition — Teacher forcing:** Training a sequence model by feeding it the true previous tokens at every step, rather than its own possibly wrong predictions, so all positions can be trained in parallel.
+
+> **Definition — Cross-entropy loss:** The standard score for next-token prediction: the negative logarithm of the probability the model gave to the token that actually came next. It is near 0 when the model was confident and right, and large when it was surprised.
+
+If the model gave " Paris" a probability of 0.869 and " Paris" was indeed next, the loss is −ln(0.869) = 0.14. If it had given " Paris" only 0.01, the loss would be −ln(0.01) = 4.6. Backpropagation then nudges every weight, in every embedding, attention matrix and feed-forward block, so " Paris" becomes a little more likely next time. Repeat this for trillions of tokens (Chapter 19), and grammar, facts, styles and reasoning patterns emerge from one simple objective.
+
+Some recent models add a twist: predicting several future tokens at once.
+
+> **Definition — Multi-token prediction (MTP):** Training a model to predict the next few tokens at each position instead of just one. It can improve learning, and the extra predictions can be used to speed up generation. DeepSeek-V3 and NVIDIA's Nemotron 3 Super use it.
+
+> **Watch out:** "It just predicts the next word, so it can't plan." The training objective is next-token prediction, but what a model learns in order to predict well can be rich. Interpretability research has found models internally choosing a rhyming word before writing the line that leads to it (Chapter 57).
+
+## Making attention cheaper
+
+Attention's cost grows with the square of the text length. Much of the engineering of the last few years has gone into reducing that bill.
+
+**FlashAttention (2022)** computes exactly the same answer as standard attention, but faster. A GPU has a small amount of very fast on-chip memory and a large amount of slower main memory. Instead of writing the full grid of scores to slow memory, FlashAttention processes the queries and keys in small tiles that fit in fast memory, keeping a running softmax as it goes, and never stores the whole grid.
+
+> **Definition — FlashAttention:** A way of computing exact attention in small tiles inside a GPU's fast on-chip memory, without ever storing the full score grid. It makes attention much faster and less memory-hungry with no change to the result.
+
+Since then, new versions have tracked each GPU generation. PyTorch 2.11 (March 2026) added a FlashAttention-4 backend that its developers report is 1.2 to 3.2 times faster on compute-bound workloads.
+
+Other methods change what is computed, accepting some approximation:
+
+> **Definition — Sliding-window attention:** Attention in which each token looks only at the most recent N tokens instead of the whole history, capping the cost. Models often alternate sliding-window layers with full-attention layers.
+
+> **Definition — Sparse attention:** Attention in which each token attends to a selected subset of earlier tokens, such as the top-k most relevant ones, instead of all of them. DeepSeek Sparse Attention is an example.
+
+> **Definition — Attention sink:** The tendency of trained models to dump large amounts of attention on the very first token, using it as a place to "park" attention when nothing else is relevant. Some designs add an explicit sink; others remove the need for one.
+
+> **Definition — Gated attention:** Adding a learned sigmoid gate to the output of each attention head, so the model can turn a head's contribution down. A Qwen team paper on it won a NeurIPS 2025 Best Paper award for improving stability and removing attention sinks.
+
+| Method | What it changes | Exact? | Example (as of 2026) |
+|---|---|---|---|
+| FlashAttention | how attention is computed on the chip | yes | standard in training and serving |
+| GQA, MQA, MLA | how much key-value memory is stored | nearly | most open models |
+| Sliding window | each token sees only recent tokens | no | gpt-oss reportedly alternates full and 128-token windows |
+| Sparse attention | each token sees a chosen subset | no | DeepSeek Sparse Attention |
+| Compressed attention | earlier tokens stored in compressed groups | no | DeepSeek V4 |
+| Gated attention | a gate on each head's output | not a shortcut, a stability fix | Qwen3-Next |
+| Linear attention and state-space hybrids | most layers keep a fixed-size memory | no | Qwen3.5, Kimi K3, Nemotron 3 (Chapter 17) |
+
+*Table 15.6: The toolbox for cheaper or steadier attention.*
+
+The most dramatic 2026 example is DeepSeek V4. Its hybrid of Compressed Sparse Attention and Heavily Compressed Attention means that at a 1-million-token context, according to DeepSeek's report, V4-Pro needs only 27 percent of the per-token computation and 10 percent of the KV cache of its predecessor, V3.2.
+
+> **At the frontier (2026):** The open question is whether cheaper attention loses something. Several labs build hybrids where most layers use a fixed-size memory and only one in four uses full attention. MiniMax went the other way with M2 (October 2025), returning to full attention because, it said, hybrids looked fine on benchmarks but degraded on multi-hop reasoning at scale. Chapter 17 lays out both sides.
+
+## Transformers beyond text
+
+Nothing in a Transformer is specific to words. Anything you can chop into a sequence of vectors can be a "token."
+
+> **Definition — Vision Transformer (ViT):** A Transformer that reads an image by cutting it into small square patches, turning each patch into a vector and treating the patches as a sequence of tokens. It was introduced by Google in 2020.
+
+> **Definition — Patch:** A small square of an image (or a small block of video across space and time) that a Transformer treats as one token.
+
+Take a 224 × 224 color image and cut it into 16 × 16 patches. That gives 14 × 14 = 196 patches, each holding 16 × 16 × 3 = 768 numbers. A learned matrix turns each patch into an embedding, position information is added, and from there the ordinary Transformer takes over. Without a CNN's built-in assumptions about nearby pixels (Chapter 14's "training wheels"), ViTs need more training data to match CNNs, but given enough data and compute they match or beat them, another case of the Bitter Lesson.
+
+```mermaid
+flowchart LR
+    A["Photo<br/>224 x 224 pixels"] --> B["Cut into 196 patches<br/>16 x 16 each"]
+    B --> C["Flatten each patch<br/>768 numbers"]
+    C --> D["Linear projection<br/>patch becomes a token vector"]
+    D --> E["Add position information"]
+    E --> F["Standard Transformer blocks"]
+    F --> G["Label, caption, or tokens<br/>for a chatbot to read"]
+```
+*Figure 15.9: How a Vision Transformer turns a picture into tokens. Multimodal chatbots use the same idea to read the photos you upload (Chapter 22).*
+
+The same trick works almost everywhere:
+- **Speech.** Sound is turned into a spectrogram, and slices of it become tokens. OpenAI's Whisper (2022), an encoder-decoder Transformer trained on 680,000 hours of audio, transcribes speech this way (Chapter 46).
+- **Video.** Video is cut into spacetime patches, small cubes covering a few pixels across a few frames, which is how modern video generators work (Chapter 16).
+- **Proteins.** A protein is a sequence of amino acids, and attention between positions helps models such as DeepMind's AlphaFold 2 predict how the chain folds (Chapter 52).
+
+> **Definition — Spectrogram:** A picture of sound showing how much energy each frequency has at each moment in time. Speech models often treat slices of it like image patches or tokens.
+
+> **Key idea:** A Transformer is a general machine for sequences of vectors. Text, images, audio, video and proteins become one kind of problem once they are cut into tokens, which is why one architecture now powers chatbots, image generators, speech recognizers and scientific models.
+
+## The 2017 Transformer versus a 2026 frontier model
+
+The core idea has barely changed since 2017: tokens, embeddings, attention, feed-forward blocks, residual stream, next-token prediction. Almost every component has been upgraded.
+
+| Component | Original Transformer (2017) | Typical open frontier model (2026) |
+|---|---|---|
+| Layout | encoder-decoder, for translation | decoder-only |
+| Size | 65 million (base) and 213 million (big) parameters | hundreds of billions to about 3 trillion total, mostly in mixture-of-experts layers |
+| Depth | 6 encoder + 6 decoder layers | roughly 60 to 95 layers |
+| Context | short sentences, a few hundred tokens | about 1 million tokens |
+| Position | sinusoidal waves | RoPE, sometimes with position-free layers |
+| Normalization | LayerNorm after each sub-layer | RMSNorm before each sub-layer, plus tricks to keep attention scores from blowing up |
+| Attention | full multi-head | GQA or MLA, plus sliding-window, sparse, compressed or linear-attention hybrids |
+| Feed-forward | ReLU MLP | SwiGLU, usually as mixture of experts |
+| Number format | 32-bit | 16-bit, 8-bit and even 4-bit (Chapter 32) |
+| Optimizer | Adam | AdamW, increasingly Muon (Chapter 13) |
+
+*Table 15.7: Same skeleton, new organs. Every row of the right-hand column is still recognizably the 2017 design.*
+
+For a concrete 2026 example, take Kimi K3 from Moonshot AI, released in July 2026 with open weights. According to its model card, it has 93 layers: 69 use Kimi Delta Attention, a linear-attention design with a fixed-size memory, and 24 use gated multi-head latent attention. Its feed-forward layers are mixtures of 896 experts, of which 16 plus 2 shared experts are used for each token, giving about 2.8 trillion parameters in total but about 104 billion active per token. It has a 160,000-token vocabulary and a 1-million-token context. Every one of those terms is now in your vocabulary.
+
+> **At the frontier (2026):** Frontier open models tend to combine the same ingredients: sparse mixture of experts, attention cheaper than the full version (GQA or MLA, sliding windows, sparse or compressed attention, or linear hybrids), 1-million-token contexts, 4-bit to 8-bit number formats, stability tricks such as gated attention, Muon-family optimizers and multi-token prediction. The closed labs (OpenAI, Anthropic, Google) do not publish their architectures, so any confident claim about what is inside GPT-6, Claude or Gemini is speculation unless the company has said so.
+
+```mermaid
+timeline
+    title The Transformer era
+    2017 : Attention Is All You Need
+    2018 : GPT and BERT
+    2019 : GPT-2 with 1.5 billion parameters
+    2020 : GPT-3 with 175 billion parameters
+         : Vision Transformer
+    2021 : RoPE and ALiBi positions
+    2022 : FlashAttention
+         : ChatGPT launches
+    2023 : Grouped-query attention spreads
+    2024 : Multi-head latent attention in DeepSeek-V2
+    2025 : Sparse attention and gated attention
+    2026 : Million-token open models and compressed attention
+```
+*Figure 15.10: Milestones of the Transformer era covered in this chapter.*
+
+## In plain English
+
+When you send a message to a chatbot, a tokenizer first chops it into tokens, pieces of words, using a vocabulary built by repeatedly merging common letter pairs. Each token is swapped for a long list of numbers from a big lookup table. Because the core mechanism has no sense of order, position is mixed in, today usually by rotating the vectors by an angle that depends on where each token sits.
+
+Then the vectors climb through a tall stack of identical blocks. In each block, every token does a quick search of the earlier tokens: it makes a query ("what am I looking for?"), compares it with every other token's key ("what do I offer?"), turns those match scores into percentages with softmax, and takes that blend of their values. That is self-attention, and you did it by hand: "it" put 80 percent of its attention on "cat." Several of these searches run side by side as heads. Then each token passes through a small network on its own, and both steps add their results to a running vector, the residual stream.
+
+At the top, the last token's vector is turned into a score for every possible next token, softmax makes those scores probabilities, and one token is picked. It is appended to the text and the whole thing runs again, with earlier work saved in a KV cache. The model learned all its weights by predicting the next token across trillions of words. Engineers have since made attention cheaper and stretched context to about a million tokens, and the same design now reads images, sound, video and proteins.
+
+## Key terms
+Transformer, Token, Tokenizer, BPE (Byte-Pair Encoding), Vocabulary, Special token, Embedding matrix, Model dimension (hidden size), Positional encoding, RoPE (Rotary Position Embedding), ALiBi (Attention with Linear Biases), Context window, Context extension, Self-attention, Query, key and value (Q, K, V), Attention weights (attention matrix), Scaled dot-product attention, Multi-head attention, Attention head, Induction head, KV cache, MQA and GQA (multi-query and grouped-query attention), MLA (Multi-head Latent Attention), Feed-forward network (FFN), SwiGLU, Mixture of experts (MoE), Residual stream, RMSNorm, Transformer block, Cross-attention, Encoder-only model, BERT, Masked language modeling, Decoder-only model, Encoder-decoder model, Causal mask, Unembedding, Logit, Temperature, Autoregressive generation, Next-token prediction, Teacher forcing, Cross-entropy loss, Multi-token prediction (MTP), FlashAttention, Sliding-window attention, Sparse attention, Attention sink, Gated attention, Vision Transformer (ViT), Patch, Spectrogram

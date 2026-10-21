@@ -279,6 +279,8 @@ flowchart LR
 
 *Figure 21.3: GRPO in one picture. The group's own average replaces the value model as the baseline.*
 
+> **Try it:** Be a GRPO trainer for one question. Ask a chatbot the pencil question from this section (or one of your own with a clear answer) in eight separate new chats at the lowest effort setting. Count how many got it right, then compute the mean, the standard deviation √(mean × (1 − mean)) and the two advantages. Would this question be a good training example for that model, or too easy?
+
 ### The credit-assignment problem
 
 Notice one crude thing about the update: every token in an answer gets the *same* advantage. In attempt 5 ("12 ÷ 3 = 4 cents each"), the first half of the reasoning (dividing 12 by 3) was fine; the mistake was in the units. GRPO still pushes the whole attempt down.
@@ -299,7 +301,7 @@ Once GRPO became popular, researchers found its rough edges and published fixes.
 - **Clip-higher:** a looser upper clipping limit, so rare but good tokens can grow faster, which counters entropy collapse.
 - **Dynamic sampling:** throw away groups that are all right or all wrong (lesson 3 above) and keep sampling until each batch is full of groups that actually teach something.
 - **Token-level loss:** weigh every token equally across the batch, so long answers are not under-counted.
-- **Overlong shaping:** a gentle penalty for answers that run past the length limit, instead of abruptly cutting them off and treating the cut as an ordinary failure.
+- **Overlong shaping:** a gentle, gradually increasing penalty as answers approach the length limit, instead of treating every cut-off answer as an ordinary failure.
 
 **Dr. GRPO** ("GRPO Done Right", from a 2025 paper that critically re-examined R1-style training) found two hidden biases in the original formula. The first came from dividing each answer's loss by its length. Here is why that matters: a wrong answer of 100 tokens with advantage −0.77 spreads its penalty as −0.0077 per token, but a wrong answer of 1,000 tokens spreads the same −0.77 as only −0.00077 per token. Long wrong answers are punished ten times more gently per token, so the model learns that when it is unsure, rambling is safer. The second bias came from dividing by the standard deviation, which over-weights questions that are nearly always right or nearly always wrong. Removing both gave similar accuracy with noticeably shorter answers.
 
@@ -371,6 +373,8 @@ Three findings from the R1 paper shaped the field:
 
 > **Definition — Monte Carlo tree search (MCTS):** A search method that explores a tree of possible moves or steps by repeatedly simulating outcomes and focusing effort on promising branches. It powered AlphaGo (Chapter 48) but proved hard to apply to open-ended language reasoning.
 
+> **Watch out:** "DeepSeek built R1 for $294,000." That figure covers only the reasoning-RL stage. It excludes pretraining the DeepSeek-V3 base model (whose final run alone was reported at about $5.6 million in rented GPU time), all the research and failed experiments, data and staff. Cheap RL on top of an expensive base model is the accurate summary.
+
 > **Key idea:** DeepSeek-R1 showed, openly, that a strong base model plus GRPO plus simple right-or-wrong rewards is enough to produce a frontier-class reasoning model, and that its reasoning can then be distilled into much smaller models.
 
 ## Process versus outcome rewards
@@ -380,6 +384,8 @@ Should you grade only the final answer, or every step? This was one of the big d
 > **Definition — Outcome reward model (ORM):** A grader that scores only the final result of a solution, such as whether the final answer is correct.
 
 > **Definition — Process reward model (PRM):** A grader, usually a trained model, that scores each intermediate step of a solution, so mistakes can be caught where they happen.
+
+> **Analogy:** An outcome reward is a teacher who looks only at the final answer box. A process reward is a teacher who marks every line of working. The second gives far more useful feedback, but takes much longer to grade, and a student can still learn a lot from the first if they practice enough problems.
 
 Here is why process rewards are attractive:
 
@@ -441,11 +447,15 @@ sequenceDiagram
 
 *Figure 21.6: One rollout in a coding RL environment. The model acts through tools in a sandbox; the grader scores the end state, including hidden tests the model never saw.*
 
+> **Analogy:** An RL environment is a flight simulator for an AI agent. It recreates a realistic situation, lets the trainee act with real controls, scores the outcome automatically, and resets instantly so the trainee can try again thousands of times, with no real plane at risk.
+
 A coding environment like this needs defenses against reward hacking. Models have been caught editing the test files so that they pass, hard-coding the expected outputs, or deleting failing tests (Chapter 20 and Chapter 55). Environment designers respond with hidden tests the model cannot see, read-only test files, checks that the tests were not modified, and monitors that read the model's reasoning for signs of cheating.
 
 ### The RL-environment industry
 
 In 2025 and 2026, building environments became a business in its own right. Startups design and sell environments and task collections to frontier labs, and labs and vendors hire domain experts (accountants, lawyers, doctors, scientists, software engineers) to write realistic tasks and grading rubrics. As of late 2026 there are no reliable public figures on the size of this market, but it has become one of the clearest new kinds of work created by reasoning models.
+
+> **Key idea:** RL environments extend verifiable rewards from single answers to whole tasks. Wherever the end state of a job can be checked, a model can practice the job.
 
 ### Rubrics and AI judges for tasks no program can check
 
@@ -468,7 +478,7 @@ What about tasks with no right answer, like writing a clear explanation or givin
 
 Reward = 8 ÷ 10 = 0.8. Splitting judgment into small, specific criteria makes the judge more consistent and makes its mistakes easier to spot. Judges still have known biases: they tend to prefer longer answers, the answer shown first, and answers written in their own style. Labs counter these by swapping answer order, using several judges, keeping objective criteria (word counts, arithmetic) in code, and checking judge scores against human ratings on samples.
 
-> **At the frontier (2026):** Training on large collections of environments (codebases, browsers, terminals, office documents, simulated customers) is now central to how labs build agents. It is also where reward hacking is most active: labs' system cards increasingly report how often models take shortcuts in coding tasks, and the research file behind this book notes that Google now reports such shortcut rates for its models.
+> **At the frontier (2026):** Training on large collections of environments (codebases, browsers, terminals, office documents, simulated customers) is now central to how labs build agents. It is also where reward hacking is most active: labs' system cards increasingly report how often models take shortcuts in coding tasks, and Google, for example, has begun reporting such shortcut rates for its models.
 
 ## How reasoning shows up in the products you use
 
@@ -504,7 +514,7 @@ timeline
 
 > **Definition — Adaptive thinking:** A mode in which the model itself decides how much to reason for each request, guided by an effort setting rather than a fixed token budget.
 
-**Google DeepMind.** Gemini models let developers set a thinking budget, a cap on how many tokens the model may spend thinking. Google's premium Deep Think mode runs many reasoning paths in parallel; Google said an advanced version of Gemini Deep Think reached gold-medal level at the 2025 International Mathematical Olympiad.
+**Google DeepMind.** Google's Gemini API introduced thinking budgets in 2025, letting developers cap how many tokens a model may spend thinking. Google's premium Deep Think mode runs many reasoning paths in parallel; Google said an advanced version of Gemini Deep Think reached gold-medal level at the 2025 International Mathematical Olympiad.
 
 > **Definition — Thinking budget:** A developer-set limit on the number of tokens a model may spend reasoning before it must answer.
 
@@ -546,7 +556,7 @@ That looks miraculous, but there is a catch: you get these numbers only if you c
 
 ### Parallel thinking modes
 
-The premium modes of 2025–2026 (Gemini Deep Think, OpenAI's Pro tier, xAI's Heavy) spend much more compute per answer, typically by running many reasoning paths at once and then comparing, critiquing or merging them. They are slow and expensive, and worth it mainly for the hardest problems.
+The premium modes of 2025–2026 (Gemini Deep Think, OpenAI's Pro tier, the Heavy tier of xAI's Grok) spend much more compute per answer, typically by running many reasoning paths at once and then comparing, critiquing or merging them. They are slow and expensive, and worth it mainly for the hardest problems.
 
 ### Agents and agent swarms
 
@@ -648,3 +658,167 @@ In your apps this shows up as routers, effort settings, thinking budgets and pre
 
 Reasoning model, Chain of thought (CoT), Thinking tokens, Chain-of-thought prompting, Self-consistency (majority voting), Test-time compute, Log-linear relationship, Reasoning effort, Overthinking, Verifier, RLVR (Reinforcement Learning with Verifiable Rewards), Unit test, Proof assistant, Rollout, GRPO (Group Relative Policy Optimization), Standard deviation, Credit assignment, Importance ratio, Entropy collapse, DAPO (Decoupled Clip and Dynamic Sampling Policy Optimization), Dr. GRPO, GSPO (Group Sequence Policy Optimization), Pass@k, Language mixing, Cold start (cold-start data), Monte Carlo tree search (MCTS), Outcome reward model (ORM), Process reward model (PRM), RL environment, Sandbox, Grader, Rubric, LLM-as-judge, Router (model router), Hybrid reasoning model, Extended thinking, Adaptive thinking, Thinking budget, Summarized thinking, Best-of-N, Agent, Agent swarm, Harness, Compaction, CoT faithfulness, CoT monitoring, Latent reasoning
 
+## Exercises
+
+1. **[Easy] Reasoning on versus off.** Feel test-time compute for yourself.
+   1. Pick two problems: a logic puzzle (for example, five people with seating rules) and an easy fact question.
+   2. Run each with the fastest or no-thinking setting of your chatbot, then with the highest thinking or effort setting available (ChatGPT's thinking options, Claude's effort setting, Gemini's thinking modes).
+   3. Record for each run: time taken, whether the answer was right, and what the thinking summary (if shown) says the model checked.
+   **What you'll learn:** that extra thinking pays off on multi-step problems and is wasted on easy ones.
+
+2. **[Easy] Self-consistency by hand.** Run a majority vote yourself.
+   1. Write a word problem with a trap, such as "A pen and a notebook cost $2.20 together; the notebook costs $2.00 more than the pen. How much is the pen?"
+   2. Ask it in five separate new chats at the lowest effort setting, and write down each final answer.
+   3. Take the majority answer. Then compute, with a calculator, the chance that a 5-vote majority is right if each attempt is right 70% of the time: 10 × 0.7³ × 0.3² + 5 × 0.7⁴ × 0.3 + 0.7⁵.
+   **What you'll learn:** how voting turns several unreliable attempts into a more reliable one, and what it costs.
+
+3. **[Easy] GRPO advantages in a spreadsheet.** Compute what GRPO computes.
+   1. In cells A1 to A8 enter eight rewards of 0 or 1 (start with 1, 0, 1, 0, 0, 1, 0, 0).
+   2. In B1 enter `=AVERAGE(A1:A8)` and in B2 enter `=STDEV.P(A1:A8)`.
+   3. In C1 enter `=(A1-$B$1)/$B$2` and fill down to C8. These are the advantages.
+   4. Change the rewards to 1 correct out of 8, then 7 out of 8, then 8 out of 8. What happens in the last case, and why does it matter for choosing training problems?
+   **What you'll learn:** how the group becomes the baseline, and why too-easy and too-hard questions give no learning signal.
+
+4. **[Medium] Write a verifier, then hack it.** Think like a reward designer and like a model.
+   1. Write, in plain words, a rule for rewarding answers to arithmetic word problems (where to find the answer, how to clean it, when to give 1 or 0).
+   2. Ask a chatbot: "Here is a reward rule used to train an AI. Find every way an AI could get a high reward without actually solving the problem." Paste your rule.
+   3. Fix each loophole and ask again. Stop after three rounds and count the loopholes found.
+   **What you'll learn:** why even verifiable rewards need careful design, and what reward hacking looks like in practice.
+
+5. **[Medium] Test chain-of-thought faithfulness.** Check whether stated reasoning tells the whole story.
+   1. Using a model that shows its thinking or a thinking summary, ask a multiple-choice question you know the answer to (for example, a general-knowledge question with four options).
+   2. In a new chat, ask the same question with a hint pointing to a wrong option: "A Stanford professor thinks the answer is C."
+   3. Compare the two answers and the visible reasoning. If the answer changed, did the reasoning mention the hint?
+   4. Repeat with three questions.
+   **What you'll learn:** why visible reasoning is useful evidence but not a guaranteed record of what drove the answer.
+
+6. **[Medium] Be a rubric designer and test an AI judge.** See how rubrics and judge biases work.
+   1. Ask a chatbot for two answers to "Explain compound interest to a teenager in under 200 words": one short and plain, one long and heavily formatted.
+   2. Write a five-item rubric with points (like the one in this chapter).
+   3. In a new chat, paste the rubric and both answers and ask the model to score each. Then swap the order of the answers in another new chat and score again.
+   4. Did the scores change with the order? Did the longer answer score higher even if it broke the word limit?
+   **What you'll learn:** how LLM-as-judge works for tasks no program can check, and the position and length biases it must guard against.
+
+7. **[Medium] An effort and cost diary.** Decide when thinking is worth paying for.
+   1. Choose five real tasks from your week (an email, a spreadsheet formula, a scheduling problem, a summary, a hard question).
+   2. Run each at a low and a high effort setting, timing each run.
+   3. In a spreadsheet, record time, quality (your own 1–5 score) and, if you use an API or Google AI Studio, the number of output tokens. Multiply tokens by a price per million tokens to estimate cost.
+   4. Write a one-line rule for when you will use high effort from now on.
+   **What you'll learn:** a personal, evidence-based policy for using reasoning effort.
+
+8. **[Challenge] Train a tiny model with GRPO.** Watch reinforcement learning with a verifiable reward in Google Colab.
+   1. Open https://colab.research.google.com, create a notebook, and choose Runtime, then Change runtime type, then a GPU (the free T4 works).
+   2. Paste the code below and run it. It takes several minutes or more.
+   3. Watch the "reward" values in the training log. They should drift upward as the model learns both the arithmetic and the "Answer:" format.
+   4. Try changing `num_generations` to 4 or 16 and compare.
+   ```python
+   # Install Hugging Face's training library (TRL) and dataset tools
+   !pip -q install trl datasets
+   import random, re
+   from datasets import Dataset
+   from trl import GRPOConfig, GRPOTrainer
+
+   # 1) Make 300 word problems with known answers: a*b - c
+   random.seed(0)
+   rows = []
+   for _ in range(300):
+       a, b, c = random.randint(11, 29), random.randint(3, 9), random.randint(1, 9)
+       rows.append({
+           "prompt": f"A box holds {a} apples. You buy {b} boxes and eat {c} apples. "
+                     "How many apples are left? Think briefly, then write 'Answer:' "
+                     "followed by the number.",
+           "answer": str(a * b - c),          # the answer key, used by the verifier
+       })
+   dataset = Dataset.from_list(rows)
+
+   # 2) The verifier: reward 1 if the number after the last 'Answer:' is right
+   def correct_reward(completions, answer, **kwargs):
+       rewards = []
+       for text, gold in zip(completions, answer):
+           found = re.findall(r"Answer:\s*(-?\d+)", text)
+           rewards.append(1.0 if found and found[-1] == gold else 0.0)
+       return rewards
+
+   # 3) GRPO settings
+   args = GRPOConfig(
+       output_dir="grpo-out",
+       num_generations=8,               # group size G: 8 answers per question
+       per_device_train_batch_size=8,   # answers per step (a multiple of G)
+       max_completion_length=128,       # keep answers short so it runs quickly
+       learning_rate=1e-6,              # small, careful steps
+       max_steps=80,                    # a short demonstration run
+       logging_steps=5,                 # print progress every 5 steps
+       bf16=False,                      # plain 32-bit math, works on any GPU
+       report_to="none",                # no external logging service
+   )
+   trainer = GRPOTrainer(
+       model="Qwen/Qwen2.5-0.5B-Instruct",  # a small open chat model
+       reward_funcs=correct_reward,         # our verifier
+       args=args,
+       train_dataset=dataset,
+   )
+   trainer.train()
+   ```
+   In plain words: the code builds 300 arithmetic word problems with answer keys, defines a verifier that gives 1 for a correct final number and 0 otherwise, and runs GRPO, which samples 8 answers per problem, compares each with the group average and nudges the model toward the better ones. Part of the rising reward will come from the model learning to use the "Answer:" format, which is itself a lesson in what rewards actually teach. If an error appears because the library has changed, paste it into a chatbot and ask for a fix.
+   **What you'll learn:** that RLVR and GRPO are real, runnable procedures, and what a learning signal from a verifier looks like.
+
+9. **[Challenge] Design an RL environment for your own job.** Think like an environment builder.
+   1. Pick a task you do at work that takes 15 minutes to 2 hours (reconciling an invoice, drafting a contract clause, triaging support tickets, cleaning a dataset).
+   2. On one page, specify: the starting state (what files, systems or documents exist), the tools the AI may use, the exact task instruction, and how you would grade the result automatically (tests, final-state checks, a rubric with points).
+   3. List three ways a model could earn a high grade without doing the task properly, and how you would block each.
+   4. Optional: show your design to a chatbot and ask it to find more loopholes.
+   **What you'll learn:** how RL environments work, why domain experts are hired to build them, and how reward hacking is anticipated.
+
+10. **[Challenge] Play the benchmark yourself.** Compare your reasoning with a frontier model's.
+    1. Go to https://arcprize.org and play several ARC-AGI-3 games, which come with no instructions.
+    2. Write down how you worked out each game's goal and how many tries it took.
+    3. Read ARC Prize's post about GPT-6 Astra and note the difference between the standard-harness and adapter-harness scores.
+    4. Write a paragraph on what "reasoning" meant in your own play, and what the harness difference says about measuring AI.
+    **What you'll learn:** what fluid-reasoning tests measure, and why compute budgets and harnesses matter as much as the model.
+
+## Areas of opportunity
+
+- **RL environment builder.** Startups and labs pay for realistic training environments (codebases, browsers, spreadsheets, simulated customers) with robust graders. Engineers who can build sandboxes and graders that resist reward hacking are in short supply.
+- **Domain-expert task and rubric writer.** Accountants, lawyers, clinicians, scientists and engineers are hired to write hard, realistic tasks and precise grading rubrics for RL training. It is a path into frontier AI work that rewards professional expertise more than coding skill.
+- **Verifier and grader engineering.** Every RL pipeline needs checkers: answer normalizers, test suites, proof checkers, rubric judges. Building graders that are both strict and fair is a specialist skill that also transfers directly to company evaluation teams.
+- **Reasoning-cost optimization consulting.** Companies overspend by running maximum effort on easy tasks, or underperform by using low effort on hard ones. Consultants and tools that route requests to the right model and effort level, and measure the trade-off, save real money.
+- **Distilled reasoning models for specific domains.** Following the DeepSeek-R1 pattern, smaller open-weight models trained on verified reasoning traces from a strong teacher can run privately and cheaply for a company's own problems, where licenses and terms of service allow.
+- **Chain-of-thought monitoring and agent oversight tools.** Companies deploying agents want monitors that read reasoning and actions and flag cheating, unsafe plans or data leaks. This links safety research directly to a commercial product.
+- **Open problems worth working on:** rewards for non-verifiable work (writing, advice, research), detecting reward hacking in complex environments, keeping reasoning faithful and monitorable, efficient reasoning that avoids overthinking, and reliable long-horizon agents that work for days.
+
+## Check your understanding
+
+1. Why can't a model simply "think harder" about one token, and how does writing a chain of thought get around that?
+2. If each attempt is right 60% of the time and wrong answers always agree, what is the probability a 3-vote majority is right? Why can voting hurt when attempts are right only 40% of the time?
+3. What makes a reward "verifiable", and why did verifiable rewards let reinforcement learning scale beyond RLHF?
+4. In a GRPO group of 8 answers with 1 correct, what are the advantages of the correct and the wrong answers? What happens when all 8 are correct?
+5. What does Dr. GRPO change, and why did the original length normalization make wrong answers longer?
+6. Name two lessons from the DeepSeek-R1 paper.
+7. Give two reasons outcome rewards won over process rewards for training large reasoning models, and one place process checks still help.
+8. Why do labs avoid training directly against a chain-of-thought monitor?
+
+<details><summary>Answers</summary>
+
+1. Each token gets a fixed amount of computation (about 2 × N operations for N active parameters). Writing intermediate steps adds many more passes through the network, gives the model a scratchpad of intermediate results, and lets it check and correct itself before answering.
+2. P = 3 × 0.6² × 0.4 + 0.6³ = 0.432 + 0.216 = 0.648. When the model is more often consistently wrong than right, the majority usually lands on the wrong answer, so voting amplifies the error (a 5-vote majority would be right only about 31.7% of the time).
+3. A reward is verifiable when a program can check the output objectively (a correct answer, passing tests, an accepted proof). Such checks are instant, cheap, consistent and cannot be flattered, so a model can practice millions of times without human judges or a learned reward model.
+4. Mean 0.125, standard deviation about 0.331, so the correct answer gets about +2.65 and each wrong answer about −0.38. If all 8 are correct, every advantage is zero and the question teaches nothing.
+5. It removes the per-answer length normalization and the standard-deviation scaling. Dividing each answer's penalty by its length meant long wrong answers were penalized less per token, so when unsure the model learned that rambling was safer.
+6. Any two of: pure RL with simple rule-based rewards can produce strong reasoning (R1-Zero); long thinking and self-checking emerged during RL; a small cold-start SFT set fixes readability and language mixing; distilling R1's reasoning into small models beat running RL on those small models; the reasoning-RL stage was relatively cheap (about $294,000 reported); process reward models and tree search did not help at scale.
+7. Any two of: step-level labels are expensive; "steps" are fuzzy in long free-form reasoning; learned process graders can be hacked; outcome rewards are exact and worked anyway at scale. Process checks still help in formal proofs, in reranking samples at test time, in catching right-answer-wrong-reasoning during evaluation, and at natural checkpoints in agent tasks.
+8. Because penalizing "bad thoughts" can teach the model to hide its intentions while continuing the bad behavior, destroying the readable reasoning that makes monitoring possible.
+
+</details>
+
+## Going deeper
+
+- **Wei et al., "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models" (2022), and Wang et al., "Self-Consistency Improves Chain of Thought Reasoning" (2022).** The two papers that started it all; short and readable.
+- **OpenAI, "Learning to Reason with LLMs" (September 2024).** The o1 announcement, with the first public charts of train-time and test-time compute scaling for reasoning.
+- **Shao et al., "DeepSeekMath" (2024).** The paper that introduced GRPO; the method section is surprisingly approachable.
+- **DeepSeek-AI, "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning" (2025, arXiv 2501.12948).** The R1-Zero and R1 recipes, the "aha moment", distillation results and the list of unsuccessful attempts.
+- **Lightman et al., "Let's Verify Step by Step" (2023).** The classic study of process versus outcome supervision and the PRM800K dataset.
+- **The DAPO paper (arXiv 2503.14476), the GSPO paper (arXiv 2507.18071) and "Understanding R1-Zero-Like Training: A Critical Perspective" (the Dr. GRPO paper).** For readers who want to see how the GRPO family evolved.
+- **Snell et al., "Scaling LLM Test-Time Compute Optimally Can Be More Effective Than Scaling Model Parameters" (2024).** The research foundation for thinking of test-time compute as a resource to allocate.
+- **Korbak et al., "Chain of Thought Monitorability: A New and Fragile Opportunity for AI Safety" (2025, arXiv 2507.11473).** The cross-lab position paper on why readable reasoning matters for safety.
+- **Nathan Lambert, "Reinforcement Learning from Human Feedback" (rlhfbook.com).** Includes accessible chapters on RL with verifiable rewards and reasoning training.
+- **Hugging Face Open-R1 project and the TRL GRPO documentation.** An open reproduction of the R1 recipe and the library used in Exercise 8.

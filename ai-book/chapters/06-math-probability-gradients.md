@@ -140,9 +140,7 @@ That last point is why AI-progress charts are almost always drawn on log scales.
 
 Some relationships are power laws: one quantity varies as another raised to a fixed power. For example, the area of a square is its side length squared. If you put a log scale on *both* axes (a log-log plot), every power law becomes a straight line, and the slope of that line is the power.
 
-> **Definition — Power law:** A relationship where one quantity changes as another raised to a fixed power, such as area = side × side. On a log-log plot it appears as a straight line.
-
-> **Definition — Log-log plot:** A chart with log scales on both axes. Power-law relationships show up as straight lines on it, which makes them easy to spot and extend.
+> **Definition — Power law:** A relationship where one quantity changes as another raised to a fixed power, such as area = side × side. On a log-log plot (a chart with log scales on both axes) it appears as a straight line.
 
 This is how researchers discovered scaling laws. In 2020, Jared Kaplan and colleagues at OpenAI plotted language models' error against the computing power used to train them on log-log axes, and the points fell along a remarkably straight line across many sizes. That straight line told the industry something precious: if you spend 10 times more compute, you can predict roughly how much better the model will get before you spend the money. Chapter 19 tells that story in full, including the 2022 "Chinchilla" refinement.
 
@@ -158,9 +156,7 @@ A probability is a number from 0 to 1 saying how likely something is. 0 means im
 
 > **Definition — Probability:** A number from 0 (impossible) to 1 (certain) that measures how likely something is. It can also be written as a percentage, so 0.25 means 25%.
 
-> **Definition — Event:** Any outcome or group of outcomes you can ask the probability of, such as "roll a 6", "roll an even number" or "the next token is Paris".
-
-We write the probability of an event A as P(A). So P(roll a 6) = 1/6.
+Anything you can ask the probability of, such as "roll a 6" or "the next token is Paris", is called an event. We write the probability of an event A as P(A). So P(roll a 6) = 1/6.
 
 ### The three rules you need
 
@@ -194,11 +190,9 @@ This is why a single surprising chatbot answer tells you little, while a test ov
 
 ## Probability distributions: the shape of uncertainty
 
-A probability distribution lists every possible outcome together with its probability, and the probabilities add up to exactly 1. A fair die's distribution gives 1/6 to each face. A loaded die might give 0.5 to the 6 and 0.1 to each other face (check: 0.5 + 5 × 0.1 = 1).
+A probability distribution lists every possible outcome together with its probability, and the probabilities add up to exactly 1. A fair die's distribution gives 1/6 to each face; when every outcome gets the same share like this, the distribution is called uniform. A loaded die might give 0.5 to the 6 and 0.1 to each other face (check: 0.5 + 5 × 0.1 = 1).
 
 > **Definition — Probability distribution:** A complete list of possible outcomes with their probabilities, which always add up to 1. A bag of marbles is a physical distribution: the share of each color is its probability of being drawn.
-
-> **Definition — Uniform distribution:** A distribution where every outcome is equally likely, like a fair die or a fair coin.
 
 > **Analogy:** A probability distribution is a bag of marbles. If the bag holds 92 red marbles, 3 blue, 2 green, 1 yellow and 2 white, then reaching in blindfolded gives red 92% of the time. Changing the distribution means changing what is in the bag.
 
@@ -318,7 +312,7 @@ flowchart LR
 
 > **Watch out:** Turning temperature up does not make a model more creative in any deep sense, and turning it down does not make it more truthful. Temperature only changes how adventurously the app draws from the same distribution. Chapter 18 adds two more twists: other sampling methods such as top-k and min-p, and why even temperature 0 is not perfectly repeatable on shared servers.
 
-> **At the frontier (2026):** Sampling is now used deliberately to make models *smarter*, not just more varied. Reasoning systems often sample many independent attempts at a hard problem and then pick the best one or take a majority vote, an idea first popularized in 2022 as "self-consistency". The "heavy" or "deep think" modes some labs sell spend extra compute on exactly this kind of parallel sampling. Chapter 21 explains how.
+> **At the frontier (2026):** Sampling is now used deliberately to make models *smarter*, not just more varied. Reasoning systems often sample many independent attempts at a hard problem and then pick the best one or take a majority vote, an idea first popularized in 2022 as "self-consistency". Premium "deep thinking" modes from several labs spend extra compute on related ideas, such as exploring several lines of reasoning in parallel before answering. Chapter 21 explains how.
 
 ## Conditional probability: the heart of every chatbot
 
@@ -465,8 +459,6 @@ Statistics is the art of summarizing many numbers with a few. Start with the "ty
 
 > **Definition — Median:** The middle value once all values are sorted (or the average of the two middle values if there is an even number of them). It is barely affected by extreme values.
 
-> **Definition — Mode:** The value that appears most often in a set of numbers.
-
 Now a billionaire walks in, earning $1 billion (1,000,000 thousand). There are now 10 people.
 
 - New mean: (515 + 1,000,000) ÷ 10 = 100,051.5 thousand, about **$100 million**. Everyone in the bar is now "on average" a multimillionaire.
@@ -538,3 +530,381 @@ Real data is never perfectly clean. Two identical students on two identical days
 Before training, every parameter in a neural network needs a starting value. The obvious choice, all zeros, fails: every neuron in a layer would compute the same thing, receive the same correction, and stay identical forever, like a choir where every singer copies every other. So networks start with small random numbers, usually drawn from a bell curve centered on zero with a small, carefully chosen standard deviation. The randomness breaks the symmetry so that different neurons can learn different things. Chapter 13 explains how the size of that starting spread is chosen.
 
 > **Definition — Random initialization:** Setting a neural network's parameters to small random numbers, often drawn from a normal distribution, before training begins. The randomness lets different parts of the network learn different things.
+
+## Correlation, causation and honest testing
+
+### Things that move together
+
+Two quantities are correlated when they tend to rise and fall together. Taller people tend to weigh more. Hours studied tend to go with higher quiz scores. Statisticians measure this with a correlation coefficient between −1 and 1: near 1 means "strongly move together", near 0 means "no straight-line relationship", and near −1 means "one goes up as the other goes down". A spreadsheet computes it with `=CORREL()`.
+
+> **Definition — Correlation:** A measure, from −1 to 1, of how strongly two quantities tend to move together in a straight-line way. It describes a pattern; it does not say why the pattern exists.
+
+### Correlation is not causation
+
+Ice-cream sales and drownings are strongly correlated. Ice cream does not cause drowning. Hot weather causes both: more people buy ice cream and more people swim. A hidden third factor like this is called a confounder.
+
+> **Definition — Confounder:** A hidden factor that influences two things at once and makes them look causally linked when they are not, like summer heat behind both ice-cream sales and drownings.
+
+This matters enormously for AI, because **models learn correlations, not causes**. A famous kind of failure: train an image classifier to tell "thumbs up" from "thumbs down", but record all the thumbs-up photos in front of a bookcase. The model may learn "bookcase means thumbs up", because that correlation is perfect in the training data. It looks brilliant in testing on similar photos and fails the moment the background changes. Chapter 9 and Chapter 11 show real versions of this, including in medicine.
+
+> **Definition — Sampling bias:** A distortion that arises when the data collected is not representative of the situation the model will face, such as training a speech recognizer mostly on one accent. The model then learns patterns that do not hold in general.
+
+### Don't grade yourself on the answer key
+
+How do you know whether a model has learned the real pattern or just memorized its examples? You test it on examples it has never seen. The standard practice is to split the data three ways before training starts.
+
+> **Definition — Training, validation and test sets:** Three separate portions of data: the training set is used to learn the parameters, the validation set to make design choices during development, and the test set is held back for one final, honest exam on unseen data.
+
+> **Definition — Overfitting:** When a model fits its training examples so closely, noise included, that it does worse on new data. It is like memorizing last year's exam answers instead of learning the subject.
+
+> **Definition — Generalization:** A model's ability to perform well on new examples it was not trained on. Generalization, not a perfect score on training data, is the real goal of learning.
+
+> **Watch out:** A benchmark score is only meaningful if the test questions were truly unseen. When test questions leak into a model's training data (which happens easily when models are trained on much of the internet), the score measures memory, not skill. Chapter 24 explains how to read benchmark claims with this in mind.
+
+## Slopes and derivatives: how much does the output move?
+
+### From speed to slope
+
+Your car's speedometer reads 60 miles per hour. That is a rate of change: how fast distance changes as time passes. Chapter 5 measured the slope of a straight line, which is the same everywhere along the line. But most interesting functions curve, so their steepness changes from place to place. A derivative is the slope at one exact point.
+
+> **Definition — Derivative:** The slope of a function at a single point: how much the output changes for a tiny nudge of the input, divided by the size of the nudge. It answers "if I nudge this input a little, how much does the output move, and in which direction?"
+
+### Finding a slope by nudging
+
+You can measure a derivative with nothing but a calculator. Take `f(x) = x × x` (x squared) and ask for its slope at x = 3, where f(3) = 9. Nudge x a little and see how much f changes:
+
+| Nudge | New x | f(new x) | Change in f | Change ÷ nudge |
+|---|---|---|---|---|
+| 0.1 | 3.1 | 9.61 | 0.61 | 6.1 |
+| 0.01 | 3.01 | 9.0601 | 0.0601 | 6.01 |
+| 0.001 | 3.001 | 9.006001 | 0.006001 | 6.001 |
+
+As the nudge shrinks, the ratio settles on exactly 6. So the slope of x squared at x = 3 is 6. Try it at x = 5 and you will find 10. The pattern is that the derivative of x squared is 2 × x. Mathematicians have worked out such patterns for all common functions, so nobody has to nudge by hand in practice. A few you may meet:
+
+| Function | Its derivative (slope at any x) | Example |
+|---|---|---|
+| A constant, like 7 | 0 | Flat line, no slope |
+| `w × x` | w | Slope of the taxi fare is the per-mile price |
+| `x^2` | 2 × x | At x = 3 the slope is 6 |
+| `e^x` | `e^x` | Its slope equals its own height |
+| `ln(x)` | 1 ÷ x | At x = 2 the slope is 0.5 |
+
+The derivative tells you three useful things:
+
+- **Its sign tells you the direction.** Positive means increasing x makes the output go up; negative means it makes the output go down.
+- **Its size tells you the steepness.** A slope of 6 means the output changes about 6 times as much as the input, near that point.
+- **Zero means flat.** At the very bottom of a valley (or top of a hill) the slope is zero. For `x^2`, that happens at x = 0.
+
+That last point is the key to learning. If you want to make an error as small as possible, you are looking for the bottom of a valley, and you can find which way is "down" from the sign of the slope.
+
+## Gradients: slopes for many knobs at once
+
+### One knob at a time
+
+A model has many knobs, and its error depends on all of them. A partial derivative is the slope with respect to one knob while all the others are held still. Nudge one knob, watch the error, put it back, and nudge the next.
+
+> **Definition — Partial derivative:** The slope of a function with respect to one input while every other input is held fixed. A model with a billion knobs has a billion partial derivatives.
+
+Let's do it for real, on the smallest possible model. Use the Chapter 5 line `prediction = w × x + b`, and a single training example: x = 2, actual answer y = 5. Start with knobs w = 1 and b = 1. Measure the error as the squared error.
+
+- Prediction: 1 × 2 + 1 = 3. Error: 3 − 5 = −2. Squared error (the loss): 4.
+- **Nudge w** to 1.01: prediction 3.02, error −1.98, loss 3.9204. The loss fell by 0.0796. Slope for w ≈ −0.0796 ÷ 0.01 ≈ **−8**.
+- **Nudge b** to 1.01 (w back at 1): prediction 3.01, error −1.99, loss 3.9601. The loss fell by 0.0399. Slope for b ≈ **−4**.
+
+### The gradient points uphill
+
+Put the slopes for every knob into one list and you have the gradient: here, [−8, −4].
+
+> **Definition — Gradient:** The list of partial derivatives for every knob of a function. It points in the direction that increases the output fastest, so stepping the opposite way decreases it fastest.
+
+Both slopes are negative, meaning "increasing this knob decreases the loss". The w slope is twice as steep, so w matters more right now. To reduce the loss, we step *against* the gradient: increase both knobs, w more than b. Use a step size of 0.05:
+
+- new w = 1 − 0.05 × (−8) = 1 + 0.4 = 1.4
+- new b = 1 − 0.05 × (−4) = 1 + 0.2 = 1.2
+- new prediction: 1.4 × 2 + 1.2 = 4.0. Error −1. Loss 1.
+
+One step took the loss from 4 to 1. You have just done one step of the algorithm that trains every neural network in this book.
+
+> **Definition — Loss landscape:** An imaginary terrain where each location is a setting of all the model's knobs and the height is the loss there. Training is a walk downhill across this landscape.
+
+> **Analogy:** The gradient is an arrow painted on a hiking map that always points straight uphill from wherever you stand. To get down, walk the other way.
+
+## The chain rule: gears turning gears
+
+### Gears
+
+Picture three gears. Turning gear A once turns gear B 3 times. Turning gear B once turns gear C 2 times. How many times does C turn for one turn of A? 3 × 2 = 6. To find how a change ripples through a chain of steps, multiply the rates of each step. That is the chain rule.
+
+> **Definition — Chain rule:** The rule that the rate of change through a chain of steps is the product of each step's rate of change. If y changes 6 times as fast as u, and u changes 3 times as fast as x, then y changes 18 times as fast as x.
+
+Worked example. Let `u = 3 × x` and then `y = u × u`. At x = 1, u = 3 and y = 9.
+
+- How fast does y change with u? The slope of u squared is 2 × u = 6.
+- How fast does u change with x? The slope of 3 × x is 3.
+- Chain rule: 6 × 3 = **18**.
+
+Check by nudging: x = 1.001 gives u = 3.003 and y = 9.018009. The change in y is 0.018009, and 0.018009 ÷ 0.001 ≈ 18. It works.
+
+You already used the chain rule without noticing. In the gradient example, the loss depends on the prediction (the slope of "error squared" is 2 × error = 2 × (−2) = −4), and the prediction depends on w (its slope with respect to w is x = 2). Multiply: −4 × 2 = −8. That is exactly the slope we found by nudging.
+
+```mermaid
+flowchart LR
+    W["Knob w"] -->|"slope: x = 2"| P["Prediction<br/>w × x + b"]
+    P -->|"slope: 2 × error = -4"| L["Loss<br/>error squared"]
+    L --> R["Chain rule:<br/>2 × -4 = -8<br/>slope of loss for w"]
+```
+
+*Figure 6.6: The chain rule as gears. Multiply the local slope of each link to get how the final loss responds to a knob at the start.*
+
+### Backpropagation
+
+A neural network is a long chain: knob, layer, layer, layer, and finally the loss. To find the slope of the loss with respect to a knob in the first layer, you multiply local slopes all the way along the chain. Doing that separately for each of a billion knobs would be hopelessly slow. Backpropagation is the trick that makes it fast: start at the loss, work backward one layer at a time, and reuse each layer's results for every knob before it. One backward pass computes every single partial derivative, at a cost of roughly twice a forward pass. (That is the "4 × N" in Chapter 5's 6 × N × D rule.)
+
+> **Definition — Backpropagation:** The method for computing the gradient of the loss with respect to every parameter of a neural network in one backward sweep, by applying the chain rule layer by layer from the output back to the input. It was popularized in a 1986 paper by Rumelhart, Hinton and Williams.
+
+> **Analogy:** Backpropagation is tracing blame back through a relay team. The team's final time was bad. How much was the anchor runner's fault? The runner before? Pass the blame backward, leg by leg, in proportion to each runner's influence.
+
+Nobody does this by hand. Modern frameworks such as PyTorch record every calculation in the forward pass and then compute all the slopes automatically.
+
+> **Definition — Automatic differentiation:** Software that records the steps of a calculation and then computes all the derivatives automatically by applying the chain rule. It is why AI engineers never have to work out a network's slopes by hand. Often shortened to autograd.
+
+Chapter 12 works backpropagation through a small network on paper, so you can see every gear turn.
+
+## Loss functions: one number for "how wrong"
+
+### Squared error, revisited
+
+Training needs a single number that says how wrong the model is, so that "make it smaller" has a precise meaning. That number comes from a loss function. Chapter 5's mean squared error is one: it works well when the model predicts quantities, like a quiz score or a house price.
+
+> **Definition — Loss function:** A formula that turns a model's outputs and the correct answers into a single number measuring how wrong the model is. Training adjusts the parameters to make this number small.
+
+### Cross-entropy: how surprised was the model?
+
+A language model does not predict a quantity; it predicts a probability distribution over tokens. So its loss asks a different question: how much probability did the model give to the token that actually came next? If it gave the true next token a high probability, it was not surprised, and the loss should be small. If it gave it a tiny probability, it was very surprised, and the loss should be big. The standard measure is:
+
+`loss for one token = −ln(probability the model gave to the correct token)`
+
+| Probability given to the correct token | ln of it | Loss (−ln) | How surprised |
+|---|---|---|---|
+| 1.0 | 0 | 0 | Not at all: perfect |
+| 0.9 | −0.105 | 0.105 | Barely |
+| 0.5 | −0.693 | 0.693 | Somewhat |
+| 0.1 | −2.303 | 2.303 | Quite |
+| 0.01 | −4.605 | 4.605 | Very |
+| 0.001 | −6.908 | 6.908 | Shocked |
+
+The minus sign just flips the always-negative log into a positive loss. To score a model on a whole text, average this loss over every token.
+
+> **Definition — Cross-entropy:** The standard loss for models that predict categories or next tokens: the average of minus the log of the probability the model gave to each correct answer. It measures how surprised the model was by the truth.
+
+Why the log, rather than just 1 minus the probability? Three reasons. It turns the product of probabilities across a sentence into a sum (as you saw earlier). It punishes confident mistakes severely: going from 0.01 to 0.001 adds another 2.3 to the loss, so a model learns never to be certain that the truth is impossible. And it connects to information theory: measured in base-2 logs, the loss is the number of bits of surprise, so a coin flip carries exactly 1 bit.
+
+When a lab says its model's pretraining loss went down, this is the number they mean: the average surprise per token on text the model is learning to predict.
+
+### Perplexity
+
+Cross-entropy has a friendlier cousin. Raise e to the power of the average loss and you get perplexity, which reads as "how many equally likely options the model feels it is choosing between". A loss of 2.303 gives a perplexity of e^2.303 = 10: as uncertain as picking from 10 equally likely tokens. A loss of 0.693 gives a perplexity of 2, like a coin flip.
+
+> **Definition — Perplexity:** e raised to the average cross-entropy loss, read as "the number of equally likely choices the model is effectively picking between at each token". Lower is better.
+
+> **Key idea:** A chatbot's pretraining is nothing more than adjusting billions of knobs to make the average surprise at the real next token as small as possible, across trillions of tokens of text.
+
+## Gradient descent: walking downhill in fog
+
+### The algorithm
+
+Gradient descent is the procedure that ties this chapter together:
+
+1. Compute the loss.
+2. Compute the gradient (the slope for every knob).
+3. Move every knob a small step against its slope: `new knob = old knob − learning rate × slope`.
+4. Repeat.
+
+The learning rate is the size of the step. It is chosen by people, not learned.
+
+> **Definition — Gradient descent:** An optimization method that repeatedly moves every parameter a small step in the direction that reduces the loss, using the gradient. It is how virtually every neural network is trained.
+
+> **Definition — Learning rate:** The size of each gradient-descent step, the number multiplied by the slope. Too small and training crawls; too big and it overshoots the valley and can blow up.
+
+### Worked: rolling down a parabola
+
+Use the simplest possible landscape: `loss = (x − 3) × (x − 3)`, whose bottom is obviously at x = 3. Its slope at any point is 2 × (x − 3). Start far away, at x = 10, with a learning rate of 0.1:
+
+| Step | x | Slope 2 × (x − 3) | Move (−0.1 × slope) | New x |
+|---|---|---|---|---|
+| 0 | 10.000 | 14.000 | −1.400 | 8.600 |
+| 1 | 8.600 | 11.200 | −1.120 | 7.480 |
+| 2 | 7.480 | 8.960 | −0.896 | 6.584 |
+| 3 | 6.584 | 7.168 | −0.717 | 5.867 |
+| 4 | 5.867 | 5.734 | −0.573 | 5.294 |
+
+After 10 steps x is about 3.75, after 20 about 3.08, and after 30 about 3.009. Notice that the steps get smaller on their own: near the bottom the slope flattens, so the same learning rate produces gentler moves. The walker slows down as it arrives.
+
+```
+ loss|                                                 .0
+     |                                                .
+     |                                               .
+     |                                             ..
+     |                                           1.
+     |                                          .
+     |                                        ..
+     |                                      2.
+     |.                                   ..
+     | ...                             .3.
+     |    ...                       .4.
+     |       .....             ...5.
+     |            ......*......
+     +--------------------------------------------------------
+          0             3        5                     10   x
+```
+
+*Figure 6.7: Gradient descent on loss = (x − 3) squared, starting at x = 10. The digits mark steps 0 to 5; the star marks the bottom at x = 3. Steps shrink as the slope flattens.*
+
+### Choosing the step size
+
+Now change only the learning rate and watch the first few values of x:
+
+| Learning rate | x over the first steps | What happens |
+|---|---|---|
+| 0.01 | 10, 9.86, 9.72, 9.59, 9.46 | Too small: it crawls and would need hundreds of steps |
+| 0.1 | 10, 8.6, 7.48, 6.58, 5.87 | Steady progress toward 3 |
+| 0.5 | 10, 3, 3, 3, 3 | Lands exactly at the bottom in one step (a lucky fit for this simple bowl) |
+| 1.0 | 10, −4, 10, −4, 10 | Bounces between the two walls forever |
+| 1.1 | 10, −5.4, 13.1, −9.1, 17.5 | Overshoots more each time and explodes |
+
+Real training lives with this trade-off at enormous scale. A learning rate that is too high can make a frontier training run's loss suddenly spike or blow up into meaningless numbers. One that is too low wastes millions of dollars of computing. Chapter 13 covers the schedules labs use, such as starting small, warming up, and slowly decreasing the rate.
+
+> **Analogy:** Gradient descent is walking downhill in thick fog. You cannot see the valley, but you can feel which way the ground slopes under your feet. The learning rate is your stride: giant leaps carry you across the valley and up the other side, while tiny shuffles take forever.
+
+### Valleys, plateaus and smarter walkers
+
+Real loss landscapes are not tidy bowls. They have small dips that feel like the bottom in the fog (local minima), long flat plateaus where the slope is nearly zero and progress stalls, and narrow ravines where the walker zig-zags. In practice, for very large networks, getting stuck in a bad local minimum turns out to be less of a problem than early researchers feared, and why that is so is still an active research question.
+
+> **Definition — Local minimum:** A point lower than everything immediately around it but not the lowest point overall, like a hollow on a mountainside. In fog, it can feel like the bottom.
+
+Two practical improvements are used everywhere. First, computing the exact gradient over trillions of training tokens before every single step would be absurdly slow. Instead, each step uses a small random handful of examples.
+
+> **Definition — Stochastic gradient descent (SGD):** Gradient descent where each step estimates the gradient from a small random batch of examples instead of the entire dataset. The steps are noisier but vastly cheaper, so training makes much faster progress.
+
+> **Definition — Mini-batch:** The small random group of training examples used to compute one gradient step. In language-model training a batch can contain millions of tokens, yet it is still a tiny sample of the full dataset.
+
+Second, the plain rule "step against the slope" can be improved, for example by giving the walker momentum (like a heavy ball rolling through small bumps) or by adapting the step size separately for each knob. The algorithm that turns gradients into knob updates is called the optimizer.
+
+> **Definition — Optimizer:** The algorithm that turns gradients into actual parameter updates. Plain gradient descent is the simplest; Adam, AdamW and Muon are smarter variants used to train modern models.
+
+## The training loop: putting it all together
+
+### Training the Chapter 5 line
+
+Now train the quiz-score line from Chapter 5 with gradient descent, using all four examples at once. The loss is the mean squared error. For a line, the chain rule gives tidy slopes: the slope for w is the average of 2 × error × x, and the slope for b is the average of 2 × error. Start from w = 0 and b = 0, with a learning rate of 0.05.
+
+**Step 0, by hand.** With w = 0 and b = 0, every prediction is 0, so the errors are −3, −5, −8 and −9.
+
+- Loss: (9 + 25 + 64 + 81) ÷ 4 = 179 ÷ 4 = 44.75.
+- Slope for w: average of 2 × error × x = (−6 − 20 − 48 − 72) ÷ 4 = −146 ÷ 4 = −36.5.
+- Slope for b: average of 2 × error = 2 × (−25) ÷ 4 = −12.5.
+- Update: w = 0 − 0.05 × (−36.5) = 1.825, and b = 0 − 0.05 × (−12.5) = 0.625.
+
+Repeat, and here is what happens:
+
+| Step | w | b | Loss (MSE) |
+|---|---|---|---|
+| 0 | 0.000 | 0.000 | 44.75 |
+| 1 | 1.825 | 0.625 | 1.398 |
+| 2 | 2.125 | 0.731 | 0.218 |
+| 3 | 2.173 | 0.752 | 0.186 |
+| 10 | 2.175 | 0.780 | 0.183 |
+| 50 | 2.141 | 0.880 | 0.177 |
+| 100 | 2.119 | 0.943 | 0.1755 |
+| 500 | 2.100 | 1.000 | 0.175 |
+
+The loss collapses in the first few steps, then creeps down for hundreds more. And the knobs end up at exactly w = 2.1 and b = 1.0, the same line of best fit the spreadsheet's shortcut gave in Chapter 5, with the same error of 0.175. Notice that w overshoots a little at first (2.18) and then drifts back as b slowly catches up. Knobs that affect each other often move in such curving paths.
+
+You have now seen the complete machine. Every model in this book, from a spam filter to the largest chatbot, learns with this same loop.
+
+```mermaid
+flowchart LR
+    A["Grab a mini-batch<br/>of examples"] --> B["Forward pass<br/>make predictions"]
+    B --> C["Loss<br/>how wrong, one number"]
+    C --> D["Backward pass<br/>gradient by the chain rule"]
+    D --> E["Optimizer step<br/>nudge every knob downhill"]
+    E --> A
+```
+
+*Figure 6.8: The training loop. For a frontier chatbot it runs for weeks or months over trillions of tokens.*
+
+> **Definition — Training loop:** The repeated cycle at the heart of machine learning: take a batch of examples, predict, measure the loss, compute the gradient by backpropagation, and update the parameters. One trip around the loop is a step.
+
+> **Definition — Epoch:** One complete pass through the entire training dataset. Small models often train for many epochs; frontier language models see most of their data only about once.
+
+### The same loop at the frontier
+
+Scale the line-fitting example up and you have pretraining a chatbot:
+
+| | Chapter 5 line | A frontier language model |
+|---|---|---|
+| Knobs | 2 (w and b) | Billions to trillions |
+| Examples | 4 quiz scores | Trillions of tokens of text |
+| Prediction | A score | A probability for every token in the vocabulary |
+| Loss | Mean squared error | Cross-entropy (average surprise at the real next token) |
+| Gradient | Two slopes, by hand | Every parameter's slope, by backpropagation |
+| Steps | 500 | Hundreds of thousands or more, each on a batch of millions of tokens |
+| Hardware | A spreadsheet | Tens of thousands of GPUs for months (Chapter 19) |
+
+And remember the split between training and inference from Chapter 5. Training runs this loop. Inference, every chat you have ever had, runs only the forward pass with the knobs frozen.
+
+> **At the frontier (2026):** The optimizer, frozen on Adam and AdamW for about a decade, is moving again. Muon, introduced by researcher Keller Jordan in December 2024, adjusts each weight matrix's update so that no single direction dominates. Moonshot AI trained its 1-trillion-parameter Kimi K2 (July 2025) with a Muon variant and reported no loss spikes, DeepSeek says its 2026 V4 models use Muon, and PyTorch now ships a built-in Muon optimizer. Chapter 13 explains how these smarter walkers work.
+
+> **Key idea:** Learning is a loop of four steps: predict, measure the surprise, compute the slopes with the chain rule, and nudge every knob a little downhill. Repeat it trillions of times and a pile of random numbers becomes a chatbot.
+
+### What you now know
+
+Across these two chapters you have built, by hand, every mathematical piece a modern AI system uses.
+
+```mermaid
+mindmap
+  root["The math of AI"]
+    Functions
+      Parameters and knobs
+      Linear and nonlinear
+    Vectors and matrices
+      Dot product
+      Cosine similarity
+      Matrix multiplication
+      Tensors and layers
+    Exponentials and logs
+      Log scales
+      Scaling laws
+    Probability
+      Distributions
+      Softmax and sampling
+      Conditional probability
+      Bayes and base rates
+    Statistics
+      Mean median spread
+      Correlation not causation
+    Calculus of learning
+      Derivatives and gradients
+      Chain rule and backprop
+      Cross-entropy loss
+      Gradient descent
+```
+
+*Figure 6.9: The complete math toolkit from Chapter 5 and Chapter 6.*
+
+You now know enough math to understand how every model in this book learns. When Chapter 12 builds a neural network, it is stacking the layers from Chapter 5 and training them with the loop from this chapter. When Chapter 15 explains attention, it is dot products, softmax and a weighted sum. When Chapter 19 talks about scaling laws, it is straight lines on log-log plots and 6 × N × D. When Chapter 21 describes reasoning models trained with rewards, it is still gradients pushing knobs downhill. The details get richer, but the arithmetic never changes.
+
+## In plain English
+
+A chatbot is never certain what comes next. For every possible next word-piece it computes a probability, a number between 0 and 1, and all those probabilities add up to 1. That list is a probability distribution. The model's raw scores are turned into probabilities by softmax, which raises the number e to each score and divides by the total. Then the app picks one at random, like drawing a marble from a bag. Temperature reshapes the bag before the draw: low temperature makes the favorite almost certain, high temperature gives long shots a chance. That is why you get different answers to the same question.
+
+Everything the model knows is the ability to compute "the probability of this next word, given everything so far", which is called conditional probability. Bayes' rule shows how evidence should update a belief, and why rare things stay unlikely even after evidence that seems strong; a confident-sounding answer is not proof.
+
+Exponentials (repeated multiplying) describe how fast AI computing has grown, about five times a year, and logarithms (counting the multiplications) let us draw that growth as a straight line. Basic statistics, such as the median instead of the mean and correlation not proving causation, keep you from being fooled by numbers.
+
+Learning works by slopes. A loss function gives one number for how wrong the model is; for chatbots it is cross-entropy, the model's surprise at the real next word. The gradient says which way each knob should turn to reduce that surprise, the chain rule lets backpropagation compute it for billions of knobs at once, and gradient descent takes a small step downhill. Repeat that loop trillions of times and you have trained a model.
+
+## Key terms
+
+Exponent, Exponential growth, Doubling time, Exponential decay, Euler's number (e), Logarithm, Natural logarithm (ln), Log scale, Power law, Scaling laws, Probability, Complement, Independence, Expected value, Law of large numbers, Probability distribution, Logit, Softmax, Greedy decoding, Sampling, Temperature, Top-p sampling, Conditional probability, Language model, Log-probability, N-gram model, Base rate, False positive, Bayes' rule, Prior and posterior, Calibration, Mean, Median, Outlier, Variance, Standard deviation, Percentile, Normal distribution, Noise, Random initialization, Correlation, Confounder, Sampling bias, Training, validation and test sets, Overfitting, Generalization, Derivative, Partial derivative, Gradient, Loss landscape, Chain rule, Backpropagation, Automatic differentiation, Loss function, Cross-entropy, Perplexity, Gradient descent, Learning rate, Local minimum, Stochastic gradient descent (SGD), Mini-batch, Optimizer, Training loop, Epoch
+

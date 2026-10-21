@@ -395,3 +395,262 @@ Here are the flagship accelerators of 2026 in one table. Read it with the warnin
 
 > **Watch out:** You cannot rank these chips from this table. A "PF" in FP4 is not a "PF" in FP8; a 9,600-chip torus is not a 72-GPU NVLink domain; and peak numbers say nothing about how well software uses them. The only fair comparisons are the same model, the same precision and the same metric (cost per million tokens, or time to train) on real systems, which is what MLPerf and careful customers try to measure.
 
+## Alternative architectures: the honest trade-offs
+
+### The common enemy is memory
+
+Every chip so far follows the same basic recipe: a big compute die (or two) surrounded by HBM stacks. Chapter 33 showed the weakness of that recipe: during decode, the chip must stream all of the model's weights from HBM for every token, so speed is capped at roughly memory bandwidth ÷ model size. The startups below each attack that limit, or the cost of generality, in a different way.
+
+> **Definition — SRAM (static RAM):** Very fast memory built from transistors on the chip itself. It is far faster than HBM but holds much less per square millimeter and costs much more per byte, so ordinary chips use it only for small caches.
+
+> **Definition — LPU (Language Processing Unit):** Groq's inference chip design, which keeps model weights in on-chip SRAM instead of HBM and runs on a fixed schedule planned in advance by a compiler, so every step takes a predictable time.
+
+> **Definition — Wafer-scale engine:** Cerebras's approach of using nearly an entire silicon wafer as one giant chip, instead of cutting it into hundreds of small chips, so that huge amounts of SRAM and compute sit on one piece of silicon.
+
+**Worked example: holding and running a 70-billion-parameter model at 8 bits (70 GB of weights).**
+
+- **One NVIDIA B300** (288 GB HBM, 8 TB/s): the whole model fits on one chip with room left for the KV cache. The best possible single-user decode speed is about 8,000 GB/s ÷ 70 GB ≈ **114 tokens per second**.
+- **First-generation Groq chips** (about 230 MB SRAM each): 70,000 MB ÷ 230 MB ≈ **305 chips** just to hold the weights.
+- **Groq 3 LPUs** (about 500 MB SRAM, about 150 TB/s each): 70,000 ÷ 500 = **140 chips**. Each chip holds a slice of the layers, and a token passes through them like an assembly line. Each chip reads its 0.5 GB slice in 0.5 GB ÷ 150,000 GB/s ≈ 3.3 µs, so the whole model takes about 140 × 3.3 µs ≈ 0.47 ms per token: an upper bound of roughly **2,100 tokens per second** for one user, ignoring chip-to-chip hops and compute time.
+- **Cerebras WSE-3** (44 GB SRAM): 70 ÷ 44 ≈ 1.6, so **2 wafers**.
+
+```
+   Chips needed to hold a 70B model at 8 bits (70 GB)
+
+   NVIDIA B300, 288 GB HBM   | 1
+   Cerebras WSE-3, 44 GB     | 2   (wafers)
+   Groq 3 LPU, ~0.5 GB       |##############  140
+   Groq gen-1, ~0.23 GB      |##############################  305
+                               (each # = 10 chips)
+```
+
+*Figure 35.4: SRAM-based designs trade capacity for speed. They need many chips (or wafers) to hold a big model, but each byte can be read much faster.*
+
+This is the whole trade-off in one picture. SRAM designs can deliver thousands of tokens per second to a single user, which is why Cerebras is known for very fast inference. But they need many chips per model, leave little room for the KV cache of long conversations, and cost more per user served when demand is about cheap bulk throughput rather than speed. That is exactly why NVIDIA pairs its Groq-based LPX racks (fast weights) with Vera Rubin racks (big memory for the KV cache) instead of replacing one with the other.
+
+### The startups, one by one
+
+> **Definition — Dataflow architecture:** A chip design in which the hardware is configured so data streams through a fixed arrangement of compute units for a given model, rather than fetching instructions one at a time. SambaNova calls its version a Reconfigurable Dataflow Unit (RDU).
+
+> **Definition — In-memory computing:** Doing arithmetic inside or right next to the memory cells that store the numbers, so weights barely move. Digital versions (like d-Matrix's) use ordinary logic; analog versions use electrical currents and are noisier.
+
+> **Definition — Photonic interconnect:** Moving data between chips with light instead of electrical signals, using optical components built into or beside the chip package, to get more bandwidth per watt over longer distances.
+
+| Company | Core bet | Where it shines | What it gives up | Status, late 2026 |
+|---|---|---|---|---|
+| Cerebras | Wafer-scale chip: 46,225 mm², 4 trillion transistors, 900,000 cores, 44 GB SRAM (WSE-3) | Very fast single-user inference, thousands of tokens per second | Capacity per wafer is small for the largest models; specialized systems and a smaller software ecosystem | Vendor lists newer WSE-3T and CS-4 systems; OpenAI reportedly signed for 750 MW of Cerebras capacity in January 2026 |
+| Groq | SRAM-only, compiler-scheduled LPU | Low, predictable latency for decode | Hundreds of chips per large model; little memory for long contexts | Technology licensed to NVIDIA (about $20B reported) and sold as Groq 3 LPX; GroqCloud still runs |
+| SambaNova | Reconfigurable dataflow (SN40L) with three memory tiers: SRAM, HBM and DDR | Hosting many models at once and switching between them quickly | Competes with GPUs on general workloads with a far smaller ecosystem | Intel invested in 2026 |
+| Etched | Sohu, an ASIC hard-wired for transformer inference | Potentially high efficiency if transformers stay dominant | Useless for architectures that are not transformers (state-space models, new hybrids; see Chapter 17) | Little independent public performance data in this book's sources |
+| Tenstorrent | RISC-V cores and an open-source software stack, led by veteran chip designer Jim Keller; also licenses its designs | Openness, licensable IP, lower cost | Unproven at frontier-cluster scale | Sells chips (Blackhole) and licenses IP |
+| d-Matrix | Corsair: digital in-memory compute for inference | Energy efficiency by not moving weights | Limited memory capacity and maturity | Inference-focused products |
+| Lightmatter, Ayar Labs, Celestial AI | Optical input/output for chips | Bandwidth per watt and reach | Manufacturing maturity and reliability at scale | Developing optical I/O; not yet mainstream in AI clusters |
+
+*Table 35.8: Alternative AI chip architectures and what they trade away. Performance claims in this space are mostly vendor claims.*
+
+> **Definition — Transformer-specific ASIC:** A chip whose circuits are hard-wired for the operations of transformer models. It can be very efficient but becomes obsolete if the dominant model architecture changes.
+
+```mermaid
+quadrantChart
+    title Where AI chips place their bets, illustrative
+    x-axis General purpose --> Specialized
+    y-axis Small fast memory --> Large memory capacity
+    quadrant-1 Specialized with big memory
+    quadrant-2 Flexible with big memory
+    quadrant-3 Flexible with small fast memory
+    quadrant-4 Specialized with small fast memory
+    NVIDIA Rubin: [0.25, 0.75]
+    AMD MI455X: [0.3, 0.88]
+    Google TPU 8i: [0.6, 0.72]
+    SambaNova SN40L: [0.6, 0.82]
+    Cerebras WSE-3: [0.68, 0.38]
+    Groq LPU: [0.82, 0.12]
+    Etched Sohu: [0.92, 0.55]
+    d-Matrix Corsair: [0.78, 0.25]
+```
+
+*Figure 35.5: A rough map of design bets. Positions are judgments for teaching, not measurements.*
+
+### Why startups struggle, and where the openings are
+
+The history of AI chip startups is full of good hardware that never found enough customers. The obstacles are the ones you have already met: the CUDA ecosystem; NVIDIA's yearly cadence, which moves the target before a startup's two-to-three-year design cycle finishes; competition for TSMC capacity, CoWoS packaging and HBM; and buyers' fear of betting billions on a small supplier. Then there is the specific risk of over-specializing: a chip tuned for 2024's models may arrive in a 2027 world of different architectures.
+
+But 2025–26 also opened doors. Inference is now a huge market, it splits into phases with different needs, and some customers will pay a premium for speed (an agent that thinks ten times faster finishes tasks ten times sooner). NVIDIA's decision to license Groq's technology rather than ignore it is the clearest signal that the alternative ideas have real value.
+
+> **At the frontier (2026):** China has its own crowded field of AI chipmakers (Huawei's Ascend line plus Cambricon, Hygon, Moore Threads, MetaX, Biren, Alibaba's T-Head and Baidu's Kunlunxin), shaped by US export controls that block access to NVIDIA's best chips and to advanced manufacturing tools. Huawei's strategy is many weaker chips joined by lots of optics and power into "SuperPoDs." Chapter 36 covers this in depth.
+
+## Edge NPUs and TOPS: AI in your pocket
+
+Your phone and laptop also contain AI accelerators, much smaller ones.
+
+> **Definition — NPU (Neural Processing Unit):** A small AI accelerator built into a phone, tablet or laptop processor (for example Apple's Neural Engine or Qualcomm's Hexagon) to run AI features efficiently on the device's battery.
+
+> **Definition — TOPS (trillions of operations per second):** The speed rating usually quoted for NPUs, typically counting 8-bit integer operations. It is not directly comparable to the FLOPS figures of data-center chips, which count floating-point operations at a stated precision.
+
+| Device or chip | What it does | Notes |
+|---|---|---|
+| Apple Neural Engine | On-device AI in iPhones, iPads and Macs | Present since the A11 chip (2017); the M5 (October 2025) also added a "Neural Accelerator" inside each GPU core |
+| Microsoft "Copilot+ PC" standard | Windows AI features run locally | Requires an NPU of 40+ TOPS (Qualcomm Snapdragon X, Intel Lunar Lake and Panther Lake, AMD Ryzen AI) |
+| Google Tensor G5 (Pixel 10, 2025) | Runs Gemini Nano on the phone | Made by TSMC |
+| NVIDIA DGX Spark | Desktop AI computer | GB10 chip with 128 GB of unified memory; reportedly shipped October 2025 |
+| NVIDIA Jetson Thor (2025) | Computer for robots | See Chapter 49 |
+
+*Table 35.9: Edge AI chips. Specific specs for several of these devices were flagged for verification in this book's research, so only basic facts are listed.*
+
+> **Definition — Unified memory:** A design (Apple silicon, NVIDIA's GB10) in which the CPU and GPU share one pool of memory, so a large model can fit without being copied between separate memories.
+
+The limit on the edge is the same as in the data center, only tighter: memory. An 8-billion-parameter model at 4 bits needs about 4–5 GB. A typical laptop's memory moves about 60–120 GB/s, so the best-case speed is about 120 ÷ 4.7 ≈ 25 tokens per second. A 70-billion-parameter model at 4 bits needs about 35 GB, which only fits on machines with large unified memory, such as high-end Macs or a DGX Spark. Apple's own on-device foundation model is reportedly around 3 billion parameters. That is why your phone app usually sends your request to a data center, and only small tasks run fully on the device. Chapter 30 shows how to run models locally, and Chapter 53 covers edge AI applications.
+
+> **Watch out:** "My phone runs ChatGPT" is almost never true. The app sends your words to data-center GPUs. On-device models are a few billion parameters at most, limited by memory and battery.
+
+## Market structure and the mega-deals of 2025–26
+
+### Who holds what
+
+NVIDIA dominates sales of AI accelerators, with $89 billion of data-center revenue in a single quarter and demand that has outrun supply. AMD is the main merchant alternative. Custom ASICs, mostly designed with help from Broadcom and Marvell, are growing fast from a smaller base. Buyers are concentrated too: a handful of hyperscalers, the frontier labs, and GPU-rental "neoclouds" such as CoreWeave, Nebius, Lambda and Crusoe.
+
+> **Definition — Neocloud:** A newer cloud company specializing in renting AI accelerators, such as CoreWeave, Nebius, Lambda or Crusoe, as opposed to the general-purpose hyperscalers.
+
+The market is growing fast enough for several winners: custom chips are growing quickly, yet NVIDIA's own sales are still climbing steeply.
+
+### The deals
+
+From September 2025 onward, AI labs signed chip deals measured not in chips but in gigawatts.
+
+| Date | Deal | What was announced | Confidence |
+|---|---|---|---|
+| Sept 2025 | OpenAI–NVIDIA | Letter of intent for at least 10 GW of NVIDIA systems, with NVIDIA intending to invest up to $100B progressively; first gigawatt on Vera Rubin in 2H 2026 | Later reports (February 2026) said the plan was shelved in favor of a $30B NVIDIA equity investment in OpenAI |
+| Sept 2025 | NVIDIA–Intel | $5B investment; joint x86 CPUs with NVLink and PC chips | Announced |
+| Oct 6, 2025 | OpenAI–AMD | 6 GW over several generations; 1 GW of MI450 from 2H 2026; warrant for AMD shares | Announced; warrant details reported |
+| Oct 13, 2025 | OpenAI–Broadcom | 10 GW of OpenAI-designed accelerators plus Ethernet, 2H 2026 to 2029 | Announced; first deployment unconfirmed |
+| Oct 2025 | Anthropic–Google | Up to 1 million TPUs, well over 1 GW in 2026 | Announced |
+| Oct 2025 | Amazon–Anthropic | Project Rainier switched on with about 500,000 Trainium2 chips | Announced by Amazon |
+| Fall 2025 | Meta–Rivos | Acquisition of a RISC-V chip startup to accelerate MTIA | Valuation (about $2B) reported |
+| Nov 2025 | Anthropic–Microsoft–NVIDIA | About $30B of Azure compute, up to 1 GW of NVIDIA systems; NVIDIA and Microsoft to invest up to $10B and $5B | Figures reported |
+| Dec 2025 | NVIDIA–Groq | Non-exclusive license of Groq's inference technology and hiring of its leaders | Price (about $20B) reported |
+| Jan 2026 | OpenAI–Cerebras | 750 MW plus an option on 1.25 GW, 2026–2028 | Reported |
+| Apr 2026 | Anthropic–Google–Broadcom | "Multiple gigawatts" of next-generation TPUs from 2027 | Announced; about 3.5 GW implied by a filing (reported) |
+| Apr 2026 | Anthropic–Amazon | Up to 5 GW; nearly 1 GW of Trainium online by end of 2026 | Announced; dollar figure reported |
+
+*Table 35.10: Major AI chip and compute deals, September 2025 to April 2026, with how firm each detail is.*
+
+> **Definition — Letter of intent:** A document stating that two parties plan to make a deal on certain terms, which is not yet a binding contract. Several headline AI compute "deals" began as letters of intent.
+
+**Worked example: translating a gigawatt deal.** A deal in gigawatts describes *power*, not chips. Using Chapter 34's rule of thumb (about 1.8 kW per GPU slot and a PUE of 1.2), one gigawatt holds roughly 460,000 accelerators.
+
+- OpenAI–Broadcom, 10 GW: about 10 × 460,000 ≈ **4.6 million** accelerator slots (fewer if each chip draws more power).
+- Cost: Epoch AI estimates about $38 billion of up-front spending per gigawatt of IT power for a whole site, and NVIDIA's CEO has reportedly cited roughly $50–60 billion per gigawatt including chips. Either way, 10 GW is on the order of **several hundred billion dollars** spread over years.
+- Add up the gigawatts in Table 35.10 (roughly 35–40 GW, counting the reshaped OpenAI–NVIDIA plan) and multiply by $38–60 billion: well over a trillion dollars, several years of NVIDIA's current data-center sales of about $356 billion a year.
+
+> **Watch out:** Read the verbs. "Up to," "intends to," "letter of intent" and "multiple gigawatts" are not purchase orders. Deals are staged, depend on financing and power, and sometimes change shape (the OpenAI–NVIDIA plan reportedly did). Many also involve the chip seller investing in the buyer, a "circular" pattern Chapter 43 examines.
+
+```mermaid
+flowchart LR
+    NV["NVIDIA"] -- "chips and investment" --> OAI["OpenAI"]
+    AMD["AMD"] -- "6 GW of GPUs, share warrant" --> OAI
+    BRCM["Broadcom"] -- "10 GW custom chips" --> OAI
+    CER["Cerebras"] -- "750 MW, reported" --> OAI
+    GOOG["Google"] -- "up to 1M TPUs" --> ANT["Anthropic"]
+    BRCM -- "builds TPUs" --> GOOG
+    AWS["Amazon"] -- "Trainium, up to 5 GW" --> ANT
+    MS["Microsoft"] -- "Azure compute" --> ANT
+    NV -- "GPUs and investment" --> ANT
+    NV -- "license and hires" --> GROQ["Groq"]
+    NV -- "5 billion dollar stake" --> INTC["Intel"]
+```
+
+*Figure 35.6: The web of 2025–26 chip deals. Arrows point from supplier to customer; several suppliers also invest in their customers.*
+
+### China and export controls, briefly
+
+US export controls bar NVIDIA's most advanced chips from China. A January 2026 rule allowed case-by-case licenses for H200-class chips, but China reportedly restricted imports; in NVIDIA's quarter ending July 2026, H200 sales to China were under 1% of data-center revenue, and its outlook assumes none. Chinese labs therefore rely increasingly on Huawei's Ascend chips (the 950 series in 2026, with the 960DT pulled forward to early 2027) and other domestic suppliers. Chapter 36 tells the full story.
+
+## Roadmaps 2026–2028
+
+```mermaid
+timeline
+    title Announced AI accelerator roadmaps
+    2026 : NVIDIA Vera Rubin NVL72 and Groq 3 LPX : AMD MI455X in Helios racks : Google TPU 8t and 8i : AWS Trainium3 at scale : Microsoft Maia 200 : Huawei Ascend 950 series
+    2027 : NVIDIA Rubin Ultra in Kyber racks, about 600 kW : AMD MI500 on 2 nm with HBM4E : next-generation TPUs for Anthropic : Huawei Ascend 960DT and 960PR
+    2028 : NVIDIA Feynman, details reported : Huawei Ascend 970
+    2029 : OpenAI-Broadcom 10 GW target : Huawei Ascend 980
+```
+
+*Figure 35.7: Announced roadmaps as of October 2026. Dates beyond 2026 are plans and often slip.*
+
+Read across the lanes and five patterns stand out:
+
+1. **A yearly cadence.** NVIDIA, AMD and Huawei now announce new data-center chips about every year, which squeezes rivals' design cycles and shortens how long any chip stays state of the art.
+2. **The rack is the product.** NVL72, Kyber, Helios, TPU superpods and Trainium UltraServers are all sold as systems.
+3. **Training and inference split.** TPU 8t/8i, Rubin plus LPX, and inference-only chips from Microsoft, AWS and startups.
+4. **Memory first.** HBM4 in 2026 and HBM4E in 2027, custom HBM base dies (Feynman's "custom HBM"), and much more on-chip SRAM (TPU 8i's 384 MB, Maia's 272 MB).
+5. **Power and open interconnects.** Racks heading toward 600 kW and beyond on 800 V DC, and open standards (UALink, Ultra Ethernet) competing with NVLink, even as NVIDIA opens NVLink through Fusion.
+
+## Physics limits and the long bets
+
+### The trends
+
+Epoch AI's trend data (updated February 2026) gives the big picture:
+
+- AI chip performance per dollar improves about **1.49× per year** (since 2023).
+- GPU energy efficiency improves about **1.34× per year**.
+- Frontier training compute grows about **5× per year**, and total installed AI compute about **3.4× per year**.
+
+Divide the last by the second: if frontier training compute grows 5× a year and efficiency only 1.34×, the energy behind a frontier run grows roughly 5 ÷ 1.34 ≈ 3.7× a year. Efficiency gains are real but are swamped by demand.
+
+> **Definition — Jevons paradox:** The observation (from 1860s coal use) that making a resource more efficient to use can increase total consumption, because cheaper use invites much more of it. AI compute is a textbook case: cheaper tokens lead to far more tokens.
+
+### The walls
+
+- **The reticle limit.** Dies cannot grow past about 858 mm², so chips grow sideways (multi-die, chiplets) and now upward.
+- **Power density.** Racks moving from 130 kW toward 600 kW and 1 MW push liquid cooling and 800 V DC (Chapters 34, 39 and 40).
+- **The memory wall.** Over about twenty years, peak compute grew roughly 3× every two years while DRAM bandwidth grew about 1.6× and interconnect about 1.4× (Gholami and colleagues, 2024). GPU memory bandwidth has grown about 28% a year since 2008.
+- **Interconnect energy.** Moving a bit across a board or a building costs far more energy than computing with it, which drives co-packaged optics and optical I/O.
+- **The precision floor.** FP4 can represent only 16 distinct values. Going lower than 4 bits for general training is an open research question.
+
+### The bets
+
+> **Definition — 3D stacking (hybrid bonding):** Building chips upward by bonding dies directly on top of each other, copper pad to copper pad, so logic and memory can sit microns apart. NVIDIA's 2028 Feynman is reported to use 3D die stacking.
+
+> **Definition — Analog computing:** Doing math with continuous electrical quantities (such as currents adding up in a wire) rather than 0s and 1s. It can be very energy-efficient but is noisy and imprecise, which is hard for large neural networks.
+
+> **Definition — Photonic computing:** Performing calculations such as matrix multiplications with light passing through optical components. Converting between electrical and optical signals adds overhead, and it is not yet competitive for frontier AI.
+
+> **Definition — Neuromorphic chip:** A chip designed to mimic the brain's spiking neurons, computing only when signals arrive. It is promising for very low-power sensing, but it does not run today's large language models (see Chapter 54).
+
+> **Definition — Quantum computer:** A machine that computes with quantum bits that can hold combinations of 0 and 1. It may one day solve certain chemistry and math problems, but it is not an AI accelerator today and has no near-term path to training frontier models.
+
+Ranked by how soon they matter: 3D stacking and co-packaged optics are arriving now, on vendor roadmaps. In-memory compute is shipping in niche inference products. Photonic computing and analog AI remain research bets. Quantum computing is not part of the AI hardware story for the foreseeable future, whatever headlines suggest.
+
+> **Watch out:** "Quantum computers will soon replace GPUs for AI" is a common misconception. Neural-network training and inference run on classical chips, and nothing on any announced roadmap changes that this decade.
+
+## How to read a chip announcement
+
+Run every announcement through this checklist:
+
+1. **Precision, dense or sparse, per what?** (Chapter 34's detective questions.)
+2. **Memory:** capacity and bandwidth per chip. For inference these often matter more than FLOPS.
+3. **Scale-up:** how many chips share the fast fabric, and at what bandwidth?
+4. **Availability:** announced, sampling, generally available or shipping in volume? Roadmap dates slip.
+5. **Software:** which frameworks and serving engines support it today, and who runs production work on it?
+6. **Power and cooling:** watts per chip and kilowatts per rack, and whether liquid cooling is required.
+7. **Cost:** performance per dollar and per watt over the hardware's life (total cost of ownership), not list price alone.
+8. **Who measured it?** Vendor claim, MLPerf result or independent customer?
+9. **Deal language:** gigawatts or chips, "up to" or firm, letter of intent or contract?
+
+> **Key idea:** Hardware specs are the beginning of the story, not the end. Software, memory, networking, supply and price decide who wins, which is why a company with competitive chips can still struggle and why NVIDIA's lead has lasted so long.
+
+## In plain English
+
+AI chips come from a surprisingly small club. NVIDIA designs the GPUs that most AI runs on and earns about $89 billion a quarter from data centers, at a 75% gross margin. Its real advantage is not just fast chips but twenty years of CUDA software and the fact that it now sells whole racks (CPUs, GPUs, switches, network cards and software designed together). AMD sells similar GPUs with more memory and a push for open standards, but has lagged on software.
+
+Because NVIDIA's margins are so high, every big cloud company builds its own chip: Google's TPUs (now split into a training chip and an inference chip), Amazon's Trainium, Microsoft's Maia, Meta's MTIA, and OpenAI's chip with Broadcom. Specialist firms like Broadcom and Marvell help them build these. Startups such as Cerebras and Groq bet on keeping the whole model in super-fast on-chip memory, which makes answers very fast for one user but needs many chips; NVIDIA liked Groq's idea enough to license it.
+
+Your phone and laptop have tiny AI chips called NPUs, but memory limits them to small models, so most chatbot requests still go to a data center.
+
+In 2025–26 the labs signed deals measured in gigawatts, worth hundreds of billions of dollars, though many are "up to" promises. Roadmaps show a new generation every year, racks heading toward a megawatt, and memory as the main battleground. And whenever you see a chip headline, ask: which precision, dense or sparse, per chip or per rack, shipping or just announced, and who measured it?
+
+## Key terms
+
+Merchant silicon, Fabless, ASIC (Application-Specific Integrated Circuit), Hyperscaler, Gross margin, Dense vs. sparse FLOPS, NVFP4 and MX formats, Disaggregated serving, MLPerf, CUDA, Kernel (GPU kernel), GPU library, NCCL and RCCL, Framework (PyTorch, JAX), ML compiler (XLA, Triton, torch.compile), Serving engine, Software moat (lock-in), ROCm, HIP, Warrant, Systolic array, TPU (Tensor Processing Unit), Trainium and Inferentia, RISC-V, Design partner (custom silicon partner), Tape-out, SRAM (static RAM), LPU (Language Processing Unit), Wafer-scale engine, Dataflow architecture, In-memory computing, Photonic interconnect, Transformer-specific ASIC, NPU (Neural Processing Unit), TOPS (trillions of operations per second), Unified memory, Neocloud, Letter of intent, Jevons paradox, 3D stacking (hybrid bonding), Analog computing, Photonic computing, Neuromorphic chip, Quantum computer
+

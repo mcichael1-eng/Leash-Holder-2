@@ -279,6 +279,8 @@ Your traffic enters a data center through fiber cables from several network carr
 
 > **Watch out:** "The cloud" sounds weightless, but it is concrete, steel, copper, glass, water pipes and gas turbines in specific towns. Every chatbot answer comes from a real machine drawing real electricity in a real building.
 
+> **Try it:** Open Epoch AI's data center hub (epoch.ai/data/data-centers) and find the largest AI data center in or nearest to your country. Note its power in megawatts, its owner and its chips, then divide the power by about 1.2 kilowatts (an average US home's draw) to see how many homes' worth of electricity it represents.
+
 ## The cloud and the hyperscalers
 
 Before about 2006, a company that wanted servers bought them, installed them in its own building and hired people to run them. Then Amazon Web Services launched in 2006 and offered something new: rent computers by the hour over the internet, start them in minutes, and switch them off when you are done. That is cloud computing.
@@ -314,6 +316,8 @@ Worked example: renting GPUs. In October 2026, Lambda listed on-demand H100 GPUs
 - 8 GPUs for a full year (8,760 hours): about $280,000.
 
 Renting is ideal for short or unpredictable jobs. Companies that will keep GPUs busy around the clock for years sign much cheaper long-term contracts, or buy and run their own (Chapter 43).
+
+> **Key idea:** The cloud turns computers into a utility you rent by the hour. That is what lets a two-person startup use the same GPUs as a giant company for an afternoon, and why AI labs, not just their customers, are among the cloud's biggest renters.
 
 > **Analogy:** The cloud is like using taxis and rental cars instead of owning a car: you pay only for the trips you take, and someone else handles maintenance. A hyperscaler is a city that owns its own buildings; a neocloud is a hotel chain renting rooms (GPUs) by the night or the year.
 
@@ -353,6 +357,8 @@ APIs charge by the token, usually quoted per million tokens, with output (what t
   - Output: 600 × $10 ÷ 1,000,000 = $0.006.
   - Total: about $0.01, one cent.
 - A thousand such turns cost about $10.
+
+> **Key idea:** Every chatbot app, AI-powered product and agent is built on API calls: a JSON request goes in over HTTPS, a JSON response comes back, and the bill is counted in tokens.
 
 APIs also enforce rate limits: caps on requests or tokens per minute, so no single customer can swamp the service. Exceed one and you get status code 429; well-written programs wait a moment and try again, waiting longer after each failure. Chapter 26 shows you how to make API calls yourself, and Chapter 28 explains how agents are built as API calls in a loop.
 
@@ -415,3 +421,280 @@ The streaming itself usually uses a simple web technique called server-sent even
 > **Key idea:** Your Wi-Fi is almost never the reason a chatbot types slowly. A chat answer needs only a few kilobytes per second. The pause before the first word comes from distance, queues and the model reading your conversation; the typing speed after that comes from the GPUs in the data center.
 
 > **Try it:** Open fast.com or speedtest.net. Note two numbers: your download speed (bandwidth, in Mbps) and your latency or "ping" (in milliseconds). Then compute how long a 4 GB file would take to download at your speed.
+
+## The journey of one chatbot message
+
+Now put it all together. Here is the trip your Lisbon question makes, in twelve steps. To keep the numbers concrete, imagine you are in Chicago on home Wi-Fi, the conversation so far is about 2,000 tokens long, the answer will be about 600 tokens, and the model streams about 50 tokens per second.
+
+```mermaid
+sequenceDiagram
+  participant P as Phone
+  participant I as Internet
+  participant E as Edge
+  participant G as Gateway
+  participant S as Scheduler
+  participant M as GPUs
+  participant T as Tools
+  participant D as Storage
+  P->>P: 1. You type and tap Send
+  P->>P: 2. App wraps the chat in an HTTPS request
+  P->>I: 3. DNS lookup, usually already cached
+  I->>E: 4. Encrypted packets cross Wi-Fi, ISP and backbone
+  E->>G: 5. Edge and load balancer pick a healthy cluster
+  G->>G: 6. Account, rate-limit and safety checks
+  G->>S: 7. Text tokenized into about 2,000 tokens
+  S->>M: 8. Request joins a batch on a GPU server
+  M->>M: 9. Prefill reads every token and builds the KV cache
+  M->>T: 10. Optional tool call such as a web search
+  T-->>M: Tool results added to the context
+  loop 11. Decode, about 50 tokens per second
+    M-->>P: Next token streamed back and shown
+  end
+  G->>D: 12. Conversation saved to storage
+```
+
+*Figure 4.12: The end-to-end journey of one chatbot message. Steps 1 to 4 happen on your side of the internet; steps 5 to 12 happen inside the AI provider's network and data center.*
+
+### Steps 1 and 2: on your phone
+
+You tap Send. The app takes the whole conversation so far, not just your new line, because the model remembers nothing between requests (Chapter 3). It packages everything as JSON, along with your login token, the model choice and settings, and prepares an HTTPS POST request to the provider's API. If the app has been open for a while, it already has an encrypted connection to the server and simply reuses it, skipping the handshake.
+
+### Steps 3 and 4: across the internet
+
+If the app has not looked up the server's address recently, it asks DNS, which usually answers from a cache in a few milliseconds and otherwise in tens of milliseconds. Then roughly 6 or 7 encrypted packets leave your phone by radio to your router, travel over copper or fiber to your ISP, pass through exchange points and backbone fiber, and reach the provider's nearest entrance. Within the United States, this one-way trip typically takes somewhere around 10 to 40 milliseconds; from another continent, add the undersea cable.
+
+### Steps 5 and 6: at the provider's front door
+
+The packets arrive at an edge site, where the provider's equipment completes the encryption handshake and decrypts the request. A load balancer then picks which data center region and which cluster of servers should handle it, steering away from anything overloaded or broken.
+
+> **Definition — Load balancer:** A traffic director that spreads incoming requests across many servers so no single one is overwhelmed, and routes around servers that have failed.
+
+Next comes the API gateway, the service that checks everything before any expensive GPU work begins: Is this account valid? Is it within its plan and rate limits? Is the request well formed? Many providers also run fast safety classifiers here, smaller models that screen inputs for clear abuse (Chapter 56). These checks take milliseconds.
+
+> **Definition — API gateway:** The front-door service of an API that checks keys or logins, enforces rate limits and routes each request to the right back-end system.
+
+### Steps 7 to 9: inside the data center
+
+Your text is now turned into tokens by the tokenizer (Chapter 3): about 2,000 token IDs. A scheduler decides which group of GPU servers running your chosen model gets the request. Those servers are serving many users at once; your request joins a batch alongside dozens of others, because processing many requests together uses the hardware far more efficiently.
+
+> **Definition — Inference:** Running an already-trained model to produce an output. Every chatbot reply is inference, as opposed to training, which creates the model.
+
+> **Definition — Batching:** Processing many users' requests together on the same GPUs at the same time, which makes far better use of the hardware than handling them one by one.
+
+A frontier model is too large to fit in one GPU's memory, so it is split across several GPUs in the same server or rack, linked by very fast connections (Chapter 34). In 2026, a typical high-end AI rack holds 72 GPUs, draws around 120 to 140 kilowatts and weighs over a tonne (Chapter 38).
+
+The model then reads your whole conversation in one pass. This is called prefill. All 2,000 tokens are processed in parallel, which keeps the GPUs' arithmetic units busy, and the model stores what it computed for each token in a KV cache so it never has to recompute it. If the start of your conversation was processed recently, the provider may reuse the cached work (prompt caching), which makes this step faster and cheaper.
+
+> **Definition — Prefill:** The first phase of answering, in which the model reads the entire prompt at once, in parallel. Its length mostly determines the wait before the first word.
+
+> **Definition — KV cache:** Stored intermediate results for every token the model has already read or written, so it does not redo that work for each new token. It grows with the length of the conversation.
+
+### Step 10: tools, if needed
+
+If you asked for something current, such as hotel prices in Lisbon this week, the model may call a tool: a web search, a code sandbox or a connector to your files. Each tool call is another round trip to another service, often adding a second or more, and the results are added to the model's context before it continues. An agent working on a long task can make dozens of such trips (Chapter 28).
+
+### Step 11: decode and stream back
+
+Now the model writes, one token at a time. This phase is called decode. For every single new token, the GPUs must read through the model's enormous set of weights in memory, so the speed is limited mostly by memory bandwidth, not by arithmetic (Chapter 23 and Chapter 33). At about 50 tokens per second, each token takes about 20 milliseconds.
+
+> **Definition — Decode:** The second phase of answering, in which the model generates the response one token at a time, each new token depending on all the tokens before it. Its speed sets how fast the text streams.
+
+Each new token is turned back into text and pushed down the still-open HTTPS connection as a server-sent event, a few bytes at a time. Your app adds it to the chat bubble and formats it as it arrives. A 600-token answer at 50 tokens per second takes about 12 seconds to finish, but you started reading after about a second.
+
+### Step 12: saved
+
+When the answer is complete, the conversation is written to the provider's databases, so it appears in your chat history on all your devices and, if you use them, memory features can draw on it later. How long it is kept, and whether it may be used to train future models, depends on the provider's policies and your settings (Chapter 58).
+
+```
+Rough time budget for one chat turn (illustrative, varies widely)
+
+Step                               Typical time
+---------------------------------  ---------------------------
+3. DNS lookup                      0 ms if cached, else ~20-50 ms
+4. Packets to the provider         ~10-40 ms one way in the US
+5-6. Edge, balancer, checks        a few ms to tens of ms
+7-8. Tokenize, queue, batch        0 ms to hundreds of ms
+9. Prefill of 2,000 tokens         a fraction of a second
+   First token travels back        ~10-40 ms
+   ----> first word on screen      about 0.5 to 2 seconds
+11. Decode 600 tokens at 50/s      ~12 s, read as it streams
+```
+
+*Figure 4.13: Where the time goes. The network adds roughly a tenth of a second; most of the wait and all of the typing happen in the data center.*
+
+### The budget of one message
+
+| Quantity | Rough value for this chat turn | Where it comes from |
+|---|---|---|
+| Time to first word | About 0.5 to 2 seconds | Network round trip, queue and prefill |
+| Time to finish | About 12 seconds | 600 tokens at 50 tokens per second |
+| Data sent and received | Tens of kilobytes | 2,000 tokens up, 600 tokens down, plus packaging |
+| Arithmetic | Hundreds of trillions of operations | About 2 operations per parameter per token (Chapter 5) |
+| Energy | About 0.3 watt-hours | Company and independent estimates for a typical text prompt |
+| Price at API list rates | About 1 cent | Claude Sonnet 5.5 at $2 and $10 per million tokens |
+
+*Figure 4.14: The physical and economic budget of a single chatbot message.*
+
+Two of those rows deserve a worked example.
+
+**Arithmetic.** Labs rarely publish the size of their closed models, so take a hypothetical model that uses 100 billion parameters for each token. The rule of thumb from Chapter 5 is about 2 operations per parameter per token, so 2 × 100 billion = 200 billion operations per token. The turn involves about 2,600 tokens (2,000 read plus 600 written): 2,600 × 200 billion = 520 trillion operations, written `5.2 × 10^14`. A human doing one multiplication per second would need over 16 million years.
+
+**Energy.** Google reported that its median Gemini Apps text prompt in May 2025 used 0.24 watt-hours, including idle machines and building overhead, and said this had fallen 33-fold in twelve months; Google notes the figure was not independently verified. OpenAI's chief executive said in June 2025 that an average ChatGPT query uses about 0.34 watt-hours. Epoch AI independently estimated about 0.3 watt-hours for a typical GPT-4o query, but about 2.5 watt-hours with 10,000 input tokens and about 40 with 100,000. Taking 0.3 watt-hours:
+
+- A 10-watt LED bulb uses 0.3 watt-hours in 0.3 ÷ 10 = 0.03 hours, about 1.8 minutes. One typical message is like leaving that bulb on for two minutes.
+- A billion such messages per day use 1,000,000,000 × 0.3 = 300 million watt-hours, which is 300 megawatt-hours per day. Spread over 24 hours, that is an average draw of 12.5 megawatts, a small power plant running nonstop for one kind of request.
+
+Per message, the energy is small. In total, across billions of messages, longer contexts, reasoning models that write many more tokens, agents that run for hours and video generation, it adds up to the gigawatt-scale buildout described in Part VII.
+
+> **Watch out:** Per-prompt energy figures come mostly from the companies themselves, measure different things (some include building overhead and idle machines, some do not), and apply to short text prompts. A long document, a reasoning model or an agent can use ten or a hundred times more. Treat "0.3 watt-hours" as a typical short-chat figure, not a universal constant.
+
+> **At the frontier (2026):** Speed is now something you can buy. As of October 2026, Anthropic offers a "fast mode" for Claude Opus 5.5 at $8 and $40 per million input and output tokens, double the standard $4 and $20, while batch requests that can wait hours cost 50% less; OpenAI renamed its priority tier "Fast mode" on July 30, 2026. Behind these prices sit the choices in this section: how big the batches are, which hardware serves the request, and how long the request waits in the queue (Chapter 23).
+
+> **At the frontier (2026):** The same speed-of-light limits that shape your chat now shape how frontier models are trained. Microsoft links its Fairwater AI data centers in Wisconsin and Atlanta, about 700 miles apart, into one "AI WAN" for training; over roughly 1,200 km of fiber, light alone takes about 6 milliseconds one way, an eternity for GPUs that must coordinate constantly. OpenAI said its GPT-6 Astra, unveiled in September 2026, came from its first pretraining run on more than 100,000 GPUs, at its Stargate site in Texas. Chapter 34 and Chapter 42 cover these giant clusters.
+
+## In plain English
+
+When you tap Send, your chatbot app wraps the whole conversation in a small JSON package and sends it over the internet. The internet is a network of networks: your Wi-Fi router passes data to your internet provider, which connects through exchange points and long-distance fiber to the AI company's own network. Messages travel as small numbered packets that may take different routes and are reassembled at the other end. Almost all of the trip is light in glass cables, including cables on the ocean floor between continents, and the speed of light sets a minimum delay of about 5 milliseconds per 1,000 km.
+
+DNS turns names like claude.ai into numeric IP addresses. HTTP is the request-and-response language of the web, with status codes like 200 (OK) and 429 (too many requests). HTTPS encrypts everything so people in between cannot read it, but the AI provider can, because its model has to read your words to answer.
+
+Servers are screenless computers in data centers, buildings now measured in megawatts and gigawatts. The cloud means renting those computers by the hour from companies like AWS, Microsoft and Google. Programs talk to AI models through APIs, paying per token: one typical chat turn costs about a cent at list prices.
+
+Latency is how long the trip takes; bandwidth is how much fits through the pipe. Chat needs almost no bandwidth. The pause before the first word is network time plus the model reading your conversation; the typing speed after that is set by GPUs. One message takes about a second to start, uses about 0.3 watt-hours, and is saved to the provider's databases when it is done.
+
+## Key terms
+
+Network, Router, ISP (Internet service provider), Internet, Internet exchange point (IXP), Backbone, Protocol, Packet, TCP (Transmission Control Protocol), Fiber-optic cable, Undersea (subsea) cable, IP address, Domain name, DNS (Domain Name System), HTTP (Hypertext Transfer Protocol), URL (Uniform Resource Locator), Request and response, Status code, Encryption, HTTPS, Public-key cryptography, TLS (Transport Layer Security), Certificate (digital), End-to-end encryption, Client, Server, Data center, Rack, Cloud computing, Hyperscaler, Neocloud, Region (cloud), Virtual machine, CDN (content delivery network) and edge, API (Application Programming Interface), Endpoint, API key, Rate limit, Latency, Bandwidth, Round-trip time (RTT), Time to first token (TTFT), Tokens per second, Streaming, Server-sent events (SSE), Load balancer, API gateway, Inference, Batching, Prefill, KV cache, Decode
+
+## Exercises
+
+1. **[Easy] Trace your route to a chatbot.** See the hops and the delays for yourself.
+   1. On Windows, open Command Prompt and type `tracert claude.ai`. On a Mac, open Terminal and type `traceroute claude.ai`. (If a line shows stars, that router simply did not answer; keep going.)
+   2. Count the hops and note the milliseconds on the last line that answered.
+   3. Run `nslookup chatgpt.com` and write down the IP addresses it returns.
+   4. Ask a chatbot to explain your output line by line.
+   **What you'll learn:** DNS turns names into addresses, your message passes through many routers, and latency is something you can measure.
+
+2. **[Easy] Inspect the padlock.** Look at a real certificate.
+   1. Open claude.ai, chatgpt.com or gemini.google.com in a desktop browser.
+   2. Click the padlock or the settings icon left of the address bar, then find the connection or certificate details.
+   3. Note who issued the certificate (the certificate authority), which names it covers, and when it expires.
+   4. Write one sentence on what this certificate protects you from, and one on what it does not protect you from.
+   **What you'll learn:** HTTPS proves you are talking to the real server and encrypts the trip, but the provider still reads your messages.
+
+3. **[Easy] Speed-of-light napkin math.** Compute the delay no technology can beat.
+   1. Pick three places: a city about 1,000 km from you, one on another continent, and the other side of the world (about 20,000 km).
+   2. For each, compute the minimum one-way time at 5 milliseconds per 1,000 km of fiber, then double it for a round trip.
+   3. If you can, compare with a real ping: `ping` followed by a website hosted in that region.
+   4. Explain why the real number is always higher.
+   **What you'll learn:** physics sets a floor on delay, which is why providers place data centers and edge sites close to users.
+
+4. **[Medium] Latency versus bandwidth on your own connection.** Separate the two ideas with real numbers.
+   1. Run a test at fast.com (click "Show more info") or speedtest.net. Write down download speed (Mbps) and latency or ping (ms).
+   2. Convert your speed to megabytes per second by dividing by 8.
+   3. Compute how long a 4 GB model download would take, and how long it takes to push a 10 KB chat request at your speed.
+   4. Compare that push time with your latency. Which one dominates for chat, and which for the download?
+   **What you'll learn:** bandwidth decides big downloads, latency decides small, chatty exchanges like chatbot messages.
+
+5. **[Medium] Watch a chatbot request in your browser.** See the API conversation your app hides.
+   1. In Chrome or Edge on a computer, open your chatbot's website and press F12 (or right-click, then Inspect). Choose the Network tab.
+   2. Send a short message. Look for a request that stays open while the answer streams in; it often has a name containing "message", "conversation" or "completion".
+   3. Click it. Look at the request's method (likely POST), its status code, its JSON payload (your message and settings) and the response arriving in many small chunks.
+   4. Find the timing information and note how long it took before the first bytes arrived.
+   **What you'll learn:** the chatbot app is a front end that sends JSON to an API over HTTPS and receives the answer as a stream.
+
+6. **[Medium] Time to first token with a stopwatch.** Measure prefill and decode from the outside.
+   1. In your chatbot, ask a short question that needs a long answer, such as "Explain how bread rises in about 400 words". Time from Send to the first word, and from the first word to the last.
+   2. Paste a long document (several pages) and ask a short question about it. Time the same two intervals.
+   3. Estimate tokens per second: count the answer's words, multiply by about 1.33 to get tokens, and divide by the streaming time.
+   4. Compare the waits before the first word in the two tests and explain the difference using the word "prefill".
+   **What you'll learn:** long inputs mainly lengthen the wait before the first word, while the streaming speed is set by the model and its hardware.
+
+7. **[Medium] Read URLs and status codes.** Get fluent in the web's basic language.
+   1. Take three URLs from your browser history and split each into scheme, domain, path and query (the part after a ? sign, if any).
+   2. Visit a page that does not exist on a real site, such as wikipedia.org/this-page-does-not-exist-123, and note what you see. Then open the browser's Network tab, reload, and find the status code.
+   3. Ask a chatbot what you should do as a programmer when an AI API returns 401, 429 and 503, and check its answers against the table in this chapter.
+   **What you'll learn:** URLs have a fixed anatomy, and status codes tell you at a glance whose problem an error is.
+
+8. **[Medium] Who answers when you call a chatbot?** Discover the edge.
+   1. Run `nslookup claude.ai` and `nslookup chatgpt.com` and copy one IP address from each.
+   2. Paste each address into a free lookup site such as ipinfo.io and note the organization that owns it and its listed location.
+   3. You may find a content delivery network or cloud company, and a location near you rather than near the AI company's headquarters.
+   4. Explain in two sentences why the provider would answer your connection close to you, even though the model runs elsewhere.
+   **What you'll learn:** your connection usually lands at an edge site near you, and the request then travels over the provider's own network to a data center.
+
+9. **[Challenge] Your first API call, no key needed.** Talk to a real API from Google Colab.
+   1. Open colab.research.google.com, start a new notebook, paste this into a cell and run it:
+
+   ```python
+   import requests                                    # a library for web requests
+   url = "https://api.github.com/repos/pytorch/pytorch"   # an API endpoint
+   response = requests.get(url)                       # send an HTTP GET request
+   print("Status code:", response.status_code)        # 200 means OK
+   print("Format:", response.headers["Content-Type"]) # the response is JSON
+   print("Requests left this hour:", response.headers.get("X-RateLimit-Remaining"))
+   data = response.json()                             # turn the JSON into a dictionary
+   print("Stars:", data["stargazers_count"])          # read one field
+   print("License:", data["license"]["name"])         # a field inside a field
+   ```
+
+   2. Read the output. GitHub allows a limited number of requests per hour without a key; watch "Requests left" drop each time you run the cell.
+   3. Change the URL to a repository that does not exist, such as ".../repos/pytorch/no-such-repo", run again and note the status code.
+   4. Ask a chatbot to explain each line, then ask how an AI API call would differ (hint: POST instead of GET, a JSON body, and an API key in the headers). Chapter 26 shows the real thing.
+   **What you'll learn:** an API call is just an HTTP request with a status code, headers and a JSON body, and rate limits are visible in the headers.
+
+10. **[Challenge] Budget a chat from Sydney.** Build your own version of the journey with numbers.
+    1. Assume a user in Sydney talks to a model served from the US West Coast, about 12,000 km away. Using 5 ms per 1,000 km, compute the minimum round trip, then double it to allow for real-world routing.
+    2. Add 0.5 seconds for queue and prefill. What is the time to first token? Compare with the Chicago example in this chapter.
+    3. For a 900-token answer at 60 tokens per second, compute the time to finish.
+    4. Using $2 per million input tokens and $10 per million output tokens, compute the price of a turn with 3,000 input and 900 output tokens.
+    5. Using 0.3 watt-hours per message, compute the energy for 500 million such messages per day, and the average power in megawatts.
+    **What you'll learn:** distance matters for the first word but not the typing speed, and per-message costs become large only at enormous scale.
+
+## Areas of opportunity
+
+- **Cloud and site reliability engineering.** Companies running AI products need engineers who understand networks, DNS, load balancing, regions and failures. These roles exist at every company with an online product, not just at AI labs.
+- **AI infrastructure networking.** Training clusters and inference fleets depend on fast optical links and specialized networks (Chapter 34). Network engineers and fiber technicians who understand both classic internet networking and AI cluster networks are scarce and well paid.
+- **Data center construction and operations trades.** Gigawatt campuses need electricians, fiber splicers, cooling technicians and operations staff. These jobs need practical training rather than degrees and are in demand wherever new sites are built (Chapter 38 and Chapter 63).
+- **AI cost optimization.** Many companies overspend on GPU rentals and API bills. Consultants and engineers who can cut costs with caching, batching, smaller models and the right cloud contracts can show savings directly, which makes the value easy to sell (Chapter 31 and Chapter 43).
+- **Low-latency AI products.** Voice assistants, customer-service agents and real-time translation live or die by time to first token. Engineers who can shave hundreds of milliseconds through edge placement, streaming and model choice are valuable to any company building real-time AI.
+- **Data residency and sovereign cloud advice.** Hospitals, banks and governments must keep certain data in specific countries. Advisers who understand regions, providers' residency options and their price premiums help these organizations adopt AI legally (Chapter 59).
+- **API security.** Leaked API keys, misconfigured endpoints and exposed data are common and expensive. Security specialists, and tools that scan code and logs for exposed secrets, are in steady demand.
+- **Connecting the 2.2 billion offline.** Affordable connectivity, offline-capable apps and small models that run on cheap phones open AI to people the cloud does not reach yet. Telecoms, NGOs and development agencies fund this work.
+- **Monitoring AI applications.** When an AI app is slow or failing, someone has to trace each request across the network, the gateway, the model and the tools. Observability tools and the engineers who use them are a growing niche.
+
+## Check your understanding
+
+1. Why does the internet split messages into packets instead of sending them whole?
+2. What is the minimum one-way delay for light through 3,000 km of fiber, and why will real delays be longer?
+3. What does DNS do, and why does it usually add almost no time to a chatbot message?
+4. You chat with an AI on café Wi-Fi using HTTPS. What can the café owner see, and what can the AI provider see?
+5. An API returns status code 429. What does it mean, and what should a well-written program do?
+6. For a chatbot conversation, which matters more, latency or bandwidth? Explain with numbers.
+7. Why does the first token take longer to appear than each later token?
+8. A chat turn has 2,000 input tokens and 600 output tokens. At $2 per million input tokens and $10 per million output tokens, what does it cost?
+
+<details><summary>Answers</summary>
+
+1. Packets let many users share the same links fairly, let routers send traffic around congestion or broken links, and mean that only a lost packet, not the whole message, needs resending.
+2. At about 5 milliseconds per 1,000 km, 3,000 km takes about 15 milliseconds one way. Real delays are longer because cables do not follow straight lines and every router and piece of equipment along the way adds a little delay.
+3. DNS turns a name like claude.ai into the numeric IP address computers use. Answers are cached on your device and by resolvers, so an app that has used the address recently does not need to look it up again.
+4. The café owner can see that your device connected to the AI provider, when, and roughly how much data moved, but not the content. The provider decrypts the connection at its servers, so it can see everything you send and receive.
+5. 429 means "too many requests": you went over a rate limit. The program should wait and retry, waiting longer after each failed attempt, rather than hammering the server.
+6. Latency matters far more. A chat request is about 10 KB, which takes under a millisecond to push through a 100 Mbps connection, and the answer streams at a few kilobytes per second at most. But each round trip to a data center 1,000 km away takes tens of milliseconds.
+7. Before the first token, the request must cross the network, pass the gateway checks, wait in a queue and go through prefill, in which the model reads the entire conversation. After that, each new token needs only one decode step, about 20 milliseconds at 50 tokens per second.
+8. Input: 2,000 × $2 ÷ 1,000,000 = $0.004. Output: 600 × $10 ÷ 1,000,000 = $0.006. Total: $0.01, one cent.
+
+</details>
+
+## Going deeper
+
+- **Code.org, "How the Internet Works" video series (on YouTube and code.org).** Short, friendly videos on packets, DNS, HTTP and encryption, introduced by internet pioneer Vint Cerf.
+- **Cloudflare Learning Center (cloudflare.com/learning).** Clear, free articles on DNS, TLS, CDNs, latency and almost every term in this chapter.
+- **MDN Web Docs, "An overview of HTTP" (developer.mozilla.org).** The standard reference for how HTTP requests, headers and status codes work.
+- **TeleGeography's Submarine Cable Map (submarinecablemap.com).** An interactive map of the undersea cables that carry the world's internet traffic.
+- **Andrew Blum, *Tubes: A Journey to the Center of the Internet* (2012).** A reporter visits the buildings, exchange points and cable landings that make up the physical internet.
+- **Ilya Grigorik, *High Performance Browser Networking* (free at hpbn.co).** The best deep dive on latency, TCP, TLS and why the speed of light matters for apps.
+- **Julia Evans's networking zines (wizardzines.com).** Illustrated, playful explanations of DNS, HTTP and networking tools.
+- **James Kurose and Keith Ross, *Computer Networking: A Top-Down Approach*.** The standard university textbook, if you want the full technical picture.
+- **Epoch AI's data center hub (epoch.ai/data/data-centers).** A regularly updated tracker of the world's largest AI data centers, their power and their chips.
