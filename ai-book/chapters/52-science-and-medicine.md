@@ -626,3 +626,131 @@ AI weather models trained on decades of reconstructed weather now forecast in mi
 
 ## Key terms
 Surrogate model, simulation, in silico, wet lab, protein, amino acid, protein folding problem, X-ray crystallography, cryo-EM (cryo-electron microscopy), PDB (Protein Data Bank), CASP (Critical Assessment of protein Structure Prediction), multiple sequence alignment (MSA), co-evolution, AlphaFold, pLDDT (predicted local distance difference test), PAE (predicted aligned error), ligand, intrinsically disordered region, protein design, binder, enzyme, inverse folding, protein language model, DNA, gene, genome, regulatory DNA, variant, missense variant, variant of uncertain significance (VUS), DNA language model, drug target, small molecule, lead compound, preclinical studies, clinical trial, Phase I, II and III trials, randomized controlled trial (RCT), placebo, FDA (Food and Drug Administration), crystal structure, stable material, DFT (density functional theory), self-driving lab, machine-learned interatomic potential, numerical weather prediction (NWP), data assimilation, ensemble forecast, reanalysis, autoregressive rollout, formal proof, proof assistant, autoformalization, IMO (International Mathematical Olympiad), neuro-symbolic AI, AI co-scientist, reproducibility, peer review, tokamak, trigger system, SaMD (software as a medical device), 510(k) clearance, De Novo authorization, PMA (premarket approval), computer-aided detection (CAD), autonomous AI diagnostic, sensitivity, specificity, positive predictive value (PPV), negative predictive value (NPV), prevalence, external validation, dataset shift, alert fatigue, retrospective vs prospective study, ambient AI scribe
+
+## Exercises
+
+1. **[Easy] Explore proteins in the AlphaFold Database.** See sequence-to-structure prediction and confidence scores for yourself.
+   1. Go to alphafold.ebi.ac.uk and search "hemoglobin human." Open the entry for the hemoglobin subunit alpha.
+   2. Rotate the 3D structure with your mouse. Read the color key and note which parts are dark blue (very confident) and which, if any, are orange (low confidence).
+   3. Search "green fluorescent protein" and open an entry. Describe the overall shape in one sentence (it is a barrel).
+   4. Search "p53 human." Find the long orange, low-confidence stretches and write down roughly where they are in the chain (the page shows the sequence positions).
+   5. Optional: at rcsb.org, search "1EMA," an experimentally measured GFP structure, and compare its shape with AlphaFold's prediction.
+   **What you'll learn:** what a predicted structure looks like, how to read pLDDT colors, and that low confidence often marks genuinely floppy, disordered regions rather than a failure.
+
+2. **[Easy] Tour the FDA's list of AI medical devices.** See what medical AI is actually authorized for.
+   1. Search the web for "FDA Artificial Intelligence-Enabled Medical Devices" and open the fda.gov page.
+   2. Download the list (it is offered as a spreadsheet) or use the table on the page.
+   3. Count how many devices are listed under radiology compared with the total. Is it close to the three-quarters mentioned in this chapter?
+   4. Find the three most recent entries and, for each, write down the company, the medical specialty and what the device does in one sentence.
+   5. Search the list for "IDx" (IDx-DR, later renamed LumineticsCore) and note the date and the authorization number.
+   **What you'll learn:** most authorized medical AI is narrow, assistive and image-based, and the regulatory record is public for anyone to check.
+
+3. **[Medium] AI versus physics forecast diary.** Judge AI weather models with your own eyes over a week.
+   1. Open charts.ecmwf.int. Find a chart from the AIFS (the AI model) and the same chart from the IFS (the physics model), for example mean sea-level pressure or total precipitation, at the same forecast time.
+   2. Each day for seven days, write down both models' forecasts for your region five days ahead (for example "rain band over my area" or "high pressure, dry").
+   3. When each target day arrives, record what actually happened and score each model: right, partly right or wrong.
+   4. Also find an ensemble chart or "plume" for a city near you and estimate the share of ensemble members that bring rain on one day.
+   5. At the end, write three sentences: which model did better for your region, how confident you are given only seven days, and what the ensemble added.
+   **What you'll learn:** AI forecasting is operational, forecasts should be judged over many days rather than one memorable miss, and ensembles turn a forecast into a probability.
+
+4. **[Medium] The drug attrition spreadsheet.** Find out where AI would have to help to matter most.
+   1. In a spreadsheet, start with 100 candidates entering Phase I. Multiply by 0.52 (pass Phase I), then by 0.289 (pass Phase II), then 0.578 (pass Phase III), then 0.906 (approved). You should end with about 7.9 approvals.
+   2. Add illustrative costs per candidate per phase: Phase I $5 million, Phase II $20 million, Phase III $100 million. Multiply each phase's cost by the number of candidates entering it, add them up, and divide by the number of approvals. You should get about $387 million in clinical costs per approved drug (real costs vary widely; these round numbers are for practice).
+   3. Scenario A: AI raises the Phase II success rate from 28.9 to 40 percent. Recompute approvals (about 10.9) and cost per approval (about $332 million).
+   4. Scenario B: AI shortens discovery by 2.5 years but leaves all success rates unchanged. What happens to the number of approvals and the clinical cost per approval?
+   5. Write two sentences on which scenario is worth more, and why.
+   **What you'll learn:** late-stage failures drive the cost of drugs, so improving the odds of success matters more than speeding up early discovery.
+
+5. **[Medium] Read a real clinical trial record.** Learn to check an "AI drug" headline against the source.
+   1. Go to clinicaltrials.gov and search for "rentosertib" (you can also try its code name, ISM001-055).
+   2. Open one trial record. Write down: the phase, the number of participants (enrollment), the condition, the primary outcome measure, the trial's status and where it is running.
+   3. Compare with this chapter's description of the Phase IIa results. Is the trial you found the same one, or a later one?
+   4. Search for one other drug described in the news as "AI-discovered" and repeat steps 2 and 3.
+   **What you'll learn:** how to find the facts behind a headline, and how far along (and how small) most AI-discovered drug trials still are.
+
+6. **[Medium] Screening arithmetic.** Work out what a positive AI screening result means in different populations.
+   1. Use IDx-DR's published figures: sensitivity 87.2 percent, specificity 90.7 percent.
+   2. For 1,000 people at 10 percent prevalence, draw the tree from Figure 52.11 and check you get a PPV of about 51 percent.
+   3. Repeat for 2 percent prevalence (you should get a PPV of about 16 percent) and 30 percent prevalence (about 80 percent).
+   4. Now consider an alert system that catches only 33 percent of true cases and flags 18 percent of all patients, in a ward where 7 percent of patients develop the condition. Out of 1,000 patients, how many true cases are caught, how many alerts are false, and what is the PPV?
+   5. Write one sentence on why a clinician might start ignoring the alerts in step 4.
+   **What you'll learn:** sensitivity and specificity describe a model, but what its results mean for patients depends on prevalence, and too many false alarms cause alert fatigue.
+
+7. **[Medium] Play co-scientist, then check for novelty.** See what AI hypothesis generation is good and bad at.
+   1. Choose a safe, everyday scientific question, such as "Why do some people get bitten by mosquitoes more than others?" or "Why does bread go stale faster in the fridge?"
+   2. Ask a chatbot: "Propose five specific, testable hypotheses for this question. For each, describe an experiment a small lab or a careful amateur could run, what result would support it and what would refute it."
+   3. For each hypothesis, search Google Scholar (scholar.google.com) or PubMed (pubmed.ncbi.nlm.nih.gov) for existing research. Label each as already well studied, partly studied or apparently new.
+   4. Rate each hypothesis from 1 to 5 on how cheap and fast it would be to test.
+   5. Write a short paragraph: how many ideas were genuinely new, and which one would you actually test first?
+   **What you'll learn:** AI is fast at producing plausible hypotheses, many of which are already known, and the experiment, not the idea, is usually the bottleneck.
+
+8. **[Challenge] Fold a protein complex with AlphaFold Server.** Run a structure prediction yourself and see how partners change confidence.
+   1. Go to alphafoldserver.com and sign in with a Google account (it is free for non-commercial use, with a daily limit on jobs).
+   2. Create a job with two protein chains. Paste human insulin's A chain, `GIVEQCCTSICSLYQLENYCN`, as the first chain and its B chain, `FVNQHLCGSHLVEALYLVCGERGFFYTPKT`, as the second.
+   3. Run the job. When it finishes, view the structure colored by pLDDT and look at the PAE plot. Is AlphaFold confident about how the two chains sit together?
+   4. Run a second job with only the B chain. Compare its confidence with the two-chain result.
+   5. Write three sentences on what changed and why a partner chain might make a prediction more confident.
+   **What you'll learn:** how AlphaFold 3 handles complexes, how to read the PAE plot, and that a protein's shape can depend on what it binds to.
+
+9. **[Challenge] Prove things the way AlphaProof does.** Experience formal proof in Lean.
+   1. Go to adam.math.hhu.de and choose the "Natural Number Game."
+   2. Complete at least the first world (the Tutorial), in which you prove simple facts such as 2 + 2 = 4 from basic rules, using tactics like `rfl` and `rw`.
+   3. Each time Lean rejects a step, read the error and fix it. Count how many attempts you needed.
+   4. Write a paragraph on why a proof checker that accepts only fully justified steps is useful for training AI with reinforcement learning, and what it cannot check (for example, whether a theorem is interesting).
+   **What you'll learn:** what a formal proof is, why it can be checked with certainty, and why mathematics became a proving ground for AI reasoning.
+
+10. **[Medium] Audit a medical AI headline.** Apply the chapter's checklist to a real claim.
+    1. Find a recent news story or press release claiming an AI system diagnoses or predicts a disease "as well as" or "better than" doctors.
+    2. Find the underlying paper or regulatory filing if one exists (follow links, or search the product name with "FDA" or the journal name).
+    3. Fill in the table from "How to read a medical AI claim": test data, comparison, outcome measured, subgroup results, regulatory status, monitoring plan.
+    4. Rate the claim's strength from 1 to 5 and write two questions you would ask the developer.
+    **What you'll learn:** how to separate test-set accuracy from proven patient benefit, the skill that matters most for judging medical AI.
+
+## Areas of opportunity
+
+- **Computational biology and "AI plus wet lab" science.** Biotech companies, research institutes and universities need people who combine machine learning with lab biology or chemistry. The rare combination of someone who can both run AlphaFold-style tools and design the experiment that tests their output is especially valued.
+- **Protein design for industry.** Designed enzymes for food processing, detergents, plastic recycling and green chemistry, and binders for diagnostics, are a growing business. Companies pay for proteins that work at industrial temperatures and costs, not just in papers.
+- **AI-native drug discovery, done honestly.** Startups and drug companies need computational chemists, biologists and clinical-trial experts. The open opportunity is improving Phase II and III success, through better targets, patient selection and trial design, where the money is lost today.
+- **Lab automation and contract self-driving labs.** Building, programming and running robotic labs is a scarce skill. Services that run automated experiments for smaller research groups, the way cloud computing serves software teams, are an emerging business.
+- **Materials informatics.** Battery, solar, catalyst and semiconductor companies hire people who can use machine-learned potentials and generative materials models to narrow down candidates before costly lab work.
+- **Weather and climate risk analytics.** Cheap, fast AI forecasts and ensembles make tailored forecasting affordable for insurers, farmers, energy traders, airlines and event organizers, who pay for decisions ("Should we harvest this week?") rather than maps.
+- **Clinical AI implementation and validation.** Hospitals need specialists who can validate a vendor's model on local data, integrate it into workflows, monitor it for drift and manage alert fatigue. Regulatory and quality professionals who understand FDA pathways for AI are in demand at device companies.
+- **Ambient documentation and administrative AI.** Scribes, prior-authorization automation and coding assistants are among the fastest-adopted health AI tools. Roles include clinical informaticists, implementation managers and specialists who audit AI-written notes.
+- **Formal verification and math tooling.** Autoformalization, Lean libraries and AI proof assistants need mathematicians who can write formal mathematics, and the same skills apply to verifying software and chip designs, where companies pay for proofs of correctness.
+- **Open problems.** Models of proteins and cells in motion rather than snapshots; reliable predictions for extreme weather beyond the training record; AI hypotheses that are new rather than recombined; prospective trials showing patient benefit from medical AI; and fair performance across populations and low-resource clinics.
+
+## Check your understanding
+
+1. Name the three broad ways AI helps science, with one example of each from this chapter.
+2. Why could AlphaFold not simply try every possible shape for a protein, and what clue from evolution does it use instead?
+3. What does a low pLDDT score on part of a predicted structure usually mean, and why is a high score not proof the prediction is right?
+4. Explain why an AI-discovered drug still takes about a decade, and where AI would need to help to make the biggest difference.
+5. What do AI weather models like GraphCast replace in the forecasting chain, and what do they still depend on?
+6. How did AI's olympiad mathematics results change between 2024 and 2025, and how should you treat the claims about IMO 2026?
+7. IDx-DR has a sensitivity of about 87 percent and a specificity of about 91 percent. Why does the share of flagged patients who are really sick depend on the population being screened?
+8. What went wrong with the widely used sepsis prediction model, and what general lessons does it teach about medical AI?
+
+<details><summary>Answers</summary>
+
+1. Fast stand-ins for slow measurements or simulations (AlphaFold for lab structure determination, GraphCast for physics weather simulation); search through enormous spaces (protein design with RFdiffusion, GNoME's crystal candidates, AlphaEvolve and AlphaProof searching for programs and proofs); automating the research loop (Google's AI co-scientist, the A-Lab and Coscientist running experiments with robots).
+2. The number of possible shapes is astronomically large: even a crude estimate for 100 amino acids gives about 5 × 10^47 shapes, which would take far longer than the age of the universe to check. AlphaFold instead reads a multiple sequence alignment of related proteins from many species; positions that mutate together (co-evolve) are probably in contact, and the network turns thousands of such clues, plus knowledge from known structures, into a 3D shape.
+3. Low pLDDT usually marks a region AlphaFold is unsure about, often because it is genuinely flexible or disordered and has no single fixed shape. A high score means the model is confident, not that it is correct; unusual or designed proteins, mutations and moving proteins still need experimental checks.
+4. AI mainly speeds up target finding, molecule design and preclinical work, but every drug must still pass Phase I, II and III trials in people, which together take many years and are paced by biology, recruitment and the need to watch outcomes over time. Only about 8 in 100 drugs entering trials are approved, and most fail in Phase II, so the biggest gain would come from raising the success rate in Phase II and III, not just from faster discovery.
+5. They replace the expensive step of solving the physics equations forward in time on a supercomputer, producing a forecast in about a minute on one machine. They still depend on traditional observations and data assimilation to estimate the starting state, and on decades of reanalysis data produced by the physics system for training; extremes outside the training record and long-term climate projection remain harder.
+6. In 2024 AlphaProof and AlphaGeometry 2 reached silver standard (28 of 42) working in Lean, with problems translated by humans and some taking days. In 2025 an advanced Gemini Deep Think reached gold standard (35 of 42) in natural language within the 4.5-hour limit, officially graded, and OpenAI reported the same score graded by former medalists. Reported perfect scores at IMO 2026 had not been confirmed as officially certified at the time of writing, so they should be treated as claims.
+7. Positive predictive value depends on prevalence. In a population where the disease is common, most positives are true; where it is rare, the false positives from the large healthy group outnumber the true cases. With 10 percent prevalence about 51 percent of flagged patients are sick; at 2 percent prevalence only about 16 percent are.
+8. An independent evaluation at the University of Michigan found it performed much worse than its developer reported (an AUC of 0.63), missed about two-thirds of sepsis cases and alerted on about 18 percent of all hospitalized patients, which invites alert fatigue. Lessons: validate models externally on the population where they will be used, prefer prospective evidence and patient outcomes over retrospective accuracy, watch for dataset shift, and design alerts that fit clinical workflow.
+
+</details>
+
+## Going deeper
+
+- **Jumper and colleagues, "Highly accurate protein structure prediction with AlphaFold" (Nature, 2021).** The AlphaFold 2 paper; the figures and the methods overview are readable even if the details are not.
+- **Nobel Prize in Chemistry 2024, popular science background (nobelprize.org).** A clear, illustrated explanation of protein structure prediction and computational protein design for non-specialists.
+- **EMBL-EBI Training, "AlphaFold: A practical guide" (free online course, ebi.ac.uk/training).** How to read and use AlphaFold predictions, pLDDT and PAE, from the team that runs the database.
+- **Lam and colleagues, "Learning skillful medium-range global weather forecasting" (Science, 2023).** The GraphCast paper, with an accessible introduction to how learned forecasting compares with physics.
+- **ECMWF's AIFS pages and open charts (ecmwf.int and charts.ecmwf.int).** The world's leading forecast center explaining, and openly publishing, its operational AI forecasts.
+- **Google DeepMind's blog posts on AlphaProof, AlphaGeometry and AlphaEvolve (deepmind.google).** Primary accounts of the mathematics results, with examples of the proofs and algorithms found.
+- **Kevin Buzzard and the Lean community, "Mathematics in Lean" and the Natural Number Game.** Free introductions to formal proof, from playful to serious.
+- **Eric Topol, *Deep Medicine* (2019).** A physician's balanced account of how AI could change medicine, still useful for its framing of what to hope for and what to test.
+- **US FDA, "Artificial Intelligence-Enabled Medical Devices" (fda.gov).** The official list of authorized AI devices and the agency's guidance on how they are regulated.

@@ -641,7 +641,7 @@ When the earliest RAG systems were built, models could read only a few thousand 
 
 > **Definition — Context window:** The maximum amount of text, measured in tokens, that a model can consider at once, including instructions, documents, conversation history and its own answer. Current frontier models offer about one million tokens.
 
-So why not paste the whole Northwind handbook into every question? Let us price it with Claude Opus 5.5's list prices as of late 2026 ($4 per million input tokens, with cache reads billed at 0.05×, or $0.20 per million) and the handbook's 200,000 tokens, for 1,000 questions a day.
+So why not paste the whole Northwind handbook into every question? Let us price it with Claude Opus 5.5's list prices as of late 2026 ($4 per million input tokens, with cache reads billed at 0.05×, or $0.20 per million) and the handbook's 200,000 tokens (counted at 0.75 words per token, as above; Claude's newer tokenizer would count about a third more, which raises every row alike), for 1,000 questions a day.
 
 > **Definition — Prompt caching:** An API feature that stores the processed form of a repeated prompt beginning, such as a long document, so later requests that start with the same text are cheaper and faster. Chapter 26 covers it in detail.
 
