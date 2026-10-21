@@ -869,3 +869,173 @@ print("5-fold accuracies:", np.round(scores, 3), " mean:", round(scores.mean(), 
 In plain words: the `import` lines load the tools. The data is loaded and the label is flipped so that "malignant" counts as positive. `train_test_split` sets aside 25% of the tumors as a test set, with a fixed random seed (`random_state=42`) so you get the same split as this book, and `stratify=y` so both parts have the same share of malignant tumors. The model scales each measurement to a comparable range and then fits a logistic regression, using only the training tumors. The `report` function turns probabilities into decisions at a given threshold, builds the confusion matrix and prints the metrics. Then the cell prints the AUC, the score of an always-benign baseline, and five-fold cross-validation scores.
 
 You should see TP=49, FN=4, FP=1, TN=89 at threshold 0.5; TP=51, FN=2, FP=3, TN=87 at 0.2; TP=52, FN=1, FP=6, TN=84 at 0.1; an AUC of 0.996; a baseline accuracy of 0.629; and fold accuracies of about 0.982, 0.982, 0.974, 0.974 and 0.991. Software versions occasionally shift a count by one; the lessons do not change.
+
+## In plain English
+
+A model's score on the data it learned from tells you almost nothing, the same way a student acing last year's exam after memorizing the answer key tells you nothing. So before training, you lock some data away. You train on one part, use a second part to compare models and tune settings, and open the third part, the test set, once at the end for an honest score. Cross-validation rotates the held-out slice so one lucky split cannot fool you, and for anything involving time, you only ever train on the past.
+
+The sneakiest failure is leakage: the answer slipping into the inputs, like a "treatment given" column when predicting a disease, or the same patient in both training and test data. Models also take shortcuts, learning snow instead of wolves or a hospital's markings instead of pneumonia.
+
+Models fail in two directions. Too simple, and they underfit: wrong everywhere in the same way (high bias). Too flexible, and they overfit: they memorize noise and scatter on new data (high variance). Regularization, early stopping and more data push back against overfitting.
+
+For yes-or-no models, accuracy can lie badly when one class is rare. The confusion matrix counts each kind of mistake, and precision ("when it says yes, is it right?") and recall ("does it catch the real cases?") tell you which mistakes it makes. Moving the threshold trades one for the other, and the right setting depends on what each mistake costs. ROC curves and AUC summarize the whole trade-off. For number predictions, MAE, RMSE, MAPE and R² measure the size of the misses.
+
+Finally, always compare against a dumb baseline, never tune on the test set, and remember Goodhart's law: once everyone aims at a benchmark, its score stops meaning what it used to.
+
+## Key terms
+
+Evaluation, Training set, Validation set, Test set, Stratified sampling, Margin of error, Data leakage, Target leakage, Benchmark contamination, Shortcut learning, Overfitting, Underfitting, Noise, Polynomial, Model complexity, Bias (statistical), Variance (statistical), Bias–variance tradeoff, Double descent, Regularization, L1 and L2 regularization, Early stopping, Dropout, Data augmentation, Cross-validation (k-fold), Walk-forward validation, True positive (TP), False positive (FP), False negative (FN), True negative (TN), Confusion matrix, Accuracy, Class imbalance, Precision, Recall, Specificity, False positive rate, F1 score, ROC curve, AUC (Area Under the ROC Curve), Precision–recall curve, RMSE (Root Mean Squared Error), R² (coefficient of determination), MAPE (Mean Absolute Percentage Error), Baseline, Hyperparameter tuning, Grid search, Random search, Bayesian optimization, Distribution shift, Benchmark, Leaderboard, Goodhart's law, Benchmark saturation, Evaluation harness
+
+## Exercises
+
+1. **[Easy] Build a confusion matrix from a medical-test story.** (Pencil and paper, 20 minutes.) A test for a rare condition is given to 2,000 people. 40 of them have the condition. The test correctly flags 36 of the 40, and wrongly flags 98 of the healthy people.
+   1. Draw the 2 × 2 confusion matrix and fill in TP, FN, FP and TN (TN is the healthy people the test correctly cleared).
+   2. Compute accuracy, precision, recall, specificity and F1. (Check: precision should come out at about 27% and recall at exactly 90%.)
+   3. Compute the accuracy of a "test" that always says healthy. Which one has the higher accuracy?
+   4. Write two sentences you would say to a patient who just tested positive.
+
+   **What you'll learn:** Why accuracy misleads with rare events, what precision and recall each mean, and how base rates turn into real conversations.
+
+2. **[Easy] Which mistake is worse?** (Paper and a chatbot, 15 minutes.) For each scenario, decide whether you would favor precision or recall, and write one sentence on why: (a) detecting gas leaks in a building; (b) flagging social media posts for removal; (c) a job-application filter that rejects candidates automatically; (d) alerting a farmer to possible crop disease; (e) a self-checkout camera that accuses shoppers of theft; (f) flagging emails as phishing; (g) recommending podcasts; (h) screening blood donations for infection. Then ask a chatbot for its answers and discuss any disagreements.
+
+   **What you'll learn:** That the right metric depends on the cost of each kind of mistake, which is a human decision, not a mathematical one.
+
+3. **[Medium] The threshold game in a spreadsheet.** (Google Sheets or Excel, 30 minutes.)
+   1. Type the 20 scores from Table 9.9 into column A (A2:A21) and the truth into column B (1 for spam, 0 for not spam).
+   2. Put a threshold in E1, starting at 0.5.
+   3. Count the four boxes: TP `=COUNTIFS(A2:A21,">="&E1,B2:B21,1)`, FP `=COUNTIFS(A2:A21,">="&E1,B2:B21,0)`, FN `=COUNTIFS(A2:A21,"<"&E1,B2:B21,1)`, TN `=COUNTIFS(A2:A21,"<"&E1,B2:B21,0)`.
+   4. Add precision `=TP/(TP+FP)`, recall `=TP/(TP+FN)` and false positive rate `=FP/(FP+TN)`, pointing at the cells where you put the counts.
+   5. Change E1 to 0.1, 0.2, and so on up to 0.9, and copy each result into a small table. You should match Table 9.10.
+   6. Make a scatter chart with false positive rate across and recall up. That is your ROC curve.
+   7. Add a cost cell: `=1*FN+10*FP`. Which threshold is cheapest? Now set the costs to 5 for a missed spam and 1 for a false alarm. Which threshold wins now?
+
+   **What you'll learn:** Where confusion matrices, precision–recall trade-offs and ROC curves come from, and how costs choose the threshold.
+
+4. **[Medium] Watch overfitting happen with trendlines.** (Google Sheets or Excel, 20 minutes.)
+   1. Enter the eight training days from Table 9.1 in two columns, and the four test days (14, 20, 26 and 32 °C) in two other columns.
+   2. Make a scatter chart with two series: training days and test days, in different colors.
+   3. Add a trendline to the training series only. Start with linear, then switch to polynomial and raise the degree step by step as far as your spreadsheet allows (Excel stops at 6).
+   4. At each degree, look at how close the curve passes to the four test points, especially the 32 °C day at the right edge.
+   5. Write down which degree you would choose and why.
+
+   **What you'll learn:** Overfitting and underfitting as something you can see, and why held-out data is the only fair judge. (Exercise 7 measures the same thing exactly in code.)
+
+5. **[Medium] Regression metrics in a spreadsheet.** (Google Sheets or Excel, 20 minutes.)
+   1. Put the actual prices from Table 9.11 in A2:A6 and the predictions in B2:B6.
+   2. Compute: MAE `=SUMPRODUCT(ABS(B2:B6-A2:A6))/5`, MSE `=SUMXMY2(B2:B6,A2:A6)/5`, RMSE `=SQRT(SUMXMY2(B2:B6,A2:A6)/5)`, MAPE `=SUMPRODUCT(ABS(B2:B6-A2:A6)/A2:A6)/5` and R² `=1-SUMXMY2(B2:B6,A2:A6)/DEVSQ(A2:A6)`. You should get 26, 980, 31.3, 0.063 (6.3%) and 0.935.
+   3. In column C, put a baseline that predicts 400 for every house, and compute the same five metrics for it.
+   4. Change house 4's prediction from 540 to 600 (a perfect guess). Which metric improves the most? (Check: MAE falls to 14 but RMSE falls further, from 31.3 to 16.1.)
+
+   **What you'll learn:** How each regression metric behaves, why RMSE punishes big misses, and why every metric needs a baseline.
+
+6. **[Medium] A confusion matrix for your own Teachable Machine model.** (Teachable Machine, 40 minutes, needs a webcam.)
+   1. At teachablemachine.withgoogle.com, make an image project with three classes: "Thumbs up," "Thumbs down" and "Nothing" (an empty frame). Record about 50 images of each and train.
+   2. Build your own test set: hold up 20 new examples of each class in the Preview panel, in slightly different positions and lighting, and note the top prediction each time.
+   3. Fill in a 3 × 3 confusion matrix like Table 9.8 and compute accuracy and the recall of each class.
+   4. Find the most common confusion. Add 30 more training images aimed at that weakness, retrain, and re-test on 20 fresh examples per class.
+   5. Optional: under the Train panel, open Advanced and then "Under the hood" to see the charts Teachable Machine itself computes, and compare them with your own.
+
+   **What you'll learn:** How to build a test set, how a multiclass confusion matrix points you at the fix, and why the test examples must be new.
+
+7. **[Challenge] Run the evaluation notebook and stress-test it.** (Google Colab, 45 minutes.)
+   1. Paste both cells from the "Real evaluation in code" section into a Colab notebook and run them. Check that your numbers match Table 9.2 and Table 9.7.
+   2. In the first cell, change `test_days` to `[0, 3, 6, 9]` and rerun. Does degree 2 still win? Does degree 7 still fail?
+   3. In the second cell, change `random_state=42` to 0, then 1, then 2, rerunning each time and noting the threshold-0.5 accuracy. (Across ten different seeds, this book's run ranged from about 95.1% to 98.6%.) How does that spread compare with the margin of error you would expect from 143 test tumors?
+   4. Add these two lines at the end of the second cell to draw the ROC curve: `from sklearn.metrics import RocCurveDisplay` and then `RocCurveDisplay.from_predictions(y_test, probs)`.
+   5. Ask a chatbot to explain any line you do not understand.
+
+   **What you'll learn:** That a single train/test split carries real luck, why cross-validation and margins of error matter, and how ROC curves are drawn in practice.
+
+8. **[Challenge] Fall into a leakage trap on purpose.** (Google Colab, 30 minutes.) Paste and run this complete cell:
+
+   ```python
+   import numpy as np
+   from sklearn.linear_model import LogisticRegression
+   from sklearn.model_selection import train_test_split
+
+   rng = np.random.default_rng(0)                    # fixed seed so the made-up data is repeatable
+   n = 2000                                          # 2,000 past loans
+   income = rng.normal(50, 15, n)                    # yearly income in thousands
+   debt_ratio = rng.uniform(0, 1, n)                 # debt as a share of income
+   late_payments = rng.poisson(1, n)                 # late payments in the past year
+   risk = -2 + 2.5 * debt_ratio + 0.6 * late_payments - 0.03 * (income - 50)
+   defaulted = rng.random(n) < 1 / (1 + np.exp(-risk))      # who actually defaulted (the label)
+   collections = defaulted & (rng.random(n) < 0.95)         # THE LEAK: only recorded after a default
+
+   honest = np.column_stack([income, debt_ratio, late_payments])
+   leaky  = np.column_stack([income, debt_ratio, late_payments, collections])
+
+   print("share who defaulted:", round(defaulted.mean(), 3))
+   for name, X in [("honest features", honest), ("with leaky column", leaky)]:
+       X_train, X_test, y_train, y_test = train_test_split(X, defaulted, test_size=0.3, random_state=0)
+       model = LogisticRegression(max_iter=1000).fit(X_train, y_train)
+       print(name, "-> test accuracy:", round(model.score(X_test, y_test), 3))
+   ```
+
+   In plain words: it invents 2,000 loans with three honest features, decides who defaulted using a hidden formula plus chance, and adds a fourth column, "collections agency contacted," that is only ever filled in after a default. It then trains the same model with and without that column. You should see roughly 45% defaults, about 68% accuracy with honest features and about 98% with the leaky column (exact numbers can shift slightly with library versions). Write one paragraph explaining why the 98% model would fail on the day a new loan application arrives, and what the right baseline accuracy is here.
+
+   **What you'll learn:** Data leakage from the inside, and healthy suspicion of scores that look too good.
+
+9. **[Medium] Evaluate two chatbots like a scientist.** (Two chatbots and a spreadsheet, 45 minutes.)
+   1. Write 30 questions with answers you can check exactly (unit conversions, dates of well-documented events, short logic puzzles, facts from a document you paste in). Do not show them to anyone in advance. This is your test set.
+   2. Ask both chatbots every question in fresh chats with the same wording. Mark each answer 1 (correct) or 0.
+   3. Compute each chatbot's accuracy and its margin of error with `=1.96*SQRT(p*(1-p)/30)`, where p is the accuracy.
+   4. Decide honestly: is the difference between the two bigger than the margins of error?
+   5. Note any questions where an answer key error was possible, and any where the chatbots disagreed with your "correct" answer and were right.
+
+   **What you'll learn:** Test sets, margins of error and answer-key errors, and why "I tried it on a few questions" is weak evidence.
+
+10. **[Easy] Goodhart's law hunt.** (Pencil and paper, then a browser, 20 minutes.)
+    1. Write down three examples of Goodhart's law from your own work, school or daily life: a number people started optimizing that stopped meaning what it used to.
+    2. Open the announcement page or model card of any recent AI model and find its benchmark table.
+    3. For two of the benchmarks listed, apply questions 1, 5, 9 and 10 of the checklist in this chapter. Ask a chatbot what each benchmark measures and whether it is considered saturated.
+
+    **What you'll learn:** To recognize Goodhart's law everywhere and to read AI benchmark claims with the right questions.
+
+## Areas of opportunity
+
+- **Evaluation engineer.** Companies deploying AI need people who can build test sets, choose metrics that match business costs, set thresholds and catch leakage. As more products are built on chatbots, "evals" has become a recognized specialty (see Chapter 31), and the skills in this chapter are its foundation.
+- **Model risk and validation in regulated industries.** Banks, insurers and healthcare organizations are required to validate models independently before and after deployment. People who can audit a model's evaluation, spot leakage and explain precision and recall to regulators and executives are steadily in demand.
+- **Clinical AI validation.** Hospitals and health systems need specialists who test vendor AI tools on their own patients and equipment, because performance often drops under distribution shift. Clinicians with data skills are especially valuable here.
+- **Benchmark and dataset creation.** Labs and evaluators need fresh, uncontaminated, carefully checked test sets, and they pay domain experts to write and verify hard questions. Answer-key errors in famous benchmarks show how much careful quality control is worth.
+- **Monitoring and drift detection services.** Every deployed model degrades as the world changes. Tools and consulting that watch live performance, alert on drift and trigger retraining serve any company with models in production.
+- **Independent testing and AI audits.** Buyers increasingly want third-party verification of vendors' accuracy, fairness and robustness claims, rather than self-reported numbers. Audit firms, testing labs and certification bodies are a growing market.
+- **Data science education for managers.** Executives approve AI projects based on numbers they cannot interrogate. Short courses that teach the checklist in this chapter, especially baselines, base rates and precision versus recall, fill a real gap.
+- **Open problem: evaluations that resist Goodhart's law.** How to measure AI ability in ways that do not saturate, leak into training data or depend on harness tricks is an open research question as of late 2026, and good answers shape billions of dollars of decisions.
+- **Open problem: measuring real-world value.** Benchmarks measure exam-style skill; businesses care about time saved and errors avoided in real work. Methods that connect the two are scarce and valuable.
+
+## Check your understanding
+
+1. Why do we need a validation set as well as a test set? What goes wrong if you use the test set to choose between 50 models?
+2. A model predicting hospital readmission includes the column "discharge follow-up call scheduled after readmission." What is the problem called, and why will the model fail in real use?
+3. A model's training error is very low and its validation error is much higher. Is it overfitting or underfitting, and name two things you could try.
+4. A spam filter is tested on 1,000 emails, 100 of which are spam. It flags 80 emails, of which 72 are really spam. Compute precision and recall.
+5. Why is a fraud detector with 99.9% accuracy not necessarily any good?
+6. A model has an AUC of 0.5. What does that mean in plain words?
+7. A model predicts prices with an R² of 0. What does that tell you?
+8. What is Goodhart's law, and give one way it shows up in AI benchmarks.
+
+<details><summary>Answers</summary>
+
+1. Choosing among models is itself a kind of learning: part of the winner's score is luck on that particular data. The validation set absorbs that luck, so the untouched test set can give an honest final score. If you pick the best of 50 models by their test scores, the winning test score is optimistic, and you no longer have an unbiased estimate of real performance.
+2. Target leakage. The column is recorded after the outcome (the readmission) has happened, so it will not exist when the model needs to make its prediction, at discharge. The model looks excellent in testing because the answer leaked into its inputs.
+3. Overfitting. You could use a simpler model, add regularization (such as an L2 penalty), stop training earlier, use data augmentation, or collect more training data.
+4. TP = 72 and FP = 80 − 72 = 8, so precision = 72 ÷ 80 = 90%. There are 100 real spam emails and 72 were caught, so FN = 28 and recall = 72 ÷ 100 = 72%.
+5. Because fraud is rare. If only 1 in 1,000 transactions is fraud, a model that never flags anything is 99.9% accurate and catches no fraud at all. You need recall (how much fraud it catches) and precision (how many alerts are real), not accuracy.
+6. The model ranks a random positive example above a random negative one only half the time, which is no better than flipping a coin. Its scores carry no useful information for separating the classes.
+7. The model explains none of the variation in prices: it does no better than always predicting the average price. (A negative R² would mean it does worse than that.)
+8. "When a measure becomes a target, it ceases to be a good measure." In AI, once a benchmark becomes the standard target, models get tuned toward it, its questions leak into training data, and harness settings get optimized, so scores rise faster than real ability. Grading only right or wrong, with no credit for "I don't know," also rewards confident guessing, which encourages hallucination.
+
+</details>
+
+## Going deeper
+
+- **Google's Machine Learning Crash Course** (developers.google.com/machine-learning/crash-course): its classification and data-splitting modules cover thresholds, the confusion matrix, ROC and AUC, and overfitting with interactive exercises.
+- **StatQuest with Josh Starmer** (YouTube): clear, friendly videos on the confusion matrix, sensitivity and specificity, ROC and AUC, cross-validation, bias and variance, and regularization.
+- **Gareth James, Daniela Witten, Trevor Hastie and Robert Tibshirani, *An Introduction to Statistical Learning*** (free PDF at statlearning.com): the standard gentle textbook on bias and variance, cross-validation and regularization, with Python and R editions.
+- **Kaggle Learn, "Intro to Machine Learning" and "Intermediate Machine Learning"** (kaggle.com/learn): free short courses with in-browser notebooks; they include lessons on underfitting, overfitting and data leakage.
+- **Arvind Narayanan and Sayash Kapoor, *AI Snake Oil*** (2024): an accessible book on how to tell AI that works from AI that does not, full of evaluation failures and leakage stories.
+- **Sayash Kapoor and Arvind Narayanan, "Leakage and the Reproducibility Crisis in ML-based Science"** (2023): the survey of leakage across scientific fields mentioned in this chapter, with a useful taxonomy of leak types.
+- **Benjamin Recht and colleagues, "Do ImageNet Classifiers Generalize to ImageNet?"** (2019): the readable study that rebuilt an ImageNet test set and measured how much of the field's progress was fitted to the original.
+- **scikit-learn user guide, "Metrics and scoring" and "Cross-validation"** (scikit-learn.org): precise definitions and code for every metric in this chapter.
+- **Epoch AI's benchmarking hub** (epoch.ai/benchmarks): independent, regularly updated measurements of frontier models, useful for practicing the checklist in this chapter.

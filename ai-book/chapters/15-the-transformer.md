@@ -147,6 +147,8 @@ A real model's vectors have thousands of numbers, which RoPE treats as hundreds 
 
 Two other ideas are worth knowing. ALiBi (2021) skips rotations and simply lowers the attention score in proportion to distance, so nearby tokens are favored. And some newer models drop positional encoding from a few of their attention layers altogether: Meta's Llama 4 (April 2025) interleaves layers without position information with RoPE layers, a design it calls iRoPE, which can help with very long texts.
 
+> **Key idea:** Attention on its own sees a bag of tokens. Position methods put the order back in, and RoPE does it in the neatest way: it makes the score between two tokens depend on how far apart they are.
+
 > **Definition — ALiBi (Attention with Linear Biases):** A position method that subtracts a penalty from each attention score in proportion to the distance between the two tokens, so the model naturally pays more attention to nearby text.
 
 ### Stretching the context window
@@ -300,6 +302,8 @@ Check the "sat" row yourself: its query [0, 2] scores 6 against cat's key and 4 
 ### The catch: attention costs grow with the square of length
 
 Every token scores every other token, so a text of n tokens needs n × n scores, in every attention head of every layer. At 1,000 tokens that is 1 million scores. At 100,000 tokens it is 10 billion. At 1 million tokens it is 1 trillion. Storing one 100,000 × 100,000 grid of 16-bit numbers would take 20 GB, for one head in one layer. This "quadratic" growth is why long contexts are expensive, and why so much research has gone into making attention cheaper (later in this chapter, and Chapter 17).
+
+> **Try it:** Ask your chatbot: "In the sentence 'The trophy didn't fit in the suitcase because it was too big,' what does 'it' refer to? What if I change 'big' to 'small'?" Resolving "it" correctly needs exactly the kind of information-gathering you just computed, done across many heads and layers.
 
 > **Watch out:** "Attention means the model is paying attention the way a person does." It is a learned weighted average based on vector similarity, a routing mechanism for information. A high attention weight shows where information flowed, not necessarily why the model made its final choice.
 
@@ -476,6 +480,8 @@ Suppose that after "The capital of France is," four candidates get these logits 
 
 Divide the logits by a temperature of 0.5 (doubling the gaps) and " Paris" rises to 0.991. Use a temperature of 2 (halving the gaps) and it falls to 0.608, with " a" at 0.174. A sampler then picks one token at random according to these probabilities, or always the top one ("greedy"). Chapter 18 compares the sampling methods (top-k, top-p, min-p) and explains why temperature 0 is still not perfectly repeatable.
 
+> **Try it:** In Google AI Studio (https://aistudio.google.com, free with a Google account), ask for "a one-line slogan for a bakery" three times at temperature 0 and three times at temperature 1.5. Low temperature keeps picking the top tokens; high temperature lets the long tail through.
+
 Then the chosen token is appended to the text and the whole process repeats, one token at a time, until the model produces an "end" token.
 
 > **Definition — Autoregressive generation:** Producing output one token at a time, where each new token is chosen using everything before it, then fed back in as input for the next step.
@@ -498,6 +504,8 @@ sequenceDiagram
     S->>U: a period, then an end token
 ```
 *Figure 15.8: Generating a reply. The prompt is processed once, its keys and values are cached, and each new token only needs a small amount of fresh work before reading the cache.*
+
+> **Key idea:** Every reply you have ever received from a chatbot was produced the same way: score every token in the vocabulary, turn the scores into probabilities, pick one, append it, and run the whole stack again.
 
 This is why replies stream onto your screen word by word, and why the first word takes longer than the rest: the model must first process your whole prompt (called prefill), then generates each new token cheaply using the cache (called decode). Chapter 23 explains how serving systems exploit this.
 
@@ -585,6 +593,8 @@ The same trick works almost everywhere:
 
 > **Definition — Spectrogram:** A picture of sound showing how much energy each frequency has at each moment in time. Speech models often treat slices of it like image patches or tokens.
 
+> **Try it:** Upload a photo that has small text in one corner (a street sign, a label) and ask your chatbot to read it. Then crop the photo to that corner and ask again. Images are usually resized before being cut into patches, so small details can fall between the cracks; cropping gives the text more patches.
+
 > **Key idea:** A Transformer is a general machine for sequences of vectors. Text, images, audio, video and proteins become one kind of problem once they are cut into tokens, which is why one architecture now powers chatbots, image generators, speech recognizers and scientific models.
 
 ## The 2017 Transformer versus a 2026 frontier model
@@ -638,3 +648,123 @@ At the top, the last token's vector is turned into a score for every possible ne
 
 ## Key terms
 Transformer, Token, Tokenizer, BPE (Byte-Pair Encoding), Vocabulary, Special token, Embedding matrix, Model dimension (hidden size), Positional encoding, RoPE (Rotary Position Embedding), ALiBi (Attention with Linear Biases), Context window, Context extension, Self-attention, Query, key and value (Q, K, V), Attention weights (attention matrix), Scaled dot-product attention, Multi-head attention, Attention head, Induction head, KV cache, MQA and GQA (multi-query and grouped-query attention), MLA (Multi-head Latent Attention), Feed-forward network (FFN), SwiGLU, Mixture of experts (MoE), Residual stream, RMSNorm, Transformer block, Cross-attention, Encoder-only model, BERT, Masked language modeling, Decoder-only model, Encoder-decoder model, Causal mask, Unembedding, Logit, Temperature, Autoregressive generation, Next-token prediction, Teacher forcing, Cross-entropy loss, Multi-token prediction (MTP), FlashAttention, Sliding-window attention, Sparse attention, Attention sink, Gated attention, Vision Transformer (ViT), Patch, Spectrogram
+
+## Exercises
+
+1. **[Easy] See tokens with your own eyes.** Open https://tiktokenizer.vercel.app (or the Hugging Face Tokenizer Playground at https://huggingface.co/spaces/Xenova/the-tokenizer-playground).
+   1. Type "I love strawberries." Then "Strawberries I love." Then "STRAWBERRIES."
+   2. Type the same short sentence in English and in another language you know, and compare the token counts.
+   3. Type a web address, the number 123456789, and a line of code such as `print("hello")`.
+   4. If the site lets you switch tokenizers, switch between an older one and a newer one and compare counts for the same paragraph.
+   **What you'll learn:** models see chunks, not letters; capitalization, spacing and language change the count; and token counts (which set prices and limits) depend on the tokenizer.
+
+2. **[Easy] Build a BPE vocabulary by hand.** Your training text has five words with these counts: "hug" 10, "pug" 5, "pun" 12, "bun" 4, "hugs" 5.
+   1. Split each word into letters and count every adjacent pair, multiplying by the word's count (for example, "u g" appears in hug, pug and hugs: 10 + 5 + 5 = 20).
+   2. Merge the most frequent pair everywhere, then recount. Do four merges in total. (Check: you should merge "ug," then "un," then "hug," then "pun.")
+   3. Use your four merges to tokenize three new words: "bug," "hugs" and "puns."
+   **What you'll learn:** how a tokenizer's vocabulary is built from frequency alone, and how unseen words are assembled from known pieces.
+
+3. **[Medium] Self-attention with a pencil, two ways.** You need paper and a calculator with an e to the x button (any phone calculator in landscape mode).
+   1. Simplified version: give the tokens "cat" [1, 0], "sat" [0, 1] and "it" [0.9, 0.1], and let each token's query, key and value all equal its vector (no learned matrices). For "it," compute the three dot products (0.9, 0.1, 0.82), divide each by 1.414, apply softmax and blend the values. (Check: weights about 0.40, 0.23, 0.38 and output about [0.74, 0.26].)
+   2. Compare with the chapter's version, where learned matrices gave "cat" 80 percent. Write one sentence on why separate query and key matrices help.
+   3. Using Table 15.3, compute the "sat" row yourself and check you get 0.804 and 0.196, then compute its output vector.
+   **What you'll learn:** attention is dot products, softmax and a blend, and the learned query and key matrices are what let a token look for something other than itself.
+
+4. **[Easy] Explore a live GPT-2 in your browser.** Open Transformer Explainer at https://poloclub.github.io/transformer-explainer/ (it runs the real GPT-2 small model on your computer).
+   1. Keep or type the sentence "Data visualization empowers users to" and run it.
+   2. Click into the embedding step, then into one attention head. Find the query, key and value vectors and the attention grid. Notice that the upper-right triangle is empty: that is the causal mask.
+   3. Look at the MLP (feed-forward) step and the final list of next-token probabilities.
+   4. Move the temperature slider from 0.2 to 2 and generate several times at each setting. Write down what changes.
+   **What you'll learn:** the whole decoder-only pipeline from this chapter on a real model, the causal mask in action, and how temperature reshapes probabilities.
+
+5. **[Easy] Walk through an LLM in 3-D.** Open Brendan Bycroft's LLM Visualization at https://bbycroft.net/llm.
+   1. Step through the guided walkthrough of the tiny "nano-GPT" model, from token embedding to output.
+   2. Find the self-attention section and the feed-forward (MLP) section in the 3-D picture.
+   3. Switch to the GPT-2 and GPT-3 models in the visualization and compare their sizes with the tiny model.
+   **What you'll learn:** the actual shapes of the matrices you computed by hand, and the staggering difference in scale between a toy model and a real one.
+
+6. **[Medium] Find attention heads in GPT-2, in Colab.** Open https://colab.research.google.com, choose New notebook, paste this into a cell and run it. The first line installs two libraries; the next lines load GPT-2 small, run one sentence through it, and draw every attention head.
+   ```python
+   !pip install -q bertviz transformers
+   from bertviz import head_view
+   from transformers import AutoTokenizer, AutoModel
+   tok = AutoTokenizer.from_pretrained("gpt2")                     # GPT-2's tokenizer
+   model = AutoModel.from_pretrained("gpt2", output_attentions=True,
+                                     attn_implementation="eager")   # ask for attention weights
+   inp = tok("The animal didn't cross the street because it was too tired", return_tensors="pt")
+   out = model(**inp)                                               # one forward pass
+   head_view(out.attentions, tok.convert_ids_to_tokens(inp["input_ids"][0]))  # interactive view
+   ```
+   Use the layer menu and click on head colors to find a head where "it" attends strongly to "animal." Then change "tired" to "wide," rerun, and see whether "it" shifts toward "street." Also notice how many heads send most of their attention to the very first token.
+   **What you'll learn:** heads specialize, the causal pattern is visible in every head, and attention sinks are real.
+
+7. **[Medium] Count a Transformer's parameters in a spreadsheet.** Use the rule from Step 7: parameters ≈ 12 × layers × d × d + vocabulary × d.
+   1. GPT-2 small: 12 layers, d = 768, vocabulary 50,257, plus 1,024 learned positions × 768. (Check: about 124 million.)
+   2. GPT-2 XL: 48 layers, d = 1,600. (Check: about 1.5 billion.)
+   3. GPT-3: 96 layers, d = 12,288. (Check: about 175 billion.)
+   4. Add a column showing what share of each model's parameters sits in the embedding table. Why does that share shrink as models grow?
+   **What you'll learn:** a model's size follows directly from its width and depth, and you can sanity-check published parameter counts yourself.
+
+8. **[Medium] Build a KV-cache calculator.** In a spreadsheet, make columns for layers, key-value heads, head size, bytes per number and context length. Compute bytes = 2 × layers × KV heads × head size × bytes per number × tokens, then divide by 1,000,000,000 for GB.
+   1. Reproduce Table 15.4 (80 layers, 128 head size, 2 bytes, 128,000 tokens; KV heads 64, 8 and 1).
+   2. Try a smaller model: 32 layers, 8 KV heads, head size 128. (Check: about 0.13 MB per token.)
+   3. Switch to 1 byte per number (8-bit cache) and to a 1,000,000-token context. Which change matters more?
+   **What you'll learn:** why long conversations eat GPU memory, why GQA and MLA exist, and why providers charge more for long contexts.
+
+9. **[Challenge] Build a tiny GPT from scratch.** Watch Andrej Karpathy's free video "Let's build GPT: from scratch, in code, spelled out" (YouTube, about two hours) while running the Colab notebook linked in its description, or run the shakespeare_char example from his nanoGPT repository on GitHub. Then change one setting at a time (number of layers, number of heads, context length) and compare the quality of the generated Shakespeare.
+   **What you'll learn:** every component in this chapter (embeddings, causal self-attention, feed-forward blocks, residual stream, normalization, next-token loss) in a couple of hundred lines of code, and that it really is "just" next-character prediction.
+
+10. **[Challenge] Architecture detective.** On https://huggingface.co, open the model pages for two open-weight models (for example Kimi K3, DeepSeek-V4-Flash or Qwen3.5-397B-A17B). Find each one's `config.json` file under "Files and versions."
+    1. Fill a table: number of layers, hidden size, attention heads, key-value heads (or latent size), vocabulary size, maximum context, number of experts and experts used per token.
+    2. Field names differ between labs. When stuck, paste the file into your chatbot and ask it to explain each field, then check its answer against the model card.
+    3. Using your KV-cache calculator (Exercise 8), estimate each model's cache per token where the fields allow it.
+    **What you'll learn:** to read real architecture specifications and map them onto this chapter's vocabulary.
+
+11. **[Easy] Ask your chatbot what it knows about itself.** Ask: "What is publicly known about your own architecture, and what is not? Separate facts the company has published from guesses." Then ask: "Explain self-attention using a cocktail-party analogy, then quiz me with four questions."
+    **What you'll learn:** closed labs disclose little about their architectures, good answers separate published facts from speculation, and explaining attention back is the best test of whether you understood it.
+
+## Areas of opportunity
+- **Applied ML engineering with architecture literacy.** Companies building on open-weight models need engineers who can read a config file, compare GQA against MLA, estimate KV-cache memory and choose the right model for their hardware. Understanding the Transformer is what separates them from people who only call an API.
+- **GPU kernel and performance engineering.** Every new attention variant (sliding-window, sparse, compressed, linear) needs fast GPU code, in the style of FlashAttention. Engineers who write CUDA or Triton kernels are chronically scarce and highly paid.
+- **Inference optimization.** Managing KV caches, long-context serving and low-precision formats directly cuts the cost of every token served. Cloud providers, AI labs and companies with big AI bills pay for this (Chapter 23).
+- **Tokenizers and under-served languages.** Languages that tokenize poorly cost more and often perform worse. Governments, local companies and nonprofits fund better tokenizers, datasets and models for their languages.
+- **Interpretability research.** Induction heads, the residual stream and attention patterns are the raw material of mechanistic interpretability, a growing field at labs and in academia (Chapter 57).
+- **Domain Transformers.** Treating genomes, proteins, medical records, sensor logs or financial time series as token sequences is a fast-growing niche. Domain experts who also understand Transformers are a rare combination.
+- **Long-context evaluation.** With million-token windows, businesses need to know whether a model actually uses what is in the middle of a long document, or whether retrieval works better. Testing and consulting on this is a practical niche (Chapter 27).
+- **Education and visualization.** Tools like Transformer Explainer show how much demand there is for clear explanations. Corporate training, courses and interactive visualizations that explain LLM internals accurately have a steady market.
+- **Open research problems.** Whether cheaper attention can match full attention on long, multi-step reasoning; why attention sinks appear; how to extend context reliably; and whether models could skip tokenizers entirely and read raw bytes efficiently are all unsettled.
+
+## Check your understanding
+1. Give three reasons the Transformer beat recurrent networks.
+2. Why is plain attention blind to word order? With toy RoPE at 10 degrees per position, both vectors starting at [1, 0], what is the dot product between a query at position 7 and a key at position 5?
+3. A query's scores against three keys are [4, 2, 0], and the key length is 4. What are the attention weights?
+4. Why do Transformers divide attention scores by the square root of the key length?
+5. What would go wrong if you trained a decoder-only model without a causal mask?
+6. A model has 32 layers, 8 key-value heads and head vectors of 128 numbers, stored at 2 bytes each. How much KV-cache memory does one token need, and how much do 100,000 tokens need?
+7. How many tokens does a Vision Transformer produce from a 384 × 384 image cut into 16 × 16 patches?
+8. In a classic dense Transformer, which part of each block holds most of the parameters? And which layout (encoder-only or decoder-only) would you choose for making search embeddings, and which for a chatbot?
+
+<details><summary>Answers</summary>
+
+1. It processes all tokens in parallel (ideal for GPUs), any token can reach any other token in one step instead of through a fading chain of memories, and it keeps improving smoothly as you add parameters, data and compute.
+2. Attention compares tokens as an unordered set, so shuffling them gives the same scores. RoPE rotates queries and keys by position-dependent angles. Positions 7 and 5 are rotated 70 and 50 degrees, 20 degrees apart, so the dot product is cos 20 degrees, about 0.940.
+3. Divide by the square root of 4, which is 2: [2, 1, 0]. e to those is 7.389, 2.718 and 1, totaling 11.107. The weights are about 0.665, 0.245 and 0.090.
+4. With long query and key vectors, dot products become large, and softmax of large numbers puts nearly all the weight on one token, which makes learning stall. Dividing by the square root of the length keeps scores in a range where softmax stays soft.
+5. Each position could see the token it is supposed to predict, so the model would learn to copy it and would learn nothing useful for generating text, where the future is not available.
+6. 2 × 32 × 8 × 128 × 2 = 131,072 bytes, about 0.13 MB per token. For 100,000 tokens, about 13.1 GB.
+7. 384 ÷ 16 = 24 patches per side, so 24 × 24 = 576 tokens.
+8. The feed-forward block, roughly two-thirds of the parameters. Encoder-only (BERT-style) suits search embeddings because every token sees the whole text; decoder-only suits a chatbot because it generates text one token at a time.
+
+</details>
+
+## Going deeper
+- **Vaswani et al., "Attention Is All You Need"** (2017): the original paper; after this chapter, its diagrams and the attention formula will be readable.
+- **Jay Alammar, "The Illustrated Transformer"** (jalammar.github.io): the most widely used visual explanation of the architecture, step by step.
+- **3Blue1Brown, neural-network video series** (YouTube; the 2024 episodes on GPT and attention): beautifully animated explanations of embeddings, attention and feed-forward blocks.
+- **Andrej Karpathy, "Let's build GPT: from scratch, in code, spelled out"** (YouTube, 2023) and the **nanoGPT** repository: build a working Transformer line by line.
+- **Transformer Explainer** (poloclub.github.io/transformer-explainer): the interactive GPT-2 from Exercise 4, from Georgia Tech's Polo Club.
+- **Brendan Bycroft, LLM Visualization** (bbycroft.net/llm): a 3-D, step-by-step walk through every matrix in a GPT-style model.
+- **Sebastian Raschka, "Build a Large Language Model (From Scratch)"** (Manning, 2024), and his free online **LLM Architecture Gallery**: a book-length build plus diagrams comparing the architectures of current open models.
+- **Elhage et al. (Anthropic), "A Mathematical Framework for Transformer Circuits"** (2021, transformer-circuits.pub): where the residual stream and attention heads are treated as objects to reverse-engineer.
+- **Dao et al., "FlashAttention"** (2022): a readable systems paper on why attention is limited by memory movement rather than arithmetic.
+- **Hugging Face LLM Course** (huggingface.co/learn/llm-course): free, practical lessons on tokenizers, Transformer models and fine-tuning with real code.

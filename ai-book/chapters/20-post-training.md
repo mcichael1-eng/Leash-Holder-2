@@ -92,7 +92,7 @@ One training example, called a demonstration, looks like this once it is laid ou
 
 ```
 <|system|>    You are a helpful assistant.
-<|user|>      My sourdough came out flat and dense. What went wrong?
+<|user|>      My sourdough came out flat and dense. Why?
 <|assistant|> A flat, dense loaf usually points to one of three things:
               1. A weak starter. It should double within 4-8 hours...
               2. Under-proofing...
@@ -502,7 +502,7 @@ Constitutional AI's short list of principles grew, across the industry, into lon
 Two documents matter most as of late 2026:
 
 - **OpenAI's Model Spec**, public and versioned, revised several times since its first release in 2024. It sets out a "chain of command" in which instructions from the platform (OpenAI) outrank the developer, which outranks the user, along with default behaviors that developers and users can adjust within limits.
-- **Anthropic's constitution for Claude**, published in January 2026 under a CC0 (public-domain) license. It lists Claude's priorities as being (1) broadly safe, (2) broadly ethical, (3) compliant with Anthropic's guidelines and (4) genuinely helpful, and says these should be weighed holistically rather than as a strict ranking. It includes a short list of hard constraints that no instruction can override (for example, never providing serious uplift to a bioweapons attack) and a section on Claude's nature, including uncertainty about its moral status and wellbeing.
+- **Anthropic's constitution for Claude**, published in January 2026 under a CC0 (public-domain) license. It lists Claude's priorities as being (1) broadly safe, (2) broadly ethical, (3) compliant with Anthropic's guidelines and (4) genuinely helpful, and says these should be weighed holistically rather than as a strict ranking. It includes a short list of hard constraints that no instruction can override (for example, never providing significant uplift to a bioweapons attack) and a section on Claude's nature, including uncertainty about its moral status and wellbeing.
 
 > **Definition — Chain of command (principal hierarchy):** The rules for whose instructions a model follows when they conflict: typically the AI developer first, then the operator (the business that deploys the model with its own system prompt, such as a bank running an AI helper), then the user, each within limits set by the level above.
 

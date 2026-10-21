@@ -654,3 +654,101 @@ In 2025–26 the labs signed deals measured in gigawatts, worth hundreds of bill
 
 Merchant silicon, Fabless, ASIC (Application-Specific Integrated Circuit), Hyperscaler, Gross margin, Dense vs. sparse FLOPS, NVFP4 and MX formats, Disaggregated serving, MLPerf, CUDA, Kernel (GPU kernel), GPU library, NCCL and RCCL, Framework (PyTorch, JAX), ML compiler (XLA, Triton, torch.compile), Serving engine, Software moat (lock-in), ROCm, HIP, Warrant, Systolic array, TPU (Tensor Processing Unit), Trainium and Inferentia, RISC-V, Design partner (custom silicon partner), Tape-out, SRAM (static RAM), LPU (Language Processing Unit), Wafer-scale engine, Dataflow architecture, In-memory computing, Photonic interconnect, Transformer-specific ASIC, NPU (Neural Processing Unit), TOPS (trillions of operations per second), Unified memory, Neocloud, Letter of intent, Jevons paradox, 3D stacking (hybrid bonding), Analog computing, Photonic computing, Neuromorphic chip, Quantum computer
 
+## Exercises
+
+1. **[Easy] Decode a chip announcement.** (1) Pick one primary source: NVIDIA's Vera Rubin NVL72 page, AMD's Instinct MI355X page, or Google Cloud's "TPU 8t and TPU 8i technical deep dive" blog post. (2) Fill in the nine-question checklist from the end of this chapter, writing "not stated" where the source is silent. (3) Circle the single most impressive-sounding number and rewrite it as dense, per-chip and at BF16 or FP8 if you can. **What you'll learn:** to separate engineering facts from marketing framing in under 20 minutes.
+
+2. **[Easy] Which chips answer your chats?** (1) Ask two different chatbots: "What hardware do you run on, and how confident are you?" (2) Compare their answers with this chapter's list of public deals. (3) Note where the chatbots hedge, guess or are out of date, and write two sentences on why AI companies rarely disclose their exact hardware. **What you'll learn:** your chatbot's answers about itself are not authoritative, and public deal announcements are often the best evidence.
+
+3. **[Easy] Run your first GPU matrix multiply (Google Colab).** (1) Open colab.research.google.com, create a new notebook, choose Runtime, Change runtime type, and pick a GPU. (2) Paste the code below into a cell and press play. (3) Change `a_gpu @ b_gpu` to `a_gpu.half() @ b_gpu.half()` (16-bit numbers) in the timed loop and run again. **What you'll learn:** one line of PyTorch quietly calls NVIDIA's cuBLAS library through CUDA, which is the software stack of Figure 35.3 in action, and lower precision runs faster on tensor cores.
+
+```python
+import torch, time                      # PyTorch (the framework) and a timer
+
+n = 4096                                # size of each square matrix
+a = torch.randn(n, n)                   # random matrix in CPU memory
+b = torch.randn(n, n)
+
+start = time.time()
+c = a @ b                               # matrix multiply on the CPU
+cpu_s = time.time() - start
+print("CPU seconds:", round(cpu_s, 3))
+
+a_gpu, b_gpu = a.cuda(), b.cuda()       # copy both matrices to the GPU
+c = a_gpu @ b_gpu                       # warm-up run (loads cuBLAS)
+torch.cuda.synchronize()                # wait until the GPU has finished
+
+start = time.time()
+for _ in range(10):
+    c = a_gpu @ b_gpu                   # ten multiplies on the GPU
+torch.cuda.synchronize()
+gpu_s = (time.time() - start) / 10      # average seconds per multiply
+print("GPU seconds per multiply:", round(gpu_s, 4))
+
+flop = 2 * n ** 3                       # one multiply plus one add per step
+print("GPU TFLOPS achieved:", round(flop / gpu_s / 1e12, 1))
+print("Speed-up over CPU:", round(cpu_s / gpu_s), "times")
+```
+
+4. **[Medium] Four years of NVIDIA in a spreadsheet.** (1) Make rows for H100, H200, B200, B300 and Rubin using Tables 35.1 and 35.2. (2) Columns: HBM GB, HBM TB/s, dense BF16 or FP8 PF (where given), year. (3) Compute each column's growth from H100 to Rubin. (4) Compute the "ridge point" (dense FLOPS ÷ bytes per second of bandwidth) for H100 and Rubin, as in Chapter 33. **What you'll learn:** compute has grown faster than memory, which is why memory now decides so much of AI performance.
+
+5. **[Medium] Price-performance from rental prices.** (1) Open RunPod's and Lambda's GPU pricing pages. (2) Record on-demand $/GPU-hour for A100, H100, H200, B200 and B300. (3) For each, compute GB of HBM per dollar-hour and TB/s per dollar-hour, using this chapter's specs. (4) Decide which GPU you would rent for (a) serving a 70B model to many users and (b) a quick fine-tuning job, and say why. **What you'll learn:** there is no single best chip; the right one depends on whether your work is limited by memory capacity, bandwidth or compute.
+
+6. **[Medium] SRAM versus HBM, by the numbers.** (1) For models of 8B, 70B and 400B parameters at 8 bits, compute how many chips are needed just to hold the weights on a Groq 3 LPU (0.5 GB), a Cerebras WSE-3 (44 GB), a B300 (288 GB) and an MI455X (432 GB). (2) For the 70B model, compute the single-user decode upper bound on a B300 (bandwidth ÷ model size) and on Groq 3 chips (as in the worked example). (3) Explain in three sentences what the KV cache does to this picture for long conversations. **What you'll learn:** the real trade-off behind "fastest inference" claims.
+
+7. **[Medium] Translate a gigawatt deal.** (1) Choose OpenAI–AMD (6 GW) or Anthropic–Amazon (up to 5 GW). (2) Estimate accelerator slots per gigawatt using 1.8 kW per slot and a PUE of 1.2, then try 2.5 kW per slot. (3) Estimate total cost at $38 billion and at $60 billion per gigawatt. (4) Compare with NVIDIA's quarterly data-center revenue. (5) List three ways the deal could end up smaller than the headline. **What you'll learn:** to turn power-denominated headlines into chips and dollars, and to read "up to" critically.
+
+8. **[Challenge] Build-or-buy memo.** You advise a cloud company spending $20 billion a year on AI accelerators. (1) List the benefits of a custom chip (cost, supply, bargaining power, fit) and the risks (design cost, two-to-three-year delay, software, manufacturing capacity, architecture change). (2) Make a simple spreadsheet: assume a custom chip delivers equal work at 40% lower unit cost after a $1 billion per year program cost, and find the share of purchases it must replace to break even. (3) Write a one-page recommendation. **What you'll learn:** the economic logic driving Google, Amazon, Microsoft, Meta and OpenAI into chip design.
+
+9. **[Challenge] Track a roadmap against reality.** (1) Build a table of every chip on Figure 35.7 with its announced date and headline specs. (2) Each month for six months, record whether it was sampled, generally available or shipping in volume, and whether specs changed. (3) Summarize which vendors hit their dates and how much specs drifted. **What you'll learn:** the habit professional analysts use to discount roadmaps and spot real progress.
+
+10. **[Easy] What can your own device run?** (1) Look up your phone's or laptop's chip, its NPU TOPS rating (if any), its memory size and, for laptops, its memory bandwidth. (2) Using about 0.5 GB per billion parameters at 4 bits, estimate the largest model that would fit while leaving half the memory for everything else. (3) Estimate tokens per second as bandwidth ÷ model size. **What you'll learn:** why on-device AI is limited to small models and why memory, not TOPS, is usually the binding limit.
+
+## Areas of opportunity
+
+- **GPU kernel and performance engineers.** People who write and tune kernels in CUDA, Triton or Google's Pallas (attention, mixture-of-experts routing, FP4 matrix math) are among the scarcest and best-paid in AI, because a 10% speed-up is worth millions of dollars a year at cluster scale. The path runs from Python to PyTorch to Triton to CUDA and profiling tools.
+- **Compiler and porting engineers for new chips.** Every new accelerator (TPU 8, Trainium3, MI455X, Maia 200, startups' chips) needs compilers (MLIR, XLA, Triton back-ends) and engineers who can move models off CUDA. Hyperscalers and labs pay well because portability is how they capture the savings from custom silicon.
+- **Multi-vendor inference specialists.** Companies that can serve open-weight models cost-effectively on AMD, TPUs or Trainium can undercut GPU-only providers; the customers are businesses with large, steady inference bills.
+- **Chip design and verification.** RTL design, physical design, verification and test roles are expanding at hyperscalers, design partners and startups, and AI-assisted chip design tools are an emerging niche.
+- **Spec-sheet literacy as a job skill.** Equity analysts, procurement and capacity planners, policy staff working on export controls, and technical salespeople who can read accelerator specs critically (precision, sparsity, rack versus chip) are in demand well beyond engineering.
+- **Independent benchmarking and advisory.** Buyers spending millions need neutral answers to "which chip for my workload at what cost per token." Testing services, consultancies and software that run a customer's own model across vendors fill a real gap left by vendor claims.
+- **Edge AI products.** On-device assistants, private local AI appliances built on large-unified-memory machines, and NPU-powered features in medical, industrial and automotive devices, sold to customers who need privacy, low latency or offline use.
+- **Secondary markets.** Refurbishing, reselling and financing previous-generation GPUs (A100, H100) as yearly cadences push them down-market, for startups, universities and smaller clouds.
+- **Open problems.** Software portability across vendors, robust FP4 training at frontier scale, memory-wall solutions (near-memory compute, better KV-cache compression), and hardware for very long-context agents are active areas for researchers and startups.
+
+## Check your understanding
+
+1. NVIDIA's gross margin was 75.0% in mid-2026. What does that mean, and why does it motivate custom chips?
+2. Give three reasons NVIDIA sells whole racks rather than just GPUs.
+3. What is the "CUDA moat," and name two forces that are wearing it down.
+4. Why did Google split its eighth-generation TPU into 8t and 8i, and what differs between them?
+5. AMD's Helios and NVIDIA's Vera Rubin NVL72 are close on compute. Where does Helios lead on paper, and why might that matter?
+6. Why can a Groq-style SRAM chip be faster for one user but need over a hundred chips to hold a 70B model?
+7. What is the difference between TOPS and FLOPS, and why is memory usually the real limit for on-device AI?
+8. A headline says "Lab X signs 10 GW chip deal." List three questions you should ask before believing it means 10 GW of chips will be installed.
+
+<details><summary>Answers</summary>
+
+1. About $25 of every $100 of sales goes to making the product, leaving $75 of gross profit. For a cloud company buying tens of billions of dollars of GPUs, most of that spend is NVIDIA's profit, so designing a cheaper chip of its own can save a great deal if it works.
+2. Any three of: performance comes from the tightly coupled system (NVLink domain); pre-tested racks deploy faster; selling CPUs, networking and software captures more revenue per data center; and integrated systems make it harder for customers to swap out pieces.
+3. It is the advantage NVIDIA gets from about twenty years of CUDA software: libraries, compilers, tools, documentation and trained developers, which make switching costly. Forces wearing it down include PyTorch and JAX abstracting the hardware, Triton and XLA compilers, AMD's ROCm and AWS's Neuron stacks, multi-vendor serving engines, and big labs like Anthropic proving they can run on several chip families.
+4. Training and inference have different needs and are each large enough to justify their own chip. TPU 8t (12.6 PF FP4, 216 GB HBM) is built for huge superpods of up to 9,600 chips; TPU 8i has more memory and bandwidth (288 GB, 8.6 TB/s) and three times the SRAM (384 MB), for fast, cheap inference.
+5. Helios has about 31 TB of HBM4 versus 20.7 TB, about 50% more. More memory lets a rack hold bigger models and larger KV caches for long conversations and many users, which matters for serving mixture-of-experts models.
+6. On-chip SRAM is extremely fast (about 150 TB/s per Groq 3 chip) but small (about 0.5 GB), so a 70 GB model needs about 140 chips. Because each chip reads only its small slice very quickly, one token can pass through all of them in well under a millisecond, giving thousands of tokens per second for one user.
+7. TOPS usually counts 8-bit integer operations per second on an NPU, while FLOPS counts floating-point operations at a stated precision, so the numbers are not comparable. On a phone or laptop, the model must fit in limited memory and its speed is roughly memory bandwidth divided by model size, so memory sets the limits more than TOPS.
+8. Examples: Is it a firm contract or a letter of intent or "up to"? Over what years, and in what stages? Is the gigawatt figure power or chips, and what chip generation? Is the seller also investing in the buyer? Is the power and financing actually secured?
+
+</details>
+
+## Going deeper
+
+- **NVIDIA's quarterly earnings releases and GTC keynotes (nvidianews.nvidia.com).** The primary source for NVIDIA's revenue, roadmap and product claims; read them alongside the footnotes.
+- **Google Cloud blog, "TPU 8t and TPU 8i technical deep dive" (2026).** A first-party explanation of why Google split training and inference chips.
+- **Jouppi et al., "In-Datacenter Performance Analysis of a Tensor Processing Unit" (ISCA 2017).** The paper that introduced the first TPU and explained why Google built it; readable even for non-specialists in its opening sections.
+- **Hennessy and Patterson, "A New Golden Age for Computer Architecture" (Communications of the ACM, 2019).** Two Turing Award winners explain why domain-specific chips like TPUs are the future of computing.
+- **Chris Miller, *Chip War* (2022).** The best popular history of the semiconductor industry and its geopolitics, and the natural bridge to Chapter 36.
+- **Epoch AI, "Trends in Machine Learning" (epoch.ai/trends).** Regularly updated data on compute growth, chip price-performance and energy efficiency.
+- **MLCommons MLPerf results (mlcommons.org).** Standardized training and inference benchmark results across vendors; useful for seeing who participates as well as who wins.
+- **Gholami et al., "AI and Memory Wall" (2024, arXiv 2403.14123).** The data behind the claim that memory bandwidth has fallen behind compute.
+- **Triton documentation and tutorials (triton-lang.org).** The easiest way to see how GPU kernels are written without CUDA, with step-by-step examples.
+- **AMD Instinct product pages and the Helios announcements (amd.com).** AMD's own specifications, useful for practicing apples-to-apples comparisons with NVIDIA's pages.

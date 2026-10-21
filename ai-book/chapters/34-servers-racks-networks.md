@@ -15,7 +15,7 @@
 
 ## Before you start
 
-Chapter 2 (How Computers Work) gave you bits, transistors and the idea that moving data costs more than doing math on it. Chapter 4 (The Internet and the Cloud) explained packets, bandwidth and latency; here we apply the same ideas inside a single building. Chapter 32 (From Transistor to Accelerator) introduced GPUs, TPUs, FLOPS and number precision, and Chapter 33 (Memory and the Memory Wall) explained HBM and why memory bandwidth often matters more than math. You do not need Chapter 37 yet. That chapter does the math of splitting a training run across many GPUs; this chapter builds the machine the math runs on. The building around the machine (power, cooling, floors) is Chapters 38 to 40.
+Chapter 2 (How Computers Work) gave you bits, transistors and the idea that moving data costs more than doing math on it. Chapter 4 (The Internet and the Cloud) explained packets, bandwidth and latency; here we apply the same ideas inside a single building. Chapter 32 (From Transistor to Accelerator) introduced GPUs, TPUs, FLOPS and number precision, and Chapter 33 (Memory and the Memory Wall) explained HBM and why memory bandwidth often matters more than math. Chapter 37 later does the math of splitting a training run across GPUs; this chapter builds the machine that math runs on. The building around it (power, cooling, floors) is Chapters 38 to 40.
 
 ## Why one chip is not enough
 
@@ -55,7 +55,7 @@ flowchart TD
 
 *Figure 34.1: The AI hardware ladder, using NVIDIA's GB300 NVL72 generation as the example. Each rung multiplies the count and adds wiring, power and cooling.*
 
-The table puts real numbers on each rung. The example is the GB300 NVL72, NVIDIA's most widely deployed rack design in 2025–26. The pod row is illustrative because pod sizes vary by company. Compute is in dense FP4, the lowest-precision headline number, so treat it as an upper bound on what any real job achieves.
+The table puts real numbers on each rung. The example is the GB300 NVL72, NVIDIA's flagship rack from late 2025 until Vera Rubin began ramping in 2026. The pod row is illustrative because pod sizes vary by company. Compute is in dense FP4, the lowest-precision headline number, so treat it as an upper bound on what any real job achieves.
 
 | Level | Real example (2025–26) | GPUs | Fast memory (HBM) | Peak compute (dense FP4) | Power |
 |---|---|---|---|---|---|
@@ -188,7 +188,7 @@ A package must be mounted on something that feeds it power, carries away its hea
 
 > **Definition — Form factor (SXM, OAM, PCIe card):** The physical shape and connector of an accelerator module. SXM (NVIDIA) and OAM (an open standard) are flat, high-power modules that bolt onto a server board; PCIe cards plug into the standard slots found in ordinary computers.
 
-PCIe cards are convenient and lower power; you will find them in workstations and smaller inference servers. The big training and serving machines use SXM- or OAM-style modules, which can deliver more power and connect to more high-speed links.
+The big training and serving machines use SXM- or OAM-style modules, which can take more power and more high-speed links than a card.
 
 > **Definition — PCIe (PCI Express):** The standard connector and protocol inside computers that links CPUs to GPUs, network cards and SSDs. A 16-lane PCIe 5.0 slot moves about 64 GB/s in each direction; PCIe 6.0 doubles that.
 
@@ -291,18 +291,18 @@ The GB200 NVL72 (2024–25) and GB300 NVL72 (from the second half of 2025) put 7
 
 ```
    NVL72-style rack, front view (simplified)
-   +--------------------------------------------+
-   | power shelves     AC in, about 50 V DC out |
-   | compute tray      [CPU GPU GPU][CPU GPU GPU]|
-   | compute tray      [CPU GPU GPU][CPU GPU GPU]|
-   |   ... more compute trays above ...         |
-   | NVLink switch tray   (9 trays in the       |
-   | NVLink switch tray    middle of the rack)  |
-   |   ...                                      |
-   |   ... more compute trays below ...         |
-   | compute tray      18 trays x 4 GPUs = 72   |
-   | power shelves                              |
-   +--------------------------------------------+
+   +----------------------------------------------+
+   | power shelves      AC in, about 50 V DC out  |
+   | compute tray     [CPU GPU GPU] [CPU GPU GPU] |
+   | compute tray     [CPU GPU GPU] [CPU GPU GPU] |
+   |   ... more compute trays above ...           |
+   | NVLink switch tray    (9 switch trays in     |
+   | NVLink switch tray     the middle)           |
+   |   ...                                        |
+   |   ... more compute trays below ...           |
+   | compute tray      18 trays x 4 GPUs = 72     |
+   | power shelves                                |
+   +----------------------------------------------+
    Behind the trays: a copper NVLink "spine" of
    roughly 5,000 cables, coolant manifolds with
    quick-disconnects, and the DC busbar.
@@ -327,7 +327,7 @@ Here are the published rack-level specs for NVIDIA's two current designs, straig
 
 *Table 34.3: NVIDIA's two NVL72 rack generations. Note the different precisions, the dense/sparse labels and the changed Rubin numbers.*
 
-Two things in this table are traps, and Chapter 35 returns to them. First, the Rubin row changed between launch and shipping: coverage of the CES 2026 launch quoted 22 TB/s of HBM bandwidth and 3.6 TB/s of NVLink per GPU, while the current product page lists 19.2 TB/s and 3 TB/s. Second, the GB300's FP8 and BF16 lines are not labeled dense on the summary page. Divide 360 PF by 72 and you get 5 PF of BF16 per GPU, about double the roughly 2.5 PF dense BF16 usually assumed for a Blackwell GPU, which suggests those two numbers are sparse figures. Check the footnotes (Exercise 1 asks you to).
+Two traps hide in this table. The Rubin numbers changed after launch: CES 2026 coverage quoted 22 TB/s of HBM and 3.6 TB/s of NVLink per GPU, while the current page lists 19.2 TB/s and 3 TB/s. And the GB300's FP8 and BF16 lines are not labeled dense: 360 PF ÷ 72 = 5 PF of BF16 per GPU, about double the roughly 2.5 PF dense usually assumed for a Blackwell GPU, which suggests sparse figures (Exercise 1 asks you to check the footnotes).
 
 Now the payoff. Why does it matter that 72 GPUs act as one?
 
@@ -691,11 +691,7 @@ Compare that with sub-microsecond NVLink hops: a thousand to ten thousand times 
 
 ### Failures at scale
 
-More parts means more breakdowns. Suppose a single GPU fails on average once every five years (about 43,800 hours). In a 100,000-GPU cluster:
-
-`43,800 hours ÷ 100,000 GPUs ≈ 0.44 hours ≈ 26 minutes between failures`
-
-Real experience is in the same range. During a 54-day period of Llama 3 training on 16,384 H100s, Meta recorded 419 unexpected interruptions, about one every three hours. About 78% were attributed to hardware, with GPUs the largest category and HBM memory alone causing 17.2%. Networks add their own failures: transceivers, cables and switches. Meta still achieved more than 90% effective training time, thanks to frequent checkpoints and fast restarts. Chapter 37 covers how labs keep a million-part machine productive.
+More parts means more breakdowns. If one GPU fails on average once every five years (about 43,800 hours), a 100,000-GPU cluster sees a failure roughly every 43,800 ÷ 100,000 ≈ 0.44 hours, about 26 minutes. Real experience is in that range: during 54 days of Llama 3 training on 16,384 H100s, Meta recorded 419 unexpected interruptions, about one every three hours, mostly hardware, and still achieved more than 90% effective training time. Chapter 37 covers checkpoints, spares and goodput.
 
 > **Analogy:** Running a 100,000-GPU training job is like a 100,000-player online game where the match pauses whenever any one player's console crashes. You save the game often (checkpoints), keep spare consoles ready (hot spares), and build the network so one bad cable does not freeze everyone.
 

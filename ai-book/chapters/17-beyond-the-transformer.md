@@ -256,3 +256,328 @@ The costs are real:
 So dense models still make sense at small sizes and on devices. Google's Gemma 4 family (April 2026), for example, includes both a 31-billion-parameter dense model and a 26B-A4B MoE.
 
 > **At the frontier (2026):** The largest open models are trillion-scale MoEs with hundreds of fine-grained experts and roughly 3–5% of weights active per token. Kimi K3 (July 2026) has 2.8 trillion total and 104 billion active parameters, with 896 experts of which 16 routed plus 2 shared run per token. DeepSeek V4-Pro has 1.6 trillion total and 49 billion active, with 4-bit expert weights and a 1-million-token context, released under the permissive MIT license. NVIDIA's Nemotron 3 Super (March 2026) uses a variant it calls LatentMoE. The frontier question is no longer whether to use MoE but how fine-grained, how sparse and how to serve it.
+
+> **Try it:** Ask your chatbot: "Explain mixture of experts using a hospital triage analogy, then tell me which parts of your own architecture your company has publicly disclosed and which it has not." Notice whether it separates published facts from speculation. Most closed-model assistants will say their architecture is not public.
+
+## Graph neural networks: when data is a web, not a line
+
+Before going back to sequences, take a short detour to a different shape of data. Text is a line of tokens and an image is a grid of pixels, but much of the world is a web: atoms bonded in a molecule, friends in a social network, intersections joined by roads, weather stations on a globe. Mathematicians call such a web a graph.
+
+> **Definition — Graph:** A set of things (nodes) joined by connections (edges). A molecule is a graph with atoms as nodes and bonds as edges; a road map has intersections and roads.
+
+> **Definition — Node and edge:** A node is one item in a graph (an atom, a person, a city); an edge is a connection between two nodes (a bond, a friendship, a road).
+
+A graph neural network (GNN) learns on graphs by message passing. In each round, every node collects messages from its neighbors, combines them with its own state, and updates itself. Stack several rounds and information travels several hops.
+
+> **Definition — Graph neural network (GNN):** A neural network that works on graph-shaped data by repeatedly updating each node from its neighbors.
+
+> **Definition — Message passing:** The core GNN step: each node gathers information from the nodes it is connected to, combines it with its own, and updates its representation.
+
+A worked example. Four friends, each with a "how much I like jazz" score: Ana 9, Ben 3, Cal 6, Dee 0. Ana knows Ben and Cal, Ben knows Cal, and Cal also knows Dee. In this simplified version, each round every person's new score is the average of their own score and their friends' scores. (A real GNN uses learned weights and an activation function in place of a plain average.)
+
+```mermaid
+flowchart LR
+  A["Ana<br/>jazz 9"] --- B["Ben<br/>jazz 3"]
+  A --- C["Cal<br/>jazz 6"]
+  B --- C
+  C --- D["Dee<br/>jazz 0"]
+```
+*Figure 17.6: A tiny social graph. Dee is two hops from Ana and only connected through Cal.*
+
+Round 1: Ana = (9 + 3 + 6) ÷ 3 = 6. Ben = (3 + 9 + 6) ÷ 3 = 6. Cal = (6 + 9 + 3 + 0) ÷ 4 = 4.5. Dee = (0 + 6) ÷ 2 = 3.
+
+Round 2: Ana = (6 + 6 + 4.5) ÷ 3 = 5.5. Ben = 5.5. Cal = (4.5 + 6 + 6 + 3) ÷ 4 = 4.875. Dee = (3 + 4.5) ÷ 2 = 3.75.
+
+After two rounds, Dee's score carries a trace of Ana's enthusiasm, even though they have never met: it arrived through Cal. That is how a GNN lets an atom "know" about atoms two bonds away, or a road segment "know" about a traffic jam two junctions upstream.
+
+The graph convolutional network (GCN, 2016) made this practical. Google DeepMind's GraphCast (2023) used message passing on a mesh covering the globe to forecast weather, and GNNs are standard tools in drug and materials discovery (Chapter 52).
+
+> **Definition — Graph convolutional network (GCN):** A 2016 GNN design in which each node's update is a learned, weighted average of its neighbors' features, a graph version of the sliding filters in a CNN.
+
+There is a neat connection back to this book's main thread. Self-attention is message passing on a graph where every token is connected to every other token, and the edge weights (attention scores) are computed on the fly. A Transformer is a GNN on a fully connected graph. That is also why it is expensive: a fully connected graph of n tokens has about n² edges.
+
+> **Analogy:** A GNN is gossip in a village. Each house updates its opinion from its neighbors, and after a few rounds news has spread across the whole map. A Transformer is a village where everyone talks to everyone at once, which is thorough but loud and costly.
+
+## The memory problem: why long context is expensive
+
+Back to language models and the memory bill. How big does the KV cache get? Take an illustrative mid-size model with 60 attention layers, 8 key-value heads of 128 numbers each (a grouped-query design, Chapter 15), stored in 16-bit format (2 bytes per number). Per token per layer it stores a key and a value: 2 × 8 × 128 × 2 bytes = 4,096 bytes. Across 60 layers that is about 245 KB per token. Then:
+- 10,000 tokens (a long chat): about 2.5 GB.
+- 100,000 tokens (a long PDF): about 25 GB.
+- 1,000,000 tokens (a frontier context window): about 245 GB, for one conversation. An NVIDIA H100 has 80 GB.
+
+Chapter 15 introduced the first line of defense, which keeps attention but makes it cheaper: grouped-query and multi-head latent attention (GQA, MLA) shrink what is stored per token; sliding windows cap how far back a layer looks; sparse attention picks only the most relevant earlier tokens. DeepSeek V4 combines compressed and sparse attention and reports that, at a 1-million-token context, V4-Pro needs 27% of the per-token compute and 10% of the KV cache of its predecessor V3.2.
+
+> **Definition — Sparse and compressed attention:** Attention variants that compare a new token with only a selected subset of earlier tokens, or with compressed summaries of them, instead of every token in full. DeepSeek V4's Compressed Sparse Attention is an example.
+
+The more radical line of defense replaces most attention layers with layers that keep a fixed-size memory, no matter how long the text gets.
+
+## State-space models and linear attention: a notebook instead of a filing cabinet
+
+### Back to recurrence, done right
+
+Recall the RNN from Chapter 14. It read text one token at a time while carrying a hidden state, a fixed-size memory vector. Its memory never grew, which is exactly what we want now. But RNNs had two problems: training was slow because each step waited for the previous one, and they forgot long-range information.
+
+> **Definition — State (memory state):** A fixed-size set of numbers a layer carries from token to token as its running summary of everything it has read. Unlike a KV cache, it does not grow with the length of the text.
+
+The new families aim for the best of both worlds: train in parallel like a Transformer, but generate like an RNN, with constant memory and constant work per new token.
+
+Start with the simplest possible recurrence: `state = 0.9 × state + input`. Feed in 5, then 0, 0, 0: the state goes 5.0, 4.5, 4.05, 3.65. Every old input fades by 10% per step, whether it mattered or not. After 100 steps the 5 has faded to almost nothing.
+
+The key upgrade is selectivity: let the token itself decide how much to keep and how much to write. Suppose a model reads "The access code is 4719. Um, anyway, as I was saying..." A selective layer can learn to write strongly when it sees the digits and to set its keep-rate close to 1 (almost no fading) while reading filler like "um, anyway," so the code survives. On a new topic it can lower the keep-rate and clear space.
+
+> **Definition — Selectivity (selective state):** Letting the input decide, token by token, how much of the existing state to keep and how much new information to write, so a fixed-size memory can hold what matters and drop filler.
+
+### From S4 to Mamba-3
+
+> **Definition — State-space model (SSM):** A sequence layer that updates a fixed-size internal state at each step, as an RNN does, but is designed so it can also be trained in parallel on GPUs. The idea comes from control engineering.
+
+The modern line runs:
+- **S4 (2021).** Albert Gu and colleagues borrowed state-space equations from control engineering and found a way to train them in parallel like a convolution. S4 was strong on very long sequences but weak on language, because its update rule was the same for every token.
+- **Mamba (December 2023).** Gu and Tri Dao made the state updates selective (input-dependent), with a GPU-friendly algorithm to keep training fast. Mamba matched Transformers of similar size on language for the first time.
+- **Mamba-2 (2024).** A reformulation showing that SSMs and attention are mathematically close relatives, which made training much faster on GPUs.
+- **Mamba-3 (2026, an oral paper at ICLR 2026).** Adds a more expressive recurrence, complex-valued state updates and a "multi-input, multi-output" design. At 1.5 billion parameters it beat Gated DeltaNet on average downstream accuracy and matched Mamba-2's perplexity with half the state size.
+
+> **Definition — Mamba:** A selective state-space model introduced in December 2023 whose state updates depend on the input, letting it choose what to remember. Successors are Mamba-2 (2024) and Mamba-3 (2026).
+
+### Linear attention and the delta rule
+
+A second road reaches a similar destination by rewriting attention itself. In normal attention, the softmax forces you to compare a new query with every stored key. If you drop the softmax (or replace it with a simpler function), the math can be rearranged so that all past keys and values are folded into one fixed-size matrix, a memory S. Writing token i adds `value × keyᵀ` to S; reading with a query q gives `S × q`. That is linear attention: constant memory and constant work per token.
+
+> **Definition — Linear attention:** A family of attention variants that fold all past keys and values into a fixed-size memory matrix, so each new token costs the same no matter how long the text is.
+
+Plain linear attention has a flaw: it only adds, so memories pile up and blur. The delta rule fixes this by correcting instead of piling. Before writing, it asks the memory what it currently returns for this key, and writes only the difference.
+
+A worked example with 2-number keys and values. The memory S starts as all zeros. Store value `v1 = [3, 1]` under key `k = [1, 0]`.
+- Delta rule: the memory currently returns S × k = [0, 0]. The error is [3, 1] − [0, 0] = [3, 1], so write that. Reading with k now gives [3, 1].
+- Now the fact changes: store `v2 = [2, 2]` under the same key. The memory returns [3, 1]; the error is [2, 2] − [3, 1] = [−1, 1]. Write that correction, and reading with k gives exactly [2, 2]. The old value was cleanly replaced.
+- Plain additive linear attention would have added both values: reading with k gives [3, 1] + [2, 2] = [5, 3], a blur of the old and new facts.
+
+> **Definition — Delta rule:** An update rule for a memory matrix that first checks what the memory currently returns for a key and then writes only the difference from the new value, so outdated information is overwritten instead of piled up.
+
+This idea powers a family of layers. DeltaNet applies the delta rule. Gated DeltaNet (2024) adds a learned forget gate so the memory can also decay. Moonshot's Kimi Delta Attention (October 2025) gives each channel of the memory its own gate. Two community-driven designs pursue the same goal from the RNN side: RWKV (an open-source RNN family since 2023) and xLSTM (2024, a modernized LSTM from Sepp Hochreiter's group, who invented the LSTM).
+
+> **Definition — Gated DeltaNet:** A linear-attention layer that combines the delta rule with a learned forget gate, letting its fixed-size memory both overwrite and gradually fade old information. Used in Qwen3-Next and Qwen3.5.
+
+> **Definition — Kimi Delta Attention (KDA):** Moonshot AI's 2025 variant of Gated DeltaNet in which each channel of the memory has its own forget gate. Used in Kimi Linear and Kimi K3.
+
+> **Definition — RWKV and xLSTM:** Two modern recurrent architectures that train in parallel yet generate with constant memory: RWKV from an open-source community, and xLSTM, a 2024 update of the LSTM.
+
+### The catch: a notebook forgets
+
+A fixed-size memory is a summary, and summaries lose detail. Ask a pure SSM to repeat a phone number from 500,000 tokens ago, or to connect a fact on page 12 with a fact on page 280 to answer a question, and it may fail, because those details were overwritten. Full attention keeps every token's key and value, so exact recall is always possible.
+
+> **Definition — Multi-hop reasoning:** Answering a question by chaining several facts that may be far apart in the text, for example "Who is the manager of the person who wrote the March report?"
+
+> **Analogy:** Full attention is a filing cabinet with every page you have ever read: perfect recall, but it grows forever. An SSM or linear-attention layer is a running summary notebook: fixed size, cheap to carry, but details get overwritten. A hybrid is mostly notebooks, with a filing cabinet on every fourth floor.
+
+```mermaid
+flowchart LR
+  subgraph FA["Full attention"]
+    A1["Card for token 1"] --> A2["Card for token 2"] --> A3["One card per token,<br/>kept forever"]
+  end
+  subgraph LIN["SSM or linear attention"]
+    S1["One fixed-size notebook,<br/>rewritten at every token"]
+  end
+  subgraph HY["Hybrid, about 3 to 1"]
+    H1["Three notebook layers"] --> H2["One card-file layer"] --> H3["Repeat up the stack"]
+  end
+```
+*Figure 17.7: Three ways to remember. Full attention keeps everything; linear layers keep a summary; hybrids mix the two.*
+
+> **Watch out:** "Linear and hybrid attention is strictly better because it is cheaper." It trades exact recall for efficiency. Some labs have seen reasoning get worse with hybrids at scale, as the next section shows. Cheaper is a trade-off, not a free win.
+
+## Hybrid architectures: mostly notebooks, some filing cabinets
+
+The practical answer of 2025–2026 is to mix layer types: most layers are cheap linear or SSM layers, and every few layers a full-attention layer keeps exact recall. AI21 Labs' Jamba (March 2024) was an early large example, mixing Transformer and Mamba layers with MoE. Since then, a 3-to-1 ratio has become common.
+
+> **Definition — Hybrid architecture:** A model that mixes layer types, typically mostly linear-attention or state-space layers plus some full-attention layers, to get long-context efficiency while keeping exact recall.
+
+> **Definition — Gated attention:** Full attention with a learned sigmoid "valve" on each head's output that can turn it down. It improves stability and removes attention sinks; the Qwen team's paper on it won a NeurIPS 2025 Best Paper award.
+
+```mermaid
+flowchart TD
+  IN["From the previous unit"] --> L1["Gated DeltaNet, then MoE"]
+  L1 --> L2["Gated DeltaNet, then MoE"]
+  L2 --> L3["Gated DeltaNet, then MoE"]
+  L3 --> L4["Gated attention, then MoE"]
+  L4 --> OUT["To the next unit:<br/>15 units make 60 layers"]
+```
+*Figure 17.8: The repeating unit of Qwen3.5's flagship model: three linear-attention layers, then one full-attention layer, each followed by an MoE block.*
+
+| Model (release) | Total / active | Layer mix |
+|---|---|---|
+| Jamba, AI21 (Mar 2024) | not covered here | Transformer and Mamba layers, with MoE |
+| Qwen3-Next (Sep 2025) | 80B / 3B | 48 layers: 12 × (3 Gated DeltaNet + 1 gated attention) |
+| Kimi Linear (Oct 2025) | 48B / 3B | Kimi Delta Attention to MLA at about 3 : 1 |
+| Nemotron 3 Nano, NVIDIA (Dec 2025) | 30B / 3B | 52 layers: 23 Mamba-2, 23 MoE, 6 attention |
+| Qwen3.5 flagship (Feb 2026) | 397B / 17B | 60 layers: 15 × (3 Gated DeltaNet + 1 gated attention), each with MoE |
+| Nemotron 3 Super, NVIDIA (Mar 2026) | 120B / 12B | Mamba-2, LatentMoE and a few attention layers; pretrained in 4-bit NVFP4 |
+| Kimi K3, Moonshot (Jul 2026) | 2.8T / 104B | 93 layers: 69 Kimi Delta Attention + 24 gated MLA, with MoE |
+
+*Table 17.2: Hybrid architectures, 2024–2026.*
+
+What does the 3-to-1 ratio buy? Redo the memory math for our illustrative 60-layer model with only 15 full-attention layers. The KV cache drops to a quarter: about 61 KB per token, so roughly 61 GB at 1 million tokens instead of 245 GB. The 45 linear layers add only a fixed state, around 256 KB per layer in a typical setup (about 15 MB in total), the same at 1,000 tokens or 1,000,000.
+
+| Context length | All 60 layers full attention | Hybrid 3:1 (15 attention layers) | Linear or SSM layers alone |
+|---|---|---|---|
+| 10,000 tokens | ~2.5 GB | ~0.6 GB | fixed, ~15 MB |
+| 100,000 tokens | ~25 GB | ~6 GB | fixed, ~15 MB |
+| 1,000,000 tokens | ~245 GB | ~61 GB | fixed, ~15 MB |
+
+*Table 17.3: Memory for one conversation in an illustrative 60-layer model. The numbers are worked from this chapter's assumptions, not measured from a specific product.*
+
+Companies report big gains. Moonshot says Kimi Linear cuts KV cache by up to 75% and decodes up to 6 times faster at a 1-million-token context; critics noted its relatively small training budget and baselines, so treat these as company-reported. NVIDIA claims Nemotron 3 Super reaches up to 2.2 times the throughput of gpt-oss-120b.
+
+### The counter-trend: going back to full attention
+
+Not everyone is convinced. In October 2025 MiniMax released MiniMax M2 with plain full attention, after earlier MiniMax models had used a hybrid "lightning attention." Its stated reasons: hybrids looked fine on benchmarks but degraded on multi-hop reasoning at scale, and full attention has far more mature kernels and serving tools.
+
+> **Definition — Kernel (GPU kernel):** A single, hand-optimized routine that runs on a GPU, such as one that computes attention. New layer types need new kernels before they run fast, which takes specialist engineering.
+
+Here is the strongest case for each side. **For hybrids:** long contexts and long agent sessions are where demand is growing, memory is the binding cost there, and 3:1 designs at Qwen, Moonshot and NVIDIA keep benchmark quality while cutting memory severalfold. **For full attention:** benchmarks may not reveal subtle recall failures that show up in long, multi-step reasoning, and the mature tooling around full attention (and cheaper variants such as MLA and sparse attention) delivers much of the efficiency without the risk. DeepSeek V4 represents a third path: keep attention everywhere, but compress and sparsify it.
+
+The diversity shows in the numbers. Sebastian Raschka's LLM Architecture Gallery counted attention types across 111 recent models (one model can use several, so shares add to more than 100%):
+
+| Attention family | Share of 111 recent models |
+|---|---|
+| Grouped-query attention family | ~65% |
+| Sliding-window and global patterns | ~31% |
+| Multi-head latent attention family | ~23% |
+| DeltaNet, Lightning or KDA hybrids | ~14% |
+| Mamba or mLSTM layers | ~7% |
+| DeepSeek Sparse Attention | ~6% |
+| Classic full multi-head attention | ~4% |
+
+*Table 17.4: Nobody agrees on attention anymore. Shares overlap because many models mix types.*
+
+> **Key idea:** In 2026 attention is a menu, not a single dish. Labs mix full, grouped, latent, sliding, sparse and linear layers to trade recall against memory, and whether cheap layers lose something important in hard reasoning is one of the field's live disputes.
+
+## Keeping giants stable: the residual stream and other plumbing
+
+A frontier pretraining run can occupy tens of thousands of chips for months. If the training loss suddenly jumps (a loss spike), the team may have to roll back to an earlier checkpoint and lose days of expensive compute. At this scale, small "plumbing" choices about how numbers flow through the network matter enormously, and labs still innovate here.
+
+> **Definition — Loss spike:** A sudden jump in training loss, usually a sign that numbers inside the network have grown unstable. At frontier scale each spike can waste days of compute.
+
+> **Definition — Residual stream:** The running vector each token carries up through all the layers of a Transformer; each layer reads it and adds its contribution back (Chapter 15).
+
+**Hyper-connections and mHC.** A residual connection computes `output = input + layer(input)` (Chapter 13), which gives signals a highway through 100+ layers. Hyper-connections, proposed in 2024, widen the highway into several parallel streams (say, 4) and let the network learn how to mix them between layers. More capacity, but a risk: if mixing slightly amplifies the signal at every layer, the effect compounds. A gain of 1.1 per layer over 60 layers is 1.1^60 ≈ 304 times; a loss of 10% per layer leaves 0.9^60 ≈ 0.002. DeepSeek's manifold-constrained hyper-connections (mHC, December 2025), used in DeepSeek V4, restrict the mixing to blending-style operations that can shuffle and average the streams but cannot blow them up or shrink them away, restoring the identity-like stability of a plain residual connection.
+
+> **Definition — Hyper-connections:** A generalization of residual connections that carries several parallel copies of the residual stream and learns how to mix them between layers.
+
+> **Definition — mHC (manifold-constrained hyper-connections):** DeepSeek's December 2025 version of hyper-connections that constrains the stream-mixing to stable, blending-style operations so signals neither explode nor vanish over many layers. Used in DeepSeek V4.
+
+**QK-norm and QK-clip.** Attention scores are dot products of queries and keys (Chapter 15). If the weights drift larger during training, those scores, called attention logits, can explode. Example: query [10, 10] against key A [10, 10] and key B [10, 0] gives scores 200 and 100; divided by √2 they are about 141 and 71. Softmax of a 70-point gap gives key A essentially 100% and key B about 10^−31. Attention becomes a hard switch, gradients die, and values can overflow. QK-norm rescales every query and key to length 1 before the dot product, so scores can never exceed a learned scale. With a scale of 10, the same vectors give scores 10 and about 7.1, a sensible 95% / 5% split. Moonshot's Kimi K2 used QK-clip instead, shrinking the query and key weights whenever the largest score passes a threshold, combined with the Muon optimizer (Chapter 13) as "MuonClip." Moonshot reported zero loss spikes across 15.5 trillion training tokens.
+
+> **Definition — Attention logit:** The raw score from a query–key dot product, before softmax turns the scores into attention weights.
+
+> **Definition — QK-norm:** Normalizing query and key vectors to a fixed length before computing attention scores, so the scores stay bounded and training stays stable.
+
+> **Definition — QK-clip (MuonClip):** Moonshot's technique, used to train Kimi K2, of shrinking the query and key weights whenever attention scores grow past a threshold, paired with the Muon optimizer.
+
+**Gated attention and attention sinks.** Models tend to dump spare attention on the very first token of a text, an "attention sink," because softmax forces the weights to add up to 1 even when nothing is relevant. Gated attention (defined above) adds a valve after attention that can simply turn the output down, which removes the need for a sink and improves stability.
+
+> **Definition — Attention sink:** The habit of attention heads to park leftover attention on the first token when nothing else is relevant, a side effect of softmax weights having to add up to 1.
+
+**DyT (Dynamic Tanh).** Normalization layers (Chapter 13) keep numbers in a sane range but cost time. A 2025 paper by Zhu, Chen, He, LeCun and Liu showed that replacing them with a simple squashing function, `tanh(α × x)` with a learned α, matches normalized Transformers in many settings. With α = 0.5: an input of 0.2 becomes about 0.10, an input of 4 becomes about 0.96, and an outlier of −10 becomes about −1.00. Ordinary values pass almost unchanged; extreme ones are tamed.
+
+> **Definition — DyT (Dynamic Tanh):** A 2025 replacement for normalization layers that passes each number through tanh(α × x) with a learned α, squashing outliers while leaving ordinary values nearly untouched.
+
+> **Analogy:** These tricks are the circuit breakers and surge protectors of a power grid. Nobody notices them on a normal day, but without them one surge anywhere in a giant system can take the whole thing down.
+
+## Recursion, memory and small models
+
+Several research directions question whether bigger stacks of fixed layers are the only way forward. Treat these as live research, not settled practice.
+
+- **Looped (recursive) models.** Instead of 100 different layers, run a smaller block many times, refining an answer with each pass. Samsung researchers' Tiny Recursive Model (October 2025) showed that a very small network, looping its reasoning, could compete with far larger language models on certain grid puzzles. Whether looping can substitute for scale on general tasks is open.
+- **Test-time memory.** Google's Titans research gives a model a memory module whose weights keep updating while it reads, storing what surprised it. It is one approach to the bigger goal of models that keep learning after deployment (Chapter 24).
+- **Multi-token prediction.** Training a model to predict several upcoming tokens, not just the next one, gives a richer learning signal and can speed up generation through speculative decoding (Chapter 23). DeepSeek-V3 and NVIDIA's Nemotron 3 Super use it.
+- **Depth.** A NeurIPS 2025 best paper, "1000 Layer Networks for Self-Supervised RL," scaled networks for reinforcement learning to 1,024 layers, a reminder that how deep networks can usefully go is still being explored.
+
+> **Definition — Looped (recursive) model:** A network that applies the same block of layers repeatedly to refine its answer, trading more computation per answer for fewer distinct parameters.
+
+> **Definition — Test-time memory:** A memory component whose contents or weights keep updating while the model reads at inference time, so it can retain information beyond its normal context.
+
+> **Definition — Multi-token prediction (MTP):** Training a model to predict several future tokens at once, which strengthens the training signal and can be reused to draft tokens for faster generation.
+
+Small, efficient designs matter commercially too. SSM and hybrid layers with fixed memory, quantized to 4 bits, are attractive for phones, cars and factory devices, where memory is scarce and context still matters (Chapter 53).
+
+## The 2026 convergence
+
+Despite the disagreements, the frontier open designs of 2026 look strikingly alike. Most combine:
+
+1. **Sparse MoE** with hundreds of experts and roughly 3–5% of parameters active.
+2. **Attention cheaper than full softmax attention**: GQA or MLA, sliding windows, sparse or compressed attention, or linear and SSM hybrids at about 3:1.
+3. **Contexts of about 1 million tokens.**
+4. **4-bit to 8-bit number formats** for training and serving (FP8, MXFP4, NVFP4).
+5. **Stability tricks**: QK-norm or QK-clip, gated attention, mHC-style residuals.
+6. **Muon-family optimizers.**
+7. **Multi-token prediction.**
+
+```mermaid
+mindmap
+  root((2026 frontier recipe))
+    Sparse MoE
+      hundreds of experts
+      3 to 5 percent active
+    Cheaper attention
+      GQA or MLA
+      sliding windows
+      sparse or compressed
+      linear hybrids at 3 to 1
+    Long context
+      about 1M tokens
+    Low precision
+      FP8
+      MXFP4 and NVFP4
+    Stability
+      QK-norm and QK-clip
+      gated attention
+      mHC residuals
+    Muon optimizers
+    Multi-token prediction
+```
+*Figure 17.9: The ingredients that most 2026 frontier open models share.*
+
+```mermaid
+timeline
+  title Ideas that reshaped the Transformer
+  1991 : Mixture of local experts
+  2017 : Transformer : Sparsely-gated MoE layer
+  2021 : Switch Transformer : S4 state-space model
+  2023 : Mixtral 8x7B : Mamba
+  2024 : DeepSeek-V3 : Jamba hybrid : Hyper-connections
+  2025 : Kimi K2 and MuonClip : Qwen3-Next hybrid : MiniMax M2 returns to full attention : mHC
+  2026 : Qwen3.5 : Mamba-3 : DeepSeek V4 : Kimi K3
+```
+*Figure 17.10: A timeline of the architecture ideas in this chapter.*
+
+Two cautions. First, closed labs (OpenAI, Anthropic, Google) disclose little about their current flagships, so this recipe describes open models; claims you read about closed architectures are usually speculation unless the company has published them. Second, architecture is only part of the story.
+
+> **Watch out:** "A model's architecture is its intelligence." At the frontier, the data, the amount of training compute, post-training with reinforcement learning (Chapters 20 and 21) and reasoning at answer time matter as much as or more than layer design, which has largely converged. Two models with near-identical architectures can differ enormously in quality.
+
+> **Definition — Inductive bias:** An assumption built into a model's design that makes some solutions easier to learn, such as a CNN's assumption that nearby pixels belong together, or an SSM's assumption that a running summary is enough.
+
+Sutton's Bitter Lesson (Chapter 13) says general methods that scale with compute beat hand-built knowledge. The 2026 designs fit that story, since MoE and cheaper attention are ways to scale further on the same budget. But inductive biases still matter wherever data or compute is limited: on small devices, in science with scarce data, and in the choice of which kinds of memory to give a model.
+
+## Open questions
+
+As of late 2026, these are the questions researchers argue about:
+- **Long context without losing recall.** Do 3:1 hybrids truly match full attention on multi-hop reasoning at scale? The MiniMax M2 versus Kimi Linear disagreement is unresolved.
+- **Why Muon-style optimizers work** and what comes next; theory trails practice.
+- **Stability at trillion-parameter scale:** loss spikes, attention-logit growth, residual design and fully 4-bit pretraining.
+- **Can small recursive models stand in for scale** on reasoning, or only on narrow puzzles?
+- **Interpretability of MoE models:** what experts actually encode, and how to audit a model whose computation takes a different path for every token (Chapter 57).
+- **Continual learning and memory:** updating a model without forgetting, and whether test-time memory can make that practical.
+- **What closed frontier models use.** Until labs publish, the best open models are the only public window into frontier design.
+
+## In plain English
+
+Every Transformer pays two bills. The compute bill: a dense model uses every weight for every word. The memory bill: attention keeps notes on every earlier word, so long conversations eat memory.
+
+Mixture of experts attacks the compute bill. Instead of one big feed-forward block, a layer holds many experts, and a tiny router sends each token to just a few, then blends their answers. So a model can store 1.6 trillion parameters but use only 49 billion per token, as DeepSeek V4-Pro does. The catches are that every expert must still be stored, tokens must be shipped between chips, and routers must be kept from overloading a few favorite experts.
+
+State-space models and linear attention attack the memory bill. They replace the ever-growing pile of notes with a fixed-size notebook that is updated at each token, choosing what to keep (Mamba) or correcting old entries (the delta rule). Because notebooks forget details, most labs now build hybrids: three cheap layers for every one full-attention layer. One lab, MiniMax, went back to full attention, arguing the hybrids hurt hard reasoning.
+
+Around these big ideas sits plumbing that keeps giant training runs stable: constrained residual streams (mHC), bounded attention scores (QK-norm), gates and simple squashing functions. Graph neural networks apply the same "pass messages between neighbors" idea to molecules, maps and weather.
+
+By 2026 the open frontier has converged on a recipe of sparse MoE, cheaper attention, million-token contexts, 4-to-8-bit numbers and stability tricks. Closed labs don't say what they use, and data and training matter at least as much as the blueprint.

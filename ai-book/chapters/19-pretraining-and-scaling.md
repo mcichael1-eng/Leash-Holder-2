@@ -100,14 +100,14 @@ How many times? Suppose a run uses 15 trillion tokens with a batch of 8 million 
 
 A frontier pretraining corpus is a blend of many kinds of text:
 
-- **The public web.** The biggest source by far. Most labs start from **Common Crawl**, a nonprofit that has archived the web since 2008. Its August 2026 crawl alone captured 2.14 billion web pages, 360 TiB of data, gathered over two weeks. Labs also run their own crawlers.
-- **Code.** Public repositories, mostly from GitHub. Code teaches precise, logical structure, and labs found it helps reasoning in general, not just programming.
+- **The public web.** The biggest source by far. Most labs start from **Common Crawl**, a nonprofit that has archived the web since 2008. Its August 2026 crawl alone captured 2.14 billion web pages, 360 TiB of uncompressed data, gathered over two weeks. Labs also run their own crawlers.
+- **Code.** Public repositories, mostly from GitHub. Code teaches precise, logical structure, and many researchers believe it helps with step-by-step reasoning in general, not just programming.
 - **Books and academic papers.** Long, carefully edited text. Also the most legally contested (Chapter 11).
 - **Math.** Textbooks, worked solutions, competition problems and proofs.
 - **Many languages.** Alibaba said its Qwen3 models were pretrained on about 36 trillion tokens across 119 languages.
 - **Licensed data.** Labs pay publishers and platforms for access, such as the Reddit–Google deal (about $60 million per year, as reported in 2024) or Meta's March 2026 deal with News Corp (up to $50 million per year for three years).
 - **Transcribed and extracted text.** Speech from video transcribed to text, and text pulled out of PDFs. Qwen3 used a vision model to extract text from PDFs, for example.
-- **Synthetic data.** Text written by other AI models, then filtered. Qwen3 used its math and code models to generate synthetic textbooks and question-answer pairs.
+- **Synthetic data.** Text written by other AI models, then filtered. Qwen3 used Alibaba's earlier Qwen2.5 math and code models to generate synthetic textbooks and question-answer pairs.
 
 > **Definition — Common Crawl:** A nonprofit that regularly crawls the public web and publishes the archive for free. It is the raw material for most pretraining datasets.
 
@@ -183,6 +183,8 @@ Here is what each stage does.
 
 They share 4 shingles, and together they have 6 different ones. Their **Jaccard similarity** is 4 ÷ 6 = 0.67. Real pipelines use longer documents and longer shingles, and mark a pair as duplicates above a chosen threshold (often around 0.8). Comparing every pair among billions of pages directly would take forever, so a technique called MinHash compresses each document's shingles into a short "fingerprint" that lets similar documents be found quickly.
 
+> **Definition — Jaccard similarity:** A measure of overlap between two sets: the number of items they share divided by the number of distinct items in either. Identical sets score 1; sets with nothing in common score 0.
+
 > **Definition — Near-duplicate detection (MinHash):** Finding documents that are mostly the same by comparing compact fingerprints of their overlapping word sequences, instead of comparing every pair of documents in full.
 
 **5. Heuristic filters.** Simple rules written by people catch a lot of junk. Typical rules (examples of the kind used, not any one lab's exact list): drop pages with very few words; drop pages where most lines do not end in punctuation, which signals lists and menus; drop pages with too many symbols or too much repeated text; drop pages containing placeholder text such as "lorem ipsum" or "enable JavaScript to view this page".
@@ -202,6 +204,8 @@ They share 4 shingles, and together they have 6 different ones. Their **Jaccard 
 > **Definition — Decontamination:** Removing benchmark test questions (and close copies of them) from training data, so that evaluation scores reflect real ability rather than memory.
 
 > **Definition — Benchmark contamination:** When test questions leak into a model's training data, inflating its scores without a real gain in ability.
+
+> **Key idea:** A pretraining dataset is built more by subtraction than by addition. Start with billions of pages, then remove junk, duplicates, low-quality text, personal data and test questions. What survives, and in what proportions, shapes the model as much as its size does.
 
 > **Watch out:** "More data is always better" is wrong at this scale. A smaller, carefully filtered dataset often trains a better model than a larger, dirtier one, because every token costs compute. Curation is one of the most closely guarded parts of a lab's recipe, and one of the main reasons two models of the same size can differ so much.
 
@@ -312,6 +316,8 @@ stateDiagram-v2
 ```
 *Figure 19.6: The states of a real pretraining run. A big run cycles through failures and restores many times.*
 
+> **Analogy:** Checkpointing is saving your video game before the boss fight. With 100,000 players in the same game, someone's console crashes every few hours, so you save often and reload quickly.
+
 Two numbers describe how well a run uses its machine. **MFU** is the share of the chips' theoretical maximum math that actually goes into the model's training; Llama 3 405B reached 38–43%, and 35–50% is typical for large runs. **Goodput** is the share of total time that produced useful progress after failures and restarts.
 
 > **Definition — MFU (Model FLOPs Utilization):** The fraction of the hardware's peak arithmetic speed actually used for the model's necessary math during training. Large runs typically reach about 35–50%.
@@ -405,6 +411,8 @@ reducible loss
 ```
 *Figure 19.7: The loss that more compute can still remove, for compute-optimal models, from the Chinchilla formula. On log-log axes the power law is a straight line. (1e24 is shorthand for 10^24.)*
 
+> **Try it:** Ask a chatbot: "Using C = 6ND and the Chinchilla rule of 20 tokens per parameter, what model size and number of tokens are compute-optimal for 10^25 FLOP? Show each step." Check its answer against the table above (about 289 billion parameters and 5.8 trillion tokens). If it slips, ask it to redo the square root with a calculator tool.
+
 > **Analogy:** Scaling laws are a baker's recipe chart that tells you how much flour and water a bigger loaf needs. Chinchilla's discovery was that earlier bakers had been using too little water (data) for the amount of flour (parameters).
 
 > **Key idea:** Loss falls smoothly and predictably as a power law in compute, as long as model size and data grow together. That predictability is why labs can justify billion-dollar runs, and why each further improvement costs about ten times more than the last.
@@ -435,6 +443,8 @@ Now turn FLOPs into time and money. Let's price a realistic mid-size run: a **70
 6. **Cost.** At $2.50 per GPU-hour (a plausible contract rate): 4.4 million × $2.50 ≈ $11 million. At an October 2026 on-demand list price of about $4 per H100-hour from a cloud such as Lambda: about $18 million.
 
 > **Definition — H100:** NVIDIA's flagship data-center GPU of 2022–2024, with 80 GB of memory and about 989 trillion 16-bit operations per second at peak. It is the workhorse behind many 2023–2025 training runs.
+
+> **Key idea:** Three lines of arithmetic turn any model's size and data into a cost: compute ≈ 6 × N × D; GPU-hours ≈ compute ÷ (peak speed × MFU × 3,600); dollars ≈ GPU-hours × hourly price. The answer is the final run's compute bill, not the full cost of building the model.
 
 **Reality check with Llama 3.1 405B.** The same method gives 3.8 × 10^25 ÷ (989 × 10^12 × 0.40) ≈ 26.7 million GPU-hours, or about 68 days on 16,384 GPUs, and about $67 million at $2.50 per hour. Meta's model card reports about 30.8 million GPU-hours for the 405B model. The gap of about 15% is exactly what you would expect from failures, restarts and an achieved utilization a bit below 40%. Epoch AI's own estimate of the compute cost, in 2023 dollars, is about $53 million.
 
@@ -472,7 +482,7 @@ So labs now deliberately **over-train**: they take a model smaller than Chinchil
 | Predicted loss | 1.937 | 1.949 |
 | Inference cost per token (2N) | 140 billion FLOP | 16 billion FLOP |
 
-Option B costs about 22% more to train and lands at nearly the same predicted loss, but every token it generates is almost 9 times cheaper. If the model will serve 10 trillion tokens over its life, Option A spends 1.4 × 10^25 FLOP on inference... wait, 2 × 70 × 10^9 × 10^13 = 1.4 × 10^24 FLOP, more than twice its training cost, while Option B spends only 1.6 × 10^23. For a model used by hundreds of millions of people, the over-trained option wins easily.
+Option B costs about 22% more to train and lands at nearly the same predicted loss, but every token it generates is almost 9 times cheaper. If the model will serve 10 trillion tokens over its life, Option A spends 2 × 70 × 10^9 × 10^13 = 1.4 × 10^24 FLOP on inference, more than twice its training compute, while Option B spends only 2 × 8 × 10^9 × 10^13 = 1.6 × 10^23. For a model used by hundreds of millions of people, the over-trained option wins easily.
 
 ```mermaid
 quadrantChart
@@ -525,6 +535,8 @@ Exact match on a 10-token answer (each # = 4 points)
 
 Per-token accuracy rose steadily from 50% to 99%. But exact match sat near zero until p passed about 80%, then shot up. Nothing sudden happened inside the model; the cliff came from the ruler. Schaeffer's team showed that switching to smoother metrics made many "emergent" curves smooth.
 
+> **Watch out:** "Emergence" does not mean abilities appear from nowhere or by magic. Even where real-world usefulness jumps, the underlying improvement in prediction usually builds up smoothly, which is why careful measurement can often see a jump coming.
+
 ### The strongest version of each side, and today's view
 
 Defenders of emergence answer that not every jump disappears under a smoother metric, and, more importantly, that all-or-nothing is often what matters in the real world. A program that almost compiles does not run. An agent with 90% reliability per step completes a 20-step task only 0.9^20 ≈ 12% of the time; at 99% per step it succeeds 0.99^20 ≈ 82% of the time. For the person relying on it, that is a leap from useless to useful, even though the per-step improvement was smooth.
@@ -549,17 +561,19 @@ timeline
        : Grok 4 about 5e26 FLOP, speculative
   2026 : GPT-6 Astra about 9e26 FLOP
 ```
-*Figure 19.10: Outside estimates of training compute, mostly from Epoch AI. 3e23 means 3 × 10^23. Six years took the frontier up roughly 3,000-fold.*
+*Figure 19.10: Outside estimates of training compute, mostly from Epoch AI. 3e23 means 3 × 10^23. From GPT-3 to GPT-6 Astra is roughly a 3,000-fold increase in six years, about 3.8 times per year for these particular models.*
 
 The hardware behind this is growing just as fast. Epoch lists xAI's Colossus 2 site in Memphis as the largest known AI data center, at about 1.1 million H100-equivalents, and estimates that a gigawatt-scale site costs about $38 billion up front per gigawatt. Part VII of this book covers the buildings and the power, and Chapter 43 the economics.
 
-> **At the frontier (2026):** GPT-6 Astra, released in September 2026, is the first publicly described pretraining run on more than 100,000 GPUs. Labs rarely disclose compute any more, so outside estimates like Epoch's are the main public window. Most labs now describe pretraining as one of several large compute sinks, alongside reinforcement learning (Chapter 21) and, above all, serving models to users (Chapter 23).
+> **At the frontier (2026):** GPT-6 Astra, released in September 2026, is the first publicly described pretraining run on more than 100,000 GPUs. Labs rarely disclose compute any more, so outside estimates like Epoch's are the main public window. Pretraining is now one of several large compute sinks: reinforcement learning keeps growing (Chapter 21), and in aggregate, serving models to users now rivals or exceeds training spending at major labs (Chapter 23).
 
 ## The data wall and how labs climb it
 
 ### Will we run out of text?
 
 Compute grows 5 times a year. Does the supply of good human-written text keep up? In 2024, Epoch AI estimated the stock of high-quality public human text at about **300 trillion tokens** (with a wide 90% range of 100 trillion to 1,000 trillion), and projected that it would be fully used sometime **between 2026 and 2032**: around 2028 under compute-optimal scaling, earlier with heavy over-training. In December 2024, Ilya Sutskever, OpenAI's former chief scientist, told the NeurIPS conference that pretraining "as we know it will end" because "we have but one internet", calling data the "fossil fuel of AI".
+
+> **Analogy:** Sutskever's "fossil fuel" image fits: human writing accumulated over centuries, like oil, and AI training is burning through the reserve far faster than people produce more. The search is on for renewables, such as synthetic data and practice environments, that can be generated on demand.
 
 > **Definition — Data wall:** The point at which the supply of new, high-quality human-written training text runs out relative to what ever-larger models would need.
 
@@ -600,7 +614,7 @@ The last stretch of pretraining has become a stage of its own. Late in the run, 
 
 Why save the best data for the end? Because what a model sees while its learning rate is falling has an outsized effect on its final behavior, a bit like a student's last weeks of revision before an exam. Mid-training is also where many models gain their long context: most of pretraining uses fairly short sequences because long ones are expensive, and only near the end does the model practice on long documents (Chapters 15 and 23 explain the position-encoding tricks involved).
 
-> **At the frontier (2026):** The lines between pretraining, mid-training and post-training have blurred. Frontier labs now feed large amounts of synthetic reasoning data and agent-style trajectories during mid-training, so that the model arrives at post-training already good at step-by-step work. Most closed labs say little about this stage; open-weight labs such as Ai2, DeepSeek and Moonshot describe more of it in their technical reports.
+> **At the frontier (2026):** The lines between pretraining, mid-training and post-training have blurred. Open-weight labs describe feeding reasoning traces, math, code and instruction-like data during mid-training, so that the model arrives at post-training already good at step-by-step work. Most closed labs say little about this stage, so the open technical reports are the best public window into it.
 
 ## In plain English
 
@@ -764,7 +778,7 @@ Pretraining, Training run, Corpus, Self-supervised learning, Loss, Cross-entropy
     1. Watch the loss: it starts near 4.2 (about −ln of 1 ÷ 65, a random guess among roughly 65 characters) and falls.
     2. Compare the samples at steps 0, 1,500 and 3,000: random letters, then word shapes, then Shakespeare-like lines.
     3. Use the 6ND rule: count parameters with sum(p.numel() for p in model.parameters()), estimate tokens seen (3,000 steps × 32 × 64), and compute the training FLOPs. Compare with GPT-3's 3.15 × 10^23.
-    **What you'll learn:** pretraining in miniature, with the same loop, loss and sampling as a frontier model, just about a billion billion times smaller.
+    **What you'll learn:** pretraining in miniature, with the same loop, loss and sampling as a frontier model, on roughly ten billion times less compute than GPT-3.
 
 10. **[Challenge] Read a technical report like an analyst.** Open DeepSeek's V3 technical report (arxiv.org/abs/2412.19437) or Meta's "The Llama 3 Herd of Models" (arxiv.org/abs/2407.21783). You can paste sections into a chatbot and ask it to explain them, but check its claims against the text.
     1. Find the number of parameters (total and active), training tokens, number of GPUs and GPU-hours.

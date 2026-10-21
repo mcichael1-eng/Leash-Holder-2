@@ -392,15 +392,15 @@ Here is why process rewards are attractive:
 ```
 Question: What is 15% of 80?
 
-Step 1: 15% = 0.15                  outcome grader:  (not checked)
-                                    process grader:  correct
-Step 2: 0.15 x 80 = 1.2             outcome grader:  (not checked)
-                                    process grader:  WRONG, it is 12
-Step 3: Move the decimal, so 12     outcome grader:  (not checked)
-                                    process grader:  unjustified fix
-Answer: 12                          outcome grader:  CORRECT, reward 1
-                                    process grader:  answer right,
-                                                     reasoning flawed
+Step 1: 15% = 0.15               outcome grader: (not checked)
+                                 process grader: correct
+Step 2: 0.15 x 80 = 1.2          outcome grader: (not checked)
+                                 process grader: WRONG, it is 12
+Step 3: Move the decimal, so 12  outcome grader: (not checked)
+                                 process grader: unjustified fix
+Answer: 12                       outcome grader: CORRECT, reward 1
+                                 process grader: answer right,
+                                                 reasoning flawed
 ```
 
 *Figure 21.5: The same flawed solution graded two ways. An outcome grader rewards a lucky or fudged path; a process grader catches the error at step 2.*

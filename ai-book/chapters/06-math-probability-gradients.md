@@ -908,3 +908,182 @@ Learning works by slopes. A loss function gives one number for how wrong the mod
 
 Exponent, Exponential growth, Doubling time, Exponential decay, Euler's number (e), Logarithm, Natural logarithm (ln), Log scale, Power law, Scaling laws, Probability, Complement, Independence, Expected value, Law of large numbers, Probability distribution, Logit, Softmax, Greedy decoding, Sampling, Temperature, Top-p sampling, Conditional probability, Language model, Log-probability, N-gram model, Base rate, False positive, Bayes' rule, Prior and posterior, Calibration, Mean, Median, Outlier, Variance, Standard deviation, Percentile, Normal distribution, Noise, Random initialization, Correlation, Confounder, Sampling bias, Training, validation and test sets, Overfitting, Generalization, Derivative, Partial derivative, Gradient, Loss landscape, Chain rule, Backpropagation, Automatic differentiation, Loss function, Cross-entropy, Perplexity, Gradient descent, Learning rate, Local minimum, Stochastic gradient descent (SGD), Mini-batch, Optimizer, Training loop, Epoch
 
+## Exercises
+
+1. **[Easy] Linear versus exponential, and the log-scale trick.** See why AI charts use log axes.
+   1. In a spreadsheet, put the years 0 to 10 in A2:A12.
+   2. In B2 type `=5*A2` (add 5 per year) and in C2 type `=5^A2` (multiply by 5 per year). Fill both down to row 12.
+   3. Select columns A to C and insert a line chart. The linear line looks flat next to the exponential one.
+   4. Open the chart editor, find the vertical axis settings, and turn on "log scale". The exponential curve becomes a straight line.
+   5. In D2 type `=LOG10(C2)` and fill down. Notice it rises by the same amount, about 0.7, every year.
+
+   **What you'll learn:** Exponential growth dwarfs linear growth, and a log scale turns steady multiplication into a straight line, which is how to read nearly every chart of AI progress.
+
+2. **[Easy] Same question, five answers.** Watch sampling happen.
+   1. In five fresh chats, ask "Give me a one-sentence slogan for a bakery." Copy the five answers into a note.
+   2. In five more fresh chats, ask "What is 17 × 23?"
+   3. Compare how much each set varies.
+   4. Ask the chatbot: "Using the idea of a probability distribution over next tokens, explain why your bakery slogans varied but your arithmetic answer did not." Check its explanation against this chapter.
+
+   **What you'll learn:** A chatbot samples from a probability distribution, so creative prompts (with spread-out distributions) vary a lot and well-determined ones barely vary.
+
+3. **[Easy] The billionaire walks into the bar.** Feel why the median matters.
+   1. Enter the salaries 40, 45, 50, 50, 55, 60, 65, 70, 80 (in thousands) in A1:A9.
+   2. Compute `=AVERAGE(A1:A9)`, `=MEDIAN(A1:A9)`, `=MODE(A1:A9)` and `=STDEV.P(A1:A9)`.
+   3. Add 1000000 in A10 and change every range to A1:A10.
+   4. Which number changed the most, and which barely moved?
+   5. Find a news story or company claim that uses the word "average" and decide whether a median would have been more honest.
+
+   **What you'll learn:** The mean and the standard deviation are easily dragged by one outlier, while the median is robust, which matters whenever you read claims about AI productivity, pay or speed.
+
+4. **[Medium] Softmax and temperature in a spreadsheet.** Build the dial yourself.
+   1. Put Paris, Lyon and Nice in A2:A4 and their logits 2, 1 and 0.1 in B2:B4. Put a temperature of 1 in E1.
+   2. In C2 type `=EXP(B2/$E$1)` and fill down. In D2 type `=C2/SUM($C$2:$C$4)` and fill down. Check you get 0.659, 0.242 and 0.099.
+   3. Change E1 to 0.5, 2, 0.1 and 10. Record Paris's probability each time.
+   4. Set E1 back to 1 and add 5 to every logit. What happens to the probabilities, and why?
+   5. Insert a bar chart of D2:D4 and watch it reshape as you change the temperature.
+
+   **What you'll learn:** Softmax turns any scores into probabilities, only the differences between scores matter, and temperature sharpens or flattens the distribution.
+
+5. **[Medium] Bayes with 1,000 imaginary people.** Beat the classic trap.
+   1. A disease affects 2% of people. A test catches 95% of sick people and wrongly flags 5% of healthy ones. On paper, draw the tree for 1,000 people (like Figure 6.4).
+   2. Fill in the 2 × 2 table: sick or healthy, positive or negative.
+   3. Compute the chance that someone who tests positive is sick.
+   4. Ask a chatbot the same question in words and check whether it gets the same answer.
+   5. In a spreadsheet, find the prevalence at which a positive test means a 50% chance of being sick.
+
+   **What you'll learn:** Base rates dominate even good tests, and you can check an AI's probability reasoning yourself instead of trusting its confident tone.
+
+6. **[Medium] Build a language model by counting.** Make next-token prediction concrete.
+   1. Take three sentences: "the cat sat on the mat", "the dog sat on the log", "the cat saw the dog".
+   2. For every word, list which words follow it inside a sentence and how often. (For example, "the" is followed 6 times: cat 2, mat 1, dog 2, log 1.)
+   3. Turn each count into a conditional probability, such as P(cat given the) = 2/6.
+   4. Generate a sentence: start with "the", then roll a die to choose the next word (for "the": 1 or 2 means cat, 3 mat, 4 or 5 dog, 6 log). Keep going until you reach "mat" or "log", or six words.
+   5. Compute the probability your model gives to "the cat sat on the mat" by multiplying the conditional probabilities after the first "the".
+   6. Did your model ever produce a sentence that was not in the original three? Why could it?
+
+   **What you'll learn:** A language model is a machine for conditional probabilities, generating text is repeated sampling, and even a counting model can produce new sentences, though it cannot handle contexts it has never seen.
+
+7. **[Medium] Simulate sampling and temperature (Google Colab).** Run the dart-throwing yourself.
+   1. Open colab.research.google.com, choose New notebook, paste this code into a cell and press the play button:
+
+      ```python
+      import random, math    # built-in tools for random numbers and math functions
+
+      # Part 1: the law of large numbers. Flip a fair coin 10,000 times.
+      flips = [random.choice("HT") for _ in range(10000)]
+      print("Share of heads:", flips.count("H") / len(flips))   # should be close to 0.5
+
+      # Part 2: a tiny "model output": four candidate next words and their scores (logits)
+      words  = ["Paris", "Lyon", "the", "a"]
+      scores = [4.0, 1.0, 1.0, 0.3]
+
+      def softmax(scores, temperature):
+          # divide each score by the temperature, raise e to it, then divide by the total
+          exps = [math.exp(s / temperature) for s in scores]
+          total = sum(exps)
+          return [e / total for e in exps]
+
+      for T in [0.2, 1.0, 2.0]:
+          probs = softmax(scores, T)
+          picks = random.choices(words, weights=probs, k=20)   # draw 20 samples
+          print(f"Temperature {T}: probabilities {[round(p, 3) for p in probs]}")
+          print("   20 samples:", " ".join(picks))
+      ```
+
+   2. Run it several times. Notice that the coin's share of heads is always near 0.5, while the samples change on every run.
+   3. Change the scores so that two words are nearly tied (for example 2.0 and 1.9) and rerun. How does that change the variety?
+
+   **What you'll learn:** Averages over many random trials are stable, single samples are not, and temperature controls how often unlikely words get picked.
+
+8. **[Medium] Find slopes by nudging.** Compute derivatives with a spreadsheet.
+   1. Put x = 0, 1, 2, 3, 4, 5 in A2:A7.
+   2. In B2 type `=A2^2`. In C2 type `=(A2+0.001)^2`. In D2 type `=(C2-B2)/0.001`. Fill all three down. Compare column D with 2 × x.
+   3. Repeat with `=EXP(A2)` and `=EXP(A2+0.001)`. The slope should match the function's own value.
+   4. Repeat with `=LN(A2)` for x from 1 to 5. The slope should be close to 1 divided by x.
+   5. Chain-rule check: with `=(3*A2)^2`, the slope at x = 1 should be about 18, which is 6 × 3.
+
+   **What you'll learn:** A derivative is just "change in output divided by a tiny change in input", and the chain rule really does multiply the slopes of each step.
+
+9. **[Challenge] Gradient descent on a curve, and the trap of local minima.** Walk downhill in a spreadsheet.
+   1. Put the learning rate 0.1 in F1. In A2:A32 put the step numbers 0 to 30. In B2 put the starting x, 10.
+   2. In C2 compute the slope `=2*(B2-3)` and in D2 the loss `=(B2-3)^2`.
+   3. In B3 type `=B2-$F$1*C2`. Fill B, C and D down to row 32. Chart column B against the step.
+   4. Try learning rates 0.01, 0.5, 0.9, 1.0 and 1.1. Describe each behavior in one word.
+   5. Now replace the loss with a bumpier curve: loss `=B2^4-3*B2^2+B2`, slope `=4*B2^3-6*B2+1`, learning rate 0.01, 200 steps. Start at x = 2, then at x = −2. Where does each walker end up, and which one found the lower valley?
+
+   **What you'll learn:** The learning rate decides between crawling, converging and exploding, and where you start can decide which valley you end up in.
+
+10. **[Challenge] Train the Chapter 5 line yourself.** Run a complete training loop.
+    1. Put the quiz data in H2:I5: hours 1, 2, 3, 4 in column H and scores 3, 5, 8, 9 in column I. Put the learning rate 0.05 in K1.
+    2. Row 2 is step 0. Put 0 in A2 (step), 0 in B2 (w) and 0 in C2 (b).
+    3. Loss in D2: `=SUMPRODUCT(($B2*$H$2:$H$5+$C2-$I$2:$I$5)^2)/4`
+    4. Slope for w in E2: `=SUMPRODUCT(2*($B2*$H$2:$H$5+$C2-$I$2:$I$5)*$H$2:$H$5)/4`
+    5. Slope for b in F2: `=SUMPRODUCT(2*($B2*$H$2:$H$5+$C2-$I$2:$I$5))/4`
+    6. In row 3: A3 `=A2+1`, B3 `=B2-$K$1*E2`, C3 `=C2-$K$1*F2`, then copy D2:F2 down into D3:F3.
+    7. Fill row 3 down to row 501. Check that step 1 shows w = 1.825 and b = 0.625, and that w and b settle at 2.1 and 1.0 with a loss of 0.175.
+    8. Chart the loss against the step. Then try learning rates of 0.01, 0.1 and 0.12. What happens at 0.12?
+
+    **What you'll learn:** You have personally run the predict, measure, compute-slopes, nudge loop that trains every neural network, and seen it rediscover the line of best fit.
+
+11. **[Challenge] Grade two language models with cross-entropy.** Score models the way labs do.
+    1. Two models read "the cat sat on the mat". After each of the first five words, here is the probability each model gave to the word that actually came next:
+
+       | Next word | cat | sat | on | the | mat |
+       |---|---|---|---|---|---|
+       | Model A | 0.5 | 0.25 | 0.8 | 0.9 | 0.6 |
+       | Model B | 0.2 | 0.1 | 0.5 | 0.7 | 0.3 |
+
+    2. For each probability compute the loss `=-LN(p)`. Average the five losses for each model.
+    3. Compute each model's perplexity with `=EXP(average loss)`.
+    4. Now suppose Model A had given the word "the" a probability of 0.001 instead of 0.9. Recompute its average loss and perplexity.
+    5. Which single change hurt more: being somewhat unsure everywhere, or being confidently wrong once?
+
+    **What you'll learn:** Cross-entropy and perplexity measure a model's surprise at the truth, and the log makes a single confident mistake very expensive, which is exactly the pressure that shapes chatbots during training.
+
+## Areas of opportunity
+
+- **AI evaluation and benchmarking.** Deciding whether a model is really better needs statistics: enough test questions, error bars, medians and percentiles, and checks for leaked test data. AI labs, companies choosing between models, and third-party evaluators all hire people with these skills, often as AI evaluators or evaluation engineers (Chapter 31).
+- **Measuring AI's real effects.** Correlation-versus-causation thinking and well-designed experiments are scarce. A 2025 randomized study by METR found that experienced open-source developers were 19% slower with early-2025 AI tools despite expecting a speed-up. Companies rolling out AI need analysts who can design such tests rather than trust impressions.
+- **Calibration and "when to trust the AI" features.** Getting models to say "I'm not sure" at the right times is an open problem, and products that surface uncertainty, cite sources or route doubtful cases to humans are valuable in medicine, law, finance and customer support.
+- **Verification and fact-checking services.** Base-rate thinking (Bayes) is the core skill for checking AI-generated content, from citations in legal briefs to claims in marketing. Publishers, law firms and compliance teams pay for it.
+- **Training and optimization engineering.** Choosing learning rates, schedules and optimizers, and diagnosing loss spikes, decide whether a training run costing millions succeeds. With new optimizers such as Muon spreading, people who understand gradient descent deeply are in demand at labs and at companies fine-tuning their own models.
+- **Data analysis everywhere.** Spreadsheet fluency with averages, medians, correlation and simple regression remains one of the most hireable skills in any industry, and AI tools make an analyst who understands the underlying math more productive, not redundant.
+- **Teaching probability and statistics for the AI age.** Explaining why chatbots vary, why confidence is not correctness, and how to read AI charts is in demand from schools, companies and online learners.
+- **Open research problems.** Why huge networks generalize instead of simply memorizing still has no complete mathematical theory; why optimizers like Muon work so well is only partly understood; and making models well calibrated without making them useless is unsolved. Each is a live research area with practical payoff.
+
+## Check your understanding
+
+1. Something grows 3 times per year. How much bigger is it after 4 years? And what is log10(1,000,000)?
+2. What is the probability of rolling two sixes with two fair dice, and which rule of probability did you use?
+3. What does softmax give for the scores [1, 1, 1]? What happens to the probabilities if you subtract 1 from every score?
+4. You lower the temperature from 1.0 to 0.3. What happens to the distribution, and to the variety of answers?
+5. A disease affects 2% of people. A test catches 95% of cases and gives false positives for 5% of healthy people. Out of 1,000 people, about what fraction of those who test positive are actually sick?
+6. Why is the median often a better summary than the mean for incomes or for chatbot response times?
+7. A model gives the correct next token a probability of 0.25. What is its cross-entropy loss on that token? If it gave every token in a text a probability of 0.25, what would its perplexity be?
+8. During gradient descent, a knob's slope is +3 and the learning rate is 0.1. Which way does the knob move, and by how much?
+
+<details><summary>Answers</summary>
+
+1. 3 × 3 × 3 × 3 = 81 times bigger. log10(1,000,000) = 6, because 1,000,000 is 10 multiplied by itself 6 times (six zeros).
+2. 1/6 × 1/6 = 1/36, about 0.028. You used the "and" rule for independent events: multiply the probabilities.
+3. [1/3, 1/3, 1/3], because equal scores give equal probabilities. Subtracting 1 from every score changes nothing, since softmax depends only on the differences between scores.
+4. Dividing the scores by 0.3 stretches the gaps between them, so the distribution becomes sharper: the most likely token gets an even bigger share. Answers become more predictable and less varied.
+5. 20 people are sick and about 19 of them test positive. 980 are healthy and about 49 of them test positive. So about 19 out of 68 positives, roughly 28%, are actually sick.
+6. A few extreme values (a billionaire, or one request that took a minute) drag the mean far from what is typical, while the median stays at the middle value. The median describes the typical case; percentiles like p99 describe the bad cases separately.
+7. The loss is −ln(0.25) ≈ 1.386. If every token got 0.25, the average loss is 1.386 and the perplexity is e^1.386 = 4: as uncertain as choosing among 4 equally likely options.
+8. The knob moves against the slope: new value = old value − 0.1 × 3, so it decreases by 0.3. A positive slope means increasing the knob would raise the loss, so we lower it.
+
+</details>
+
+## Going deeper
+
+- **3Blue1Brown, "Essence of Calculus" (YouTube series).** Animated, intuition-first explanations of derivatives and the chain rule; the best visual companion to the second half of this chapter.
+- **3Blue1Brown, "Neural Networks" series, especially the episodes on gradient descent and backpropagation (YouTube).** Shows exactly how this chapter's math trains a real network.
+- **3Blue1Brown, "Bayes theorem, the geometry of changing beliefs" (YouTube).** A clear, visual treatment of the medical-test problem and base rates.
+- **Seeing Theory (seeing-theory.brown.edu).** Free interactive visualizations of probability and statistics from Brown University; you can draw samples and watch distributions form.
+- **Khan Academy, Statistics and Probability (khanacademy.org).** Free lessons and practice for everything from means to the normal distribution.
+- **David Spiegelhalter, "The Art of Statistics" (2019).** A readable book on reasoning with data, by one of Britain's best-known statisticians, full of real cases of correlation, causation and risk.
+- **Charles Wheelan, "Naked Statistics" (2013).** A funny, non-technical introduction to the statistics you meet in the news.
+- **Andrej Karpathy, "The spelled-out intro to neural networks and backpropagation: building micrograd" (YouTube).** Builds automatic differentiation and gradient descent from scratch in a couple of hours of friendly code.
+- **Deisenroth, Faisal and Ong, "Mathematics for Machine Learning" (free PDF at mml-book.com).** Chapters 5 to 7 cover calculus, probability and optimization formally when you are ready for the full version.
