@@ -362,7 +362,7 @@ Pretraining data comes from web crawls such as Common Crawl, code, books, papers
 
 Published pretraining runs used about 15.6 trillion tokens (Llama 3, 2024), more than 30 trillion (Llama 4, 2025), about 36 trillion (Qwen3, 2025) and about 33 trillion (DeepSeek-V4-Pro, 2026). Stored as plain text at about 4 bytes per token, 30 trillion tokens is about 120 TB, which fits on a handful of large hard drives. The data is small; reading it is what costs.
 
-Here is a puzzle worth working through. The 6ND rule says training compute ≈ 6 × N × D, where N is the number of active parameters and D the number of training tokens (Chapter 19). If Model F's run is about `10^27` operations, then N × D ≈ `10^27 ÷ 6` ≈ `1.7 × 10^26`. Labs do not publish N and D for runs like this, but try two guesses: with 500 billion active parameters, D ≈ 330 trillion tokens; with 1 trillion active, D ≈ 170 trillion. Either way it is several times the 15–36 trillion tokens of the published runs, and in the neighborhood of Epoch AI's 2024 estimate that only about 300 trillion tokens of high-quality public human text exist (Chapter 11). That is why frontier labs now train on images, audio and video tokens, repeat their best data, generate synthetic data and lean ever harder on reinforcement learning, which creates its own training data.
+Here is a puzzle worth working through. The 6ND rule says training compute ≈ 6 × N × D, where N is the number of active parameters and D the number of training tokens (Chapter 19). If Model F's run is about `10^27` operations, then N × D ≈ `10^27 ÷ 6` ≈ `1.7 × 10^26`. Labs do not publish N and D for runs like this, but try two guesses for N and divide `1.7 × 10^26` by each to get D: with 500 billion active parameters, D ≈ 330 trillion tokens; with 1 trillion active, D ≈ 170 trillion. Either way it is several times the 15–36 trillion tokens of the published runs, and in the neighborhood of Epoch AI's 2024 estimate that only about 300 trillion tokens of high-quality public human text exist (Chapter 11). That is why frontier labs now train on images, audio and video tokens, repeat their best data, generate synthetic data and lean ever harder on reinforcement learning, which creates its own training data.
 
 > **Definition — 6ND rule:** A rule of thumb that training a Transformer takes about 6 × N × D floating-point operations, where N is the number of active parameters and D the number of training tokens.
 
@@ -406,7 +406,7 @@ hour   0   4   8   12  16  20  24
        212322202321314203122232
 
 About 47 a day. If each costs the whole cluster 10 minutes,
-47 x 10 = 470 minutes, about a third of every day, is lost.
+47 x 10 = 470 of the day's 1,440 minutes, about a third, is lost.
 If each costs 2 minutes, the loss falls to about 6.5%.
 ```
 
@@ -513,7 +513,7 @@ The two journeys meet in three calculations.
 
 **Energy: training versus serving.** Model F's pretraining used about 470 GWh. If its family then served a billion lease-sized requests a day at about 1.2 Wh each, serving would use 1.2 GWh per day and would match the whole pretraining run in about 390 days. At a billion short 0.3 Wh prompts per day, it would take about four years. Either way, over a model's life, inference energy catches up with training, which is why the industry expects inference to become the larger share of AI computing (JLL projects it overtaking training around 2027).
 
-**Fleet size.** Our request used 0.028 rack-seconds, so one rack can serve about 86,400 ÷ 0.028 ≈ 3.1 million such requests per day at full use. A billion a day needs about 320 racks at 100% utilization, or about 640 at a more realistic 50%. At 156 kW each, 640 racks draw about 100 MW. Serving one popular model is a data-hall-sized job, roughly half the power of the cluster that trained it, running every day for the life of the model.
+**Fleet size.** Our request used 0.028 rack-seconds, so one rack can serve about 86,400 seconds in a day ÷ 0.028 ≈ 3.1 million such requests per day at full use. A billion a day needs about 320 racks at 100% utilization, or about 640 at a more realistic 50%. At 156 kW each, 640 racks draw about 100 MW. Serving one popular model is a data-hall-sized job, roughly half the power of the cluster that trained it, running every day for the life of the model.
 
 > **Key idea:** Training is a huge fixed cost paid once; serving is a smaller cost paid on every token forever. The business only works when a model is used enough to spread the first over the second, which is why both clocks matter to everything from pricing to power plants.
 

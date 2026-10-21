@@ -366,7 +366,7 @@ pie title Where 100 kWh from the grid goes, illustrative AI site at PUE 1.2
     "Chips, memory, network and fans doing the work" : 72
 ```
 
-*Figure 39.4: An illustrative split of 100 kWh. PUE 1.2 means about 83 kWh reaches the IT equipment, but losses inside the servers' own power supplies and regulators still count as "IT".*
+*Figure 39.4: An illustrative split of 100 kWh. PUE 1.2 means about 100 ÷ 1.2 ≈ 83 kWh reaches the IT equipment, but losses inside the servers' own power supplies and regulators still count as "IT".*
 
 > **Watch out:** PUE does not count losses inside the servers. The power supplies in the rack and the voltage regulators beside each chip are classed as IT equipment, so their roughly 10–15% of losses look like "useful IT load". Two sites with the same PUE can deliver quite different amounts of power to the actual silicon.
 
@@ -603,11 +603,11 @@ Three lessons hide in that table.
 
 **PUE is worth fighting over.** The same 100 MW of IT at PUE 1.5 instead of 1.1 uses an extra 0.4 × 100 MW × 8,760 h ≈ 350 GWh per year at full load, about $25 million a year at 7 cents. That is why operators fight over decimal points (Chapter 40).
 
-**Energy charges are not the whole bill.** Large customers also pay for delivery and transmission and for their share of the grid's *capacity*, the promise that power will be there at peak. In the PJM grid region (run by the operator PJM across 13 states from New Jersey to Illinois, plus Washington, DC), capacity prices reportedly hit a cap of about $329 per megawatt-day for 2026/27. If a 120 MW peak were charged at that price in full, it would add roughly 120 × $329 × 365 ≈ $14 million a year; how such costs reach a data center depends on its utility's tariff (Chapter 41).
+**Energy charges are not the whole bill.** Large customers also pay for delivery and transmission and for their share of the grid's *capacity*, the promise that power will be there at peak. In the PJM grid region (run by the operator PJM across 13 states from New Jersey to Illinois, plus Washington, DC), capacity prices reportedly hit a cap of about $329 per megawatt-day for 2026/27 (a capacity price is charged for each megawatt of peak demand, for every day of the year, whether or not the power is used). If a 120 MW peak were charged at that price in full, it would add roughly 120 × $329 × 365 ≈ $14 million a year; how such costs reach a data center depends on its utility's tariff (Chapter 41).
 
 **Scale it up.** A 1 GW campus is ten of these sites: roughly 7.9 TWh and $550 million a year at the same assumptions.
 
-> **Try it:** Ask your chatbot: "A data center has 50 MW of IT load, a PUE of 1.3, runs at 70% average load and pays 6 cents per kWh. What is its yearly electricity bill? Show each step." Check it with the recipe in Figure 39.8: 50 × 1.3 × 0.7 × 8,760 ≈ 398,600 MWh, and at $60 per MWh that is about $23.9 million. If the chatbot's answer differs, find the step where it went wrong (a missing PUE or a kWh-versus-MWh slip is the usual culprit).
+> **Try it:** Ask your chatbot: "A data center has 50 MW of IT load, a PUE of 1.3, runs at 70% average load and pays 6 cents per kWh. What is its yearly electricity bill? Show each step." Check it with the recipe in Figure 39.8: 50 × 1.3 × 0.7 × 8,760 ≈ 398,600 MWh, and at $60 per MWh (6 cents per kWh × 1,000 kWh in a MWh) that is about $23.9 million. If the chatbot's answer differs, find the step where it went wrong (a missing PUE or a kWh-versus-MWh slip is the usual culprit).
 
 > **Key idea:** For a single GPU, electricity is a small cost next to the hardware. For a campus, it is hundreds of millions of dollars a year, and the real bottleneck is not the bill but getting the megawatts delivered at all.
 
