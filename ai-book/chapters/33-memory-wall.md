@@ -170,7 +170,7 @@ The software half of the solution is called tiling.
 
 Take an 8,192 × 8,192 matrix multiply in 16-bit numbers on an H100:
 
-- **The math:** 2 × 8,192³ ≈ 1.1 × 10^12 operations. At 989 TFLOPS that takes about 1.1 ms.
+- **The math:** 2 × 8,192³ ≈ 1.1 × 10^12 operations (8,192³ means 8,192 × 8,192 × 8,192). At 989 TFLOPS that takes about 1.1 ms.
 - **A naive version** that fetched both inputs from HBM for every multiply-add would read 2 × 8,192³ numbers × 2 bytes ≈ 2.2 TB. At 3.35 TB/s that takes 0.66 seconds, 600 times longer than the math.
 - **The ideal version** reads each of the three matrices from HBM exactly once: 3 × 8,192² × 2 bytes ≈ 403 MB, which takes 0.12 ms, less than the math. Now the chip is limited by compute, as it should be.
 
@@ -210,7 +210,7 @@ Let us compute it for four jobs, all in 16-bit numbers (2 bytes each).
 
 > **Definition — Batching:** Processing many requests together so that each read of the model's weights from memory is shared across all of them. It raises arithmetic intensity and total throughput.
 
-**4. A big square matrix multiply (training, or reading a long prompt).** For two n × n matrices: 2n³ operations and, ideally, 3n² numbers moved (6n² bytes). Intensity = 2n³ ÷ 6n² = n ÷ 3. For n = 8,192 that is about 2,731 FLOP/byte. Plenty of math per byte.
+**4. A big square matrix multiply (training, or reading a long prompt).** For two n × n matrices: 2n³ operations and, ideally, 3n² numbers moved (6n² bytes). Intensity = 2n³ ÷ 6n² = n ÷ 3 (n³ ÷ n² leaves a single n, because n × n × n divided by n × n is n, and 2 ÷ 6 is one-third). For n = 8,192 that is about 2,731 FLOP/byte. Plenty of math per byte.
 
 Lower precision changes the bytes. With weights stored in FP8 (1 byte), job 2 becomes 2 FLOP/byte; in FP4 (half a byte), 4 FLOP/byte. Fewer bytes per weight means more math per byte moved.
 
@@ -273,7 +273,7 @@ Three lessons come straight off the chart:
 
 ### Newer chips are even hungrier
 
-Now repeat the exercise for NVIDIA's 2026 Rubin GPU at its 35 PFLOPS of dense NVFP4 and 19.2 TB/s: the ridge point is 35,000 ÷ 19.2 ≈ 1,823 FLOP/byte. With FP4 weights, decode for one user has intensity 4, so it reaches 4 × 19.2 = 77 TFLOPS out of 35,000: about 0.2%. To reach the ridge you would need a batch of about 456 users. Lower precision gave the chip enormous compute, but bandwidth grew less, so the ridge moved right and even more batching is needed to use it.
+Now repeat the exercise for NVIDIA's 2026 Rubin GPU at its 35 PFLOPS of dense NVFP4 and 19.2 TB/s: the ridge point is 35,000 ÷ 19.2 ≈ 1,823 FLOP/byte. With FP4 weights, decode for one user has intensity 4, so it reaches 4 × 19.2 = 77 TFLOPS out of 35,000: about 0.2%. To reach the ridge you would need a batch of about 1,823 ÷ 4 ≈ 456 users, since each extra user adds another 4 FLOP per byte. Lower precision gave the chip enormous compute, but bandwidth grew less, so the ridge moved right and even more batching is needed to use it.
 
 Here are ridge points for real chips, using the vendor figures from Chapter 32:
 
@@ -712,7 +712,7 @@ Von Neumann architecture, Von Neumann bottleneck, Memory capacity, Memory bandwi
 
    **What you'll learn:** Batching turns a memory-bound job into a compute-bound one, and you can see the switch happen on real hardware.
 
-6. **[Medium] Build a KV cache calculator.** In a spreadsheet, make columns for layers, key-value heads, head size, bytes per number and tokens, and a result column with the formula `= 2 × layers × kv_heads × head_size × bytes × tokens ÷ 1,000,000,000` (in GB).
+6. **[Medium] Build a KV cache calculator.** In a spreadsheet, make columns for layers, key-value heads, head size, bytes per number and tokens, and a result column with the formula `= 2 × layers × kv_heads × head_size × bytes × tokens ÷ 1,000,000,000` (in GB). In the spreadsheet itself, use * for × and / for ÷ and point at the cells, for example `=2*A2*B2*C2*D2*E2/1000000000` if the five inputs are in columns A to E.
    1. Llama-3-70B-style: 80 layers, 8 key-value heads, head size 128, 2 bytes. Fill in 1,000, 8,192, 32,768, 128,000 and 1,000,000 tokens.
    2. Llama-3-8B-style: 32 layers, 8 key-value heads, head size 128, 2 bytes.
    3. Repeat the 70B case without GQA (64 key-value heads), and with an FP8 cache (1 byte).

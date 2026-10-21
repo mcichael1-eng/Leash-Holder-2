@@ -605,7 +605,7 @@ A 2025 paper by Adam Tauman Kalai and colleagues, "Why Language Models Hallucina
 
 On an accuracy-only leaderboard, Model A wins, even though it produced 80 confident falsehoods. Train models to climb such leaderboards and you train them to bluff.
 
-Now change the scoring so that a wrong answer costs points. The paper suggests telling the model a confidence target t: "answer only if you are more than t confident; a mistake costs t ÷ (1 − t) points; 'I don't know' scores 0." With t = 0.75, a mistake costs 0.75 ÷ 0.25 = 3 points.
+Now change the scoring so that a wrong answer costs points. The paper suggests telling the model a confidence target t: "answer only if you are more than t confident; a mistake costs t ÷ (1 − t) points; 'I don't know' scores 0." With t = 0.75, a mistake costs 0.75 ÷ 0.25 = 3 points. Below, "expected score" means the average score per question the model would earn if it faced many questions like this one (Chapter 6 calls it the expected value).
 
 - A guess the model is 80% sure of: expected score = 0.8 × 1 − 0.2 × 3 = 0.8 − 0.6 = +0.2. Worth answering.
 - A guess it is 60% sure of: expected score = 0.6 × 1 − 0.4 × 3 = 0.6 − 1.2 = −0.6. Better to say "I don't know."
@@ -718,7 +718,7 @@ Large language model (LLM), Model (AI model), Chatbot app, API (Application Prog
 3. **[Easy] Train a BPE tokenizer with a pencil.** Use this corpus: "sun" 8 times, "sunny" 3 times, "run" 6 times, "runny" 2 times, "fun" 4 times.
    1. Split every word into letters and count every adjacent pair, multiplied by the word's count.
    2. Merge the most frequent pair everywhere, write down the new token, and recount.
-   3. Repeat until no pairs are left. You should find seven merges, with "u + n" (23 occurrences) first and "run + ny" last.
+   3. Repeat until every word in the corpus has become a single token. You should find seven merges, with "u + n" (23 occurrences) first and "run + ny" last.
    4. Use your merge list, in order, to tokenize "funny" and "runs". Expected: [fun] [ny] and [run] [s].
    **What you'll learn:** exactly how a real tokenizer's vocabulary is built, and how it handles words it never saw.
 
@@ -727,7 +727,7 @@ Large language model (LLM), Model (AI model), Chatbot app, API (Application Prog
    2. In C2 type `=EXP((B2-MAX($B$2:$B$5))/$E$1)` and copy it down to C5. This subtracts the largest logit, divides by temperature and exponentiates.
    3. In D2 type `=C2/SUM($C$2:$C$5)` and copy it down. These are the probabilities; check they match the chapter (64.4%, 23.7%, 8.7%, 3.2%).
    4. Change E1 to 0.5, 2, 0.1 and 10. Make a bar chart of column D and watch it change.
-   5. Add a top-p column: keep a token only if the running total of probabilities before it is below 0.9, then rescale the survivors.
+   5. Add a top-p column: keep a token only if the running total of probabilities before it is below 0.9, then rescale the survivors. In F2 type `=SUM($D$1:D1)` (the running total of the rows above; D1 is empty, so F2 shows 0), in G2 type `=IF(F2<0.9, D2, 0)`, and in H2 type `=G2/SUM($G$2:$G$5)`. Copy all three down to row 5; column H holds the top-p probabilities.
    **What you'll learn:** temperature and top-p are simple arithmetic on the model's scores, and you can predict their effect exactly.
 
 5. **[Medium] Temperature in a real playground.** Open Google AI Studio (aistudio.google.com).
@@ -795,7 +795,7 @@ Large language model (LLM), Model (AI model), Chatbot app, API (Application Prog
 
 11. **[Challenge] Price the same job in three languages.** Pick one paragraph of about 100 words and get good translations into two other languages (ask a chatbot).
     1. Count the tokens of all three versions in Tiktokenizer.
-    2. Using Claude Sonnet 5.5's October 2026 API price ($2 per million input tokens and $10 per million output tokens), work out the cost of summarizing 10,000 such paragraphs in each language, assuming a 30-token summary each.
+    2. Using Claude Sonnet 5.5's October 2026 API price ($2 per million input tokens and $10 per million output tokens), work out the cost of summarizing 10,000 such paragraphs in each language, assuming a 30-token summary each. (Input cost = 10,000 × tokens per paragraph × $2 ÷ 1,000,000; output cost = 10,000 × 30 × $10 ÷ 1,000,000; add the two.)
     3. Calculate how many times more expensive the costliest language is than the cheapest.
     **What you'll learn:** tokens drive cost, tokenizers are not language-neutral, and cost estimates are simple multiplication once you know the token counts.
 
