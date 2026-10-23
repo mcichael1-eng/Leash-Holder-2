@@ -397,7 +397,7 @@ There are two ways to arrive at a quantized model.
 
 *Table 23.3: The precision ladder for inference. Block formats add a small overhead for their scale factors (MXFP4 averages about 4.25 bits per weight).*
 
-> **At the frontier (2026):** Four-bit is now mainstream at the top. OpenAI's open gpt-oss-120b stores its expert weights in MXFP4 so the whole 117-billion-parameter model fits on one 80 GB GPU. Moonshot trained Kimi K3 with MXFP4 quantization-aware training. Google released Gemma 4 QAT checkpoints. DeepSeek-V4 stores its expert weights in FP4 and the rest in FP8. NVIDIA's Nemotron 3 Super was even pretrained in NVFP4.
+> **At the frontier (2026):** Four-bit is now mainstream at the top. OpenAI's open gpt-oss-120b stores its expert weights in MXFP4 so the whole 117-billion-parameter model fits on one 80 GB GPU. Moonshot applied MXFP4 quantization-aware training to Kimi K3 from the fine-tuning stage onward. Google released Gemma 4 QAT checkpoints. DeepSeek-V4 stores its expert weights in FP4 and the rest in FP8. NVIDIA's Nemotron 3 Super was even pretrained in NVFP4.
 
 How much quality is lost? Good 8-bit quantization is usually close to lossless. Good 4-bit quantization, especially with QAT, typically loses a little, more on hard reasoning and rare knowledge than on everyday chat. Below about 4 bits, losses become noticeable; hobbyists running local models often find the "knee" around 4 bits. Quantizing the KV cache to 8 bits is also common, and activations (the numbers flowing between layers) are hardest because they contain the worst outliers.
 

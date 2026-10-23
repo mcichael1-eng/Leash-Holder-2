@@ -336,7 +336,7 @@ Two numbers describe how well a run uses its machine. **MFU** is the share of th
 
 ### Fewer bits, more speed
 
-Training math does not need every decimal place. BF16, a 16-bit format, became the standard for large models. **FP8** (8-bit) training followed on NVIDIA's Hopper chips; DeepSeek-V3, trained on 2,048 H800 GPUs, was a prominent public example in late 2024. In 2026, 4-bit formats have arrived: Moonshot's Kimi K3 used MXFP4 weights with quantization-aware training, and DeepSeek-V4-Pro stores its expert weights in FP4 with FP8 elsewhere. NVIDIA went furthest with its open Nemotron 3 Super (March 2026), pretrained on 25 trillion tokens in its 4-bit NVFP4 format. Each halving of bits roughly doubles the math a chip can do and halves memory traffic, if the training stays stable.
+Training math does not need every decimal place. BF16, a 16-bit format, became the standard for large models. **FP8** (8-bit) training followed on NVIDIA's Hopper chips; DeepSeek-V3, trained on 2,048 H800 GPUs, was a prominent public example in late 2024. In 2026, 4-bit formats have arrived: Moonshot's Kimi K3 ships MXFP4 weights, using quantization-aware training from the fine-tuning stage onward (its pretraining was not in 4-bit), and DeepSeek-V4-Pro stores its expert weights in FP4 with FP8 elsewhere. NVIDIA went furthest with its open Nemotron 3 Super (March 2026), pretrained on 25 trillion tokens in its 4-bit NVFP4 format. Each halving of bits roughly doubles the math a chip can do and halves memory traffic, if the training stays stable.
 
 > **Definition — FP8 and FP4:** 8-bit and 4-bit number formats. Newer AI chips do math in them much faster than in 16-bit, at the cost of more rounding, which careful scaling tricks keep under control.
 

@@ -23,7 +23,7 @@ In addition, 4 questions that were answered but hard to find, or answered with a
 
 Left as PARTLY on purpose (C20, G20, I11, M8): a personal career choice the book already frames (C20), a speculative question (G20), a niche server setting (I11) and a question with no reliable data to cite (M8).
 
-Where the gaps were: careers and job-hunting mechanics (interviews, where jobs are posted, age), running models on modest or non-NVIDIA hardware, the context cost of tools and MCP versus the command line, skill atrophy and invented packages in AI coding, embedding-model choice and local or agentic retrieval, and early-stage founder questions (first customers, funding). The core how-it-works and how-to-build material was already strong: 172 of 205 questions were fully answered before any edit.
+Where the gaps were: careers and job-hunting mechanics (interviews, where jobs are posted, age), running models on modest or non-NVIDIA hardware, the context cost of tools and MCP versus the command line, skill atrophy and invented packages in AI coding, embedding-model choice and local or agentic retrieval, and early-stage founder questions (first customers, funding). The core how-it-works and how-to-build material was already strong: 175 of 205 questions were fully answered before any edit.
 
 ## Edits made
 

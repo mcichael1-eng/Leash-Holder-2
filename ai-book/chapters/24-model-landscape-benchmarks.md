@@ -547,7 +547,7 @@ SpaceX acquired xAI on February 2, 2026, renamed the AI unit SpaceXAI in July an
 
 **Alibaba's Qwen** team released the Qwen3.8 family in August 2026: the open-weight Qwen3.8-2.4T-A95B (August 12); Qwen3.8-Max, the hosted version of that model with image input and other extras (August 3); the cheaper Qwen3.8-Flash (August 26); and the small Qwen3.8-27B under Apache-2.0 (August 14).
 
-**Moonshot AI** released **Kimi K3** on July 16, 2026: 2.8 trillion parameters (104 billion active), a 1M-token context, a hybrid of linear and full attention layers, 4-bit (MXFP4) weights from quantization-aware training, and, in Moonshot's apps, an Agent Swarm mode that Moonshot says can split work across up to 300 sub-agents.
+**Moonshot AI** released **Kimi K3** on July 16, 2026: 2.8 trillion parameters (104 billion active), a 1M-token context, a hybrid of linear and full attention layers, 4-bit (MXFP4) weights from quantization-aware training applied from the fine-tuning stage onward, and, in Moonshot's apps, an Agent Swarm mode that Moonshot says can split work across up to 300 sub-agents.
 
 Other notable labs include **Z.ai** (GLM-5.3), **Xiaomi** (MiMo-V2.6-Pro, the top open-weight model on the Artificial Analysis index at 46), **StepFun** (Step 5) and **MiniMax**.
 

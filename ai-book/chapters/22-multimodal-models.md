@@ -438,6 +438,8 @@ The top systems are often hybrids. An autoregressive model may plan the image as
 
 Video is the newest output. At Google I/O on May 19, 2026, Google announced Gemini Omni, a model that combines Gemini with Google's generative-media models: any input in, starting with video out, with editing by conversation. Gemini Omni Flash rolled out in the Gemini app that day, entered the Gemini API in preview on June 30, 2026 and became generally available there on August 27. Chapter 47 covers the video-generation landscape, the products, and the provenance tools (such as watermarks and Content Credentials) used to label AI-made media.
 
+Not every chatbot draws. As of late 2026, Anthropic's help pages say Claude "doesn't generate photos or illustrations the way image-generation tools do"; instead it builds diagrams, charts and interactive visuals from code (HTML and SVG) and can read images you upload. If you need a picture rather than a chart, use an app with a built-in image model or a dedicated generator (Chapter 47).
+
 > **Key idea:** The shift is from "a chatbot that calls an artist" to "a single model that can draw." The single model brings its knowledge of language and the world into the picture, and it can see and revise its own work.
 
 ## Reading screens: perception for computer use
