@@ -1,6 +1,6 @@
 # Glossary
 
-*Every term in the book (3693 terms), generated from the chapters.*
+*Every term in the book (3694 terms), generated from the chapters.*
 
 
 ## #
@@ -190,6 +190,7 @@
 - **Anti-distillation safeguard** — Any measure that makes a model's outputs less useful for copying it, such as detecting mass-extraction accounts, classifiers that flag distillation patterns, or showing only summaries of the model's raw reasoning. *(Chapter 20)*
 - **Antifragility** — The property of getting stronger from shocks, stress and mistakes, as muscles do after exercise or an organization does when it studies every near miss, rather than merely surviving them. *(Chapter 56)*
 - **Anti-money laundering (AML)** — The rules and systems banks use to detect money from crime being moved and disguised. AI flags unusual patterns of transfers for human investigators, who decide whether to report them to authorities. *(Chapter 53)*
+- **Antitrust law (competition law)** — Laws that stop companies from gaining or abusing market dominance, for example by forcing suppliers or customers into unfair deals. In the US the main antitrust law is the Sherman Act of 1890; in Europe the same field is called competition law. *(Chapter 58)*
 - **Any-to-any model** — A model that can accept many kinds of input (text, images, audio, video) and produce many kinds of output, choosing the output modality to suit the request. *(Chapter 22)*
 - **Apache Kafka** — A widely used open-source system for storing and distributing streams of events at very high volume, originally built at LinkedIn. *(Appendix F)*
 - **API (Application Programming Interface)** — A defined way for one program to request services from another, like a restaurant menu and a waiter. AI companies sell model access through APIs. *(Chapter 4, Chapter 18, Chapter 24, Chapter 26, Chapter 62)*

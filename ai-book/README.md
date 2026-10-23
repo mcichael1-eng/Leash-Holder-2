@@ -5,7 +5,7 @@
 A complete book for someone with almost no computer-science background who uses AI chatbots every day and wants to understand all of it: how computers work, the math, how machines learn, neural networks and Transformers, how frontier labs build large language models, how to build with AI, chips and compute, data centers and energy, every major branch of AI, safety, law and society, and the skills, careers and opportunities that come with it.
 
 - **10 parts, 66 chapters, 6 appendices**
-- **3,693 terms** in a searchable glossary (every term is defined where it first appears)
+- **3,694 terms** in a searchable glossary (every term is defined where it first appears)
 - **533 diagrams**, plus tables and hand-worked numeric examples
 - **659 exercises** from Easy to Challenge, none of which require prior coding experience
 - About **1,040,000 words**
