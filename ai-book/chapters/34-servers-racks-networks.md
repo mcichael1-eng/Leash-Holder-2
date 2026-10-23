@@ -25,7 +25,9 @@ Three numbers explain why.
 
 **Memory.** Frontier models have hundreds of billions to trillions of parameters. Take a round trillion. Stored at 8 bits (1 byte) each, the weights alone take 1 TB. The largest single NVIDIA GPU shipping in volume in late 2025, the B300, holds 288 GB of fast memory. So you need at least four of them (1,000 ÷ 288 ≈ 3.5, rounded up) just to hold the weights, before you leave any room for the KV cache that stores everyone's conversations (Chapter 33). Training needs far more: roughly 16 bytes per parameter once you count the weights, gradients and optimizer state, so about 16 TB for a trillion-parameter model. That is at least 56 B300s just to *hold* the numbers, before doing any math.
 
-**Time.** Frontier training runs in 2025–26 are believed to use around `10^26` FLOP or more. An H100 GPU does about 989 trillion floating-point operations per second in dense BF16, and real training software gets roughly 40% of that. One H100 would therefore need:
+> **Definition — NVIDIA:** The American company that designs most of the GPUs used to train and run AI models, together with the networking chips, rack designs and CUDA software around them. It designs its chips but does not manufacture them; the Taiwanese contract chipmaker TSMC does (Chapters 35 and 36).
+
+**Time.** Frontier training runs in 2025–26 are believed to use around `10^26` FLOP or more. An H100 GPU does about 989 trillion floating-point operations per second in dense BF16 ("dense" means counting every multiplication, with none assumed skipped; Chapter 32), and real training software gets roughly 40% of that. One H100 would therefore need:
 
 `10^26 ÷ (989 × 10^12 × 0.4) ≈ 2.5 × 10^11 seconds ≈ 8,000 years`
 
@@ -57,6 +59,14 @@ flowchart TD
 
 The table puts real numbers on each rung. The example is the GB300 NVL72, NVIDIA's flagship rack from late 2025 until Vera Rubin began ramping in 2026. The pod row is illustrative because pod sizes vary by company. Compute is in dense FP4, the lowest-precision headline number, so treat it as an upper bound on what any real job achieves.
 
+> **Definition — GB200 and GB300:** NVIDIA's "Grace Blackwell" superchips, each pairing one Grace CPU with two Blackwell GPUs (the original B200 in the GB200, the upgraded B300 in the GB300). The names also label the racks built from them: a GB300 NVL72 rack holds 36 GB300s, so 72 GPUs.
+
+> **Definition — TFLOPS and PFLOPS (PF):** Units of computing speed: a TFLOPS (teraFLOPS) is a trillion (10^12) floating-point operations per second, and a PFLOPS (petaFLOPS) is 1,000 TFLOPS (10^15). Spec sheets often shorten petaFLOPS to "PF", so "15 PF" means 15 petaFLOPS.
+
+> **Definition — EF and ZF (exaFLOPS and zettaFLOPS):** Bigger units of computing speed: 1 EF is 1,000 PF (10^18 operations per second) and 1 ZF is 1,000 EF (10^21). A rack rated at 1,080 PF therefore delivers about 1.08 EF.
+
+> **Definition — PB (petabyte):** A million gigabytes (10^15 bytes), which is 1,000 terabytes. Whole AI clusters measure their memory and storage in petabytes.
+
 | Level | Real example (2025–26) | GPUs | Fast memory (HBM) | Peak compute (dense FP4) | Power |
 |---|---|---|---|---|---|
 | Die | One Blackwell die, close to the reticle limit | half of one | on-chip caches only | about half a GPU | part of the package |
@@ -76,7 +86,7 @@ A few of these numbers are worth checking with your own arithmetic, because that
 - **Rack memory:** 72 GPUs × 288 GB = 20,736 GB ≈ 20 TB. NVIDIA's page says 20 TB. It matches.
 - **Rack compute:** 72 × 15 PF = 1,080 PF. NVIDIA's page lists 1,080 PF dense FP4. It matches.
 - **Power per GPU slot:** 130 kW ÷ 72 ≈ 1.8 kW. That includes the GPU's share of CPUs, switches, NICs and pumps, which is why it is much more than any single chip's rating.
-- **Cluster power:** 100,000 ÷ 72 ≈ 1,389 racks. 1,389 × 130 kW ≈ 180 MW of IT load. Add cooling and power losses at a PUE of 1.2 (power usage effectiveness: the whole building's power divided by the computers' power, Chapter 40) and the building draws about 217 MW.
+- **Cluster power:** 100,000 ÷ 72 ≈ 1,389 racks. 1,389 × 130 kW ≈ 180 MW of IT load (the power used by the computing equipment itself). Add cooling and power losses at a PUE of 1.2 (power usage effectiveness: the whole building's power divided by the computers' power, Chapter 40) and the building draws about 217 MW.
 
 There is a second pattern hiding in the ladder. Every rung outward, the links get longer, slower and more expensive per bit.
 
@@ -104,7 +114,9 @@ The machines that print circuits onto wafers expose one rectangle at a time, and
 
 > **Definition — Reticle limit:** The largest area (about 26 × 33 mm, roughly 858 mm²) that a lithography machine can print in one exposure, which caps the size of a single die.
 
-AI chip designers hit this wall years ago. NVIDIA's H100 die is about 814 mm², already about 95% of the limit, with 80 billion transistors on TSMC's 4N process. Making dies even bigger has a second problem: yield. Every wafer has a few random defects, and one defect can ruin a whole die. A huge die is like one giant cookie on a tray with a few burnt spots: it is almost certain to include one. Chapter 36 works through the yield math.
+AI chip designers hit this wall years ago. NVIDIA's H100 die is about 814 mm², already about 95% of the limit, with 80 billion transistors on TSMC's 4N process (a "process" is one generation of chip-manufacturing technology; Chapter 36 explains these names). Making dies even bigger has a second problem: yield. Every wafer has a few random defects, and one defect can ruin a whole die. A huge die is like one giant cookie on a tray with a few burnt spots: it is almost certain to include one. Chapter 36 works through the yield math.
+
+> **Definition — TSMC (Taiwan Semiconductor Manufacturing Company):** The Taiwanese contract chipmaker (foundry) that manufactures nearly all advanced AI chips, including NVIDIA's, AMD's and Google's, to their designers' blueprints. It also makes the CoWoS packages described below.
 
 ### Chiplets: when one die is not enough
 
@@ -112,7 +124,11 @@ So the industry split chips into pieces.
 
 > **Definition — Chiplet:** A smaller die designed to be combined with other dies inside one package, instead of building one huge die. Chiplets raise yield and let companies mix different manufacturing processes.
 
-NVIDIA's Blackwell GPU is two reticle-sized dies, joined by an extremely fast die-to-die link, that present themselves to software as one GPU with 208 billion transistors. Vera Rubin, shipping in 2026, has 336 billion transistors on TSMC's N3 process, again with two GPU dies per package. That is why NVIDIA once planned to call its Rubin rack "NVL144" (counting dies) before branding it "NVL72" (counting packages). AMD went further, earlier: the MI300X (2023) is built from many chiplets stacked and tiled together, 153 billion transistors in all, and the 2026 MI455X uses chiplets made on TSMC's 2 nm and 3 nm processes.
+NVIDIA's Blackwell GPU is two reticle-sized dies, joined by an extremely fast die-to-die link, that present themselves to software as one GPU with 208 billion transistors. Vera Rubin, shipping in 2026, has 336 billion transistors on TSMC's N3 process, again with two GPU dies per package. That is why NVIDIA once planned to call its Rubin rack "NVL144" (counting dies) before branding it "NVL72" (counting packages). In these rack names, NVL stands for NVLink, NVIDIA's chip-to-chip connection (explained below), and the number counts the GPUs it joins. AMD went further, earlier: the MI300X (2023) is built from many chiplets stacked and tiled together, 153 billion transistors in all, and the 2026 MI455X uses chiplets made on TSMC's 2 nm and 3 nm processes.
+
+> **Definition — AMD (Advanced Micro Devices):** An American chip designer that makes CPUs for PCs and servers and is NVIDIA's main rival in AI GPUs. Like NVIDIA, it has its chips manufactured by TSMC.
+
+> **Definition — AMD Instinct (MI300X, MI355X, MI455X):** AMD's line of data-center AI GPUs. The MI300X (2023, the first of the MI300 family) has 192 GB of HBM3, the MI355X (2025) 288 GB of HBM3E and the MI455X (2026) 432 GB of HBM4, sold in AMD's 72-GPU Helios rack. Chapter 35 compares them with NVIDIA's chips.
 
 Splitting a chip only works if the pieces can talk to each other almost as fast as wires inside one die. That link has to carry terabytes per second while using very little energy per bit, which is a hard engineering problem in its own right. To let chiplets from different companies work together, the industry created an open standard.
 
@@ -124,7 +140,7 @@ Chapter 33 explained that AI chips are usually starved for memory bandwidth, not
 
 > **Definition — HBM (High Bandwidth Memory):** DRAM memory chips stacked 8 to 16 high and placed millimeters from the processor with an extremely wide connection, delivering terabytes per second. It is the main working memory of AI accelerators.
 
-A B300 package has eight HBM3E stacks, each twelve DRAM layers high, holding 36 GB per stack: 8 × 36 GB = 288 GB. The newer HBM4 standard (used by NVIDIA's Rubin and AMD's MI400 family) doubles each stack's interface to 2,048 bits. Multiply that out for a Rubin package: 8 stacks × 2,048 = 16,384 separate data connections between memory and GPU. You cannot route sixteen thousand wires through an ordinary circuit board. You need something much finer.
+A B300 package has eight HBM3E stacks, each twelve DRAM layers high, holding 36 GB per stack: 8 × 36 GB = 288 GB. The newer HBM4 standard (used by NVIDIA's Rubin and AMD's MI400 family, which includes the MI455X) doubles each stack's interface to 2,048 bits. Multiply that out for a Rubin package: 8 stacks × 2,048 = 16,384 separate data connections between memory and GPU. You cannot route sixteen thousand wires through an ordinary circuit board. You need something much finer.
 
 ### The interposer and CoWoS
 
@@ -168,11 +184,11 @@ CoWoS comes in flavors. CoWoS-S uses one continuous silicon interposer. CoWoS-L,
 
 ### A kilowatt in your palm
 
-A modern AI package is about the size of your palm and draws as much power as a space heater. NVIDIA's H100 (SXM version) is rated at 700 W; AMD's liquid-cooled MI355X is rated at 1,400 W. Here is the surprising part. The transistors run at around 1 volt or less. Power equals voltage times current (Chapter 39 covers this in depth), so:
+A modern AI package is about the size of your palm and draws as much power as a space heater. NVIDIA's H100 (SXM version, the high-power module described in the next section) is rated at 700 W; AMD's liquid-cooled MI355X is rated at 1,400 W. Here is the surprising part. The transistors run at around 1 volt or less. Power equals voltage times current (Chapter 39 covers this in depth), so:
 
 `current = power ÷ voltage = 1,000 W ÷ 1 V ≈ 1,000 amps`
 
-That is five to ten times what the main electrical panel of a typical house is rated for (usually 100–200 amps), flowing continuously into a palm-sized part. It cannot travel far at that voltage without melting wires and wasting energy, so the board brings power in at around 50 volts and converts it down right next to the package.
+That is five to ten times what the main electrical panel of a typical house is rated for (usually 100–200 amps), flowing continuously into a palm-sized part. It cannot travel far at that voltage without melting wires and wasting energy, so the board brings power in at around 50 volts of direct current (DC: electricity that flows steadily in one direction, like a battery's; Chapter 39) and converts it down right next to the package.
 
 > **Definition — Voltage regulator (VRM):** Small power circuits placed right beside a chip that convert board power (around 48–54 V DC) down to the roughly 1 V the chip's transistors need, delivering very large currents over a very short distance.
 
@@ -223,6 +239,8 @@ Starting with Grace Hopper and then Grace Blackwell, NVIDIA changed the building
 > **Definition — NVLink-C2C:** NVIDIA's chip-to-chip link that joins the CPU and GPUs inside a superchip so they can share memory coherently, far faster than PCIe.
 
 Why bother putting a CPU so close? Because the CPU's memory becomes a useful extra tier. The GB300 NVL72 rack has 36 Grace CPUs with 2,592 Arm cores in total, which works out to 2,592 ÷ 36 = 72 cores per CPU, and NVIDIA counts 37 TB of "fast memory" per rack: the 20 TB of HBM plus the CPUs' LPDDR5X memory. The Vera Rubin NVL72 rack carries up to 54 TB of LPDDR5X, or 54 ÷ 36 = 1.5 TB per Vera CPU. That CPU memory is slower than HBM but much larger, which helps with things like spilling an oversized KV cache from long conversations (Chapter 33) or staging training data.
+
+> **Definition — LPDDR5X:** The current generation of LPDDR, the low-power DRAM used in phones and laptops (Chapter 33). NVIDIA attaches it to its Grace and Vera CPUs as a large, cheaper and slower memory tier beside the GPUs' HBM.
 
 Two superchips go into one **compute tray**: a flat, removable server sled about the size of a large pizza box, holding four GPUs and two CPUs. Each tray also carries network cards (ConnectX-8 at 800 Gb/s in the GB300 generation; ConnectX-9 in the 1.6 Tb/s class for Rubin), a BlueField DPU for the outside network, and cold plates instead of most of the fans.
 
@@ -277,7 +295,7 @@ Scale-up links are short, extremely fast and let chips treat each other's memory
 
 > **Definition — NVLink:** NVIDIA's high-speed GPU-to-GPU connection, far faster than PCIe: about 900 GB/s per GPU on Hopper (NVLink 4), 1.8 TB/s on Blackwell (NVLink 5), and 3–3.6 TB/s on Rubin (NVLink 6). NVIDIA quotes these figures counting both directions together, so each direction gets half.
 
-A link between two GPUs is nice; what you really want is for *every* GPU to talk to *every* other GPU at full speed at the same time. Wiring every pair directly does not scale (72 GPUs would need 2,556 separate pairwise links), so NVIDIA built a switch chip for NVLink.
+A link between two GPUs is nice; what you really want is for *every* GPU to talk to *every* other GPU at full speed at the same time. Wiring every pair directly does not scale (72 GPUs would need 72 × 71 ÷ 2 = 2,556 separate pairwise links: each GPU pairs with 71 others, and each link serves two GPUs), so NVIDIA built a switch chip for NVLink.
 
 > **Definition — NVSwitch:** A switch chip that connects many GPUs' NVLinks so that every GPU in the group can talk to every other at full NVLink speed simultaneously.
 
@@ -329,6 +347,8 @@ Here are the published rack-level specs for NVIDIA's two current designs, straig
 
 Two traps hide in this table. The Rubin numbers changed after launch: CES 2026 coverage quoted 22 TB/s of HBM and 3.6 TB/s of NVLink per GPU, while the current page lists 19.2 TB/s and 3 TB/s. And the GB300's FP8 and BF16 lines are not labeled dense: 360 PF ÷ 72 = 5 PF of BF16 per GPU, about double the roughly 2.5 PF dense usually assumed for a Blackwell GPU, which suggests sparse figures. The footnote confirms it: all of the page's tensor figures include sparsity unless marked otherwise, and NVIDIA's own Blackwell Ultra description lists 5 PF of dense FP8 per GPU, so the dense rack figures are about 360 PF of FP8 and 180 PF of BF16 (Exercise 1 asks you to check the footnotes yourself).
 
+> **Definition — CES:** The Consumer Electronics Show, a huge technology trade show held every January in Las Vegas, where companies including NVIDIA launch new products. NVIDIA launched Vera Rubin at CES 2026.
+
 Now the payoff. Why does it matter that 72 GPUs act as one?
 
 **Worked example: moving 1 GB.** Suppose a step of a training run or a big inference job needs to move 1 GB of numbers from one GPU to another.
@@ -355,6 +375,8 @@ The 2025 Ironwood TPU comes in pods of 256 or 9,216 chips. The TPU 8t training c
 
 **Amazon's Trainium** uses NeuronLink links and, for Trainium3, a NeuronSwitch fabric. A Trainium3 "UltraServer" joins 144 chips with 20.7 TB of HBM3E and 362 PF of MXFP8 compute.
 
+> **Definition — MXFP8:** An 8-bit floating-point format from the open "microscaling" (MX) standard, in which each block of 32 numbers shares one scale factor, so 8 bits per number can still cover a wide range of sizes. Chapter 35 explains the MX family alongside NVIDIA's NVFP4.
+
 **AMD's Helios rack** (shipping from the second half of 2026) joins 72 MI455X GPUs, each with 3.6 TB/s of scale-up bandwidth, using an open protocol called UALink carried ("tunneled") over Ethernet hardware, in a wide rack format designed by Meta.
 
 > **Definition — UALink (Ultra Accelerator Link):** An open scale-up interconnect standard (version 1.0 in April 2025) backed by AMD, Intel, Google, Meta, Microsoft and others as an alternative to NVLink. It supports up to 1,024 accelerators in one domain using 200 Gb/s lanes.
@@ -364,6 +386,8 @@ The 2025 Ironwood TPU comes in pods of 256 or 9,216 chips. The TPU 8t training c
 And NVIDIA, seeing customers build their own chips, opened its fabric a little.
 
 > **Definition — NVLink Fusion:** NVIDIA's program that lets other companies' CPUs or accelerators connect into NVLink fabrics. AWS has said its future Trainium4 chip will support it.
+
+> **Definition — AWS (Amazon Web Services):** Amazon's cloud-computing business, the largest company renting out computers, storage and AI chips over the internet (Chapter 4). Through its Annapurna Labs unit it designs its own AI chips, Trainium and Inferentia.
 
 | Scale-up design | Chips in one domain | How it is wired |
 |---|---|---|
@@ -376,7 +400,7 @@ And NVIDIA, seeing customers build their own chips, opened its fabric a little.
 | AMD Helios (2H 2026) | 72 GPUs | UALink tunneled over Ethernet |
 | Microsoft Maia 200 | up to 6,144 | Ethernet-based |
 
-*Table 34.4: Scale-up domains compared, as of late 2026. Bigger domains are not automatically better: per-chip bandwidth and latency inside the domain matter as much as the count.*
+*Table 34.4: Scale-up domains compared, as of late 2026 ("2H" means the second half of the year). Bigger domains are not automatically better: per-chip bandwidth and latency inside the domain matter as much as the count.*
 
 > **Watch out:** "9,216 TPUs in one pod" and "72 GPUs in one rack" are not directly comparable. NVLink gives every GPU a full-speed path to every other through switches; a torus gives each chip fast links to its neighbors, and distant chips reach each other in several hops. Each design wins on different traffic patterns.
 
@@ -403,9 +427,9 @@ At 1 MW per rack, even the 50-volt busbar runs into physics. Do the arithmetic w
 
 Fifteen times less current means far thinner copper and far less heat lost in the wires. NVIDIA says a 1 MW rack fed at 54 V could need about 200 kg of copper busbar, which is why it is moving to a new design.
 
-> **Definition — 800 V DC distribution:** NVIDIA's announced power architecture, planned for production alongside its next-generation Kyber racks (NVIDIA's rack design for its Rubin Ultra chips, around 600 kW each) in 2027, that delivers 800-volt direct current to racks. NVIDIA says it carries 85% more power through the same conductor than 415 V AC, cuts copper use by about 45% and improves end-to-end efficiency by up to 5%.
+> **Definition — 800 V DC distribution:** NVIDIA's announced power architecture, planned for production alongside its next-generation Kyber racks (NVIDIA's rack design for its Rubin Ultra chips, around 600 kW each) in 2027, that delivers 800-volt direct current to racks. NVIDIA says it carries 85% more power through the same conductor than 415 V AC (alternating current, the kind the grid supplies), cuts copper use by about 45% and improves end-to-end efficiency by up to 5%.
 
-There is one more power problem unique to AI. In a training run, thousands of GPUs compute, then all pause to exchange numbers, then compute again, in lockstep. The whole site's power draw can swing by tens of megawatts within seconds; Meta reported exactly this during Llama 3 training. Designers now add capacitors near racks to absorb millisecond spikes and batteries at the facility to handle swings of seconds to minutes. Chapter 39 covers the full power chain and Chapter 40 the cooling.
+There is one more power problem unique to AI. In a training run, thousands of GPUs compute, then all pause to exchange numbers, then compute again, in lockstep. The whole site's power draw can swing by tens of megawatts within seconds; Meta reported exactly this during Llama 3 training. Designers now add capacitors (components that store a small amount of electrical energy and release it almost instantly) near racks to absorb millisecond spikes and batteries at the facility to handle swings of seconds to minutes. Chapter 39 covers the full power chain and Chapter 40 the cooling.
 
 ## Rung 5 and up: scale-out networking
 
@@ -455,7 +479,7 @@ InfiniBand was born lossless: a sender only transmits when the receiver has room
 
 > **Definition — Network switch and radix:** A switch is a box that forwards data between the many devices plugged into it. Its radix is how many ports it has; higher radix means fewer layers of switches are needed to connect a big cluster.
 
-Here is a real number to work with. Broadcom's Tomahawk 6 switch chip (2025) handles 102.4 Tb/s in total. Divide by 800 Gb/s per port: 102.4 ÷ 0.8 = 128 ports. So one switch chip can connect 128 GPUs at 800G.
+Here is a real number to work with. Broadcom (a large American chip company, known in AI for its Ethernet switch chips and for co-designing custom chips such as Google's TPUs) makes the Tomahawk 6 switch chip (2025), which handles 102.4 Tb/s in total. Divide by 800 Gb/s per port: 102.4 ÷ 0.8 = 128 ports. So one switch chip can connect 128 GPUs at 800G.
 
 The question is how to wire tens of thousands of GPUs together through 128-port switches. The answer used almost everywhere is a layered design.
 
@@ -483,7 +507,7 @@ flowchart TB
 - **Two layers.** Each leaf uses half its ports (64) for GPUs and half (64) for links up to spines. Each spine has 128 ports, so there can be at most 128 leaves. Maximum GPUs = 128 leaves × 64 = **8,192**.
 - **Three layers.** The standard formula for a three-layer fat tree built from k-port switches is k³ ÷ 4. With k = 128: 128 × 128 × 128 ÷ 4 = **524,288** GPUs.
 
-That is why 100,000-GPU clusters typically need three layers of switching, and why the industry cares so much about higher-radix switch chips: each doubling of ports multiplies the maximum size of a three-layer network by eight.
+That is why 100,000-GPU clusters typically need three layers of switching, and why the industry cares so much about higher-radix switch chips: each doubling of ports multiplies the maximum size of a three-layer network by eight (2 × 2 × 2, because the formula multiplies k by itself three times).
 
 Two properties describe how good such a network is.
 
@@ -537,7 +561,7 @@ A torus needs no big switches and its short neighbor links are cheap, and many A
 
 > **Definition — Dragonfly:** A topology in which chips or switches are organized into groups that are densely connected inside, and every group has direct links to every other group, keeping the number of hops between any two points small.
 
-Google's TPU 8i "Boardfly" layout is a dragonfly-style design. For TPU 8t, Google built a datacenter-scale fabric it calls Virgo that links more than 134,000 chips with 47 Pb/s of bisection bandwidth. Divide that by 134,000 chips and you get roughly 350 Gb/s of cross-network capacity per chip, an enormous total. Google says its software (JAX and Pathways) can scale one training job past one million TPU chips.
+Google's TPU 8i "Boardfly" layout is a dragonfly-style design. For TPU 8t, Google built a datacenter-scale fabric it calls Virgo that links more than 134,000 chips with 47 Pb/s (petabits per second; 1 Pb/s is a million Gb/s) of bisection bandwidth. Divide that by 134,000 chips and you get roughly 350 Gb/s of cross-network capacity per chip, an enormous total. Google says its software (JAX and Pathways) can scale one training job past one million TPU chips.
 
 ### Collectives: why the slowest link sets the pace
 
@@ -550,6 +574,8 @@ In an all-reduce across 100,000 GPUs, nobody can continue until the total is kno
 ### Matching work to wires
 
 All of this leads to one design principle: put each kind of communication on the tier that can handle it.
+
+The figure below names five ways of splitting work across chips, and Chapter 37 explains each properly. In one line each: tensor and expert parallelism you met above; *pipeline parallelism* gives each group of GPUs a different block of the model's layers, like stations on an assembly line; *context parallelism* splits one very long input across GPUs; and *data parallelism* runs full copies of the model on different data and averages what they learned after each step, with FSDP (Fully Sharded Data Parallel) a memory-saving version that spreads each copy's numbers across several GPUs.
 
 ```mermaid
 flowchart LR
@@ -587,10 +613,10 @@ As lane speeds climb to 200 Gb/s and beyond, an electrical signal in copper fade
 **Worked example: counting transceivers.** In a three-layer, non-blocking fat tree, every GPU's port feeds one link to a leaf, the leaves need an equal number of links up to the middle layer, and the middle layer needs an equal number up to the top. That is about 3 links per GPU. If every link is optical, each needs a transceiver at both ends: about 6 transceivers per GPU.
 
 - 100,000 GPUs × 6 ≈ 600,000 transceivers for the back-end alone.
-- Switch count, using 128-port switches: about 100,000 ÷ 64 ≈ 1,560 leaf switches, about 1,560 middle-layer switches and about 780 top-layer switches, roughly 3,900 switches.
+- Switch count, using 128-port switches: about 100,000 ÷ 64 ≈ 1,560 leaf switches, about 1,560 middle-layer switches and about 780 top-layer switches (top switches need no links further up, so all 128 of their ports face down and half as many are enough), roughly 3,900 switches.
 - Add the front-end and storage networks and the largest sites use millions of optical modules.
 
-How much power is that? Huawei claims its "Hi-ONE" optical design for the Atlas 960E SuperPoD (4,096 chips) replaces about 48,000 800G modules with about 5,500 units and saves over 550 kW. That company claim implies roughly 550,000 W ÷ 48,000 ≈ 11–12 W per module. At that rate, 600,000 transceivers would draw about 7 MW, a small power plant's worth, just to turn electricity into light and back. And every one contains a laser that can fail; at hundreds of thousands of modules, failures are a daily maintenance task.
+How much power is that? Huawei, the Chinese telecom-equipment and chip giant, claims its "Hi-ONE" optical design for the Atlas 960E SuperPoD (4,096 chips) replaces about 48,000 800G modules with about 5,500 units and saves over 550 kW. That company claim implies roughly 550,000 W ÷ 48,000 ≈ 11–12 W per module. At that rate, 600,000 transceivers would draw about 7 MW, a small power plant's worth, just to turn electricity into light and back. And every one contains a laser that can fail; at hundreds of thousands of modules, failures are a daily maintenance task.
 
 ### Co-packaged optics and optical circuit switches
 
@@ -620,7 +646,7 @@ flowchart LR
 
 *Figure 34.11: The march of optics toward the chip. Each step trades some serviceability or maturity for lower power and longer reach.*
 
-> **Try it:** Search the web for images of an "800G OSFP transceiver" and of the back of an "NVL72 rack." Notice how small and finned the optical module is (it has a laser and a heat sink inside), and how dense the copper cabling is behind the rack. Seeing them makes the counts in this section feel real.
+> **Try it:** Search the web for images of an "800G OSFP transceiver" (OSFP, Octal Small Form-factor Pluggable, is one standard module shape) and of the back of an "NVL72 rack." Notice how small and finned the optical module is (it has a laser and a heat sink inside), and how dense the copper cabling is behind the rack. Seeing them makes the counts in this section feel real.
 
 > **At the frontier (2026):** Optics have become a strategic component. NVIDIA's Rubin platform is six new chips, and only two of them (the Vera CPU and the Rubin GPU) compute; the other four (the NVLink 6 switch, the ConnectX-9 SuperNIC, the BlueField-4 DPU and the Spectrum-6 Ethernet switch) exist to move data. Huawei's strategy for its SuperPoDs is explicitly many weaker chips bound together with lots of optics and power, a direct consequence of export controls (Chapter 36).
 
@@ -632,8 +658,8 @@ flowchart LR
 
 Google's Ironwood pod is a clean example to check by hand. NVIDIA-style pods are built from NVL72 racks, and their size varies by customer.
 
-- 9,216 chips × 4,614 TFLOPS of FP8 each = about 42.5 million TFLOPS = **42.5 exaFLOPS** of FP8 per pod.
-- 9,216 chips × 192 GB of HBM each = about 1,770,000 GB = **1.77 PB** of HBM per pod.
+- 9,216 chips × 4,614 TFLOPS of FP8 each = about 42.5 million TFLOPS = **42.5 exaFLOPS** of FP8 per pod (one exaFLOPS is a million TFLOPS).
+- 9,216 chips × 192 GB of HBM each = about 1,770,000 GB = **1.77 PB** of HBM per pod (one petabyte is a million gigabytes).
 
 Both match Google's published figures.
 
@@ -667,7 +693,7 @@ Some reference points, from the research files behind this book:
 
 *Table 34.5: A rough bill of materials for a 100,000-GPU cluster. Every line is an estimate built from the per-rack numbers.*
 
-> **At the frontier (2026):** The race is now to make a million chips behave like one. Google says JAX and Pathways can run one training job across more than a million TPU 8t chips; AWS has cited Trainium UltraClusters of up to a million chips; and Huawei describes SuperClusters of up to 512,000 Ascend chips (a million with extra network "rails"). At that scale the hard problems are less about chips and more about networks, failures and power.
+> **At the frontier (2026):** The race is now to make a million chips behave like one. Google says JAX and Pathways can run one training job across more than a million TPU 8t chips; AWS has cited Trainium UltraClusters of up to a million chips; and Huawei describes SuperClusters of up to 512,000 of its Ascend AI chips (a million with extra network "rails"). At that scale the hard problems are less about chips and more about networks, failures and power.
 
 ### Campuses and "AI factories"
 
@@ -697,7 +723,7 @@ Compare that with sub-microsecond NVLink hops: a thousand to ten thousand times 
 
 ### Failures at scale
 
-More parts means more breakdowns. If one GPU fails on average once every five years (about 43,800 hours), a 100,000-GPU cluster sees a failure roughly every 43,800 ÷ 100,000 ≈ 0.44 hours, about 26 minutes. Real experience is in that range: during 54 days of Llama 3 training on 16,384 H100s, Meta recorded 419 unexpected interruptions, about one every three hours, mostly hardware, and still achieved more than 90% effective training time. Chapter 37 covers checkpoints, spares and goodput.
+More parts means more breakdowns. If one GPU fails on average once every five years (5 × 8,760 hours in a year = about 43,800 hours), a 100,000-GPU cluster sees a failure roughly every 43,800 ÷ 100,000 ≈ 0.44 hours, about 26 minutes. Real experience is in that range: during 54 days of Llama 3 training on 16,384 H100s, Meta recorded 419 unexpected interruptions, about one every three hours, mostly hardware, and still achieved more than 90% effective training time. Chapter 37 covers checkpoints, spares and goodput.
 
 > **Analogy:** Running a 100,000-GPU training job is like a 100,000-player online game where the match pauses whenever any one player's console crashes. You save the game often (checkpoints), keep spare consoles ready (hot spares), and build the network so one bad cable does not freeze everyone.
 
@@ -721,7 +747,7 @@ The scheduler raises a puzzle of its own. If the one machine that knows where ev
 
 Google's Chubby lock service (described in 2006) provides this, and open-source equivalents such as Apache ZooKeeper and etcd (which stores Kubernetes' state) do the same job across much of the cloud. Choosing a leader can be as simple as a race to lock one file: the winner writes its name in it, everyone else sees who won, and if the leader stops checking in, the lock lapses and another machine takes over. Majorities explain why clouds like groups of three. With three copies, any two can outvote a third that has been cut off. With two, neither side can tell whether it is the one that should keep going.
 
-**A distributed storage system** holds files too big or too important for one machine. It cuts each file into chunks and spreads them, with copies, across many servers, so reads and writes happen in parallel and a dead disk loses nothing. Google's GFS (described in 2003), its successor Colossus, and cloud object stores such as Amazon S3 work this way. Training data streams out of such systems, and checkpoints stream back in.
+**A distributed storage system** holds files too big or too important for one machine. It cuts each file into chunks and spreads them, with copies, across many servers, so reads and writes happen in parallel and a dead disk loses nothing. Google's GFS (the Google File System, described in 2003), its successor Colossus, and cloud object stores such as Amazon S3 (AWS's storage service) work this way. Training data streams out of such systems, and checkpoints stream back in.
 
 > **Definition — Distributed storage (distributed file system, object storage):** A storage system that splits data into chunks kept, with copies, on many machines, so it can hold petabytes, serve thousands of readers at once and survive failed disks.
 
@@ -768,23 +794,23 @@ Along the way, three physical limits keep showing up: power (racks heading from 
 
 ## Key terms
 
-Die, Reticle limit, Chiplet, UCIe (Universal Chiplet Interconnect Express), HBM (High Bandwidth Memory), Interposer, CoWoS (Chip-on-Wafer-on-Substrate), Package substrate, Package, Voltage regulator (VRM), Form factor (SXM, OAM, PCIe card), PCIe (PCI Express), HGX and DGX, NIC (Network Interface Card), DPU (Data Processing Unit) and SuperNIC, Superchip, NVLink-C2C, Compute tray, Cold plate (direct-to-chip liquid cooling), Busbar, Rack, Scale-up vs. scale-out, NVLink, NVSwitch, NVLink domain (scale-up domain), ICI (Inter-Chip Interconnect), UALink (Ultra Accelerator Link), NVLink Fusion, 800 V DC distribution, Back-end vs. front-end network, InfiniBand, Ethernet, RDMA and RoCE, Ultra Ethernet (UEC), Network switch and radix, Topology, Fat tree (Clos or leaf-spine network), Non-blocking network, Bisection bandwidth, Rail-optimized network, Torus, Dragonfly, Collective communication, SerDes (serializer/deserializer), Lane, Optical fiber, Optical transceiver, Co-packaged optics (CPO), Optical circuit switch (OCS), Software-defined networking (SDN), Pod (SuperPOD), Cluster, H100-equivalent (H100e), Campus, AI factory, Scale-across (multi-site training), Warehouse-scale computer (WSC), Cluster scheduler (resource manager), Gang scheduling, Consensus (distributed consensus), Distributed storage (distributed file system, object storage), Erasure coding, MapReduce (Hadoop, Spark)
+NVIDIA, GB200 and GB300, TFLOPS and PFLOPS (PF), EF and ZF (exaFLOPS and zettaFLOPS), PB (petabyte), Die, Reticle limit, TSMC (Taiwan Semiconductor Manufacturing Company), Chiplet, AMD (Advanced Micro Devices), AMD Instinct (MI300X, MI355X, MI455X), UCIe (Universal Chiplet Interconnect Express), HBM (High Bandwidth Memory), Interposer, CoWoS (Chip-on-Wafer-on-Substrate), Package substrate, Package, Voltage regulator (VRM), Form factor (SXM, OAM, PCIe card), PCIe (PCI Express), HGX and DGX, NIC (Network Interface Card), DPU (Data Processing Unit) and SuperNIC, Superchip, NVLink-C2C, LPDDR5X, Compute tray, Cold plate (direct-to-chip liquid cooling), Busbar, Rack, Scale-up vs. scale-out, NVLink, NVSwitch, NVLink domain (scale-up domain), CES, ICI (Inter-Chip Interconnect), MXFP8, UALink (Ultra Accelerator Link), NVLink Fusion, AWS (Amazon Web Services), 800 V DC distribution, Back-end vs. front-end network, InfiniBand, Ethernet, RDMA and RoCE, Ultra Ethernet (UEC), Network switch and radix, Topology, Fat tree (Clos or leaf-spine network), Non-blocking network, Bisection bandwidth, Rail-optimized network, Torus, Dragonfly, Collective communication, SerDes (serializer/deserializer), Lane, Optical fiber, Optical transceiver, Co-packaged optics (CPO), Optical circuit switch (OCS), Software-defined networking (SDN), Pod (SuperPOD), Cluster, H100-equivalent (H100e), Campus, AI factory, Scale-across (multi-site training), Warehouse-scale computer (WSC), Cluster scheduler (resource manager), Gang scheduling, Consensus (distributed consensus), Distributed storage (distributed file system, object storage), Erasure coding, MapReduce (Hadoop, Spark)
 
 ## Exercises
 
 1. **[Easy] Read a rack spec sheet like a detective.** (1) Open NVIDIA's GB300 NVL72 page (nvidia.com/en-us/data-center/gb300-nvl72/) and its Vera Rubin NVL72 page. (2) For every FLOPS number, write down the precision (FP4, FP8, BF16), whether it is dense or sparse (read the footnotes), and whether it is per GPU or per rack. (3) Divide each rack number by 72 to get a per-GPU figure. (4) Decide whether the GB300's 360 PF BF16 figure is dense or sparse, and say what evidence you used. **What you'll learn:** headline numbers can differ by 2× (sparsity), 4× (precision) and 72× (rack vs. chip), and only careful reading tells you which.
 
-2. **[Easy] See real GPU wiring in Google Colab.** (1) In Colab, choose Runtime, Change runtime type, and pick a GPU. (2) In a cell, run `!nvidia-smi` and note the GPU name, memory and power draw. (3) Run `!nvidia-smi topo -m` and read the grid (on one GPU it is tiny; note the legend explaining NV#, PIX and SYS links). (4) Run `!nvidia-smi -q | grep -i -A3 "link"` to see the PCIe generation and link width. (5) Write two sentences on what would change on an 8-GPU NVLink server. **What you'll learn:** GPUs are physical devices with specific links, and tools exist to inspect exactly how they are wired.
+2. **[Easy] See real GPU wiring in Google Colab.** (1) In Colab, choose Runtime, Change runtime type, and pick a GPU. (2) In a cell, run `!nvidia-smi` and note the GPU name, memory and power draw. (3) Run `!nvidia-smi topo -m` and read the grid (on one GPU it is tiny; note the legend below it, which explains codes such as NV# for GPUs joined by a bundle of NVLinks, PIX for a path through a single PCIe switch, and SYS for a path that has to cross between the server's CPUs, the slowest kind). (4) Run `!nvidia-smi -q | grep -i -A3 "link"` to see the PCIe generation and link width. (5) Write two sentences on what would change on an 8-GPU NVLink server. **What you'll learn:** GPUs are physical devices with specific links, and tools exist to inspect exactly how they are wired.
 
-3. **[Easy] Bits, bytes and transfer times (spreadsheet).** (1) Make rows for: PCIe 5.0 x16 (64 GB/s each way), NVLink 5 (900 GB/s each way; NVIDIA's 1.8 TB/s counts both directions), NVLink 6 (1,800 GB/s each way at launch), an 800 Gb/s NIC, a 1.6 Tb/s NIC and a 1 Gb/s home internet line. (2) Convert every bit rate to GB/s by dividing by 8. (3) Compute the time to move 1 GB, 100 GB and 1 TB over each. (4) Highlight the fastest and slowest in each column. **What you'll learn:** the bits-versus-bytes trap, and why a 20 TB NVL72 behaves so differently from 72 GPUs on a network.
+3. **[Easy] Bits, bytes and transfer times (spreadsheet).** (1) Make rows for: PCIe 5.0 x16 (64 GB/s each way), NVLink 5 (900 GB/s each way; NVIDIA's 1.8 TB/s counts both directions), NVLink 6 (1,800 GB/s each way at launch), an 800 Gb/s NIC, a 1.6 Tb/s NIC and a 1 Gb/s home internet line. (2) Convert every bit rate to GB/s by dividing by 8 (first turn Tb/s into Gb/s by multiplying by 1,000, so 1.6 Tb/s is 1,600 Gb/s, or 200 GB/s). (3) Compute the time to move 1 GB, 100 GB and 1 TB over each: time in seconds = gigabytes ÷ GB/s, and 1 TB = 1,000 GB. If cell B2 holds a row's GB/s figure, type =1/B2, =100/B2 and =1000/B2. (4) Highlight the fastest and slowest in each column. **What you'll learn:** the bits-versus-bytes trap, and why a 20 TB NVL72 behaves so differently from 72 GPUs on a network.
 
-4. **[Medium] Build the ladder in a spreadsheet.** (1) Create rows for package, superchip, compute tray, rack, a 16-rack pod, a 100,000-GPU cluster and a 1 GW campus. (2) Columns: GPUs, HBM (288 GB per GPU), dense FP4 (15 PF per GPU) and IT power (130 kW per 72-GPU rack). (3) For the campus, work backwards: 1 GW ÷ 1.2 (PUE) ÷ 130 kW per rack = how many racks and GPUs? (4) Compare your GPU count with Epoch AI's figure of about 1.1 million H100-equivalents for Colossus 2 and explain why the units differ. **What you'll learn:** how chips, racks and power scale together, and how to sanity-check claims about gigawatt sites.
+4. **[Medium] Build the ladder in a spreadsheet.** (1) Create rows for package, superchip, compute tray, rack, a 16-rack pod, a 100,000-GPU cluster and a 1 GW campus. (2) Columns: GPUs, HBM (288 GB per GPU), dense FP4 (15 PF per GPU) and IT power (130 kW per 72-GPU rack). (3) For the campus, work backwards: 1 GW ÷ 1.2 (PUE) ÷ 130 kW per rack = how many racks and GPUs? (Write 1 GW as 1,000,000 kW so the units match, then multiply the racks by 72.) (4) Compare your GPU count with Epoch AI's figure of about 1.1 million H100-equivalents for Colossus 2 and explain why the units differ. **What you'll learn:** how chips, racks and power scale together, and how to sanity-check claims about gigawatt sites.
 
-5. **[Medium] Size a fat-tree network.** (1) With 128-port switches, compute the maximum GPUs in a two-layer leaf-spine (leaves use 64 ports down, 64 up) and in a three-layer fat tree (k³ ÷ 4). (2) Repeat with 64-port switches. (3) For a 32,768-GPU cluster on 128-port switches, estimate the number of leaf, middle and top switches and the number of optical transceivers (about 6 per GPU). (4) At roughly 12 W per transceiver, estimate the optics power. **What you'll learn:** why switch radix and optics dominate the cost and power of scale-out networks.
+5. **[Medium] Size a fat-tree network.** (1) With 128-port switches, compute the maximum GPUs in a two-layer leaf-spine (leaves use 64 ports down, 64 up) and in a three-layer fat tree (k³ ÷ 4). (2) Repeat with 64-port switches. (3) For a 32,768-GPU cluster on 128-port switches, estimate the number of leaf, middle and top switches and the number of optical transceivers (about 6 per GPU). Follow the transceiver worked example: leaves = GPUs ÷ 64, the same number of middle switches, and half as many top switches. (4) At roughly 12 W per transceiver, estimate the optics power. **What you'll learn:** why switch radix and optics dominate the cost and power of scale-out networks.
 
 6. **[Medium] Why 800 volts?** (1) Using current = power ÷ voltage, compute the current for a 130 kW rack and a 1 MW rack at 54 V, 415 V and 800 V. (2) Wire losses grow with the square of current. For the same wire, how many times larger are losses at 54 V than at 800 V? (Hint: square the ratio of the currents.) (3) In two sentences, explain why NVIDIA is moving racks to 800 V DC. **What you'll learn:** the physics that is reshaping the power design of AI racks (and the bridge to Chapter 39).
 
-7. **[Medium] The speed-of-light budget.** (1) Using 5 µs per km of fiber (5 ns per meter), compute one-way delay for 2 m (inside a rack), 200 m (across a hall), 1,200 km (Wisconsin to Atlanta by fiber) and 6,000 km (roughly across the Atlantic). (2) If a training step must exchange data 1,000 times per second, which distances are affordable? (3) Ask a chatbot to explain "local SGD" or "infrequent synchronization" in multi-site training and summarize the idea in three sentences. **What you'll learn:** why tensor parallelism stays inside a rack and only patient traffic crosses campuses.
+7. **[Medium] The speed-of-light budget.** (1) Using 5 µs per km of fiber (5 ns per meter), compute one-way delay for 2 m (inside a rack), 200 m (across a hall), 1,200 km (Wisconsin to Atlanta by fiber) and 6,000 km (roughly across the Atlantic). (2) If a training step must exchange data 1,000 times per second, which distances are affordable? (Each exchange then has at most 1 millisecond, which is 1,000 µs, in total; a distance is affordable only if its one-way delay is a small fraction of that.) (3) Ask a chatbot to explain "local SGD" or "infrequent synchronization" in multi-site training and summarize the idea in three sentences. **What you'll learn:** why tensor parallelism stays inside a rack and only patient traffic crosses campuses.
 
 8. **[Challenge] Map a model onto a cluster.** You have a 400-billion-parameter mixture-of-experts model, 8,064 GPUs in 112 NVL72 racks, and 128,000-token training sequences. (1) Decide which parallelism goes inside each rack (tensor and expert parallelism), which across racks (pipeline parallelism), where context parallelism goes, and use data parallelism for the rest. (2) Draw it, labeling which network tier each uses (copy Figure 34.10's logic). (3) Check: does your plan put any every-layer communication on the back-end network? If so, fix it. **What you'll learn:** the logic of matching communication-heavy work to the fastest links, the core skill of ML systems engineers (Chapter 37 goes deeper).
 
@@ -797,7 +823,7 @@ Die, Reticle limit, Chiplet, UCIe (Universal Chiplet Interconnect Express), HBM 
 - **Liquid-cooled rack technicians.** Data center technicians who can service cold plates, quick-disconnects, busbars and dense fiber are in short supply, and many roles need a two-year technical degree or trade background rather than a university degree.
 - **Optical interconnect.** Co-packaged optics, 1.6T and faster transceivers, optical circuit switches and optical input/output chiplets are a fast-growing supply chain, with demand for photonics engineers, test engineers and manufacturing technicians.
 - **Power electronics for racks.** The move to 800 V DC, solid-state transformers and capacitor or battery smoothing of GPU power swings creates work for power engineers and component makers selling to rack builders.
-- **Cluster observability and GPU FinOps software.** Tools that spot stragglers and flaky links, attribute cost per job and raise utilization sell to every company running more than a few racks, because idle GPUs are expensive.
+- **Cluster observability and GPU FinOps software.** FinOps ("financial operations") means tracking and cutting cloud and hardware spending. Tools that spot stragglers and flaky links, attribute cost per job and raise utilization sell to every company running more than a few racks, because idle GPUs are expensive.
 - **Rack integration and testing services.** Rack-scale systems are built, burned in and tested before shipping; contract manufacturers and independent test and logistics firms in this chain are growing quickly.
 - **Open problems worth working on.** Training across distant campuses with rare synchronization, fault-tolerant training at a million chips, reducing interconnect energy per bit, and scale-up fabrics based on open standards (UALink, Ultra Ethernet) are active research and startup areas.
 
@@ -831,8 +857,8 @@ Die, Reticle limit, Chiplet, UCIe (Universal Chiplet Interconnect Express), HBM 
 - **Google Cloud blog, "TPU 8t and TPU 8i technical deep dive" (2026).** A clear first-party description of superpods, the Virgo fabric, Boardfly and the training/inference split.
 - **Meta, "The Llama 3 Herd of Models" (2024, arXiv 2407.21783), infrastructure sections.** The best public account of running a 16,384-GPU training job: network design, parallelism, failures and power swings.
 - **Barroso, Hölzle and Ranganathan, *The Data Center as a Computer* (4th edition, Springer, December 2025; free open-access download).** The classic book on treating a whole building as one machine, written by Google engineers; the new edition adds AI hardware, optical networking and software-defined infrastructure.
-- **Jouppi et al., "TPU v4: An Optically Reconfigurable Supercomputer for Machine Learning" (ISCA 2023).** How Google uses tori and optical circuit switches to build pods of thousands of chips.
-- **Al-Fares, Loukissas and Vahdat, "A Scalable, Commodity Data Center Network Architecture" (SIGCOMM 2008).** The paper that popularized fat-tree networks built from identical switches, including the k³ ÷ 4 formula.
-- **NVIDIA developer blog posts on the 800 V HVDC architecture (2025).** Where the copper, current and efficiency numbers for megawatt racks come from.
+- **Jouppi et al., "TPU v4: An Optically Reconfigurable Supercomputer for Machine Learning" (ISCA 2023, the International Symposium on Computer Architecture, the field's top conference).** How Google uses tori and optical circuit switches to build pods of thousands of chips.
+- **Al-Fares, Loukissas and Vahdat, "A Scalable, Commodity Data Center Network Architecture" (SIGCOMM 2008, the top networking research conference).** The paper that popularized fat-tree networks built from identical switches, including the k³ ÷ 4 formula.
+- **NVIDIA developer blog posts on the 800 V HVDC (high-voltage direct current) architecture (2025).** Where the copper, current and efficiency numbers for megawatt racks come from.
 - **Microsoft, "Inside the world's most powerful AI datacenter" (September 2025).** A readable tour of the Fairwater design, from rack layout to closed-loop cooling.
 - **Epoch AI data center hub (epoch.ai/data/data-centers).** Live estimates of the largest AI sites by power and H100-equivalents, with methodology notes.

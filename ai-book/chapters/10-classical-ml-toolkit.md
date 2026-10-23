@@ -69,7 +69,7 @@ timeline
     2025 : TabPFN-2.5 and Chronos-2 foundation models
 ```
 
-*Figure 10.2: A rough timeline of the toolkit. Many of these ideas are decades old and still in daily use.*
+*Figure 10.2: A rough timeline of the toolkit (CART stands for classification and regression trees). Many of these ideas are decades old and still in daily use.*
 
 ## A running example: will this subscriber cancel?
 
@@ -168,7 +168,7 @@ The real attraction is that you can read the weights. Each extra weekly hour low
 
 > **Definition — Interpretability:** How easily a person can understand why a model made a particular prediction. A regression with five readable weights is highly interpretable; a forest of 500 trees much less so.
 
-The decision boundary is where the score is zero, which rearranges to months = 9 − 1.2 × hours: a straight line on Figure 10.3 from 9 months at zero hours down to zero months at 7.5 hours. Everyone below it is predicted to cancel. That straightness is the strength and the weakness. These models are fast, stable, hard to overfit with a little regularization (Chapter 9), and usually give well-calibrated probabilities. But if the true pattern curves, or depends on combinations ("light users cancel only if they are also new"), a straight line misses it unless a human adds features such as hours × months.
+The decision boundary is where the score is zero. Doubling every number in 4.5 − 0.6 × hours − 0.5 × months = 0 gives 9 − 1.2 × hours − months = 0, which rearranges to months = 9 − 1.2 × hours: a straight line on Figure 10.3 from 9 months at zero hours down to zero months at 7.5 hours. Everyone below it is predicted to cancel. That straightness is the strength and the weakness. These models are fast, stable, hard to overfit with a little regularization (Chapter 9), and usually give well-calibrated probabilities. But if the true pattern curves, or depends on combinations ("light users cancel only if they are also new"), a straight line misses it unless a human adds features such as hours × months.
 
 Linear and logistic regression are the best-known members of a family statisticians call generalized linear models: compute a weighted sum of the inputs, then pass it through a fixed function suited to what you are predicting. An amount uses the sum as it is (linear regression). A yes-or-no uses the sigmoid (logistic regression). A count, such as the number of insurance claims a driver files in a year, uses the exponential, which keeps the prediction positive (Poisson regression). For more than two classes, softmax (Chapter 6) replaces the sigmoid, giving softmax regression, which is exactly the calculation in the final layer of most neural-network classifiers.
 
@@ -247,7 +247,7 @@ That instability turns out to be useful. If trees make different mistakes, a cro
 
 > **Definition — Ensemble:** A combination of several models whose predictions are merged, by voting or averaging, so that their individual errors partly cancel out.
 
-The arithmetic of crowds: suppose each of five trees is right 70 percent of the time and, unrealistically, their mistakes are independent. The majority is right when at least three are. Exactly three right: 10 × 0.7³ × 0.3² = 0.309. Exactly four: 5 × 0.7⁴ × 0.3 = 0.360. All five: 0.7⁵ = 0.168. Total: about 0.84. Five 70-percent trees make an 84-percent forest; 101 independent ones would be right more than 99.99 percent of the time.
+The arithmetic of crowds: suppose each of five trees is right 70 percent of the time and, unrealistically, their mistakes are independent. The majority is right when at least three are. The 10 and the 5 below count the different ways it can happen: there are 10 ways to choose which three of the five trees are the right ones, and 5 ways to choose which single tree is the wrong one. Exactly three right: 10 × 0.7³ × 0.3² = 0.309. Exactly four: 5 × 0.7⁴ × 0.3 = 0.360. All five: 0.7⁵ = 0.168. Total: about 0.84. Five 70-percent trees make an 84-percent forest; 101 independent ones would be right more than 99.99 percent of the time.
 
 The catch is "independent": trees trained on the same data make the same mistakes. Leo Breiman's random forest (2001) makes trees deliberately different. Each trains on a bootstrap sample, a random draw of rows with replacement (some rows twice, some not at all), and at each question each tree may consider only a random handful of features.
 
@@ -261,7 +261,7 @@ Random forests are the safe default of tabular machine learning: they need littl
 
 The price is interpretability: you can read one tree, not 500.
 
-Feature importance describes the model as a whole. To explain one particular prediction ("why was this loan refused?"), two model-agnostic tools are standard. SHAP splits the prediction among the features using Shapley values from game theory (Chapter 48). LIME, introduced by Marco Tulio Ribeiro, Sameer Singh and Carlos Guestrin in 2016, takes the case being explained, makes many slightly altered copies of it (change the income a little, drop a word from the email), asks the black-box model for its prediction on each, and fits a small linear model to those nearby answers. The weights of that little model are the explanation: they say which features pushed this one prediction up or down. Both are approximations of the model's behavior, not a view of its insides, and they can disagree.
+Feature importance describes the model as a whole. To explain one particular prediction ("why was this loan refused?"), two model-agnostic tools (ones that work with any kind of model) are standard. SHAP (SHapley Additive exPlanations) splits the prediction among the features using Shapley values from game theory, a method for sharing a team's winnings fairly according to what each player added (Chapter 48). LIME, introduced by Marco Tulio Ribeiro, Sameer Singh and Carlos Guestrin in 2016, takes the case being explained, makes many slightly altered copies of it (change the income a little, drop a word from the email), asks the black-box model for its prediction on each, and fits a small linear model to those nearby answers. The weights of that little model are the explanation: they say which features pushed this one prediction up or down. Both are approximations of the model's behavior, not a view of its insides, and they can disagree.
 
 > **Definition — LIME (local interpretable model-agnostic explanations):** A method that explains one prediction of any model by testing slightly altered versions of the input and fitting a simple linear model to how the predictions change, whose weights show which features mattered for that case.
 
@@ -284,7 +284,7 @@ Real data is noisy, so too many rounds start fitting noise; practitioners stop w
 
 > **Definition — Gradient boosting:** Boosting in which each new tree is fitted to the gradient of the loss (for squared error, simply the residuals), so the ensemble walks downhill on its errors one small tree at a time.
 
-> **Definition — XGBoost, LightGBM and CatBoost:** The three most popular open-source gradient-boosting libraries. XGBoost was released in 2014; LightGBM comes from Microsoft and CatBoost from Yandex.
+> **Definition — XGBoost, LightGBM and CatBoost:** The three most popular open-source gradient-boosting libraries. XGBoost was released in 2014; LightGBM comes from Microsoft and CatBoost from Yandex, Russia's largest search-engine company.
 
 For about a decade, gradient-boosted trees have been the default winner on tabular data, in industry and in Kaggle competitions: fraud scoring, credit risk, ad click prediction, insurance pricing, demand planning. Careful 2022 research comparing them with deep neural networks on typical business tables still found the trees ahead in most cases.
 
@@ -324,7 +324,7 @@ The best-known answer is TabPFN, from the startup Prior Labs: a neural network p
 
 > **Definition — Tabular foundation model:** A model pretrained, often on synthetic tables, to make predictions on new spreadsheet-style datasets with little or no training of its own. TabPFN is the best-known example.
 
-According to its developers, TabPFN-2.5 (November 2025) led the TabArena benchmark ahead of tuned tree ensembles on small-to-medium tables. In May 2026 SAP announced it would acquire Prior Labs, in a deal described as a commitment of more than €1 billion; it was reported closed in July 2026.
+According to its developers, TabPFN-2.5 (November 2025) led the TabArena benchmark ahead of tuned tree ensembles on small-to-medium tables. In May 2026 SAP, the German maker of business software used by many large companies, announced it would acquire Prior Labs, in a deal described as a commitment of more than €1 billion; it was reported closed in July 2026.
 
 > **At the frontier (2026):** Gradient boosting is still the practical default for business tables: cheap, fast, well understood and runnable anywhere. But pretrained "models for spreadsheets" are moving fast, and big enterprise software makers are betting on them. Whether they replace hand-tuned XGBoost for everyday business data is one of 2026's open questions.
 
@@ -338,7 +338,7 @@ If two classes can be separated by a line at all, many lines do it. A support ve
 
 Real data is messy, so SVMs allow some examples inside the street, with a penalty set by a hyperparameter usually called C: large C insists on few mistakes (risking overfitting), small C accepts some in exchange for a wider street.
 
-The famous part is the kernel trick, which lets this straight-line method draw curves. Seven points sit on a number line, red (R) at both ends and blue (B) in the middle. No single cut separates them. Add a second feature, x squared: the reds become 9, 4, 4 and 9, the blues 1, 0 and 1, and a flat cut at 2.5 separates them perfectly. On the original line, that one cut becomes two, at about −1.58 and +1.58.
+The famous part is the kernel trick, which lets this straight-line method draw curves. Seven points sit on a number line, red (R) at both ends and blue (B) in the middle. No single cut separates them. Add a second feature, x squared: the reds become 9, 4, 4 and 9, the blues 1, 0 and 1, and a flat cut at 2.5 separates them perfectly. On the original line, that one cut becomes two, at about −1.58 and +1.58 (the two numbers whose square is 2.5).
 
 ```
 BEFORE: one feature, x. No single cut separates R from B.
@@ -366,7 +366,7 @@ SVMs dominated the 2000s, in handwriting recognition, text classification and bi
 
 > **Analogy:** An SVM is a town planner drawing the widest possible road between two neighborhoods. The houses right at the roadside are the support vectors; move any other house and the road stays put.
 
-Kernels power another classic method you may hear about. A Gaussian process predicts a number together with an honest error bar. Close to the examples it has seen, it is confident; far from them, its error bar widens. The kernel decides how similar two inputs are, and so how much each known example should sway a guess about a new one. Gaussian processes suit small datasets where knowing your uncertainty matters, such as deciding which experiment to run next, and they are the classic engine inside the Bayesian optimization of hyperparameters (Chapter 9). Their cost grows with the cube of the number of examples, so they struggle beyond tens of thousands of data points.
+Kernels power another classic method you may hear about. A Gaussian process predicts a number together with an honest error bar. Close to the examples it has seen, it is confident; far from them, its error bar widens. The kernel decides how similar two inputs are, and so how much each known example should sway a guess about a new one. Gaussian processes suit small datasets where knowing your uncertainty matters, such as deciding which experiment to run next, and they are the classic engine inside the Bayesian optimization of hyperparameters (Chapter 9). Their cost grows with the cube of the number of examples (double the examples and the work goes up eight times, because 2 × 2 × 2 = 8), so they struggle beyond tens of thousands of data points.
 
 > **Definition — Gaussian process:** A method that predicts a value together with an uncertainty band, using a kernel to judge how much each known example should influence the prediction at a new point. The uncertainty is small near known examples and grows away from them.
 
@@ -409,7 +409,7 @@ Bad starts can trap k-means, so software runs it several times and keeps the bes
 
 > **Analogy:** k-means is placing ice-cream trucks in a park. Put three trucks down anywhere, let everyone walk to the nearest one, move each truck to the middle of its crowd, and repeat until no one switches.
 
-A softer cousin of k-means gives every point a probability of belonging to each group instead of an all-or-nothing assignment. In a Gaussian mixture model, each cluster is a bell curve (a normal distribution, Chapter 6) with its own center, spread and share of the data. Take our subscribers, with two bell curves centered at 2 and 11 hours, each with a spread (standard deviation) of 2.5 hours and an equal share. A subscriber who uses the product 6 hours a week sits 4 hours from the first center and 5 from the second. The heights of the two bell curves at that point are proportional to e^(−4² ÷ (2 × 2.5²)) = e^(−1.28) ≈ 0.278 and e^(−5² ÷ (2 × 2.5²)) = e^(−2) ≈ 0.135, so she is 0.278 ÷ (0.278 + 0.135) ≈ 67% "light user" and 33% "heavy user."
+A softer cousin of k-means gives every point a probability of belonging to each group instead of an all-or-nothing assignment. In a Gaussian mixture model, each cluster is a bell curve (a normal distribution, Chapter 6) with its own center, spread and share of the data. Take our subscribers, with two bell curves centered at 2 and 11 hours, each with a spread (standard deviation) of 2.5 hours and an equal share. A subscriber who uses the product 6 hours a week sits 4 hours from the first center and 5 from the second. A bell curve's height falls off with distance from its center as e^(−distance² ÷ (2 × spread²)), the formula behind the normal distribution of Chapter 6, so the heights of the two bell curves at that point are proportional to e^(−4² ÷ (2 × 2.5²)) = e^(−1.28) ≈ 0.278 and e^(−5² ÷ (2 × 2.5²)) = e^(−2) ≈ 0.135, so she is 0.278 ÷ (0.278 + 0.135) ≈ 67% "light user" and 33% "heavy user."
 
 The model is fitted with the expectation–maximization (EM) algorithm, which is k-means with soft edges. The E step computes every point's membership probabilities, as we just did. The M step moves each bell curve's center, spread and share to fit its members, each counted in proportion to its membership. Repeat until nothing changes. EM is a general recipe for learning when part of the picture is hidden (here, each point's true group), and it is how the hidden Markov models of classic speech recognition were trained (Chapter 46).
 
@@ -441,7 +441,7 @@ Two names travel with PCA. Its directions are the **eigenvectors** of a table re
 
 > **Definition — Independent component analysis (ICA):** A method that unmixes signals by finding directions in the data that are statistically independent, such as separating two voices recorded together by two microphones.
 
-PCA only rotates and squashes in straight lines. For pictures of complex data, t-SNE (2008) and UMAP (2018) are more popular: both keep each point's close neighbors close in a 2-D map, producing striking "islands" of similar items.
+PCA only rotates and squashes in straight lines. For pictures of complex data, t-SNE (2008; short for t-distributed stochastic neighbor embedding) and UMAP (2018; uniform manifold approximation and projection) are more popular: both keep each point's close neighbors close in a 2-D map, producing striking "islands" of similar items.
 
 > **Definition — t-SNE and UMAP:** Methods for squashing high-dimensional data into a 2-D or 3-D map in which similar items end up near each other, used mainly for visualization.
 
@@ -537,7 +537,7 @@ One step up, exponential smoothing blends the latest actual with the previous fo
 
 > **Definition — Exponential smoothing:** A forecasting method in which each new forecast is a weighted blend of the latest actual value and the previous forecast, so recent data counts most and older data fades.
 
-> **Definition — ARIMA:** A classic statistical forecasting model that predicts the next value from recent past values and recent past forecast errors, after removing trend.
+> **Definition — ARIMA:** Short for autoregressive integrated moving average: a classic statistical forecasting model that predicts the next value from recent past values and recent past forecast errors, after removing trend.
 
 Further up sit Prophet, an open-source forecaster from Meta (2017), and gradient-boosted trees fed lag and calendar features such as day of week and holidays, an approach large retailers use heavily.
 
@@ -547,7 +547,7 @@ The golden rule is never peek at the future. A random train/test split lets a mo
 
 > **Definition — Backtesting:** Testing a forecasting method by repeatedly training only on data up to a past date, forecasting the period after it, and comparing with what actually happened.
 
-> **At the frontier (2026):** Forecasting has its own foundation models, pretrained on huge collections of time series. Amazon's Chronos-2 (October 2025) handles many related series and outside factors together; Google's TimesFM 2.5 is the default forecaster inside the BigQuery data warehouse, with TimesFM 3.0, which can forecast several related series together, in preview as of October 2026; Salesforce's Moirai and others compete on the GIFT-Eval benchmark. Whether they beat a tuned boosted-tree forecaster depends on the data, so backtest both.
+> **At the frontier (2026):** Forecasting has its own foundation models, pretrained on huge collections of time series. Amazon's Chronos-2 (October 2025) handles many related series and outside factors together; Google's TimesFM 2.5 is the default forecaster inside BigQuery, Google's cloud data warehouse (a database built for analysis, Chapter 11), with TimesFM 3.0, which can forecast several related series together, in preview as of October 2026; Moirai, from the business-software company Salesforce, and others compete on the GIFT-Eval benchmark, a public test of forecasters on many real-world time series. Whether they beat a tuned boosted-tree forecaster depends on the data, so backtest both.
 
 > **Definition — Time-series foundation model:** A model pretrained on a large, varied collection of time series that can forecast a new series with little or no task-specific training.
 
@@ -833,7 +833,7 @@ For one model, a few scripts and a careful person suffice. For fifty models, com
 The usual pieces:
 
 - **Experiment tracking.** Every training run logs its code version, data version, settings and scores to a shared dashboard, so "which model was that?" always has an answer. MLflow and Weights & Biases are widely used.
-- **Data versioning.** Datasets get version numbers just as code does with Git (Chapter 3), using tools such as DVC, so any model can be rebuilt from exactly the data that made it.
+- **Data versioning.** Datasets get version numbers just as code does with Git (Chapter 3), using tools such as DVC (Data Version Control), so any model can be rebuilt from exactly the data that made it.
 - **Model registry.** A catalog of trained models with their versions, scores, owners and status (testing, production, retired), and the one place deployment tools fetch models from.
 - **Feature store.** A shared library of features, such as "spend in the last 30 days", computed by one piece of code and served both to training jobs and to live models. It is the standard cure for training-serving skew, and it lets ten teams reuse one feature instead of writing it ten slightly different ways. Feast is a popular open-source example.
 - **Pipelines and compute.** Orchestrators such as Airflow (Chapter 11) run the steps in order, on clusters scheduled by systems such as Kubernetes.
@@ -908,8 +908,8 @@ Classical machine learning, inductive bias, tabular data, churn, k-nearest neigh
 
 5. **[Medium] Forecasting bake-off.** Google Sheets plus Google Trends, 60 minutes.
    1. At trends.google.com, search a term with a weekly or yearly rhythm (for example "pizza" or "gym") and download the past 5 years as CSV. Open it in Sheets.
-   2. For the last 8 periods, make four forecasts per period using only earlier data: naive (previous value), seasonal naive (same period one cycle ago), 4-period moving average, and exponential smoothing with weight 0.3.
-   3. For each method compute the mean absolute error (the average of the absolute differences between forecast and actual).
+   2. For the last 8 periods, make four forecasts per period using only earlier data: naive (previous value), seasonal naive (same period one cycle ago; five years of Trends data come as one row per week, so for a yearly rhythm that is the value 52 rows earlier), 4-period moving average (the `=AVERAGE` of the 4 rows just before), and exponential smoothing with weight 0.3 (in a new column, set the first forecast equal to the first value of the series; each row below is 0.3 × the previous row's actual value + 0.7 × the previous row's forecast, filled down to the end).
+   3. For each method compute the mean absolute error: next to each of the 8 forecasts put its miss with `=ABS(...)`, for example `=ABS(C200-B200)` if the forecast is in C200 and the actual value in B200, then take the `=AVERAGE` of the 8 misses.
    4. Which method won? Ask a chatbot to explain why, given your series' shape.
 
    **What you'll learn:** trend, seasonality, baselines and honest backtesting.

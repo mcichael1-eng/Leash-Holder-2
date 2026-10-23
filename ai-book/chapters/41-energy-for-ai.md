@@ -46,9 +46,11 @@ The numbers below come from the most widely cited sources. Several are forecasts
 
 - **The world.** The International Energy Agency (IEA) estimated in April 2025 that data centers used about **415 TWh in 2024, around 1.5% of global electricity**, and projected about **945 TWh by 2030** in its base case, slightly more than Japan uses today. The US accounted for about 45% of 2024 consumption, China about 25% and Europe about 15%.
 - **The United States.** Lawrence Berkeley National Laboratory (LBNL) estimated in December 2024 that US data centers used **176 TWh in 2023, about 4.4% of US electricity**, up from 76 TWh in 2018, and projected **325–580 TWh by 2028, or 6.7–12%**.
-- **Hot spots.** In Ireland, data centres used **23% of all metered electricity in 2025**, up from 22% in 2024 and 5% in 2015 (Irish Central Statistics Office, July 2026). In Virginia, data centers were already about a quarter of the state's electricity use in 2023 (EPRI).
+- **Hot spots.** In Ireland, data centres used **23% of all metered electricity in 2025**, up from 22% in 2024 and 5% in 2015 (Irish Central Statistics Office, July 2026). In Virginia, data centers were already about a quarter of the state's electricity use in 2023 (EPRI, the Electric Power Research Institute, a research group funded by US utilities).
 - **AI specifically.** Epoch AI's tracker (data updated October 20, 2026) lists **95 large AI data centers with about 14.2 GW of IT power, about 18.5 GW including cooling and overhead**. Epoch estimates these cover about 44% of the world's AI compute.
 - **Capacity growth.** The property firm JLL (January 2026) expects global data center capacity to roughly **double from about 103 GW to about 200 GW between 2025 and 2030**.
+
+> **Definition — IEA (International Energy Agency):** A Paris-based organization, set up by governments in 1974, that publishes widely used data and forecasts on world energy, including the most cited global estimates of data center electricity use.
 
 ```mermaid
 pie title Global data center electricity by region, 2024, IEA estimate
@@ -126,15 +128,19 @@ A separate non-profit, the North American Electric Reliability Corporation (NERC
 | Grid operator | Region | Why it matters for AI |
 |---|---|---|
 | PJM | All or parts of 13 states plus Washington, DC, from New Jersey to Illinois, including Virginia and Ohio | Home to Northern Virginia, the world's largest data center market; its capacity prices spiked (case study below) |
-| ERCOT | Most of Texas, on a largely separate grid | Cheap land, abundant wind, solar and gas, and a large-load boom drew Stargate Abilene and other megaprojects; Texas wrote special large-load rules in 2025 |
-| MISO | Central US from Louisiana to Minnesota and Michigan | Includes Louisiana (Meta's Hyperion) and Wisconsin (Microsoft's Fairwater) |
-| SPP | Great Plains, including Oklahoma and Kansas | Strong wind resources and growing data center interest |
-| CAISO, NYISO, ISO-NE | California, New York, New England | Expensive power and tight land; less megaproject activity |
-| No ISO | Much of the Southeast (for example TVA and Georgia utilities) and much of the West | Vertically integrated utilities plan and build for data centers directly; Memphis (xAI's Colossus) is in TVA's region |
+| ERCOT (Electric Reliability Council of Texas) | Most of Texas, on a largely separate grid | Cheap land, abundant wind, solar and gas, and a large-load boom drew Stargate Abilene and other megaprojects; Texas wrote special large-load rules in 2025 |
+| MISO (Midcontinent Independent System Operator) | Central US from Louisiana to Minnesota and Michigan | Includes Louisiana (Meta's Hyperion) and Wisconsin (Microsoft's Fairwater) |
+| SPP (Southwest Power Pool) | Great Plains, including Oklahoma and Kansas | Strong wind resources and growing data center interest |
+| CAISO, NYISO, ISO-NE (the California, New York and New England ISOs) | California, New York, New England | Expensive power and tight land; less megaproject activity |
+| No ISO | Much of the Southeast (for example TVA, the federally owned Tennessee Valley Authority, and Georgia utilities) and much of the West | Vertically integrated utilities plan and build for data centers directly; Memphis (xAI's Colossus) is in TVA's region |
 
 *Table 41.1: The main US grid operators and their role in the AI buildout, as of late 2026.*
 
+> **Definition — PJM (PJM Interconnection):** The largest US grid operator (an ISO/RTO), running the grid and wholesale markets for all or parts of 13 states plus Washington, DC. The letters come from its founding states: Pennsylvania, New Jersey and Maryland.
+
 > **Try it:** Ask a chatbot: "Which utility and which grid operator serve my town of [your town, state]? Roughly what share of my state's electricity came from gas, nuclear, coal, wind and solar last year?" Then check the answer against the US Energy Information Administration's free state profile for your state (eia.gov/state). Note anything the chatbot got wrong or out of date.
+
+> **Definition — EIA (US Energy Information Administration):** The statistics agency of the US Department of Energy. It publishes free official data and short-term forecasts on electricity prices, generation by source and new power plants.
 
 ### How wholesale prices are set
 
@@ -310,7 +316,7 @@ Now the central question: where should the electricity come from? Every source i
 
 1. **Cost.** How much each megawatt-hour costs over the plant's life.
 2. **Speed.** How many years until first power.
-3. **Carbon.** How much CO₂ is emitted per kilowatt-hour, counting construction and fuel.
+3. **Carbon.** How much CO₂ (carbon dioxide) is emitted per kilowatt-hour, counting construction and fuel.
 4. **Firmness.** Whether it is available 24/7, which matters because AI data centers run around the clock.
 5. **Land.** How much space it needs, which matters for permitting and community acceptance.
 
@@ -318,7 +324,7 @@ Two more definitions make the comparison fair.
 
 > **Definition — LCOE (levelized cost of energy):** The average cost of each megawatt-hour a plant will produce over its life, counting construction, financing, fuel, operations and maintenance. It is useful for comparing plants but ignores the extra cost of making variable power available around the clock.
 
-> **Definition — Lifecycle emissions:** The greenhouse gases emitted per kilowatt-hour over a power source's whole life, including building the plant, mining and transporting fuel, operating and dismantling it, measured in grams of CO₂-equivalent per kWh.
+> **Definition — Lifecycle emissions:** The greenhouse gases emitted per kilowatt-hour over a power source's whole life, including building the plant, mining and transporting fuel, operating and dismantling it, measured in grams of CO₂-equivalent per kWh. "CO₂-equivalent" (CO₂e) counts other greenhouse gases, such as methane, as the amount of CO₂ that would cause the same warming.
 
 ### Natural gas: the near-term winner
 
@@ -334,7 +340,7 @@ Natural gas is the largest single source of US electricity, a bit over 40% in 20
 
 What the AI industry did with gas, as of October 2026:
 
-- **xAI's Colossus in Memphis** started with an initial grid supply of only about 8 MW in 2024 and filled the gap with temporary gas turbines and Tesla Megapack batteries (reported). For Colossus 2 next door, Mississippi approved a permanent **plant of about 1.2 GW with 41 turbines in Southaven (March 2026)**, and the NAACP, represented by the Southern Environmental Law Center and Earthjustice, sued in April 2026 under the Clean Air Act (reported).
+- **xAI's Colossus in Memphis** started with an initial grid supply of only about 8 MW in 2024 and filled the gap with temporary gas turbines and Tesla Megapack batteries (reported). For Colossus 2 next door, Mississippi approved a permanent **plant of about 1.2 GW with 41 turbines in Southaven (March 2026)**, and the NAACP (a long-established US civil rights organization), represented by the environmental law groups Southern Environmental Law Center and Earthjustice, sued in April 2026 under the Clean Air Act, the main US air-pollution law (reported).
 - **Stargate's Shackelford County, Texas, site** plans an on-site gas microgrid, and the **Doña Ana County, New Mexico** site plans two gas microgrids (Epoch AI, April 2026). Reports put the Shackelford microgrid at about **700 MW of VoltaGrid gas engines behind the meter**.
 - **Meta's Hyperion** in Louisiana is served by new combined-cycle gas plants that the utility Entergy is building, and Meta's Prometheus campus in Ohio uses on-site gas plants to supplement the grid (reported).
 - **Turbine makers** (GE Vernova, Siemens Energy, Mitsubishi Power) report multi-year backlogs. Large turbines ordered in 2025–26 are often reported to arrive around 2029–2030, an estimate the makers' late-October 2026 results may update.
@@ -357,7 +363,7 @@ Nuclear power is firm, nearly carbon-free and runs about 90% or more of the hour
 
 > **Definition — Nuclear restart:** Returning a shut-down nuclear plant to service by repairing, relicensing and refueling it. It is far faster and cheaper than building a new reactor but only possible at a few recently closed plants.
 
-- **Three Mile Island Unit 1**, renamed the Crane Clean Energy Center, will sell its output to Microsoft under a 20-year agreement announced in 2024 (about 835 MW according to Constellation). A $1 billion Department of Energy loan was announced in November 2025, and the restart was reportedly targeted for 2027 (originally 2028), a date that could still move.
+- **Three Mile Island Unit 1** (TMI-1), renamed the Crane Clean Energy Center, will sell its output to Microsoft under a 20-year agreement announced in 2024 (about 835 MW according to Constellation). A $1 billion Department of Energy loan was announced in November 2025, and the restart was reportedly targeted for 2027 (originally 2028), a date that could still move.
 - **Duane Arnold** in Iowa is reportedly being restarted for Google by 2029, and Holtec has been restarting **Palisades** in Michigan.
 
 **4. New reactors.** This is where the long-term bets are.
@@ -371,6 +377,10 @@ Nuclear power is firm, nearly carbon-free and runs about 90% or more of the hour
 - As of 2026, only China and Russia operate SMRs (reported).
 - **Google–Kairos:** 500 MW of SMRs for 2030–35 (reported). **Amazon–X-energy:** an SMR partnership.
 - **Meta (January 9, 2026):** up to 6.6 GW of nuclear by 2035, including up to 1.2 GW from Oklo in Pike County, Ohio, as early as 2030, and two TerraPower Natrium units (690 MW) as early as 2032, with rights to six more.
+
+> **Definition — NRC (Nuclear Regulatory Commission):** The independent US federal agency that licenses and inspects nuclear power plants. Every new reactor, restart and uprate in the US needs its approval.
+
+> **Definition — BWRX-300:** A 300 MW small modular reactor designed by GE Vernova Hitachi, a simplified boiling-water reactor (one that boils water directly in the reactor to drive a steam turbine). Its first US construction permit, for the Tennessee Valley Authority's Clinch River site, came in September 2026.
 
 Large conventional reactors are a cautionary tale. The two new reactors at Plant Vogtle in Georgia, the only ones completed in the US in decades, entered service in 2023 and 2024, years late and many billions of dollars over budget. That history is why companies are betting on smaller, factory-built designs, and why skeptics want to see SMRs delivered on time before believing their cost promises.
 
@@ -408,7 +418,7 @@ Hydropower, from water flowing through dams, is firm, cheap once built and very 
 
 > **Definition — Fuel cell:** A device that turns a fuel such as natural gas or hydrogen into electricity through a chemical reaction rather than burning it. Solid-oxide fuel cells like Bloom Energy's can be installed on site quickly and emit fewer local air pollutants than engines, though running on natural gas they still emit CO₂.
 
-Bloom Energy has signed fuel-cell supply deals for fast on-site power with the utility AEP, with Oracle and with Brookfield. Fuel cells cost more per megawatt-hour than large gas plants, but their speed and lower local pollution make them attractive as bridge or permanent on-site power.
+Bloom Energy has signed fuel-cell supply deals for fast on-site power with the utility AEP (American Electric Power), with Oracle and with Brookfield. Fuel cells cost more per megawatt-hour than large gas plants, but their speed and lower local pollution make them attractive as bridge or permanent on-site power.
 
 ### Coal: retirements delayed
 
@@ -416,7 +426,7 @@ No new coal plants are being built in the US, but demand growth has slowed the c
 
 ### The big comparison table
 
-Here is every option on one page. Cost tiers are relative. As a rough guide, widely cited levelized-cost studies such as Lazard's 2024–2025 editions put unsubsidized new utility-scale solar and onshore wind at very roughly $30–90 per MWh, new combined-cycle gas at roughly $45–110, gas peakers well above $100, and new nuclear roughly $140–220. Those bands move every year with interest rates, fuel prices, equipment shortages and subsidies, and they do not include the cost of making variable power firm. Lifecycle carbon values are the median estimates from the Intergovernmental Panel on Climate Change's 2014 review; newer studies differ in detail but not in ranking.
+Here is every option on one page. Cost tiers are relative. As a rough guide, widely cited levelized-cost studies such as the investment bank Lazard's 2024–2025 editions put unsubsidized new utility-scale solar and onshore wind at very roughly $30–90 per MWh, new combined-cycle gas at roughly $45–110, gas peakers well above $100, and new nuclear roughly $140–220. Those bands move every year with interest rates, fuel prices, equipment shortages and subsidies, and they do not include the cost of making variable power firm. Lifecycle carbon values are the median estimates from the 2014 review by the Intergovernmental Panel on Climate Change (IPCC, the United Nations body that assesses climate science); newer studies differ in detail but not in ranking.
 
 | Source | Cost tier (new build) | Typical time to first power (2026) | Lifecycle carbon (g CO₂e per kWh) | Firmness | Land | AI examples (dated) |
 |---|---|---|---|---|---|---|
@@ -538,7 +548,7 @@ Now look hour by hour:
 
 > **Try it:** Open the free Electricity Maps app (app.electricitymaps.com), pick your region and look at the last 24 hours. Find the cleanest and dirtiest hours of the day. Those are the hours when a data center's "100% renewable" claim is most and least true.
 
-Same purchase, two honest answers: 100% on an annual or daily basis, about 42% on an hourly basis. Neither is a lie, but they mean very different things for the atmosphere at 2 a.m. That is why 24/7 matching and additionality have become the tests that serious analysts apply, and why the main greenhouse gas accounting standard (the GHG Protocol) has been reviewing its electricity rules with proposals for hourly matching.
+Same purchase, two honest answers: 100% on an annual or daily basis, about 42% on an hourly basis. Neither is a lie, but they mean very different things for the atmosphere at 2 a.m. That is why 24/7 matching and additionality have become the tests that serious analysts apply, and why the main greenhouse gas accounting standard (the GHG Protocol, GHG standing for greenhouse gas) has been reviewing its electricity rules with proposals for hourly matching.
 
 Additionality is the other test. When a company signs a contract for an existing nuclear plant's output, it gets firm clean power, but the grid loses that power for everyone else. Supporters argue such deals keep existing plants running and fund uprates and license extensions; critics argue they mostly reshuffle existing clean power while new demand is met by gas.
 
@@ -556,9 +566,9 @@ Grids are built for the few hours of the year when demand peaks. If a data cente
 
 > **Definition — Demand response (curtailment):** Reducing electricity use when the grid is stressed, either on request or automatically, usually in exchange for payment or a faster connection.
 
-Rules are starting to require this. **Texas SB 6 (2025)** requires large loads of 75 MW or more to disclose their backup generation, share in interconnection costs, and accept being curtailed, or switched to backup power, during grid emergencies, according to summaries of the law. A widely cited February 2025 study from Duke University estimated that US grids could absorb on the order of 100 GW of new load without new peak capacity if those loads agreed to be curtailed for less than 1% of the hours in a year.
+Rules are starting to require this. **Texas SB 6 (2025)**, Senate Bill 6 of the Texas legislature, requires large loads of 75 MW or more to disclose their backup generation, share in interconnection costs, and accept being curtailed, or switched to backup power, during grid emergencies, according to summaries of the law. A widely cited February 2025 study from Duke University estimated that US grids could absorb on the order of 100 GW of new load without new peak capacity if those loads agreed to be curtailed for less than 1% of the hours in a year.
 
-**Worked example.** 0.5% of the 8,760 hours in a year is about 44 hours. A 1 GW data center that agrees to cut back for those 44 hours (spread over a few heat waves or cold snaps) might connect years earlier than one demanding guaranteed power every hour, because the grid would not need new peak plants for it.
+**Worked example.** Take half that limit: 0.5% of the 8,760 hours in a year is about 44 hours. A 1 GW data center that agrees to cut back for those 44 hours (spread over a few heat waves or cold snaps) might connect years earlier than one demanding guaranteed power every hour, because the grid would not need new peak plants for it.
 
 Which AI work can bend?
 
@@ -583,8 +593,8 @@ Every number about future AI electricity use is a forecast, and forecasts disagr
 
 **Worked example: how wide is LBNL's range?** US data centers used 176 TWh in 2023. LBNL's 2028 range is 325–580 TWh.
 
-- Low case: 325 ÷ 176 ≈ 1.85× in five years, about 13% growth per year.
-- High case: 580 ÷ 176 ≈ 3.3× in five years, about 27% growth per year.
+- Low case: 325 ÷ 176 ≈ 1.85× in five years, about 13% growth per year (growth compounds, and 1.13 × 1.13 × 1.13 × 1.13 × 1.13 ≈ 1.84).
+- High case: 580 ÷ 176 ≈ 3.3× in five years, about 27% growth per year (1.27 multiplied by itself five times ≈ 3.3).
 
 EPRI's range for 2030 (4.6–9.1% of US electricity) also spans about a factor of two. Why so wide?
 
@@ -681,7 +691,7 @@ Every energy source is a trade-off. Gas is firm and fast-ish but emits carbon. N
 
 ## Key terms
 
-Speed to power, Gigawatt (GW), Nameplate capacity, Capacity factor, Large load, Peak demand, Grid, Transmission and distribution, Grid frequency, Balancing authority, Firm power, Variable (intermittent) power, Utility, ISO / RTO (independent system operator / regional transmission organization), FERC (Federal Energy Regulatory Commission), PUC (public utility commission), Wholesale electricity market, Merit order, Interconnection, Interconnection queue, System impact study, Network upgrade, Phantom load (speculative load), Rate case, Tariff, Stranded cost, Large-load tariff, Capacity market, Base Residual Auction (BRA), LCOE (levelized cost of energy), Lifecycle emissions, Combined-cycle gas turbine (CCGT), Simple-cycle (peaker) turbine, Aeroderivative turbine, Reciprocating engine, Uprate, Nuclear restart, SMR (small modular reactor), Advanced reactor, Fusion power, Solar photovoltaics (PV), Battery energy storage system (BESS), Enhanced geothermal system (EGS), Fuel cell, Front-of-meter, Behind-the-meter (BTM), Co-location (power), Bridge power, Microgrid, PPA (power purchase agreement), REC (renewable energy certificate), Annual matching, 24/7 carbon-free energy (CFE), Additionality, Emission scopes (Scope 1 to Scope 3), Demand response (curtailment), Carbon-aware computing (carbon-intelligent scheduling), Jevons paradox
+Speed to power, Gigawatt (GW), Nameplate capacity, Capacity factor, IEA (International Energy Agency), Large load, Peak demand, Grid, Transmission and distribution, Grid frequency, Balancing authority, Firm power, Variable (intermittent) power, Utility, ISO / RTO (independent system operator / regional transmission organization), FERC (Federal Energy Regulatory Commission), PUC (public utility commission), PJM (PJM Interconnection), EIA (US Energy Information Administration), Wholesale electricity market, Merit order, Interconnection, Interconnection queue, System impact study, Network upgrade, Phantom load (speculative load), Rate case, Tariff, Stranded cost, Large-load tariff, Capacity market, Base Residual Auction (BRA), LCOE (levelized cost of energy), Lifecycle emissions, Combined-cycle gas turbine (CCGT), Simple-cycle (peaker) turbine, Aeroderivative turbine, Reciprocating engine, Uprate, Nuclear restart, SMR (small modular reactor), Advanced reactor, NRC (Nuclear Regulatory Commission), BWRX-300, Fusion power, Solar photovoltaics (PV), Battery energy storage system (BESS), Enhanced geothermal system (EGS), Fuel cell, Front-of-meter, Behind-the-meter (BTM), Co-location (power), Bridge power, Microgrid, PPA (power purchase agreement), REC (renewable energy certificate), Annual matching, 24/7 carbon-free energy (CFE), Additionality, Emission scopes (Scope 1 to Scope 3), Demand response (curtailment), Carbon-aware computing (carbon-intelligent scheduling), Jevons paradox
 
 ## Exercises
 
@@ -691,11 +701,11 @@ Speed to power, Gigawatt (GW), Nameplate capacity, Capacity factor, Large load, 
 
 3. **[Easy] Watch your grid live.** (1) Open the free Electricity Maps app (app.electricitymaps.com) or your grid operator's website (for example ERCOT or PJM). (2) Note the current mix of sources and the carbon intensity. (3) Check again at night and at midday, or compare yesterday's chart. (4) Explain why a data center running flat out would be cleaner at some hours than others. **What you'll learn:** that the grid's mix and carbon change hour by hour, the basis of 24/7 matching.
 
-4. **[Medium] Build a merit-order market.** (1) In a spreadsheet, list four plants with capacity and running cost: solar 300 MW at $0, nuclear 500 MW at $10, gas combined cycle 400 MW at $35, peaker 200 MW at $90. (2) Sort by cost and add a cumulative capacity column. (3) For demand of 700, 1,000, 1,250 and 1,350 MW, find the marginal plant and the price. (4) Add a 300 MW data center to each demand level and see how prices change. (5) Add a new 300 MW solar farm and see what happens. **What you'll learn:** how large new loads and new cheap supply move wholesale prices.
+4. **[Medium] Build a merit-order market.** (1) In a spreadsheet, list four plants with capacity and running cost: solar 300 MW at $0, nuclear 500 MW at $10, gas combined cycle 400 MW at $35, peaker 200 MW at $90. (2) Sort by cost and add a cumulative capacity column, a running total of capacity (300, 800, 1,200, 1,400). (3) For demand of 700, 1,000, 1,250 and 1,350 MW, find the marginal plant (the first plant, going down the list, whose running total reaches the demand) and the price (that plant's running cost). (4) Add a 300 MW data center to each demand level and see how prices change. Where demand now exceeds the 1,400 MW total, write "shortage": the market cannot serve it, and a real grid would hit its price cap or cut some customers off. (5) Add a new 300 MW solar farm and see what happens. **What you'll learn:** how large new loads and new cheap supply move wholesale prices.
 
 5. **[Medium] Explore a capacity market.** (1) Find PJM's Base Residual Auction results (pjm.com, search "Base Residual Auction results"). (2) Chart the clearing price from 2022/23 to the latest auction. (3) Convert each price from $/MW-day to $/kW-year. (4) Estimate the effect on a household whose share of the peak is 2 kW, and note why real bills differ. **What you'll learn:** how an auction three years ahead turns data center growth into bills, and how to check this chapter's figures against the source.
 
-6. **[Medium] Annual versus hourly matching.** (1) In a spreadsheet, make 24 rows (hours). (2) Put a steady 100 MW data center load in one column. (3) In another, put a solar farm's output: 240 MW from 7 a.m. to 5 p.m., zero otherwise. (4) Compute the daily totals and the hourly matched energy (the smaller of load and solar each hour). (5) Add 200 MW of 4-hour batteries charged from surplus solar and recompute the hourly matched share. **What you'll learn:** why "100% renewable" and "24/7 carbon-free" are different claims, and how storage closes part of the gap.
+6. **[Medium] Annual versus hourly matching.** (1) In a spreadsheet, make 24 rows (hours). (2) Put a steady 100 MW data center load in one column. (3) In another, put a solar farm's output: 240 MW from 7 a.m. to 5 p.m., zero otherwise. (4) Compute the daily totals and the hourly matched energy, the smaller of load and solar each hour (for example `=MIN(B2,C2)` if load is in column B and solar in column C). (5) Add 200 MW of 4-hour batteries charged from surplus solar and recompute the hourly matched share. The batteries hold 200 MW × 4 hours = 800 MWh; the daytime surplus (1,400 MWh) fills them, and at night they supply 100 MW for 8 hours, so add 800 MWh to the matched energy (ignoring battery losses) and divide by the 2,400 MWh used. **What you'll learn:** why "100% renewable" and "24/7 carbon-free" are different claims, and how storage closes part of the gap.
 
 7. **[Medium] Read an interconnection queue.** (1) Download a public queue (for example ERCOT's large-load or generation interconnection reports, or PJM's or MISO's generation queue). (2) Filter by your state or county. (3) Count gigawatts by fuel type (solar, storage, gas, wind) and by status, including "withdrawn". (4) Write a paragraph on what the data say about bottlenecks. **What you'll learn:** what grid congestion looks like in real data.
 

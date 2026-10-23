@@ -108,7 +108,7 @@ Imagine drawing a map where every word or sentence gets a location, and things t
 ```
 *Figure 27.2: A hand-made two-dimensional map of meaning. Similar meanings sit close together; "piggy bank" lands between the two clusters.*
 
-Now distance means something. Dog and puppy are 1 unit apart: the square root of (9 − 8)² + (1 − 1)² = 1. Dog and mortgage are far apart: the square root of (8 − 1)² + (1 − 9)², which is the square root of 49 + 64 = 113, about 10.6 units. If someone searches for "puppy", you can find "dog" by looking for the nearest point, even though the two words share no letters.
+Now distance means something. We measure it with the straight-line (Euclidean) distance from Chapter 5: subtract the two points' x scores and square the result, do the same for the y scores, add the two squares, and take the square root. Dog and puppy are 1 unit apart: the square root of (9 − 8)² + (1 − 1)² = 1. Dog and mortgage are far apart: the square root of (8 − 1)² + (1 − 9)², which is the square root of 49 + 64 = 113, about 10.6 units. If someone searches for "puppy", you can find "dog" by looking for the nearest point, even though the two words share no letters.
 
 ### From two dimensions to hundreds
 
@@ -220,7 +220,7 @@ The password passage wins, the login passage is a close second (it is about acco
 
 ### Keyword search and BM25
 
-The oldest kind of retrieval matches words. You already know the simplest version: Ctrl+F. A real keyword search engine is smarter in three ways.
+The oldest kind of retrieval matches words. You already know the simplest version: Ctrl+F (Cmd+F on a Mac), the find-in-page shortcut in a browser or document. A real keyword search engine is smarter in three ways.
 
 First, it does not scan every document for every query. It builds an index ahead of time, just like the index at the back of a book.
 
@@ -232,7 +232,7 @@ Second, it gives more weight to rare words. If you search a company's 1,000 docu
 
 > **Definition — IDF (Inverse Document Frequency):** A weight that makes rare words count more than common ones in keyword search. It is usually computed as the logarithm of (total documents ÷ documents containing the word). Words that appear everywhere, like "the", get a weight near zero.
 
-**Worked example.** Using base-10 logarithms in a collection of 1,000 documents:
+**Worked example.** Using base-10 logarithms in a collection of 1,000 documents. (Recall from Chapter 6 that log(x) answers "10 to what power gives x?", so log(1) = 0, log(10) = 1 and log(100) = 2; the log key on a phone calculator, or `=LOG10(20)` in a spreadsheet, gives values in between.)
 - "the" appears in all 1,000. IDF = log(1,000 ÷ 1,000) = log(1) = 0. It tells you nothing.
 - "refund" appears in 50. IDF = log(1,000 ÷ 50) = log(20) = 1.3.
 - "E-4012" appears in 2. IDF = log(1,000 ÷ 2) = log(500) = 2.7.
@@ -349,7 +349,7 @@ Beyond fast search, a vector database handles the dull but essential parts: addi
 |---|---|---|
 | A plain array in Python | Brute force in memory | You have up to a few thousand passages and are learning |
 | Chroma | Simple, open-source, runs locally | You want a real vector store on your laptop |
-| pgvector | An extension to the Postgres database | Your company already runs Postgres and wants one system |
+| pgvector | An extension to Postgres (PostgreSQL), a popular free, open-source database | Your company already runs Postgres and wants one system |
 | Pinecone, Weaviate, Qdrant, Milvus | Dedicated vector databases, hosted or self-run | You have millions of vectors and need scale |
 | Elasticsearch, OpenSearch | Search engines that added vector search | You want BM25 and vectors in one place for hybrid search |
 
@@ -359,7 +359,7 @@ Every passage in a real system carries labels: which document it came from, the 
 
 > **Definition — Metadata:** Data about data: the labels attached to each stored passage, such as source file, author, date, department, document type and access rights.
 
-> **Definition — Metadata filtering:** Restricting a search to passages whose labels match certain conditions, such as "only HR documents", "only policies dated 2026" or "only documents this user may read", either before or alongside the vector search.
+> **Definition — Metadata filtering:** Restricting a search to passages whose labels match certain conditions, such as "only HR (human resources) documents", "only policies dated 2026" or "only documents this user may read", either before or alongside the vector search.
 
 Filters matter for quality. A question about "the current travel policy" should not retrieve the 2019 version just because it is worded similarly. They matter even more for safety. Imagine a company assistant built on every document in the shared drive. An intern asks, "What is the CEO's salary?" If the payroll spreadsheet is in the index and the search is not filtered by permissions, the nearest neighbor is exactly the passage the intern must not see, and the model will read it out.
 
@@ -576,7 +576,7 @@ flowchart TD
 ```
 *Figure 27.8: The retrieval funnel. Each stage is slower and smarter than the one above it, and sees fewer items.*
 
-> **Analogy:** The first search is a recruiter skimming 1,000 CVs for keywords in an afternoon. The reranker is the hiring manager who carefully reads the 50 that made the cut. You would not want the hiring manager to read all 1,000, or the recruiter to make the final call.
+> **Analogy:** The first search is a recruiter skimming 1,000 CVs (résumés) for keywords in an afternoon. The reranker is the hiring manager who carefully reads the 50 that made the cut. You would not want the hiring manager to read all 1,000, or the recruiter to make the final call.
 
 ## Query transformation: fixing the question before searching
 
@@ -626,7 +626,7 @@ Chunk retrieval answers *local* questions well: "What is the warranty on carbon 
 
 In 2024 Darren Edge and colleagues at Microsoft Research described GraphRAG. A language model reads every chunk and extracts the entities in it (people, products, suppliers, places) and the relationships between them. These become a knowledge graph. The graph is then split into communities, clusters of closely connected entities, and the model writes a summary of each community. Global questions are answered by combining community summaries rather than individual chunks.
 
-> **Definition — Knowledge graph:** A way of storing information as entities (such as people, companies and products) connected by labeled relationships (such as "supplies", "works for" or "complained about"). Wikidata is a famous public example.
+> **Definition — Knowledge graph:** A way of storing information as entities (such as people, companies and products) connected by labeled relationships (such as "supplies", "works for" or "complained about"). Wikidata, a free database of facts run by the same foundation as Wikipedia, is a famous public example.
 
 > **Definition — GraphRAG:** A retrieval approach, popularized by Microsoft Research in 2024, that uses a language model to build a knowledge graph from documents, groups the graph into communities of related entities, summarizes each community, and answers broad questions from those summaries.
 
@@ -663,7 +663,7 @@ Text-to-SQL is powerful and easy to get subtly wrong: a query can run perfectly 
 
 > **Definition — Text-to-SQL:** Having a language model translate a plain-English question into a database query, which ordinary software then runs, so the answer comes from an exact calculation over structured data rather than from retrieved text.
 
-**Images, diagrams and scanned pages.** An exploded diagram in a repair manual or a chart in a slide deck carries information that text extraction throws away. Multimodal RAG handles it in one of two ways: describe each image in words with a vision model and index the description like any other chunk, or embed the images directly with a model trained to put pictures and text in the same space (CLIP, from Chapter 16, is the classic example), so that a text question can retrieve a matching picture. The retrieved image is then shown to a multimodal model (Chapter 22) along with the question. Some systems skip text extraction entirely and index images of whole pages, which keeps tables and layout intact.
+**Images, diagrams and scanned pages.** An exploded diagram (a drawing that shows a machine's parts pulled apart) in a repair manual or a chart in a slide deck carries information that text extraction throws away. Multimodal RAG handles it in one of two ways: describe each image in words with a vision model and index the description like any other chunk, or embed the images directly with a model trained to put pictures and text in the same space (CLIP, from Chapter 16, is the classic example), so that a text question can retrieve a matching picture. The retrieved image is then shown to a multimodal model (Chapter 22) along with the question. Some systems skip text extraction entirely and index images of whole pages, which keeps tables and layout intact.
 
 > **Definition — Multimodal RAG:** Retrieval-augmented generation over images, diagrams, scanned pages or other non-text content, either by indexing text descriptions of them or by embedding them directly in a shared image-and-text space.
 
@@ -673,7 +673,7 @@ When the earliest RAG systems were built, models could read only a few thousand 
 
 > **Definition — Context window:** The maximum amount of text, measured in tokens, that a model can consider at once, including instructions, documents, conversation history and its own answer. Current frontier models offer about one million tokens.
 
-So why not paste the whole Northwind handbook into every question? Let us price it with Claude Opus 5.5's list prices as of late 2026 ($4 per million input tokens, with cache reads billed at 0.05×, or $0.20 per million) and the handbook's 200,000 tokens (counted at 0.75 words per token, as above; Claude's newer tokenizer would count about a third more, which raises every row alike), for 1,000 questions a day.
+So why not paste the whole Northwind handbook into every question? Let us price it with Claude Opus 5.5's list prices as of late 2026 ($4 per million input tokens, with cache reads billed at 0.05×, or $0.20 per million) and the handbook's 200,000 tokens (counted at 0.75 words per token, as above; Claude's newer tokenizer would count up to about 35% more, which raises every row alike), for 1,000 questions a day.
 
 > **Definition — Prompt caching:** An API feature that stores the processed form of a repeated prompt beginning, such as a long document, so later requests that start with the same text are cheaper and faster. Chapter 26 covers it in detail.
 
@@ -758,7 +758,7 @@ A help-center article edited by a malicious contributor might contain "Ignore yo
 
 > **Definition — Data poisoning:** Deliberately planting false or malicious content in data an AI system learns from or retrieves, such as a fake policy page added to a wiki, to steer its answers.
 
-Other risks: permission leaks (covered above); stale or contradictory documents giving confident wrong answers; and the vectors themselves. The OWASP Top 10 for LLM Applications (2025) lists "Vector and Embedding Weaknesses" as its own category, and researchers have shown that embeddings can sometimes be turned back into close approximations of the original text. Treat a vector store with the same care as the documents in it.
+Other risks: permission leaks (covered above); stale or contradictory documents giving confident wrong answers; and the vectors themselves. The OWASP Top 10 for LLM Applications (2025), a widely used checklist from the nonprofit security community OWASP (Chapter 31), lists "Vector and Embedding Weaknesses" as its own category, and researchers have shown that embeddings can sometimes be turned back into close approximations of the original text. Treat a vector store with the same care as the documents in it.
 
 > **At the frontier (2026):** Retrieval is becoming invisible and everywhere. Chat apps search your files, connected apps and past chats automatically; hybrid search, contextual retrieval and reranking are standard building blocks; and million-token windows with cheap cached reads let systems pass far more evidence than before. The unsolved problems are reliable permissions across many connected systems, defending against injected instructions in retrieved content, and grading answers to open-ended questions.
 
@@ -783,7 +783,7 @@ Knowledge cutoff, Hallucination, Retrieval, RAG (Retrieval-Augmented Generation)
    **What you'll learn:** embeddings are coordinates on a map of meaning, nearest neighbors are what retrieval returns, and real embeddings need many more dimensions than two.
 
 2. **[Easy] Cosine similarity in a spreadsheet.** Reproduce this chapter's worked example.
-   1. In Google Sheets or Excel, put the query vector 0.8, 0.1, 0.1 in cells B2:D2, and the passage vectors A (0.9, 0, 0.1), B (0.1, 0.9, 0.2) and C (0.7, 0.2, 0) in rows 3 to 5.
+   1. In Google Sheets or Excel, put the query vector 0.8, 0.1, 0.1 in cells B2:D2 (one number per cell), and the passage vectors A (0.9, 0, 0.1), B (0.1, 0.9, 0.2) and C (0.7, 0.2, 0) in columns B to D of rows 3 to 5. Type the labels "query", "A", "B" and "C" in A2 to A5.
    2. In E3 type `=SUMPRODUCT($B$2:$D$2,B3:D3)/(SQRT(SUMSQ($B$2:$D$2))*SQRT(SUMSQ(B3:D3)))` and copy it down to E5.
    3. Check you get about 0.992, 0.252 and 0.981. Sort the rows by column E.
    4. Change the query to 0.1, 0.8, 0.1 (a money question) and watch the ranking flip.
@@ -808,7 +808,7 @@ Knowledge cutoff, Hallucination, Retrieval, RAG (Retrieval-Augmented Generation)
 5. **[Medium] Reciprocal rank fusion by hand.** Merge two search results the way hybrid search does.
    1. Keyword search returns, in order: Manual-7, FAQ-2, Manual-3, Blog-9, FAQ-5. Semantic search returns: FAQ-2, FAQ-5, Forum-4, Manual-7, Manual-1.
    2. For each document, add up 1 ÷ (60 + rank) for every list it appears in. Use a spreadsheet or a calculator.
-   3. Sort by total. Which document wins? Which document that appeared in only one list ends up highest?
+   3. Sort by total. Which document wins? Which documents that appeared in only one list end up highest? (Two of them tie; explain why.)
    4. Recompute with k = 1 instead of 60. What changes, and why does a larger k make the merge gentler?
    **What you'll learn:** how hybrid search combines results whose raw scores are not comparable, and why documents that both methods like rise to the top.
 
@@ -1078,7 +1078,7 @@ Knowledge cutoff, Hallucination, Retrieval, RAG (Retrieval-Augmented Generation)
 - **Anthropic, "Introducing Contextual Retrieval" (September 2024, anthropic.com).** A clear, practical write-up with the measurements quoted in this chapter and a cookbook to reproduce them.
 - **Edge et al., "From Local to Global: A Graph RAG Approach to Query-Focused Summarization" (Microsoft Research, 2024, arXiv:2404.16130).** The GraphRAG paper, with good diagrams of the indexing steps.
 - **Malkov and Yashunin, "Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs" (arXiv:1603.09320).** The HNSW paper, for readers who want to see how vector databases work inside.
-- **Manning, Raghavan and Schütze, *Introduction to Information Retrieval* (Cambridge University Press, 2008; free online).** The classic textbook on inverted indexes, TF-IDF, ranking and evaluation; everything before embeddings, explained well.
+- **Manning, Raghavan and Schütze, *Introduction to Information Retrieval* (Cambridge University Press, 2008; free online).** The classic textbook on inverted indexes, TF-IDF (term frequency times IDF, a simpler ancestor of BM25; Chapter 11), ranking and evaluation; everything before embeddings, explained well.
 - **Liu et al., "Lost in the Middle: How Language Models Use Long Contexts" (2023).** The study behind the "lost in the middle" effect, useful for deciding how many passages to retrieve and where to put them.
 - **Sentence Transformers documentation (sbert.net).** The library used in this chapter's Colab project, with many free embedding and reranking models and short examples.
 - **Hugging Face Open-Source AI Cookbook (huggingface.co/learn).** Free, copy-paste notebooks for RAG, reranking, hybrid search and evaluation with open models.

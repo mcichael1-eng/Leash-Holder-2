@@ -198,7 +198,7 @@ The reward model currently gives the lemonade answer (B) a score of 2.0 and the 
 1. Gap: 2.0 − 0.5 = 1.5.
 2. Predicted probability that B wins: 1 / (1 + e^(−1.5)) = 1 / (1 + 0.223) = 0.82.
 3. **If the annotator picked B** (agreeing with the model), the loss is −ln(0.82) = 0.20. Small loss, small nudge: the model was already mostly right.
-4. **If the annotator picked A** (surprising the model), the loss is −ln(1 − 0.82) = −ln(0.18) = 1.70. Big loss, big nudge: gradient descent pushes A's score up and B's score down.
+4. **If the annotator picked A** (surprising the model), the loss is −ln(1 − 0.82) = −ln(0.18) ≈ 1.71. Big loss, big nudge: gradient descent pushes A's score up and B's score down.
 
 Repeat over hundreds of thousands of comparisons, and the reward model learns a "taste" function that can score any new response. Notice that this is the same cross-entropy idea as SFT, applied to "which one wins?" instead of "which token comes next?"
 
@@ -307,7 +307,7 @@ The last column of the table measures how far the policy has drifted from the SF
 > **Definition — KL divergence (Kullback–Leibler divergence):** A measure of how different two probability distributions are. It is zero when they are identical and grows as they diverge. For a list of options it is the sum of `p × ln(p / q)` over all options, where p is the new probability and q is the old one.
 
 For round 1 it works out like this:
-- A: 0.53 × ln(0.53 / 0.50) = 0.53 × 0.05 = 0.03
+- A: 0.53 × ln(0.53 / 0.50) = 0.53 × 0.06 = 0.03
 - B: 0.43 × ln(0.43 / 0.30) = 0.43 × 0.36 = 0.15
 - C: 0.05 × ln(0.05 / 0.20) = 0.05 × (−1.39) = −0.07
 - Total ≈ **0.11**.
@@ -364,6 +364,8 @@ In 2023 a group of Stanford researchers noticed something about the leash formul
 
 **score = β × ln(policy probability / reference probability) + a constant**
 
+(The steps: divide both sides by the reference probability, take the natural log of both sides, which undoes e^, and multiply by β. The "rescaled to add up to 1" step only shifts every score by the same amount, which is the constant.)
+
 In words: once a model has been trained this way, its own probabilities, compared with the reference model's, *already contain* the reward. You do not need a separate reward model at all. The paper's subtitle said it plainly: "Your Language Model Is Secretly a Reward Model."
 
 > **Definition — DPO (Direct Preference Optimization):** A post-training method (2023) that learns directly from pairs of chosen and rejected responses, with no separate reward model and no reinforcement-learning loop. It raises the probability of chosen responses relative to rejected ones, measured against a frozen reference model.
@@ -419,7 +421,7 @@ Researchers quickly built variations on DPO, each fixing a specific complaint.
 
 > **Definition — IPO (Identity Preference Optimization):** A 2023 variant of DPO that adds a regularizing term so the model does not push probabilities to extremes when the same answer is always preferred, a failure mode of plain DPO.
 
-> **Definition — KTO (Kahneman–Tversky Optimization):** A 2024 method that learns from single responses labeled simply "good" or "bad" (like thumbs-up and thumbs-down) instead of pairs. It borrows ideas from prospect theory, which says people feel losses more than equal gains.
+> **Definition — KTO (Kahneman–Tversky Optimization):** A 2024 method that learns from single responses labeled simply "good" or "bad" (like thumbs-up and thumbs-down) instead of pairs. It borrows ideas from prospect theory, the psychologists Daniel Kahneman and Amos Tversky's finding that people feel losses more than equal gains.
 
 > **Definition — ORPO (Odds Ratio Preference Optimization):** A 2024 method that combines supervised fine-tuning and preference learning into a single training stage, with no reference model.
 
@@ -502,7 +504,7 @@ Constitutional AI's short list of principles grew, across the industry, into lon
 Two documents matter most as of late 2026:
 
 - **OpenAI's Model Spec**, public and versioned, revised several times since its first release in 2024. It sets out a "chain of command" in which instructions from the platform (OpenAI) outrank the developer, which outranks the user, along with default behaviors that developers and users can adjust within limits.
-- **Anthropic's constitution for Claude**, published in January 2026 under a CC0 (public-domain) license. It lists Claude's priorities as being (1) broadly safe, (2) broadly ethical, (3) compliant with Anthropic's guidelines and (4) genuinely helpful, and says these should be weighed holistically rather than as a strict ranking. It includes a short list of hard constraints that no instruction can override (for example, never providing significant uplift to a bioweapons attack) and a section on Claude's nature, including uncertainty about its moral status and wellbeing.
+- **Anthropic's constitution for Claude**, published in January 2026 under a CC0 (Creative Commons Zero) license, which places it in the public domain so anyone may copy and reuse it. It lists Claude's priorities as being (1) broadly safe, (2) broadly ethical, (3) compliant with Anthropic's guidelines and (4) genuinely helpful, and says these should be weighed holistically rather than as a strict ranking. It includes a short list of hard constraints that no instruction can override (for example, never providing significant uplift to a bioweapons attack) and a section on Claude's nature, including uncertainty about its moral status and wellbeing.
 
 > **Definition — Chain of command (principal hierarchy):** The rules for whose instructions a model follows when they conflict: typically the AI developer first, then the operator (the business that deploys the model with its own system prompt, such as a bank running an AI helper), then the user, each within limits set by the level above.
 
@@ -562,7 +564,7 @@ Model X lets 20 harmful requests through; Model Y lets 40 through. But Model X f
 
 > **Definition — Deliberative alignment:** A safety-training method, introduced by OpenAI in late 2024 for its reasoning models, in which the model learns to recall the relevant parts of its written spec and reason about them explicitly before answering.
 
-Instead of learning refusal patterns by example alone ("requests that look like this get refused"), the model is trained to think, in its chain of thought, something like: "This asks about a chemical's toxicity. The spec allows general safety information but not synthesis routes for weapons. The user wants to know symptoms, so I can answer." It handles new situations better, because the model reasons from the rule rather than matching surface features, and developers can read *why* a decision was made. OpenAI and Apollo Research later reported that training of this kind sharply reduced covert rule-breaking in their test scenarios, with the caveat that models' growing awareness of being tested may explain part of the improvement (Chapter 55 discusses this).
+Instead of learning refusal patterns by example alone ("requests that look like this get refused"), the model is trained to think, in its chain of thought, something like: "This asks about a chemical's toxicity. The spec allows general safety information but not synthesis routes for weapons. The user wants to know symptoms, so I can answer." It handles new situations better, because the model reasons from the rule rather than matching surface features, and developers can read *why* a decision was made. OpenAI and Apollo Research (an independent AI-safety research group that tests models for deceptive behavior) later reported that training of this kind sharply reduced covert rule-breaking in their test scenarios, with the caveat that models' growing awareness of being tested may explain part of the improvement (Chapter 55 discusses this).
 
 ### Character training
 
@@ -578,7 +580,7 @@ Training is only the inner layer of defense. Labs wrap deployed models in additi
 
 > **Definition — Constitutional classifiers:** Anthropic's safety classifiers, trained on synthetic examples generated from a written list of allowed and disallowed content.
 
-Classifiers are especially useful against jailbreaks, prompts crafted to trick a model into ignoring its safety training, which labs hunt for by red teaming: deliberately attacking their own models before release (Chapter 57). Anthropic reported in February 2025 that its constitutional classifiers cut the success rate of automated jailbreak attempts in its tests from 86% to 4.4%, with a modest increase in refusals of harmless requests, and it followed up with a public bug bounty. In June 2026 Anthropic used classifiers to create a tiered release: the public Fable 5 model and the partner-only Mythos 5 model are the same underlying model with different safeguards. In Fable, classifiers watch for cyber, biological and chemical misuse, and for attempts to copy the model through distillation, and route flagged requests to the older Opus 4.8; Anthropic says over 95% of Fable sessions never trigger that fallback.
+Classifiers are especially useful against jailbreaks, prompts crafted to trick a model into ignoring its safety training, which labs hunt for by red teaming: deliberately attacking their own models before release (Chapter 57). Anthropic reported in February 2025 that its constitutional classifiers cut the success rate of automated jailbreak attempts in its tests from 86% to 4.4%, with a modest increase in refusals of harmless requests, and it followed up with a public bug bounty (a program that pays outsiders who find a way to break the safeguards). In June 2026 Anthropic used classifiers to create a tiered release: the public Fable 5 model and the partner-only Mythos 5 model are the same underlying model with different safeguards. In Fable, classifiers watch for cyber, biological and chemical misuse, and for attempts to copy the model through distillation, and route flagged requests to the older Opus 4.8; Anthropic says over 95% of Fable sessions never trigger that fallback.
 
 ```mermaid
 flowchart LR
@@ -640,7 +642,7 @@ Reward hacking is not just a lab curiosity. In 2025, METR and several labs' own 
 
 > **Definition — Verbosity bias:** The tendency of human raters and AI judges to prefer longer, more elaborately formatted answers regardless of whether they are better, which training then amplifies.
 
-If chatbots give you headings, bullets and bold text for a question that deserved two sentences, you have seen this bias: longer, structured answers look more thorough, so they win comparisons, so the reward model learns to like them, so the policy writes more of them. Human-preference leaderboards such as LMArena (Chapter 24) have added adjustments that try to separate style from substance for the same reason. Fixes in training include length penalties, length-normalized methods such as SimPO, and rubric-based judges told explicitly not to reward length.
+If chatbots give you headings, bullets and bold text for a question that deserved two sentences, you have seen this bias: longer, structured answers look more thorough, so they win comparisons, so the reward model learns to like them, so the policy writes more of them. Human-preference leaderboards such as Arena, formerly LMArena (Chapter 24), have added adjustments that try to separate style from substance for the same reason. Fixes in training include length penalties, length-normalized methods such as SimPO, and rubric-based judges told explicitly not to reward length.
 
 ### Over-refusal and the alignment tax
 
@@ -700,7 +702,7 @@ If you can distill a model by training on its outputs, then anyone with API acce
 
 > **Definition — Distillation attack:** Mass querying of another company's model, often through fake or resold accounts, to collect outputs for training a competing model, usually in violation of the provider's terms of service.
 
-On February 23, 2026, Anthropic published a report saying it had detected about 24,000 fraudulent accounts that had generated over 16 million exchanges with Claude for this purpose, and it named DeepSeek, Moonshot and MiniMax. Labs have responded with several countermeasures:
+On February 23, 2026, Anthropic published a report saying it had detected about 24,000 fraudulent accounts that had generated over 16 million exchanges with Claude for this purpose, and it named DeepSeek, Moonshot and MiniMax, three Chinese AI labs. Labs have responded with several countermeasures:
 
 > **Definition — Anti-distillation safeguard:** Any measure that makes a model's outputs less useful for copying it, such as detecting mass-extraction accounts, classifiers that flag distillation patterns, or showing only summaries of the model's raw reasoning.
 
@@ -736,7 +738,7 @@ Everything so far happens inside AI labs, but the same methods are available to 
 
 > **Definition — LoRA (Low-Rank Adaptation):** A fine-tuning method (2021) that freezes the original weights and trains a small add-on for each weight matrix, built from two thin matrices. It needs a tiny fraction of the memory and storage of full fine-tuning.
 
-**Worked example.** One weight matrix in a mid-sized model might be 4,096 × 4,096 = 16,777,216 numbers. Full fine-tuning updates all of them. LoRA with rank 8 instead trains two thin matrices, 4,096 × 8 and 8 × 4,096, which is 32,768 + 32,768 = 65,536 numbers, about 0.39% of the original. Multiply the savings across hundreds of matrices and fine-tuning fits on a single consumer GPU.
+**Worked example.** One weight matrix in a mid-sized model might be 4,096 × 4,096 = 16,777,216 numbers. Full fine-tuning updates all of them. LoRA with rank 8 instead trains two thin matrices, 4,096 × 8 and 8 × 4,096, which is 32,768 + 32,768 = 65,536 numbers, about 0.39% of the original. (The rank is the thin side of the two add-on matrices, here 8. Multiplied together, a 4,096 × 8 matrix and an 8 × 4,096 matrix give a full 4,096 × 4,096 table of changes, which is added to the frozen weights.) Multiply the savings across hundreds of matrices and fine-tuning fits on a single consumer GPU.
 
 QLoRA goes further by storing the frozen base weights in 4-bit precision while training the LoRA add-on, so fairly large models fit on one GPU.
 
@@ -755,7 +757,7 @@ As of late 2026, several major model providers offer some combination of supervi
 - **Simple averaging** (a "model soup"): (0.56 + 0.47) / 2 = **0.515**.
 - **Task arithmetic**: base + both task vectors = 0.50 + 0.06 − 0.03 = **0.53**.
 
-Now notice the problem: the two fine-tunes pushed this weight in opposite directions, so each method partly cancels one skill. Methods such as TIES-merging handle this by trimming tiny changes, picking the majority direction for each weight where fine-tunes disagree, and merging only the changes that agree. Merging is wildly popular in the open-weight community, where many leaderboard entries are merges, and labs also use it internally, for example to combine specialist models trained in parallel.
+Now notice the problem: the two fine-tunes pushed this weight in opposite directions, so each method partly cancels one skill. Methods such as TIES-merging (short for "trim, elect sign and merge") handle this by trimming tiny changes, picking the majority direction for each weight where fine-tunes disagree, and merging only the changes that agree. Merging is wildly popular in the open-weight community, where many leaderboard entries are merges, and labs also use it internally, for example to combine specialist models trained in parallel.
 
 > **Analogy:** Model merging is like blending two sourdough starters. Sometimes you get the best of both; sometimes you get mush. Merging works best when both "starters" came from the same original culture, which is why merges almost always combine fine-tunes of the same base model.
 
@@ -841,11 +843,11 @@ Base model, Post-training, Alignment, Fine-tuning, SFT (Supervised Fine-Tuning),
    **What you'll learn:** the Bradley–Terry model, and why a surprising human choice produces a big training signal.
 
 4. **[Medium] The KL leash in a spreadsheet.** Rebuild this chapter's toy RLHF example.
-   1. Make three rows for replies A, B and C. Column B holds the SFT probabilities (0.50, 0.30, 0.20); column C holds the reward-model scores (2.0, 2.6, −1.0).
+   1. Make three rows for replies A, B and C: type the labels A, B and C in cells A2, A3 and A4 (row 1 is for headings). Column B holds the SFT probabilities (0.50, 0.30, 0.20); column C holds the reward-model scores (2.0, 2.6, −1.0).
    2. Put β in cell F1 (start with 2).
-   3. In column D compute the unnormalized weight `=B2*EXP(C2/$F$1)` (and the same for rows 3 and 4).
-   4. In column E divide each weight by the sum of the three weights. These are the probabilities where training settles.
-   5. Try β = 4, 2, 1, 0.5 and 0.25 and record P(B). Then "fix the judge" by changing B's score to 0.5 and repeat.
+   3. In column D compute the unnormalized weight `=B2*EXP(C2/$F$1)` (and the same for rows 3 and 4; the dollar signs keep F1 fixed when you copy the formula down).
+   4. In column E divide each weight by the sum of the three weights: `=D2/SUM($D$2:$D$4)` in E2, copied to E3 and E4. These are the probabilities where training settles. With β = 2 you should see the chapter's 0.53, 0.43 and 0.05.
+   5. Try β = 4, 2, 1, 0.5 and 0.25 and record P(B) (cell E3). Then "fix the judge" by changing B's score in C3 to 0.5 and repeat.
    **What you'll learn:** how the leash length trades off learning against drift, and why a leash cannot rescue a flawed reward model.
 
 5. **[Medium] Constitutional AI by hand.** Run the critique-and-revise loop yourself.
@@ -907,7 +909,7 @@ Base model, Post-training, Alignment, Fine-tuning, SFT (Supervised Fine-Tuning),
    1. Prepare at least 15 preference pairs (you can reuse Exercise 1): each needs a prompt, a chosen answer and a rejected answer.
    2. In a Colab notebook with a GPU, paste the code below, replacing the two example pairs with yours (keep the same format).
    3. Run it and watch the "loss" column in the log fall from about 0.69.
-   4. Afterwards, ask the trained model one of your prompts with the `generate` code from Exercise 7 (using `trainer.model` and `tok`) and compare its answer with the untrained model's.
+   4. Afterwards, paste the second code block below into a new cell, put one of your prompts in its first line, and run it. It asks the trained model and a fresh, untrained copy the same question so you can compare their answers.
    ```python
    # Install Hugging Face's training library (TRL) and its dataset tools
    !pip -q install trl datasets
@@ -943,7 +945,20 @@ Base model, Post-training, Alignment, Fine-tuning, SFT (Supervised Fine-Tuning),
    trainer = DPOTrainer(model=model, args=args, train_dataset=dataset, processing_class=tok)
    trainer.train()
    ```
-   In plain words: the code loads a small chat model, turns your pairs into a dataset, and runs DPO, which nudges the model to make each chosen answer more likely than the rejected one compared with a frozen copy of itself. With so few pairs the effect will be small; the point is to see the mechanics. If the library has changed and an error appears, paste it into a chatbot and ask for the fix.
+   ```python
+   # Second block (step 4): run in a new cell after training has finished
+   my_prompt = "Explain inflation to a 10-year-old."      # replace with one of your prompts
+   dev = trainer.model.device                             # where the trained model lives (the GPU)
+   fresh = AutoModelForCausalLM.from_pretrained(name).to(dev)   # an untrained copy, for comparison
+   text = tok.apply_chat_template([{"role": "user", "content": my_prompt}],
+                                  tokenize=False, add_generation_prompt=True)  # wrap in the chat template
+   ids = tok(text, return_tensors="pt").to(dev)           # text -> token IDs, on the same device
+   for label, m in [("TRAINED", trainer.model), ("UNTRAINED", fresh)]:
+       out = m.generate(**ids, max_new_tokens=80, do_sample=False)
+       reply = out[0][ids["input_ids"].shape[1]:]          # keep only the new tokens
+       print(label, "MODEL:\n", tok.decode(reply, skip_special_tokens=True), "\n")
+   ```
+   In plain words: the first block loads a small chat model, turns your pairs into a dataset, and runs DPO, which nudges the model to make each chosen answer more likely than the rejected one compared with a frozen copy of itself. The second block loads a fresh copy of the original model and prints both models' replies to the same prompt. With so few pairs the effect will be small; the point is to see the mechanics. If the library has changed and an error appears, paste it into a chatbot and ask for the fix.
    **What you'll learn:** that preference tuning is an ordinary, runnable training job, and what its loss means.
 
 10. **[Challenge] Write a mini-constitution for a homework helper.** Design values, then test them.

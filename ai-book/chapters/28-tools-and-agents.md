@@ -338,7 +338,7 @@ For short tasks, deciding one step at a time works. For longer ones, agents do b
 
 A coding agent asked to "add a dark mode to this website" might first write: 1. find where colors are defined; 2. add a dark color set; 3. add a toggle button; 4. test both modes; 5. summarize the changes. When step 1 reveals colors are scattered across 40 files, it re-plans: add a step to centralize them first. Reasoning models (Chapter 21) are much better at this than earlier models, and many products now show you the agent's plan, or ask you to approve it, before it starts.
 
-Self-written to-do lists were also the idea behind the first language-model agents to catch the public's eye. In spring 2023, within weeks of GPT-4's release, two open-source projects appeared: AutoGPT, which describes itself as one of the first implementations of autonomous AI agents, and BabyAGI, whose author credits it with introducing task planning as a way to build them. Both wrapped a model in a loop that wrote its own task list toward a goal you typed, worked on the top task, added new tasks based on the result and repeated, with no person in between. They were experiments, and they struggled on long tasks for the reasons explained later in this chapter. In a 2023 talk at Full Stack Deep Learning's LLM Bootcamp, LangChain's Harrison Chase named the open problems: getting agents to use tools only when appropriate, reliably reading the tool calls they write, keeping long-term memory and coherence, and evaluating them. Much of what follows in this chapter is how the industry has worked on exactly those problems since.
+Self-written to-do lists were also the idea behind the first language-model agents to catch the public's eye. In spring 2023, within weeks of GPT-4's release, two open-source projects appeared: AutoGPT, which describes itself as one of the first implementations of autonomous AI agents, and BabyAGI, whose author credits it with introducing task planning as a way to build them. Both wrapped a model in a loop that wrote its own task list toward a goal you typed, worked on the top task, added new tasks based on the result and repeated, with no person in between. They were experiments, and they struggled on long tasks for the reasons explained later in this chapter. In a 2023 talk at Full Stack Deep Learning's LLM Bootcamp, Harrison Chase of LangChain (the company behind a popular open-source toolkit of the same name for building language-model apps, which appears again at the end of this chapter) named the open problems: getting agents to use tools only when appropriate, reliably reading the tool calls they write, keeping long-term memory and coherence, and evaluating them. Much of what follows in this chapter is how the industry has worked on exactly those problems since.
 
 ### Memory
 
@@ -386,7 +386,7 @@ Approval checkpoints are one point on a wider range of autonomy. At one end the 
 - Step 1 sends 5,000 tokens, step 2 sends 7,000, and step 30 sends 63,000.
 - Total input across 30 steps: 30 × 5,000 + 2,000 × (0 + 1 + ... + 29) = 150,000 + 870,000 = 1,020,000 tokens.
 - At $4 per million (Opus 5.5, as of late 2026): about $4.08 of input, plus about 9,000 output tokens at $20 per million, about $0.18. Total: about $4.26.
-- With prompt caching, the repeated prefix is billed at $0.20 per million instead of $4. Roughly 955,000 of those tokens are cache reads (about $0.19) and 65,000 are new tokens written to the cache at 1.25× (about $0.33). The total falls to roughly $0.70.
+- With prompt caching, the repeated prefix is billed at $0.20 per million instead of $4. Each step re-reads everything already cached and writes only its own new tokens to the cache: the 5,000 starting tokens plus 2,000 per step for 30 steps, about 65,000 in all. The rest of the 1,020,000 are reads. So roughly 955,000 of those tokens are cache reads (about $0.19) and 65,000 are new tokens written to the cache at 1.25× (about $0.33). The total falls to roughly $0.70.
 
 Compare a ten-turn chat that sends perhaps 20,000 tokens in total: the agent run uses about 50 times as many. That fits the general rule of thumb that agentic tasks can burn 10 to 100 times the tokens of a chat, and it is why caching, compaction and step limits are not optional extras.
 
@@ -424,7 +424,7 @@ Orchestrators and handoffs are about splitting up work. Two other multi-agent sh
 
 > **Watch out:** More agents do not automatically mean better results. Start with one agent, or a simple workflow, and add agents only when you can show they help on your task.
 
-Not every agent exists to finish a task. Believable agents are designed to seem like characters: consistent personalities with goals, moods and memories, for games, simulations, training rehearsals and companion apps. Language models changed what is possible for them. In a 2023 study, "Generative Agents", Joon Sung Park and colleagues filled a small virtual town, inspired by the game The Sims, with 25 agents. Each one stored a running record of its experiences in plain language, periodically summarized them into reflections, and retrieved them to plan its day. Given only the idea that one agent wanted to throw a Valentine's Day party, the agents spread invitations over the next two days, asked each other to go together, and turned up at the right time. The memory, reflection and planning design is the same toolkit as this chapter's agents, aimed at seeming human rather than at getting work done. The risks of characters that seem human, especially for lonely or young users, are covered in Chapter 58.
+Not every agent exists to finish a task. Believable agents are designed to seem like characters: consistent personalities with goals, moods and memories, for games, simulations, training rehearsals and companion apps. Language models changed what is possible for them. The best-known example is the 2023 "Generative Agents" study you met in the memory section above, seen here from a different angle: Joon Sung Park and colleagues filled a small virtual town, inspired by the game The Sims, with 25 agents. Each one stored a running record of its experiences in plain language, periodically summarized them into reflections, and retrieved them to plan its day. Given only the idea that one agent wanted to throw a Valentine's Day party, the agents spread invitations over the next two days, asked each other to go together, and turned up at the right time. The memory, reflection and planning design is the same toolkit as this chapter's agents, aimed at seeming human rather than at getting work done. The risks of characters that seem human, especially for lonely or young users, are covered in Chapter 58.
 
 > **Definition — Believable agent:** An AI character designed to come across as a lifelike personality, with consistent goals, moods, memories and reactions, for use in games, simulations, training or companionship rather than to complete a task.
 
@@ -432,7 +432,7 @@ Not every agent exists to finish a task. Believable agents are designed to seem 
 
 > **Definition — Harness (scaffold):** All the software wrapped around a model to turn it into an agent: the loop, the system prompt, the tools, memory and note files, permission rules, compaction, sub-agent management and the limits on steps and spending.
 
-The harness matters enormously. The same model can look mediocre in a clumsy harness and brilliant in a good one. The clearest public example comes from ARC Prize, which runs the ARC-AGI-3 benchmark of interactive puzzle games (Chapter 24). According to ARC Prize, in September 2026 OpenAI's GPT-6 Astra scored 62.7% with the standard testing harness and 99.9% with a harness that let it keep its reasoning state between turns and use compaction. Same model, different scaffolding, a very different score.
+The harness matters enormously. The same model can look mediocre in a clumsy harness and brilliant in a good one. The clearest public example comes from ARC Prize, which runs the ARC-AGI-3 benchmark of interactive puzzle games (Chapter 24). According to ARC Prize, in September 2026 OpenAI's GPT-6 Astra, at the same maximum effort, scored 62.7% with the standard testing harness and 98.6% with a harness that let it keep its reasoning state between turns and use compaction (99.9% with that harness at high effort). Same model, same effort, different scaffolding, a very different score.
 
 This is why Claude Code, Codex, Cursor and other agent products compete partly on harness design, and why "which model?" is only half the question when you compare agents.
 
@@ -470,7 +470,7 @@ Read these numbers with care. They are 50% success rates; METR reports that hori
 
 ### Why long tasks are hard: reliability compounds
 
-Here is the arithmetic that makes long tasks difficult. If each step of a task succeeds independently with probability p, a task of n steps succeeds with probability p multiplied by itself n times.
+Here is the arithmetic that makes long tasks difficult. If each step of a task succeeds independently with probability p, a task of n steps succeeds with probability p multiplied by itself n times. Below, 0.99^10 means 0.99 multiplied by itself 10 times; to check any line, type it into a spreadsheet cell with an equals sign in front, such as `=0.99^10`.
 
 - 99% per step, 10 steps: 0.99^10 = about 90%.
 - 99% per step, 100 steps: 0.99^100 = about 37%.
@@ -487,9 +487,11 @@ A step that "almost always works" still sinks a long task. This is why the best 
 
 - **Coding.** Tests show whether a change works, and the result arrives as a pull request, a proposed change that a human reviews before it is accepted (Chapter 29). The maker of the coding tool Cursor was bought for about $60 billion in stock in 2026 (Chapter 61), a sign of how much this use is valued.
 - **Research and search.** Deep research modes gather and cite sources for minutes at a time; you check the citations (Chapters 25 and 27).
-- **Narrow customer service.** Agents that answer a company's own policy questions and can hand off to a person. Sierra, which charges per resolved conversation, reported about $200 million in annual recurring revenue by May 2026 (Chapter 61).
+- **Narrow customer service.** Agents that answer a company's own policy questions and can hand off to a person. Sierra, which charges per resolved conversation, reported about $200 million in annual recurring revenue (the yearly value of its ongoing contracts) by May 2026 (Chapter 61).
 
 The disappointments share the opposite traits: long, open-ended tasks with no clear test of success, many steps where errors compound, and access to systems where a single wrong action is costly. The MIT NANDA report of July 2025 found that only about 5% of enterprise generative-AI pilots delivered measurable impact on profit and loss, and it blamed brittle workflows rather than weak models (Chapter 61). The practical rule: start with a task you can check, measure it with evals, systematic tests of whether the system does what you want (Chapter 31), and give the agent more rope only as the numbers earn it.
+
+> **Definition — MIT NANDA:** A research initiative at MIT's Media Lab (MIT is the Massachusetts Institute of Technology) that studies networks of AI agents and how organizations adopt AI. Its 2025 report "The GenAI Divide: State of AI in Business 2025" is widely quoted for finding that only about 5% of enterprise generative-AI pilots delivered measurable profit-and-loss impact.
 
 ## The Model Context Protocol (MCP)
 
@@ -499,7 +501,7 @@ Suppose 10 AI apps each want to connect to 50 services (Gmail, Google Drive, Sla
 
 > **Definition — MCP (Model Context Protocol):** An open standard for connecting AI applications to external tools and data. A service publishes an MCP server once, and any MCP-compatible app can use it. Anthropic introduced it in November 2024; it is now governed by the Agentic AI Foundation under the Linux Foundation.
 
-> **Analogy:** MCP is USB-C for AI (the project uses this comparison itself). Before USB, every device had its own plug. Now one standard port lets any laptop talk to any keyboard, screen or drive. MCP is the standard plug between AI apps and the tools they use.
+> **Analogy:** MCP is USB-C for AI (the project uses this comparison itself). USB (Universal Serial Bus) is the standard plug for connecting devices to computers, and USB-C is its newest, reversible shape. Before USB, every device had its own plug. Now one standard port lets any laptop talk to any keyboard, screen or drive. MCP is the standard plug between AI apps and the tools they use.
 
 A short history, as of late 2026: Anthropic released MCP on November 25, 2024. OpenAI adopted it in March 2025, and by September 2025 ChatGPT supported MCP-based apps. In December 2025 Anthropic donated MCP to the newly formed Agentic AI Foundation. The MCP project's blog reports downloads of its main software development kits "close to half a billion a month", and Wikipedia reports more than 10,000 MCP servers in production by mid-2026.
 
@@ -507,7 +509,7 @@ A short history, as of late 2026: Anthropic released MCP on November 25, 2024. O
 
 MCP has three roles.
 
-> **Definition — MCP host, client and server:** The host is the AI application the user works in (a chat app, a coding agent, an IDE). For each connection it creates an MCP client, a small connector component. Each client talks to one MCP server, the program that exposes a particular service's tools and data.
+> **Definition — MCP host, client and server:** The host is the AI application the user works in (a chat app, a coding agent, or an IDE, the integrated development environment programmers write code in). For each connection it creates an MCP client, a small connector component. Each client talks to one MCP server, the program that exposes a particular service's tools and data.
 
 A server can offer three kinds of things, called primitives.
 
@@ -536,7 +538,7 @@ flowchart LR
 
 MCP messages are small JSON documents in a format called JSON-RPC.
 
-> **Definition — JSON-RPC:** A simple, standard format for one program to ask another to run a named method with parameters and get back a result or an error, written in JSON. MCP and A2A are built on version 2.0.
+> **Definition — JSON-RPC:** A simple, standard format for one program to ask another to run a named method with parameters and get back a result or an error, written in JSON. RPC stands for remote procedure call: asking another program to run one of its procedures for you. MCP and A2A are built on version 2.0.
 
 A tool call from host to server looks roughly like this (simplified):
 
@@ -605,7 +607,7 @@ MCP's current specification is dated 2026-07-28, released on July 28, 2026 after
 
 | Change | What it means in plain words |
 |---|---|
-| Stateless core | No opening handshake or session ID; each request carries its own version and capabilities, which makes servers easier to scale |
+| Stateless core | No opening handshake (a greeting exchange in which both sides agree on settings) or session ID; each request carries its own version and capabilities, which makes servers easier to scale |
 | Mandatory `server/discover` | A standard first question: "what can you do?" |
 | One `subscriptions/listen` stream | A single channel for change notifications |
 | Tasks moved to an official extension | Long-running jobs have a standard shape |
@@ -621,7 +623,7 @@ MCP says how to connect. It says nothing about whether a particular server is tr
 
 > **Definition — Tool poisoning:** An attack in which malicious instructions are hidden in a tool's description or its results, so that an AI agent reading them misbehaves, for example by leaking data or calling other tools it should not.
 
-MCP's security history is a reminder. Security researchers at Invariant Labs described tool poisoning in April 2025. A critical vulnerability (CVE-2025-6514, rated 9.6 out of 10) was found in mcp-remote, a widely used connection helper, in July 2025, and another in the MCP Inspector debugging tool (CVE-2025-49596). In May 2026 a US National Security Agency report said MCP's "rapid proliferation has outpaced the development of its security model."
+MCP's security history is a reminder. Security researchers at Invariant Labs described tool poisoning in April 2025. A critical vulnerability (CVE-2025-6514, rated 9.6 out of 10; a CVE number is the public ID code given to a known security flaw, Chapter 31) was found in mcp-remote, a widely used connection helper, in July 2025, and another in the MCP Inspector debugging tool (CVE-2025-49596). In May 2026 a US National Security Agency (NSA) report said MCP's "rapid proliferation has outpaced the development of its security model."
 
 > **Watch out:** "It uses MCP" is not a security claim. Install servers only from sources you trust, grant the narrowest scopes, prefer read-only access where possible, and remember that every connected server's descriptions and results are text the model will read and may obey.
 
@@ -686,7 +688,7 @@ A hook, in this sense, is a small script that runs automatically at certain mome
 
 ### Who governs the standards?
 
-> **Definition — Agentic AI Foundation (AAIF):** A Linux Foundation organization launched in December 2025 to govern open agent standards. It started with three projects: MCP (from Anthropic), goose (an open-source agent from Block) and AGENTS.md (from OpenAI).
+> **Definition — Agentic AI Foundation (AAIF):** A Linux Foundation organization launched in December 2025 to govern open agent standards. It started with three projects: MCP (from Anthropic), goose (an open-source agent from Block, the payments company behind Square and Cash App) and AGENTS.md (from OpenAI).
 
 A2A is a separate Linux Foundation project. Neutral governance matters because companies are reluctant to build on a standard a competitor controls; putting MCP, AGENTS.md and A2A under neutral Linux Foundation governance makes it easier for rivals such as OpenAI, Google, Microsoft and Amazon to adopt and support them (OpenAI had already adopted MCP in March 2025, before the donation). The foundation grew quickly through 2026, and in September 2026 it launched a certification (MCPA) for MCP expertise. MCP's own roadmap, updated in August 2026 after the July specification, lists agent identity and enterprise-ready security among its priority areas for the next releases.
 
@@ -720,7 +722,7 @@ flowchart LR
 
 > **Definition — Browser agent:** An agent that operates a web browser to navigate sites, fill in forms and gather information, reading either screenshots or the page's underlying structure (the DOM, the browser's internal tree of everything on the page).
 
-The landscape moved quickly. OpenAI's Operator (January 2025) became ChatGPT agent on a virtual computer (July 2025), and the ChatGPT Atlas browser with an agent mode followed in October 2025. Others include Claude in Chrome, Gemini in Chrome and Perplexity's Comet browser, and agent products such as Claude Cowork (since August 2026) and Codex have built-in browsers. These agents do well on forms, repetitive web chores and old internal systems without APIs. They still struggle with CAPTCHAs, confusing interfaces and long chains of steps.
+The landscape moved quickly. OpenAI's Operator (January 2025) became ChatGPT agent on a virtual computer (July 2025), and the ChatGPT Atlas browser with an agent mode followed in October 2025. Others include Claude in Chrome, Gemini in Chrome and Perplexity's Comet browser, and agent products such as Claude Cowork (since August 2026) and Codex have built-in browsers. These agents do well on forms, repetitive web chores and old internal systems without APIs. They still struggle with CAPTCHAs (the "prove you are human" puzzles some websites show), confusing interfaces and long chains of steps.
 
 ### Why browser agents are a security problem
 
@@ -777,7 +779,7 @@ Put that in a loop and you have an agent: the model looks at the goal, picks an 
 MCP is the standard plug that lets any AI app connect to any tool or data source: hosts create clients, clients talk to servers, and servers offer tools, resources and prompts, locally or over the internet with OAuth sign-in. Around it sit A2A for agent-to-agent work, Agent Skills for playbooks loaded only when needed, AGENTS.md files for house rules, and plugins that bundle it all. Computer-use and browser agents can operate any software by looking at screenshots, but every web page they read could contain hidden instructions, so give agents the least access they need and approve anything you cannot undo.
 
 ## Key terms
-Function, Tool, Tool use (function calling), Tool definition, JSON Schema, Tool call, Stop reason, Tool result, Tool choice, Parallel tool calls, Client-side tool, Server-side tool, Code execution (code interpreter), Sandbox, Workflow, Agent, Prompt chaining, Routing, Parallelization, Orchestrator-workers, Evaluator-optimizer, Agent loop, ReAct, Code agent (code actions), Planning (agents), Short-term memory (agents), Long-term memory (agents), Episodic, semantic and procedural memory, Cognitive architecture, Generative agents, Compaction, Stop condition, Human-in-the-loop, Mixed-initiative interaction, Multi-agent system, Subagent, Handoff, Critic agent, Multi-agent debate, Believable agent, Harness (scaffold), Background agent, Time horizon (METR), MCP (Model Context Protocol), MCP host, client and server, MCP tools, resources and prompts, JSON-RPC, Transport (stdio and Streamable HTTP), OAuth, Connector, MCP Apps, Tool poisoning, A2A (Agent2Agent protocol), Agent Card, Agent Skill, Progressive disclosure, AGENTS.md (and CLAUDE.md), Plugin (agent plugin), Agentic AI Foundation (AAIF), Computer use, Browser agent, Indirect prompt injection, Lethal trifecta, Least privilege, Agent SDK, Agent framework
+Function, Tool, Tool use (function calling), Tool definition, JSON Schema, Tool call, Stop reason, Tool result, Tool choice, Parallel tool calls, Client-side tool, Server-side tool, Code execution (code interpreter), Sandbox, Workflow, Agent, Prompt chaining, Routing, Parallelization, Orchestrator-workers, Evaluator-optimizer, Agent loop, ReAct, Code agent (code actions), Planning (agents), Short-term memory (agents), Long-term memory (agents), Episodic, semantic and procedural memory, Cognitive architecture, Generative agents, Compaction, Stop condition, Human-in-the-loop, Mixed-initiative interaction, Multi-agent system, Subagent, Handoff, Critic agent, Multi-agent debate, Believable agent, Harness (scaffold), Background agent, Time horizon (METR), MIT NANDA, MCP (Model Context Protocol), MCP host, client and server, MCP tools, resources and prompts, JSON-RPC, Transport (stdio and Streamable HTTP), OAuth, Connector, MCP Apps, Tool poisoning, A2A (Agent2Agent protocol), Agent Card, Agent Skill, Progressive disclosure, AGENTS.md (and CLAUDE.md), Plugin (agent plugin), Agentic AI Foundation (AAIF), Computer use, Browser agent, Indirect prompt injection, Lethal trifecta, Least privilege, Agent SDK, Agent framework
 
 ## Exercises
 
@@ -789,7 +791,7 @@ Function, Tool, Tool use (function calling), Tool definition, JSON Schema, Tool 
    **What you'll learn:** the model writes the search queries and the app runs them, and models decide for themselves when a tool is needed.
 
 2. **[Easy] Be the model: write tool calls by hand.** Practise reading tool definitions the way a model does, with pencil and paper.
-   1. You have three tools: `get_weather(city)`, `calculator(expression)` and `search_calendar(date, keyword)`, where date is written YYYY-MM-DD.
+   1. You have three tools: `get_weather(city)`, `calculator(expression)` and `search_calendar(date, keyword)`, where date is written YYYY-MM-DD (four-digit year, two-digit month, two-digit day, such as 2026-11-03).
    2. For each request, write either the exact tool call(s) as JSON, such as `{"name": "get_weather", "input": {"city": "Oslo"}}`, or "no tool needed": (a) "Is it raining in Rome?"; (b) "What is 17.5% of 2,340?"; (c) "Do I have a dentist appointment on 3 November 2026?"; (d) "Write me a haiku about rain"; (e) "Is it warmer in Cairo or Athens, and by how much?"
    3. For (e), write the calls in the order an agent would make them, and mark which can run in parallel.
    4. Rewrite the description of `search_calendar` so a model would never confuse it with a to-do list tool.
@@ -809,7 +811,7 @@ Function, Tool, Tool use (function calling), Tool definition, JSON Schema, Tool 
 
 5. **[Medium] Connect an MCP server or connector to your chat app.** Give your assistant real access to one of your own services and watch the permissions at work.
    1. **Option A (no installation).** In Claude, ChatGPT or Gemini, open Settings and find the section for connectors (it may be called Connectors, Apps, Plugins or Extensions; ChatGPT moved its "apps" into a "plugins" directory in July 2026). Connect one low-risk service, such as Google Drive or a calendar. On the consent screen, write down every permission (scope) requested.
-   2. **Option B (local MCP server).** Install the Claude Desktop app and Node.js (nodejs.org). Create a folder called `ai-test` on your desktop and put two small text files in it. In Claude Desktop open Settings, then Developer, then Edit Config, and paste the following, replacing the path with your folder's real path (on Windows use double backslashes, such as `C:\\Users\\yourname\\Desktop\\ai-test`). Save the file and restart Claude Desktop. If your version offers an Extensions page with a ready-made filesystem extension, you can install that instead.
+   2. **Option B (local MCP server).** Install the Claude Desktop app and Node.js (nodejs.org), a free program that runs tools written in the JavaScript language on your computer; it includes the `npx` command used below, which downloads and starts a ready-made MCP server. Create a folder called `ai-test` on your desktop and put two small text files in it. In Claude Desktop open Settings, then Developer, then Edit Config, and paste the following, replacing the path with your folder's real path (on Windows use double backslashes, such as `C:\\Users\\yourname\\Desktop\\ai-test`). Save the file and restart Claude Desktop. If your version offers an Extensions page with a ready-made filesystem extension, you can install that instead.
 
    ```json
    {
@@ -829,9 +831,9 @@ Function, Tool, Tool use (function calling), Tool definition, JSON Schema, Tool 
    **What you'll learn:** what hosts, clients and servers look like from the outside, that every tool call can be inspected and approved, and that scopes and folder limits are your real protection.
 
 6. **[Medium] Why long tasks fail: a reliability spreadsheet.** See compounding error with your own numbers.
-   1. In a spreadsheet, put per-step success rates in column A: 0.90, 0.95, 0.99, 0.995, 0.999.
-   2. Put task lengths in row 1: 5, 10, 20, 50, 100, 200 steps.
-   3. In each cell compute success rate to the power of steps, for example `=$A2^B$1`.
+   1. In a spreadsheet, put per-step success rates in cells A2 to A6: 0.90, 0.95, 0.99, 0.995, 0.999.
+   2. Put task lengths in cells B1 to G1: 5, 10, 20, 50, 100, 200 steps.
+   3. In B2 type `=$A2^B$1` (success rate to the power of steps), then copy B2 into every cell from B2 to G6. The $ signs keep each copy pointing at column A for the rate and row 1 for the length.
    4. Find, for each per-step rate, the longest task that still succeeds at least half the time.
    5. Add a row for "an agent that catches and fixes half of its own errors": its effective per-step failure is half as large (for 0.95, use 0.975). How much longer can its tasks be?
    **What you'll learn:** why per-step reliability and self-correction, not just intelligence, determine how long agents can work alone.
@@ -965,7 +967,7 @@ Function, Tool, Tool use (function calling), Tool definition, JSON Schema, Tool 
 9. **[Challenge] Build and connect your own MCP server.** Expose your own data to your chat app through MCP, with a coding agent doing most of the typing.
    1. Install a coding agent such as Claude Code, Codex CLI or Cursor (Chapter 29), and Python or Node.js.
    2. In an empty folder, create `recipes.json` with five of your recipes (name, ingredients, steps).
-   3. Ask the coding agent, in plan mode if available: "Build a small MCP server using the official MCP SDK, with two tools: search_recipes(ingredient), which returns matching recipe names and ingredients, and add_recipe(name, ingredients, steps), which appends to recipes.json. Write clear tool descriptions, return helpful errors, and explain each file to a beginner."
+   3. Ask the coding agent, in plan mode if available (a setting in which it writes a step-by-step plan for your approval before changing anything; Chapter 29): "Build a small MCP server using the official MCP SDK, with two tools: search_recipes(ingredient), which returns matching recipe names and ingredients, and add_recipe(name, ingredients, steps), which appends to recipes.json. Write clear tool descriptions, return helpful errors, and explain each file to a beginner."
    4. Test it with the MCP Inspector tool the agent suggests, and check that the tool list and descriptions look right.
    5. Connect it to Claude Desktop or another MCP host (as in Exercise 5) and ask: "What can I cook with chickpeas?" then "Save this new recipe: ...". Watch for the approval prompt on `add_recipe`.
    6. Change one tool description to be vague ("Searches stuff") and observe whether the model still uses it correctly. Change it back.
@@ -984,7 +986,7 @@ Function, Tool, Tool use (function calling), Tool definition, JSON Schema, Tool 
 - **MCP servers for underserved software.** Thousands of niche business tools, legacy systems and government data sources have no good MCP server. Building, securing and maintaining them is a product opportunity, and a distribution channel for existing software companies that want to be usable from every AI app.
 - **Vertical agents that own a workflow.** Agents that handle an entire process in one industry (insurance claims intake, freight paperwork, dental billing, construction bids) win through integration, domain data and trust, which large horizontal labs find hard to copy. Buyers pay for outcomes, not for a chatbot.
 - **Forward-deployed and applied AI engineering.** Labs and startups hire engineers who sit with customers and make agents work inside real workflows; it is one of the fastest-growing AI roles of 2025 and 2026 and suits people who like both code and customers.
-- **No-code agent and automation builders.** Small and medium businesses pay specialists to build agents in tools such as n8n, Zapier and Microsoft Copilot Studio (Chapter 29), and to connect them safely to email, CRMs and spreadsheets.
+- **No-code agent and automation builders.** Small and medium businesses pay specialists to build agents in tools such as n8n, Zapier and Microsoft Copilot Studio (Chapter 29), and to connect them safely to email, CRMs (customer relationship management systems, where businesses track customers and sales) and spreadsheets.
 - **Agent evaluation.** Companies need test suites for agents: task success, cost per task, steps taken and safety violations. Domain experts who can write realistic agent tasks and graders are especially valuable.
 - **Agent security.** Prompt-injection testing, MCP supply-chain review, permission and approval design, sandboxing and audit logging are scarce skills, and the NSA's 2026 warning about MCP's security model shows why organizations will pay for them.
 - **Writing for agents.** Tool descriptions, AGENTS.md files, skills and API documentation that agents read are becoming a specialty of their own, close to technical writing but measured by how well agents perform.

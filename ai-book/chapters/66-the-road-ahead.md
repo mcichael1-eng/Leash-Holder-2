@@ -27,7 +27,7 @@ Here is the picture as of late October 2026, using figures from earlier chapters
 | Frontier models | Claude Opus 5.5 leads the two main independent indices, with GPT-6 Astra, Gemini 4 Argon and Meta's Muse Wonder close behind; open-weight models from DeepSeek, Moonshot, Alibaba, Xiaomi and Z.ai trail by months, not years | Artificial Analysis, Epoch AI (Chapter 24) |
 | Biggest known training run | GPT-6 Astra, OpenAI's first pretraining run on more than 100,000 GPUs; Epoch estimates about 9.4 × 10^26 FLOP (individual arithmetic operations) | Epoch AI estimate (Chapters 19, 37) |
 | Agent stamina | METR's 50% time horizon reached about 17 hours for an early Claude Mythos Preview (April 2026), with a very wide uncertainty range | METR (Chapters 24, 28) |
-| Hard tests | ARC-AGI-3 went from 0.51% for frontier AI at launch (March 2026) to 62.7% or 99.9% for GPT-6 Astra by September, depending on the software harness | ARC Prize (Chapter 24) |
+| Hard tests | ARC-AGI-3 went from 0.51% for frontier AI at launch (March 2026) to 62.7% or 98.6% for GPT-6 Astra at the same maximum effort by September, depending on the software harness (99.9% at high effort) | ARC Prize (Chapter 24) |
 | Original math | GPT-6 Astra solved 2 of 68 previously unsolved Erdős problems in Epoch's FrontierMath Erdős set, the first model to solve any | Epoch AI (Chapter 24) |
 | Buildings | Epoch tracks 95 large AI data centers with about 14.2 GW of IT power; the largest single sites are near or above 1 GW | Epoch AI data hub, Oct 20, 2026 (Chapters 38, 42) |
 | Money | The largest US cloud companies guided to roughly $720–800 billion of 2026 capital spending, depending on who is counted and how | FactSet and company guidance (Chapter 43) |
@@ -161,7 +161,7 @@ METR's data shows the horizon climbing from about 4 minutes for GPT-4 in March 2
 
 > **Definition — Logarithmic scale:** A way of drawing an axis where each equal step means multiplying by the same factor (for example, each row is twice the one below) instead of adding the same amount. Exponential growth shows up as a straight line on it.
 
-The open problems hide in the caveats. The 50% horizon flatters reliability: in METR's data, horizons at 80% success are 5 to 10 times shorter. And METR warns that its measurements above about 16 hours are unreliable with its current tasks; it stopped updating the page on September 8, 2026, and turned to measuring how much AI speeds up AI research. The measuring stick ran out of length just as the trend got interesting.
+The open problems hide in the caveats. The 50% horizon flatters reliability: in METR's data, horizons at 80% success are about 4 to 10 times shorter. And METR warns that its measurements above about 16 hours are unreliable with its current tasks; it stopped updating the page on September 8, 2026, and turned to measuring how much AI speeds up AI research. The measuring stick ran out of length just as the trend got interesting.
 
 **Worked example: when would a one-month horizon arrive if the trend held?** A working month is about 167 hours (2,000 working hours a year divided by 12). Starting from 17.4 hours in April 2026:
 
@@ -215,7 +215,7 @@ Reasoning models trained with reinforcement learning on checkable problems got d
 
 > **Definition — Generalization:** A model's ability to perform well on new examples it has not seen, especially ones that differ from its training data. "Out-of-distribution" generalization means handling genuinely unfamiliar situations, not just new examples of familiar ones.
 
-The evidence points both ways. GPT-6 Astra solved two of 68 previously unsolved Erdős problems, and a 2025 Gemini Deep Think system reached gold-medal standard at the International Mathematical Olympiad under official grading. Yet on ARC-AGI-3, where every game is new and comes without instructions, frontier AI scored 0.51% at launch in March 2026 while humans solved them all. By September GPT-6 Astra scored 62.7% with the standard harness and 99.9% with one that let it keep its reasoning state, and ARC Prize explicitly declined to call this AGI. Rapid progress, and a reminder that what we measure depends on how we measure.
+The evidence points both ways. GPT-6 Astra solved two of 68 previously unsolved Erdős problems, and a 2025 Gemini Deep Think system reached gold-medal standard at the International Mathematical Olympiad under official grading. Yet on ARC-AGI-3, where every game is new and comes without instructions, frontier AI scored 0.51% at launch in March 2026 while humans solved them all. By September GPT-6 Astra at maximum effort scored 62.7% with the standard harness and 98.6% with one that let it keep its reasoning state (99.9% with that harness at high effort), and ARC Prize explicitly declined to call this AGI. Rapid progress, and a reminder that what we measure depends on how we measure.
 
 > **Definition — Jagged frontier:** The observation that AI capability is uneven: superhuman at some tasks and surprisingly weak at nearby ones that seem easier to people, so its boundary looks like a jagged coastline rather than a smooth line.
 
@@ -274,7 +274,7 @@ Labs answer with layers: training (constitutions, deliberative alignment), safeg
 
 > **Definition — Safety case:** A structured, evidence-backed written argument that a specific AI system is acceptably safe for a specific use, similar to the safety cases required for aircraft or nuclear plants.
 
-> **At the frontier (2026):** Capability thresholds are now crossed in the open. Anthropic restricted Claude Mythos Preview (April 2026) to vetted cyber defenders after it reportedly found thousands of serious software vulnerabilities, and according to coverage of an August 2026 notice, OpenAI said it could no longer rule out its "Critical" cybersecurity threshold for the model that became GPT-6 Astra. A public version with safeguards plus a restricted version for trusted users is now a standard pattern.
+> **At the frontier (2026):** Capability thresholds are now crossed in the open. Anthropic restricted Claude Mythos Preview (April 2026) to vetted cyber defenders after it reportedly found thousands of serious software vulnerabilities, and according to coverage of an August 2026 notice, OpenAI said it could no longer rule out its "Critical" cybersecurity threshold for the model that became GPT-6 Astra; at release in September, OpenAI's own safety card confirmed Astra as its first model at the Critical level of cybersecurity capability. A public version with safeguards plus a restricted version for trusted users is now a standard pattern.
 
 ### 9. Measuring any of it: the science of evaluation
 
@@ -289,7 +289,7 @@ Every problem above depends on measurement, and measurement is itself open. Benc
 | Open problem | What you notice in your own chatbot | Where it stands, late 2026 | What real progress would look like |
 |---|---|---|---|
 | Reliability and calibration | Confident wrong answers, invented citations | Reduced, not solved | Models that abstain when unsure and whose 90% answers are right 90% of the time |
-| Long-horizon agency | Agents that start well and drift on long jobs | 50% horizon about 17 h; 80% horizons 5–10× shorter | High-reliability horizons of days, on new task suites |
+| Long-horizon agency | Agents that start well and drift on long jobs | 50% horizon about 17 h; 80% horizons about 4–10× shorter | High-reliability horizons of days, on new task suites |
 | Continual learning | It forgets your corrections; "memory" is notes | Frozen weights plus memory notes | Safe on-the-job learning without forgetting or leaking |
 | Data efficiency | Invisible to you | Trillions of tokens per model; human text may run short 2026–2032 | Equal skill from far less data |
 | Generalization and world models | Superb on familiar tasks, odd failures on novel ones | Big math gains; world models hold for minutes | Fast learning of truly new tasks |
@@ -314,7 +314,7 @@ The technical problems decide what AI can do. The infrastructure problems decide
 
 > **Definition — Gigawatt (GW):** A billion watts, a unit of power (a rate of energy use). One gigawatt running for a year delivers 8.76 terawatt-hours of energy, about the yearly electricity of 800,000 average US homes.
 
-The open problems are about speed and fairness more than raw supply. JLL reports average waits of more than four years for a grid connection in major markets, which pushes builders toward gas turbines on site. Gas fills most of the near-term gap, nuclear restarts help this decade, and new small modular reactors mostly arrive in the 2030s: the first US construction permit for a BWRX-300, a leading small-reactor design, was issued only on September 28, 2026. Meanwhile prices in the eastern US capacity market jumped many times over, sparking fights about whether households subsidize data centers (Chapter 41).
+The open problems are about speed and fairness more than raw supply. JLL reports average waits of more than four years for a grid connection in major markets, which pushes builders toward gas turbines on site. Gas fills most of the near-term gap, nuclear restarts help this decade, and new small modular reactors mostly arrive in the 2030s: the first US construction permit for a BWRX-300, a leading small-reactor design, was approved only in late September 2026 (the Nuclear Regulatory Commission announced it on September 29). Meanwhile prices in the eastern US capacity market jumped many times over, sparking fights about whether households subsidize data centers (Chapter 41).
 
 > **Definition — Interconnection queue:** The waiting line of projects asking to connect to the electricity grid. Each needs engineering studies and often new equipment, and waits are now measured in years.
 
@@ -469,8 +469,8 @@ In the tables below, the middle column says what has been announced, targeted or
 | Signpost | Status, or expected date and who says so | Where to check | What it would tell you |
 |---|---|---|---|
 | A credible 50% time horizon above one working week (40 h), on a new task suite | Last published value about 17 h (April 2026 model); METR says its suite is unreliable above about 16 h | metr.org | Whether agents keep stretching, and whether measurement keeps up |
-| An 80% time horizon above one working day (8 h) | 80% horizons run 5–10× shorter than 50% ones in METR's data | metr.org | Whether reliability, not just peak ability, is improving |
-| Labs' estimates of how much AI speeds up their own research | A preliminary Anthropic-internal estimate of about 1.5×, cited by METR in September 2026 | System cards, METR reports | Whether AI is accelerating AI development, the engine of the fastest scenarios |
+| An 80% time horizon above one working day (8 h) | 80% horizons run about 4–10× shorter than 50% ones in METR's data | metr.org | Whether reliability, not just peak ability, is improving |
+| Estimates of how much AI speeds up the labs' own research | About 1.5× inside Anthropic: a preliminary estimate by a separate METR team, cited in METR's September 2026 report on Claude Opus 5.5 | METR reports, system cards | Whether AI is accelerating AI development, the engine of the fastest scenarios |
 | Previously unsolved Erdős problems solved by AI | 2 of 68 (GPT-6 Astra, per Epoch, September 2026) | epoch.ai/benchmarks | Whether AI produces original mathematics |
 | Interpretability that "reliably detects most model problems" | A goal Anthropic's CEO set for 2027 | Lab research sites, system cards | Whether safety arguments can rest on looking inside models |
 | A drug discovered and designed with AI approved by a major regulator | None as of late 2026; some reached mid-stage trials | FDA and EMA | Whether AI for science reaches patients |
@@ -581,7 +581,7 @@ quadrantChart
 
 **The story.** Capability races ahead and institutions lag. Entry-level work shrinks faster than new roles appear, power concentrates, and cyber and bio misuse rise. In the most serious versions, AI that automates AI research outruns human oversight and people lose meaningful control. The 2025 "AI 2027" scenario by Daniel Kokotajlo and colleagues explores a fast version, and Eliezer Yudkowsky and Nate Soares's 2025 book *If Anyone Builds It, Everyone Dies* argues the most extreme case.
 
-**For.** Capability thresholds are being crossed in the open (Mythos-class cyber skills, OpenAI's reported "cannot rule out Critical" notice); controlled experiments have shown reward hacking, alignment faking and scheming-like behavior; models increasingly recognize tests; and competition is fierce. In a 2023 survey of 2,778 AI researchers, the median respondent put about a 5% chance on extremely bad outcomes such as human extinction.
+**For.** Capability thresholds are being crossed in the open (Mythos-class cyber skills; GPT-6 Astra, the first model OpenAI places at its "Critical" cybersecurity level); controlled experiments have shown reward hacking, alignment faking and scheming-like behavior; models increasingly recognize tests; and competition is fierce. In a 2023 survey of 2,778 AI researchers, the median respondent put about a 5% chance on extremely bad outcomes such as human extinction.
 
 **Against.** The scheming and blackmail experiments were contrived stress tests, and labs report not seeing such behavior in real deployments. Critics argue the case leans on unproven assumptions about AI agency and fast takeoff, that it can distract from present harms, and that some calls for strict rules would entrench the biggest firms.
 
@@ -666,7 +666,7 @@ stateDiagram-v2
 Imagine the headline "AI scores 99.9% on ARC-AGI-3. Is this AGI?"
 
 1. **Claim.** A model can solve novel puzzle games. The AGI framing is the headline's; ARC Prize explicitly declined to call the result AGI.
-2. **Number.** 99.9% used a harness that let GPT-6 Astra keep its reasoning state; with the standard harness it scored 62.7%, at a reported cost of about $26,000 at maximum effort.
+2. **Number.** 99.9% used a harness that let GPT-6 Astra keep its reasoning state, at high effort. A fair comparison holds the effort fixed: at maximum effort it scored 98.6% with that harness and 62.7% with the standard one, at a reported cost of about $26,000.
 3. **Source.** ARC Prize's own blog, independent of the model's maker.
 4. **Compared with what?** Humans scored 100%; frontier AI scored 0.51% at launch in March 2026. The jump is real and fast.
 5. **Stage.** A measured lab result, not a deployment.
@@ -845,7 +845,7 @@ Frontier (of AI), Open problem, Jevons paradox, Hallucination, Calibration, Abst
 
 1. Technical problems (for example continual learning or reliability) need new ideas. Infrastructure problems (for example connecting gigawatts to the grid, or HBM memory supply) need time, resources and engineering against physical limits. Societal problems (for example copyright compensation or entry-level jobs) need people to agree on what they want and who pays and benefits.
 2. About 0.99^100 ≈ 0.37, so roughly a 37% chance. Real agents can notice and fix their own mistakes, so errors are not all independent and fatal; better self-correction is one reason measured time horizons have grown.
-3. Factor 167 ÷ 17.4 ≈ 9.6, which is about 3.26 doublings; 3.26 × 4.2 ≈ 13.7 months after April 2026, so around mid-2027. Cautions: the starting value has a wide range (about 8.5 to 55 hours); METR says its measurements are unreliable above about 16 hours; a 7-month doubling time gives early 2028 instead; 80%-reliability horizons are 5–10× shorter; and trends can bend.
+3. Factor 167 ÷ 17.4 ≈ 9.6, which is about 3.26 doublings; 3.26 × 4.2 ≈ 13.7 months after April 2026, so around mid-2027. Cautions: the starting value has a wide range (about 8.5 to 55 hours); METR says its measurements are unreliable above about 16 hours; a 7-month doubling time gives early 2028 instead; 80%-reliability horizons are about 4–10× shorter; and trends can bend.
 4. Making a resource cheaper to use can increase total use, because new uses become worthwhile. AI chips get more energy-efficient (about 1.34× a year by Epoch's measure) and the price per unit of capability falls fast, yet total data center electricity is projected to roughly double by 2030 because people use far more AI, with longer contexts, agents and video.
 5. A good signpost is specific enough that people would agree whether it happened, has a date, has a public place to check, and would change your view. Example: "By December 31, 2028, a company reports in a regulatory filing at least one million hours of unassisted paid work by its humanoid robots in a single year."
 6. The axes are the pace of capability growth (slower to faster) and how well society adapts (poorly to well). Early signs favoring bust and backlash: hyperscalers cutting capex guidance, collapsing GPU rental prices, cancelled campuses, down-round fundraising, and spreading laws against data-center-driven electricity price rises, while capability gains on hard real-world tasks slow.

@@ -632,7 +632,7 @@ By 2026 the big labs were releasing new models roughly every month. Rather than 
 | Lab | January–June 2026 | July–October 2026 |
 |---|---|---|
 | Anthropic | Claude Opus 4.6 (Feb 5), Mythos Preview (Apr 7), Opus 4.7, Opus 4.8, Fable 5 and Mythos 5 (Jun 9), Sonnet 5 | Opus 5 (Jul 24), Fable and Mythos 5.1 (early to mid-September), Opus 5.5 (Sep 22), Sonnet 5.5, Haiku 5.5 (Oct 7) |
-| OpenAI | GPT-5.3-Codex, GPT-5.4, GPT-5.5 (Apr 23), GPT-5.6 | GPT-6 Astra (Sep 3), GPT-6 Sol and Luna (Sep 22), GPT-6.1 Sol (Sep 29), GPT-6 for all ChatGPT users (Oct 7–8) |
+| OpenAI | GPT-5.3-Codex, GPT-5.4, GPT-5.5 (Apr 23), GPT-5.6 limited preview (Jun 26) | GPT-5.6 public release (Jul 9), GPT-6 Astra (Sep 3), GPT-6 Sol and Luna (Sep 22), GPT-6.1 Sol (Sep 29), GPT-6 for all ChatGPT users (Oct 7–8) |
 | Google DeepMind | Gemini 3.1 Pro preview (Feb 19), Gemma 4 open models, Gemini 3.5 family (May 19) | Gemini 3.6 to 3.8 Flash, Gemini 4 Argon (generally available in Google's API Oct 13, per Google's changelog) |
 | Open-weight leaders | DeepSeek-V4 preview (Apr 24) | Kimi K3 (Jul 16), DeepSeek-V4-Pro (August), Qwen3.8 (August) |
 
@@ -654,7 +654,7 @@ DeepSeek-V4-Pro has 1.6 trillion total parameters (49 billion active per token),
 
 ### Measuring a moving target
 
-Benchmarks now fall within months. ARC-AGI-3, launched March 25, 2026, used interactive puzzle games with no instructions; at launch humans scored 100% and frontier AI 0.51%. By September GPT-6 Astra scored 62.7% using the standard setup, and 99.9% with a different "harness" that let it keep its reasoning between steps. ARC Prize declined to call this AGI. Humanity's Last Exam, a set of very hard expert-written questions launched in January 2025 when frontier models scored under 10%, saw Claude Opus 5.5 reach about 61% by October 2026 (text-only, per Artificial Analysis).
+Benchmarks now fall within months. ARC-AGI-3, launched March 25, 2026, used interactive puzzle games with no instructions; at launch humans scored 100% and frontier AI 0.51%. By September GPT-6 Astra at maximum effort scored 62.7% using the standard setup, and 98.6% at the same effort with a different "harness" that let it keep its reasoning between steps (its best score, 99.9%, came with that harness at high effort). ARC Prize declined to call this AGI. Humanity's Last Exam, a set of very hard expert-written questions launched in January 2025 when frontier models scored under 10%, saw Claude Opus 5.5 reach about 61% by October 2026 (text-only, per Artificial Analysis).
 
 > **Definition — Benchmark saturation:** The point at which top models score so high on a test that it can no longer tell them apart, forcing the field to build harder tests.
 
@@ -668,7 +668,7 @@ A worked example with METR's numbers: GPT-4 (March 2023) had a time horizon of a
 
 NVIDIA launched its Vera Rubin platform at CES in January 2026 (336 billion transistors per GPU, HBM4 memory), saying it was already in full production with partner systems due in the second half of the year; by August, racks were running at several clouds. Google announced its eighth-generation TPUs, split into a training chip and an inference chip, on April 22. For the quarter ending July 2026, NVIDIA reported revenue of $96.2 billion, more than double a year earlier.
 
-The buildings grew to match. Epoch AI lists xAI's Colossus 2 in Memphis as the largest AI data center by compute, at about 1.1 million H100-equivalents. Anthropic and Amazon agreed on April 20 to up to 5 GW. On July 13 Meta said its Hyperion campus in Louisiana would scale to 5 GW. As of October 20, 2026 Epoch tracked 95 large AI data centers totaling about 14.2 GW of IT power. Power became a story in its own right: in January Meta signed nuclear deals for up to 6.6 GW by 2035, and on September 28 US regulators issued the first construction permit for a small modular reactor of its type, at a Tennessee Valley Authority site.
+The buildings grew to match. Epoch AI lists xAI's Colossus 2 in Memphis as the largest AI data center by compute, at about 1.1 million H100-equivalents. Anthropic and Amazon agreed on April 20 to up to 5 GW. On July 13 Meta said its Hyperion campus in Louisiana would scale to 5 GW. As of October 20, 2026 Epoch tracked 95 large AI data centers totaling about 14.2 GW of IT power. Power became a story in its own right: in January Meta signed nuclear deals for up to 6.6 GW by 2035, and in late September (announced September 29) US regulators approved the first construction permit for a small modular reactor of its type, at a Tennessee Valley Authority site.
 
 A quick worked example of why gigawatts matter: a 1 GW campus running all year uses up to 1 GW × 8,760 hours = 8,760 GWh, or 8.76 terawatt-hours. Epoch estimates a gigawatt campus costs about $38 billion up front and takes about two years to build (see Chapter 42).
 
@@ -691,7 +691,7 @@ timeline
     Jul : Meta Hyperion to 5 gigawatts
         : Kimi K3 and Claude Opus 5
     Aug : DeepSeek-V4-Pro and Qwen3.8
-    Sep : GPT-6 Astra, first pretraining run on over 100k GPUs
+    Sep : GPT-6 Astra, OpenAI's first pretraining run on over 100k GPUs
         : Claude Opus 5.5
     Oct : GPT-6 for all ChatGPT users
         : Gemini 4 Argon and Claude Haiku 5.5

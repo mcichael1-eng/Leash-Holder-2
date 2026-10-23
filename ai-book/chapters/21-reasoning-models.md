@@ -66,8 +66,8 @@ A second 2022 idea (Wang and colleagues) was to sample several independent chain
 **Worked example.** Suppose each independent attempt is right 60% of the time, and, as a worst case, every wrong attempt gives the same wrong answer. What is the chance that a majority vote is right?
 
 - One attempt: 0.60.
-- Vote of 3: you need at least 2 right. P = 3 × 0.6² × 0.4 + 0.6³ = 0.432 + 0.216 = **0.648**.
-- Vote of 5: you need at least 3 right. P = 10 × 0.6³ × 0.4² + 5 × 0.6⁴ × 0.4 + 0.6⁵ = 0.346 + 0.259 + 0.078 = **0.683**.
+- Vote of 3: you need at least 2 right. P = 3 × 0.6² × 0.4 + 0.6³ = 0.432 + 0.216 = **0.648**. (0.6² × 0.4 is the chance of one particular pattern, such as right, right, wrong; the 3 counts the three places the single wrong attempt can be. 0.6³ is all three right.)
+- Vote of 5: you need at least 3 right. P = 10 × 0.6³ × 0.4² + 5 × 0.6⁴ × 0.4 + 0.6⁵ = 0.346 + 0.259 + 0.078 = **0.683**. (There are 10 ways to choose which 2 of the 5 attempts are the wrong ones, and 5 ways to choose a single wrong one.)
 - Vote of 11: about **0.753**.
 
 In real problems, wrong answers usually scatter (one attempt says 7, another 12, another 9), while right answers agree, so voting does even better than this worst case. The cost is linear: five votes cost five times as much.
@@ -234,7 +234,7 @@ The model writes eight attempts. Here are their final lines and the verifier's v
 
 **Step 1, mean:** (1 + 0 + 1 + 0 + 0 + 1 + 0 + 0) ÷ 8 = 3 ÷ 8 = **0.375**.
 
-**Step 2, standard deviation.** For rewards that are only 0 or 1, the standard deviation is √(mean × (1 − mean)) = √(0.375 × 0.625) = √0.234 = **0.484**.
+**Step 2, standard deviation.** The general recipe is: take each reward's distance from the mean, square it, average those squares, and take the square root. Here three rewards sit 0.625 above the mean and five sit 0.375 below it, so the average square is (3 × 0.625² + 5 × 0.375²) ÷ 8 = 0.234. For rewards that are only 0 or 1, this always simplifies to √(mean × (1 − mean)) = √(0.375 × 0.625) = √0.234 = **0.484**.
 
 **Step 3, advantages:**
 - Each correct attempt: (1 − 0.375) ÷ 0.484 = **+1.29**
@@ -297,7 +297,7 @@ Once GRPO became popular, researchers found its rough edges and published fixes.
 
 > **Definition — Entropy collapse:** A failure in RL training in which the model becomes too certain too early, always choosing the same tokens, so it stops exploring alternatives and stops improving.
 
-**DAPO** (2025, from ByteDance Seed with academic collaborators) made four changes:
+**DAPO** (2025, from ByteDance Seed, the AI research team of TikTok's Chinese parent company ByteDance, with academic collaborators) made four changes:
 - **Clip-higher:** a looser upper clipping limit, so rare but good tokens can grow faster, which counters entropy collapse.
 - **Dynamic sampling:** throw away groups that are all right or all wrong (lesson 3 above) and keep sampling until each batch is full of groups that actually teach something.
 - **Token-level loss:** weigh every token equally across the batch, so long answers are not under-counted.
@@ -334,7 +334,7 @@ DeepSeek first tried something radical. They took their base model, DeepSeek-V3-
 - **Accuracy:** is the final math answer right, or does the code pass its tests?
 - **Format:** is the reasoning inside thinking tags, followed by an answer?
 
-No human-written reasoning examples, no reward model, no step-by-step grading. The paper reported that this model, R1-Zero, improved its pass@1 score on the AIME 2024 math competition from 15.6% to 71.0% over training, and to 86.7% with majority voting.
+No human-written reasoning examples, no reward model, no step-by-step grading. The paper reported that this model, R1-Zero, improved its pass@1 score on the AIME 2024 math competition (the American Invitational Mathematics Examination, a hard contest for top US high-school students, with 30 problems a year whose answers are whole numbers) from 15.6% to 71.0% over training, and to 86.7% with majority voting.
 
 > **Definition — Pass@k:** The probability that at least one of k attempts at a problem is correct. Pass@1 is the chance of getting it right on a single try; it is the standard way to report reasoning accuracy.
 
@@ -669,7 +669,7 @@ Reasoning model, Chain of thought (CoT), Thinking tokens, Chain-of-thought promp
 2. **[Easy] Self-consistency by hand.** Run a majority vote yourself.
    1. Write a word problem with a trap, such as "A pen and a notebook cost $2.20 together; the notebook costs $2.00 more than the pen. How much is the pen?"
    2. Ask it in five separate new chats at the lowest effort setting, and write down each final answer.
-   3. Take the majority answer. Then compute, with a calculator, the chance that a 5-vote majority is right if each attempt is right 70% of the time: 10 × 0.7³ × 0.3² + 5 × 0.7⁴ × 0.3 + 0.7⁵.
+   3. Take the majority answer. Then compute, with a calculator, the chance that a 5-vote majority is right if each attempt is right 70% of the time: 10 × 0.7³ × 0.3² + 5 × 0.7⁴ × 0.3 + 0.7⁵. (In a spreadsheet, type =10*0.7^3*0.3^2+5*0.7^4*0.3+0.7^5. You should get about 0.837, so voting lifts 70% to about 84%.)
    **What you'll learn:** how voting turns several unreliable attempts into a more reliable one, and what it costs.
 
 3. **[Easy] GRPO advantages in a spreadsheet.** Compute what GRPO computes.
@@ -772,7 +772,7 @@ Reasoning model, Chain of thought (CoT), Thinking tokens, Chain-of-thought promp
 10. **[Challenge] Play the benchmark yourself.** Compare your reasoning with a frontier model's.
     1. Go to https://arcprize.org and play several ARC-AGI-3 games, which come with no instructions.
     2. Write down how you worked out each game's goal and how many tries it took.
-    3. Read ARC Prize's post about GPT-6 Astra and note the difference between the standard-harness and adapter-harness scores.
+    3. Read ARC Prize's post about GPT-6 Astra and note the difference between the standard-harness and adapter-harness scores (the adapter is the different harness described in this chapter, which let the model keep its reasoning between steps).
     4. Write a paragraph on what "reasoning" meant in your own play, and what the harness difference says about measuring AI.
     **What you'll learn:** what fluid-reasoning tests measure, and why compute budgets and harnesses matter as much as the model.
 

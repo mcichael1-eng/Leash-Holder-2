@@ -56,6 +56,8 @@ Look at Figure 8.1 carefully, because it contains the whole idea of this chapter
 
 The term "machine learning" goes back to Arthur Samuel at IBM, who in 1959 described a checkers program that improved partly by playing games against itself, until it played better than he did (see Chapter 7). A widely used definition comes from the computer scientist Tom Mitchell (1997): a program learns from experience E, with respect to some task T and performance measure P, if its performance at T, as measured by P, improves with experience E. Translated: there is a job to do, a way to score how well it is done, and a pile of examples, and the score goes up as the program sees more examples. Every system in this book fits that sentence, from a spam filter to Claude.
 
+> **Definition — IBM (International Business Machines):** A large American computer company, more than a century old, that built many of the business computers of the 20th century and several landmark AI projects, such as the chess computer Deep Blue (1997) and the quiz-show system Watson (2011).
+
 > **Key idea:** Machine learning is for problems where you can collect examples of the right answer but cannot write down the rule. You trade the job of writing rules for the job of collecting good examples.
 
 > **Watch out:** "AI" and "machine learning" are not the same thing. Machine learning is one way of building AI, and today it is the dominant way. Rules-based systems, search and planning are also AI (see Chapter 54), and many real products mix learned parts with hand-written rules. Your chatbot is a learned model wrapped in a lot of ordinary, hand-written software.
@@ -646,7 +648,7 @@ To turn a probability into a decision, you pick a cutoff.
 
 > **Definition — Threshold:** The cutoff that turns a probability into a yes or no decision. It is often 0.5, but you can move it: a cautious bank might only approve loans where the predicted chance of repayment is above 0.9.
 
-With a threshold of 0.5, the model predicts "pass" for anyone who studied more than 4 hours. Raise the threshold to 0.8 and it only predicts "pass" above about 5.4 hours. Same model, different decisions. Choosing the threshold is a business or safety decision, not a math one, and Chapter 9 shows how to make that choice well.
+With a threshold of 0.5, the model predicts "pass" for anyone who studied more than 4 hours. Raise the threshold to 0.8 and it only predicts "pass" above about 5.4 hours (in Table 8.9 the probability climbs past 0.8 between 5 hours, at 0.73, and 6 hours, at 0.88). Same model, different decisions. Choosing the threshold is a business or safety decision, not a math one, and Chapter 9 shows how to make that choice well.
 
 ### Decision boundaries
 
@@ -654,7 +656,7 @@ With one feature, the threshold is a single point on a line (4 hours). With two 
 
 `z = −4 + 0.5 × links + 0.5 × exclamation marks`
 
-An email with 6 links and 4 exclamation marks scores `z = −4 + 3 + 2 = 1`, which the sigmoid turns into 0.73: spam. An email with 2 links and 1 exclamation mark scores `−4 + 1 + 0.5 = −2.5`, probability 0.08: not spam. The probability is exactly 0.5 wherever `z = 0`, which happens when links + exclamation marks = 8. That is a straight line on the chart, and it splits the map into a "spam" side and a "not spam" side.
+An email with 6 links and 4 exclamation marks scores `z = −4 + 3 + 2 = 1`, which the sigmoid turns into 0.73: spam. An email with 2 links and 1 exclamation mark scores `−4 + 1 + 0.5 = −2.5`, probability 0.08: not spam. The probability is exactly 0.5 wherever `z = 0`, which happens when links + exclamation marks = 8 (because 0.5 × 8 = 4, which cancels the −4). That is a straight line on the chart, and it splits the map into a "spam" side and a "not spam" side.
 
 > **Definition — Decision boundary:** The dividing line (or, with more features, the dividing surface) where a classifier switches from predicting one class to another.
 
@@ -678,7 +680,7 @@ Logistic regression can only draw straight boundaries. If spam and normal emails
 
 ### Cross-entropy: the loss for categories
 
-How do you measure the loss of a probability? If an email really is spam, a model that said 0.99 was nearly perfect, one that said 0.6 was hesitant, and one that said 0.01 was confidently wrong. The standard loss, cross-entropy, is the negative logarithm of the probability the model gave to the correct answer (Chapter 6 calls this "surprise").
+How do you measure the loss of a probability? If an email really is spam, a model that said 0.99 was nearly perfect, one that said 0.6 was hesitant, and one that said 0.01 was confidently wrong. The standard loss, cross-entropy, is the negative logarithm of the probability the model gave to the correct answer (Chapter 6 calls this "surprise"). It uses the natural logarithm, the ln key on a calculator, so to check a row of Table 8.10 in a spreadsheet you would type `=-LN(0.9)` and get 0.11.
 
 > **Definition — Cross-entropy (log loss):** The standard loss for classification: minus the logarithm of the probability the model assigned to the correct answer. It is small when the model is confidently right and very large when it is confidently wrong.
 
@@ -834,7 +836,7 @@ Under the hood, learning means two things. A loss function scores how wrong the 
 
 ## Key terms
 
-Algorithm, Rules-based system, Machine learning (ML), Model, Parameter, Weight, Bias (parameter), Hyperparameter, Example, Feature, Label, Dataset, Training, Inference, Generalization, Supervised learning, Regression, Classification, Binary classification, Multiclass classification, Unsupervised learning, Clustering, Dimensionality reduction, Anomaly detection, Semi-supervised learning, Self-supervised learning, Token, Pretraining, Reinforcement learning (RL), Agent, Environment, Reward, Policy, RLHF (Reinforcement Learning from Human Feedback), Transfer learning, Fine-tuning, Few-shot and zero-shot learning, Active learning, Online learning, Loss function, MSE (Mean Squared Error), MAE (Mean Absolute Error), Gradient, Gradient descent, Learning rate, Batch, Stochastic gradient descent (SGD), Epoch, Local minimum, Linear regression, Slope and intercept, Residual, Hypothesis space, Feature expansion (basis expansion), Logistic regression, Sigmoid function, Threshold, Decision boundary, Cross-entropy (log loss), Calibration, Google Colab, scikit-learn
+Algorithm, Rules-based system, Machine learning (ML), IBM (International Business Machines), Model, Parameter, Weight, Bias (parameter), Hyperparameter, Example, Feature, Label, Dataset, Training, Inference, Generalization, Supervised learning, Regression, Classification, Binary classification, Multiclass classification, Unsupervised learning, Clustering, Dimensionality reduction, Anomaly detection, Semi-supervised learning, Self-supervised learning, Token, Pretraining, Reinforcement learning (RL), Agent, Environment, Reward, Policy, RLHF (Reinforcement Learning from Human Feedback), Transfer learning, Fine-tuning, Few-shot and zero-shot learning, Active learning, Online learning, Loss function, MSE (Mean Squared Error), MAE (Mean Absolute Error), Gradient, Gradient descent, Learning rate, Batch, Stochastic gradient descent (SGD), Epoch, Local minimum, Linear regression, Slope and intercept, Residual, Hypothesis space, Feature expansion (basis expansion), Logistic regression, Sigmoid function, Threshold, Decision boundary, Cross-entropy (log loss), Calibration, Google Colab, scikit-learn
 
 ## Exercises
 
@@ -897,7 +899,7 @@ Algorithm, Rules-based system, Machine learning (ML), Model, Parameter, Weight, 
    1. Open colab.research.google.com, start a new notebook, and paste Cell 1 and Cell 2 from the "Your first model in code" section into two cells. Run them both and check the numbers against the text.
    2. In Cell 1, add an eleventh student who studied 2 hours but scored 95: change the data lines to `hours = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 2], dtype=float)` and add `, 95` at the end of the scores list. Run again. How much did `w` and `b` change, and does the line still look sensible on the chart?
    3. Change `learning_rate` to 0.002, then 0.026, and record what happens to the printed loss.
-   4. In Cell 2, change the `passed` list so the data is perfectly clean (for example `[0, 0, 0, 0, 1, 1, 1, 1, 1, 1]`) and rerun. Where does the decision boundary move?
+   4. In Cell 2, change the `passed` list so the data is perfectly clean (for example `[0, 0, 0, 0, 1, 1, 1, 1, 1, 1]`) and rerun. The boundary barely moves (it stays near 4.5 hours, because the switch from fail to pass is still between 4 and 5 hours), but the weight rises from about 0.9 to about 1.2: a steeper curve, because the model is now surer. Then try `[0, 0, 0, 0, 0, 0, 1, 1, 1, 1]` (only students with 7 or more hours passed). Where does the decision boundary move? (It should land at about 6.5 hours.)
    5. Ask a chatbot to explain any line of the code you do not understand.
 
    **What you'll learn:** The training loop in real code, the effect of outliers and learning rate, and how a decision boundary follows the data.
@@ -905,8 +907,8 @@ Algorithm, Rules-based system, Machine learning (ML), Model, Parameter, Weight, 
 9. **[Challenge] Test your chatbot's calibration.** (Chatbot and spreadsheet, 45 minutes.)
    1. Write 20 factual questions with answers you can check (mix easy and hard: populations, dates, chemical formulas, sports records).
    2. In a fresh chat, ask each question and add: "Answer in one line and give your confidence as a percentage."
-   3. In a spreadsheet, record the stated confidence and whether the answer was correct (1 or 0).
-   4. Group answers into buckets (below 70%, 70 to 89%, 90% and above) and compute the actual share correct in each with `=AVERAGEIFS`.
+   3. In a spreadsheet, record the stated confidence as a plain number in column A (type 85 for 85%) and whether the answer was correct in column B (1 or 0), one question per row in rows 2 to 21.
+   4. Group answers into buckets (below 70%, 70 to 89%, 90% and above) and compute the actual share correct in each: `=AVERAGEIFS(B2:B21, A2:A21, "<70")` for the first bucket, `=AVERAGEIFS(B2:B21, A2:A21, ">=70", A2:A21, "<90")` for the second and `=AVERAGEIFS(B2:B21, A2:A21, ">=90")` for the third. Each formula averages the 1s and 0s of the rows whose confidence falls in that range, which is the share correct. A #DIV/0! error just means no answers fell in that bucket.
    5. Compare the stated confidence with the actual accuracy in each bucket, as in Table 8.11.
 
    **What you'll learn:** What calibration means in practice, and how far to trust a chatbot's expressed certainty. Twenty questions is a small sample, so treat the result as a hint, not proof.
@@ -921,7 +923,7 @@ Algorithm, Rules-based system, Machine learning (ML), Model, Parameter, Weight, 
 ## Areas of opportunity
 
 - **AI trainer and expert data contributor.** Frontier labs now pay doctors, lawyers, accountants, engineers, scientists and coders, through vendors such as Mercor, Surge AI, Scale AI, Handshake, micro1 and Turing, to write hard problems, grade model answers and design rubrics. Pay above $100 an hour has been reported for some expert programs. It is flexible work, though project volumes are volatile.
-- **The analyst-to-ML ladder.** Spreadsheets, SQL, Python with pandas, and the concepts in this chapter (features, labels, training versus inference, loss) remain the entry point to data analyst, data scientist and machine learning engineer roles. AI coding assistants lower the programming barrier but raise expectations for framing the right question and checking results.
+- **The analyst-to-ML ladder.** Spreadsheets, SQL, Python with pandas (a Python library for working with tables, Chapter 10), and the concepts in this chapter (features, labels, training versus inference, loss) remain the entry point to data analyst, data scientist and machine learning engineer roles. AI coding assistants lower the programming barrier but raise expectations for framing the right question and checking results.
 - **Machine learning for small businesses.** Restaurants, independent retailers, gyms and subscription businesses would pay for simple, well-explained models: next week's demand, which customers are likely to cancel, which invoices will be paid late. A logistic regression or a small tree model with a friendly interface is often enough, and much cheaper than an LLM call per prediction.
 - **Problem framer or AI product manager.** Teams waste months building models for badly framed problems. People who can turn a business question into "what are the features, what is the label, how will we get labels, what does a wrong answer cost" are valuable in every industry adopting AI.
 - **Labeling operations and data quality lead.** Someone has to write annotation guidelines, measure whether labelers agree, audit vendors and decide which examples are worth labeling (active learning). Organizations building in-house models, from hospitals to insurers, need this role.

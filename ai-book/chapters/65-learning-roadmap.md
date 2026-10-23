@@ -933,7 +933,7 @@ Use these critically: each measures something specific, and none measures "which
 - **Epoch AI:** trends in compute, cost, hardware and benchmarks.
 - **METR:** evaluations of how long a task AI agents can complete.
 - **Artificial Analysis:** independent comparisons of model price, speed and quality.
-- **LMArena:** rankings from human preference votes, which are sensitive to style as well as substance.
+- **Arena (formerly LMArena):** rankings from human preference votes, which are sensitive to style as well as substance.
 - **Stanford AI Index:** the annual report on the state of AI.
 - **Lab system cards and model cards:** the primary source for what a model can do and how it was safety-tested.
 

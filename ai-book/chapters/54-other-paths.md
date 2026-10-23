@@ -76,7 +76,11 @@ The symbolists' bet was simple. Experts know things. If we could write that know
 
 > **Definition — Inference engine:** The part of an expert system that applies rules to facts to reach conclusions. It is the same program whatever the domain, which is why one engine could run a medical system or a car-repair system.
 
-Chapter 7 tells the history: MYCIN at Stanford in the 1970s used several hundred rules to recommend antibiotics for blood infections and matched specialists in tests, and XCON at Digital Equipment Corporation grew to thousands of rules for configuring computer orders. Here we run one.
+Chapter 7 tells the history: MYCIN at Stanford in the 1970s used several hundred rules to recommend antibiotics for blood infections and matched specialists in tests, and XCON at Digital Equipment Corporation, a leading computer maker of the time, grew to thousands of rules for configuring computer orders. Here we run one.
+
+> **Definition — MYCIN:** An expert system built at Stanford University in the 1970s that used several hundred IF-THEN rules, each with a certainty factor, to identify the bacteria behind serious blood infections and recommend antibiotics. In tests it performed about as well as specialists but was never used routinely in hospitals.
+
+> **Definition — XCON:** An expert system built in 1980 for Digital Equipment Corporation that checked and completed customers' computer orders, choosing every cable and component. It grew to thousands of rules and reportedly saved the company tens of millions of dollars a year, making it the best-known commercial success of the expert-system era.
 
 ### A tiny expert system, worked by hand
 
@@ -123,7 +127,7 @@ flowchart LR
 
 > **Definition — Forward chaining:** Reasoning from known facts toward conclusions: fire every rule whose conditions are met, add its conclusion as a new fact, and repeat until nothing new appears.
 
-That was forward chaining. MYCIN mostly worked the other way. It started from a goal ("Is the organism E. coli?") and worked backward, asking the doctor questions only when a needed fact was missing. In our system, backward chaining toward "call a mechanic" would look for a rule concluding that (R5), see it needs "starter faulty", find R4, see that R4 needs "headlights bright", and ask you: "Are the headlights bright?" When you say "dim", that line of reasoning closes.
+That was forward chaining. MYCIN mostly worked the other way. It started from a goal ("Is the organism E. coli?", a common bacterium) and worked backward, asking the doctor questions only when a needed fact was missing. In our system, backward chaining toward "call a mechanic" would look for a rule concluding that (R5), see it needs "starter faulty", find R4, see that R4 needs "headlights bright", and ask you: "Are the headlights bright?" When you say "dim", that line of reasoning closes.
 
 > **Definition — Backward chaining:** Reasoning from a goal back to the facts needed to prove it, asking for missing facts along the way. It makes an expert system feel like a consultant asking targeted questions.
 
@@ -163,7 +167,7 @@ The simplest version, propositional logic, works with whole statements that are 
 
 > **Definition — Entailment:** A conclusion is entailed by some facts when it is true in every possible situation in which the facts are true. Logical reasoning is the search for what is entailed.
 
-**Worked example.** Facts: (1) IF the alarm is on THEN the door is locked. (2) The alarm is on OR the guard is present. (3) The guard is NOT present. Is the door locked? A computer can check by brute force: three true-or-false statements give 2 × 2 × 2 = 8 possible situations, and in the only one where all three facts hold (guard absent, alarm on, door locked), the door is locked. So "the door is locked" is entailed. Brute force doubles with every new statement, so real reasoners use inference rules instead. The most famous, resolution (1965), rewrites every fact as an OR statement and cancels opposites: from "alarm OR guard" and "NOT guard" it derives "alarm" in one step, and from "NOT alarm OR locked" (which is what fact 1 means) and "alarm" it derives "locked".
+**Worked example.** Facts: (1) IF the alarm is on THEN the door is locked. (2) The alarm is on OR the guard is present. (3) The guard is NOT present. Is the door locked? A computer can check by brute force: three true-or-false statements give 2 × 2 × 2 = 8 possible situations, and in the only one where all three facts hold (guard absent, alarm on, door locked), the door is locked. So "the door is locked" is entailed. Brute force doubles with every new statement, so real reasoners use inference rules instead. The most famous, resolution (1965), rewrites every fact as an OR statement and cancels opposites: from "alarm OR guard" and "NOT guard" it derives "alarm" in one step, and from "NOT alarm OR locked" (which is what fact 1 means: either the alarm is off, or the door is locked) and "alarm" it derives "locked".
 
 > **Definition — Resolution:** A single inference rule that combines two OR statements containing a fact and its opposite, cancelling the pair to produce a new statement. Applied systematically it can establish anything that logically follows from a set of facts, which made it the basis of automated theorem proving.
 
@@ -219,7 +223,7 @@ Now questions become walks along arrows. "Was Marie Curie born in a capital city
 
 ### Ancestors, defaults and the frame problem
 
-Knowledge graphs have older ancestors. In the 1960s researchers drew semantic networks: concepts linked by labeled arrows such as "a canary IS-A bird" and "a bird HAS wings". In 1974 Marvin Minsky proposed frames, structured records for stereotyped things and situations; a "restaurant visit" frame has slots for the menu, the waiter and the bill, each with a default. Both rely on inheritance: a canary inherits "has wings" from "bird" without anyone writing it down. Formal versions of these ideas, called description logics, underlie OWL, the Web Ontology Language, used for large medical and scientific vocabularies. OWL is part of the Semantic Web standards of the World Wide Web Consortium (W3C), alongside RDF, a format for publishing facts as subject, relation, object triples (the same shape as the triples above), so that programs can read and link facts across websites rather than only people reading pages.
+Knowledge graphs have older ancestors. In the 1960s researchers drew semantic networks: concepts linked by labeled arrows such as "a canary IS-A bird" and "a bird HAS wings". In 1974 Marvin Minsky proposed frames, structured records for stereotyped things and situations; a "restaurant visit" frame has slots for the menu, the waiter and the bill, each with a default. Both rely on inheritance: a canary inherits "has wings" from "bird" without anyone writing it down. Formal versions of these ideas, called description logics, underlie OWL, the Web Ontology Language, used for large medical and scientific vocabularies. OWL is part of the Semantic Web standards of the World Wide Web Consortium (W3C), alongside RDF (Resource Description Framework), a format for publishing facts as subject, relation, object triples (the same shape as the triples above), so that programs can read and link facts across websites rather than only people reading pages.
 
 > **Definition — Semantic network:** An early way of representing knowledge as a web of concepts linked by labeled relationships, such as "canary IS-A bird", from which properties can be inherited. Knowledge graphs are its modern descendant.
 
@@ -235,9 +239,9 @@ Inheritance raises a famous problem. "Birds fly" is a sensible default, but peng
 
 ### Wikidata and Google's Knowledge Graph
 
-In 2012 Google introduced its Knowledge Graph with the slogan "things, not strings": search should understand that "Paris" is a city (or a person, or a mythological prince) rather than matching a string of letters. The same year the Wikimedia Foundation launched Wikidata, a free knowledge graph anyone can edit, which now holds more than 100 million items and feeds Wikipedia's infoboxes, voice assistants and countless apps.
+In 2012 Google introduced its Knowledge Graph with the slogan "things, not strings": search should understand that "Paris" is a city (or a person, or a mythological prince) rather than matching a string of letters. The same year the Wikimedia Foundation, the nonprofit that runs Wikipedia, launched Wikidata, a free knowledge graph anyone can edit, which now holds more than 100 million items and feeds Wikipedia's infoboxes (the fact boxes beside many articles), voice assistants and countless apps.
 
-Wikidata gives every entity and relation an ID so that facts are unambiguous in any language. France is Q142, Paris is Q90, and the relation "capital" is P36. The triple "France — capital — Paris" is stored as Q142, P36, Q90. You can query it in a language called SPARQL at query.wikidata.org:
+Wikidata gives every entity and relation an ID so that facts are unambiguous in any language. France is Q142, Paris is Q90, and the relation "capital" is P36. The triple "France — capital — Paris" is stored as Q142, P36, Q90. You can query it in a language called SPARQL (pronounced "sparkle"), the standard query language for RDF triples, at query.wikidata.org. Words starting with `?` are blanks for the computer to fill in, and everything after `#` on a line is a comment for human readers:
 
 ```sparql
 SELECT ?capitalLabel WHERE {
@@ -263,6 +267,8 @@ The two are now combined in practice. Language models read documents and extract
 Chapter 6 introduced Bayes' rule with a medical test: a disease affects 1 in 100 people, a test catches 90% of sick people and wrongly flags 9% of healthy ones, and only about 9% of people who test positive are actually sick. The lesson was that evidence must be weighed against how common something was to begin with.
 
 > **Definition — Bayes' rule:** A formula for updating a belief when new evidence arrives: P(A given B) = P(B given A) × P(A) ÷ P(B). It combines how well the evidence fits A with how likely A was beforehand.
+
+In the formula, P( ) is shorthand for "the probability of", and "A given B" means "A, once you know B". A is the thing you are unsure about (having the disease) and B is the evidence (a positive test). This chapter writes probabilities the same way from here on.
 
 Real problems involve many uncertain things that influence each other. A doctor juggles dozens of symptoms, test results and risk factors. Writing down the probability of every combination quickly becomes impossible: with 30 yes-or-no variables there are 2^30, about 1.07 billion, combinations. In the 1980s Judea Pearl showed how to tame this with a picture, and in 2011 he received the Turing Award, computing's highest honor, partly for that work.
 
@@ -310,7 +316,7 @@ Wet mornings total 59.4 + 126 + 192 + 28 = 405.4.
 
 Explaining away is natural for people (if you know your friend is late because her train broke down, you stop wondering whether she overslept) but impossible in a simple chain of IF-THEN rules, which only ever add support. Bayesian networks handle it automatically, because they keep the whole probability picture consistent.
 
-**The compression.** Our network needed 1 number for rain, 1 for the sprinkler and 4 for wet grass: 6 numbers. Writing out every combination of three yes-or-no variables directly needs 2^3 − 1 = 7. A tiny saving here, but enormous at scale: 30 variables with at most three parents each need at most 30 × 2^3 = 240 numbers instead of about a billion. Most things in the world directly depend on only a few others, and Bayesian networks exploit that.
+**The compression.** Our network needed 1 number for rain, 1 for the sprinkler and 4 for wet grass: 6 numbers. Writing out every combination of three yes-or-no variables directly needs 2^3 − 1 = 7 (there are 2 × 2 × 2 = 8 combinations, but their probabilities must add up to 1, so the last one follows from the other seven). A tiny saving here, but enormous at scale: 30 variables with at most three parents each need at most 30 × 2^3 = 240 numbers instead of about a billion. Most things in the world directly depend on only a few others, and Bayesian networks exploit that.
 
 Two named ideas hide in that paragraph. The giant table of every combination is called the full joint distribution, and it grows exponentially. A Bayesian network avoids it by assuming conditional independence: once you know a variable's direct causes, nothing further upstream tells you anything more about it.
 
@@ -674,7 +680,11 @@ timeline
 
 *Figure 54.10: The four eras of language AI, with translation as the thread that runs through all of them.*
 
-**Era 1: rules (1950s–1980s).** Linguists wrote grammars and dictionaries by hand. On January 7, 1954, IBM and Georgetown University demonstrated a system that translated more than 60 Russian sentences into English using a vocabulary of about 250 words and six grammar rules. The organizers predicted that machine translation would be largely solved within three to five years. It was not. In 1966 the US government's ALPAC report concluded that machine translation was slower, less accurate and more expensive than human translation, and US funding collapsed. The same year, Joseph Weizenbaum's ELIZA imitated a therapist by matching keywords and reflecting statements back as questions ("I feel sad." "Why do you feel sad?"). People confided in it anyway, a reaction Chapter 7 calls the ELIZA effect. Around 1970, Terry Winograd's SHRDLU could follow typed instructions about a small world of toy blocks, impressively, but only inside that world. Rule-based translation did survive in niches: the SYSTRAN system, for example, served governments for decades.
+**Era 1: rules (1950s–1980s).** Linguists wrote grammars and dictionaries by hand. On January 7, 1954, IBM and Georgetown University demonstrated a system that translated more than 60 Russian sentences into English using a vocabulary of about 250 words and six grammar rules. The organizers predicted that machine translation would be largely solved within three to five years. It was not. In 1966 the report of ALPAC, a US government advisory committee, concluded that machine translation was slower, less accurate and more expensive than human translation, and US funding collapsed. The same year, Joseph Weizenbaum's ELIZA imitated a therapist by matching keywords and reflecting statements back as questions ("I feel sad." "Why do you feel sad?"). People confided in it anyway, a reaction Chapter 7 calls the ELIZA effect. Around 1970, Terry Winograd's SHRDLU could follow typed instructions about a small world of toy blocks, impressively, but only inside that world. Rule-based translation did survive in niches: the SYSTRAN system, for example, served governments for decades.
+
+> **Definition — IBM (International Business Machines):** The American computer company that dominated business computing for much of the 20th century and ran some of AI's best-known projects, from the 1954 translation demo and the Deep Blue chess computer to the Watson question-answering system.
+
+> **Definition — ALPAC (Automatic Language Processing Advisory Committee):** A committee set up by the US government whose 1966 report judged machine translation slower, less accurate and more expensive than human translation. It led to deep cuts in US funding for the field.
 
 **Era 2: statistics (1990s–2000s).** In 1990 a team at IBM showed that translation could be learned from data. They took Canadian parliamentary records, published in both English and French, and computed which words and phrases tended to correspond. No grammar rules, just counting and probability. The same statistical revolution gave speech recognition its hidden Markov models and gave every language task its n-gram models (Chapter 6). Google Translate launched in 2006 on statistical methods.
 
@@ -686,7 +696,7 @@ timeline
 
 > **Definition — Neural machine translation:** Translation done end to end by a neural network that reads the source sentence and writes the target sentence, the standard approach since about 2016.
 
-**Era 4: Transformers and LLMs (2017–now).** The Transformer (Chapter 15) was invented in 2017 *for translation*, and then turned out to work for nearly everything. Meta's NLLB-200 (2022) translates between 200 languages, and phones and earbuds now offer live speech-to-speech translation. Of the world's roughly 7,000 languages, most still have very little digital text, so "low-resource" languages remain the field's hardest open problem.
+**Era 4: Transformers and LLMs (2017–now).** The Transformer (Chapter 15) was invented in 2017 *for translation*, and then turned out to work for nearly everything. Meta's NLLB-200 (2022; the letters stand for No Language Left Behind) translates between 200 languages, and phones and earbuds now offer live speech-to-speech translation. Of the world's roughly 7,000 languages, most still have very little digital text, so "low-resource" languages remain the field's hardest open problem.
 
 > **Watch out:** You may have heard that an early system translated "The spirit is willing but the flesh is weak" into Russian and back as "The vodka is good but the meat is rotten." It is a great story, but almost certainly a legend. The real failures of rule-based translation were more mundane: stilted, word-by-word output that broke on idioms and ambiguity.
 
@@ -698,7 +708,7 @@ timeline
 
 - Single words: the output's six words are the, cat, sat, on, a, mat. Five appear in the reference ("a" does not). Unigram precision = 5 ÷ 6 ≈ 0.83.
 - Word pairs: the cat, cat sat, sat on, on a, a mat. Three appear in the reference. Bigram precision = 3 ÷ 5 = 0.60.
-- Combining just these two with a geometric mean: √(0.83 × 0.60) = √0.50 ≈ 0.71.
+- Combining just these two with a geometric mean (multiply the two numbers, then take the square root, written √): √(0.83 × 0.60) = √0.50 ≈ 0.71.
 
 Real BLEU uses up to four-word sequences and penalizes outputs that are too short. Its weakness is visible even here: "the feline rested upon the rug" means nearly the same thing and would score close to zero. Modern evaluation increasingly uses learned metrics, human judgment and LLM judges (Chapter 31).
 
@@ -800,7 +810,7 @@ So how much computing would it take to match a brain? Nobody knows. The research
 ### Ideas that flowed from brains to AI
 
 - **Vision.** In the late 1950s and early 1960s David Hubel and Torsten Wiesel found neurons in the cat's visual cortex that respond to edges at particular angles, arranged in layers that build up more complex features; they shared a Nobel Prize in 1981. Kunihiko Fukushima's Neocognitron (1980) copied that layered design, and it led to the convolutional networks of Chapter 14.
-- **Reward.** In the 1990s Wolfram Schultz recorded dopamine neurons in monkeys, and in 1997 he, Peter Dayan and Read Montague showed that their firing matched the "temporal-difference error" of reinforcement learning (Chapter 48).
+- **Reward.** In the 1990s Wolfram Schultz recorded dopamine neurons (brain cells that release dopamine, a chemical messenger linked to reward) in monkeys, and in 1997 he, Peter Dayan and Read Montague showed that their firing matched the "temporal-difference error" of reinforcement learning (Chapter 48).
 
 > **Definition — Reward prediction error:** The difference between the reward an animal or agent expected and the reward it got. Dopamine neurons appear to signal it, and reinforcement-learning algorithms learn from the same quantity.
 
@@ -843,8 +853,8 @@ flowchart LR
 | Approach | How electrodes get there | Signal quality | Examples |
 |---|---|---|---|
 | Non-invasive | Cap on the scalp | Blurry | EEG headsets |
-| Minimally invasive | Threaded through a blood vessel | Medium | Synchron's stent-based electrode |
-| Invasive | Implanted in brain tissue by surgery | Sharpest | Utah arrays (BrainGate), Neuralink, Paradromics |
+| Minimally invasive | Threaded through a blood vessel | Medium | Synchron's stent-based electrode (a stent is a small mesh tube placed inside a blood vessel) |
+| Invasive | Implanted in brain tissue by surgery | Sharpest | Utah arrays (grids of tiny needle electrodes, used by the BrainGate research team), Neuralink, Paradromics |
 
 **The decoder is ordinary machine learning.** Suppose two recorded neurons tend to fire faster when a person intends to move a cursor right (neuron A) or left (neuron B). A simple linear decoder might compute horizontal speed = 0.05 × (rate of A) − 0.05 × (rate of B), in centimeters per second.
 
@@ -853,7 +863,9 @@ flowchart LR
 
 The weights are learned by asking the person to imagine moving toward targets on a screen: supervised learning (Chapter 8) with intent as the label. Real systems use hundreds of channels and neural networks, and they need recalibration as signals drift.
 
-**What has been achieved.** In 2006 the BrainGate team reported that a man with paralysis could move a computer cursor using an implanted array. In 2023 two studies, at Stanford and at UCSF with UC Berkeley, decoded attempted speech from people who could no longer speak clearly, at roughly 60 to 80 words per minute; the UCSF team also drove a talking digital avatar. In 2024 a UC Davis team reported in the *New England Journal of Medicine* that a man with ALS could communicate through a speech neuroprosthesis with about 97% word accuracy. Neuralink implanted its first human participant in January 2024 and said in January 2026 that 21 participants were enrolled in its trials worldwide (as reported), and as of mid-2026 reports its vision implant, Blindsight, was still awaiting a first human implant. Synchron's electrode reaches the brain through a blood vessel, avoiding open-brain surgery.
+**What has been achieved.** In 2006 the BrainGate team reported that a man with paralysis could move a computer cursor using an implanted array. In 2023 two studies, at Stanford and at the University of California, San Francisco (UCSF) with UC Berkeley, decoded attempted speech from people who could no longer speak clearly, at roughly 60 to 80 words per minute; the UCSF team also drove a talking digital avatar. In 2024 a UC Davis team reported in the *New England Journal of Medicine* that a man with ALS (amyotrophic lateral sclerosis, a disease that gradually paralyzes the muscles, including those used for speech) could communicate through a speech neuroprosthesis with about 97% word accuracy. Neuralink implanted its first human participant in January 2024 and said in January 2026 that 21 participants were enrolled in its trials worldwide (as reported), and as of mid-2026 reports its vision implant, Blindsight, was still awaiting a first human implant. Synchron's electrode reaches the brain through a blood vessel, avoiding open-brain surgery.
+
+> **Definition — UC (University of California):** California's public research university system, whose campuses include Berkeley, Davis, Los Angeles (UCLA), San Diego and San Francisco (UCSF). Its labs appear throughout AI research, from computer vision to brain-computer interfaces.
 
 > **At the frontier (2026):** Speech neuroprostheses are the most striking progress: people who lost the ability to speak are communicating at conversational speeds, sometimes in a synthesized version of their own former voice. The open problems are implant longevity, wireless bandwidth, frequent recalibration, and making devices that work at home without a research team.
 
@@ -900,7 +912,7 @@ Case-based reasoning, Symbolic AI (GOFAI), Production rule, Expert system, Knowl
 
 3. **[Medium] A Bayesian network in a spreadsheet.**
    1. Make four rows for the four combinations of rain and sprinkler. Columns: P(combination), P(wet given combination), and P(combination and wet) = the product.
-   2. Compute P(rain given wet), P(rain given wet and sprinkler on) and P(rain given wet and sprinkler off), and check them against this chapter (0.46, 0.24, 0.82).
+   2. Compute P(rain given wet), P(rain given wet and sprinkler on) and P(rain given wet and sprinkler off), and check them against this chapter (0.46, 0.24, 0.82). Each one is a share of the last column: for P(rain given wet), add the "combination and wet" values of the two rainy rows and divide by the sum of all four rows; for "sprinkler on", use only the two rows where the sprinkler ran, and divide the rainy one by the sum of both.
    3. Change P(sprinkler) to 0.6 and recompute. Does explaining away get stronger or weaker? Why?
    **What you'll learn:** how a Bayesian network turns small probability tables into answers to many questions, and how explaining away works.
 

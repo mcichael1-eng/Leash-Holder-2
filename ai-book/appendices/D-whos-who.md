@@ -16,7 +16,7 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | Microsoft AI | Microsoft's in-house AI group; Microsoft was OpenAI's earliest large backer and is also an Anthropic compute partner. | Copilot assistants in Windows and Office; in-house models | Chapter 61 |
 | Amazon | Builds its own Nova models and the Bedrock platform that serves many labs' models; Anthropic's main cloud and training partner. | Nova models; Bedrock; Alexa | Chapter 61 |
 | DeepSeek | Hangzhou lab founded in 2023 by Liang Wenfeng and funded by the quantitative hedge fund High-Flyer; known for efficient open-weight models. | DeepSeek V4-Pro, V4-Flash, V4.1-Flash (MIT license); the R1 reasoning model (2025) | Chapter 24 |
-| Alibaba Qwen | The model team of Alibaba Cloud; Qwen is one of the most widely used open-weight families. | Qwen3.8-Max (closed); Qwen3.8-2.4T-A95B and Qwen3.8-27B (open) | Chapter 24 |
+| Alibaba Qwen | The model team of Alibaba Cloud; Qwen is one of the most widely used open-weight families. | Qwen3.8-2.4T-A95B and Qwen3.8-27B (open); Qwen3.8-Max, the hosted version of the 2.4T model | Chapter 24 |
 | Moonshot AI | Beijing startup founded in 2023 by Yang Zhilin; maker of the Kimi assistant. | Kimi K3 (open weights, 2.8 trillion parameters) | Chapter 24 |
 | Z.ai (formerly Zhipu AI) | Beijing lab that grew out of Tsinghua University research. | GLM-5.3 (open weights) | Chapter 24 |
 | MiniMax | Shanghai company making language, speech and video models. | MiniMax models; Hailuo video app | Chapter 17 |

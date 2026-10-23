@@ -314,7 +314,7 @@ timeline
 |---|---|---|
 | Jan 1, 2026 | California SB 53 and SB 243 (companion chatbots) take effect | First US frontier-AI and companion-chatbot rules in force |
 | Jan 2026 | Anthropic publishes Claude's constitution; Claude Cowork research preview | Public priorities for a model's behavior; agents for non-coding work |
-| Jan 2026 | NVIDIA launches the Vera Rubin platform at CES; Microsoft's Maia 200 chip | Next-generation GPU and custom silicon |
+| Jan 2026 | NVIDIA launches the Vera Rubin platform at CES (January 5), saying it is in full production with partner systems due in the second half of 2026; Microsoft's Maia 200 chip | Next-generation GPU and custom silicon |
 | Jan 2026 | Colossus 2's first GB200 cluster comes online, reportedly about 110,000 GPUs | xAI's gigawatt-scale site begins operating |
 | Jan 5, 2026 | Boston Dynamics unveils the production electric Atlas humanoid | Humanoids move toward factory use |
 | Jan 9, 2026 | Meta signs nuclear deals for up to 6.6 GW by 2035 | Nuclear power for AI campuses |
@@ -362,7 +362,7 @@ timeline
 | Year | Event | Why it matters |
 |---|---|---|
 | Jul 2026 | ChatGPT Work launches and ChatGPT's "apps" are renamed "plugins"; xAI is rebranded SpaceXAI; Microsoft says (July 29) it added another gigawatt of capacity in one quarter | Agents for office work; corporate reshuffles; capacity races on |
-| Jul 8, 2026 | Waymo goes fully driverless in Las Vegas | Robotaxis spread to more US cities |
+| Jul 8, 2026 | Waymo goes fully driverless in Las Vegas, Denver, San Diego and Tampa (employees ride first; by October Waymo lists 15 US metros open to the public) | Robotaxis spread to more US cities |
 | Jul 9, 2026 | S&P cuts Oracle to BBB- | Financial strain of the AI build-out shows |
 | Jul 9, 2026 | GPT-5.6 released in Luna, Terra and Sol tiers | Tiered model families |
 | Jul 13, 2026 | Meta says its Hyperion campus in Louisiana will scale to 5 GW | Single campuses reach multiple gigawatts |
@@ -380,13 +380,13 @@ timeline
 | Aug 2026 | Press reports say OpenAI can no longer rule out "Critical" cyber capability for an unreleased model | Cyber capability becomes the leading safety concern |
 | Aug 10, 2026 | Zoox begins paid robotaxi rides in Las Vegas (reported); Meta's Muse Glimmer, a 30-billion-parameter open-weight model | Purpose-built robotaxis enter commercial service; Meta keeps one open model |
 | Aug 13, 2026 | DeepSeek-V4-Pro generally available; Gemini 3.7 Flash | Open-weight frontier model released; rapid Flash updates |
-| Jul–Aug 2026 | Qwen3.8 family: closed Qwen3.8-Max (July 19) and open models including a 2.4T model (August 8) | Chinese open-weight scale-up |
+| Jul–Aug 2026 | Qwen3.8 family: the open Qwen3.8-2.4T-A95B, its hosted version Qwen3.8-Max, and the small open Qwen3.8-27B (sources differ on the days: Epoch lists Max on July 19 and the 2.4T weights on August 8; other reports give August 3 and August 12) | Chinese open-weight scale-up |
 | Aug 2026 | Stanford "Canaries" update: young workers in AI-exposed jobs about 19% below trend | Early labor-market signal, described as not causal |
-| Aug 26, 2026 | NVIDIA reports quarterly revenue of $96.2 billion and says Vera Rubin is in full production | AI hardware demand still doubling year over year |
+| Aug 26, 2026 | NVIDIA reports quarterly revenue of $96.2 billion and says Vera Rubin is "ramping into full production," with racks running at several clouds | AI hardware demand still doubling year over year |
 | Sep 1–2, 2026 | US Justice Department files a statement of interest arguing that copying works to train AI can be fair use, in the OpenAI copyright cases (sources differ on the day) | Government weighs in on AI copyright |
 | Sep 2, 2026 | Gemini 3.8 Flash | Google's fast-model line keeps updating |
 | Sep 3, 2026 | OpenAI unveils GPT-6 Astra, its first pretraining run on more than 100,000 GPUs (about 9.4 × 10^26 FLOP, per Epoch) | Largest known training run; released first as a limited preview, then to paid users |
-| Sep 3, 2026 | GPT-6 Astra scores 62.7% on ARC-AGI-3 with the standard harness and 99.9% with a provider-built "adapter" harness, per ARC Prize | Benchmark falls within six months; harness choice matters |
+| Sep 3, 2026 | GPT-6 Astra scores 62.7% on ARC-AGI-3 with the standard harness and 98.6% with a provider-built "adapter" harness, both at maximum effort (99.9% with the adapter at high effort), per ARC Prize | Benchmark falls within six months; harness choice matters |
 | Sep 8, 2026 | METR stops updating its time-horizon page, warning that measurements above about 16 hours are unreliable | The best-known agent yardstick runs out of room |
 | Sep 15, 2026 | Claude Fable 5.1 and Mythos 5.1 (the date on Anthropic's announcement; some trackers list September 1) | Updated tiered models |
 | Sep 21, 2026 | Grok 4.7 | SpaceX's AI unit releases a new model |

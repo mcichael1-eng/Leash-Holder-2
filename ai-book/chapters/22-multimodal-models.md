@@ -124,7 +124,7 @@ The 2023 research project LLaVA showed how cheap this can be. Its authors took a
 
 > **Definition — Vision-language model (VLM):** A model that takes images and text together and can describe, answer questions about, or reason over images. Every frontier chatbot that accepts photo uploads contains one.
 
-Many systems also shrink the number of image vectors before they reach the language model, because every vector costs context space and compute. Some merge each 2 × 2 group of neighboring patch vectors into one. Others use a fixed set of learned "query" vectors that summarize the whole image into, say, 32 or 64 vectors regardless of its size; DeepMind's Flamingo (2022) and Salesforce's BLIP-2 (2023) worked this way.
+Many systems also shrink the number of image vectors before they reach the language model, because every vector costs context space and compute. Some merge each 2 × 2 group of neighboring patch vectors into one. Others use a fixed set of learned "query" vectors that summarize the whole image into, say, 32 or 64 vectors regardless of its size; DeepMind's Flamingo (2022) and BLIP-2 (2023, short for Bootstrapping Language-Image Pre-training, from the business-software company Salesforce) worked this way.
 
 > **Definition — Visual token:** One vector that represents part of an image inside a language model's sequence, after the encoder and projector. Providers bill visual tokens like input text tokens.
 
@@ -150,7 +150,7 @@ flowchart LR
 
 Let's price a photo two ways: from the architecture, and from a provider's published rule of thumb.
 
-**From the architecture.** Suppose a model uses 14-pixel patches and then merges each 2 × 2 group, a design used by Alibaba's open Qwen2-VL models in 2024. Take a photo resized to 1,008 × 1,008 pixels.
+**From the architecture.** Suppose a model uses 14-pixel patches and then merges each 2 × 2 group, a design used by Alibaba's open Qwen2-VL models in 2024 (VL stands for vision-language). Take a photo resized to 1,008 × 1,008 pixels.
 
 1. Patches per side: 1,008 ÷ 14 = 72.
 2. Patches in total: 72 × 72 = 5,184.
@@ -301,7 +301,7 @@ For a model to *speak*, not just listen, it needs discrete audio tokens it can p
 
 > **Definition — Neural audio codec:** A pair of neural networks that compress audio into a short stream of discrete tokens (the encoder) and rebuild natural-sounding audio from those tokens (the decoder). It is the audio equivalent of a text tokenizer, and it lets a language model "write" sound.
 
-Codecs use the codebook idea from earlier, often in layers. The first codebook captures the rough shape of each short slice of sound; a second codebook encodes what the first got wrong; a third refines further, and so on. Meta's EnCodec (2022) produces 75 frames per second for 24 kHz audio; Kyutai's Mimi codec (2024), built for its Moshi voice model, runs at just 12.5 frames per second, each frame carrying several codebook tokens.
+Codecs use the codebook idea from earlier, often in layers. The first codebook captures the rough shape of each short slice of sound; a second codebook encodes what the first got wrong; a third refines further, and so on. Meta's EnCodec (2022) produces 75 frames per second for 24 kHz audio (24 kilohertz: 24,000 samples per second); the Mimi codec (2024) from Kyutai, a nonprofit AI research lab in Paris, built for its Moshi voice model, runs at just 12.5 frames per second, each frame carrying several codebook tokens.
 
 > **Definition — Semantic and acoustic tokens:** Two kinds of audio tokens. Semantic tokens capture *what* is said (the words and their meaning); acoustic tokens capture *how* it sounds (the voice, tone, accent and background). Speaking models typically need both.
 
@@ -335,7 +335,7 @@ sequenceDiagram
     participant L as Language model
     participant T as Text to speech
     U->>V: You stop speaking
-    Note over V: Waits a few hundred ms to be sure you finished
+    Note over V: Waits a few hundred milliseconds to be sure you finished
     V->>A: Your audio
     A->>L: Transcript as text
     L->>T: First sentence of the reply
@@ -417,6 +417,8 @@ Variations exist. Alibaba's Qwen Omni models split the work between a "Thinker" 
 
 For several years, "make me a picture" in a chatbot meant something quite indirect. The chatbot wrote a text prompt and handed it to a separate image generator, typically a diffusion model (see Chapter 16) that starts from random noise and removes it step by step under the guidance of the prompt. OpenAI's DALL·E 3 inside ChatGPT (2023) worked this way: ChatGPT rewrote your request into a detailed prompt, and DALL·E drew it. The chatbot could not see what was drawn while drawing it, and edits meant redrawing from scratch.
 
+> **Definition — DALL·E:** OpenAI's family of text-to-image generators (DALL·E in 2021, DALL·E 2 in 2022, DALL·E 3 in 2023), named after the painter Salvador Dalí and the film robot WALL·E. DALL·E 3 was built into ChatGPT in 2023, and in 2025 ChatGPT switched to image generation inside GPT-4o itself.
+
 In March 2025, OpenAI changed this with native image generation in GPT-4o. The same model that read your conversation now produced the image itself, predicting image tokens one after another.
 
 > **Definition — Autoregressive image generation:** Creating an image by predicting its tokens one at a time, each conditioned on the conversation and all the image tokens so far, the same way a language model writes text. A decoder then turns the tokens into pixels.
@@ -436,7 +438,7 @@ The top systems are often hybrids. An autoregressive model may plan the image as
 
 > **Definition — Any-to-any model:** A model that can accept many kinds of input (text, images, audio, video) and produce many kinds of output, choosing the output modality to suit the request.
 
-Video is the newest output. At Google I/O on May 19, 2026, Google announced Gemini Omni, a model that combines Gemini with Google's generative-media models: any input in, starting with video out, with editing by conversation. Gemini Omni Flash rolled out in the Gemini app that day, entered the Gemini API in preview on June 30, 2026 and became generally available there on August 27. Chapter 47 covers the video-generation landscape, the products, and the provenance tools (such as watermarks and Content Credentials) used to label AI-made media.
+Video is the newest output. At Google I/O, Google's yearly developer conference, on May 19, 2026, Google announced Gemini Omni, a model that combines Gemini with Google's generative-media models: any input in, starting with video out, with editing by conversation. Gemini Omni Flash rolled out in the Gemini app that day, entered the Gemini API in preview on June 30, 2026 and became generally available there on August 27. Chapter 47 covers the video-generation landscape, the products, and the provenance tools (such as watermarks and Content Credentials) used to label AI-made media.
 
 Not every chatbot draws. As of late 2026, Anthropic's help pages say Claude "doesn't generate photos or illustrations the way image-generation tools do"; instead it builds diagrams, charts and interactive visuals from code (HTML and SVG) and can read images you upload. If you need a picture rather than a chart, use an app with a built-in image model or a dedicated generator (Chapter 47).
 

@@ -22,7 +22,7 @@ You need Chapter 12 (Neural Networks From Scratch), which builds the neuron, the
 In Chapter 12, one step of plain gradient descent took the ice-cream network from a loss of 0.5 to almost zero. With nine parameters and one example, the recipe is easy. Now scale it up: a hundred layers, billions of parameters, trillions of examples. Five problems appear, and for about twenty years they made deep networks look like a dead end.
 
 1. **It is slow.** The loss landscape of a big network has long, narrow valleys. Plain gradient descent zig-zags across them instead of walking along them.
-2. **It is unstable.** One step that is too big can blow the numbers up. A training run that has cost millions of dollars can suddenly print "loss = NaN" and die.
+2. **It is unstable.** One step that is too big can blow the numbers up. A training run that has cost millions of dollars can suddenly print "loss = NaN" ("not a number", the computer's sign that its arithmetic has broken down) and die.
 3. **Signals fade or explode.** Backpropagation multiplies slopes layer by layer. Through a hundred layers, the learning signal can shrink to nothing or grow to infinity.
 4. **It memorizes.** A network with enough parameters can memorize every training example, including the noise, and fail on new data.
 5. **It is expensive.** Every number costs memory and energy. How many bits each number gets, and which software organizes the work, matters enormously at scale.
@@ -147,7 +147,7 @@ In 2017 Ilya Loshchilov and Frank Hutter noticed that the usual way of adding we
 
 ### Beyond Adam: Lion, Shampoo and SOAP
 
-Researchers kept looking for better walkers. **Lion** (Google, 2023), found partly by an automated search over possible update rules, uses only the *sign* of a momentum-like quantity, so every parameter moves by exactly the same amount each step, and it stores less state than Adam. **Shampoo** (2018) and its 2024 descendant **SOAP** go the other way: they keep richer information about the *curvature* of the landscape, meaning how the slope itself changes as you move, for each layer. Curvature tells you how big a step is safe in each direction (where the landscape bends sharply, a step that looks safe can quickly overshoot), so these optimizers, sometimes called "second-order" methods, can take better-aimed steps at the cost of extra memory and computation.
+Researchers kept looking for better walkers. **Lion** (Google, 2023), found partly by an automated search over possible update rules, uses only the *sign* of a momentum-like quantity (whether it is positive or negative, ignoring its size), so every parameter moves by exactly the same amount each step, and it stores less state than Adam. **Shampoo** (2018) and its 2024 descendant **SOAP** go the other way: they keep richer information about the *curvature* of the landscape, meaning how the slope itself changes as you move, for each layer. Curvature tells you how big a step is safe in each direction (where the landscape bends sharply, a step that looks safe can quickly overshoot), so these optimizers, sometimes called "second-order" methods, can take better-aimed steps at the cost of extra memory and computation.
 
 > **Definition — Lion, Shampoo and SOAP:** Alternative optimizers. Lion (2023) moves each parameter by a fixed amount in the direction of the sign of its momentum. Shampoo (2018) and SOAP (2024) use per-layer curvature information to shape their steps, at extra cost.
 
@@ -171,7 +171,7 @@ Muon is meant for the 2-D weight matrices of hidden layers. The recommended prac
 
 The results came quickly:
 
-- Muon set speed records on two community benchmarks, the NanoGPT "speedrun" and training a small image classifier on CIFAR-10 (reaching 94% accuracy in 2.6 seconds of A100 GPU time instead of 3.3).
+- Muon set speed records on two community benchmarks, the NanoGPT "speedrun" (a public race to train a small GPT-style language model to a fixed quality as fast as possible) and training a small image classifier on CIFAR-10 (a standard set of 60,000 tiny 32-by-32-pixel color photos in ten classes such as cat, ship and truck), reaching 94% accuracy in 2.6 seconds of time on an A100 (NVIDIA's 2020 data-center GPU) instead of 3.3.
 - In February 2025, Moonshot AI published "Muon is Scalable for LLM Training", showing that with weight decay and a per-matrix adjustment of the update size, Muon works for large language models.
 - In July 2025, Moonshot's Kimi K2 (about 1 trillion total parameters, 32 billion active) was pre-trained on 15.5 trillion tokens with **MuonClip**, Muon plus a fix that stops attention scores from growing out of control, and Moonshot reported zero loss spikes during the run.
 - DeepSeek V4 (2026) states that it uses Muon "for faster convergence and greater training stability".
@@ -272,7 +272,7 @@ Learning rate and batch size work together. A bigger batch averages more example
 
 Even with a good schedule, large runs sometimes suffer a **loss spike**: the loss, which had been falling smoothly, suddenly jumps up. Sometimes it recovers on its own within a few hundred steps. Sometimes it never recovers, or turns into NaN. Causes include an unusual batch of data, numbers inside the attention mechanism growing too large, and the optimizer taking one step too far in a sharp part of the landscape.
 
-At frontier scale, spikes are expensive, because thousands of chips sit idle or compute garbage. The standard defense is to save a **checkpoint**, a complete snapshot of all parameters and optimizer state, every so often. If a spike does not recover, engineers roll back to a checkpoint from before the spike and change something: skip the batches that triggered it, lower the learning rate, or tighten gradient clipping (explained later in this chapter). Google's PaLM paper (2022), for example, reported about 20 spikes during training and handled them by restarting from a checkpoint roughly 100 steps before each one and skipping a few hundred batches of data. Newer designs try to prevent spikes in the first place, for instance by normalizing the queries and keys inside attention ("QK-norm") or by clipping them, as in Kimi K2's MuonClip.
+At frontier scale, spikes are expensive, because thousands of chips sit idle or compute garbage. The standard defense is to save a **checkpoint**, a complete snapshot of all parameters and optimizer state, every so often. If a spike does not recover, engineers roll back to a checkpoint from before the spike and change something: skip the batches that triggered it, lower the learning rate, or tighten gradient clipping (explained later in this chapter). Google's PaLM paper (2022), which describes a 540-billion-parameter language model, for example, reported about 20 spikes during training and handled them by restarting from a checkpoint roughly 100 steps before each one and skipping a few hundred batches of data. Newer designs try to prevent spikes in the first place, for instance by normalizing the queries and keys inside attention ("QK-norm") or by clipping them, as in Kimi K2's MuonClip. (Attention, which Chapter 15 takes apart, scores how relevant each earlier token is by comparing a "query" vector from the current token with a "key" vector from each earlier one; Q and K are their initials, and if those vectors grow too large the scores explode.)
 
 > **Definition — Loss spike:** A sudden jump in the training loss during an otherwise smooth run, usually a sign of numerical instability. At frontier scale each spike can waste large amounts of compute.
 
@@ -311,7 +311,7 @@ The random numbers must also be the right size. Each layer multiplies its input 
 
 The fix is to scale the random starting weights according to how many inputs each neuron has: the more inputs being added together, the smaller each weight should be, so the sum stays about the same size as each input.
 
-- **Xavier (or Glorot) initialization** (Xavier Glorot and Yoshua Bengio, 2010) sets the spread of the random weights based on the number of inputs and outputs of the layer. For a layer with 512 inputs and 512 outputs, the standard deviation (the typical size of the random numbers, see Chapter 6) is √(2 ÷ 1,024) ≈ 0.044.
+- **Xavier (or Glorot) initialization** (Xavier Glorot and Yoshua Bengio, 2010) sets the spread of the random weights based on the number of inputs and outputs of the layer. The rule is √(2 ÷ (number of inputs + number of outputs)). For a layer with 512 inputs and 512 outputs, that sum is 1,024, so the standard deviation (the typical size of the random numbers, see Chapter 6) is √(2 ÷ 1,024) ≈ 0.044.
 - **He initialization** (Kaiming He and colleagues, 2015) adjusts this for ReLU, which zeroes out about half its inputs, so the weights are a bit larger: √(2 ÷ number of inputs). For 512 inputs that is √(2 ÷ 512) = 0.0625.
 
 Modern frameworks apply sensible defaults automatically, so you rarely choose by hand. Large language models typically draw their starting weights from a narrow bell curve, and their published configuration files often list the spread as a setting (frequently called something like `initializer_range`). Some designs also shrink the starting weights of layers that add into a residual connection, so that a stack of many such layers starts out calm; the GPT-2 paper (2019), for example, scaled them down according to the number of layers.
@@ -398,7 +398,7 @@ Classical statistics says that as a model grows more flexible, its test error fi
 ```
 *Figure 13.6: Double descent. Past the danger zone where the model can barely fit its training data, making it even bigger lowers the test error again.*
 
-Another surprise, **grokking** (reported in 2022), happens on some small, puzzle-like tasks: a network memorizes the training set quickly, its validation accuracy stays poor for a long time, and then, thousands of steps later, it suddenly "gets" the underlying rule and validation accuracy jumps. One of the NeurIPS 2025 best papers, "Why Diffusion Models Don't Memorize", found a related pattern in image generators: generalization appears on one timescale during training, and memorization only on a later, slower one.
+Another surprise, **grokking** (reported in 2022), happens on some small, puzzle-like tasks: a network memorizes the training set quickly, its validation accuracy stays poor for a long time, and then, thousands of steps later, it suddenly "gets" the underlying rule and validation accuracy jumps. One of the best papers at NeurIPS 2025 (the largest yearly AI research conference), "Why Diffusion Models Don't Memorize", found a related pattern in image generators: generalization appears on one timescale during training, and memorization only on a later, slower one.
 
 > **Definition — Double descent:** The observation that as models grow, test error can fall, rise to a peak near the size where the model just fits its training data, and then fall again for even larger models.
 
@@ -422,7 +422,7 @@ Take one token's vector of four numbers: [2, 4, 6, 8].
 
 The result always has a mean of 0 and a spread of 1, whether the input was [2, 4, 6, 8] or [2,000, 4,000, 6,000, 8,000]. The layer then multiplies each position by a learned "gain" and adds a learned shift, so the network can still choose the scale it wants. That is **layer normalization**.
 
-**RMSNorm** is a simpler, cheaper version. It skips the mean and only divides by the root-mean-square (the square root of the average of the squares). For [2, 4, 6, 8]: the squares are 4, 16, 36 and 64, their average is 30, and √30 ≈ 5.477. Dividing gives **[0.365, 0.730, 1.095, 1.461]**. The sizes are tamed but the mean is not forced to zero, and in practice this works just as well with less computation.
+**RMSNorm** is a simpler, cheaper version. It skips the mean and only divides by the root-mean-square, or RMS (the square root of the average of the squares). For [2, 4, 6, 8]: the squares are 4, 16, 36 and 64, their average is 30, and √30 ≈ 5.477. Dividing gives **[0.365, 0.730, 1.095, 1.461]**. The sizes are tamed but the mean is not forced to zero, and in practice this works just as well with less computation.
 
 ### The family of normalizations
 
@@ -435,7 +435,7 @@ The result always has a mean of 0 and a spread of 1, whether the input was [2, 4
 
 **Batch normalization** (Sergey Ioffe and Christian Szegedy, 2015) was a breakthrough for image networks, but it depends on the other examples in the batch, which is awkward for text of varying lengths and for small batches. **Layer normalization** (Jimmy Ba, Jamie Kiros and Geoffrey Hinton, 2016) normalizes each example on its own and became the Transformer standard. **RMSNorm** (Biao Zhang and Rico Sennrich, 2019) simplified it and is now used in most open large language models.
 
-Where the normalization sits also matters. The original 2017 Transformer normalized *after* each sub-layer (**post-norm**). Later models such as GPT-2 moved it *before* each sub-layer (**pre-norm**), which trains much more stably in deep stacks and is the norm today. And in 2025, a paper titled "Transformers without Normalization" (CVPR 2025) showed that replacing normalization layers with a simple learned squash, tanh(α × x), called **DyT**, matches normalized Transformers in many settings, a reminder that even basic plumbing is still being rethought.
+Where the normalization sits also matters. The original 2017 Transformer normalized *after* each sub-layer (**post-norm**); the sub-layers are the attention part and the feed-forward part of each block, shown in Figure 13.8. Later models such as GPT-2 moved it *before* each sub-layer (**pre-norm**), which trains much more stably in deep stacks and is the norm today. And in 2025, a paper titled "Transformers without Normalization" (presented at CVPR 2025, the leading computer-vision research conference) showed that replacing normalization layers with a simple learned squash, tanh(α × x), where α (the Greek letter alpha) is a number the network learns, called **DyT**, matches normalized Transformers in many settings, a reminder that even basic plumbing is still being rethought.
 
 > **Definition — Normalization layer:** A layer that rescales a group of numbers to a standard range (for example mean 0 and spread 1) before passing them on, so that training stays stable as values flow through many layers.
 
@@ -642,8 +642,8 @@ Nobody writes forward and backward passes by hand for real models, as you did in
 | Framework | Origin | Style | Where it leads in 2026 |
 |---|---|---|---|
 | PyTorch | Meta, 2016; now run by the PyTorch Foundation | Python-first; runs code line by line, easy to debug | Research and most open frontier models |
-| JAX | Google, 2018 | Functional style; compiles whole computations | Google DeepMind's main research stack, Google TPUs |
-| TensorFlow | Google, 2015 | Originally graph-based; mature production tools | Large installed base in companies |
+| JAX | Google, 2018 | Functional style (code written as math-like functions); compiles whole computations before running them | Google DeepMind's main research stack, Google TPUs |
+| TensorFlow | Google, 2015 | Originally graph-based (you described the whole calculation first, then ran it); mature production tools | Large installed base in companies |
 | Keras 3 | François Chollet, 2015; version 3 in 2023 | High-level and beginner-friendly | Runs on top of TensorFlow, JAX or PyTorch |
 
 PyTorch dominates research and open-model development. Its 2.11 release on 23 March 2026 contained 2,723 commits from 432 contributors, and the project moved to a new release every two months in 2026. JAX is the research workhorse at Google DeepMind and is closely tied to Google's TPU chips. TensorFlow, which dominated the late 2010s, retains a large base in production systems, and Keras offers the gentlest on-ramp.
@@ -731,7 +731,7 @@ X, y = load_digits(return_X_y=True)           # 1,797 images of 8x8 pixels
 X = X / 16.0                                  # pixel values 0..16 -> 0..1
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=0, stratify=y)   # 80% study, 20% exam
-to_t = lambda a, dt: torch.tensor(a, dtype=dt)
+to_t = lambda a, dt: torch.tensor(a, dtype=dt)   # helper: array -> tensor
 train_ds = TensorDataset(to_t(X_train, torch.float32), to_t(y_train, torch.long))
 test_ds = TensorDataset(to_t(X_test, torch.float32), to_t(y_test, torch.long))
 train_dl = DataLoader(train_ds, batch_size=64, shuffle=True)  # shuffled batches
@@ -860,7 +860,7 @@ Put the chapter together and you can read the "recipe card" of a modern model. H
 | Initialization | He initialization | Small random values, residual branches scaled down |
 | Normalization | Batch normalization | RMSNorm in pre-norm position, often extra norms inside attention (QK-norm) |
 | Shortcuts | Residual connections (ResNet) | Residual stream; some use hyper-connections such as DeepSeek's mHC |
-| Activation | ReLU | SwiGLU (a gated form of SiLU) |
+| Activation | ReLU | SwiGLU (a gated form of SiLU, Chapter 15) |
 | Regularization | Dropout, data augmentation, weight decay | Weight decay; little or no dropout; enormous data seen about once |
 | Precision | FP32 | BF16 mixed precision, FP8, and the first FP4 runs |
 | Scale | Tens of millions of parameters, a few GPUs | Hundreds of billions to over a trillion parameters, thousands of chips |
@@ -904,7 +904,7 @@ Finally, frameworks such as PyTorch do the calculus for you, so a complete, mode
 
 ## Key terms
 
-Optimizer, loss landscape, saddle point, momentum, Adam, optimizer state, weight decay, AdamW, Lion, Shampoo and SOAP, Muon, orthogonalization, Newton–Schulz iteration, NaN (Not a Number), learning-rate schedule, warmup, cosine decay, WSD (warmup–stable–decay), loss spike, checkpoint, symmetry breaking, initialization, Xavier (Glorot) initialization, He initialization, generalization, overfitting, underfitting, regularization, dropout, data augmentation, early stopping, label smoothing, double descent, grokking, normalization layer, batch normalization, layer normalization, RMSNorm, pre-norm and post-norm, DyT (Dynamic Tanh), vanishing gradient, exploding gradient, gradient norm, gradient clipping, residual connection (skip connection), ResNet, residual stream, hyper-connections and mHC, universal approximation theorem, inductive bias, the Bitter Lesson, scaling laws, floating-point format, BF16, mixed precision, quantization, framework, PyTorch, JAX, TensorFlow and Keras, CUDA, Triton and kernels, Hugging Face, learning curve, error analysis.
+Optimizer, loss landscape, saddle point, momentum, Adam, optimizer state, weight decay, AdamW, Lion, Shampoo and SOAP, Muon, orthogonalization, Newton–Schulz iteration, NaN (Not a Number), learning-rate schedule, warmup, cosine decay, WSD (warmup–stable–decay), loss spike, checkpoint, symmetry breaking, initialization, Xavier (Glorot) initialization, He initialization, generalization, overfitting, underfitting, regularization, dropout, data augmentation, early stopping, label smoothing, double descent, grokking, normalization layer, batch normalization, layer normalization, RMSNorm, pre-norm and post-norm, DyT (Dynamic Tanh), vanishing gradient, exploding gradient, gradient norm, gradient clipping, residual connection (skip connection), ResNet, residual stream, hyper-connections and mHC, universal approximation theorem, inductive bias, the Bitter Lesson, scaling laws, floating-point format, BF16, mixed precision, quantization, framework, PyTorch, JAX, TensorFlow and Keras, CUDA, Triton and kernels, Hugging Face, learning curve, error analysis, AMD (Advanced Micro Devices).
 
 ## Exercises
 
@@ -949,8 +949,8 @@ Optimizer, loss landscape, saddle point, momentum, Adam, optimizer state, weight
 
 7. **[Medium] Train, then break, a real network in Google Colab.** Copy the complete script from the section "A complete training script for Google Colab" in this chapter into a new notebook at https://colab.research.google.com and run it. Confirm you see about 26,122 parameters and roughly 97% test accuracy. Then change one thing at a time, rerun, and write down the final test accuracy and what the loss curves look like:
    1. Learning rate `lr=3e-3` to `lr=1.0` (expect instability), then to `lr=1e-5` (expect crawling).
-   2. Remove both `nn.ReLU()` entries (the network collapses into a linear model; accuracy drops).
-   3. Change `nn.Linear(64, 128)` and the next layer to width 8 instead of 128 (fix the matching numbers so the shapes line up: 64 → 8 → 8 → 10).
+   2. Remove both `nn.ReLU()` entries, deleting each one together with the comma after it, `nn.ReLU(),` (the network collapses into a linear model; accuracy drops).
+   3. Shrink the hidden layers from width 128 to width 8, so the shapes go 64 → 8 → 8 → 10: the three layer lines become `nn.Linear(64, 8)`, `nn.Linear(8, 8)` and `nn.Linear(8, 10)`.
    4. Set `warmup = 0` and remove the line with `clip_grad_norm_`; then set `EPOCHS = 200` and look for the generalization gap widening.
 
    **What you'll learn:** how the learning rate, activations, capacity and schedule show up in real training curves, the skill practitioners call "reading the loss".
@@ -1008,7 +1008,7 @@ Optimizer, loss landscape, saddle point, momentum, Adam, optimizer state, weight
    plt.legend(); plt.show()
    ```
 
-   What each part does: the first block loads the digits; `make_model` builds a fresh 64 → 128 → 128 → 10 network with identical starting weights for every racer; `make_optimizers` creates each optimizer, giving Muon only the 2-D weight matrices and AdamW the biases, as recommended; the main loop trains each racer for five epochs on the same shuffled batches and records the loss after every step; the chart uses a log scale so small and large losses are both visible. In our run, plain SGD was still far behind after five epochs (final loss about 1.9), momentum, Adam and AdamW reached roughly 0.14 to 0.24, and Muon reached about 0.03. Your numbers may differ. Now multiply and divide each learning rate by 10 and rerun. Does the ranking change?
+   What each part does: the first block loads the digits; `make_model` builds a fresh 64 → 128 → 128 → 10 network with identical starting weights for every racer; `make_optimizers` creates each optimizer, giving Muon only the 2-D weight matrices and AdamW the biases, as recommended; the main loop trains each racer for five epochs on the same shuffled batches and records the loss after every step; the chart uses a log scale so small and large losses are both visible. In our run, plain SGD was still far behind after five epochs (final loss about 1.9), momentum, Adam and AdamW reached roughly 0.14 to 0.24, and Muon reached about 0.03. Your numbers may differ. Now multiply and divide each learning rate by 10 and rerun: edit the `lr=` numbers inside `make_optimizers`, remembering that `1e-3` means 0.001, so ten times bigger is `1e-2` and ten times smaller is `1e-4`. Does the ranking change?
 
    **What you'll learn:** optimizers differ in speed, the learning rate interacts with the choice of optimizer, and a fair comparison needs the same starting point and the same data.
 
@@ -1076,6 +1076,8 @@ Optimizer, loss landscape, saddle point, momentum, Adam, optimizer state, weight
 - **Open problem: stability at trillion-parameter scale.** Loss spikes, growing attention scores, residual-stream design (such as mHC) and 4-bit pretraining are all active research areas where small improvements are worth a lot at frontier scale.
 - **Open problem: why big networks generalize.** Double descent, grokking and the memorization timescales in diffusion models remain only partly explained. Better theory would help predict when a model will memorize sensitive or copyrighted data.
 - **Open problem: continual learning.** Today's models are trained once and then frozen. Methods that let a model keep learning from new data without forgetting what it knew would change how AI products work.
+
+> **Definition — AMD (Advanced Micro Devices):** An American chip company that makes processors for PCs and servers and is NVIDIA's main rival in GPUs for AI, with its Instinct line of data-center accelerators.
 
 ## Check your understanding
 

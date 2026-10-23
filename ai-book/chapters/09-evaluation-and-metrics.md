@@ -84,7 +84,7 @@ Worked out for 1,500 emails at 90%: `0.9 × 0.1 = 0.09`; divided by 1,500 is 0.0
 
 This matters more than people think. If model A scores 91.0% and model B scores 91.8% on the same 1,500 test emails, the difference is smaller than the noise. You have not shown that B is better. Many "state of the art" claims in research papers and product launches are differences of this size.
 
-Statisticians have a formal version of this check, the significance test. You start by assuming there is no real difference (both models are equally good) and ask: if that were true, how often would luck alone produce a gap at least as big as the one you saw? That probability is the p-value. If it is small, conventionally below 0.05 (1 in 20), the result is called statistically significant: chance becomes an unlikely explanation. For two scores near 91%, each measured on its own separate set of 1,500 emails, each carries a margin of about 1.5 points, and the gap would need to be roughly 2 points before it passed that bar, so 0.8 points falls well short. When both models answer the same emails, a paired comparison that looks only at the emails where they disagree can detect smaller gaps.
+Statisticians have a formal version of this check, the significance test. You start by assuming there is no real difference (both models are equally good) and ask: if that were true, how often would luck alone produce a gap at least as big as the one you saw? That probability is the p-value. If it is small, conventionally below 0.05 (1 in 20), the result is called statistically significant: chance becomes an unlikely explanation. For two scores near 91%, each measured on its own separate set of 1,500 emails, each carries a margin of about 1.5 points, and the gap would need to be roughly 2 points before it passed that bar, so 0.8 points falls well short. (Why 2 and not 1.5 + 1.5 = 3? Both scores would have to be off by their full margin in opposite directions at the same time, which is unlikely, so the two margins combine to about 1.4 times one margin, not twice it.) When both models answer the same emails, a paired comparison that looks only at the emails where they disagree can detect smaller gaps.
 
 > **Definition — p-value:** The probability of seeing a difference at least as large as the one observed if there were really no difference at all, only chance. A small p-value means luck is an unlikely explanation; it is not the probability that the result is true.
 
@@ -117,7 +117,7 @@ flowchart LR
 
 > **Definition — Target leakage:** A kind of leakage where a feature is a consequence of the answer, recorded after the fact, such as "treatment given" when predicting a disease.
 
-**Duplicate leakage.** If the same item appears in both training and test data, the test partly measures memory. Researchers found that the popular CIFAR image benchmarks contained near-duplicates of some test images in their training sets. In medicine, a subtler version happens when several scans of the same patient are split across training and test. The model can learn to recognize that patient instead of the disease. The fix is to split by patient, not by scan.
+**Duplicate leakage.** If the same item appears in both training and test data, the test partly measures memory. Researchers found that the popular CIFAR image benchmarks (two sets of 60,000 tiny color photos of everyday objects such as cars, birds and ships, named after the Canadian Institute for Advanced Research) contained near-duplicates of some test images in their training sets. In medicine, a subtler version happens when several scans of the same patient are split across training and test. The model can learn to recognize that patient instead of the disease. The fix is to split by patient, not by scan.
 
 **Time leakage.** When predicting the future, you must train only on the past. A model that predicts next month's sales using a feature computed over the whole year, including next month, looks brilliant in testing and fails on day one.
 
@@ -136,7 +136,7 @@ A close cousin of leakage is a model that finds an easy clue that happens to wor
 Some of the best-known cases:
 
 - **Wolves and snow.** In a 2016 paper on explaining model decisions ("Why Should I Trust You?"), researchers deliberately trained a classifier on photos where every wolf stood on snow and every husky did not. The model learned "snow means wolf." Their explanation tool exposed the trick. It was a planted experiment, but the lesson stuck because real systems do the same thing without anyone planting it.
-- **Which hospital took the X-ray.** A 2018 study of a pneumonia detector trained on chest X-rays found that the model could tell which hospital an image came from, and that its performance dropped on images from other hospitals. Hospitals differ in their patients and their equipment, so "which hospital" was a useful clue in the training data and useless in the real world. A 2021 study of COVID-19 X-ray models found similar shortcuts, including text markers in the corner of images.
+- **Which hospital took the X-ray.** A 2018 study of a pneumonia detector trained on chest X-rays found that the model could tell which hospital an image came from, and that its performance dropped on images from other hospitals. Hospitals differ in their patients and their equipment, so "which hospital" was a useful clue in the training data and useless in the real world. A 2021 study of COVID-19 X-ray models (built during the 2020 coronavirus pandemic to spot the disease's lung damage) found similar shortcuts, including text markers in the corner of images.
 - **Rulers and skin cancer.** Dermatology researchers reported that an image classifier for skin lesions seemed more likely to call a lesion malignant when a ruler appeared in the photo. Doctors tend to measure the spots that worry them, so the ruler was a hint about what the doctor thought.
 
 > **Watch out:** If a result looks too good to be true, look for a leak before you celebrate. A survey by Princeton researchers Sayash Kapoor and Arvind Narayanan (2023) found leakage problems in hundreds of published papers that used machine learning, across more than a dozen scientific fields.
@@ -307,7 +307,7 @@ If overfitting comes from too much flexibility, one fix is to make flexibility c
 
 The most common version adds a penalty to the loss for large weights. Training then has to balance two goals: fit the data, and keep the weights small.
 
-> **Definition — L1 and L2 regularization:** Adding a penalty for large weights to the loss. L2 (also called ridge) adds the sum of squared weights and shrinks all weights toward zero; L1 (also called lasso) adds the sum of absolute weights and tends to push unhelpful weights to exactly zero, which removes those features.
+> **Definition — L1 and L2 regularization:** Adding a penalty for large weights to the loss. L2 (also called ridge) adds the sum of squared weights and shrinks all weights toward zero; L1 (also called lasso) adds the sum of absolute weights (each weight with its minus sign dropped, so −3 counts as 3) and tends to push unhelpful weights to exactly zero, which removes those features.
 
 A worked example. Two models each have a training MSE of 4.0. Model A has weights 2 and −1. Model B has weights 40 and −38: two huge numbers that nearly cancel, a typical sign of a model contorting itself to fit noise. With an L2 penalty strength of 0.1:
 
@@ -682,7 +682,7 @@ Now the baseline. A "model" that always predicts the average, $400,000, has an M
 
 *Table 9.12: Choosing a regression metric.*
 
-> **Watch out:** In a spreadsheet, the RSQ function returns the squared correlation between two columns, which is not always the same as the R² of your model's predictions. Compute R² directly as 1 minus the sum of squared errors divided by the sum of squared differences from the mean (Exercise 5 shows the formulas).
+> **Watch out:** In a spreadsheet, the RSQ function (short for "R squared") returns the squared correlation between two columns, which is not always the same as the R² of your model's predictions. Compute R² directly as 1 minus the sum of squared errors divided by the sum of squared differences from the mean (Exercise 5 shows the formulas).
 
 ## Baselines: is it better than doing something dumb?
 
@@ -790,7 +790,7 @@ So far we have evaluated one model on one problem. Science and industry also nee
 
 > **Definition — Leaderboard:** A public ranking of models by their benchmark scores.
 
-Benchmarks have driven much of AI's progress. MNIST (1998), with its 70,000 small images of handwritten digits, was the standard test of image recognition for years. ImageNet (2009), with about 14 million labeled images, set up the yearly challenge in which, in 2012, the AlexNet neural network cut the top-5 error rate to about 15.3%, against about 26% for the runner-up. That single benchmark result launched the deep learning era (see Chapter 7 and Chapter 14).
+Benchmarks have driven much of AI's progress. MNIST (1998), with its 70,000 small images of handwritten digits, was the standard test of image recognition for years. ImageNet (2009), with about 14 million labeled images, set up the yearly challenge in which, in 2012, the AlexNet neural network cut the top-5 error rate (the share of test images whose correct label was not among the model's five best guesses) to about 15.3%, against about 26% for the runner-up. That single benchmark result launched the deep learning era (see Chapter 7 and Chapter 14).
 
 But a benchmark is a test set that the whole world gets to look at, again and again, for years. Every published paper that tunes its approach to do slightly better on the same test set is, collectively, a small step of tuning on the test set. In 2019, a team led by Benjamin Recht built a fresh ImageNet-style test set, following the original recipe as closely as they could, and re-tested many published models. Accuracy dropped by roughly 11 to 14 percentage points, although the ranking of the models mostly held. Part of each model's original score was fitted to the particular quirks of the original test images.
 
@@ -820,13 +820,13 @@ A few examples from the research for this book, all as of October 2026:
 
 - **Saturation.** MMLU, a 2020 multiple-choice exam across 57 school and professional subjects, was a headline benchmark for years and is now saturated for frontier models. Humanity's Last Exam, a set of 2,500 expert-level questions released in January 2025, was designed to be much harder: frontier models scored under 10% at launch. By October 2026 the best text-only score reported by the independent evaluator Artificial Analysis was about 61%.
 - **Wrong answers in the answer key.** Test sets have label errors too. An audit by the research group FutureHouse suggested that about 30% of the answers in Humanity's Last Exam's text-only chemistry and biology questions might be wrong, which prompted a rolling, corrected version. A model that "fails" a question with a wrong answer key may be right.
-- **Harness dependence.** The same model can score very differently depending on the testing setup, or harness: the instructions, tools and memory it is given. On the ARC-AGI-3 puzzle benchmark, OpenAI's GPT-6 Astra reportedly scored 62.7% under the standard harness and 99.9% under a harness that let it keep its reasoning state between steps. Same model, same puzzles, very different headline numbers.
+- **Harness dependence.** The same model can score very differently depending on the testing setup, or harness: the instructions, tools and memory it is given. On the ARC-AGI-3 puzzle benchmark (puzzles designed to test whether a system can pick up a new skill from a few examples), ARC Prize, the foundation that runs it, reported that OpenAI's GPT-6 Astra, at the same maximum effort setting, scored 62.7% under the standard harness and 98.6% under a harness that let it keep its reasoning state between steps (99.9% with that harness at high effort). Same model, same puzzles, very different headline numbers.
 
 > **Definition — Evaluation harness:** The software setup used to run a benchmark: how questions are phrased, how many attempts are allowed, what tools and memory the model gets, and how answers are graded. Different harnesses can produce very different scores for the same model.
 
 Goodhart's law even helps explain hallucination. A 2025 OpenAI paper by Adam Kalai and colleagues argued that most benchmarks grade answers only as right or wrong, with no credit for "I don't know." Under that scoring rule, guessing always beats admitting uncertainty, so models trained and selected to score well learn to bluff. The metric shaped the behavior (see Chapter 18).
 
-> **At the frontier (2026):** Leading labs and evaluators now fight Goodhart's law on several fronts: removing known benchmark questions from training data, keeping private test sets that are never published, building benchmarks that refresh over time, publishing exact harness settings, measuring human preferences in blind side-by-side comparisons (as LMArena does), and testing on realistic work tasks rather than exam questions. Chapter 24 explains how to read model benchmarks, Chapter 31 how product teams build their own evaluations, and Chapter 57 how safety evaluations work.
+> **At the frontier (2026):** Leading labs and evaluators now fight Goodhart's law on several fronts: removing known benchmark questions from training data, keeping private test sets that are never published, building benchmarks that refresh over time, publishing exact harness settings, measuring human preferences in blind side-by-side comparisons (as Arena, formerly LMArena, does), and testing on realistic work tasks rather than exam questions. Chapter 24 explains how to read model benchmarks, Chapter 31 how product teams build their own evaluations, and Chapter 57 how safety evaluations work.
 
 > **Try it:** Ask your chatbot: "Which AI benchmarks have become saturated or contaminated, and why does that make headline scores less meaningful?" Then ask it to name one way it might itself have seen benchmark questions during training. Notice whether it is appropriately uncertain about its own training data.
 
@@ -960,11 +960,11 @@ Evaluation, Training set, Validation set, Test set, Stratified sampling, Margin 
 3. **[Medium] The threshold game in a spreadsheet.** (Google Sheets or Excel, 30 minutes.)
    1. Type the 20 scores from Table 9.9 into column A (A2:A21) and the truth into column B (1 for spam, 0 for not spam).
    2. Put a threshold in E1, starting at 0.5.
-   3. Count the four boxes: TP `=COUNTIFS(A2:A21,">="&E1,B2:B21,1)`, FP `=COUNTIFS(A2:A21,">="&E1,B2:B21,0)`, FN `=COUNTIFS(A2:A21,"<"&E1,B2:B21,1)`, TN `=COUNTIFS(A2:A21,"<"&E1,B2:B21,0)`.
-   4. Add precision `=TP/(TP+FP)`, recall `=TP/(TP+FN)` and false positive rate `=FP/(FP+TN)`, pointing at the cells where you put the counts.
+   3. Count the four boxes, with a label in column D and the formula in column E: TP in E2 `=COUNTIFS(A2:A21,">="&E1,B2:B21,1)`, FP in E3 `=COUNTIFS(A2:A21,">="&E1,B2:B21,0)`, FN in E4 `=COUNTIFS(A2:A21,"<"&E1,B2:B21,1)`, TN in E5 `=COUNTIFS(A2:A21,"<"&E1,B2:B21,0)`.
+   4. Add precision in E6 `=E2/(E2+E3)` (that is TP ÷ (TP + FP)), recall in E7 `=E2/(E2+E4)` (TP ÷ (TP + FN)) and false positive rate in E8 `=E3/(E3+E5)` (FP ÷ (FP + TN)).
    5. Change E1 to 0.1, 0.2, and so on up to 0.9, and copy each result into a small table. You should match Table 9.10.
    6. Make a scatter chart with false positive rate across and recall up. That is your ROC curve.
-   7. Add a cost cell: `=1*FN+10*FP`. Which threshold is cheapest? Now set the costs to 5 for a missed spam and 1 for a false alarm. Which threshold wins now?
+   7. Add a cost cell in E9: `=1*E4+10*E3` (1 × FN + 10 × FP). Which threshold is cheapest? Now set the costs to 5 for a missed spam and 1 for a false alarm (`=5*E4+1*E3`). Which threshold wins now?
 
    **What you'll learn:** Where confusion matrices, precision–recall trade-offs and ROC curves come from, and how costs choose the threshold.
 
@@ -980,7 +980,7 @@ Evaluation, Training set, Validation set, Test set, Stratified sampling, Margin 
 5. **[Medium] Regression metrics in a spreadsheet.** (Google Sheets or Excel, 20 minutes.)
    1. Put the actual prices from Table 9.11 in A2:A6 and the predictions in B2:B6.
    2. Compute: MAE `=SUMPRODUCT(ABS(B2:B6-A2:A6))/5`, MSE `=SUMXMY2(B2:B6,A2:A6)/5`, RMSE `=SQRT(SUMXMY2(B2:B6,A2:A6)/5)`, MAPE `=SUMPRODUCT(ABS(B2:B6-A2:A6)/A2:A6)/5` and R² `=1-SUMXMY2(B2:B6,A2:A6)/DEVSQ(A2:A6)`. You should get 26, 980, 31.3, 0.063 (6.3%) and 0.935.
-   3. In column C, put a baseline that predicts 400 for every house, and compute the same five metrics for it.
+   3. In column C, put a baseline that predicts 400 for every house, and compute the same five metrics for it (copy each formula and change B2:B6 to C2:C6). You should get an MAE of 100 and an R² of 0.
    4. Change house 4's prediction from 540 to 600 (a perfect guess). Which metric improves the most? (Check: MAE falls to 14 but RMSE falls further, from 31.3 to 16.1.)
 
    **What you'll learn:** How each regression metric behaves, why RMSE punishes big misses, and why every metric needs a baseline.
@@ -997,7 +997,7 @@ Evaluation, Training set, Validation set, Test set, Stratified sampling, Margin 
 7. **[Challenge] Run the evaluation notebook and stress-test it.** (Google Colab, 45 minutes.)
    1. Paste both cells from the "Real evaluation in code" section into a Colab notebook and run them. Check that your numbers match Table 9.2 and Table 9.7.
    2. In the first cell, change `test_days` to `[0, 3, 6, 9]` and rerun. Does degree 2 still win? Does degree 7 still fail?
-   3. In the second cell, change `random_state=42` to 0, then 1, then 2, rerunning each time and noting the threshold-0.5 accuracy. (Across ten different seeds, this book's run ranged from about 95.1% to 98.6%.) How does that spread compare with the margin of error you would expect from 143 test tumors?
+   3. In the second cell, change `random_state=42` to 0, then 1, then 2, rerunning each time and noting the threshold-0.5 accuracy. (Across ten different seeds, this book's run ranged from about 95.1% to 98.6%.) How does that spread compare with the margin of error you would expect from 143 test tumors? (Work the margin out with the rule of thumb in "How sure is the score?", using an accuracy of 0.965 and 143 examples.)
    4. Add these two lines at the end of the second cell to draw the ROC curve: `from sklearn.metrics import RocCurveDisplay` and then `RocCurveDisplay.from_predictions(y_test, probs)`.
    5. Ask a chatbot to explain any line you do not understand.
 
@@ -1036,7 +1036,7 @@ Evaluation, Training set, Validation set, Test set, Stratified sampling, Margin 
 9. **[Medium] Evaluate two chatbots like a scientist.** (Two chatbots and a spreadsheet, 45 minutes.)
    1. Write 30 questions with answers you can check exactly (unit conversions, dates of well-documented events, short logic puzzles, facts from a document you paste in). Do not show them to anyone in advance. This is your test set.
    2. Ask both chatbots every question in fresh chats with the same wording. Mark each answer 1 (correct) or 0.
-   3. Compute each chatbot's accuracy and its margin of error with `=1.96*SQRT(p*(1-p)/30)`, where p is the accuracy.
+   3. Compute each chatbot's accuracy and its margin of error. If one chatbot's 1s and 0s are in B2:B31, type `=AVERAGE(B2:B31)` in B32 for its accuracy and `=1.96*SQRT(B32*(1-B32)/30)` in B33 for its margin. Do the same for the other chatbot in column C.
    4. Decide honestly: is the difference between the two bigger than the margins of error?
    5. Note any questions where an answer key error was possible, and any where the chatbots disagreed with your "correct" answer and were right.
 
@@ -1044,7 +1044,7 @@ Evaluation, Training set, Validation set, Test set, Stratified sampling, Margin 
 
 10. **[Easy] Goodhart's law hunt.** (Pencil and paper, then a browser, 20 minutes.)
     1. Write down three examples of Goodhart's law from your own work, school or daily life: a number people started optimizing that stopped meaning what it used to.
-    2. Open the announcement page or model card of any recent AI model and find its benchmark table.
+    2. Open the announcement page or model card (the document a lab publishes describing a model, how it was trained and how it scored on tests) of any recent AI model and find its benchmark table.
     3. For two of the benchmarks listed, apply questions 1, 5, 9 and 10 of the checklist in this chapter. Ask a chatbot what each benchmark measures and whether it is considered saturated.
 
     **What you'll learn:** To recognize Goodhart's law everywhere and to read AI benchmark claims with the right questions.

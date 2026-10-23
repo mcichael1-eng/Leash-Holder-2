@@ -6,7 +6,7 @@
 
 - Why benchmarks exist, what one score really contains, and how to put error bars on it with school arithmetic.
 - The ways benchmarks die (saturation, contamination, broken answer keys, Goodhart's law and harness dependence), with ARC-AGI-3 as the case study.
-- The benchmark zoo: what MMLU, GPQA, Humanity's Last Exam, FrontierMath, SWE-bench, Terminal-Bench, OSWorld, ARC-AGI, GDPval, METR time horizons, LMArena and the big indices each measure, and where each one fails.
+- The benchmark zoo: what MMLU, GPQA, Humanity's Last Exam, FrontierMath, SWE-bench, Terminal-Bench, OSWorld, ARC-AGI, GDPval, METR time horizons, Arena (formerly LMArena) and the big indices each measure, and where each one fails.
 - How to read a model card or system card like a skeptical analyst.
 - Open weights versus closed models, what licenses allow, and how big the gap between them is in late 2026.
 - Who's who in late 2026: the labs, their flagship models, their tiers, and how to decode model names.
@@ -29,7 +29,7 @@ Start simple. Imagine two students. You want to know which one is better at math
 
 Your own chatbot shows why this matters. When you ask Claude, ChatGPT or Gemini a question, you see one answer, not the thousand you did not ask for. One impressive answer, or one silly mistake, tells you little about the average. A benchmark asks hundreds or thousands of questions and reports the average.
 
-> **Definition — Leaderboard:** A public ranking of models by their scores on one or more benchmarks, updated as new models appear. Artificial Analysis, Epoch AI and LMArena run widely cited leaderboards.
+> **Definition — Leaderboard:** A public ranking of models by their scores on one or more benchmarks, updated as new models appear. Artificial Analysis, Epoch AI and Arena (formerly LMArena) run widely cited leaderboards.
 
 > **Definition — Frontier model:** One of the most capable AI models in existence at a given time. As of October 2026 that group includes Anthropic's Claude Opus 5.5 and Fable 5.1, OpenAI's GPT-6 Astra and Google's Gemini 4 Argon.
 
@@ -210,10 +210,10 @@ Of hundreds of benchmarks, about a dozen families matter for following the front
 | Software engineering | SWE-bench Verified, SWE-bench Pro | Fix real GitHub issues so the project's own tests pass; Verified is a 500-task human-checked subset | Verified is saturating; labs moved to harder tests | Tests can be gamed; public code leaks into training |
 | Agentic coding | Terminal-Bench, DeepSWE, FrontierSWE | Multi-step jobs in a real terminal or codebase | Opus 5.5 reports 66.4% on Terminal-Bench 4.0 | Many versions; scores depend heavily on the harness |
 | Computer use | OSWorld | Doing tasks by operating real desktop apps through screenshots, mouse and keyboard | Opus 5.5 reports 81.8% on OSWorld 2.1; Kimi K3 reports 84.8% on OSWorld-Verified | Different versions; setups vary between labs |
-| Fluid reasoning | ARC-AGI-1, 2 and 3 | Learning a new rule or game from scratch | ARC-AGI-3 went from 0.51% (March 2026) to 62.7% or 99.9% (September) | Harness and cost dominate the result |
+| Fluid reasoning | ARC-AGI-1, 2 and 3 | Learning a new rule or game from scratch | ARC-AGI-3 went from 0.51% (March 2026) to 62.7% or 98.6% at the same maximum effort, depending on the harness, and 99.9% at high effort (September) | Harness and cost dominate the result |
 | Economic value | GDPval | Realistic work products from many occupations, judged by professionals against expert human work | Opus 5.5 reports a GDPval-AA rating of 1846 | Preference grading; tasks are short snapshots of real jobs |
 | Agent stamina | METR time horizon | Length of task, in skilled-human time, an agent completes with 50% success | About 17.4 hours for an early Mythos Preview, with a wide interval | Task suite too short above about 16 hours |
-| Human preference | LMArena | Crowd votes in blind head-to-head chats | Updated continuously | Rewards style, length and formatting; voters are not experts |
+| Human preference | Arena (formerly LMArena) | Crowd votes in blind head-to-head chats | Updated continuously | Rewards style, length and formatting; voters are not experts |
 | Long context | Needle in a haystack, RULER, GraphWalks | Finding and combining facts across very long inputs | Argon reports 84.2 on GraphWalks 256K–1M | Simple needle tests are saturated; multi-step versions vary |
 | Aggregate indices | Artificial Analysis Intelligence Index, Epoch Capabilities Index | Many benchmarks combined into one number | Opus 5.5 leads both as of October 2026 | One number hides an uneven profile |
 
@@ -327,7 +327,7 @@ The early Mythos Preview measurement in April 2026 was about 17.4 hours, close t
 
 > **Watch out:** METR itself warns that measurements above about 16 hours are unreliable with its current task suite, because it has too few tasks that long. Its time-horizon page stopped being updated as of September 8, 2026. Also, horizons at 80% reliability are about 4 to 10 times shorter than at 50%. "Succeeds half the time on a 17-hour task" is very different from "can be trusted with a 17-hour task."
 
-### The crowd: LMArena
+### The crowd: Arena (formerly LMArena)
 
 > **Definition — LMArena:** A public website where people chat with two anonymous models side by side and vote for the better answer; the votes are turned into Elo-style ratings. It measures what ordinary users prefer, not what is correct. It was renamed Arena in January 2026 and now lives at arena.ai.
 
@@ -715,7 +715,7 @@ The landscape keeps changing because several hard problems remain open. These ar
 
 > **Definition — AI R&D automation:** AI systems doing the work of AI researchers and engineers, which could speed up AI progress itself. Labs and evaluators now measure it directly.
 
-As noted earlier, METR judged Opus 5.5 "unlikely to be able to fully automate AI R&D," citing Anthropic's preliminary estimate of about 1.5× research acceleration: significant, but far from the runaway loop some forecasts imagine (Chapter 60 presents that debate).
+As noted earlier, METR judged Opus 5.5 "unlikely to be able to fully automate AI R&D," citing its own preliminary estimate of about 1.5× research acceleration inside Anthropic: significant, but far from the runaway loop some forecasts imagine (Chapter 60 presents that debate).
 
 - **Monitoring how models reason.** Labs treat readable chains of thought as a safety asset. Any shift toward hidden or internal reasoning (such as the unconfirmed "recurrent depth" report about Astra) would make monitoring harder.
 
@@ -808,7 +808,7 @@ Benchmark, Evaluation (eval), Leaderboard, Frontier model, Harness (scaffold), R
 
 ## Exercises
 
-1. **[Easy] Blind taste test.** Compare models the way LMArena does. (1) Go to arena.ai (LMArena's new name and address since January 2026) and open the battle mode, where two anonymous models answer the same prompt. (2) Enter five prompts from your real life: an email you need to write, a question from your work, a recipe adaptation, a tricky fact and a short explanation for a child. (3) Vote for the better answer each time before the names are revealed. (4) Afterwards, note whether you tended to prefer the longer or more formatted answer. **What you'll learn:** how human-preference leaderboards work, and how style sways votes even when accuracy does not differ.
+1. **[Easy] Blind taste test.** Compare models the way Arena (formerly LMArena) does. (1) Go to arena.ai (LMArena's new name and address since January 2026) and open the battle mode, where two anonymous models answer the same prompt. (2) Enter five prompts from your real life: an email you need to write, a question from your work, a recipe adaptation, a tricky fact and a short explanation for a child. (3) Vote for the better answer each time before the names are revealed. (4) Afterwards, note whether you tended to prefer the longer or more formatted answer. **What you'll learn:** how human-preference leaderboards work, and how style sways votes even when accuracy does not differ.
 
 2. **[Easy] Error bars in a spreadsheet.** (1) Build the sheet from the Try it box: accuracy in column A, number of questions in column B, and in column C the formula =1.96*SQRT(A2*(1-A2)/B2). (2) Fill five rows: 0.80 with 100, 500 and 2,500 questions; 0.95 with 200 questions; 0.50 with 500 questions. (3) For two models scoring 0.82 and 0.80 on 500 questions, write down both intervals and decide whether the difference is meaningful. **What you'll learn:** why small benchmarks and small score gaps deserve skepticism.
 

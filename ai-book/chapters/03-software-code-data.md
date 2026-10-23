@@ -66,7 +66,7 @@ The word "Hi!" is therefore 3 bytes: 24 tiny switches in a particular pattern. A
 
 ASCII has no "é", no Arabic, Hindi or Chinese, and no emoji. In the 1980s, countries and companies invented their own incompatible encodings, and a file sent between systems arrived as garbage: "cafÃ©" instead of "café".
 
-The fix was Unicode, first published in 1991. Unicode gives every character in every writing system its own unique number, called a code point. Code points are written with "U+" and the number in hexadecimal (base 16), so "A" is U+0041. The Unicode space has room for 1,114,112 code points. Recent versions assign roughly 150,000 of them, covering well over 150 scripts, historic writing systems, mathematical symbols and thousands of emoji.
+The fix was Unicode, first published in 1991. Unicode gives every character in every writing system its own unique number, called a code point. Code points are written with "U+" and the number in hexadecimal (base 16), so "A" is U+0041. In base 16 each place is worth 16 times the place to its right (just as in ordinary numbers each place is worth 10 times), so 41 means 4 × 16 + 1 = 65, and the letters A to F stand for the extra digits 10 to 15. The Unicode space has room for 1,114,112 code points. Recent versions assign roughly 150,000 of them, covering well over 150 scripts, historic writing systems, mathematical symbols and thousands of emoji.
 
 > **Definition — Unicode:** The worldwide standard that assigns a unique number to every character in every writing system, including emoji. It is why a message in Hindi, Arabic or Chinese displays correctly on any modern device.
 
@@ -107,7 +107,7 @@ Here is where text meets AI. A language model does not read characters one at a 
 
 > **Definition — Tokenizer:** The program that splits text into tokens and turns them into ID numbers for a model, and turns the model's output numbers back into text.
 
-Many modern tokenizers work directly on UTF-8 bytes, so they never fail on an unusual language, emoji or typo. The price is fairness: text in languages that were rare in the tokenizer's training data gets split into more, smaller pieces, so the same meaning costs more tokens and more money. Tokenizers also change between model generations; Anthropic notes that Claude models from 4.7 onward use a newer tokenizer that produces about 30% more tokens for the same text. Chapter 15 and Chapter 18 explain tokens in depth.
+Many modern tokenizers work directly on UTF-8 bytes, so they never fail on an unusual language, emoji or typo. The price is fairness: text in languages that were rare in the tokenizer's training data gets split into more, smaller pieces, so the same meaning costs more tokens and more money. Tokenizers also change between model generations; Anthropic notes that Claude models from 4.7 onward use a newer tokenizer that turns the same text into roughly 1.0 to 1.35 times as many tokens (up to about 35% more, depending on the content). Chapter 15 and Chapter 18 explain tokens in depth.
 
 > **Watch out:** It is natural to assume a chatbot "sees" your letters the way you do. It does not. It sees token IDs, numbers standing for chunks of text. That is why models have historically stumbled on tasks like counting the letter "r" in "strawberry": the letters are hidden inside tokens. Chapter 18 covers this.
 
@@ -179,7 +179,7 @@ height
 
 > **Definition — Bit depth:** How many bits each sample uses, which sets how finely the wave's height is measured. CD audio uses 16 bits, giving 65,536 possible levels.
 
-Why 44,100? A rule from signal theory says you must sample at more than twice the highest frequency you want to capture. Human hearing tops out around 20,000 Hz, so a little over 40,000 samples per second captures everything we can hear.
+Why 44,100? A rule from signal theory says you must sample at more than twice the highest frequency you want to capture. A sound's frequency is how many times per second its wave goes up and down; the higher the frequency, the higher the pitch you hear. Human hearing tops out around 20,000 Hz, so a little over 40,000 samples per second captures everything we can hear.
 
 Worked example: one second of CD-quality stereo music.
 
@@ -187,7 +187,9 @@ Worked example: one second of CD-quality stereo music.
 - In bits: 176,400 × 8 = about 1,411,000 bits per second (1,411 kilobits per second).
 - A 3-minute song: 176,400 × 180 seconds = about 31.8 MB.
 
-A typical MP3 of that song at 128 kilobits per second is 16,000 bytes per second × 180 = about 2.9 MB, roughly 11 times smaller.
+A typical MP3 of that song at 128 kilobits per second is 16,000 bytes per second (128,000 bits ÷ 8) × 180 = about 2.9 MB, roughly 11 times smaller.
+
+> **Definition — MP3:** The most widely used format for compressed music and audio. It uses lossy compression (explained later in this chapter), dropping sounds your ear is unlikely to notice, so a song typically shrinks to about a tenth of its raw size.
 
 AI speech systems need far less. OpenAI's Whisper speech-recognition model works on 16,000 samples per second in one channel, because the important parts of speech sit well below 8,000 Hz. Many audio models first turn samples into a spectrogram, a picture of which pitches are loud at each moment, and treat it much like an image (Chapter 46).
 
@@ -202,7 +204,7 @@ Worked example: one minute of uncompressed Full HD video (1920 × 1080 pixels at
 - One minute: 187 MB × 60 = about 11.2 GB.
 - One hour: about 672 GB, more than many laptops can hold.
 
-Streaming services deliver HD video at roughly 5 megabits per second, which is about 0.6 MB per second. That is around 300 times smaller than the uncompressed stream. The magic is a codec, software that compresses video by storing occasional complete frames (keyframes) and, in between, only what changed. In a video of someone talking against a still wall, the wall barely changes for minutes, so it costs almost nothing after the first frame.
+Streaming services deliver HD video at roughly 5 megabits per second, which is about 0.6 MB per second (5 ÷ 8, since a byte is 8 bits). That is around 300 times smaller than the uncompressed stream. The magic is a codec, software that compresses video by storing occasional complete frames (keyframes) and, in between, only what changed. In a video of someone talking against a still wall, the wall barely changes for minutes, so it costs almost nothing after the first frame.
 
 > **Definition — Codec:** Software that compresses and decompresses audio or video (the name comes from coder-decoder). Common video codecs include H.264, HEVC and AV1.
 
@@ -216,7 +218,9 @@ Everything you have seen so far ends up in a file. A file is simply a named sequ
 
 > **Definition — File format:** The rulebook for what a file's bytes mean and in what order they appear, such as JPEG for photos or MP3 for music.
 
-Many formats also start with a fixed signature so programs can recognize them even if the name is wrong. Every PNG image begins with the bytes 137, 80, 78, 71 (the last three are ASCII for "P", "N", "G"), and every PDF starts with "%PDF". Here is a surprise: a Word document (.docx) is actually a ZIP folder full of small text files. Rename a copy from report.docx to report.zip and you can open it and look inside (Exercise 3 asks you to do this).
+> **Definition — JPEG:** The most common format for photos, named after the Joint Photographic Experts Group that created it. It uses lossy compression, storing fine color detail coarsely, which typically makes a photo about ten times smaller than its raw pixel data.
+
+Many formats also start with a fixed signature so programs can recognize them even if the name is wrong. Every PNG image (a common format for screenshots and graphics that, unlike JPEG, loses no detail) begins with the bytes 137, 80, 78, 71 (the last three are ASCII for "P", "N", "G"), and every PDF starts with "%PDF". Here is a surprise: a Word document (.docx) is actually a ZIP folder (a bundle of files squeezed into one smaller file) full of small text files. Rename a copy from report.docx to report.zip and you can open it and look inside (Exercise 3 asks you to do this).
 
 Some formats are plain text: you can open them in Notepad or TextEdit and read them, because every byte is a UTF-8 character. Others are binary: the bytes are raw numbers (pixel values, sound samples, compressed data) and look like gibberish in a text editor.
 
@@ -297,7 +301,7 @@ The key thing to understand about programs is that the computer does exactly wha
 
 > **Analogy:** A program is a recipe followed by an extremely literal cook. If the recipe says "add two eggs" and never says "crack them", the shells go in too.
 
-The large language model behind your chatbot is a strange kind of software: almost none of its behavior was written by a person. The code that runs it is fairly ordinary. The behavior lives in billions of learned numbers, its weights, set by training on data (Chapter 8). Andrej Karpathy called this "Software 2.0" in a 2017 essay: instead of writing rules, you collect examples and let an optimizer find the numbers.
+The large language model behind your chatbot is a strange kind of software: almost none of its behavior was written by a person. The code that runs it is fairly ordinary. The behavior lives in billions of learned numbers, its weights, set by training on data (Chapter 8). Andrej Karpathy called this "Software 2.0" in a 2017 essay: instead of writing rules, you collect examples and let an optimizer (a procedure that nudges the numbers step by step until the model's answers improve, Chapter 6) find the numbers.
 
 > **Definition — Weights:** The learned numbers inside an AI model that set how strongly each input influences each output. A large model has billions of them, and together they encode its knowledge and skills (Chapter 5).
 
@@ -333,7 +337,7 @@ flowchart TD
 Sorting shows the same lesson with bigger stakes. Suppose you must sort 1,000,000 names alphabetically.
 
 - A simple method ("find the smallest remaining name, move it to the front, repeat") makes about n × n ÷ 2 comparisons. With n = 1,000,000, that is 500 billion comparisons. At a billion comparisons per second, about 500 seconds.
-- A smarter method called merge sort (split the list, sort each half, then merge the sorted halves) needs about n × log2(n) comparisons: 1,000,000 × 20 = 20 million. At the same speed, 0.02 seconds.
+- A smarter method called merge sort (split the list, sort each half, then merge the sorted halves) needs about n × log2(n) comparisons. Here log2(n) simply means "how many times you can halve n before you reach 1", which for a million is about 20, just as in binary search. So the count is 1,000,000 × 20 = 20 million. At the same speed, 0.02 seconds.
 
 Same computer, same data, 25,000 times faster, purely from a better method. Computer scientists study this under the name of algorithmic efficiency.
 
@@ -341,7 +345,7 @@ Same computer, same data, 25,000 times faster, purely from a better method. Comp
 
 This matters for AI in two ways. First, AI's cost is dominated by a few algorithms run trillions of times, above all multiplying tables of numbers (Chapter 5), so small improvements save fortunes. Second, machine learning flips who writes the algorithm: a person writes a learning method (gradient descent, Chapter 6), and the data shapes the final behavior (Chapter 8).
 
-> **At the frontier (2026):** AI systems now help discover algorithms. In May 2025, Google DeepMind's AlphaEvolve found a way to multiply two 4 × 4 matrices of complex numbers using 48 scalar multiplications, the first improvement on the Strassen-based method for that case in 56 years. Since AI training is mostly matrix multiplication, even tiny gains like this are worth chasing.
+> **At the frontier (2026):** AI systems now help discover algorithms. In May 2025, Google DeepMind's AlphaEvolve found a way to multiply two 4 × 4 matrices (grids of numbers, Chapter 5) of complex numbers (a kind of number used in physics and engineering) using 48 scalar multiplications (multiplications of one single number by another), the first improvement for that case in 56 years on the method built from Volker Strassen's famous 1969 shortcut. Since AI training is mostly matrix multiplication, even tiny gains like this are worth chasing.
 
 ## Code and programming languages
 
@@ -363,13 +367,15 @@ flowchart TD
 
 There are two ways to translate code down the ladder. A compiler translates the whole program ahead of time, like translating a book before publishing it. An interpreter translates and runs it as it goes, like a live interpreter at a meeting. Compiled programs usually run faster; interpreted ones are quicker to write and change. Python is normally run by an interpreter. C, C++ and Rust are compiled. Nvidia's CUDA, released in 2007, lets programmers write compiled code that runs on GPUs, and it is one reason Nvidia dominates AI hardware (Chapter 35).
 
+> **Definition — NVIDIA:** An American chip company, founded in 1993, that designs the GPUs most AI is trained and run on. It started out making graphics chips for video games; its CUDA software and its data-center chips such as the H100 and B200 made it the dominant supplier of AI hardware.
+
 > **Definition — Compiler:** A program that translates a whole program from a programming language into machine code before it runs.
 
 > **Definition — Interpreter:** A program that reads code and carries it out step by step as it goes, without producing a separate machine-code file first.
 
 ### Why Python runs AI
 
-Python, first released in 1991, is the language of AI. It topped the TIOBE popularity index in October 2026 at about 19%. On GitHub, TypeScript (popular for web apps) overtook Python by monthly contributors in August 2025, but Python still led AI projects by a wide margin and powered nearly half of new AI repositories, according to GitHub's 2025 Octoverse report.
+Python, first released in 1991, is the language of AI. It topped the TIOBE popularity index (a monthly ranking of programming languages based largely on how often they are searched for online) in October 2026 at about 19%. On GitHub (the website where programmers share code, described later in this chapter), TypeScript (popular for web apps) overtook Python by monthly contributors in August 2025, but Python still led AI projects by a wide margin and powered nearly half of new AI repositories (project folders), according to GitHub's 2025 Octoverse report.
 
 > **Definition — Python:** A popular, readable programming language that dominates AI work, largely because of its huge collection of ready-made libraries for math, data and neural networks.
 
@@ -482,7 +488,7 @@ Most AI learners and many researchers write Python in notebooks. A notebook is a
 
 ## Bugs and debugging
 
-Every programmer, and every AI coding agent, writes code that does not work the first time. The word "bug" for a technical fault is older than computers, but it got a famous mascot in 1947, when operators of the Harvard Mark II computer found a moth stuck in a relay and taped it into their logbook as the "first actual case of bug being found".
+Every programmer, and every AI coding agent, writes code that does not work the first time. The word "bug" for a technical fault is older than computers, but it got a famous mascot in 1947, when operators of the Harvard Mark II computer found a moth stuck in a relay (an electrically operated switch) and taped it into their logbook as the "first actual case of bug being found".
 
 > **Definition — Bug:** A mistake in code that makes a program behave wrongly or crash.
 
@@ -514,7 +520,7 @@ Chatbots are excellent debugging partners if you give them what a human expert w
 3. What you expected to happen.
 4. What you have already tried.
 
-> **Watch out:** Code written by AI can look perfect and still be wrong, especially with logic errors that produce plausible but incorrect numbers. Always test it on a case where you already know the right answer. In one careful 2025 study, METR found that experienced open-source developers using early-2025 AI tools took 19% longer on their tasks, even though they expected to be faster. Tools have improved since: METR's February 2026 follow-up suggested that late-2025 tools probably sped developers up, though it called its own new data an unreliable signal. The lesson stands: checking matters (Chapter 29).
+> **Watch out:** Code written by AI can look perfect and still be wrong, especially with logic errors that produce plausible but incorrect numbers. Always test it on a case where you already know the right answer. In one careful 2025 study, METR (an independent nonprofit that tests AI systems, Chapter 57) found that experienced open-source developers using early-2025 AI tools took 19% longer on their tasks, even though they expected to be faster. Tools have improved since: METR's February 2026 follow-up suggested that late-2025 tools probably sped developers up, though it called its own new data an unreliable signal. The lesson stands: checking matters (Chapter 29).
 
 ## Operating systems: the building manager
 
@@ -530,7 +536,11 @@ You use several operating systems every day. Windows and macOS run most laptops.
 
 > **Definition — Linux:** A free, open-source operating system that runs almost all servers, supercomputers and AI clusters, and whose kernel is the base of Android.
 
-> **At the frontier (2026):** Operating systems are some of the most heavily tested code in the world, and AI is now finding bugs that decades of human review missed. On April 7, 2026, Anthropic announced Project Glasswing, giving defenders limited access to an unreleased model, Claude Mythos Preview. According to Anthropic, it found thousands of high-severity vulnerabilities across every major operating system and web browser, including a 27-year-old bug in OpenBSD and a 16-year-old bug in FFmpeg that automated testing had hit five million times without catching. Partners included AWS, Apple, Google, Microsoft, Nvidia and the Linux Foundation. Chapter 58 discusses what this means for security.
+> **Definition — TOP500:** A ranking of the world's 500 fastest supercomputers, published twice a year since 1993 by a small team of researchers, based on how fast each machine runs a standard math test.
+
+> **At the frontier (2026):** Operating systems are some of the most heavily tested code in the world, and AI is now finding bugs that decades of human review missed. On April 7, 2026, Anthropic announced Project Glasswing, giving defenders limited access to an unreleased model, Claude Mythos Preview. According to Anthropic, it found thousands of high-severity vulnerabilities (security flaws an attacker could exploit) across every major operating system and web browser, including a 27-year-old bug in OpenBSD (a free operating system known for its focus on security) and a 16-year-old bug in FFmpeg (free software used almost everywhere to play and convert audio and video) that automated testing had hit five million times without catching. Partners included AWS, Apple, Google, Microsoft, Nvidia and the Linux Foundation (the nonprofit that looks after Linux). Chapter 58 discusses what this means for security.
+
+> **Definition — AWS (Amazon Web Services):** Amazon's cloud-computing business, launched in 2006 and one of the biggest companies that rent out computers, storage and AI chips over the internet by the hour. Chapter 4 explains the cloud.
 
 ## The app stack: from chip to chat
 
@@ -563,11 +573,11 @@ Some software keeps its source code secret; you can run it but not read or chang
 
 > **Definition — Open source:** Software whose source code is published so anyone can use, study, change and share it under a license.
 
-> **Definition — License:** The legal terms saying what you may do with code, data or a model. Permissive licenses such as MIT and Apache 2.0 allow almost anything; "copyleft" licenses such as the GPL require you to share your changes under the same terms.
+> **Definition — License:** The legal terms saying what you may do with code, data or a model. Permissive licenses such as MIT and Apache 2.0 allow almost anything; "copyleft" licenses such as the GPL (GNU General Public License) require you to share your changes under the same terms.
 
 Linux, Python, PyTorch and most tools for serving models are open source, improved by thousands of volunteers and companies together.
 
-AI added a new twist. A trained model has two very different parts: the code that defines and runs it, and the weights, the billions of learned numbers. Many companies now publish the weights of their models so anyone can download and run them. These are called open-weight models. Meta's Llama, DeepSeek, Alibaba's Qwen, Mistral's models and OpenAI's gpt-oss are well-known examples. But publishing the weights is not the same as open source. The training data and the training code usually stay private, and the license may restrict use; some forbid certain applications or very large companies.
+AI added a new twist. A trained model has two very different parts: the code that defines and runs it, and the weights, the billions of learned numbers. Many companies now publish the weights of their models so anyone can download and run them. These are called open-weight models. Meta's Llama, DeepSeek, Alibaba's Qwen, the models of Mistral (a French AI company) and OpenAI's gpt-oss are well-known examples. But publishing the weights is not the same as open source. The training data and the training code usually stay private, and the license may restrict use; some forbid certain applications or very large companies.
 
 > **Definition — Open-weight model:** An AI model whose trained weights can be downloaded and run by anyone. The training data and code may stay private, and the license may restrict how it is used.
 
@@ -581,7 +591,7 @@ In October 2024 the Open Source Initiative, which maintains the official definit
 | Can you see the training code? | No | Usually not | Yes |
 | Can you see the training data? | No | No, or only a description | Yes, or enough detail to rebuild it |
 | Can you run it on your own computer? | No | Yes, if you have the hardware | Yes |
-| Examples | The main ChatGPT, Claude and Gemini models | Llama, DeepSeek, Qwen, gpt-oss | Research releases such as AI2's OLMo |
+| Examples | The main ChatGPT, Claude and Gemini models | Llama, DeepSeek, Qwen, gpt-oss | Research releases such as OLMo from AI2 (the Allen Institute for AI, a nonprofit lab) |
 
 *Figure 3.12: Three levels of openness for AI models. "Open" in AI headlines usually means open-weight.*
 
@@ -644,7 +654,7 @@ Alan,Manchester,2026-07-21,Pro
 
 > **Definition — CSV (comma-separated values):** A plain-text table where each line is a row and commas separate the columns. Every spreadsheet program can open and save it.
 
-CSV's simplicity is also its weakness. A value containing a comma, such as "New York, NY", must be wrapped in quote marks or the columns shift, and a file saved in the wrong encoding turns "José" into garbage. Much real data work is fixing exactly these problems.
+CSV's simplicity is also its weakness. A value containing a comma, such as "New York, NY" (a city and its state), must be wrapped in quote marks or the columns shift, and a file saved in the wrong encoding turns "José" into garbage. Much real data work is fixing exactly these problems.
 
 ### JSON: structured data with labels
 
@@ -727,7 +737,7 @@ The operating system manages the hardware for every app. Your chatbot app is a t
 
 ## Key terms
 
-Encoding, ASCII, Unicode, Code point, UTF-8, Token, Tokenizer, Pixel, RGB, Resolution, Sample (audio), Sample rate, Bit depth, Codec, File, File format, Metadata, Compression, Lossless compression, Lossy compression, Program (software), Weights, Algorithm, Binary search, Machine code, Programming language, Compiler, Interpreter, Python, Variable, Data type, List, Dictionary, Loop, Function (programming), Library, Notebook (Jupyter, Google Colab), Bug, Debugging, Error message (traceback), Operating system (OS), Linux, Front end and back end, Open source, License, Open-weight model, Version control (Git), Repository (repo), Commit, Pull request, GitHub, Dataset, CSV (comma-separated values), JSON (JavaScript Object Notation), Database, SQL (Structured Query Language), Structured and unstructured data
+Encoding, ASCII, Unicode, Code point, UTF-8, Token, Tokenizer, Pixel, RGB, Resolution, Sample (audio), Sample rate, Bit depth, MP3, Codec, File, File format, JPEG, Metadata, Compression, Lossless compression, Lossy compression, Program (software), Weights, Algorithm, Binary search, Machine code, Programming language, Compiler, Interpreter, NVIDIA, Python, Variable, Data type, List, Dictionary, Loop, Function (programming), Library, Notebook (Jupyter, Google Colab), Bug, Debugging, Error message (traceback), Operating system (OS), Linux, TOP500, AWS (Amazon Web Services), Front end and back end, Open source, License, Open-weight model, Version control (Git), Repository (repo), Commit, Pull request, GitHub, Dataset, CSV (comma-separated values), JSON (JavaScript Object Notation), Database, SQL (Structured Query Language), Structured and unstructured data
 
 
 ## Exercises
@@ -742,14 +752,14 @@ Encoding, ASCII, Unicode, Code point, UTF-8, Token, Tokenizer, Pixel, RGB, Resol
 2. **[Easy] A photo is a spreadsheet.** Measure how much compression your phone does.
    1. Pick a photo on your phone or computer and find its resolution (width × height in pixels) and file size in the photo's info or properties panel.
    2. Compute the uncompressed size: width × height × 3 bytes. Divide by 1,000,000 to get megabytes.
-   3. Divide the uncompressed size by the actual file size to get the compression ratio.
+   3. Divide the uncompressed size by the actual file size to get the compression ratio. Make sure both numbers are in megabytes first: if the file size is shown in kilobytes (KB), divide it by 1,000.
    4. Open a free "image color picker" website, upload the photo, and read the RGB numbers of three different pixels: one bright, one dark, one colorful.
    **What you'll learn:** an image really is a grid of numbers, and lossy formats like JPEG shrink it roughly tenfold.
 
 3. **[Easy] Look inside a Word file.** Discover that a format is just an agreement about bytes.
    1. Make a copy of any .docx file (never use the original). Rename the copy so it ends in .zip instead of .docx. Accept the warning.
    2. Open the .zip (double-click on Mac or Windows). Inside you will find folders such as "word" and "docProps".
-   3. Open "word/document.xml" in a web browser or text editor and search for a sentence you know is in the document.
+   3. Open "word/document.xml" in a web browser or text editor (XML is another plain-text format that wraps text in labels written in angle brackets, such as `<w:t>Hello</w:t>`) and search for a sentence you know is in the document.
    4. Also open "docProps/core.xml" to see the metadata: author name and creation date.
    **What you'll learn:** a .docx is a ZIP folder of plain-text files, and documents carry metadata you may not know you are sharing.
 
@@ -768,7 +778,7 @@ Encoding, ASCII, Unicode, Code point, UTF-8, Token, Tokenizer, Pixel, RGB, Resol
    ```
 
    3. Change "Ada" to your name and add your favorite numbers to the list. Run it again.
-   4. Add a new cell (click "+ Code") and write `print(2 ** 20)`. Check that the answer matches the binary search number from this chapter.
+   4. Add a new cell (click "+ Code") and write `print(2 ** 20)`. In Python `**` means "to the power of", so this multiplies 2 by itself 20 times. Check that the answer matches the binary search number from this chapter.
    **What you'll learn:** variables, lists, functions and loops in practice, and that running code is no more mysterious than running a calculator.
 
 5. **[Medium] Have a chatbot explain code line by line.** Use AI as a patient code tutor, then check it.
@@ -807,7 +817,7 @@ Encoding, ASCII, Unicode, Code point, UTF-8, Token, Tokenizer, Pixel, RGB, Resol
    plt.show()
    ```
 
-   2. Change the numbers to draw the first letter of your name in yellow (255, 255, 0).
+   2. Change the numbers to draw the first letter of your name in yellow (255, 255, 0). How the positions work: `img[row, column]` picks one pixel, counting from 0 at the top-left, and `2:6` means "from 2 up to but not including 6", so `img[2:6, 2:6]` is rows 2 to 5 and columns 2 to 5. For example, `img[1:7, 1] = [255, 255, 0]` paints a yellow vertical line down column 1, and `img[6, 1:6] = [255, 255, 0]` paints a yellow line along row 6, which together make an "L". Delete the red-square and blue-row lines first if you want a clean black background.
    3. Ask a chatbot to explain what `img[2:6, 2:6]` means, then predict what `img[7, 7] = [255, 255, 255]` will do before you run it.
    **What you'll learn:** to a computer an image is a block of numbers with a shape (height × width × 3), exactly the kind of block AI models take in.
 
@@ -837,8 +847,8 @@ Encoding, ASCII, Unicode, Code point, UTF-8, Token, Tokenizer, Pixel, RGB, Resol
     **What you'll learn:** CSV is a flat table, JSON is labeled and can nest, and pandas converts between them in one line.
 
 11. **[Challenge] Open source or open weights?** Investigate what "open" really means for real projects.
-    1. On github.com, open the PyTorch repository (github.com/pytorch/pytorch). Find its LICENSE file, its README, and how many commits it has.
-    2. On huggingface.co, search for an open-weight model such as gpt-oss, Qwen or Llama. Open its model card and find its license and anything it says about training data.
+    1. On github.com, open the PyTorch repository (github.com/pytorch/pytorch). Find its LICENSE file, its README (the introduction file shown on the project's front page), and how many commits it has.
+    2. On huggingface.co, search for an open-weight model such as gpt-oss, Qwen or Llama. Open its model card (the page that describes the model, shown when you click on it) and find its license and anything it says about training data.
     3. Make a three-column table with rows "code", "weights", "training data", "license" and columns "PyTorch", "the model you chose", "a closed chatbot model". Fill in what is available for each.
     4. Ask a chatbot to check your table, then decide which items count as open source under the Open Source AI Definition described in this chapter.
     **What you'll learn:** open-source code and open-weight models share very different things, and licenses are where the real rules live.
@@ -847,11 +857,11 @@ Encoding, ASCII, Unicode, Code point, UTF-8, Token, Tokenizer, Pixel, RGB, Resol
 
 - **Document-to-data services.** Law firms, insurers, hospitals and accountants sit on mountains of PDFs, scans and recordings. People who can turn them into clean JSON or CSV with AI, and check the results, are paid to save thousands of hours of manual data entry.
 - **Small-business automation from unstructured data.** Bookkeepers and small shops pay for workflows that read receipts, invoices and emails and fill spreadsheets automatically. This needs only the formats in this chapter, an AI model and careful testing.
-- **Reviewing and hardening AI-written code.** Vibe-coded prototypes (software built by describing it to an AI and accepting the code without reading it closely) are cheap, but companies need people who can read Python, write tests, use Git and catch logic errors before software reaches customers. Code review and QA testing skills are rising in value, not falling.
+- **Reviewing and hardening AI-written code.** Vibe-coded prototypes (software built by describing it to an AI and accepting the code without reading it closely) are cheap, but companies need people who can read Python, write tests, use Git and catch logic errors before software reaches customers. Code review and QA (quality assurance) testing skills are rising in value, not falling.
 - **AI-assisted security work.** Project Glasswing showed AI models finding long-hidden bugs in operating systems and open-source libraries. Defenders who understand operating systems, open source and how to triage AI-found vulnerabilities are in demand at software vendors and security firms.
 - **Open-source contribution as a career launchpad.** Fixing documentation, writing tests and answering issues on popular AI projects on GitHub builds a public portfolio that employers can inspect directly.
 - **Model and license auditing.** With about 3.17 million models on Hugging Face as of October 2026 and licenses that vary widely, companies need people who can check whether a model's license, data disclosure and terms fit their use before they build on it.
-- **Fairer tools for under-served languages.** Languages that tokenizers handle poorly cost more and work worse. Building datasets, evaluation sets and tools for these languages is valuable to governments, NGOs and regional companies serving the 2.2 billion people who are still offline and many more who are online in under-served languages.
+- **Fairer tools for under-served languages.** Languages that tokenizers handle poorly cost more and work worse. Building datasets, evaluation sets and tools for these languages is valuable to governments, NGOs (non-governmental organizations, such as charities) and regional companies serving the 2.2 billion people who are still offline and many more who are online in under-served languages.
 - **Data and database roles.** Every AI project depends on clean, well-organized data. SQL, spreadsheets and Python for data cleaning remain among the most reliably hired skills (Chapter 11 and Chapter 62).
 - **Privacy and metadata hygiene.** Organizations that upload documents and photos to AI tools need processes that strip hidden metadata such as locations and author names. Consultants and tool builders can serve this compliance need.
 - **Teaching "everything is numbers".** Schools, companies and older adults need clear AI-literacy teaching. The ideas in this chapter (encodings, files, code, data) are the foundation, and good explainers are scarce.
@@ -883,7 +893,7 @@ Encoding, ASCII, Unicode, Code point, UTF-8, Token, Tokenizer, Pixel, RGB, Resol
 ## Going deeper
 
 - **Charles Petzold, *Code: The Hidden Language of Computer Hardware and Software* (2nd edition, 2022).** Builds from flashlights and switches all the way to software, one gentle step at a time.
-- **Harvard CS50x (cs50.harvard.edu/x).** The world's most popular free introduction to computer science, covering encodings, algorithms, Python and SQL with excellent lectures.
+- **Harvard CS50x (cs50.harvard.edu/x).** The world's most popular free introduction to computer science (the "CS" in its name), covering encodings, algorithms, Python and SQL with excellent lectures.
 - **Al Sweigart, *Automate the Boring Stuff with Python* (free at automatetheboringstuff.com).** Practical Python for non-programmers, focused on real chores like spreadsheets and files.
 - **The official Python Tutorial (docs.python.org/3/tutorial).** The authoritative, well-written guide to the language once you want to go beyond reading code.
 - **Kaggle Learn: Python and Pandas courses (kaggle.com/learn).** Free, short, browser-based lessons with exercises, ideal after this chapter.

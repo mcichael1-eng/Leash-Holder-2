@@ -89,7 +89,7 @@ flowchart BT
     L5 --> L6["Services<br/>capital: lowest<br/>entry: implementation, training"]
     L6 --> U["Customers: people<br/>and organizations"]
 ```
-*Figure 64.3: The AI stack as an opportunity map. Capability flows upward; customers' money flows back down. Capital needs fall sharply toward the top.*
+*Figure 64.3: The AI stack as an opportunity map. Capability flows upward; customers' money flows back down. Capital needs fall sharply toward the top. (FinOps, short for financial operations, is the work of tracking and cutting a company's cloud bills.)*
 
 Table 64.1 adds what each layer sells, where newcomers can win and one dated headline number to anchor the scale.
 
@@ -97,7 +97,7 @@ Table 64.1 adds what each layer sells, where newcomers can win and one dated hea
 |---|---|---|---|
 | Energy, land and construction | Power, sites, buildings, cooling and electrical systems | Skilled trades, commissioning, local suppliers, permitting and community services, powered-land development, workforce training | Building and electromechanical systems cost about $10–18M per megawatt (industry estimates); Epoch AI estimates about $38B of capital per gigawatt for the largest campuses |
 | Chips and hardware | GPUs, custom accelerators, memory, networking, cooling hardware | Component niches (cooling parts, power conversion, test equipment), refurbishing and reselling older GPUs | Nvidia: quarterly revenue $96.2B, of which data center $89.0B, gross margin 75.0% (SEC filing, quarter ended July 26, 2026) |
-| Cloud and compute | Rented chips and managed AI services | Cost optimization, utilization dashboards, compute brokering, inference on cheaper or alternative chips | Microsoft, Alphabet, Amazon and Meta guided to about $720–745B of combined 2026 capital spending (reported, 2026) |
+| Cloud and compute | Rented chips and managed AI services | Cost optimization, utilization dashboards, compute brokering, inference on cheaper or alternative chips | Microsoft, Alphabet, Amazon and Meta guided to (told investors to expect) about $720–745B of combined 2026 capital spending (reported, 2026) |
 | Foundation models | Model access through APIs, subscriptions and enterprise deals | Fine-tuned open-weight models for one industry, private and local deployments, model selection and routing | OpenAI run-rate about $50B (Sept 2026) and Anthropic over $65B (July 2026), both reported and measured differently |
 | Data and tooling | Human data, RL environments, evals, observability, security, connectors | Expert-data niches, eval packs, agent security, MCP servers, provenance tools | Mercor about $2B gross run-rate (June 2026, reported), of which contractors receive 60–70% |
 | Applications | Software that end users use: general assistants and industry-specific tools | Vertical agents, outcome-priced services, agent-ready commerce | Enterprise generative-AI spending $37B in 2025, about $19B at the application layer (Menlo Ventures estimate) |
@@ -114,6 +114,8 @@ Table 64.1 adds what each layer sells, where newcomers can win and one dated hea
 > **Definition — Capex (capital expenditure):** Money spent on long-lived physical assets such as data centers, chips and power equipment. Big-tech AI capex is the engine of the data-center boom.
 
 > **Definition — Open-weight model:** A model whose trained parameters are published so anyone can download, run and modify it, within its license. The weights are free, but running them still costs compute and engineering (Chapter 30).
+
+> **Definition — SEC (Securities and Exchange Commission):** The US government agency that regulates stock markets. Public companies must file detailed financial reports with it, such as quarterly and annual reports and, before first listing their shares, a document called an S-1; anyone can read these filings free on its website.
 
 Three patterns stand out in Table 64.1.
 
@@ -345,13 +347,13 @@ Idea 2 makes a good worked example because both its value and its costs are easy
 
 **Step 2: your cost to serve.** Suppose the practice receives 600 calls a month averaging 3 minutes, and the voice AI, phone line and transcription together cost you $0.10 per minute. Compute cost = 600 × 3 × $0.10 = $180 a month. Add 2 hours a month of your time for updates and support, valued at $50 an hour: $100. Total cost to serve = $280.
 
-**Step 3: price and margin.** Price at $500 a month, under a tenth of the $6,000 value at stake. Gross margin on compute alone = ($500 − $180) ÷ $500 = 64%. Contribution after your support time = $500 − $280 = $220 per customer per month.
+**Step 3: price and margin.** Price at $500 a month, under a tenth of the $6,000 value at stake. Gross margin on compute alone = ($500 − $180) ÷ $500 = 64%. Contribution (what each customer leaves you once its direct costs are paid) after your support time = $500 − $280 = $220 per customer per month.
 
 **Step 4: the cost of winning a customer.** Suppose each new practice takes 10 hours of selling at $50 an hour plus $100 of advertising: $600. Payback period = $600 ÷ $220 ≈ 2.7 months.
 
 **Step 5: lifetime value.** If 3% of customers cancel each month, the average customer stays about 1 ÷ 0.03 ≈ 33 months. Lifetime value ≈ 33 × $220 ≈ $7,300, about 12 times the $600 it cost to win them. A ratio well above 3 is usually considered healthy.
 
-> **Definition — CAC (customer acquisition cost):** The total cost of winning one new customer, including sales time, advertising and free trials.
+> **Definition — Customer acquisition cost (CAC):** The total cost of winning one new customer, including sales time, advertising and free trials.
 
 > **Definition — Churn:** The share of customers who cancel in a given period, often measured monthly. Average customer lifetime is roughly 1 divided by the monthly churn rate.
 
@@ -381,7 +383,7 @@ Chapter 61 tells these companies' stories; here are the lessons for anyone looki
 - **Sierra (customer-service agents):** charging per resolution ties price to value and escapes the shrinking-seats problem. It was reported at about $200 million of annual recurring revenue in May 2026.
 - **Lovable (app builder):** mixing a subscription ($25 to $50 a month) with usage credits keeps heavy users from destroying margins. It was reported at about $600 million of annualized revenue in September 2026.
 - **Cursor (coding):** a product built on other companies' models reached a multi-billion-dollar run-rate and a reported $60 billion acquisition by SpaceX in June 2026. "Wrapper" is not an insult when workflow depth, speed and distribution are real.
-- **Mercor (expert data):** a marketplace's gross revenue overstates what it keeps; read the take rate.
+- **Mercor (expert data):** a marketplace's gross revenue overstates what it keeps; read the take rate (the share of each payment the marketplace keeps).
 - **Scale AI (data labeling):** after Meta bought 49% of it for $14.3 billion in June 2025, Google, OpenAI and other customers reportedly left. Depending on a few customers who are also competitors of your investor is a structural risk.
 
 ## How to find and validate an AI opportunity: an eight-step method
@@ -536,7 +538,7 @@ Funding comes in three broad forms. Bootstrapping means paying your own way from
 
 > **Definition — Angel investor:** A wealthy individual who invests personal money in a very early company, usually in exchange for a small share of ownership, often before any venture capital fund will.
 
-> **Definition — Accelerator:** A program, such as Y Combinator, that invests a fixed amount in many young companies at once in exchange for a share of ownership, and gives them a few months of intensive advice and introductions to investors.
+> **Definition — Startup accelerator:** A program, such as Y Combinator, that invests a fixed amount in many young companies at once in exchange for a share of ownership, and gives them a few months of intensive advice and introductions to investors.
 
 ## Open problems worth working on
 
@@ -563,6 +565,8 @@ Some of the largest opportunities are not businesses yet. They are unsolved prob
 *Table 64.7: Open problems drawn from across the book, with an entry point for a newcomer.*
 
 > **Definition — Open problem:** A question that experts have not yet solved and that is widely recognized as important. Contributing even a small, careful result on an open problem is strong evidence of skill.
+
+> **Definition — IEA (International Energy Agency):** An international organization, founded in 1974 and based in Paris, that tracks and forecasts energy supply and demand for its member countries. Its estimates of data-center electricity use are among the most widely cited.
 
 > **At the frontier (2026):** Several of these problems have turned into markets before they were solved. Agent security, evaluation and RL environments each attracted dedicated startups in 2025 and 2026, and large security vendors reportedly bought AI-security startups in 2025. Labs' system cards describe their safety testing and known limitations in detail; reading them is a free map of where the hardest work, and often the next wave of jobs, will be.
 

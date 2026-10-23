@@ -182,9 +182,9 @@ There is a biological echo. Around 1959 to 1962, the neuroscientists David Hubel
 
 Nothing about the sliding flashlight requires a flat picture. It only needs data in which neighbors belong together.
 
-In one dimension, a sound recording is a single long row of numbers (Chapter 3), and a 1-D convolution slides a short filter along it, firing on a click or a rising pitch wherever it occurs. Because the same filter is simply applied more or fewer times, one network can read a two-second clip or a two-minute one, something a fixed table of weights cannot do. Text works the same way once each word becomes a list of numbers (the embeddings at the end of this chapter): a filter three words wide slides along a sentence and can learn to fire on phrases such as "not very good". In 2014 Yoon Kim showed that a simple CNN of this kind, built on pretrained word vectors, beat the best previous results on 4 of 7 sentence-classification tasks, including sentiment analysis.
+In one dimension, a sound recording is a single long row of numbers (Chapter 3), and a 1-D convolution slides a short filter along it, firing on a click or a rising pitch wherever it occurs. Because the same filter is simply applied more or fewer times, one network can read a two-second clip or a two-minute one, something a fixed table of weights cannot do. Text works the same way once each word becomes a list of numbers (the embeddings at the end of this chapter): a filter three words wide slides along a sentence and can learn to fire on phrases such as "not very good". In 2014 Yoon Kim showed that a simple CNN of this kind, built on pretrained word vectors, beat the best previous results on 4 of 7 sentence-classification tasks, including sentiment analysis (judging whether a review or comment is positive or negative).
 
-In three dimensions, video adds time to height and width. A 3-D convolution uses a small cube instead of a square, for example 3 × 3 pixels across 3 frames, the size used throughout the C3D video network released in late 2014. A single filter can then respond to motion, such as an edge that shifts between frames, as well as to shape. Stacks of medical scan slices, such as CT scans, are handled the same way, with depth in place of time. Chapter 45 shows how video recognition uses this.
+In three dimensions, video adds time to height and width. A 3-D convolution uses a small cube instead of a square, for example 3 × 3 pixels across 3 frames, the size used throughout the C3D video network released in late 2014. A single filter can then respond to motion, such as an edge that shifts between frames, as well as to shape. Stacks of medical scan slices, such as CT (computed tomography) scans, which X-ray the body in thin slices, are handled the same way, with depth in place of time. Chapter 45 shows how video recognition uses this.
 
 > **Definition — 1-D convolution:** A convolution whose filter slides along a single direction, such as time in an audio recording or word position in a sentence, to find short patterns wherever they occur.
 
@@ -211,14 +211,14 @@ flowchart LR
 ```
 *Figure 14.5: The classic CNN recipe. Repeated convolution and pooling stages shrink the image while adding channels, then dense layers and softmax produce class probabilities.*
 
-Training works exactly as in Chapter 12: forward pass, cross-entropy loss, backpropagation, nudge every filter weight. The filters start as random noise and end up as edge detectors and color blobs, because those turn out to be the most useful building blocks. To see one working, the CNN Explainer website from a Georgia Tech research group runs a small network called TinyVGG in your browser (Exercise 2).
+Training works exactly as in Chapter 12: forward pass, cross-entropy loss, backpropagation, nudge every filter weight. The filters start as random noise and end up as edge detectors and color blobs, because those turn out to be the most useful building blocks. To see one working, the CNN Explainer website from a Georgia Tech research group runs a small network called TinyVGG (a miniature of the VGG design described later in this chapter) in your browser (Exercise 2).
 
 ### Looking inside a trained CNN
 
 How did researchers confirm the edges-to-objects hierarchy, and how do engineers check what a trained network is really looking at? Four techniques became famous, and you may have seen their pictures online.
 
 - **Feature visualization.** Collect the image patches that make one neuron fire hardest, or start from gray noise and adjust the pixels, step by step, until the neuron fires as strongly as possible. Matthew Zeiler and Rob Fergus's 2013 gallery of what each layer of an AlexNet-style network responds to was the first famous example: edges in layer 1, textures in the middle, dog faces and whole objects near the top.
-- **Saliency maps.** Ask which pixels the answer depends on most, by measuring how much the "cat" score changes when each pixel is nudged (its gradient, Chapter 6), and paint the result as a heat map over the photo. Grad-CAM (2017) made coarser, cleaner heat maps from the last convolutional layer. Explanation tools like these are how shortcut learning, such as a classifier that decides "wolf" by looking at snow, gets caught (Chapter 45).
+- **Saliency maps.** Ask which pixels the answer depends on most, by measuring how much the "cat" score changes when each pixel is nudged (its gradient, Chapter 6), and paint the result as a heat map over the photo. Grad-CAM (gradient-weighted class activation mapping, 2017) made coarser, cleaner heat maps from the last convolutional layer. Explanation tools like these are how shortcut learning, such as a classifier that decides "wolf" by looking at snow, gets caught (Chapter 45).
 - **DeepDream** (Google, 2015). Run feature visualization on a whole photo: tweak it so whatever a layer already faintly sees, it sees more. Clouds sprout dog heads and eyes, the hallucinatory images that briefly flooded the internet.
 - **Neural style transfer** (Leon Gatys and colleagues, 2015). Optimize a new image so that its deep-layer features match a content photo while its texture statistics match a painting: your holiday snapshot, repainted as if by Van Gogh.
 
@@ -271,7 +271,7 @@ The field changed direction almost overnight. Google hired Hinton and his two st
 
 ### VGG, GoogLeNet and the race for depth
 
-If eight layers were good, were more better? In 2014, Oxford's VGG used 16 or 19 layers of nothing but 3 × 3 filters: two stacked 3 × 3 layers see the same 5 × 5 region as one 5 × 5 filter, with fewer weights (18 instead of 25) and an extra ReLU. Google's GoogLeNet (Inception) reached 22 layers with only about 7 million parameters by running several filter sizes in parallel. But past roughly 20 layers, plain networks got worse, even on their own training data, because the error signal faded on its way back (the vanishing-gradient problem from Chapter 13).
+If eight layers were good, were more better? In 2014, Oxford's VGG (named after the university's Visual Geometry Group) used 16 or 19 layers of nothing but 3 × 3 filters: two stacked 3 × 3 layers see the same 5 × 5 region as one 5 × 5 filter, with fewer weights (18 instead of 25) and an extra ReLU. Google's GoogLeNet (Inception) reached 22 layers with only about 7 million parameters by running several filter sizes in parallel. But past roughly 20 layers, plain networks got worse, even on their own training data, because the error signal faded on its way back (the vanishing-gradient problem from Chapter 13).
 
 ### ResNet, 2015: the express elevator
 
@@ -351,6 +351,8 @@ flowchart TD
 This is how Google's free Teachable Machine website learns your hand gestures from a few dozen webcam snapshots (Exercise 3). "Pretrain big and general, then adapt small and specific" became the central recipe of modern AI. Your chatbot is a giant example: pretrained on trillions of words, then adapted into an assistant (Chapters 19 and 20).
 
 > **Key idea:** Transfer learning means the expensive part of learning, building general knowledge, can be done once and shared. That is why a small company with 500 photos can build a useful vision system, and why foundation models exist at all.
+
+> **Definition — Foundation model:** A large model pretrained on broad data, such as huge collections of text, images or both, that is then adapted to many different tasks instead of being built for one. The models behind ChatGPT, Claude and Gemini are foundation models.
 
 > **At the frontier (2026):** The largest vision systems now mostly use Transformers instead of CNNs (Chapter 15 explains how images become "patches"). But CNNs never went away. Modernized designs such as ConvNeXt (2022) showed that CNNs updated with Transformer-era training tricks can match Vision Transformers on standard benchmarks. CNNs remain common in phones, cameras, cars, factory inspection and medical imaging, where they are fast, small and well understood. Chapter 45 covers computer vision applications in depth.
 
@@ -706,7 +708,7 @@ Language comes in order, so researchers built recurrent networks that read one w
 Meanwhile, embeddings turned words into points on a map where similar meanings sit close together, first with one fixed point per word (word2vec), then with context-dependent points (BERT). That is how semantic search works today. In 2017, researchers kept the attention, threw away the slow step-by-step reading, and created the Transformer.
 
 ## Key terms
-Pixel, Channel, MNIST, MLP (Multilayer Perceptron), Inductive bias, Convolution, Filter (kernel), Feature map, Weight sharing, Translation invariance, Stride, Padding, ReLU (Rectified Linear Unit), Pooling (max pooling, average pooling), Receptive field, 1-D convolution, 3-D convolution, CNN (Convolutional Neural Network), Softmax, Feature visualization, Saliency map, DeepDream, Neural style transfer, ImageNet, Top-5 error, AlexNet, GPU (Graphics Processing Unit), Data augmentation, Dropout, Residual connection (skip connection), ResNet, Image segmentation, U-Net, 1 × 1 convolution (pointwise convolution), Depthwise separable convolution, Transfer learning, Pretrained model, Fine-tuning, Sequence, RNN (Recurrent Neural Network), Hidden state, Tanh, Unrolling, Backpropagation through time (BPTT), Vanishing gradient, Exploding gradient, LSTM (Long Short-Term Memory), Cell state, Gate, GRU (Gated Recurrent Unit), Stacked (deep) RNN, Bidirectional RNN, Seq2seq (sequence-to-sequence), Encoder, Decoder, Context vector, Bottleneck (information bottleneck), Attention, Alignment, Vocabulary, One-hot encoding, Embedding, Embedding space (vector space), Cosine similarity, Embedding table (embedding matrix), Distributional hypothesis, word2vec, Contextual embedding, Sentence embedding, Semantic search
+Pixel, Channel, MNIST, MLP (Multilayer Perceptron), Inductive bias, Convolution, Filter (kernel), Feature map, Weight sharing, Translation invariance, Stride, Padding, ReLU (Rectified Linear Unit), Pooling (max pooling, average pooling), Receptive field, 1-D convolution, 3-D convolution, CNN (Convolutional Neural Network), Softmax, Feature visualization, Saliency map, DeepDream, Neural style transfer, ImageNet, Top-5 error, AlexNet, GPU (Graphics Processing Unit), Data augmentation, Dropout, Residual connection (skip connection), ResNet, Image segmentation, U-Net, 1 × 1 convolution (pointwise convolution), Depthwise separable convolution, Transfer learning, Pretrained model, Fine-tuning, Foundation model, Sequence, RNN (Recurrent Neural Network), Hidden state, Tanh, Unrolling, Backpropagation through time (BPTT), Vanishing gradient, Exploding gradient, LSTM (Long Short-Term Memory), Cell state, Gate, GRU (Gated Recurrent Unit), Stacked (deep) RNN, Bidirectional RNN, Seq2seq (sequence-to-sequence), Encoder, Decoder, Context vector, Bottleneck (information bottleneck), Attention, Alignment, Vocabulary, One-hot encoding, Embedding, Embedding space (vector space), Cosine similarity, Embedding table (embedding matrix), Distributional hypothesis, word2vec, Contextual embedding, Sentence embedding, Semantic search
 
 ## Exercises
 
@@ -735,18 +737,18 @@ Pixel, Channel, MNIST, MLP (Multilayer Perceptron), Inductive bias, Convolution,
    1. Type the 6 × 6 image from Exercise 1 into cells A1:F6. Type the 3 × 3 filter into H1:J3.
    2. In cell A9 type `=SUMPRODUCT(A1:C3,$H$1:$J$3)`. This multiplies the 3 × 3 window by the filter and adds everything up. The dollar signs keep the filter fixed when you copy.
    3. Copy A9 across to D9 and down to row 12. You now have the 4 × 4 feature map.
-   4. Change the image (draw an "L" or an "X" with 9s) and the filter, and watch the map update instantly. Try the blur filter (every weight 1/9) and the sharpen filter (0, −1, 0 / −1, 5, −1 / 0, −1, 0).
+   4. Change the image (draw an "L" or an "X" with 9s) and the filter, and watch the map update instantly. Try the blur filter (every weight 1/9; type it as `=1/9`, because a bare 1/9 is turned into a date) and the sharpen filter (0, −1, 0 / −1, 5, −1 / 0, −1, 0).
    **What you'll learn:** convolution is nothing but multiply-and-add in a sliding window, and different weights detect different patterns.
 
 5. **[Medium] Watch an RNN forget, and an LSTM remember.** In a spreadsheet:
    1. Put step numbers 1 to 40 in A2:A41. In B2 put 1, and in B3:B41 put 0 (one important word, then filler).
    2. Put 0 in C1. In C2 type `=TANH(0.5*B2+0.8*C1)` and copy it down to C41. This is the tiny RNN from this chapter.
    3. Put 0 in D1. In D2 type `=0.98*D1+0.5*B2` and copy it down. This mimics an LSTM cell state with forget gate 0.98 and input gate 0.5.
-   4. Chart columns C and D. Then change 0.8 to 0.95 and to 1.5, and change 0.98 to 0.9 and to 1.0.
-   **What you'll learn:** repeated multiplication makes memory fade or blow up, and a forget gate near 1 keeps information alive for many steps.
+   4. Chart columns C and D. Then change 0.8 to 0.95 and to 1.5, and change 0.98 to 0.9 and to 1.0. Each time, edit the number inside the formula in C2 (or D2) and copy it down to row 41 again, so every row uses the new value. With 1.5 the memory does not fade: it climbs and sticks near 0.86, because tanh can never go above 1. The forward signal is capped, but in training it is the backward signal, which has no such cap, that explodes.
+   **What you'll learn:** repeated multiplication makes memory fade (or, with a factor above 1, run away until tanh caps it), and a forget gate near 1 keeps information alive for many steps.
 
 6. **[Medium] Attention weights with a calculator.** Translate "the red car" into French: "la voiture rouge."
-   1. When writing "voiture" (car), suppose the scores for the English words [the, red, car] are [0.3, 0.8, 2.9]. Compute e to each score, add them, and divide each by the total. (Check: the weights should be about 0.06, 0.10 and 0.84.)
+   1. When writing "voiture" (car), suppose the scores for the English words [the, red, car] are [0.3, 0.8, 2.9]. Compute e to each score (the e^x key on a calculator, or `=EXP(0.3)` in a spreadsheet), add them, and divide each by the total. (Check: the weights should be about 0.06, 0.10 and 0.84.)
    2. When writing "rouge" (red), invent scores you think are sensible, compute the weights, and check that they add to 1.
    3. Double every score in step 1 and recompute. What happens to the biggest weight?
    **What you'll learn:** attention is scores, then softmax, then a blend, and bigger score gaps make attention sharper.

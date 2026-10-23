@@ -434,7 +434,7 @@ Three yardsticks dominate the 2026 conversation (Chapter 24 covers benchmarks in
 
 **Humanity's Last Exam (HLE).** A public set of 2,500 expert-level questions released in January 2025 by the Center for AI Safety and Scale AI, designed to be too hard for AI. Frontier models scored under 10% at launch. By October 20, 2026, the best text-only score listed by Artificial Analysis was 61.4% (Claude Opus 5.5). One caveat: an audit suggested about 30% of the text-only chemistry and biology answers might themselves be wrong.
 
-**ARC-AGI.** A family of puzzle benchmarks from François Chollet's ARC Prize, designed to test learning new skills from a few examples rather than recalling knowledge. ARC-AGI-3, launched March 25, 2026, uses interactive games with no instructions. At launch, humans solved 100% and the best AI 0.51%. By September 2026, OpenAI's GPT-6 Astra scored 62.7% with the standard testing setup (at a cost of about $26,000) and 99.9% with a different setup that let it keep its reasoning state between steps. ARC Prize explicitly declined to call this AGI.
+**ARC-AGI.** A family of puzzle benchmarks from François Chollet's ARC Prize, designed to test learning new skills from a few examples rather than recalling knowledge. ARC-AGI-3, launched March 25, 2026, uses interactive games with no instructions. At launch, humans solved 100% and the best AI 0.51%. By September 2026, OpenAI's GPT-6 Astra at maximum effort scored 62.7% with the standard testing setup (at a cost of about $26,000) and 98.6% at the same effort with a different setup that let it keep its reasoning state between steps; its best score, 99.9%, came with that setup at high effort. ARC Prize explicitly declined to call this AGI.
 
 > **Definition — Benchmark saturation:** When top models score near the maximum on a test, so it can no longer tell them apart and a harder test is needed.
 
@@ -445,7 +445,7 @@ timeline
     title How fast hard new tests fall
     2025 : Jan - Humanity's Last Exam launches, frontier models under 10 percent
     2026 : Mar 25 - ARC-AGI-3 launches, humans 100 percent, best AI 0.51 percent
-         : Sep - GPT-6 Astra scores 62.7 percent standard, 99.9 percent with a new harness
+         : Sep - GPT-6 Astra scores 62.7 percent standard, up to 99.9 percent with a new harness
          : Oct - Best text-only HLE score about 61 percent
 ```
 *Figure 60.7: Two benchmarks designed to be hard for AI went from near zero to well over half in under two years. Saturation is a sign of progress and also a sign that benchmarks alone cannot settle the AGI question.*
@@ -721,7 +721,7 @@ Steelman, Strawman, Crux, Calibration, Forecast, Task, Labor market, Exposure (t
 3. Why might experienced developers have been slower with AI in METR's 2025 study while believing they were faster, and what is the general lesson?
 4. Acemoglu and Goldman Sachs differ by about a factor of ten in their AI growth estimates. Show the per-year arithmetic and name the crux.
 5. Give the strongest bull argument and the strongest bear argument in the AI bubble debate, and explain why "bubble" and "transformative" can both be true.
-6. What does ARC-AGI-3's 62.7% versus 99.9% result teach about benchmarks?
+6. What does GPT-6 Astra's ARC-AGI-3 result (62.7% versus 98.6% at the same effort, depending on the harness) teach about benchmarks?
 7. If the METR time horizon is 17.4 hours and doubles every 4.2 months, roughly how long until it reaches 167 hours? What are two reasons not to trust that date?
 8. State the strongest argument for and against taking model welfare seriously.
 
@@ -732,7 +732,7 @@ Steelman, Strawman, Crux, Calibration, Forecast, Task, Labor market, Exposure (t
 3. Time spent prompting, waiting and reviewing AI output that did not fit a codebase they knew deeply can outweigh time saved, especially for experts on familiar work; meanwhile the feeling of fluency makes the work seem faster. The general lesson is to measure productivity rather than trust impressions, and that AI gains are largest for novices on well-defined tasks.
 4. 7% over ten years is about 1.07^(1/10) − 1 ≈ 0.68 percentage points of extra growth per year; 0.7% over ten years is about 0.07 points per year. The crux is how many tasks AI will profitably transform within a decade and how fast organizations will reorganize around it.
 5. Bull: demand outruns supply, lab revenues are growing several-fold a year, most spending comes from profitable companies' cash flow, and falling prices expand usage. Bear: spending far exceeds recognized revenue, circular deals and "up to" commitments inflate demand, chips depreciate quickly, debt financing is rising, and competition may crush margins. Both can be true because, as with railways and fiber, a real technology can be overbuilt and still transform the economy after investors lose money.
-6. The same model scored 62.7% with the standard harness and 99.9% with a harness that kept its reasoning state, so scores depend heavily on the setup around the model; hard benchmarks can saturate within months; and ARC Prize still declined to call it AGI, showing that a benchmark score does not settle definitional questions.
+6. The same model at the same maximum effort scored 62.7% with the standard harness and 98.6% with a harness that kept its reasoning state (99.9% at high effort), so scores depend heavily on the setup around the model; hard benchmarks can saturate within months; and ARC Prize still declined to call it AGI, showing that a benchmark score does not settle definitional questions.
 7. 167 ÷ 17.4 ≈ 9.6, and log2(9.6) ≈ 3.3 doublings; 3.3 × 4.2 ≈ 14 months. Reasons for caution: measurements above 16 hours are unreliable and have wide error bars; the doubling time is uncertain (about 6.2 months gives about 20 months); trends can follow an S-curve; and a 50% success rate on mostly software tasks is not the reliability of a real job.
 8. For: there is no settled theory of consciousness, some theories allow machine consciousness, AI runs at enormous scale, and cheap precautions guard against a possibly huge moral error. Against: models trained on human text will talk about feelings regardless of whether they have any, encouraging belief in AI feelings can harm vulnerable users and divert moral attention, and companies could exploit the idea.
 

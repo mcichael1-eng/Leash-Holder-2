@@ -77,13 +77,19 @@ Data center builders price everything per megawatt of IT capacity. There are two
 Industry estimates for the building side, as of 2026:
 
 - **JLL** puts the global average shell-and-core cost at **$10.7 million per MW in 2025** and forecasts **$11.3 million per MW for 2026**, up from $7.7 million in 2020. AI tenant fit-out can reach about **$25 million per MW**.
-- **Cushman & Wakefield's** 2026 guide puts the average greenfield cost of the most modern facilities at **$17.6 million per MW**, up 21% from its previous report.
+- **Cushman & Wakefield's** (another large commercial real-estate firm) 2026 guide puts the average greenfield (built from scratch on an empty site) cost of the most modern facilities at **$17.6 million per MW**, up 21% from its previous report.
 
 Call it roughly **$10 to 18 million per MW** for the building and its electromechanical systems, before the chips.
+
+> **Definition — JLL (Jones Lang LaSalle):** A global commercial real-estate services firm that advises on, leases and manages data centers, and publishes widely cited reports on their construction costs and capacity.
 
 ### The IT equipment
 
 The chips cost several times more than the building. Prices are rarely published, but reported figures give the scale: an H100 reportedly sold for about $25,000 to $40,000, and a GB200 or GB300 NVL72 rack (72 GPUs plus CPUs, switches and cooling) reportedly for about $3 to 4 million. Third-party estimates (low confidence) put a Vera Rubin NVL72 rack at about $5 to 7 million.
+
+> **Definition — NVIDIA:** The US company that designs most of the GPUs used for AI, along with the software (CUDA) and networking that tie them together. It does not manufacture its chips; the Taiwanese contract chipmaker TSMC does. Its data-center GPU generations (H100, Blackwell, Vera Rubin) fill most AI data centers.
+
+> **Definition — GB200 and GB300:** NVIDIA's "Grace Blackwell" modules, each pairing one Grace CPU with two Blackwell GPUs (the original Blackwell in the GB200, the upgraded Blackwell Ultra in the GB300). An NVL72 rack holds 36 of them, so 72 GPUs.
 
 **Worked example: IT cost per MW.** A Blackwell-class GPU slot draws about 1.8 kW as its share of an NVL72 rack (Chapter 39). Add its share of the network switches, storage and other gear outside the rack, plus some headroom, and plan on about 2.2 kW of IT capacity per slot, so a megawatt holds roughly **450 GPU slots**. At about **$50,000 per slot** all-in, that is 450 × $50,000 ≈ **$22.5 million per MW**, more than the building.
 
@@ -105,7 +111,7 @@ The chips cost several times more than the building. Prices are rarely published
 - IT equipment: $22.5 million × 1,000 = **about $22.5 billion**.
 - Total: about **$33 to 41 billion** per gigawatt of IT.
 
-Compare with outside estimates. Epoch AI estimates about **$38 billion of up-front capital per gigawatt** of IT power. NVIDIA's CEO has reportedly cited about $50 to 60 billion per gigawatt, which fits the newest, priciest chips. Forbes described Anthropic's $50 billion data center commitment with Fluidstack as roughly the cost of one gigawatt. So when you read "a 5 GW campus," translate it to **roughly $200 to 300 billion** of eventual spending.
+Compare with outside estimates. Epoch AI estimates about **$38 billion of up-front capital per gigawatt** of IT power. NVIDIA's CEO has reportedly cited about $50 to 60 billion per gigawatt, which fits the newest, priciest chips. Forbes described Anthropic's $50 billion data center commitment with Fluidstack (a GPU cloud company) as roughly the cost of one gigawatt. So when you read "a 5 GW campus," translate it to **roughly $200 to 300 billion** of eventual spending.
 
 ```mermaid
 pie title Rough split of up-front spending on an AI campus
@@ -126,9 +132,9 @@ Once built, a data center costs money every hour.
 
 - Energy: 100 MW × 1.2 × 8,760 h × 0.8 ≈ **841,000 MWh** a year.
 - Cost: 841,000 × $70 ≈ **$59 million a year**.
-- Per GPU: one slot drawing about 2 kW at $0.08 per kWh costs about **$0.16 per hour**.
+- Per GPU: $70 per MWh is $0.07 per kWh (1 MWh is 1,000 kWh); round it up to $0.08 to stay on the cautious side. One slot uses about 2 kW (its 2.2 kW share × 80% load × PUE 1.2 ≈ 2.1 kW), so it costs about 2 × $0.08 = **$0.16 per hour**.
 
-Now compare with the chips. 45,000 GPU slots at $50,000 each, depreciated over 5 years, cost **$450 million a year**, over seven times the power bill. This is a striking fact: **power is a small share of an AI data center's annual cost, yet it is the main limit on how many can be built** (Chapter 42). Operators would happily pay more for electricity if they could get more of it sooner.
+Now compare with the chips. 45,000 GPU slots (100 MW × 450 slots per MW) at $50,000 each, depreciated over 5 years, cost **$450 million a year**, over seven times the power bill. This is a striking fact: **power is a small share of an AI data center's annual cost, yet it is the main limit on how many can be built** (Chapter 42). Operators would happily pay more for electricity if they could get more of it sooner.
 
 Efficiency still matters at this scale. Running that 100 MW site at PUE 1.5 instead of 1.1 wastes 100 MW × 0.4 × 8,760 h ≈ 350,000 MWh a year at full load, about **$25 million** at $70 per MWh, which is why operators fight over decimal points of PUE (Chapter 40).
 
@@ -168,6 +174,8 @@ Notice also the **cluster premium**: an H100 in Lambda's pre-wired multi-node cl
 
 **Neoclouds versus hyperscalers.** Neoclouds (CoreWeave, Lambda, Nebius, RunPod and others) compete on price, availability and simplicity. Hyperscalers (AWS, Azure, Google Cloud, Oracle) usually charge more for on-demand GPUs but bundle storage, security, databases and enterprise contracts. For the biggest customers, every provider negotiates private multi-year deals, and those prices are what really drive the industry.
 
+> **Definition — AWS (Amazon Web Services):** Amazon's cloud-computing business, one of the three biggest hyperscalers alongside Microsoft Azure and Google Cloud. It rents out servers, storage, NVIDIA GPUs and Amazon's own AI chips (Trainium) by the hour or on long contracts.
+
 **Worked example: renting a cluster.**
 
 - 8 H100s for one week at $3.99: 8 × 168 hours × $3.99 ≈ **$5,360**.
@@ -193,7 +201,7 @@ How busy are real sites? Epoch AI notes that large AI sites typically consume 60
 
 How long does an AI GPU stay economically useful? That question is worth tens of billions of dollars of reported profit every year.
 
-**What companies do.** As of 2026, hyperscalers depreciate servers, including GPU servers, over about 5 to 6 years. Amazon shortened the life of some servers from 6 to 5 years in early 2025. Microsoft went the other way for buildings, extending data center building lives from 15 to 25 years from its 2027 fiscal year.
+**What companies do.** As of 2026, hyperscalers depreciate servers, including GPU servers, over about 5 to 6 years. Amazon shortened the life of some servers from 6 to 5 years in early 2025. Microsoft went the other way for buildings, extending data center building lives from 15 to 25 years from its 2027 fiscal year (a company's accounting year, which need not match the calendar year; Microsoft's starts in July).
 
 **Worked example: why the choice matters.** Suppose a company owns $100 billion of AI servers.
 
@@ -332,11 +340,15 @@ flowchart LR
 
 *Figure 43.3: How the total cost of ownership of a GPU is built up, and how utilization turns it into a break-even rental price.*
 
-TCO is also why the biggest buyers design their own chips. NVIDIA's gross margin was 75.0% in its quarter ending July 2026: for every dollar of NVIDIA products, about 25 cents was the direct cost of making them. A hyperscaler that designs its own chip with a partner such as Broadcom pays its own design costs (hundreds of millions of dollars per chip) and the partner's fee, but avoids most of that margin. The claimed savings, all from interested parties:
+TCO is also why the biggest buyers design their own chips. NVIDIA's gross margin was 75.0% in its quarter ending July 2026: for every dollar of NVIDIA products, about 25 cents was the direct cost of making them. A hyperscaler that designs its own chip with a partner such as Broadcom (a US chip company that co-designs custom chips for big buyers) pays its own design costs (hundreds of millions of dollars per chip) and the partner's fee, but avoids most of that margin. The claimed savings, all from interested parties:
 
 - Meta reported in a 2025 research paper that its MTIA chips had 44% lower TCO than GPUs on specific inference tasks.
-- Microsoft claims its Maia 200 has 30% better performance per dollar than its existing fleet.
-- AMD claims its Helios rack delivers up to 30% more tokens per dollar than an NVIDIA Vera Rubin NVL72.
+- Microsoft claims its Maia 200, its in-house AI chip, has 30% better performance per dollar than its existing fleet.
+- AMD claims its Helios rack, its rack-scale rival to NVIDIA's, delivers up to 30% more tokens per dollar than an NVIDIA Vera Rubin NVL72.
+
+> **Definition — MTIA (Meta Training and Inference Accelerator):** Meta's own custom AI chip, designed with Broadcom and used mainly to run the recommendation and ranking models behind Facebook and Instagram feeds.
+
+> **Definition — AMD (Advanced Micro Devices):** A US chip designer that is NVIDIA's main rival in AI GPUs (its Instinct line and Helios racks) and a major maker of ordinary computer processors.
 
 > **Try it:** Ask a chatbot: "Build me a table of every cost that goes into the total cost of ownership of an AI GPU over five years, and mark which ones are usually left out of simple estimates." Compare its list with Figure 43.3. Which costs did it add that this chapter skipped?
 
@@ -398,7 +410,7 @@ AI labs don't usually sell GPU-hours; they sell tokens and subscriptions. Chapte
 
 > **Definition — Throughput:** The total amount of work a system completes per unit of time; for a chatbot server, the total tokens per second it produces across all users at once.
 
-**Worked example: a Fairwater rack.** Microsoft quotes one GB200 NVL72 rack (72 GPUs) at **865,000 tokens per second**. Suppose each GPU costs **$4 per hour** all-in.
+**Worked example: a Fairwater rack.** For its Fairwater AI data centers (Chapter 34), Microsoft quotes one GB200 NVL72 rack (72 GPUs) at **865,000 tokens per second**. Suppose each GPU costs **$4 per hour** all-in.
 
 - Rack cost per hour: 72 × $4 = **$288**.
 - Tokens per hour: 865,000 × 3,600 ≈ **3.1 billion**, or 3,114 million.
@@ -435,7 +447,11 @@ Follow the money from your subscription back to the silicon. Each layer takes it
 
 > **Definition — Customer concentration:** When a large share of a company's revenue comes from a few customers. It is a risk: losing one customer can sink the business.
 
-**Layer 1: chips.** NVIDIA is the clearest winner of the buildout so far. In its quarter ending July 26, 2026, it reported revenue of **$96.2 billion** (up 106% from a year earlier), of which **$89.0 billion** was data center revenue, a GAAP gross margin of **75.0%** and net income of **$59.7 billion**. It guided to about $108 billion for the next quarter. Margins this high are a sign of scarcity and of the CUDA software moat (Chapter 35). Memory makers (SK hynix, Samsung, Micron) also benefit from tight HBM supply, and TSMC from manufacturing nearly all of the chips (Chapter 36).
+**Layer 1: chips.** NVIDIA is the clearest winner of the buildout so far. In its quarter ending July 26, 2026, it reported revenue of **$96.2 billion** (up 106% from a year earlier), of which **$89.0 billion** was data center revenue, a GAAP gross margin (GAAP: measured under standard US accounting rules) of **75.0%** and net income of **$59.7 billion**. It guided to (gave investors a forecast of) about $108 billion for the next quarter. Margins this high are a sign of scarcity and of the CUDA software moat (Chapter 35). Memory makers (SK hynix, Samsung, Micron) also benefit from tight HBM supply, and TSMC from manufacturing nearly all of the chips (Chapter 36).
+
+> **Definition — TSMC (Taiwan Semiconductor Manufacturing Company):** The Taiwanese contract chipmaker (foundry) that manufactures nearly all advanced AI chips, including NVIDIA's, AMD's and Google's, to their customers' designs.
+
+> **Definition — SK hynix:** A South Korean memory-chip maker, part of the SK business group, that has led the market for the high-bandwidth memory (HBM) stacked beside AI GPUs and is NVIDIA's main HBM supplier.
 
 **Layer 2: servers and racks.** Contract manufacturers such as Foxconn, Quanta, Wistron and Wiwynn, and brands such as Supermicro and Dell, assemble racks. They handle enormous volumes but keep a much thinner slice of each dollar, because most of a rack's value is the chips they buy.
 
@@ -443,12 +459,14 @@ Follow the money from your subscription back to the silicon. Each layer takes it
 
 **Layer 4: AI labs.** Revenue is growing at historic speed, alongside very large costs. Reported figures, all from outside sources and best treated as estimates:
 
-- **OpenAI** recognized about $13.1 billion of revenue in 2025 and reportedly expected about $36 billion in 2026, with a run-rate around $50 billion by September 2026. The Financial Times reported projections of about $278 billion of cumulative negative free cash flow over 2026 to 2030.
-- **Anthropic** reported run-rate revenue of more than $65 billion by the end of July 2026, up from about $9 billion at the end of 2025. Reported recognized revenue was $4.8 billion, $11.5 billion and $16.8 billion in the first three quarters of 2026, with an adjusted operating margin of 11% (excluding stock-based compensation) in the third quarter. Sacra cites about $1.70 of revenue per $1 of compute in that quarter, which is not the same as a gross margin, and Anthropic books cloud-reseller sales gross, which raises its reported revenue compared with companies that book them net.
+- **OpenAI** recognized (actually earned and booked in its accounts) about $13.1 billion of revenue in 2025 and reportedly expected about $36 billion in 2026, with a run-rate around $50 billion by September 2026. The Financial Times reported projections of about $278 billion of cumulative negative free cash flow over 2026 to 2030.
+- **Anthropic** reported run-rate revenue of more than $65 billion by the end of July 2026, up from about $9 billion at the end of 2025. Reported recognized revenue was $4.8 billion, $11.5 billion and $16.8 billion in the first three quarters of 2026, with an adjusted operating margin of 11% (excluding stock-based compensation, the part of staff pay given in shares) in the third quarter. Sacra cites about $1.70 of revenue per $1 of compute in that quarter, which is not the same as a gross margin, and Anthropic books cloud-reseller sales gross (it counts the full price customers pay when they buy Claude through a cloud partner, and records the partner's cut as a cost), which raises its reported revenue compared with companies that book them net (counting only what is left after the partner's cut).
+
+> **Definition — FT (Financial Times):** A London-based daily business newspaper whose reporting on company finances is widely cited, including in this book.
 
 **Layer 5: applications.** Apps built on top of models (coding tools, legal assistants, customer-service agents) pay model providers for every token, so their gross margins are usually lower than traditional software's, and they face the risk that the model provider builds their feature (Chapter 61 covers this).
 
-**Layer 6: you.** Consumers pay subscriptions (ChatGPT had more than 50 million consumer subscribers as of February 2026, reportedly), and businesses pay per seat, per token or per outcome.
+**Layer 6: you.** Consumers pay subscriptions (ChatGPT had more than 50 million consumer subscribers as of February 2026, reportedly), and businesses pay per seat (per user), per token or per outcome.
 
 ```mermaid
 flowchart TD
@@ -468,7 +486,7 @@ flowchart TD
 
 ## The spending: capex in 2025 and 2026
 
-Here is what the five biggest spenders said they would spend, as of their earnings calls in late July 2026. Definitions differ between companies (some include finance leases, some include non-AI spending), so compare trends rather than exact figures. Third-quarter results due the week of October 27 to 30, 2026 will update these.
+Here is what the five biggest spenders said they would spend, as of their earnings calls (the quarterly calls where companies present results to investors) in late July 2026. Definitions differ between companies (some include finance leases, rentals counted much like purchases, explained later in this chapter; some include non-AI spending), so compare trends rather than exact figures. Third-quarter results due the week of October 27 to 30, 2026 will update these.
 
 | Company | 2025 capex (approx.) | 2026 plan (as of late July 2026) |
 |---|---|---|
@@ -498,11 +516,11 @@ For years, Big Tech paid for data centers out of profits. In 2026 that stopped b
 | Bonds | Borrow from investors at a fixed interest rate | Amazon's $25 billion bond, 2.5× oversubscribed | Interest cost, credit downgrades |
 | New shares | Sell ownership for cash | Alphabet's equity program of about $85 billion, June 2026 | Dilutes existing owners |
 | Leases | Rent buildings and equipment instead of buying | About $820 billion of off-balance-sheet lease commitments (FactSet) | Fixed payments that look like debt |
-| Joint ventures and SPVs | A separate company owns the asset and borrows | Meta's Hyperion venture with Blue Owl funds (reported) | Complexity, guarantees |
+| Joint ventures and SPVs | A separate company owns the asset and borrows | Meta's Hyperion venture with Blue Owl (an investment firm) funds (reported) | Complexity, guarantees |
 | Private credit | Loans from investment funds instead of banks | Construction and GPU loans | Less transparency |
 | GPU-backed loans | Chips and rental contracts as collateral | CoreWeave's $2.3 billion H100-backed facility (2023) | Collateral loses value fast |
 | Vendor financing | Suppliers invest in customers | NVIDIA's investments in OpenAI, Anthropic, CoreWeave, Nebius | Inflated apparent demand |
-| Sovereign wealth funds | State investment funds | MGX in Stargate; GIC led an Anthropic round | Political strings |
+| Sovereign wealth funds | State investment funds | MGX (Abu Dhabi) in Stargate; GIC (Singapore) led an Anthropic round | Political strings |
 | Private funding rounds | Sell private shares to investors | OpenAI's $122 billion round (March 2026) | Valuation risk |
 
 *Table 43.8: How the AI buildout is financed, with examples from 2025 and 2026. Several examples come from news reports.*
@@ -511,13 +529,19 @@ For years, Big Tech paid for data centers out of profits. In 2026 that stopped b
 
 > **Definition — Bond:** A loan from investors to a company or government, repaid with interest on a fixed schedule. Big Tech has issued tens of billions of dollars of bonds to fund data centers.
 
-> **Definition — Credit rating:** An agency's grade (from AAA down) of how likely a borrower is to repay. "Investment grade" (BBB- or better at S&P) lets a company borrow cheaply; below that, interest costs jump.
+> **Definition — Credit rating:** An agency's grade of how likely a borrower is to repay, on a letter scale running from AAA (safest) down through AA, A, BBB, BB and lower, with a plus or minus marking the top or bottom of each grade. "Investment grade" (BBB- or better at S&P) lets a company borrow cheaply; below that, a level often called "junk", interest costs jump.
+
+> **Definition — S&P (S&P Global Ratings):** One of the three big credit-rating agencies, alongside Moody's and Fitch. Its grades, from AAA down, are the ones most often quoted in news about company debt.
 
 Amazon placed a $25 billion bond that was 2.5 times oversubscribed, meaning investors offered to lend far more than it asked for. Oracle financed its fiscal 2026 buildout with about $43 billion of debt and $5 billion of equity, and on July 9, 2026 S&P cut Oracle's rating to **BBB-**, the lowest investment-grade step.
 
 > **Definition — Equity offering:** Selling new shares to raise cash. An "at-the-market" program sells shares gradually into the stock market over time instead of all at once.
 
-On June 1, 2026, Alphabet announced an **$80 billion equity program**: $30 billion of underwritten public offerings (half common stock, half mandatory convertible preferred shares), a $40 billion at-the-market program, and a $10 billion private placement to Berkshire Hathaway; when the offerings were priced the next day, the total grew to about $84.75 billion. According to its SEC filings, the underwritten offerings and the Berkshire placement fund general corporate purposes, including capital spending on AI infrastructure, while about $30 billion of the at-the-market proceeds was earmarked for Alphabet's 2026 tax obligations. A company that used to buy back its own shares was now selling new ones.
+On June 1, 2026, Alphabet announced an **$80 billion equity program**: $30 billion of underwritten public offerings (half common stock, half mandatory convertible preferred shares), a $40 billion at-the-market program, and a $10 billion private placement to Berkshire Hathaway; when the offerings were priced the next day, the total grew to about $84.75 billion. (In an underwritten offering, banks buy the new shares and resell them to investors. Preferred shares are a special class of share; "mandatory convertible" ones must turn into ordinary shares by a set date. A private placement sells shares directly to one buyer, here Warren Buffett's company Berkshire Hathaway.) According to its SEC filings, the underwritten offerings and the Berkshire placement fund general corporate purposes, including capital spending on AI infrastructure, while about $30 billion of the at-the-market proceeds was earmarked for Alphabet's 2026 tax obligations. A company that used to buy back its own shares was now selling new ones.
+
+> **Definition — SEC (Securities and Exchange Commission):** The US government agency that regulates stock and bond markets. Public companies must file regular financial reports with it (a yearly 10-K and three quarterly 10-Qs) plus documents for every share or bond sale, and anyone can read them free.
+
+> **Definition — EDGAR:** The SEC's free online database of company filings (sec.gov/edgar), where you can search any US public company's reports, from quarterly results to the details of a bond sale.
 
 ### Leases, joint ventures and SPVs
 
@@ -571,10 +595,12 @@ The weakness of GPU collateral is the depreciation debate again: if GPUs lose va
 
 Examples from 2025 and 2026:
 
-- **NVIDIA and OpenAI.** In September 2025 NVIDIA signed a letter of intent to invest "up to $100 billion" as OpenAI deployed 10 GW of NVIDIA systems. That plan was reportedly shelved in favor of a **$30 billion** NVIDIA equity investment in OpenAI's 2026 funding round. OpenAI's round closed on March 31, 2026 at **$122 billion** and an $852 billion post-money valuation, with Amazon reportedly committing $50 billion (of which $35 billion was contingent on an IPO or a technical milestone) and NVIDIA and SoftBank $30 billion each. The relationship changed shape again on August 17, 2026: NVIDIA agreed to provide credit support for SoftBank's SB Energy to build an 8 GW campus in Pike County, Ohio, leased to OpenAI for 20 years and reserved for NVIDIA systems, and to invest $1.5 billion in SB Energy (Reuters reported a guarantee of up to about $105 billion).
+- **NVIDIA and OpenAI.** In September 2025 NVIDIA signed a letter of intent to invest "up to $100 billion" as OpenAI deployed 10 GW of NVIDIA systems. That plan was reportedly shelved in favor of a **$30 billion** NVIDIA equity investment in OpenAI's 2026 funding round. OpenAI's round closed on March 31, 2026 at **$122 billion** and an $852 billion post-money valuation (the company's agreed value just after the round, defined below), with Amazon reportedly committing $50 billion (of which $35 billion was contingent on an IPO, an initial public offering, meaning a company's first sale of shares on a stock exchange, or on a technical milestone) and NVIDIA and SoftBank $30 billion each. The relationship changed shape again on August 17, 2026: NVIDIA agreed to provide credit support for SoftBank's SB Energy to build an 8 GW campus in Pike County, Ohio, leased to OpenAI for 20 years and reserved for NVIDIA systems, and to invest $1.5 billion in SB Energy (Reuters, the news agency, reported a guarantee of up to about $105 billion).
 - **AMD and OpenAI.** In October 2025, alongside a 6 GW GPU purchase, AMD gave OpenAI warrants for up to about 10% of AMD.
 - **Microsoft, NVIDIA and Anthropic.** In November 2025, Microsoft and NVIDIA committed up to $5 billion and $10 billion respectively to Anthropic, as Anthropic committed about $30 billion to Azure compute.
 - **NVIDIA and neoclouds.** NVIDIA invested $2 billion in CoreWeave (January 2026) and $2 billion in Nebius (March 2026), both large NVIDIA customers.
+
+> **Definition — SB Energy:** A US developer of solar farms, battery storage and AI data center campuses, backed by Japan's SoftBank Group (a technology investment company and a lead partner in OpenAI's Stargate project). It builds and runs Stargate sites leased to OpenAI.
 
 ```mermaid
 flowchart LR
@@ -593,7 +619,9 @@ flowchart LR
 
 > **Definition — Sovereign wealth fund:** An investment fund owned by a national government, usually funded by oil revenue or trade surpluses. Funds from Abu Dhabi, Singapore and Saudi Arabia are major AI investors.
 
-Abu Dhabi's MGX is a Stargate partner and invested in OpenAI's 2026 round; Singapore's GIC co-led Anthropic's $30 billion Series G in February 2026 (reported); Saudi Arabia's Public Investment Fund owns Humain (Chapter 42). Private rounds reached sizes once seen only in public markets: Anthropic's Series H was reported at $65 billion at a $965 billion post-money valuation in May 2026.
+Abu Dhabi's MGX is a Stargate partner and invested in OpenAI's 2026 round; Singapore's GIC co-led Anthropic's $30 billion Series G (a late-stage private funding round; each new round takes the next letter) in February 2026 (reported); Saudi Arabia's Public Investment Fund owns Humain (Chapter 42). Private rounds reached sizes once seen only in public markets: Anthropic's Series H was reported at $65 billion at a $965 billion post-money valuation in May 2026.
+
+> **Definition — MGX:** A state-backed Abu Dhabi technology investment company, set up in 2024, that invests in AI companies and AI infrastructure. It is a partner in OpenAI's Stargate project.
 
 > **Definition — Valuation (post-money):** The value investors assign to a whole company immediately after a funding round, based on the price they paid for a small slice. It is an agreed estimate of future value, not cash the company holds.
 
@@ -684,7 +712,7 @@ Big Tech planned close to $800 billion of spending in 2026, more than its cash f
 
 ## Key terms
 
-Unit economics, Capex (capital expenditure), Opex (operating expenditure), Depreciation, Useful life, Straight-line depreciation, Residual value, Operating cash flow, Free cash flow, Shell-and-core, Fit-out, All-in cost, GPU-hour, On-demand pricing, Reserved pricing, Spot pricing, Utilization, Economic life, Opportunity cost, Break-even, Payback period, Cost of capital, IRR (internal rate of return), TCO (total cost of ownership), Cost per million tokens, Throughput, Gross margin, Operating margin, Run-rate, Backlog (remaining performance obligations, RPO), Customer concentration, Bond, Credit rating, Equity offering, Finance lease vs. operating lease, Off-balance-sheet, Joint venture (JV), SPV (special purpose vehicle), Residual value guarantee, Private credit, Collateral, GPU-backed loan, Convertible note, Vendor financing, Circular deal, Warrant, Sovereign wealth fund, Valuation (post-money), Bubble, Overbuild (glut), Railway Mania, Dark fiber
+Unit economics, Capex (capital expenditure), Opex (operating expenditure), Depreciation, Useful life, Straight-line depreciation, Residual value, Operating cash flow, Free cash flow, Shell-and-core, Fit-out, JLL (Jones Lang LaSalle), NVIDIA, GB200 and GB300, All-in cost, GPU-hour, On-demand pricing, Reserved pricing, Spot pricing, AWS (Amazon Web Services), Utilization, Economic life, Opportunity cost, Break-even, Payback period, Cost of capital, IRR (internal rate of return), TCO (total cost of ownership), MTIA (Meta Training and Inference Accelerator), AMD (Advanced Micro Devices), Cost per million tokens, Throughput, Gross margin, Operating margin, Run-rate, Backlog (remaining performance obligations, RPO), Customer concentration, TSMC (Taiwan Semiconductor Manufacturing Company), SK hynix, FT (Financial Times), Bond, Credit rating, S&P (S&P Global Ratings), Equity offering, SEC (Securities and Exchange Commission), EDGAR, Finance lease vs. operating lease, Off-balance-sheet, Joint venture (JV), SPV (special purpose vehicle), Residual value guarantee, Private credit, Collateral, GPU-backed loan, Convertible note, Vendor financing, Circular deal, Warrant, SB Energy, Sovereign wealth fund, MGX, Valuation (post-money), Bubble, Overbuild (glut), Railway Mania, Dark fiber
 
 ## Exercises
 
@@ -692,7 +720,7 @@ Unit economics, Capex (capital expenditure), Opex (operating expenditure), Depre
 
 2. **[Easy] Capex or opex?** (1) Write down ten things your household spends money on (a car, a laptop, groceries, rent, a phone bill, a fridge, and so on). (2) Label each capex or opex, and give each capex item a guessed useful life. (3) Do the same for ten data center items: GPUs, electricity, the building, technicians' wages, transformers, water, network switches, insurance, software licenses, cooling towers. (4) Ask a chatbot to check your labels and explain any disagreements. **What you'll learn:** the capex/opex split and why useful life matters for each item.
 
-3. **[Medium] Does a GPU pay for itself?** (1) In a spreadsheet, put the assumptions from Table 43.4 in cells B1 to B7 (cost 50000, life 5, power kW 2, price per kWh 0.08, rent per kW-month 180, rental price 3, utilization 0.7). (2) Capital per hour: `=B1/(B2*8760)`. (3) Power per hour: `=B3*B4`. (4) Rent per hour: `=B5*B3/730`. (5) Total cost per hour of life: the sum of the three. (6) Break-even price: `=total/B7`. (7) Yearly net cash: `=(B6*B7-(power+rent))*8760`; payback years: `=B1/net`. (8) Try utilization 0.5 and 0.9, life 4 and 6, and a GPU cost of $70,000. Check your base answers against this chapter: $1.79 per hour, $2.56 break-even, about 3.9 years payback. **What you'll learn:** that utilization, price and life matter more than electricity for GPU economics.
+3. **[Medium] Does a GPU pay for itself?** (1) In a spreadsheet, put the assumptions from Table 43.4 in cells B1 to B7 (cost 50000, life 5, power kW 2, price per kWh 0.08, rent per kW-month 180, rental price 3, utilization 0.7). Type a label for each in column A so you remember which is which. (2) Capital per hour, in B9: `=B1/(B2*8760)`. (3) Power per hour, in B10: `=B3*B4`. (4) Rent per hour, in B11: `=B5*B3/730`. (5) Total cost per hour of life, in B12: `=B9+B10+B11`. (6) Break-even price, in B13: `=B12/B7`. (7) Yearly net cash, in B14: `=(B6*B7-(B10+B11))*8760`; payback years, in B15: `=B1/B14`. (8) Try utilization 0.5 and 0.9, life 4 and 6, and a GPU cost of $70,000. Check your base answers against this chapter: $1.79 per hour, $2.56 break-even, about 3.9 years payback. **What you'll learn:** that utilization, price and life matter more than electricity for GPU economics.
 
 4. **[Medium] Depreciation and reported profit.** (1) Suppose a company with $30 billion of yearly operating profit before depreciation owns $100 billion of AI servers. (2) Compute its profit after server depreciation with 4-, 5- and 6-year lives (straight-line). (3) Compute the percentage difference between the 4-year and 6-year profit. (4) Write two sentences on why investors argue about this choice, using the A100's 2026 rental prices as evidence for one side and NVIDIA's yearly product cadence for the other. **What you'll learn:** how an accounting assumption moves billions of dollars of reported profit.
 
@@ -700,9 +728,9 @@ Unit economics, Capex (capital expenditure), Opex (operating expenditure), Depre
 
 6. **[Challenge] Model a 100 MW AI data center.** Build the model from Table 43.5 yourself. (1) Inputs in column B: B1 IT MW (100), B2 GPU slots per MW (450), B3 building cost per MW (15000000), B4 cost per GPU slot (50000), B5 building life (20), B6 IT life (5), B7 PUE (1.2), B8 average load (0.8), B9 power price per MWh (70), B10 other operating costs per year (60000000), B11 rental price per GPU-hour (2.5), B12 utilization (0.75). (2) Calculations: B15 slots `=B1*B2`; B16 building capex `=B1*B3`; B17 IT capex `=B15*B4`; B18 total capex `=B16+B17`; B19 revenue `=B15*8760*B12*B11`; B20 depreciation `=B16/B5+B17/B6`; B21 energy in MWh `=B1*B7*8760*B8`; B22 power cost `=B21*B9`; B23 total cost `=B20+B22+B10`; B24 operating profit `=B19-B23`; B25 margin `=B24/B19`; B26 yearly cash flow `=B19-B22-B10`; B27 break-even price `=B23/(B15*8760*B12)`. (3) In D1 to D6 put the cash flows: D1 `=-B18`, D2 to D5 `=B26`, D6 `=B26+B16*(1-B6/B5)` (the building's remaining value). (4) In D8, `=IRR(D1:D6)`. (5) Check: revenue about $739 million, operating profit about $95 million, break-even price about $2.18, IRR about 3.5%. (6) Build the sensitivity grid of Table 43.6 by changing B11 and B12. (7) Extension: assume each GPU produces 2,000 tokens per second while busy, and compute the cost per million tokens as `=B23/(B15*2000*3600*8760*B12/1000000)` (about $0.30). **What you'll learn:** how capex, depreciation, power, price and utilization combine into the economics of a real facility, and how to use IRR to judge an investment.
 
-7. **[Challenge] When prices fall.** (1) Set up yearly cash flows for one $50,000 GPU slot over 5 years: year 0 is −50,000. (2) Each later year's cash is price × 0.7 × 8,760 − 5,722 (the yearly cost of power and rent). (3) Case A: price stays at $3.00. Case B: price falls 20% a year ($3.00, $2.40, $1.92, $1.54, $1.23). Case C: falls 35% a year. (4) Compute `=IRR()` for each and the cumulative cash by year. (5) Find the yearly price decline at which the GPU exactly breaks even over five years (the IRR is zero). **What you'll learn:** why the speed at which compute gets cheaper decides whether today's GPUs are good investments.
+7. **[Challenge] When prices fall.** (1) Set up yearly cash flows for one $50,000 GPU slot over 5 years: year 0 is −50,000. (2) Each later year's cash is price × 0.7 × 8,760 − 5,722 (the yearly cost of power and rent). (3) Case A: price stays at $3.00. Case B: price falls 20% a year ($3.00, $2.40, $1.92, $1.54, $1.23). Case C: falls 35% a year. (4) Put each case's six cash flows (year 0 to year 5) in one column, for example B1 to B6, and compute `=IRR(B1:B6)` for each case, plus the cumulative cash by year (a running total of the column). In Case C the GPU's yearly cash turns negative in years 4 and 5 and never gets close to repaying its cost, so no IRR exists and the spreadsheet shows an error such as #NUM!; that error is the answer, not a mistake. (5) Find the yearly price decline at which the GPU exactly breaks even over five years (the IRR is zero). **What you'll learn:** why the speed at which compute gets cheaper decides whether today's GPUs are good investments.
 
-8. **[Medium] Build a capex tracker.** (1) Go to the investor relations pages of Alphabet, Amazon, Meta, Microsoft and Oracle. (2) From the latest quarterly earnings releases or 10-Q filings, record each company's capital expenditures, revenue and operating cash flow for the last four quarters. (3) Compute capex as a percentage of operating cash flow. (4) Update Table 43.7 with the newest figures and note any company whose capex exceeds its operating cash flow. **What you'll learn:** to read primary financial disclosures and see how close the buildout is to the limits of Big Tech's cash.
+8. **[Medium] Build a capex tracker.** (1) Go to the investor relations pages of Alphabet, Amazon, Meta, Microsoft and Oracle. (2) From the latest quarterly earnings releases or 10-Q filings (the quarterly reports filed with the SEC, also searchable on EDGAR), record each company's capital expenditures, revenue and operating cash flow for the last four quarters. (3) Compute capex as a percentage of operating cash flow. (4) Update Table 43.7 with the newest figures and note any company whose capex exceeds its operating cash flow. **What you'll learn:** to read primary financial disclosures and see how close the buildout is to the limits of Big Tech's cash.
 
 9. **[Medium] Decode a financing headline.** (1) Find a recent news story about an AI compute deal, funding round or data center financing. (2) Answer: Is the number revenue, run-rate, backlog, valuation or an "up to" commitment? Who is the source and what do they gain? Is there a primary document (an SEC filing or company post)? Does money flow back to the investor as purchases? What conditions or timeline apply? (3) Rewrite the headline so it is accurate. (4) Ask a chatbot to critique your rewrite. **What you'll learn:** to read AI money news like an analyst instead of a fan or a cynic.
 

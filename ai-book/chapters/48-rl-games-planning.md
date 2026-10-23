@@ -143,7 +143,7 @@ Textbooks compare search methods on four questions. Is it complete: does it alwa
 
 > **Definition — Complete and optimal (search):** A search method is complete if it is guaranteed to find a solution whenever one exists, and optimal if the solution it finds is guaranteed to be the cheapest one.
 
-One more blind trick works when you know the goal exactly. Bidirectional search runs two searches at once, one forward from the start and one backward from the goal, and stops when they meet. Each only has to cover about half the distance. With 10 choices per step and a solution 6 steps away, one search might examine about 10^6 = 1,000,000 states, while two half-searches examine about 2 × 10^3 = 2,000.
+One more blind trick works when you know the goal exactly. Bidirectional search runs two searches at once, one forward from the start and one backward from the goal, and stops when they meet. Each only has to cover about half the distance. With 10 choices per step and a solution 6 steps away, one search might examine about 10^6 = 1,000,000 states, while two half-searches, each only 3 steps deep and so examining about 10^3 = 1,000 states, examine about 2 × 10^3 = 2,000 between them.
 
 > **Definition — Bidirectional search:** Searching forward from the start and backward from the goal at the same time until the two searches meet, which can cut the work dramatically because each search covers only about half the distance.
 
@@ -398,8 +398,6 @@ Even with pruning, chess is far too big to search to the end. So chess programs 
 > **Definition — Evaluation function:** A formula or model that scores a game position that is not finished, estimating how good it is for one player, for example by counting material and judging king safety.
 
 This is exactly how IBM's Deep Blue beat world champion Garry Kasparov in May 1997, winning the six-game match 3.5 to 2.5 after losing their first match in 1996. Deep Blue used hundreds of custom chess chips to examine about 200 million positions per second, with alpha-beta pruning and an evaluation function hand-crafted with help from grandmasters. It learned almost nothing. It was a triumph of search and engineering.
-
-> **Definition — IBM (International Business Machines):** A large American technology company, for much of the 20th century the world's dominant computer maker, whose research labs produced several game-playing landmarks: Arthur Samuel's checkers program, TD-Gammon, Deep Blue and the Watson question-answering system.
 
 Modern engines kept the search but changed the evaluation: since 2020 the leading open engine, Stockfish, has used a small neural network to judge positions.
 
@@ -889,7 +887,7 @@ Three more ideas complete the toolkit.
 
 > **Definition — Mechanism design:** Designing the rules of a game, such as an auction or a voting system, so that players pursuing their own interests produce the outcome the designer wants.
 
-Game theory also has a cooperative branch, about how a group should share what it earns together. Its best-known tool, the Shapley value (Lloyd Shapley, 1953), pays each member their average added contribution over every order in which the group could have formed. Suppose Alice alone can earn 60, Bob alone 20, and together 100. If Alice joins first, she adds 60 and Bob adds the remaining 40; if Bob joins first, he adds 20 and Alice adds 80. Averaging the two orders, Alice gets (60 + 80) ÷ 2 = 70 and Bob gets (40 + 20) ÷ 2 = 30, which adds up to the 100. The idea has a second life in AI: the popular SHAP method explains a single prediction by treating the input features as players and splitting the prediction among them with Shapley values.
+Game theory also has a cooperative branch, about how a group should share what it earns together. Its best-known tool, the Shapley value (Lloyd Shapley, 1953), pays each member their average added contribution over every order in which the group could have formed. Suppose Alice alone can earn 60, Bob alone 20, and together 100. If Alice joins first, she adds 60 and Bob adds the remaining 40; if Bob joins first, he adds 20 and Alice adds 80. Averaging the two orders, Alice gets (60 + 80) ÷ 2 = 70 and Bob gets (40 + 20) ÷ 2 = 30, which adds up to the 100. The idea has a second life in AI: the popular SHAP method (SHapley Additive exPlanations, Chapter 10) explains a single prediction by treating the input features as players and splitting the prediction among them with Shapley values.
 
 > **Definition — Shapley value:** A fair way to divide a group's total payoff among its members by averaging each member's added contribution over every possible order in which the group could have formed. The SHAP method uses it to show which features drove a model's prediction.
 
@@ -912,7 +910,9 @@ Since the mid-2010s, RL has moved into real systems wherever decisions are seque
 
 **Chips.** A 2021 *Nature* paper from Google described RL that places the large blocks of a chip design, and Google later said the method (AlphaChip) helped lay out several generations of its TPUs. Some outside researchers disputed how much it beat conventional tools, a useful reminder to read single-company claims carefully.
 
-**Fusion and drones.** In 2022 DeepMind and the Swiss Plasma Center at EPFL reported that an RL controller trained in simulation held the superheated plasma of a real tokamak reactor in a range of shapes. In 2023 a University of Zurich drone called Swift, trained mostly in simulation, beat human champion pilots in head-to-head races. Both results appeared in *Nature*.
+**Fusion and drones.** In 2022 DeepMind and the Swiss Plasma Center at EPFL (the Swiss Federal Institute of Technology in Lausanne) reported that an RL controller trained in simulation held the superheated plasma of a real tokamak reactor in a range of shapes. In 2023 a University of Zurich drone called Swift, trained mostly in simulation, beat human champion pilots in head-to-head races. Both results appeared in *Nature*.
+
+> **Definition — Tokamak:** A doughnut-shaped fusion research reactor that uses powerful magnetic fields to hold plasma (gas heated to millions of degrees, so hot that its atoms break into electrically charged particles) away from its walls. Keeping the plasma in shape means adjusting the magnets thousands of times a second, a fast control problem.
 
 **Your chatbot.** This is the biggest application of all. Reinforcement learning from human feedback (RLHF) turned base language models into helpful assistants (Chapter 20). Since 2024, RL with verifiable rewards has trained "reasoning" models: the environment is a math problem or a code repository, the action is the next chunk of text, and the reward is whether the final answer checks out or the tests pass (Chapter 21).
 
@@ -934,7 +934,7 @@ In 2026 this shows up in several forms:
 
 - **Thinking longer.** Reasoning models write out long chains of reasoning before answering, effectively searching through ideas in words. More thinking generally means better answers on hard problems (Chapter 21).
 - **Thinking wider.** Systems sample many answers and pick the best with a verifier or a vote (best-of-N), or explore branching reasoning paths in a tree, borrowing directly from MCTS.
-- **Searching for proofs.** AlphaProof (2024) treated theorem proving as a game whose win condition is a proof accepted by the Lean proof checker. With AlphaGeometry 2 it reached silver-medal standard at the 2024 International Mathematical Olympiad (28 of 42 points), though some problems took days of computation (Chapter 52).
+- **Searching for proofs.** AlphaProof (2024) treated theorem proving as a game whose win condition is a proof accepted by the Lean proof checker (a proof assistant, Chapter 21, that checks every step of a proof written in a precise formal language). With AlphaGeometry 2 it reached silver-medal standard at the 2024 International Mathematical Olympiad (28 of 42 points), though some problems took days of computation (Chapter 52).
 - **Searching for algorithms.** AlphaTensor (2022) treated finding faster matrix-multiplication methods as a game, AlphaDev (2023) found faster sorting routines that went into a widely used C++ library, and AlphaEvolve (May 2025) paired a language model with evolutionary search over code.
 - **Planning agents.** Coding and computer-use agents (Chapter 28) plan multi-step tasks, act, observe the result and replan, the agent-environment loop of Figure 48.5 with a language model as the policy.
 
@@ -955,7 +955,7 @@ The second is reinforcement learning: learn from rewards. An agent acts, the wor
 Games were the perfect lab. TD-Gammon, Deep Blue, DQN, AlphaGo, AlphaZero, MuZero, OpenAI Five, AlphaStar, Pluribus and CICERO each added an ingredient, and self-play let programs surpass every human teacher. Then RL left the arcade: cooling data centers, steering fusion plasma, racing drones, teaching robots to walk, and shaping your chatbot. When your chatbot "thinks" before answering, it is using ideas born in game-playing AI: a policy, a reward, and a search for the best path.
 
 ## Key terms
-Sequential decision-making, Planning, Rational agent, Fully and partially observable, Deterministic and stochastic, Episodic and sequential, Simple reflex agent, Model-based agent, Goal-based agent, Utility-based agent, Utility, Maximum expected utility principle, Value of information, Risk aversion, Money pump, Sensitivity analysis, Optimizer's curse, State, Action, State space, Search (AI sense), Factored representation, Breadth-first search (BFS), Depth-first search (DFS), Uniform-cost search (Dijkstra's algorithm), Iterative deepening, Complete and optimal (search), Bidirectional search, Heuristic, A* search, Manhattan distance, Admissible heuristic, Greedy best-first search, Weighted A*, IDA* (iterative deepening A*), Local search, Hill climbing, Local maximum, Simulated annealing, Tabu search, Beam search, Constraint satisfaction problem (CSP), Constraint propagation, Arc consistency, Backtracking search, NP-complete, Classical planning, Precondition and effect, PDDL (Planning Domain Definition Language), Hierarchical planning (HTN), Contingent plan (conditional plan), Game tree, Branching factor, Zero-sum game, Minimax, Alpha-beta pruning, Evaluation function, Horizon effect, Opening book, Endgame tablebase, Chance node (expectiminimax), Playout (rollout), Monte Carlo tree search (MCTS), UCB (upper confidence bound), Reinforcement learning (RL), Agent, Environment, Reward, Episode, Return, Discount factor (gamma), Policy, Value function, Q-value (action value), Bellman equation, Markov decision process (MDP), Markov property, Value iteration, POMDP (partially observable Markov decision process), Belief state, Exploration versus exploitation, Multi-armed bandit, Epsilon-greedy, Credit assignment problem, Sparse reward, Reward shaping, Temporal-difference (TD) learning, Q-learning, Learning rate (alpha), Deep Q-Network (DQN), Experience replay, Target network, Policy gradient method, Advantage, Actor-critic method, PPO (proximal policy optimization), Model-free RL, Model-based RL, Reward hacking (specification gaming), Imitation learning, Inverse reinforcement learning, Imperfect-information game, Nash equilibrium, Counterfactual regret minimization (CFR), Self-play, Elo rating, Game theory, Prisoner's dilemma, Dominant strategy, Pareto optimal, Tragedy of the commons, Mixed strategy, Mechanism design, Shapley value, RLHF (reinforcement learning from human feedback), RL environment (for language models), Test-time search
+Sequential decision-making, Planning, Rational agent, Fully and partially observable, Deterministic and stochastic, Episodic and sequential, Simple reflex agent, Model-based agent, Goal-based agent, Utility-based agent, Utility, Maximum expected utility principle, Value of information, Risk aversion, Money pump, Sensitivity analysis, Optimizer's curse, State, Action, State space, Search (AI sense), Factored representation, Breadth-first search (BFS), Depth-first search (DFS), Uniform-cost search (Dijkstra's algorithm), Iterative deepening, Complete and optimal (search), Bidirectional search, SRI (SRI International), Heuristic, A* search, Manhattan distance, Admissible heuristic, Greedy best-first search, Weighted A*, IDA* (iterative deepening A*), Local search, Hill climbing, Local maximum, Simulated annealing, Tabu search, Beam search, Constraint satisfaction problem (CSP), Constraint propagation, Arc consistency, Backtracking search, NP-complete, Classical planning, Precondition and effect, PDDL (Planning Domain Definition Language), Hierarchical planning (HTN), NASA (National Aeronautics and Space Administration), Contingent plan (conditional plan), Game tree, Branching factor, Zero-sum game, Minimax, Alpha-beta pruning, Evaluation function, Horizon effect, Opening book, Endgame tablebase, Chance node (expectiminimax), Playout (rollout), Monte Carlo tree search (MCTS), UCB (upper confidence bound), Reinforcement learning (RL), Agent, Environment, Reward, Episode, Return, Discount factor (gamma), Policy, Value function, Q-value (action value), Bellman equation, Markov decision process (MDP), Markov property, Value iteration, POMDP (partially observable Markov decision process), Belief state, Exploration versus exploitation, Multi-armed bandit, Epsilon-greedy, Credit assignment problem, Sparse reward, Reward shaping, Temporal-difference (TD) learning, Q-learning, Learning rate (alpha), Deep Q-Network (DQN), Experience replay, Target network, Policy gradient method, Advantage, Actor-critic method, PPO (proximal policy optimization), Model-free RL, Model-based RL, Reward hacking (specification gaming), Imitation learning, Inverse reinforcement learning, Imperfect-information game, Nash equilibrium, Counterfactual regret minimization (CFR), CICERO, Self-play, Elo rating, Game theory, Prisoner's dilemma, Dominant strategy, Pareto optimal, Tragedy of the commons, Mixed strategy, Mechanism design, Shapley value, Tokamak, RLHF (reinforcement learning from human feedback), RL environment (for language models), Test-time search
 
 ## Exercises
 
@@ -975,10 +975,10 @@ Sequential decision-making, Planning, Rational agent, Fully and partially observ
    **What you'll learn:** Why a little exploration is needed to find the best option, and what it costs.
 
 3. **[Medium] Q-learning in a spreadsheet.** Reproduce Table 48.5 and watch value flow backward.
-   1. Put α = 0.5 in cell B1 and γ = 0.9 in cell B2.
-   2. In row 5, write headers: Episode, Q(A), Q(B), Q(C). In row 6, put 0, 0, 0, 0.
-   3. In row 7: A7 = A6+1. Use these formulas: D7 = D6 + $B$1*(10 - D6). C7 = C6 + $B$1*($B$2*D6 - C6). B7 = B6 + $B$1*($B$2*C6 - B6).
-   4. Copy row 7 down for 30 rows. Check that row 9 (episode 3) shows 1.0125, 4.5 and 8.75, and that the values approach 8.1, 9 and 10.
+   1. Type the label alpha in cell A1 and the number 0.5 in cell B1 (that is α). Type gamma in A2 and 0.9 in B2 (that is γ).
+   2. In row 5, write headers: Episode, Q(A), Q(B), Q(C) in cells A5 to D5. In row 6, put 0, 0, 0, 0 in cells A6 to D6.
+   3. In row 7, type these four formulas, each starting with an equals sign: in A7, `=A6+1`; in D7, `=D6+$B$1*(10-D6)`; in C7, `=C6+$B$1*($B$2*D6-C6)`; in B7, `=B6+$B$1*($B$2*C6-B6)`. (The dollar signs keep the formulas pointing at B1 and B2 when you copy them; column B holds Q(A), C holds Q(B) and D holds Q(C), and each square uses the previous episode's value of the square to its right, just as in the worked example.)
+   4. Select cells A7 to D7, copy them, and paste into rows 8 to 36 (or drag the small square at the selection's bottom-right corner down). Check that row 9 (episode 3) shows 1.0125, 4.5 and 8.75, and that the values approach 8.1, 9 and 10.
    5. Change γ to 0.5 and predict the new final values before looking (they should approach 2.5, 5 and 10). Then set α to 0.1 and watch learning slow down.
    **What you'll learn:** How the Q-learning update works with real numbers, and what the discount factor and learning rate each control.
 
@@ -997,7 +997,7 @@ Sequential decision-making, Planning, Rational agent, Fully and partially observ
 6. **[Medium] Train a Q-learning agent in Google Colab.** Watch an agent learn to find treasure and avoid traps.
    1. Go to https://colab.research.google.com, create a new notebook, paste the code below into a cell and press the play button.
    2. Read the printed grid: arrows show the learned best move in each square; T is a trap (−10) and G is the treasure (+10). Each ordinary step costs 1.
-   3. Check the printed value of the start square (about 1.81) by hand: the best route takes 6 steps, so it is −1 − 0.9 − 0.81 − 0.729 − 0.6561 + 0.9^5 × 10 ≈ 1.81.
+   3. Check the printed value of the start square (about 1.81) by hand: the best route takes 6 steps. The first five are ordinary steps costing 1 each, discounted by one more factor of 0.9 each time, and the sixth lands on the treasure, discounted five times (0.9^5 means 0.9 multiplied by itself five times, about 0.59). So the value is −1 − 0.9 − 0.81 − 0.729 − 0.6561 + 0.9^5 × 10 ≈ −4.10 + 5.90 ≈ 1.81.
 
    ```python
    import random
@@ -1063,7 +1063,7 @@ Sequential decision-making, Planning, Rational agent, Fully and partially observ
    **What you'll learn:** Specification gaming is natural for optimizers, and every reward is an incomplete description of what you want.
 
 8. **[Challenge] Monte Carlo by hand.** Compare random playouts with minimax.
-   1. Use the position from Exercise 1. For each of X's three moves, play out 10 games where every remaining move (for both players) is chosen at random with a die (re-roll if the number does not match an empty square).
+   1. Use the position from Exercise 1. For each of X's three moves, play out 10 games where every remaining move (for both players) is chosen at random. After X's move only two squares are empty, so flip a coin for O's reply (heads, the lower-numbered square; tails, the higher one); X then takes the last square, unless O has already won.
    2. Record each move's win rate for X (count a draw as half a win).
    3. Compare the ranking with your minimax answer. Did random playouts pick the right move? Why might random opponents make a bad move look good?
    **What you'll learn:** Why plain random playouts are noisy and can be fooled, and why AlphaGo replaced them with a learned value network and a smart policy.
@@ -1075,10 +1075,10 @@ Sequential decision-making, Planning, Rational agent, Fully and partially observ
    **What you'll learn:** The human side of a landmark in AI, and how experts reacted when a machine found something new.
 
 10. **[Challenge] Experiment with the agent.** Change the Colab agent from Exercise 6 and explain what happens.
-    1. Set `epsilon = 0` (no exploration) and run it several times. Does the agent still find the treasure?
-    2. Set `gamma = 0.5`. Does the policy change? Why might a "short-sighted" agent prefer different routes?
-    3. Change the ordinary step reward from −1 to 0 and run again. What changes, and why?
-    4. Move the treasure to a different square in `world` and confirm the arrows adapt.
+    1. Set epsilon to 0 (no exploration): in the line `alpha, gamma, epsilon = 0.5, 0.9, 0.2`, change the last number to 0. (Edit that line rather than adding a new one, because that line would overwrite anything typed above it.) Run it several times. Does the agent still find the treasure?
+    2. Put epsilon back to 0.2 and set gamma to 0.5 by changing the middle number on the same line. Does the policy change? Why might a "short-sighted" agent prefer different routes?
+    3. Change the ordinary step reward from −1 to 0: in the line `return r, c, -1, False`, change -1 to 0. Run again. What changes, and why?
+    4. Move the treasure to a different square by editing the four strings in `world` (for example, make the last row "T..." and the second row ".T.G") and confirm the arrows adapt.
     **What you'll learn:** How exploration, discounting and reward design shape what an agent learns.
 
 ## Areas of opportunity

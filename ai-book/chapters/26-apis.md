@@ -169,7 +169,7 @@ content-type: application/json      (the body is JSON)
 { "model": "claude-opus-5-5", "max_tokens": 2000, "messages": [ ... ] }
 ```
 
-The version line matters more than it looks. On October 21, 2026 Anthropic released API version 2026-10-21 together with version 2.0 of its Python library, which sends the new version and passes the key in the `authorization` header. Older code that sends `anthropic-version: 2023-06-01` and an `x-api-key` header still works; the API accepts the key in either header.
+The version line matters more than it looks. On October 21, 2026 Anthropic released API version 2026-10-21 together with version 2.0 of its Python library, which sends the new version and passes the key in the `authorization` header (the word "Bearer" in front of the key is a standard web label meaning "whoever holds this key may use it"). Older code that sends `anthropic-version: 2023-06-01` and an `x-api-key` header still works; the API accepts the key in either header.
 
 ### API keys and how not to lose money
 
@@ -475,7 +475,7 @@ How does this compare to a chat subscription? Imagine a heavy user who sends 50 
 
 > **Definition — Tokenizer:** The component that chops text into tokens. Different models chop differently, so the same text can be a different number of tokens, and cost a different amount, on different models.
 
-Anthropic notes that its newer tokenizer, used by Claude 4.7 and later, produces about 30% more tokens for the same text than its previous one (roughly 555,000 versus 750,000 English words per million tokens). That means per-token prices are not directly comparable across tokenizers.
+Anthropic notes that its newer tokenizer, used by Claude 4.7 and later, turns the same text into roughly 1.0 to 1.35 times as many tokens as its previous one, depending on the content (for English prose, roughly 555,000 versus 750,000 words per million tokens, which is the top of that range). That means per-token prices are not directly comparable across tokenizers.
 
 A worked comparison with a hypothetical second model: a 10,000-word report is about 10,000 × 1.8 = 18,000 tokens on the newer Claude tokenizer, and about 10,000 × 1.33 ≈ 13,300 tokens on a tokenizer like the older one. Model A charges $2.00 per MTok and uses the newer tokenizer: 18,000 × $2 ÷ 1,000,000 = $0.036. Hypothetical model B charges $2.50 per MTok but uses the more compact tokenizer: 13,300 × $2.50 ÷ 1,000,000 ≈ $0.033. The model with the higher price per token is cheaper for this task. The only fair comparison is to run your real task on both and compare the bills.
 
@@ -503,7 +503,7 @@ flowchart TD
     F --> A
     E -->|"no"| G["Give up gracefully<br/>log it and alert someone"]
 ```
-*Figure 26.4: Retry with exponential backoff. Only retry errors that can fix themselves.*
+*Figure 26.4: Retry with exponential backoff. Only retry errors that can fix themselves. "5xx" is shorthand for any code from 500 to 599.*
 
 A worked example: with waits of 1, 2, 4, 8 and 16 seconds, five retries add up to 1 + 2 + 4 + 8 + 16 = 31 seconds of waiting before you give up, which is enough to ride out most brief overloads without hammering the server. The good news for beginners: the official SDKs already retry 429 and server errors automatically with exponential backoff (twice by default, in Anthropic's Python SDK). You can raise that with one setting: `anthropic.Anthropic(api_key=..., max_retries=5)`. Errors like 400 and 401 are never worth retrying, because the request itself is wrong.
 
@@ -613,7 +613,7 @@ print("Read from cache: ", response.usage.cache_read_input_tokens)
 print("Uncached input:  ", response.usage.input_tokens)
 ```
 
-Run the same cell twice within five minutes. The first time, the manual's tokens appear under "written to cache"; the second time, under "read from cache". Very short prompts are not cached at all (each model has a minimum length), which is why this only pays off for long, repeated prefixes. Exercise 8 is a complete caching lab.
+The `"ephemeral"` label is Anthropic's name for its standard short-lived cache, the default five minutes. Run the same cell twice within five minutes. The first time, the manual's tokens appear under "written to cache"; the second time, under "read from cache". Very short prompts are not cached at all (each model has a minimum length), which is why this only pays off for long, repeated prefixes. Exercise 8 is a complete caching lab.
 
 > **Analogy:** Prompt caching is a chef's mise en place. The onions every dish needs are chopped once at the start of service, not again for each plate.
 
@@ -736,7 +736,7 @@ The messages you send can contain more than text.
 
 > **Definition — Files API:** An API feature that lets you upload a file (such as a PDF or image) once and then refer to it by an ID in many later requests, instead of re-sending the whole file each time.
 
-Images, PDFs and, on some models, audio go into the same `content` list as text, as their own content blocks. Here is an image example; replace the placeholder with any public link to a JPG or PNG file.
+Images, PDFs and, on some models, audio go into the same `content` list as text, as their own content blocks. Here is an image example; replace the placeholder with any public link to a JPG or PNG file (the two most common image file formats; Chapter 3).
 
 ```python
 response = client.messages.create(
@@ -772,7 +772,7 @@ With dozens of models on offer, choosing one is a real skill. The good news: the
 | Top | Fable 5.1 | gpt-6-astra | Gemini 4 Argon | Hardest reasoning, long agentic work |
 | Default | Opus 5.5 | | | Most workloads, per Anthropic's guidance |
 | Middle | Sonnet 5.5 | gpt-6.1-sol | | High-volume work that still needs judgment |
-| Small and fast | Haiku 5.5 | gpt-6-luna | Gemini 3.8 Flash, Flash-Lite | Classification, extraction, routing, simple Q&A |
+| Small and fast | Haiku 5.5 | gpt-6-luna | Gemini 3.8 Flash, Flash-Lite | Classification, extraction, routing, simple Q&A (question answering) |
 
 (As of late 2026; the blank cells mean that lab's lineup is not split at that point, not that it lacks capable models. Chapter 24 covers the full landscape.)
 
@@ -893,7 +893,7 @@ All Colab exercises assume you have stored your key as a secret named `ANTHROPIC
 
 1. **[Easy] Read a receipt by hand.** Using only pencil and paper, look at this response: `{"content": [{"type": "text", "text": "Paris."}], "stop_reason": "end_turn", "usage": {"input_tokens": 1200, "output_tokens": 350}}`. (1) Name the three parts of the response and what each tells you. (2) Compute the cost on Opus 5.5 ($4 / $20 per MTok) and on Haiku 5.5 ($0.10 / $0.50). (3) Explain why 350 output tokens could appear for a one-word answer on a reasoning model. **What you'll learn:** How to read any API response and turn usage into dollars.
 
-2. **[Easy] A cost calculator spreadsheet.** In Google Sheets or Excel: (1) Make columns A: model, B: input price per MTok, C: output price per MTok, D: input tokens per job, E: output tokens per job, F: cost. (2) In F2 type `=(B2*D2 + C2*E2)/1000000`. (3) Fill rows for Haiku 5.5, Sonnet 5.5, Opus 5.5 and Fable 5.1 using the price table in this chapter, with 900,000 input and 200,000 output tokens. (4) Add column G for the batch price, `=F2*0.5`. Check that you reproduce the $3.80, $1.90 and $0.19 figures from the worked example. **What you'll learn:** Cost estimation, and how large the model-choice and batch levers are.
+2. **[Easy] A cost calculator spreadsheet.** In Google Sheets or Excel: (1) Make columns A: model, B: input price per MTok, C: output price per MTok, D: input tokens per job, E: output tokens per job, F: cost. (2) In F2 type `=(B2*D2 + C2*E2)/1000000`. (3) Fill rows 2 to 5 for Haiku 5.5, Sonnet 5.5, Opus 5.5 and Fable 5.1 using the price table in this chapter, with 900,000 input and 200,000 output tokens, then copy F2 down to F3, F4 and F5 (select F2, copy, select F3 to F5, paste) so every row gets its own cost. (4) Add column G for the batch price: type `=F2*0.5` in G2 and copy it down the same way. Check that you reproduce the $3.80, $1.90 and $0.19 figures from the worked example. **What you'll learn:** Cost estimation, and how large the model-choice and batch levers are.
 
 3. **[Easy] Your first call, then three changes.** (1) Run the first-call cells from this chapter. (2) Change the system prompt to make the model answer as a sports commentator. (3) Change `effort` from `"low"` to `"high"` and ask the packs-of-pens question. (4) Change the model to `claude-haiku-5-5`. Record input tokens, output tokens and cost for each run in a small table. **What you'll learn:** How system prompts, effort and model choice change behavior and cost.
 
@@ -1112,8 +1112,8 @@ All Colab exercises assume you have stored your key as a secret named `ANTHROPIC
 - **AI engineer or applied AI engineer.** Companies need people who can wire model APIs into real products: prompts, structured outputs, caching, batching, error handling and cost tracking. It is among the fastest-growing software roles, and it rewards product sense as much as machine-learning theory.
 - **Cost and performance optimization for AI products.** Many teams overspend by sending everything to the largest model without caching or batching. Consultants and in-house specialists who can cut a bill by half or more, using the levers in this chapter, pay for themselves quickly.
 - **Document-processing automation for small businesses.** Accountants, property managers, clinics and logistics firms drown in invoices, forms and emails. Structured-output pipelines that turn these into spreadsheet rows, with human review of uncertain cases, are a concrete, sellable service.
-- **LLMOps and platform engineering.** Larger organizations need gateways that route across providers, track spending per team, handle model deprecations and keep audit logs. This blends classic infrastructure skills with the API concepts here.
-- **Evaluation and model-selection services.** Every company choosing between models needs a small, honest eval on its own data. People who can build golden test sets and compare models on cost per task are in demand, especially with domain expertise in law, medicine or finance.
+- **LLMOps and platform engineering.** LLMOps is the practice of running language-model applications reliably in production (Chapter 31). Larger organizations need gateways that route across providers, track spending per team, handle model deprecations and keep audit logs. This blends classic infrastructure skills with the API concepts here.
+- **Evaluation and model-selection services.** Every company choosing between models needs a small, honest eval on its own data. People who can build golden test sets (fixed collections of real inputs with trusted answers, Chapter 31) and compare models on cost per task are in demand, especially with domain expertise in law, medicine or finance.
 - **Internal tools and "AI in the spreadsheet".** Operations, finance and marketing teams want small scripts and notebook tools that call a model for their specific chores. A non-engineer who can read API code and direct an AI coding assistant can deliver a great deal of value here.
 - **Teaching and documentation.** Clear tutorials, notebooks and courses that take beginners from zero to a first useful API project remain scarce relative to demand, and providers' fast-changing APIs keep creating new material to explain.
 - **Open problems.** Fair price comparison across tokenizers and reasoning settings; predicting the cost of agentic tasks before running them; reliable structured extraction from messy scans; and keeping applications working through constant model updates and retirements.

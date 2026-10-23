@@ -64,13 +64,17 @@ mindmap
 
 *Figure 35.1: The AI chip industry in six groups. Nearly all of them depend on the same few manufacturers: TSMC for chips and packaging, and SK hynix, Samsung and Micron for HBM memory.*
 
+> **Definition — SK hynix:** A South Korean memory-chip maker, part of the SK business group, that leads the market for the HBM stacked beside AI chips and has been NVIDIA's main HBM supplier since HBM3. Samsung (also South Korean) and Micron (American) are the other two HBM makers (Chapter 33).
+
 A few terms organize this map.
 
 > **Definition — Merchant silicon:** Chips designed by one company and sold to anyone who wants to buy them, as NVIDIA and AMD sell GPUs. The opposite is in-house silicon that a company builds for its own use.
 
-> **Definition — Fabless:** A chip company that designs chips but pays a foundry to manufacture them. NVIDIA, AMD, Broadcom, Qualcomm and Apple are all fabless.
+> **Definition — Fabless:** A chip company that designs chips but pays a foundry (a contract chip factory, such as TSMC) to manufacture them. NVIDIA, AMD, Broadcom, Qualcomm and Apple are all fabless.
 
 > **Analogy:** Fabless design is like being a book author who uses someone else's printing press. NVIDIA writes the book, TSMC prints it, and ASML builds the most advanced printing presses, which only ASML can make. Chapter 36 visits the print shop.
+
+> **Definition — ASML:** A Dutch company that is the only maker of the EUV (extreme ultraviolet) lithography machines needed to print the finest patterns on today's most advanced chips (Chapter 36). Every leading-edge chip factory depends on its tools.
 
 > **Definition — ASIC (Application-Specific Integrated Circuit):** A chip designed for one job. AI ASICs such as Google's TPU, Amazon's Trainium and Microsoft's Maia give up a GPU's flexibility to do neural-network math more cheaply and efficiently.
 

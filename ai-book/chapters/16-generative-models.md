@@ -69,7 +69,7 @@ Where does the training signal come from? Nobody has labeled billions of images 
 
 ### Self-supervised learning
 
-In self-supervised learning, the model hides part of an example from itself and learns to predict the hidden part. Your chatbot was pretrained this way: take a sentence from the internet, hide the next word, predict it, check, adjust (Chapter 8 introduced the idea). BERT (2018) hid about 15% of the words in each sentence and learned to fill them in. Vision models do the same with pictures: masked autoencoders (2021) hide most of an image's patches and learn to repaint them.
+In self-supervised learning, the model hides part of an example from itself and learns to predict the hidden part. Your chatbot was pretrained this way: take a sentence from the internet, hide the next word, predict it, check, adjust (Chapter 8 introduced the idea). BERT (2018) hid about 15% of the words in each sentence and learned to fill them in. Vision models do the same with pictures: masked autoencoders (2021; autoencoders are explained later in this chapter) hide most of an image's patches and learn to repaint them.
 
 > **Definition — Self-supervised learning:** Training where the labels come from the data itself, for example by hiding the next word or a patch of an image and predicting it. No human has to annotate anything, which is why the whole internet can serve as training material.
 
@@ -156,7 +156,7 @@ The variational autoencoder, introduced by Diederik Kingma and Max Welling in 20
 
 > **Definition — Reparameterization trick:** The VAE technique of writing a random sample as "mean + spread × random noise," so the randomness comes from outside the network and gradients can still flow back through the mean and the spread during training.
 
-A tiny worked example. Suppose that for one face the encoder outputs mean 1.5 and spread 0.2 for the latent number that seems to control "smile." One training sample might be 1.5 + 0.2 × (−0.7) = 1.36. Another time it might be 1.5 + 0.2 × 1.1 = 1.72. The decoder has to turn both into a sensible smile. After training, you can throw the encoder away, pick random latent values from the standard bell curve, and the decoder turns them into new faces that never existed.
+A tiny worked example. Suppose that for one face the encoder outputs mean 1.5 and spread 0.2 for the latent number that seems to control "smile." One training sample might be 1.5 + 0.2 × (−0.7) = 1.36. Another time it might be 1.5 + 0.2 × 1.1 = 1.72. The decoder has to turn both into a sensible smile. After training, you can throw the encoder away, pick random latent values from the standard bell curve (centered on 0 with a spread of 1, the shape the second loss term pulled every region toward), and the decoder turns them into new faces that never existed.
 
 VAEs give smooth, explorable latent spaces, but blurry images: when the decoder is unsure where a strand of hair goes, the safest answer under a squared-error loss is a smear. VAEs lost the image-quality race but became a crucial component. Inside Stable Diffusion and most modern image and video generators, a VAE compresses images into a latent space and decodes latents back into pixels.
 
@@ -200,7 +200,9 @@ Around 2021–2022, diffusion models overtook GANs for most image generation. Di
 
 A third way to generate an image is the one your chatbot already uses for words: treat the image as a sequence and predict it one piece at a time. Early versions (PixelRNN and PixelCNN, 2016) predicted raw pixels one by one, which was painfully slow: a 256 × 256 image has 65,536 positions to fill in order.
 
-The breakthrough was to tokenize images first. An image tokenizer (an autoencoder variant, often called a VQ-VAE) cuts the image into a grid and replaces each cell with the closest entry from a learned codebook of visual patterns, the way a mosaic artist picks tiles from a fixed box. OpenAI's first DALL·E (January 2021) turned a 256 × 256 image into a 32 × 32 grid of tokens, 1,024 in all, each chosen from a codebook of 8,192 entries. A Transformer then learned to predict those image tokens one after another after reading the text prompt, exactly as a language model predicts words.
+The breakthrough was to tokenize images first. An image tokenizer (an autoencoder variant, often called a VQ-VAE, where VQ stands for "vector quantized": each region's vector is snapped to the nearest entry in a fixed list) cuts the image into a grid and replaces each cell with the closest entry from a learned codebook of visual patterns, the way a mosaic artist picks tiles from a fixed box. OpenAI's first DALL·E (January 2021) turned a 256 × 256 image into a 32 × 32 grid of tokens, 1,024 in all, each chosen from a codebook of 8,192 entries. A Transformer then learned to predict those image tokens one after another after reading the text prompt, exactly as a language model predicts words.
+
+> **Definition — DALL·E:** OpenAI's family of text-to-image models: DALL·E (January 2021), DALL·E 2 (2022) and DALL·E 3 (2023). The name blends the painter Salvador Dalí and the Pixar robot WALL·E.
 
 > **Definition — Autoregressive model:** A model that generates output one piece at a time, each piece conditioned on everything generated so far. Chatbots write text this way, and some image models paint images this way.
 
@@ -212,7 +214,7 @@ The appeal is unity: one Transformer, text and images in one stream. That is why
 
 ## Diffusion, step by step
 
-Now the centerpiece. Diffusion models and their close relatives power most image and video generators you have used: Stable Diffusion, Midjourney, Google's Imagen and Veo, Black Forest Labs' FLUX. The idea was proposed in 2015 and made practical by Jonathan Ho, Ajay Jain and Pieter Abbeel's DDPM paper in 2020. It is surprisingly simple.
+Now the centerpiece. Diffusion models and their close relatives power most image and video generators you have used: Stable Diffusion, Midjourney, Google's Imagen and Veo, Black Forest Labs' FLUX. The idea was proposed in 2015 and made practical by Jonathan Ho, Ajay Jain and Pieter Abbeel's DDPM paper (short for denoising diffusion probabilistic models) in 2020. It is surprisingly simple.
 
 > **Definition — Diffusion model:** A generator trained to reverse a gradual noising process. It creates data by starting from pure random static and removing noise step by step until a clean image (or sound, or video) remains.
 
@@ -244,7 +246,7 @@ Take a real training image and add a small amount of random noise. Then add a bi
 
 > **Definition — Noise schedule:** The plan for how much noise is present at each timestep, for example a little at first and then more and more until the image is gone.
 
-A convenient shortcut makes training fast: you never have to apply 700 small steps to reach step 700. A formula jumps straight there. If `a` is the fraction of the original signal's strength that survives at a given step (set by the noise schedule), then:
+A convenient shortcut makes training fast: you never have to apply 700 small steps to reach step 700. A formula jumps straight there. If `a` is the fraction of the original signal's strength that survives at a given step (set by the noise schedule), then, writing sqrt for "the square root of":
 
 `noisy pixel = sqrt(a) × clean pixel + sqrt(1 − a) × noise`
 
@@ -602,7 +604,7 @@ A classifier is graded against an answer key. A generator has none: there is no 
 - **Likelihood.** How probable real, held-out examples are under the model, the generative version of Chapter 6's cross-entropy. Only some families (autoregressive models, flows, and VAEs approximately) can compute it, and a good score does not guarantee good-looking samples.
 - **FID (Fréchet Inception Distance, 2017).** Run thousands of real and generated images through a pretrained image network and compare the statistics of the features it extracts. Lower is better. It rewards realism and variety but says nothing about whether an image follows its prompt.
 - **CLIP score.** How closely each image matches its prompt in CLIP's shared space (earlier in this chapter). It inherits CLIP's blind spots, such as counting.
-- **Human preference.** People see two outputs side by side and pick the better one. It is slow and costly, but it measures what users actually care about. It is the same blind head-to-head idea as the LMArena chatbot rankings of Chapter 24.
+- **Human preference.** People see two outputs side by side and pick the better one. It is slow and costly, but it measures what users actually care about. It is the same blind head-to-head idea as the Arena (formerly LMArena) chatbot rankings of Chapter 24.
 
 > **Definition — FID (Fréchet Inception Distance):** A standard score for image generators that compares the statistics of features, extracted by a pretrained image network, from generated images and from real images. Lower is better; zero would mean the two sets are statistically identical.
 

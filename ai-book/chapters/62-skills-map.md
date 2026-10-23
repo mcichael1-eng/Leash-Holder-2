@@ -129,7 +129,7 @@ A before-and-after shows the gap. Before: "Write an email about the delay." Afte
 
 *What:* making "check before you trust" a habit. *Why:* AI output is only as valuable as your ability to catch its mistakes, and small error rates compound.
 
-A worked example shows why. Suppose a model gets each factual claim right 95% of the time. A memo with 10 independent claims is entirely correct with probability 0.95^10 ≈ 0.60, so roughly 4 memos in 10 contain at least one error. With 30 claims, the chance of a flawless memo falls to 0.95^30 ≈ 0.21. Verification is not paranoia; it is arithmetic.
+A worked example shows why. Suppose a model gets each factual claim right 95% of the time. A memo with 10 independent claims is entirely correct only if all ten are right, which happens with probability 0.95^10 (0.95 multiplied by itself ten times) ≈ 0.60, so roughly 4 memos in 10 contain at least one error. With 30 claims, the chance of a flawless memo falls to 0.95^30 ≈ 0.21. Verification is not paranoia; it is arithmetic.
 
 *Learn:* make "verify three claims" a habit for anything important, and read Arvind Narayanan and Sayash Kapoor's writing (*AI Snake Oil*, "AI as Normal Technology"). *Prove:* your written trust rules, based on a verification drill (Exercise 3).
 
@@ -219,6 +219,8 @@ Level 3 is where you start writing code. It takes three to twelve months part-ti
 > **Definition — Notebook (Jupyter, Google Colab):** A document that mixes runnable code, its output and notes, so you can experiment one step at a time in a browser.
 
 **Python basics.** *What:* variables, loops, functions, files, packages and notebooks. *Why:* it is the language of AI. *Learn:* DeepLearning.AI's "AI Python for Beginners" (about 11.5 hours), Harvard's CS50P, Kaggle Learn. *Prove:* a small script on GitHub that does something useful for you.
+
+> **Definition — CS50P:** Harvard University's free online course "CS50's Introduction to Programming with Python," a beginner-friendly offshoot of its well-known CS50 introduction to computer science.
 
 > **Definition — Command line:** A text interface for running programs by typing commands, used for nearly all engineering work and by coding agents themselves.
 
@@ -314,6 +316,8 @@ flowchart TD
 
 **Data engineering.** *What:* pipelines, warehouses (Snowflake, BigQuery, Databricks), orchestration (Airflow, Dagster) and data quality. *Why:* it supplies the data that makes AI work, and it is a large, steady job market. *Learn:* DeepLearning.AI and AWS's "Data Engineering" (about 107 hours), *Fundamentals of Data Engineering* by Reis and Housley. *Prove:* a scheduled pipeline with data-quality checks.
 
+> **Definition — AWS (Amazon Web Services):** Amazon's cloud-computing business, one of the three biggest cloud providers alongside Microsoft Azure and Google Cloud. It rents out computers, storage, databases and AI services (including its own Trainium chips) by the hour, and runs training courses and certifications.
+
 > **Definition — Distributed system:** Software that splits one job across many machines and keeps working when some of them fail. Frontier training runs are distributed systems spanning tens of thousands of chips (see Chapter 37).
 
 **Distributed systems.** *Why:* nothing at frontier scale fits on one machine. *Learn:* Hugging Face's "The Ultra-Scale Playbook," Google DeepMind's "How to Scale Your Model," Martin Kleppmann's *Designing Data-Intensive Applications*. *Prove:* a multi-GPU training run with measured speed-up and a write-up of where time was lost.
@@ -326,7 +330,11 @@ flowchart TD
 
 > **Definition — CUDA and Triton:** CUDA is NVIDIA's platform for programming its GPUs directly; Triton is a Python-like language for writing fast GPU kernels with less effort (see Chapter 35).
 
+> **Definition — NVIDIA:** The American chip company whose GPUs, together with the CUDA software for programming them, power most AI training and inference worldwide (see Chapter 35).
+
 **Kernels and inference optimization.** *What:* writing GPU kernels in CUDA or Triton, quantization, batching, managing the KV cache, speculative decoding, and serving engines such as vLLM, SGLang and TensorRT-LLM (Chapters 23 and 33). *Why:* small gains on an enormous fleet are worth millions of dollars, which is why Anthropic's posted base-salary range for performance engineers reached $850,000 in October 2026. *Learn:* *Programming Massively Parallel Processors* (Hwu, Kirk and El Hajj), the GPU MODE lectures, the Triton tutorials, and Stanford CS336's systems assignment (writing FlashAttention-2 in Triton). *Prove:* a kernel benchmarked against PyTorch's built-in version, published with the numbers.
+
+> **Definition — CS336:** Stanford University's course "Language Modeling from Scratch," whose lectures and assignments are free online. Students build and train a small language model themselves, from the tokenizer and GPU code to data, scaling and post-training.
 
 > **Analogy:** A kernel engineer is a Formula 1 mechanic. A 2% gain sounds small, but across a fleet of a hundred thousand chips running all year, it pays for a whole team.
 
@@ -338,7 +346,7 @@ Level 6 is where the models themselves improve. It often takes two to five years
 
 **Post-training and RL.** *What:* supervised fine-tuning, RLHF (reinforcement learning from human feedback), RL (reinforcement learning, training by trial and reward) from verifiable rewards, reasoning models, RL environments and agent training (Chapters 20 and 21). *Why:* most capability gains of 2024–2026 (reasoning, coding, agents) came from here, and it was the most-posted research specialty on Anthropic's job board in October 2026. *Learn:* Nathan Lambert's RLHF book and Interconnects newsletter, CS336 assignment 5, Hugging Face's TRL. *Prove:* an RL fine-tune that measurably improves a small model on a verifiable task.
 
-**Evaluation research.** *What:* designing benchmarks, measuring dangerous capabilities and long-horizon agent performance (Chapter 57). *Why:* labs cannot improve what they cannot measure, and governments rely on evals for oversight. *Learn:* METR and Epoch AI papers, the UK AI Security Institute's Inspect framework, lab system cards. *Prove:* a new benchmark of 50–200 hard tasks in a domain you know (Exercise 10). This turns domain expertise directly into research credibility.
+**Evaluation research.** *What:* designing benchmarks, measuring dangerous capabilities and long-horizon agent performance (Chapter 57). *Why:* labs cannot improve what they cannot measure, and governments rely on evals for oversight. *Learn:* METR and Epoch AI papers, the UK AI Security Institute's Inspect framework (free software for building and running evals), lab system cards. *Prove:* a new benchmark of 50–200 hard tasks in a domain you know (Exercise 10). This turns domain expertise directly into research credibility.
 
 > **Definition — Interpretability:** Research into what is happening inside a model's neural network: which features it represents and which circuits produce its behavior (see Chapter 57).
 
@@ -346,7 +354,11 @@ Level 6 is where the models themselves improve. It often takes two to five years
 
 **Interpretability.** *What:* mechanistic interpretability: finding the features and circuits inside a network and probing what it represents (Chapter 57). *Why:* understanding a model's internals is central to safety and to debugging, because it can reveal problems that testing from the outside misses. *Learn:* the ARENA curriculum, Anthropic's Transformer Circuits thread, Neel Nanda's guides. *Prove:* a small replication of a published interpretability result.
 
-**Alignment and safety research.** *What:* scalable oversight, AI control, adversarial robustness, model welfare and misuse safeguards. *Why:* it is small but growing: 80,000 Hours estimated only about 300 people (a range of 76 to 536 full-time equivalents) worked on technical AI safety aimed at catastrophic risks as of 2022. *Learn:* BlueDot Impact's free courses, ARENA bootcamps, MATS, the Anthropic Fellows Program, the 80,000 Hours career guide. *Prove:* a small public project in one safety area, such as a replicated AI-control or evaluation experiment written up with code and honest limitations, which doubles as a fellowship application.
+> **Definition — ARENA (Alignment Research Engineer Accelerator):** A London-based program that teaches the engineering side of AI safety research, through in-person bootcamps with costs covered and a free online curriculum of coding exercises on transformers, interpretability, reinforcement learning and evals.
+
+**Alignment and safety research.** *What:* scalable oversight, AI control, adversarial robustness, model welfare and misuse safeguards. *Why:* it is small but growing: the career-advice nonprofit 80,000 Hours estimated only about 300 people (a range of 76 to 536 full-time equivalents) worked on technical AI safety aimed at catastrophic risks as of 2022. *Learn:* BlueDot Impact's free courses, ARENA bootcamps, MATS, the Anthropic Fellows Program, the 80,000 Hours career guide. *Prove:* a small public project in one safety area, such as a replicated AI-control or evaluation experiment written up with code and honest limitations, which doubles as a fellowship application.
+
+> **Definition — MATS (originally ML Alignment & Theory Scholars):** A research fellowship that pairs newcomers with experienced mentors for paid projects of about 12 weeks in AI alignment, interpretability, security and governance. It is one of the main routes into safety research.
 
 > **Definition — Fellowship (research residency):** A paid, time-boxed program in which newcomers do research with mentorship, such as MATS or the Anthropic Fellows Program. Fellowships are the main on-ramp into safety research.
 
@@ -372,6 +384,10 @@ The main ladder is not the only route. Five branches cross it, and each one mult
 
 > **Definition — AI governance:** The policies, processes and controls an organization uses to manage AI risk, comply with laws and decide which AI uses are allowed.
 
+> **Definition — IAPP (International Association of Privacy Professionals):** The main professional body for privacy specialists. It runs widely recognized certifications, including the AIGP (AI Governance Professional).
+
+> **Definition — CSET (Center for Security and Emerging Technology):** A research center at Georgetown University in Washington, D.C., that studies AI, chips and national security and publishes data-driven policy reports.
+
 **Sales, solutions and forward-deployed work.** *What:* discovery (finding the customer's real problem), demos, scoping, proofs of concept, change management and return-on-investment (ROI) cases. Forward-deployed engineers (FDEs) are engineers embedded with a customer, often for weeks or months, to build its deployment (Chapter 63). *Why:* sales and applied AI were the largest hiring categories at the frontier labs in October 2026 (Chapter 61). *Learn:* read lab "Applied AI Architect" and FDE postings, and do a free AI implementation for a local business. *Prove:* a case study with the time saved measured after two weeks.
 
 **Technical writing, education and developer relations.** *What:* documentation, tutorials, courses and workshops. *Why:* adoption is bottlenecked by understanding; in October 2026 Anthropic was hiring a Lead Technical Instructor at a posted $270,000–$365,000 base. *Learn:* write public explainers and contribute documentation to open-source projects. *Prove:* a tutorial that strangers have used successfully.
@@ -379,6 +395,12 @@ The main ladder is not the only route. Five branches cross it, and each one mult
 **Domain expertise plus AI.** *What:* deep knowledge of a field (medicine, law, accounting, logistics, teaching, the trades) combined with Level 1–2 AI skills. *Why:* domain experts design the evals, spot the errors and know which problems matter; expert contractors who write and grade training data reportedly average $85 or more an hour through Mercor. *Learn:* apply Levels 1 and 2 to your own field and write about it. *Prove:* an eval or a published guide for your profession.
 
 **Data-center trades and engineering.** *What:* electrical, mechanical and HVAC, controls, fiber and networking, construction management and commissioning (Chapters 38 to 41). *Why:* physical buildout is the binding constraint on AI. *Learn:* registered apprenticeships such as the electrical training run by the electricians' union (IBEW) and the contractors' association (NECA), community-college HVAC and controls programs, and data-center operator training. *Prove:* licenses and certifications, which in the trades are the proof that counts.
+
+> **Definition — HVAC (heating, ventilation and air conditioning):** The systems that heat, cool and move air through a building. In a data center, HVAC and related cooling systems carry away the heat the chips produce (see Chapter 40).
+
+> **Definition — IBEW (International Brotherhood of Electrical Workers):** The main electricians' union in the United States and Canada. With NECA it runs paid, multi-year electrical apprenticeships.
+
+> **Definition — NECA (National Electrical Contractors Association):** The US trade association of companies that employ union electricians. It runs electrical apprenticeship training jointly with the IBEW.
 
 > **Definition — T-shaped skills:** Deep expertise in one area (the vertical bar of the T) plus broad working knowledge across many (the crossbar). A "pi-shaped" person has two deep areas joined by the same broad crossbar.
 
@@ -414,7 +436,7 @@ Every level has a typical form of proof, and they share one rule: **show, don't 
 |---|---|---|
 | 0–1 | "I use ChatGPT a lot" | A measured automation map and written trust rules |
 | 2 | A course certificate | A tool other people use, with an eval spreadsheet |
-| 3 | A list of languages on a CV | A GitHub profile with working, documented scripts |
+| 3 | A list of languages on a CV (résumé) | A GitHub profile with working, documented scripts |
 | 4 | A demo video | A deployed app with a published eval and error analysis |
 | 5 | "Familiar with PyTorch and CUDA" | A benchmarked kernel or a model in production with monitoring |
 | 6 | Papers read | A public replication with code and an honest list of discrepancies |
@@ -422,7 +444,7 @@ Every level has a typical form of proof, and they share one rule: **show, don't 
 
 *Table 62.2: Weak versus strong proof at each level.*
 
-Certifications matter most where buyers or HR departments filter on them: cloud-centric enterprises, consulting firms, government contracting, and governance and compliance (for example the AWS Certified AI Practitioner, a $100 exam of 65 questions in 90 minutes, or the IAPP's AIGP). They matter little for research, research engineering and startup engineering, where public work dominates. A good rule of thumb: one relevant certification plus three strong portfolio pieces beats five certifications and no portfolio. Chapter 65 covers certifications and portfolio-building in detail.
+Certifications matter most where buyers or HR (human resources) departments filter on them: cloud-centric enterprises, consulting firms, government contracting, and governance and compliance (for example the AWS Certified AI Practitioner, a $100 exam of 65 questions in 90 minutes, or the IAPP's AIGP). They matter little for research, research engineering and startup engineering, where public work dominates. A good rule of thumb: one relevant certification plus three strong portfolio pieces beats five certifications and no portfolio. Chapter 65 covers certifications and portfolio-building in detail.
 
 ## Choosing your path through the tree
 
@@ -577,7 +599,7 @@ What counts is proof: a tool people use, an eval you published, a replication ot
 
 ## Key terms
 
-Skill tree, Portfolio, Hallucination, Knowledge cutoff, Jagged frontier, Power user, Prompt, Prompt engineering, Context engineering, Verification, Agent, Custom assistant, Agent Skill, Connector, Workflow automation, Vibe coding, AI app builder, MCP (Model Context Protocol), Eval set (golden set), Python, Notebook (Jupyter, Google Colab), Command line, Git and GitHub, SQL (Structured Query Language), API (application programming interface), JSON, AI engineer (LLM application engineer), Structured output, RAG (retrieval-augmented generation), Tool calling (function calling), Error analysis, LLM-as-judge, Observability (tracing), Prompt injection, Fine-tuning, PyTorch, MLOps (and LLMOps), Data pipeline, Distributed system, Kubernetes and Slurm, GPU kernel, CUDA and Triton, Interpretability, Alignment, Fellowship (research residency), Ablation, Replication, Research taste, AI governance, T-shaped skills.
+Skill tree, Portfolio, Hallucination, Knowledge cutoff, Jagged frontier, Power user, Prompt, Prompt engineering, Context engineering, Verification, Agent, Custom assistant, Agent Skill, Connector, Workflow automation, Vibe coding, AI app builder, MCP (Model Context Protocol), Eval set (golden set), Python, Notebook (Jupyter, Google Colab), CS50P, Command line, Git and GitHub, SQL (Structured Query Language), API (application programming interface), JSON, AI engineer (LLM application engineer), Structured output, RAG (retrieval-augmented generation), Tool calling (function calling), Error analysis, LLM-as-judge, Observability (tracing), Prompt injection, Fine-tuning, PyTorch, MLOps (and LLMOps), Data pipeline, AWS (Amazon Web Services), Distributed system, Kubernetes and Slurm, GPU kernel, CUDA and Triton, NVIDIA, CS336, Interpretability, Alignment, ARENA (Alignment Research Engineer Accelerator), MATS (originally ML Alignment & Theory Scholars), Fellowship (research residency), Ablation, Replication, Research taste, AI governance, IAPP (International Association of Privacy Professionals), CSET (Center for Security and Emerging Technology), HVAC (heating, ventilation and air conditioning), IBEW (International Brotherhood of Electrical Workers), NECA (National Electrical Contractors Association), T-shaped skills.
 
 ## Exercises
 

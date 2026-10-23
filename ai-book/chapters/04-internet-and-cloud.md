@@ -59,7 +59,7 @@ All these networks can work together only because they follow the same protocols
 
 > **Definition — Protocol:** An agreed set of rules for how computers communicate, like etiquette for machines. TCP/IP, HTTP and TLS are protocols.
 
-The internet now reaches most of humanity, but not all of it. The International Telecommunication Union reported in 2025 that almost three quarters of the world's people are online and about 2.2 billion remain offline, mostly in low- and middle-income countries. For them, cloud AI is out of reach.
+The internet now reaches most of humanity, but not all of it. The International Telecommunication Union (the United Nations agency for telecommunications) reported in 2025 that almost three quarters of the world's people are online and about 2.2 billion remain offline, mostly in low- and middle-income countries. For them, cloud AI is out of reach.
 
 ## Packets: big messages in small pieces
 
@@ -75,7 +75,7 @@ Worked example: how many packets?
 - A 3 MB photo you upload is 3,000,000 ÷ 1,500 = about 2,000 packets.
 - A 4 GB open-weight model download is about 2.7 million packets.
 
-Packets can arrive out of order, and occasionally one is lost. A protocol called TCP numbers every packet, puts them back in order at the destination and asks for any missing ones to be sent again. Your app never sees the chaos; it receives a clean stream of bytes. (A newer protocol called QUIC, used by HTTP/3, does the same job with fewer round trips, and many large sites use it.)
+Packets can arrive out of order, and occasionally one is lost. A protocol called TCP numbers every packet, puts them back in order at the destination and asks for any missing ones to be sent again. Your app never sees the chaos; it receives a clean stream of bytes. (A newer protocol called QUIC, used by HTTP/3, the latest version of the web's main protocol described later in this chapter, does the same job with fewer round trips, and many large sites use it.)
 
 > **Definition — TCP (Transmission Control Protocol):** The protocol that makes packet delivery reliable: it numbers packets, reassembles them in order and resends any that are lost.
 
@@ -110,7 +110,7 @@ Between continents, the internet runs along the ocean floor. Several hundred und
 
 ### The speed of light sets a floor on delay
 
-Light in a vacuum travels about 300,000 km per second. Inside glass it is slower, roughly 200,000 km per second. That works out to about 5 microseconds (millionths of a second) per kilometer of fiber, or 5 milliseconds per 1,000 km. No engineering can beat this; it is physics. Real cables also zigzag rather than going in straight lines, and every router along the way adds a little extra delay.
+Light in a vacuum travels about 300,000 km per second. Inside glass it is slower, roughly 200,000 km per second. One kilometer therefore takes 1 ÷ 200,000 of a second, which works out to about 5 microseconds (millionths of a second) per kilometer of fiber, or 5 milliseconds per 1,000 km. No engineering can beat this; it is physics. Real cables also zigzag rather than going in straight lines, and every router along the way adds a little extra delay.
 
 Worked examples (one-way, light in fiber, straight line, no delays):
 
@@ -130,11 +130,11 @@ The last row explains why traditional satellite internet feels sluggish: geostat
 
 ## Addresses and names: IP and DNS
 
-To deliver a packet, the network needs an address. Every device on the internet has an IP address, a number that works like a postal address. The older version, IPv4, uses 32-bit addresses written as four numbers from 0 to 255, such as 203.0.113.42. That gives 2 to the power 32, about 4.3 billion, possible addresses: fewer than the number of devices on Earth. So your home router usually shares one public address among all your devices, and the newer IPv6 uses 128-bit addresses, about `3.4 × 10^38` of them, enough to never run out.
+To deliver a packet, the network needs an address. Every device on the internet has an IP address, a number that works like a postal address. The older version, IPv4, uses 32-bit addresses written as four numbers from 0 to 255 (four bytes of 8 bits each), such as 203.0.113.42. That gives 2 to the power 32, about 4.3 billion, possible addresses: fewer than the number of devices on Earth. So your home router usually shares one public address among all your devices, and the newer IPv6 uses 128-bit addresses, about `3.4 × 10^38` of them, enough to never run out.
 
 > **Definition — IP address:** A number that identifies a device on the internet so packets can be delivered to it, such as 203.0.113.42. IP stands for Internet Protocol.
 
-Nobody wants to remember numbers, so we use domain names like claude.ai, chatgpt.com or gemini.google.com. The Domain Name System (DNS) is the internet's phone book: it turns a name into an IP address. When your app needs to reach a server it hasn't contacted recently, it asks a DNS resolver (usually run by your ISP or a public service), which may ask a chain of other servers: the root servers, then the servers for the ending (.ai, .com), then the servers for the specific name.
+Nobody wants to remember numbers, so we use domain names like claude.ai, chatgpt.com or gemini.google.com. The Domain Name System (DNS) is the internet's phone book: it turns a name into an IP address. When your app needs to reach a server it hasn't contacted recently, it asks a DNS resolver (usually run by your ISP or a public service), which may ask a chain of other servers: the root servers, then the servers for the ending (.ai, .com), run by that ending's registry (the organization in charge of it), then the name server (a server that answers DNS questions) for the specific name.
 
 > **Definition — Domain name:** A human-readable name for an internet address, such as claude.ai. The ending (.com, .ai, .org) is called the top-level domain.
 
@@ -181,7 +181,7 @@ scheme     domain          path      query
 
 > **Definition — URL (Uniform Resource Locator):** A web address, such as https://claude.ai/new. It names the protocol, the server and the specific page or resource.
 
-A request also has a method (GET to fetch something, POST to send something, such as your chat message), headers (labels with extra information, such as your login token and the format of the data) and, for POST, a body (the data itself, for a chatbot usually the JSON from Chapter 3). The response comes back with a three-digit status code, its own headers and a body.
+A request also has a method (GET to fetch something, POST to send something, such as your chat message), headers (labels with extra information, such as your login token, a code proving you are signed in that has nothing to do with the text tokens of Chapter 3, and the format of the data) and, for POST, a body (the data itself, for a chatbot usually the JSON from Chapter 3). The response comes back with a three-digit status code, its own headers and a body.
 
 > **Definition — Request and response:** The two halves of a web conversation. The client sends a request (what it wants, plus any data); the server sends a response (a status code plus the result).
 
@@ -202,9 +202,9 @@ A request also has a method (GET to fetch something, POST to send something, suc
 
 *Figure 4.6: Common HTTP status codes. The first digit tells you the family: 2 is success, 4 is your side's problem, 5 is the server's problem.*
 
-Some providers add their own codes. Anthropic's API, for example, uses 529 to signal that its servers are temporarily overloaded.
+Some providers add their own codes. Anthropic's API, for example, uses 529 to signal that its servers are temporarily overloaded. (API keys, the passwords programs use to access AI services, and rate limits, caps on how many requests you may send, are explained later in this chapter.)
 
-> **At the frontier (2026):** The web's plumbing is being rewired around AI. On July 1, 2025, Cloudflare, which sits in front of a large share of websites, began blocking known AI crawlers by default for new domains and launched "Pay Per Crawl", which revives the long-dormant HTTP status code 402 Payment Required so sites can charge AI companies for access. Chapter 11 covers how this affects AI training data.
+> **At the frontier (2026):** The web's plumbing is being rewired around AI. On July 1, 2025, Cloudflare, which sits in front of a large share of websites, began blocking known AI crawlers (programs that automatically download web pages, for example to collect training data) by default for new domains and launched "Pay Per Crawl", which revives the long-dormant HTTP status code 402 Payment Required so sites can charge AI companies for access. Chapter 11 covers how this affects AI training data.
 
 ## HTTPS and encryption: the locked briefcase
 
@@ -273,13 +273,13 @@ Servers live in data centers: buildings packed with racks of servers, network eq
 
 > **Definition — Rack:** A standard metal cabinet that holds servers and network gear in data centers. A 2026 AI rack can draw around 120 to 140 kilowatts, about as much as 100 homes.
 
-AI data centers are measured not in square meters but in power. The largest are approaching 1 gigawatt, roughly enough electricity for 800,000 to a million US homes. Epoch AI estimates that building one costs about $38 billion per gigawatt of IT power and takes about two years. As of October 20, 2026, Epoch's data center tracker followed 95 large AI data centers with about 14.2 GW of IT power between them. The largest known, according to Epoch, is xAI's Colossus 2 in Memphis, at roughly 1.1 million H100-equivalent chips. Altogether, the International Energy Agency estimated that the world's data centers (AI and everything else) used about 415 terawatt-hours of electricity in 2024, about 1.5% of global electricity, and projected about 945 TWh by 2030.
+AI data centers are measured not in square meters but in power. The largest are approaching 1 gigawatt, roughly enough electricity for 800,000 to a million US homes. Epoch AI estimates that building one costs about $38 billion per gigawatt of IT power (the power the computers themselves use, not counting cooling and other overhead) and takes about two years. As of October 20, 2026, Epoch's data center tracker followed 95 large AI data centers with about 14.2 GW of IT power between them. The largest known, according to Epoch, is xAI's Colossus 2 in Memphis, at roughly 1.1 million H100-equivalent chips. Altogether, the International Energy Agency estimated that the world's data centers (AI and everything else) used about 415 terawatt-hours of electricity in 2024, about 1.5% of global electricity, and projected about 945 TWh by 2030.
 
 Your traffic enters a data center through fiber cables from several network carriers, which meet the building's own network in a secure room called a meet-me room. From there it flows over the building's front-end network, the one that handles user traffic and storage. Separate, much faster networks link the GPUs to each other so that a model too big for one chip can run across many (Chapter 34). Part VII of this book (Chapter 38 to Chapter 44) tours the building, its power, its cooling, its energy sources and its economics.
 
 > **Watch out:** "The cloud" sounds weightless, but it is concrete, steel, copper, glass, water pipes and gas turbines in specific towns. Every chatbot answer comes from a real machine drawing real electricity in a real building.
 
-> **Try it:** Open Epoch AI's data center hub (epoch.ai/data/data-centers) and find the largest AI data center in or nearest to your country. Note its power in megawatts, its owner and its chips, then divide the power by about 1.2 kilowatts (an average US home's draw) to see how many homes' worth of electricity it represents.
+> **Try it:** Open Epoch AI's data center hub (epoch.ai/data/data-centers) and find the largest AI data center in or nearest to your country. Note its power in megawatts, its owner and its chips, then multiply the megawatts by 1,000 to get kilowatts and divide by about 1.2 kilowatts (an average US home's draw) to see how many homes' worth of electricity it represents.
 
 ## The cloud and the hyperscalers
 
@@ -293,7 +293,7 @@ The biggest cloud providers are called hyperscalers: Amazon Web Services (AWS), 
 
 > **Definition — Neocloud:** A newer cloud company that specializes in renting GPUs for AI, such as CoreWeave, Nebius or Lambda.
 
-Cloud providers organize their data centers into regions, such as "US East" or "Europe West", each a cluster of buildings in one geographic area. Regions matter for speed (closer is faster) and for law: some customers must keep data inside a particular country or bloc. AI providers charge for this; OpenAI, for example, adds a 10% uplift for regional processing on models released since March 2026.
+Cloud providers organize their data centers into regions, such as "US East" or "Europe West", each a cluster of buildings in one geographic area. Regions matter for speed (closer is faster) and for law: some customers must keep data inside a particular country or bloc. AI providers charge for this; OpenAI, for example, adds a 10% uplift (surcharge) for regional processing on models released since March 2026.
 
 > **Definition — Region (cloud):** A geographic area where a cloud provider runs a group of data centers, such as US East or Europe West. Choosing a region affects speed, price and which country's laws apply to your data.
 
@@ -315,7 +315,7 @@ Clouds sell at three levels. You can rent bare machines (often virtual machines,
 
 *Figure 4.9: The three levels of cloud service. A chatbot subscription is software as a service.*
 
-Worked example: renting GPUs. In October 2026, Lambda listed on-demand H100 GPUs at about $3.99 to $4.29 per GPU-hour, and RunPod listed them from about $2.69 to $3.99 (in 2025 they were widely available for $2 to $3). At $4 per hour:
+Worked example: renting GPUs. In October 2026, Lambda listed on-demand H100 GPUs at about $3.99 to $4.29 per GPU-hour (one GPU rented for one hour), and RunPod, another GPU rental company, listed them from about $2.69 to $3.99 (in 2025 they were widely available for $2 to $3). At $4 per hour:
 
 - 8 GPUs for a 10-hour fine-tuning experiment: 8 × 10 × $4 = $320.
 - 8 GPUs running all month (about 730 hours): 8 × 730 × $4 = about $23,000.
@@ -389,7 +389,7 @@ One unit trap first. Internet speeds are quoted in megabits per second (Mbps), b
 Worked examples:
 
 - **Downloading a 4 GB open-weight model on 100 Mbps:** 4 GB = 4,000 MB = 32,000 megabits. 32,000 ÷ 100 = 320 seconds, about 5 minutes. Here bandwidth is everything; a 1,000 Mbps connection would take 32 seconds.
-- **Sending a 10 KB chat request on the same connection:** 10 KB = 80,000 bits. 80,000 ÷ 100,000,000 = 0.0008 seconds, under a millisecond. But the request still needs perhaps 20 to 40 milliseconds to reach a data center 1,000 km away. Here latency is everything.
+- **Sending a 10 KB chat request on the same connection:** 10 KB = 80,000 bits, and 100 Mbps is 100,000,000 bits per second. 80,000 ÷ 100,000,000 = 0.0008 seconds, under a millisecond. But the request still needs perhaps 20 to 40 milliseconds to reach a data center 1,000 km away. Here latency is everything.
 - **Receiving a streamed answer:** a model writing 50 tokens per second, at roughly 4 bytes of text per token, sends about 200 bytes of text per second. Even with the wrapping and labels around each chunk, that is a few kilobytes per second at most. HD video streaming uses about 5 megabits per second, hundreds of times more.
 
 ```mermaid
@@ -497,7 +497,7 @@ The model then reads your whole conversation in one pass. This is called prefill
 
 ### Step 10: tools, if needed
 
-If you asked for something current, such as hotel prices in Lisbon this week, the model may call a tool: a web search, a code sandbox or a connector to your files. Each tool call is another round trip to another service, often adding a second or more, and the results are added to the model's context before it continues. An agent working on a long task can make dozens of such trips (Chapter 28).
+If you asked for something current, such as hotel prices in Lisbon this week, the model may call a tool: a web search, a code sandbox or a connector to your files. Each tool call is another round trip to another service, often adding a second or more, and the results are added to the model's context (all the text it can see while answering) before it continues. An agent working on a long task can make dozens of such trips (Chapter 28).
 
 ### Step 11: decode and stream back
 
@@ -543,11 +543,11 @@ Step                               Typical time
 
 Two of those rows deserve a worked example.
 
-**Arithmetic.** Labs rarely publish the size of their closed models, so take a hypothetical model that uses 100 billion parameters for each token. The rule of thumb from Chapter 5 is about 2 operations per parameter per token, so 2 × 100 billion = 200 billion operations per token. The turn involves about 2,600 tokens (2,000 read plus 600 written): 2,600 × 200 billion = 520 trillion operations, written `5.2 × 10^14`. A human doing one multiplication per second would need over 16 million years.
+**Arithmetic.** Labs rarely publish the size of their closed models, so take a hypothetical model that uses 100 billion parameters for each token. The rule of thumb from Chapter 1 (Chapter 5 shows where it comes from) is about 2 operations per parameter per token, so 2 × 100 billion = 200 billion operations per token. The turn involves about 2,600 tokens (2,000 read plus 600 written): 2,600 × 200 billion = 520 trillion operations, written `5.2 × 10^14`. A human doing one multiplication per second would need `5.2 × 10^14` seconds; a year has about 31.5 million seconds, so that is over 16 million years.
 
 **Energy.** Google reported that its median Gemini Apps text prompt in May 2025 used 0.24 watt-hours, including idle machines and building overhead, and said this had fallen 33-fold in twelve months; Google notes the figure was not independently verified. OpenAI's chief executive said in June 2025 that an average ChatGPT query uses about 0.34 watt-hours. Epoch AI independently estimated about 0.3 watt-hours for a typical GPT-4o query, but about 2.5 watt-hours with 10,000 input tokens and about 40 with 100,000. Taking 0.3 watt-hours:
 
-- A 10-watt LED bulb uses 0.3 watt-hours in 0.3 ÷ 10 = 0.03 hours, about 1.8 minutes. One typical message is like leaving that bulb on for two minutes.
+- A 10-watt LED (light-emitting diode) bulb uses 0.3 watt-hours in 0.3 ÷ 10 = 0.03 hours, about 1.8 minutes. One typical message is like leaving that bulb on for two minutes.
 - A billion such messages per day use 1,000,000,000 × 0.3 = 300 million watt-hours, which is 300 megawatt-hours per day. Spread over 24 hours, that is an average draw of 12.5 megawatts, a small power plant running nonstop for one kind of request.
 
 Per message, the energy is small. In total, across billions of messages, longer contexts, reasoning models that write many more tokens, agents that run for hours and video generation, it adds up to the gigawatt-scale buildout described in Part VII.
@@ -556,7 +556,7 @@ Per message, the energy is small. In total, across billions of messages, longer 
 
 > **At the frontier (2026):** Speed is now something you can buy. As of October 2026, Anthropic offers a "fast mode" for Claude Opus 5.5 at $8 and $40 per million input and output tokens, double the standard $4 and $20, while batch requests that can wait hours cost 50% less; OpenAI renamed its priority tier "Fast mode" on July 30, 2026. Behind these prices sit the choices in this section: how big the batches are, which hardware serves the request, and how long the request waits in the queue (Chapter 23).
 
-> **At the frontier (2026):** The same speed-of-light limits that shape your chat now shape how frontier models are trained. Microsoft links its Fairwater AI data centers in Wisconsin and Atlanta, about 700 miles apart, into one "AI WAN" for training; over roughly 1,200 km of fiber, light alone takes about 6 milliseconds one way, an eternity for GPUs that must coordinate constantly. OpenAI said its GPT-6 Astra, unveiled in September 2026, came from its first pretraining run on more than 100,000 GPUs, at its Stargate site in Texas. Chapter 34 and Chapter 42 cover these giant clusters.
+> **At the frontier (2026):** The same speed-of-light limits that shape your chat now shape how frontier models are trained. Microsoft links its Fairwater AI data centers in Wisconsin and Atlanta, about 700 miles apart, into one "AI WAN" (wide-area network, a network that joins distant sites) for training; over roughly 1,200 km of fiber, light alone takes about 6 milliseconds one way, an eternity for GPUs that must coordinate constantly. OpenAI said its GPT-6 Astra, unveiled in September 2026, came from its first pretraining run (the main, longest phase of training, Chapter 19) on more than 100,000 GPUs, at its Stargate site in Texas (part of OpenAI's giant data center program of that name). Chapter 34 and Chapter 42 cover these giant clusters.
 
 ## In plain English
 
@@ -598,7 +598,7 @@ Network, Router, ISP (Internet service provider), Internet, Internet exchange po
 4. **[Medium] Latency versus bandwidth on your own connection.** Separate the two ideas with real numbers.
    1. Run a test at fast.com (click "Show more info") or speedtest.net. Write down download speed (Mbps) and latency or ping (ms).
    2. Convert your speed to megabytes per second by dividing by 8.
-   3. Compute how long a 4 GB model download would take, and how long it takes to push a 10 KB chat request at your speed.
+   3. Compute how long a 4 GB model download would take, and how long it takes to push a 10 KB chat request at your speed. For the download, 4 GB is 4,000 MB, so divide 4,000 by your speed in megabytes per second from step 2. For the chat request, 10 KB is 80,000 bits, so divide 80,000 by your speed in bits per second (your Mbps number × 1,000,000), as in the worked example in this chapter.
    4. Compare that push time with your latency. Which one dominates for chat, and which for the download?
    **What you'll learn:** bandwidth decides big downloads, latency decides small, chatty exchanges like chatbot messages.
 
@@ -666,7 +666,7 @@ Network, Router, ISP (Internet service provider), Internet, Internet exchange po
 - **Low-latency AI products.** Voice assistants, customer-service agents and real-time translation live or die by time to first token. Engineers who can shave hundreds of milliseconds through edge placement, streaming and model choice are valuable to any company building real-time AI.
 - **Data residency and sovereign cloud advice.** Hospitals, banks and governments must keep certain data in specific countries. Advisers who understand regions, providers' residency options and their price premiums help these organizations adopt AI legally (Chapter 59).
 - **API security.** Leaked API keys, misconfigured endpoints and exposed data are common and expensive. Security specialists, and tools that scan code and logs for exposed secrets, are in steady demand.
-- **Connecting the 2.2 billion offline.** Affordable connectivity, offline-capable apps and small models that run on cheap phones open AI to people the cloud does not reach yet. Telecoms, NGOs and development agencies fund this work.
+- **Connecting the 2.2 billion offline.** Affordable connectivity, offline-capable apps and small models that run on cheap phones open AI to people the cloud does not reach yet. Telecoms, NGOs (non-governmental organizations, such as charities) and development agencies fund this work.
 - **Monitoring AI applications.** When an AI app is slow or failing, someone has to trace each request across the network, the gateway, the model and the tools. Observability tools and the engineers who use them are a growing niche.
 
 ## Check your understanding
@@ -697,7 +697,7 @@ Network, Router, ISP (Internet service provider), Internet, Internet exchange po
 
 - **Code.org, "How the Internet Works" video series (on YouTube and code.org).** Short, friendly videos on packets, DNS, HTTP and encryption, introduced by internet pioneer Vint Cerf.
 - **Cloudflare Learning Center (cloudflare.com/learning).** Clear, free articles on DNS, TLS, CDNs, latency and almost every term in this chapter.
-- **MDN Web Docs, "An overview of HTTP" (developer.mozilla.org).** The standard reference for how HTTP requests, headers and status codes work.
+- **MDN Web Docs, "An overview of HTTP" (developer.mozilla.org).** The Mozilla Developer Network's guide, and the standard reference for how HTTP requests, headers and status codes work.
 - **TeleGeography's Submarine Cable Map (submarinecablemap.com).** An interactive map of the undersea cables that carry the world's internet traffic.
 - **Andrew Blum, *Tubes: A Journey to the Center of the Internet* (2012).** A reporter visits the buildings, exchange points and cable landings that make up the physical internet.
 - **Ilya Grigorik, *High Performance Browser Networking* (free at hpbn.co).** The best deep dive on latency, TCP, TLS and why the speed of light matters for apps.

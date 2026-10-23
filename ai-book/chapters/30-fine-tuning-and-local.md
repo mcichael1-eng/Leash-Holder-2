@@ -194,7 +194,7 @@ Why is full fine-tuning so memory-hungry? With the usual Adam optimizer and mixe
 
 > **Definition — Optimizer:** The algorithm that decides exactly how to update the weights from the gradients. Adam and AdamW, the most common ones, keep two running averages for every weight, which costs extra memory.
 
-For an 8-billion-parameter model: 8 billion × 16 bytes = **128 GB**, before counting the working memory for the training examples themselves. That is more than an 80 GB H100, the workhorse data-center GPU of 2023 and 2024, can hold, and about eight times the memory of the free GPU in Google Colab. Full fine-tuning of even a modest model is a multi-GPU job. Something cleverer was needed.
+For an 8-billion-parameter model: 8 billion × 16 bytes = **128 GB**, before counting the working memory for the training examples themselves. That is more than an 80 GB H100, the workhorse data-center GPU of 2023 and 2024, can hold, and about eight times the memory of the free GPU in Google Colab (16 GB). Full fine-tuning of even a modest model is a multi-GPU job. Something cleverer was needed.
 
 ## LoRA: the clip-on lens
 
@@ -242,7 +242,7 @@ Now take a real weight matrix of size 4,096 × 4,096, the shape of an attention 
   New behavior:  W + (alpha / r) x (B x A)
 ```
 
-*Figure 30.3: LoRA in one picture. The big matrix stays frozen; only the thin matrices B and A are trained, and their product is added on.*
+*Figure 30.3: LoRA in one picture. The big matrix stays frozen; only the thin matrices B and A are trained, and their product is added on, scaled by alpha ÷ r (r is the rank; alpha is a strength setting explained just below).*
 
 Apply this to every main matrix in a model shaped like Llama 3 8B (32 layers, each with seven large matrices) at rank 16, and the adapter totals about **42 million** trainable numbers, roughly **0.5%** of 8 billion. Stored at 16 bits, the adapter file is about 84 MB, while the base model is about 16 GB. You can keep dozens of adapters for different jobs and swap them like lenses on a camera.
 
@@ -262,7 +262,7 @@ LoRA is the most popular member of a larger family called parameter-efficient fi
 
 ### Does LoRA give up quality?
 
-A fair worry: if LoRA trains well under 1% of the numbers, is the result worse than full fine-tuning? A careful 2025 study by John Schulman and colleagues at Thinking Machines Lab, titled "LoRA Without Regret", found that on small and medium-sized instruction and reasoning datasets LoRA learned as fast as full fine-tuning and ended just as good, provided three details were right:
+A fair worry: if LoRA trains well under 1% of the numbers, is the result worse than full fine-tuning? A careful 2025 study by John Schulman and colleagues at the AI startup Thinking Machines Lab, titled "LoRA Without Regret", found that on small and medium-sized instruction and reasoning datasets LoRA learned as fast as full fine-tuning and ended just as good, provided three details were right:
 
 1. Put adapters on every layer, especially the big feed-forward matrices. Adapters on the attention matrices alone did worse, even when given as many trainable numbers.
 2. Use a learning rate about 10 times higher than you would for full fine-tuning of the same model.
@@ -304,7 +304,7 @@ Free Colab T4 GPU: 16 GB      Typical high-end gaming GPU: 24 GB
 
 Where do those numbers come from? QLoRA's frozen base is about 8 billion × 0.5 bytes (4 bits) plus scaling numbers, so roughly 4.5 to 5 GB. The 42 million adapter parameters need about 16 bytes each while training, about 0.7 GB. The rest is working memory for the examples in each batch, which gradient checkpointing keeps to a few gigabytes. The walkthrough in Exercise 8 fine-tunes a smaller 1.7-billion-parameter model, which fits comfortably and trains in minutes.
 
-> **At the frontier (2026):** The same ideas run at the top end. Labs now build low precision into training itself: Moonshot's open Kimi K3 (July 2026) used 4-bit (MXFP4) quantization-aware training from its fine-tuning stage onward, and Google ships Gemma 4 checkpoints prepared the same way, so their 4-bit versions lose very little quality. LoRA-style adapters are also used inside labs and by fine-tuning services to serve thousands of customer customizations on top of one shared base model.
+> **At the frontier (2026):** The same ideas run at the top end. Labs now build low precision into training itself: Moonshot's open Kimi K3 (July 2026) used 4-bit (MXFP4) quantization-aware training (training that simulates the low precision in advance, defined later in this chapter) from its fine-tuning stage onward, and Google ships Gemma 4 checkpoints prepared the same way, so their 4-bit versions lose very little quality. LoRA-style adapters are also used inside labs and by fine-tuning services to serve thousands of customer customizations on top of one shared base model.
 
 ## Data: the part that decides the result
 
@@ -342,7 +342,7 @@ flowchart LR
 
 | Route | What it is | Good for | Things to know |
 |---|---|---|---|
-| Hosted fine-tuning by a model maker | Upload JSONL to the provider's service; it trains and hosts your custom version of their model | Teams already using that provider; no hardware | Only some models are offered; OpenAI has offered supervised, preference and reinforcement fine-tuning for some models, and Google offers tuning for some Gemini models through Vertex AI; options change often |
+| Hosted fine-tuning by a model maker | Upload JSONL to the provider's service; it trains and hosts your custom version of their model | Teams already using that provider; no hardware | Only some models are offered; OpenAI has offered supervised, preference and reinforcement fine-tuning for some models, and Google offers tuning for some Gemini models through Vertex AI, its cloud AI platform; options change often |
 | Hosted fine-tuning of open models | Services such as Together AI and Fireworks AI fine-tune and serve open-weight models | Open models without managing GPUs | You can usually download the resulting weights or adapter |
 | Do it yourself with open-source tools | Hugging Face TRL and PEFT, Unsloth, Axolotl, LLaMA-Factory on Colab or rented GPUs | Learning, full control, privacy | You handle setup, evaluation and serving |
 
@@ -390,7 +390,7 @@ Everything so far works best with models whose files you can download. Here is w
 
 How far behind are they? On Artificial Analysis's Intelligence Index on October 21, 2026, the best open-weight model (Xiaomi's MiMo-V2.6-Pro) scored 46, with DeepSeek, Z.ai and Moonshot models close behind, against 58 for the best closed model (Claude Opus 5.5). The usual summary is that the top open models trail the top closed ones by months, not years. Notice also that most of the strongest open models now come from Chinese labs, a point Chapter 24 and Chapter 59 discuss.
 
-> **Watch out:** "Open" does not mean "runs on my laptop". DeepSeek V4-Pro has 1.6 trillion parameters; even compressed to 4 bits that is about 800 GB of weights, which needs a server full of data-center GPUs. Open weights give you the *right* to run a model anywhere; your hardware decides whether you *can*.
+> **Watch out:** "Open" does not mean "runs on my laptop". DeepSeek V4-Pro has 1.6 trillion parameters; even compressed to 4 bits that is about 800 GB of weights (nearer 960 GB once the scaling numbers are counted, as the table below shows), which needs a server full of data-center GPUs. Open weights give you the *right* to run a model anywhere; your hardware decides whether you *can*.
 
 ### Licenses in plain words
 
@@ -467,7 +467,7 @@ But the weights are not all. Running a model also needs space for its working me
 
 > **Definition — KV cache:** Stored intermediate results (keys and values) for every token already processed, kept so the model does not recompute them for each new token. It grows with the length of the conversation.
 
-For a model shaped like Llama 3 8B (32 layers, 8 key-value heads of 128 numbers each, stored at 16 bits), the cache costs 2 (keys and values) × 32 × 8 × 128 × 2 bytes = 131,072 bytes, or about **0.125 MB per token**. A 8,000-token conversation needs about 1 GB; 32,000 tokens need about 4 GB; 128,000 tokens need about 16 GB, three times the size of the 4-bit weights. That is why local apps let you set the context length, and why a long context can make a model that "fits" suddenly run out of memory.
+For a model shaped like Llama 3 8B (32 layers, 8 key-value heads of 128 numbers each, stored at 16 bits), the cache costs 2 (keys and values) × 32 × 8 × 128 × 2 bytes = 131,072 bytes, or about **0.125 MB per token**. An 8,000-token conversation needs about 1 GB; 32,000 tokens need about 4 GB; 128,000 tokens need about 16 GB, three times the size of the 4-bit weights. That is why local apps let you set the context length, and why a long context can make a model that "fits" suddenly run out of memory.
 
 ```mermaid
 pie title Memory for an 8B model at 4-bit with a 32K-token conversation
@@ -486,6 +486,10 @@ On a typical PC, a model runs fast only if it fits in the graphics card's VRAM; 
 
 **No GPU, a small GPU, or a non-NVIDIA one?** All three can work, with trade-offs. With no graphics card at all, tools built on llama.cpp, such as Ollama and LM Studio, run the model on the CPU from ordinary memory. Small models (1B to 8B parameters at 4-bit) are usable that way, but speed follows the bandwidth rule in the next section, and ordinary PC memory is many times slower than a graphics card's. If a model is a little too big for your VRAM, the same tools can split it between the GPU and ordinary memory. It works, but the slow part sets the pace. To see where a model actually landed, Ollama's `ollama ps` command shows whether it sits on the GPU, in system memory, or split between the two: the first thing to check when a model is unexpectedly slow. NVIDIA cards have the broadest support. Ollama's documentation also lists AMD cards (through AMD's ROCm software, its counterpart to NVIDIA's CUDA, Chapter 32), Apple Silicon (through Apple's Metal) and other cards through Vulkan, a cross-vendor graphics interface; expect a little more setup outside NVIDIA.
 
+> **Definition — NVIDIA:** The American company that designs most of the GPUs used for AI, from gaming graphics cards to data-center chips such as the H100, together with CUDA, the software platform for programming them. It designs its chips and has them manufactured by contract factories (Chapter 35 and Chapter 36).
+
+> **Definition — AMD (Advanced Micro Devices):** An American chip company that makes CPUs for PCs and servers and is NVIDIA's main rival in GPUs, including its Instinct data-center AI accelerators and ROCm, its counterpart to NVIDIA's CUDA software.
+
 > **Definition — Layer offloading:** Splitting a model so that some of its layers run on the GPU and the rest on the CPU from ordinary memory, letting a model that is slightly too big for the graphics card still run, more slowly.
 
 One more trap: local apps often start with a short context window to save memory. Ollama's FAQ gives a default of 4,096 tokens, so a long document can be silently cut off unless you raise the setting, and raising it costs KV-cache memory, as worked out above.
@@ -498,7 +502,7 @@ Once it fits, speed depends mostly on how quickly the computer can read the weig
 
 > **Definition — Tokens per second:** How many tokens a model writes per second once it has started. Reading speed is about 5 to 10 tokens per second; comfortable chat feels like 20 or more.
 
-So: **tokens per second ≤ memory bandwidth ÷ bytes read per token**. Worked examples:
+So: **tokens per second ≤ memory bandwidth ÷ bytes read per token** (the sign ≤ means "is at most"). Worked examples:
 
 - A laptop with about 100 GB/s of bandwidth running an 8B model at 4-bit (about 4.9 GB): 100 ÷ 4.9 ≈ **20 tokens per second** at best. The same model at 16-bit (16 GB): 100 ÷ 16 ≈ **6 tokens per second**. Quantization made it both fit and run three times faster.
 - A gaming GPU with roughly 1,000 GB/s running the same 4.9 GB model: about **200 tokens per second** at best.
@@ -528,7 +532,7 @@ A weight of 0.37, stored on rulers with fewer and fewer marks
 
 *Figure 30.7: Quantization as rounding to the nearest mark. Fewer bits means fewer marks and bigger rounding errors.*
 
-With 16 evenly spaced levels between −1 and +1, the gap between marks is 2 ÷ 15 ≈ 0.133, so 0.37 rounds to 0.333, an error of about 0.04. With 256 levels the gap is about 0.008 and the error is ten times smaller. Real schemes are cleverer: they quantize small blocks of weights (say 32 at a time), each with its own scale, and some keep the most sensitive weights at higher precision. That is why 4-bit models work far better than this crude ruler suggests.
+With 16 evenly spaced levels between −1 and +1, there are 15 gaps covering a distance of 2, so the gap between marks is 2 ÷ 15 ≈ 0.133, so 0.37 rounds to 0.333, an error of about 0.04. With 256 levels the gap is about 0.008 and the error is ten times smaller. Real schemes are cleverer: they quantize small blocks of weights (say 32 at a time), each with its own scale, and some keep the most sensitive weights at higher precision. That is why 4-bit models work far better than this crude ruler suggests.
 
 > **Definition — Bits per weight:** The average number of bits used to store each parameter in a quantized model, including the scaling numbers. A "4-bit" file often averages about 4.5 to 5 bits per weight.
 
@@ -552,9 +556,9 @@ Three rules of thumb: Q8 is nearly lossless; Q4_K_M is the usual best trade-off;
 
 > **Definition — Quantization-aware training (QAT):** Training a model while simulating low-precision numbers, so that its final low-bit version loses very little quality. Models released with QAT checkpoints are the best ones to run at 4 bits.
 
-Other formats you will meet: **MLX** files for Apple Silicon, **AWQ** and **GPTQ** files for GPU servers, and plain **safetensors** for full-precision weights used in fine-tuning.
+Other formats you will meet: **MLX** files for Apple Silicon, **AWQ** (activation-aware weight quantization) and **GPTQ** files, made by two popular 4-bit quantization methods, for GPU servers, and plain **safetensors** for full-precision weights used in fine-tuning.
 
-> **Analogy:** Quantization is saving a photo as a JPEG. At high quality you cannot tell the difference and the file is a fraction of the size; crank the compression too far and blocky artifacts appear. Q4_K_M is the "good quality JPEG" setting most people choose.
+> **Analogy:** Quantization is saving a photo as a JPEG, the everyday compressed photo format (Chapter 3). At high quality you cannot tell the difference and the file is a fraction of the size; crank the compression too far and blocky artifacts appear. Q4_K_M is the "good quality JPEG" setting most people choose.
 
 > **Watch out:** "Quantized models are broken models" is wrong, and "quantization is free" is also wrong. Good 8-bit and 4-bit models often lose little on everyday tasks, but losses can show up first in exact recall, arithmetic, long reasoning chains and less common languages. Test the specific quant on your own tasks.
 
@@ -688,7 +692,7 @@ Open-weight models from DeepSeek, Alibaba, Moonshot, Google, OpenAI, Mistral and
 
 ## Key terms
 
-Weights (parameters), fine-tuning, supervised fine-tuning (SFT), training example, JSONL, preference tuning, DPO, reinforcement fine-tuning (RFT), grader, distillation, full fine-tuning, epoch, learning rate, validation set, catastrophic forgetting, optimizer, LoRA, low-rank matrix, rank, adapter, target modules, merging an adapter, prompt tuning (soft prompt), QLoRA, NF4, VRAM, gradient checkpointing, held-out test set, synthetic data, Hugging Face TRL and PEFT, open-weight model, open-source AI, license, permissive license, acceptable use policy, mixture of experts, instruct model, Hugging Face Hub, model card, safetensors, gated model, Space, Gradio and Streamlit, KV cache, unified memory, layer offloading, memory bandwidth, tokens per second, quantization, bits per weight, GGUF, quantization level, quantization-aware training, pruning, inference engine, llama.cpp, Ollama, LM Studio, MLX, vLLM, local server, OpenAI-compatible API.
+Weights (parameters), fine-tuning, supervised fine-tuning (SFT), training example, JSONL, preference tuning, DPO, reinforcement fine-tuning (RFT), grader, distillation, full fine-tuning, epoch, learning rate, validation set, catastrophic forgetting, optimizer, LoRA, low-rank matrix, rank, adapter, target modules, merging an adapter, prompt tuning (soft prompt), QLoRA, NF4, VRAM, gradient checkpointing, held-out test set, synthetic data, Hugging Face TRL and PEFT, open-weight model, open-source AI, license, permissive license, acceptable use policy, mixture of experts, instruct model, Hugging Face Hub, model card, safetensors, gated model, Space, Gradio and Streamlit, KV cache, unified memory, NVIDIA, AMD (Advanced Micro Devices), layer offloading, memory bandwidth, tokens per second, quantization, bits per weight, GGUF, quantization level, quantization-aware training, pruning, inference engine, llama.cpp, Ollama, LM Studio, MLX, vLLM, local server, OpenAI-compatible API.
 
 ## Exercises
 
@@ -714,7 +718,7 @@ Weights (parameters), fine-tuning, supervised fine-tuning (SFT), training exampl
    4. Check your measurements against the rules in this chapter: is the Q8 file about 1.8 times bigger, and is it slower by a similar factor?
    **What you'll learn:** quantization trades a little quality for a lot of memory and speed, and where (if anywhere) you can see the difference.
 
-4. **[Easy] Build a "Will it fit?" spreadsheet.** In Google Sheets or Excel, make columns for model name, billions of parameters (total), billions active, bits per weight, context length, and layers, KV heads and head size (from the model's `config.json`; use 32, 8 and 128 for an 8B-class model if unsure). Add formulas: weights in GB = total billions × bits ÷ 8; KV cache in GB = 2 × layers × KV heads × head size × 2 bytes × context ÷ 1,000,000,000; total = weights + KV cache + 0.5 GB. Add a speed column: your machine's memory bandwidth in GB/s ÷ (active billions × bits ÷ 8). Fill in five models from this chapter, including one MoE model, and colour rows green if the total fits in about 70% of your computer's memory.
+4. **[Easy] Build a "Will it fit?" spreadsheet.** In Google Sheets or Excel, make columns for model name, billions of parameters (total), billions active, bits per weight, context length, and layers, KV heads and head size (from the model's `config.json`, where they are called `num_hidden_layers`, `num_key_value_heads` and `head_dim`; if `head_dim` is missing, divide `hidden_size` by `num_attention_heads`; use 32, 8 and 128 for an 8B-class model if unsure). Add formulas: weights in GB = total billions × bits ÷ 8; KV cache in GB = 2 × layers × KV heads × head size × 2 bytes × context ÷ 1,000,000,000; total = weights + KV cache + 0.5 GB. Add a speed column: your machine's memory bandwidth in GB/s ÷ (active billions × bits ÷ 8). In a spreadsheet, type * for × and / for ÷, and point at cells. For example, with the columns in the order above (A name, B total billions, C active billions, D bits, E context, F layers, G KV heads, H head size) and your bandwidth typed into cell N1 (use 100 for a typical laptop if you do not know yours), row 2 gets: weights `=B2*D2/8` in I2, KV cache `=2*F2*G2*H2*2*E2/1000000000` in J2, total `=I2+J2+0.5` in K2 and speed `=$N$1/(C2*D2/8)` in L2 (the $ signs keep the formula pointing at N1 when you copy it down the column). Fill in five models from this chapter, including one MoE model, and colour rows green if the total fits in about 70% of your computer's memory.
    **What you'll learn:** the memory and speed rules well enough to choose models and hardware yourself.
 
 5. **[Easy] Read a model card and license like a lawyer.** On huggingface.co, open the pages for two open models from different labs (for example gpt-oss-20b and a Qwen or DeepSeek model). For each, fill in: total and active parameters, context length, license name, whether commercial use is allowed, any user or revenue thresholds, whether you may share fine-tuned versions, any acceptable use policy, who ran the benchmarks on the card, and the file format and total size of the weights.
@@ -951,16 +955,16 @@ Weights (parameters), fine-tuning, supervised fine-tuning (SFT), training exampl
              "| FEW-SHOT:", card_few_shot(n).replace("\n", " / "))
    ```
 
-   This builds 30 new notes with names and tasks the model never trained on, then scores two approaches by exact match: the fine-tuned model with no examples, and the original base model (adapter switched off) given five worked examples in the prompt. Record both scores, then try three variations: change `pairs[:5]` to `pairs[:2]`, rerun Cell 7 with `num_train_epochs=1`, and add a new sentence pattern to `templates` used only for the held-out set. Write two sentences on when fine-tuning was worth it here.
+   This builds 30 new notes with names and tasks the model never trained on, then scores two approaches by exact match: the fine-tuned model with no examples, and the original base model (adapter switched off) given five worked examples in the prompt. Record both scores, then try three variations: change `pairs[:5]` to `pairs[:2]`; retrain with one epoch by rerunning Cells 3, 5, 6, 7 and 8 with `num_train_epochs=1` in Cell 7 (start again from Cell 3 so the adapter starts fresh; rerunning Cell 7 alone would only train the existing adapter some more), then rerun this cell; and add a new sentence pattern used only for the held-out set by putting a line such as `templates.append("{n} must {t} no later than {w}")` at the top of this cell and rerunning it (the training pairs were made earlier, so only the held-out notes can use the new pattern). Write two sentences on when fine-tuning was worth it here.
    **What you'll learn:** how to compare fine-tuning fairly against a prompting baseline; on a narrow format task like this one fine-tuning can win clearly, but the gap depends on model size and the number of examples, and you only know by measuring.
 
-10. **[Medium] Call your local model from code, privately.** With Ollama running (Exercise 2), turn off Wi-Fi. On Mac or Linux, paste this into a terminal:
+10. **[Medium] Call your local model from code, privately.** With Ollama running (Exercise 2), turn off Wi-Fi. On Mac or Linux, paste this into a terminal (curl is a built-in command-line tool that sends a web request and prints the reply):
 
     ```
     curl http://localhost:11434/api/chat -d '{"model": "gemma4:e2b", "messages": [{"role": "user", "content": "Give me three names for a book club."}], "stream": false}'
     ```
 
-    You get back JSON (Chapter 26) with the answer inside `message` and `content`. On any computer with Python installed, this script does the same using only Python's built-in libraries:
+    You get back JSON (Chapter 26) with the answer inside `message` and `content`. On any computer with Python installed, this script does the same using only Python's built-in libraries. Save it in a plain-text file called `ask.py`, then run it from a terminal opened in the same folder by typing `python3 ask.py` (on Windows, `python ask.py`):
 
     ```python
     import json, urllib.request
@@ -987,7 +991,7 @@ Weights (parameters), fine-tuning, supervised fine-tuning (SFT), training exampl
 - **On-device AI apps.** Apps that run small quantized models on phones and laptops serve users who need offline or private help: field technicians, travellers, journalists, people in low-connectivity regions.
 - **Inference and quantization engineering.** Engineers who can make models smaller and faster (quantization, serving with vLLM, kernels) are scarce and well paid at labs, clouds and any company serving open models at scale.
 - **Local-AI setup and training.** Individuals and small teams pay for workshops, configured machines and support to get started with LM Studio, Ollama and private assistants.
-- **Models for under-served languages and domains.** Fine-tuning open models for languages and specialties that big labs serve poorly (where users also pay more tokens per word) is valued by governments, NGOs, universities and local businesses.
+- **Models for under-served languages and domains.** Fine-tuning open models for languages and specialties that big labs serve poorly (where users also pay more tokens per word) is valued by governments, NGOs (non-governmental organizations, such as charities), universities and local businesses.
 - **License and compliance advice for open models.** Companies need help reading model licenses, acceptable use policies and data terms before building products on open weights.
 - **Open problems.** Continual learning without catastrophic forgetting, cheap per-user personalization, keeping safety training intact through fine-tuning, and the policy debate over releasing powerful open weights are active areas for researchers and startups.
 

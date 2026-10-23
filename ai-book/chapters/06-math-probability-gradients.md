@@ -60,11 +60,11 @@ AI is full of exponentials. Epoch AI, a research group that tracks the field, es
 
 After five years the linear line has reached 25. The exponential one has reached `5^5` = 3,125. That is the difference between a company that grows its computing budget by a fixed amount each year and one that multiplies it.
 
-Epoch describes the same trend as compute doubling about every 5.2 months. Are those two descriptions consistent? A year has 12 ÷ 5.2 ≈ 2.3 doubling periods, and 2 multiplied by itself 2.3 times is about 4.9. So yes: doubling every 5.2 months is about 5 times per year.
+Epoch describes the same trend as compute doubling about every 5.2 months. Are those two descriptions consistent? A year has 12 ÷ 5.2 ≈ 2.3 doubling periods, and 2 multiplied by itself 2.3 times is about 4.9. (A fraction of a doubling is fine for a calculator: type `2^2.3`, or `=2^2.3` in a spreadsheet. As a check, two doublings give 4 and three give 8, so 2.3 doublings must land a little above 4.) So yes: doubling every 5.2 months is about 5 times per year.
 
 ### Exponential decay
 
-Exponentials also shrink things. Halving again and again (1, 0.5, 0.25, 0.125, ...) is exponential decay. Radioactive material decays this way, and so do AI prices. The 2025 Stanford AI Index reported that the cost of using a model as capable as GPT-3.5 fell more than 280-fold between November 2022 and October 2024. Spread over those roughly two years, that is a drop of more than ten times per year.
+Exponentials also shrink things. Halving again and again (1, 0.5, 0.25, 0.125, ...) is exponential decay. Radioactive material decays this way, and so do AI prices. The 2025 Stanford AI Index reported that the cost of using a model as capable as GPT-3.5 fell more than 280-fold between November 2022 and October 2024. Spread over those roughly two years, that is a drop of more than ten times per year: a drop of about 17 times in each year gives 17 × 17 ≈ 290 over two years.
 
 > **Definition — Exponential decay:** Shrinking by repeated multiplication by a number less than 1, such as halving every year. It falls fast at first and then flattens toward zero without ever quite reaching it.
 
@@ -265,7 +265,7 @@ The three probabilities, 65.9%, 24.2% and 9.9%, add to 100%. The order is preser
 
 Here is a neat property. Add the same number to every score, say +1, giving 3.0, 2.0 and 1.1. Work it through and you get exactly the same probabilities: 0.659, 0.242, 0.099. Only the *differences* between scores matter, not their absolute size.
 
-> **Try it:** In a spreadsheet, put 2, 1 and 0.1 in A1 to A3. In B1 type `=EXP(A1)` and fill down. In C1 type `=B1/SUM($B$1:$B$3)` and fill down. You have built softmax. Now change the first score to 5 and watch Paris's probability approach 1.
+> **Try it:** In a spreadsheet, put 2, 1 and 0.1 in A1 to A3. In B1 type `=EXP(A1)` and fill down. In C1 type `=B1/SUM($B$1:$B$3)` and fill down (the $ signs keep the total pointing at B1 to B3 as you fill down). You have built softmax. Now change the first score to 5 and watch Paris's probability approach 1.
 
 Softmax appears in two key places in a chatbot: at the end, to produce next-token probabilities, and inside every attention step, where it turns relevance scores into percentages that say how much each token should borrow from each other token (Chapter 15).
 

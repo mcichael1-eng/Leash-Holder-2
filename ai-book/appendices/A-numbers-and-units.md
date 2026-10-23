@@ -251,7 +251,7 @@ Power (watts) is a rate, like speed. Energy (watt-hours) is an amount, like dist
 | Chip core voltage | about 1 V or less |
 | One "ton" of cooling | 12,000 BTU per hour, about 3.5 kW of heat |
 | Heat carried by water versus air, per unit volume | about 3,500 times more |
-| PUE: ideal / leading AI sites / industry average | 1.0 / about 1.1–1.2 / about 1.5–1.6 |
+| PUE: ideal / leading AI sites / industry average | 1.0 / about 1.1–1.2 (Google's fleet: 1.09 in 2025) / about 1.5–1.6 (1.54 in the Uptime Institute's 2025 survey, as cited by Google) |
 | US average residential electricity price | 17.3¢/kWh (2025), 18.2¢ (2026), 18.7¢ (2027 forecast), per the EIA |
 
 *Table A.17: Electrical and cooling reference values (Chapters 39 and 40).*
