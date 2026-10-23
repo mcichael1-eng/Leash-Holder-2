@@ -302,6 +302,8 @@ Big tasks are planned in layers. "Make dinner" breaks into "make pasta" and "mak
 
 Classical planners work in places you might not expect. NASA's Remote Agent planned and carried out spacecraft operations on board the Deep Space 1 probe in 1999. Logistics companies plan deliveries with them, and many video games plan the actions of their computer-controlled characters this way, for example the enemy soldiers of the 2005 game *F.E.A.R.*. Real-world planning also has to handle time, deadlines and shared resources, which turns it into scheduling, a constraint problem, and surprises, which call for watching the plan as it runs and replanning when a step fails. That plan, act, observe, replan loop is exactly what a coding agent does with its to-do list (Chapter 28). The difference is that the agent writes its "recipe cards" in plain language rather than PDDL, which makes it far more flexible but gives none of a classical planner's guarantees that every precondition has been checked.
 
+> **Definition — NASA (National Aeronautics and Space Administration):** The United States government's space agency, which runs spacecraft, space telescopes and robotic probes such as the Mars rovers, and funds research on making them act on their own when they are too far away to be steered from Earth.
+
 There are two other ways to cope with surprises, besides fixing things after they go wrong. A contingent (or conditional) plan builds the surprises in from the start, with branches that depend on what the agent will observe: "fill the kettle; if the kettle does not heat, boil water in a pan instead; then pour." A rover on Mars, which cannot wait for instructions from Earth, benefits from exactly this kind of plan. Continuous (or online) planning never finishes planning at all: the agent plans a little ahead, acts, looks, and plans again, the way a driver keeps adjusting a route, which is also how the robot controllers of Chapter 49 work.
 
 > **Definition — Contingent plan (conditional plan):** A plan with built-in branches of the form "if you observe this, do that", prepared in advance for situations the planner cannot predict, instead of a single fixed sequence of steps.
@@ -397,6 +399,8 @@ Even with pruning, chess is far too big to search to the end. So chess programs 
 
 This is exactly how IBM's Deep Blue beat world champion Garry Kasparov in May 1997, winning the six-game match 3.5 to 2.5 after losing their first match in 1996. Deep Blue used hundreds of custom chess chips to examine about 200 million positions per second, with alpha-beta pruning and an evaluation function hand-crafted with help from grandmasters. It learned almost nothing. It was a triumph of search and engineering.
 
+> **Definition — IBM (International Business Machines):** A large American technology company, for much of the 20th century the world's dominant computer maker, whose research labs produced several game-playing landmarks: Arthur Samuel's checkers program, TD-Gammon, Deep Blue and the Watson question-answering system.
+
 Modern engines kept the search but changed the evaluation: since 2020 the leading open engine, Stockfish, has used a small neural network to judge positions.
 
 Three more details explain how real engines get so strong. First, move ordering: alpha-beta prunes most when it examines the best replies first, so engines try captures, and moves that proved strong elsewhere in the search, before the rest. With perfect ordering, alpha-beta can search about twice as deep as plain minimax in the same time. Second, a fixed depth cutoff creates the horizon effect. If the program would lose its queen at ply 9 but searches only 8, it may play pointless delaying moves that push the loss just past the depth it can see. Engines soften this by searching further whenever the position is still unsettled, for example in the middle of an exchange of pieces. Third, some search is replaced by lookup. An opening book stores well-studied first moves, and an endgame tablebase stores perfect play for positions with only a few pieces left. Complete tablebases for every position with seven pieces, counting both kings, were finished in 2018, and engines including Stockfish consult them during play. A game counts as solved when perfect play from the starting position is known, as for checkers in Table 48.4; chess is not solved.
@@ -447,7 +451,7 @@ The clever part is step 1. How does MCTS choose which branch to follow? It balan
 
 > **Definition — UCB (upper confidence bound):** A rule for choosing among options that adds an "uncertainty bonus" to each option's average result, so options that have been tried only a few times get extra chances. It is a mathematical form of "optimism in the face of uncertainty."
 
-In plain text the score is: `win rate + c × square root of (ln N ÷ n)`, where N is the total number of playouts so far, n is the playouts through this move, ln is the natural logarithm, and c is a tuning constant (1.4 is a common choice).
+In plain text the score is: `win rate + c × square root of (ln N ÷ n)`, where N is the total number of playouts so far, n is the playouts through this move, ln is the natural logarithm (Chapter 6; the ln key on a calculator), and c is a tuning constant (1.4 is a common choice).
 
 Worked example. After 12 playouts, move A has won 6 of 10 (win rate 0.6) and move B has won 1 of 2 (win rate 0.5). ln 12 ≈ 2.48.
 
@@ -781,6 +785,8 @@ Carnegie Mellon's Noam Brown and Tuomas Sandholm built Libratus, which beat four
 
 *Diplomacy* is a seven-player board game of alliances and betrayal, played mostly through private negotiation in plain language. Meta's CICERO combined a language model with a planning engine that reasoned about other players' likely moves. In 40 anonymous online games, it scored more than double the average human player's score and ranked in the top 10% of participants who played more than one game. It was an early sign of language models and strategic planning merging, the combination behind today's agents.
 
+> **Definition — CICERO:** Meta's 2022 AI system for the negotiation board game *Diplomacy*. It paired a language model that bargains with other players in plain English with a planning engine that predicts their moves, and it scored well above the average human in anonymous online games.
+
 | Year | System | Game | Key new ingredient |
 |---|---|---|---|
 | 1992 | TD-Gammon | Backgammon | TD learning plus a neural network, self-play |
@@ -819,7 +825,7 @@ Self-play has pitfalls: agents can chase each other in circles, like rock-paper-
 
 > **Definition — Elo rating:** A rating system in which the difference between two players' ratings predicts their expected score against each other. A 400-point gap predicts that the stronger player scores about 91% of the points.
 
-The formula is: expected score = 1 ÷ (1 + 10^(−difference ÷ 400)). For a 400-point gap that is 1 ÷ (1 + 0.1) ≈ **0.91**; for 200 points, about **0.76**; for 100 points, about **0.64**. Self-play training curves are usually drawn as Elo climbing over time.
+The formula is: expected score = 1 ÷ (1 + 10^(−difference ÷ 400)). For a 400-point gap the power is 10^−1, which is 0.1 (Chapter 2), so the expected score is 1 ÷ (1 + 0.1) ≈ **0.91**; for 200 points, about **0.76**; for 100 points, about **0.64**. Powers like 10^−0.5 are not easy by hand, so use a spreadsheet: `=1/(1+10^(-200/400))` gives the 200-point figure. Self-play training curves are usually drawn as Elo climbing over time.
 
 Not all games are equally hard for AI. Hidden information and many players acting at once both raise the difficulty.
 
@@ -844,7 +850,7 @@ quadrantChart
 ```
 *Figure 48.10: Games placed by how much is hidden and how many players act at once. The milestones moved from the bottom left toward the top right.*
 
-> **Watch out:** "If AI is superhuman at Go, it is superhuman at thinking." Game-playing systems are narrow. AlphaZero could not hold a conversation or fold a towel. In 2023, researchers even showed that amateur humans could beat top Go programs using a strange strategy discovered by another program, a reminder that superhuman in-distribution play can hide blind spots.
+> **Watch out:** "If AI is superhuman at Go, it is superhuman at thinking." Game-playing systems are narrow. AlphaZero could not hold a conversation or fold a towel. In 2023, researchers even showed that amateur humans could beat top Go programs using a strange strategy discovered by another program, a reminder that superhuman in-distribution play (play on the kinds of positions a program met in training) can hide blind spots.
 
 ### A short course in game theory
 
