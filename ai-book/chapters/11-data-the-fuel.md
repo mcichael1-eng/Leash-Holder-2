@@ -106,15 +106,15 @@ You can tell the story of AI as a story of datasets, each one bigger and messier
 
 To feel the scale: Common Crawl's August 2026 crawl captured 2.14 billion web pages, 360 tebibytes (binary terabytes, see Chapter 2) uncompressed, gathered between August 7 and 20. That is about 2.14 billion ÷ 14 days ≈ 153 million pages a day, or roughly 1,770 pages every second.
 
-**C4 (2019).** Google filtered Common Crawl into the "Colossal Clean Crawled Corpus" to train its T5 model, an early sign that cleaning web text mattered as much as collecting it.
+**C4 (2019).** Google filtered Common Crawl into the "Colossal Clean Crawled Corpus" to train its T5 model (a 2019 language model), an early sign that cleaning web text mattered as much as collecting it.
 
-**The Pile (2020).** EleutherAI combined 825 gibibytes of text from 22 sources, including academic papers, code and a books collection called Books3 that later became central to copyright lawsuits.
+**The Pile (2020).** EleutherAI, a volunteer-founded nonprofit group of open-source AI researchers, combined 825 gibibytes of text from 22 sources, including academic papers, code and a books collection called Books3 that later became central to copyright lawsuits.
 
-**LAION-5B (2022).** About 5.85 billion image–text pairs scraped from the web, used to train open image generators such as Stable Diffusion (Chapter 47). In late 2023 researchers found links to child sexual abuse material in it, and it was taken down for cleaning: a stark example of what indiscriminate scraping sweeps up.
+**LAION-5B (2022).** About 5.85 billion image–text pairs scraped from the web by LAION, a German nonprofit that builds open AI datasets, used to train open image generators such as Stable Diffusion (Chapter 47). In late 2023 researchers found links to child sexual abuse material in it, and it was taken down for cleaning: a stark example of what indiscriminate scraping sweeps up.
 
 **RedPajama, Dolma and FineWeb (2023–24).** Open, documented recreations of the kind of data the big labs use. Hugging Face's FineWeb holds about 15 trillion tokens drawn from 96 Common Crawl snapshots, according to its creators, with "FineWeb-Edu" subsets filtered for educational value.
 
-**The Common Pile (2025).** EleutherAI and partners released an 8-terabyte collection of public-domain and openly licensed text from 30 sources. Small 7-billion-parameter models trained only on it were competitive with Meta's Llama 1 and 2 models of the same size, showing that rights-cleared training is viable, at least at moderate scale.
+**The Common Pile (2025).** EleutherAI and partners released an 8-terabyte collection of public-domain (no longer, or never, covered by copyright) and openly licensed text from 30 sources. Small 7-billion-parameter models trained only on it were competitive with Meta's Llama 1 and 2 models of the same size, showing that rights-cleared training is viable, at least at moderate scale.
 
 Meanwhile the labs' own training sets kept growing: Meta said Llama 4 was pretrained on "more than 30 trillion tokens" (April 2025), and Alibaba said Qwen3 used about 36 trillion tokens across 119 languages.
 
@@ -174,7 +174,7 @@ Allow: /
 
 Other rules also apply. Terms of service may forbid scraping. Paywalls and logins keep content out of reach. Many sites prefer to offer an API, a structured doorway for programs (Chapter 4), with rate limits on how many requests you may make per minute. Collecting through an API is cleaner and more clearly permitted than scraping.
 
-The big shift of 2025–26 was that websites started fighting back and asking to be paid. On July 1, 2025, Cloudflare, which sits in front of a large share of the world's websites, began blocking known AI crawlers by default for new customer domains and launched "Pay Per Crawl," which revives a long-unused web code, HTTP 402 "Payment Required," so a site can charge a crawler per page. In September 2025 a group backed by Reddit, Yahoo, Medium, Quora and others launched RSL (Really Simple Licensing), a machine-readable way for sites to state their AI licensing and payment terms. Platforms also turned to the courts: Reddit sued Anthropic in June 2025 (a case sent back to California state court as a contract, trespass and privacy dispute rather than a copyright one), and in October 2025 sued Perplexity and several scraping firms.
+The big shift of 2025–26 was that websites started fighting back and asking to be paid. On July 1, 2025, Cloudflare, which sits in front of a large share of the world's websites, began blocking known AI crawlers by default for new customer domains and launched "Pay Per Crawl," which revives a long-unused web code, HTTP 402 "Payment Required," so a site can charge a crawler per page. In September 2025 a group backed by Reddit, Yahoo, Medium, Quora and others launched RSL (Really Simple Licensing), a machine-readable way for sites to state their AI licensing and payment terms. Platforms also turned to the courts: Reddit sued Anthropic in June 2025 (a case sent back to California state court as a contract, trespass and privacy dispute rather than a copyright one), and in October 2025 sued Perplexity, an AI search company, and several scraping firms.
 
 ```mermaid
 sequenceDiagram
@@ -262,7 +262,7 @@ Real data is messy. Here are five customer records as they might arrive:
 | Chen Wu | CA | (blank) | 2026-03-07 |
 | Dara Fox | Calif. | 29 | 7 March 2026 |
 
-Problems: rows 1 and 2 are the same person (a duplicate with different capitalization and date format); "NY," "New York" and "new york" are one state written three ways, as are "CA" and "Calif."; an age of 340 is impossible (probably a typo for 34); one age is missing; and the dates use three formats, one of them ambiguous (is 03/02 March 2 or February 3?). Fixing these is data cleaning.
+Problems: rows 1 and 2 are the same person (a duplicate with different capitalization and date format); "NY," "New York" and "new york" are one state written three ways, as are "CA" and "Calif." (both short for California); an age of 340 is impossible (probably a typo for 34); one age is missing; and the dates use three formats, one of them ambiguous (is 03/02 March 2 or February 3?). Fixing these is data cleaning.
 
 > **Definition — Data cleaning:** Finding and fixing incorrect, duplicate, missing or inconsistent data, such as merging duplicate records, standardizing spellings and units, and correcting impossible values.
 
@@ -407,7 +407,7 @@ Good teams also record lineage, the history of where each number came from and e
 
 > **Definition — Datasheet (data card):** Standard documentation describing a dataset's origin, contents, collection and labeling process, intended uses, limitations and license.
 
-Documentation is becoming law. Since August 2, 2025, providers of general-purpose AI models in the EU must publish a "sufficiently detailed summary" of their training content using a European Commission template, and the EU's AI Office gained powers to enforce these rules from August 2, 2026. California's AB 2013 requires generative-AI developers to post high-level documentation of their training data from January 1, 2026. Chapter 59 covers these laws.
+Documentation is becoming law. Since August 2, 2025, providers of general-purpose AI models in the EU must publish a "sufficiently detailed summary" of their training content using a European Commission template, and the EU's AI Office gained powers to enforce these rules from August 2, 2026. California's AB 2013 (Assembly Bill 2013, a state law) requires generative-AI developers to post high-level documentation of their training data from January 1, 2026. Chapter 59 covers these laws.
 
 ## Bias in data
 
@@ -438,7 +438,7 @@ Sampling bias usually creeps in through the way data was gathered. Statisticians
 
 A worked example: a company's past records show 200 men and 200 women applying, with 60 men hired (30 percent) and 30 women hired (15 percent). A model trained to imitate past hiring will learn to favor men. Deleting the gender column does not fix it if a column like "captain of the women's chess club" or the name of a women's college remains. In 2018 Reuters reported that Amazon scrapped an experimental recruiting model after it learned to downgrade résumés containing the word "women's."
 
-Two other cases became landmarks. In 2016 ProPublica analyzed COMPAS, a risk score used in US courts, and found that Black defendants who did not reoffend were nearly twice as likely as white defendants to have been labeled high risk; the company replied that its scores were equally accurate for both groups. Both claims were mathematically true at once, because different definitions of "fair" can conflict when groups have different base rates. In 2018 the Gender Shades study by Joy Buolamwini and Timnit Gebru found that commercial face-analysis systems misclassified darker-skinned women up to 34.7 percent of the time, against at most 0.8 percent for lighter-skinned men.
+Two other cases became landmarks. In 2016 ProPublica, a US investigative news organization, analyzed COMPAS, a risk score used in US courts, and found that Black defendants who did not reoffend were nearly twice as likely as white defendants to have been labeled high risk; the company replied that its scores were equally accurate for both groups. Both claims were mathematically true at once, because different definitions of "fair" can conflict when groups have different base rates. In 2018 the Gender Shades study by Joy Buolamwini and Timnit Gebru found that commercial face-analysis systems misclassified darker-skinned women up to 34.7 percent of the time, against at most 0.8 percent for lighter-skinned men.
 
 > **Definition — Algorithmic fairness:** The study of whether models treat groups equitably. It includes several competing mathematical definitions of "fair" that often cannot all be satisfied at once.
 
@@ -462,7 +462,7 @@ Data about people is personal information, and using it for AI raises hard priva
 
 > **Definition — PII (personally identifiable information):** Data that can identify a specific person, such as a name, email address, ID number, face or precise location.
 
-The traditional protection was anonymization: strip the names and release the rest. It fails surprisingly often, because combinations of innocent-looking facts are unique. In 2000 the computer scientist Latanya Sweeney showed that about 87 percent of Americans could be uniquely identified by just their 5-digit zip code, birth date and sex; earlier she had used public voter rolls to find the Massachusetts governor's records in "anonymized" hospital data. In 2006 AOL released about 20 million "anonymous" search queries from roughly 650,000 users, and New York Times reporters identified user 4417749 as a 62-year-old woman in Georgia from her searches alone. And researchers linked "anonymous" Netflix Prize ratings to public movie reviews, leading to a privacy lawsuit and the cancellation of the planned second contest.
+The traditional protection was anonymization: strip the names and release the rest. It fails surprisingly often, because combinations of innocent-looking facts are unique. In 2000 the computer scientist Latanya Sweeney showed that about 87 percent of Americans could be uniquely identified by just their 5-digit zip code, birth date and sex; earlier she had used public voter rolls to find the Massachusetts governor's records in "anonymized" hospital data. In 2006 AOL (America Online, then one of the biggest US internet companies) released about 20 million "anonymous" search queries from roughly 650,000 users, and New York Times reporters identified user 4417749 as a 62-year-old woman in Georgia from her searches alone. And researchers linked "anonymous" Netflix Prize ratings to public movie reviews, leading to a privacy lawsuit and the cancellation of the planned second contest.
 
 > **Definition — Re-identification:** Working out who a person is in a supposedly anonymous dataset by linking it with other available data.
 
@@ -470,7 +470,7 @@ The law has caught up partly. Europe's GDPR (applying since 2018) and California
 
 > **Definition — GDPR and CCPA:** The European Union's General Data Protection Regulation and the California Consumer Privacy Act, the best-known laws giving people rights over their personal data and placing duties on organizations that use it.
 
-Two technical ideas offer stronger protection. Differential privacy adds carefully calibrated noise so that results barely change whether or not any one person is included. The oldest version is a survey trick you can do with a coin. Ask 1,000 people "Have you ever cheated on a test?" Each secretly flips a coin: heads, answer truthfully; tails, flip again and say "yes" for heads, "no" for tails. Nobody can tell whether any individual "yes" is true. But if the true rate is p, the expected share of yeses is 0.5 × p + 0.25. If 400 of 1,000 say yes, then 0.40 = 0.5 × p + 0.25, so p = 0.30: 30 percent have cheated, measured without exposing anyone. The US Census Bureau used differential privacy for the 2020 census, and Apple uses it to collect some usage statistics.
+Two technical ideas offer stronger protection. Differential privacy adds carefully calibrated noise so that results barely change whether or not any one person is included. The oldest version is a survey trick you can do with a coin. Ask 1,000 people "Have you ever cheated on a test?" Each secretly flips a coin: heads, answer truthfully; tails, flip again and say "yes" for heads, "no" for tails. Nobody can tell whether any individual "yes" is true. But if the true rate is p, the expected share of yeses is 0.5 × p + 0.25. Here is why: half the people (first flip heads) answer truthfully, contributing 0.5 × p yeses, and the other half answer by the second coin, half of whom say yes, contributing 0.5 × 0.5 = 0.25. If 400 of 1,000 say yes, then 0.40 = 0.5 × p + 0.25, so p = 0.30: 30 percent have cheated, measured without exposing anyone. The US Census Bureau used differential privacy for the 2020 census, and Apple uses it to collect some usage statistics.
 
 > **Definition — Differential privacy:** A mathematical guarantee, achieved by adding calibrated random noise, that a result barely changes whether or not any single person's data is included, so no individual can be singled out.
 

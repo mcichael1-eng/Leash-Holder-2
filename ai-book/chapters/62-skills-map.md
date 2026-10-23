@@ -125,7 +125,7 @@ A before-and-after shows the gap. Before: "Write an email about the delay." Afte
 
 ### Verification and critical reading
 
-> **Definition — Verification:** Checking AI output before relying on it: confirming citations, cross-checking facts against sources or a second model, testing numbers and spotting confident errors.
+> **Definition — Verification of AI output:** Checking AI output before relying on it: confirming citations, cross-checking facts against sources or a second model, testing numbers and spotting confident errors.
 
 *What:* making "check before you trust" a habit. *Why:* AI output is only as valuable as your ability to catch its mistakes, and small error rates compound.
 
@@ -599,7 +599,7 @@ What counts is proof: a tool people use, an eval you published, a replication ot
 
 ## Key terms
 
-Skill tree, Portfolio, Hallucination, Knowledge cutoff, Jagged frontier, Power user, Prompt, Prompt engineering, Context engineering, Verification, Agent, Custom assistant, Agent Skill, Connector, Workflow automation, Vibe coding, AI app builder, MCP (Model Context Protocol), Eval set (golden set), Python, Notebook (Jupyter, Google Colab), CS50P, Command line, Git and GitHub, SQL (Structured Query Language), API (application programming interface), JSON, AI engineer (LLM application engineer), Structured output, RAG (retrieval-augmented generation), Tool calling (function calling), Error analysis, LLM-as-judge, Observability (tracing), Prompt injection, Fine-tuning, PyTorch, MLOps (and LLMOps), Data pipeline, AWS (Amazon Web Services), Distributed system, Kubernetes and Slurm, GPU kernel, CUDA and Triton, NVIDIA, CS336, Interpretability, Alignment, ARENA (Alignment Research Engineer Accelerator), MATS (originally ML Alignment & Theory Scholars), Fellowship (research residency), Ablation, Replication, Research taste, AI governance, IAPP (International Association of Privacy Professionals), CSET (Center for Security and Emerging Technology), HVAC (heating, ventilation and air conditioning), IBEW (International Brotherhood of Electrical Workers), NECA (National Electrical Contractors Association), T-shaped skills.
+Skill tree, Portfolio, Hallucination, Knowledge cutoff, Jagged frontier, Power user, Prompt, Prompt engineering, Context engineering, Verification of AI output, Agent, Custom assistant, Agent Skill, Connector, Workflow automation, Vibe coding, AI app builder, MCP (Model Context Protocol), Eval set (golden set), Python, Notebook (Jupyter, Google Colab), CS50P, Command line, Git and GitHub, SQL (Structured Query Language), API (application programming interface), JSON, AI engineer (LLM application engineer), Structured output, RAG (retrieval-augmented generation), Tool calling (function calling), Error analysis, LLM-as-judge, Observability (tracing), Prompt injection, Fine-tuning, PyTorch, MLOps (and LLMOps), Data pipeline, AWS (Amazon Web Services), Distributed system, Kubernetes and Slurm, GPU kernel, CUDA and Triton, NVIDIA, CS336, Interpretability, Alignment, ARENA (Alignment Research Engineer Accelerator), MATS (originally ML Alignment & Theory Scholars), Fellowship (research residency), Ablation, Replication, Research taste, AI governance, IAPP (International Association of Privacy Professionals), CSET (Center for Security and Emerging Technology), HVAC (heating, ventilation and air conditioning), IBEW (International Brotherhood of Electrical Workers), NECA (National Electrical Contractors Association), T-shaped skills.
 
 ## Exercises
 

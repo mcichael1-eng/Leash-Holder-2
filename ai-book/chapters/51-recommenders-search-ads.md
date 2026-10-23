@@ -361,7 +361,7 @@ Before a new model meets real users, engineers test it on logged history: hide s
 
 > **Definition — NDCG (normalized discounted cumulative gain):** A ranking score between 0 and 1 that rewards putting the most relevant items at the top. Each item's relevance is divided by a discount that grows with its position, the results are summed, and the total is divided by the best possible total.
 
-A worked NDCG example. A search engine shows five results whose relevance (judged by people, 0 to 3) is, in order: 0, 2, 3, 0, 1. The discount for position n is log2(n + 1): 1.0, 1.585, 2.0, 2.322, 2.585.
+A worked NDCG example. A search engine shows five results whose relevance (judged by people, 0 to 3) is, in order: 0, 2, 3, 0, 1. The discount for position n is log2(n + 1), the base-2 logarithm of Chapter 6 ("what power of 2 gives this number?"), which for positions 1 to 5 is 1.0, 1.585, 2.0, 2.322, 2.585.
 
 - Shown order: 0 ÷ 1.0 + 2 ÷ 1.585 + 3 ÷ 2.0 + 0 ÷ 2.322 + 1 ÷ 2.585 = 0 + 1.262 + 1.5 + 0 + 0.387 = 3.149.
 - Best possible order (3, 2, 1, 0, 0): 3 ÷ 1.0 + 2 ÷ 1.585 + 1 ÷ 2.0 = 3 + 1.262 + 0.5 = 4.762.
@@ -413,7 +413,7 @@ The other side effect is time. Features such as infinite scroll and autoplay rem
 
 > **Definition — Autoplay:** Automatically starting the next video when one finishes, so continuing requires no decision while stopping does.
 
-Whether heavy social media use causes harm, especially to teenagers, is one of the most argued questions in social science. One camp argues that the timing of rising teen anxiety and depression in several countries, together with experimental and survey evidence, points to smartphones and social feeds as a major cause. The other camp argues that the measured effects in most studies are small, that causation is hard to separate from correlation (anxious teens may scroll more), and that blaming apps can distract from other causes. Lawmakers have not waited for a verdict. New York passed its SAFE for Kids Act in 2024 to restrict algorithmic "addictive feeds" for minors without parental consent, and the European Union's Digital Services Act requires the largest platforms to offer users at least one feed option that is not based on profiling them.
+Whether heavy social media use causes harm, especially to teenagers, is one of the most argued questions in social science. One camp argues that the timing of rising teen anxiety and depression in several countries, together with experimental and survey evidence, points to smartphones and social feeds as a major cause. The other camp argues that the measured effects in most studies are small, that causation is hard to separate from correlation (anxious teens may scroll more), and that blaming apps can distract from other causes. Lawmakers have not waited for a verdict. New York passed its SAFE for Kids Act (Stop Addictive Feeds Exploitation for Kids Act) in 2024 to restrict algorithmic "addictive feeds" for minors without parental consent, and the European Union's Digital Services Act requires the largest platforms to offer users at least one feed option that is not based on profiling them.
 
 > **Definition — Digital Services Act (DSA):** A European Union law, fully applicable since 2024, that sets rules for online platforms, including transparency about recommender systems and, for the largest platforms, an option to use a feed not based on personal profiling.
 
@@ -455,7 +455,7 @@ Most of the free internet is paid for by advertising, and advertising provides t
 
 > **Definition — Conversion:** The action an advertiser actually wants after a click, such as a purchase, sign-up or app install.
 
-> **Definition — CPM, CPC and CPA:** Three ways of pricing ads. CPM is cost per thousand impressions, CPC is cost per click and CPA is cost per acquisition (per conversion).
+> **Definition — CPM, CPC and CPA:** Three ways of pricing ads. CPM is cost per thousand impressions (M is the Roman numeral for a thousand), CPC is cost per click and CPA is cost per acquisition (per conversion).
 
 ### Predicting the click
 
@@ -543,7 +543,7 @@ ATT had a large effect. Meta told investors in early 2022 that it expected the c
 
 Generative AI (Chapter 47) now makes the ads themselves. Advertisers on the major platforms can generate background scenes for product photos, expand images to new shapes, write dozens of headline variants and turn a still image into a short video. The automated campaign then tests the variants and shows the winners. This lowers costs for small businesses that could never afford a photo shoot. It also brings risks: scam ads using AI-generated celebrity endorsements and deepfaked voices are a growing problem (Chapter 58).
 
-> **At the frontier (2026):** Ads are arriving inside AI assistants. OpenAI announced in January 2026 that it would test ads in ChatGPT, and they were appearing for some users by March 2026; it had already launched an Agentic Commerce Protocol with Stripe in September 2025 so purchases can happen inside a conversation. The open questions are the ones search faced twenty-five years ago, sharpened: how clearly paid content is separated from the answer, whether sponsors can influence what the model says, and how the advertiser's auction interacts with a model that writes a single answer instead of a list of links.
+> **At the frontier (2026):** Ads are arriving inside AI assistants. OpenAI announced in January 2026 that it would test ads in ChatGPT, and they were appearing for some users by March 2026; it had already launched an Agentic Commerce Protocol with the online-payments company Stripe in September 2025 so purchases can happen inside a conversation. The open questions are the ones search faced twenty-five years ago, sharpened: how clearly paid content is separated from the answer, whether sponsors can influence what the model says, and how the advertiser's auction interacts with a model that writes a single answer instead of a list of links.
 
 ## Search: from PageRank to answer engines
 
@@ -738,7 +738,7 @@ Recommender system, ranking, feed, explicit feedback, implicit feedback, engagem
    3. In B12 type `=$B2*B$8+$C2*B$9` and copy it across to E12 and down to row 15. This is the predicted table; check it matches Figure 51.5.
    4. Type the real ratings in B18:E21 from Figure 51.3, leaving the four question-mark cells empty.
    5. In B24 type `=IF(B18="","",B18-B12)` and copy it to B24:E27 (the errors). In G24 type `=SQRT(SUMSQ(B24:E27)/COUNT(B24:E27))`. You should get about 0.196.
-   6. Now one learning step. Put Ana's starting tastes 0.5 and 0.8 in two cells and Alien's starting traits 0.9 and 0.3 in two more, and a learning rate of 0.1. Compute the prediction (0.69), the error (5 minus the prediction) and the four updated numbers using the rule in the chapter. Check that the new prediction is about 1.59.
+   6. Now one learning step. Put Ana's starting tastes 0.5 and 0.8 in I2 and J2, Alien's starting traits 0.9 and 0.3 in I3 and J3, and a learning rate of 0.1 in I4. In I5 compute the prediction `=I2*I3+J2*J3` (0.69) and in I6 the error `=5-I5`. Ana's updated tastes go in I8 `=I2+$I$4*$I$6*I3` and J8 `=J2+$I$4*$I$6*J3`; Alien's updated traits, using Ana's old tastes, go in I9 `=I3+$I$4*$I$6*I2` and J9 `=J3+$I$4*$I$6*J2`. In I10 compute the new prediction `=I8*I9+J8*J9` and check that it is about 1.59.
    7. Change Dee's factor 2 from 4 to 3. Which predictions change, and does the error go up or down?
    **What you'll learn:** a recommendation is a dot product, the fit is measured by RMSE, and learning is repeated small nudges toward the known ratings.
 
@@ -763,7 +763,7 @@ Recommender system, ranking, feed, explicit feedback, implicit feedback, engagem
    2. In row 3 type: A3 `=0.0375+0.85*C2`, B3 `=0.0375+0.85*A2/2`, C3 `=0.0375+0.85*(A2/2+B2+D2)`, D3 `=0.0375`.
    3. Copy row 3 down to row 40. The values should settle near A 0.37, B 0.20, C 0.39, D 0.04, and each row should add up to 1.
    4. Add a link from D to A (D now has two outgoing links, so it passes D/2 to each of A and C). Update the formulas and see what changes (A rises to about 0.38).
-   5. Now imagine a spammer creates two new pages, E and F, that link only to D. With six pages the "bored jump" term becomes 0.15 ÷ 6 = 0.025. Rebuild the formulas. D rises only to about 0.07.
+   5. Now imagine a spammer creates two new pages, E and F, that link only to D. With six pages the "bored jump" term becomes 0.15 ÷ 6 = 0.025. Rebuild the formulas: label columns E and F, start all six pages at 1/6 (about 0.167) in row 2, change 0.0375 to 0.025 in every formula, give E3 and F3 the formula `=0.025` (nobody links to them), and make D3 `=0.025+0.85*(E2+F2)`. D rises only to about 0.07.
    **What you'll learn:** PageRank rewards links from important pages, not just many links, which is why link farms of unimportant pages achieve little.
 
 8. **[Medium] Search engine versus answer engine.** Measure zero-click search yourself.
@@ -880,8 +880,8 @@ Recommender system, ranking, feed, explicit feedback, implicit feedback, engagem
 
 ## Going deeper
 
-- **Koren, Bell and Volinsky, "Matrix Factorization Techniques for Recommender Systems" (IEEE Computer, 2009).** A short, readable account of the methods that won the Netflix Prize, by members of the winning team.
-- **Covington, Adams and Sargin, "Deep Neural Networks for YouTube Recommendations" (RecSys 2016).** The classic description of the two-stage candidate generation and ranking design, with clear diagrams.
+- **Koren, Bell and Volinsky, "Matrix Factorization Techniques for Recommender Systems" (IEEE Computer, 2009; a magazine of the IEEE, the Institute of Electrical and Electronics Engineers, the largest professional association for engineers and computer scientists).** A short, readable account of the methods that won the Netflix Prize, by members of the winning team.
+- **Covington, Adams and Sargin, "Deep Neural Networks for YouTube Recommendations" (RecSys 2016, the main annual research conference on recommender systems).** The classic description of the two-stage candidate generation and ranking design, with clear diagrams.
 - **Google Developers, "Recommendation Systems" course (developers.google.com/machine-learning/recommendation).** A free short course covering candidate generation, embeddings, two-tower models and re-ranking, with exercises.
 - **Brin and Page, "The Anatomy of a Large-Scale Hypertextual Web Search Engine" (1998).** The original Google paper, surprisingly approachable, with PageRank and the first index design.
 - **Manning, Raghavan and Schütze, *Introduction to Information Retrieval* (Cambridge University Press, 2008; free online).** The standard textbook on indexing, ranking and evaluation metrics such as NDCG.

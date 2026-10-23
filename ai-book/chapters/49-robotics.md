@@ -461,7 +461,7 @@ A few milestones deserve a sentence each.
 
 - **π0.5 (April 22, 2025)** aimed, in Physical Intelligence's words, at "open-world generalization": chores in homes the robot had never been trained in.
 - **Gemini Robotics 1.5 (September 25, 2025)** transferred skills across different bodies (a two-armed ALOHA 2 robot, Apptronik's Apollo humanoid and Franka arms).
-- **NVIDIA GR00T N1 (March 2025)**, from NVIDIA's GR00T (pronounced "Groot") family of humanoid-robot models, was billed as the first open humanoid foundation model. In June 2026 NVIDIA announced an Isaac GR00T reference humanoid for academic research: a Unitree H2 Plus body, Sharpa tactile hands and a Jetson Thor onboard computer, with Ai2, ETH Zurich, Stanford and UC San Diego named as users.
+- **NVIDIA GR00T N1 (March 2025)**, from NVIDIA's GR00T (pronounced "Groot") family of humanoid-robot models, was billed as the first open humanoid foundation model. In June 2026 NVIDIA announced an Isaac GR00T reference humanoid for academic research: a Unitree H2 Plus body, Sharpa tactile hands and a Jetson Thor onboard computer, with Ai2 (the Allen Institute for AI, a non-profit research lab), ETH Zurich, Stanford and UC San Diego named as users.
 - **π0.7 (April 16, 2026)** was described as "a steerable model with emergent capabilities".
 - **Gemini Robotics 2, ER 2 and On-Device 2 (July 30, 2026)** added whole-body humanoid control (walking, crouching and manipulating together), dexterous tasks and multi-robot collaboration, with Apptronik, Agile Robots and Boston Dynamics among named partners plus more than 100 trusted testers.
 

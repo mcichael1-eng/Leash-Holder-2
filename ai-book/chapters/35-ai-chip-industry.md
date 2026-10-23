@@ -95,6 +95,8 @@ NVIDIA began in 1993 making graphics chips for video games. In the quarter that 
 
 At its March 2026 GTC conference, NVIDIA said combined purchase orders for Blackwell and Vera Rubin systems were aimed at about $1 trillion through 2027.
 
+> **Definition — GTC (GPU Technology Conference):** NVIDIA's main yearly conference, held each spring in San Jose, California, where the company announces new chips, racks and roadmaps.
+
 > **Definition — Gross margin:** The share of revenue left after paying the direct cost of making the product. A 75% gross margin means that out of every $100 of sales, about $25 went to manufacturing (chips, memory, packaging, assembly) and $75 is left for research, other costs and profit.
 
 **Worked example: what $89 billion a quarter means.** $89.0 billion ÷ 91 days ≈ $980 million of data-center sales *per day*. Multiply the quarter by four and you get an annualized pace of about $356 billion. With a 75% gross margin, roughly three-quarters of every dollar a cloud company pays NVIDIA is NVIDIA's gross profit. Keep that number in mind: it is the main reason every large cloud company is building its own chip.
@@ -138,6 +140,10 @@ Two number-format terms keep appearing in that table, so pin them down.
 
 > **Definition — NVFP4 and MX formats:** Four-bit (and six- and eight-bit) number formats that attach a shared scale factor to each small block of values so that very few bits can still cover a wide range. MXFP4 is an open industry standard using blocks of 32 values; NVFP4 is NVIDIA's version using blocks of 16.
 
+The memory column also uses the names of older HBM generations.
+
+> **Definition — HBM2, HBM2e and HBM3:** Earlier generations of High Bandwidth Memory (Chapter 33), each faster per stack than the one before: HBM2 in NVIDIA's 2017 V100, HBM2e in the 2020 A100, and HBM3 in the 2022 H100 and AMD's MI300X. HBM3E and HBM4 came next.
+
 **Worked example: how much better is each generation?** Compare an H100 (2022) with a Rubin GPU (2026), always at the same precision:
 
 | Measure | H100 | Rubin | Ratio |
@@ -178,13 +184,17 @@ Chapter 23 explained that answering a prompt has two phases: *prefill* (reading 
 
 In late December 2025, NVIDIA reportedly paid around $20 billion for a non-exclusive license to the inference technology of Groq, a startup, and hired its leadership, including CEO Jonathan Ross. Groq stayed an independent company and kept running its GroqCloud service. At GTC 2026 NVIDIA introduced the **Groq 3 LPU** and the **LPX rack**: 256 LPUs per rack, each chip with about 500 MB of on-chip SRAM, about 150 TB/s of SRAM bandwidth and about 1.2 PF of FP8 compute. The LPX is meant to generate tokens at very low latency alongside Vera Rubin racks, which hold the large KV caches. NVIDIA claims up to 35 times more throughput per megawatt at high interactivity; that is a vendor claim. By NVIDIA's August 2026 earnings report, the LPX was in full production.
 
+> **Definition — LPX (Groq 3 LPX rack):** NVIDIA's inference rack, introduced at GTC 2026, holding 256 Groq 3 LPUs (Language Processing Units: Groq-designed chips that keep a model's weights in fast on-chip SRAM, explained later in this chapter). It generates tokens at very low latency beside Vera Rubin racks that hold the large KV caches.
+
 NVIDIA also announced, in September 2025, the **Rubin CPX**, a GPU using cheaper GDDR7 memory meant for the prefill phase of very long prompts. Its 2026 shipping status was not confirmed in this book's sources.
+
+> **Definition — Rubin CPX:** A GPU that NVIDIA announced in September 2025 for the compute-heavy prefill phase of very long prompts. It uses GDDR7, the cheaper graphics memory found on gaming cards (Chapter 33), instead of HBM, because prefill needs arithmetic more than memory bandwidth.
 
 > **At the frontier (2026):** The biggest shift in AI chips this year is specialization. NVIDIA pairs Rubin GPUs with Groq-based LPUs; Google split its eighth-generation TPU into a training chip (8t) and an inference chip (8i); Microsoft's Maia 200 and AWS's Inferentia target inference. Inference spending at major labs now rivals or exceeds training, so it pays to build chips just for it.
 
 ### Beyond the data center
 
-NVIDIA also sells smaller machines. The **DGX Spark**, a desktop computer built on a GB10 chip with 128 GB of memory shared by CPU and GPU, reportedly began shipping in October 2025. **RTX Spark**, a roughly 1-petaflop Windows PC chip made with Microsoft, launched in 2026 according to NVIDIA's earnings release. In September 2025 NVIDIA invested $5 billion in Intel to co-develop x86 CPUs that connect over NVLink, along with PC chips. And in the MLPerf Training 6.0 results (2026), NVIDIA says Blackwell systems led every category.
+NVIDIA also sells smaller machines. The **DGX Spark**, a desktop computer built on a GB10 chip (a small Grace Blackwell chip that pairs Arm CPU cores with a Blackwell GPU) with 128 GB of memory shared by CPU and GPU, reportedly began shipping in October 2025. **RTX Spark** (RTX is NVIDIA's brand for its gaming and workstation graphics), a roughly 1-petaflop Windows PC chip made with Microsoft, launched in 2026 according to NVIDIA's earnings release. In September 2025 NVIDIA invested $5 billion in Intel to co-develop x86 CPUs that connect over NVLink, along with PC chips. And in the MLPerf Training 6.0 results (2026), NVIDIA says Blackwell systems led every category.
 
 > **Definition — MLPerf:** A set of standardized AI training and inference benchmarks run by the MLCommons industry group, where vendors submit results under shared rules. It is the closest thing to an independent, apples-to-apples comparison of AI hardware, though not every vendor participates.
 
@@ -270,6 +280,8 @@ AMD is the only other company selling high-end AI GPUs to all comers at large sc
 
 *Table 35.3: AMD Instinct accelerators, vendor figures. Dashes mean the figure is not in this book's sources.*
 
+> **Definition — MI500:** AMD's next Instinct GPU generation after the MI400 family (which includes the MI455X), planned for 2027 on TSMC's 2 nm process with HBM4E memory. It uses CDNA 6; CDNA is AMD's name for each design generation of its data-center GPUs (CDNA 4 in the MI355X, CDNA 5 in the MI455X).
+
 AMD's 2026 flagship is not a chip but a rack. **Helios** combines 72 MI455X GPUs with AMD's EPYC "Venice" CPUs (2 nm, up to 256 Zen 6 cores) and Pensando "Vulcano" network cards, in Meta's Open Rack Wide format, with the GPUs joined by UALink carried over Ethernet (Chapter 34). Rack totals: 2.9 EF dense FP4, 1.4 EF FP8, 31 TB of HBM4 and about 1.4–1.7 PB/s of memory bandwidth (AMD's pages give both 19.6 and up to 23.3 TB/s per GPU). Shipments begin in the second half of 2026 and ramp through 2027. AMD claims up to 30% more tokens per dollar than a Vera Rubin NVL72; that is AMD's own claim, not an independent test.
 
 **Worked example: Helios versus Vera Rubin NVL72.**
@@ -290,7 +302,7 @@ On paper the racks are close on compute and bandwidth, and AMD has about 50% mor
 
 > **Definition — HIP:** AMD's programming interface, which closely mirrors CUDA so that CUDA code can be translated to run on AMD GPUs with relatively few changes.
 
-ROCm has historically trailed CUDA in maturity, polish and day-one support for new techniques. It improved through 2025–26, helped by better AMD support in PyTorch, Triton and vLLM and by the arrival of very large customers willing to invest engineering time. The decisive vote of confidence came on October 6, 2025, when OpenAI and AMD announced a multi-generation agreement for **6 GW** of AMD GPUs, starting with **1 GW of MI450-series chips in the second half of 2026**. The deal reportedly included a warrant letting OpenAI buy up to 160 million AMD shares, roughly 10% of the company, as deployment milestones are met.
+ROCm has historically trailed CUDA in maturity, polish and day-one support for new techniques. It improved through 2025–26, helped by better AMD support in PyTorch, Triton and vLLM and by the arrival of very large customers willing to invest engineering time. The decisive vote of confidence came on October 6, 2025, when OpenAI and AMD announced a multi-generation agreement for **6 GW** of AMD GPUs, starting with **1 GW of MI450-series chips (the family that includes the MI455X) in the second half of 2026**. The deal reportedly included a warrant letting OpenAI buy up to 160 million AMD shares, roughly 10% of the company, as deployment milestones are met.
 
 > **Definition — Warrant:** A contract giving its holder the right to buy a company's shares at a set price, often only after conditions are met. Chip vendors have used warrants to tie big customers' purchases to a stake in the vendor's success.
 
@@ -344,9 +356,11 @@ In April 2026, Anthropic and Amazon announced an agreement for **up to 5 GW**, w
 
 **Microsoft Maia 200** (January 2026) is made on TSMC's 3 nm process. Microsoft's published specs: more than 140 billion transistors, 216 GB of HBM3E at 7 TB/s, 272 MB of on-die SRAM, more than 10 PF of FP4 and more than 5 PF of FP8 within 750 W, with an Ethernet-based scale-up network reaching up to 6,144 accelerators. Microsoft deployed it first in Iowa, with Arizona next, to run Microsoft 365 Copilot and OpenAI models, and claims 30% better performance per dollar than its existing fleet. A successor has been reported but not confirmed.
 
-**Meta's MTIA** chips are RISC-V-based inference accelerators, built first for the recommendation and ranking models behind Facebook and Instagram feeds (Chapter 51). A 2025 paper at ISCA, a top computer-architecture conference, reported 44% lower total cost of ownership than GPUs on specific inference tasks. In fall 2025 Meta announced it was acquiring Rivos, a RISC-V chip startup reportedly valued around $2 billion, to speed up MTIA, including a push toward training.
+**Meta's MTIA** chips are RISC-V-based inference accelerators, built first for the recommendation and ranking models behind Facebook and Instagram feeds (Chapter 51). A 2025 paper at ISCA, a top computer-architecture conference, reported 44% lower total cost of ownership (the full cost of buying, powering and running hardware over its life) than GPUs on specific inference tasks. In fall 2025 Meta announced it was acquiring Rivos, a RISC-V chip startup reportedly valued around $2 billion, to speed up MTIA, including a push toward training.
 
 > **Definition — RISC-V:** A free, open instruction set (the basic vocabulary of commands a processor understands) that anyone can use without license fees. It is popular with startups and appears in AI chips such as Meta's MTIA and Tenstorrent's designs.
+
+> **Definition — MTIA (Meta Training and Inference Accelerator):** Meta's in-house AI chips, RISC-V-based and designed with Broadcom, built first to run the recommendation and ranking models behind Facebook and Instagram feeds.
 
 **OpenAI and Broadcom** announced on October 13, 2025 that OpenAI would design custom AI accelerators, with Broadcom developing them and supplying Ethernet networking, for **10 GW** deployed from the second half of 2026 through 2029. Whether the first chips had been deployed by October 2026 was not confirmed in this book's sources. OpenAI has said it used its own AI models to help with parts of the chip design.
 
@@ -415,7 +429,7 @@ Every chip so far follows the same basic recipe: a big compute die (or two) surr
 
 > **Definition — LPU (Language Processing Unit):** Groq's inference chip design, which keeps model weights in on-chip SRAM instead of HBM and runs on a fixed schedule planned in advance by a compiler, so every step takes a predictable time.
 
-> **Definition — Wafer-scale engine:** Cerebras's approach of using nearly an entire silicon wafer as one giant chip, instead of cutting it into hundreds of small chips, so that huge amounts of SRAM and compute sit on one piece of silicon.
+> **Definition — Wafer-scale engine (WSE):** Cerebras's approach of using nearly an entire silicon wafer as one giant chip, instead of cutting it into hundreds of small chips, so that huge amounts of SRAM and compute sit on one piece of silicon.
 
 **Worked example: holding and running a 70-billion-parameter model at 8 bits (70 GB of weights).**
 
@@ -452,9 +466,9 @@ This is the whole trade-off in one picture. SRAM designs can deliver thousands o
 |---|---|---|---|---|
 | Cerebras | Wafer-scale chip: 46,225 mm², 4 trillion transistors, 900,000 cores, 44 GB SRAM (WSE-3) | Very fast single-user inference, thousands of tokens per second | Capacity per wafer is small for the largest models; specialized systems and a smaller software ecosystem | In August 2026 Cerebras announced the CS-4, a rack of three WSE-3T wafers that it rates at 750 PF in total (a vendor figure); OpenAI reportedly signed for 750 MW of Cerebras capacity in January 2026 |
 | Groq | SRAM-only, compiler-scheduled LPU | Low, predictable latency for decode | Hundreds of chips per large model; little memory for long contexts | Technology licensed to NVIDIA (about $20B reported) and sold as Groq 3 LPX; GroqCloud still runs |
-| SambaNova | Reconfigurable dataflow (SN40L) with three memory tiers: SRAM, HBM and DDR | Hosting many models at once and switching between them quickly | Competes with GPUs on general workloads with a far smaller ecosystem | Intel invested in 2026 |
+| SambaNova | Reconfigurable dataflow (SN40L) with three memory tiers: SRAM, HBM and DDR (ordinary DRAM) | Hosting many models at once and switching between them quickly | Competes with GPUs on general workloads with a far smaller ecosystem | Intel invested in 2026 |
 | Etched | Sohu, an ASIC hard-wired for transformer inference | Potentially high efficiency if transformers stay dominant | Useless for architectures that are not transformers (state-space models, new hybrids; see Chapter 17) | Little independent public performance data in this book's sources |
-| Tenstorrent | RISC-V cores and an open-source software stack, led by veteran chip designer Jim Keller; also licenses its designs | Openness, licensable IP, lower cost | Unproven at frontier-cluster scale | Sells chips (Blackhole) and licenses IP |
+| Tenstorrent | RISC-V cores and an open-source software stack, led by veteran chip designer Jim Keller; also licenses its designs | Openness, licensable IP (chip designs other companies pay to use), lower cost | Unproven at frontier-cluster scale | Sells chips (Blackhole) and licenses IP |
 | d-Matrix | Corsair: digital in-memory compute for inference | Energy efficiency by not moving weights | Limited memory capacity and maturity | Inference-focused products |
 | Lightmatter, Ayar Labs, Celestial AI | Optical input/output for chips | Bandwidth per watt and reach | Manufacturing maturity and reliability at scale | Developing optical I/O; not yet mainstream in AI clusters |
 
@@ -537,7 +551,7 @@ From September 2025 onward, AI labs signed chip deals measured not in chips but 
 
 | Date | Deal | What was announced | Confidence |
 |---|---|---|---|
-| Sept 2025 | OpenAI–NVIDIA | Letter of intent for at least 10 GW of NVIDIA systems, with NVIDIA intending to invest up to $100B progressively; first gigawatt on Vera Rubin in 2H 2026 | Later reports (February 2026) said the plan was shelved in favor of a $30B NVIDIA equity investment in OpenAI; in August 2026 NVIDIA agreed to back SB Energy's planned 8 GW PORTS-Pike campus in Ohio, leased to OpenAI (Chapter 42) |
+| Sept 2025 | OpenAI–NVIDIA | Letter of intent for at least 10 GW of NVIDIA systems, with NVIDIA intending to invest up to $100B progressively; first gigawatt on Vera Rubin in 2H 2026 | Later reports (February 2026) said the plan was shelved in favor of a $30B NVIDIA equity investment in OpenAI; in August 2026 NVIDIA agreed to back SB Energy's planned 8 GW PORTS-Pike campus, on the site of a former uranium-enrichment plant in Pike County, Ohio, leased to OpenAI (Chapter 42) |
 | Sept 2025 | NVIDIA–Intel | $5B investment; joint x86 CPUs with NVLink and PC chips | Announced |
 | Oct 6, 2025 | OpenAI–AMD | 6 GW over several generations; 1 GW of MI450 from 2H 2026; warrant for AMD shares | Announced; warrant details reported |
 | Oct 13, 2025 | OpenAI–Broadcom | 10 GW of OpenAI-designed accelerators plus Ethernet, 2H 2026 to 2029 | Announced; first deployment unconfirmed |
@@ -556,11 +570,13 @@ From September 2025 onward, AI labs signed chip deals measured not in chips but 
 
 > **Definition — Letter of intent:** A document stating that two parties plan to make a deal on certain terms, which is not yet a binding contract. Several headline AI compute "deals" began as letters of intent.
 
+> **Definition — SB Energy:** A US developer of solar farms, battery storage and AI data center campuses, backed by Japan's SoftBank Group, a lead partner in OpenAI's Stargate project (Chapter 42).
+
 **Worked example: translating a gigawatt deal.** A deal in gigawatts describes *power*, not chips. Using Chapter 34's rule of thumb (about 1.8 kW per GPU slot and a PUE of 1.2, meaning the building uses 20% extra power for cooling and power conversion), one gigawatt holds roughly 460,000 accelerators.
 
 - OpenAI–Broadcom, 10 GW: about 10 × 460,000 ≈ **4.6 million** accelerator slots (fewer if each chip draws more power).
 - Cost: Epoch AI estimates about $38 billion of up-front spending per gigawatt of IT power for a whole site, and NVIDIA's CEO has reportedly cited roughly $50–60 billion per gigawatt including chips. Either way, 10 GW is on the order of **several hundred billion dollars** spread over years.
-- Add up the gigawatts in Table 35.10 (roughly 35–40 GW, counting the reshaped OpenAI–NVIDIA plan) and multiply by $38–60 billion: well over a trillion dollars, several years of NVIDIA's current data-center sales of about $356 billion a year.
+- Add up the gigawatts in Table 35.10 (roughly 43–45 GW, counting the reshaped OpenAI–NVIDIA plan as its 8 GW Ohio campus) and multiply by $38–60 billion: well over a trillion dollars, several years of NVIDIA's current data-center sales of about $356 billion a year.
 
 > **Watch out:** Read the verbs. "Up to," "intends to," "letter of intent" and "multiple gigawatts" are not purchase orders. Deals are staged, depend on financing and power, and sometimes change shape (the OpenAI–NVIDIA plan reportedly did). Many also involve the chip seller investing in the buyer, a "circular" pattern Chapter 43 examines.
 
@@ -674,7 +690,7 @@ In 2025–26 the labs signed deals measured in gigawatts, worth hundreds of bill
 
 ## Key terms
 
-Merchant silicon, Fabless, ASIC (Application-Specific Integrated Circuit), Hyperscaler, Gross margin, Dense vs. sparse FLOPS, NVFP4 and MX formats, Disaggregated serving, MLPerf, CUDA, Kernel (GPU kernel), GPU library, NCCL and RCCL, Framework (PyTorch, JAX), ML compiler (XLA, Triton, torch.compile), Serving engine, Software moat (lock-in), ROCm, HIP, Warrant, Systolic array, TPU (Tensor Processing Unit), Trainium and Inferentia, RISC-V, Design partner (custom silicon partner), Tape-out, SRAM (static RAM), LPU (Language Processing Unit), Wafer-scale engine, Dataflow architecture, In-memory computing, Photonic interconnect, Transformer-specific ASIC, NPU (Neural Processing Unit), TOPS (trillions of operations per second), Unified memory, Neocloud, Letter of intent, Jevons paradox, 3D stacking (hybrid bonding), Analog computing, Photonic computing, Neuromorphic chip, Quantum computer
+SK hynix, Merchant silicon, Fabless, ASML, ASIC (Application-Specific Integrated Circuit), Hyperscaler, GTC (GPU Technology Conference), Gross margin, Dense vs. sparse FLOPS, NVFP4 and MX formats, HBM2, HBM2e and HBM3, Disaggregated serving, LPX (Groq 3 LPX rack), Rubin CPX, MLPerf, CUDA, Kernel (GPU kernel), GPU library, NCCL and RCCL, Framework (PyTorch, JAX), ML compiler (XLA, Triton, torch.compile), Serving engine, Software moat (lock-in), MI500, ROCm, HIP, Warrant, Systolic array, TPU (Tensor Processing Unit), Trainium and Inferentia, RISC-V, MTIA (Meta Training and Inference Accelerator), Design partner (custom silicon partner), Tape-out, SRAM (static RAM), LPU (Language Processing Unit), Wafer-scale engine (WSE), Dataflow architecture, In-memory computing, Photonic interconnect, Transformer-specific ASIC, NPU (Neural Processing Unit), TOPS (trillions of operations per second), Unified memory, Neocloud, Letter of intent, SB Energy, Jevons paradox, 3D stacking (hybrid bonding), Analog computing, Photonic computing, Neuromorphic chip, Quantum computer
 
 ## Exercises
 
@@ -712,15 +728,15 @@ print("GPU TFLOPS achieved:", round(flop / gpu_s / 1e12, 1))
 print("Speed-up over CPU:", round(cpu_s / gpu_s), "times")
 ```
 
-4. **[Medium] Four years of NVIDIA in a spreadsheet.** (1) Make rows for H100, H200, B200, B300 and Rubin using Tables 35.1 and 35.2. (2) Columns: HBM GB, HBM TB/s, dense BF16 or FP8 PF (where given), year. (3) Compute each column's growth from H100 to Rubin. (4) Compute the "ridge point" (dense FLOPS ÷ bytes per second of bandwidth) for H100 and Rubin, as in Chapter 33. **What you'll learn:** compute has grown faster than memory, which is why memory now decides so much of AI performance.
+4. **[Medium] Four years of NVIDIA in a spreadsheet.** (1) Make rows for H100, H200, B200, B300 and Rubin using Tables 35.1 and 35.2. (2) Columns: HBM GB, HBM TB/s, dense BF16 or FP8 PF (where given), year. (3) Compute each column's growth from H100 to Rubin (divide Rubin's value by the H100's). (4) Compute the "ridge point" (dense FLOPS ÷ bytes per second of bandwidth) for H100 and Rubin, as in Chapter 33. Put both in the same scale first: PF × 1,000 gives TFLOPS, so the ridge point in operations per byte is TFLOPS ÷ TB/s (for the H100, 989 ÷ 3.35 ≈ 295). **What you'll learn:** compute has grown faster than memory, which is why memory now decides so much of AI performance.
 
-5. **[Medium] Price-performance from rental prices.** (1) Open RunPod's and Lambda's GPU pricing pages. (2) Record on-demand $/GPU-hour for A100, H100, H200, B200 and B300. (3) For each, compute GB of HBM per dollar-hour and TB/s per dollar-hour, using this chapter's specs. (4) Decide which GPU you would rent for (a) serving a 70B model to many users and (b) a quick fine-tuning job, and say why. **What you'll learn:** there is no single best chip; the right one depends on whether your work is limited by memory capacity, bandwidth or compute.
+5. **[Medium] Price-performance from rental prices.** (1) Open RunPod's and Lambda's GPU pricing pages. (2) Record on-demand $/GPU-hour for A100, H100, H200, B200 and B300. (3) For each, compute GB of HBM per dollar-hour and TB/s per dollar-hour, using this chapter's specs (divide the GPU's HBM in GB, and then its bandwidth in TB/s, by its hourly price; the A100 has 80 GB at about 2 TB/s). (4) Decide which GPU you would rent for (a) serving a 70B model to many users and (b) a quick fine-tuning job, and say why. **What you'll learn:** there is no single best chip; the right one depends on whether your work is limited by memory capacity, bandwidth or compute.
 
-6. **[Medium] SRAM versus HBM, by the numbers.** (1) For models of 8B, 70B and 400B parameters at 8 bits, compute how many chips are needed just to hold the weights on a Groq 3 LPU (0.5 GB), a Cerebras WSE-3 (44 GB), a B300 (288 GB) and an MI455X (432 GB). (2) For the 70B model, compute the single-user decode upper bound on a B300 (bandwidth ÷ model size) and on Groq 3 chips (as in the worked example). (3) Explain in three sentences what the KV cache does to this picture for long conversations. **What you'll learn:** the real trade-off behind "fastest inference" claims.
+6. **[Medium] SRAM versus HBM, by the numbers.** (1) For models of 8B, 70B and 400B parameters at 8 bits, compute how many chips are needed just to hold the weights on a Groq 3 LPU (0.5 GB), a Cerebras WSE-3 (44 GB), a B300 (288 GB) and an MI455X (432 GB). At 8 bits each billion parameters takes 1 GB, so chips needed = model size in GB ÷ memory per chip, rounded up to a whole chip. (2) For the 70B model, compute the single-user decode upper bound on a B300 (bandwidth ÷ model size) and on Groq 3 chips (as in the worked example). (3) Explain in three sentences what the KV cache does to this picture for long conversations. **What you'll learn:** the real trade-off behind "fastest inference" claims.
 
-7. **[Medium] Translate a gigawatt deal.** (1) Choose OpenAI–AMD (6 GW) or Anthropic–Amazon (up to 5 GW). (2) Estimate accelerator slots per gigawatt using 1.8 kW per slot and a PUE of 1.2, then try 2.5 kW per slot. (3) Estimate total cost at $38 billion and at $60 billion per gigawatt. (4) Compare with NVIDIA's quarterly data-center revenue. (5) List three ways the deal could end up smaller than the headline. **What you'll learn:** to turn power-denominated headlines into chips and dollars, and to read "up to" critically.
+7. **[Medium] Translate a gigawatt deal.** (1) Choose OpenAI–AMD (6 GW) or Anthropic–Amazon (up to 5 GW). (2) Estimate accelerator slots per gigawatt using 1.8 kW per slot and a PUE of 1.2, then try 2.5 kW per slot (slots = 1,000,000 kW ÷ (kW per slot × 1.2); multiply by the deal's gigawatts). (3) Estimate total cost at $38 billion and at $60 billion per gigawatt. (4) Compare with NVIDIA's quarterly data-center revenue. (5) List three ways the deal could end up smaller than the headline. **What you'll learn:** to turn power-denominated headlines into chips and dollars, and to read "up to" critically.
 
-8. **[Challenge] Build-or-buy memo.** You advise a cloud company spending $20 billion a year on AI accelerators. (1) List the benefits of a custom chip (cost, supply, bargaining power, fit) and the risks (design cost, two-to-three-year delay, software, manufacturing capacity, architecture change). (2) Make a simple spreadsheet: assume a custom chip delivers equal work at 40% lower unit cost after a $1 billion per year program cost, and find the share of purchases it must replace to break even. (3) Write a one-page recommendation. **What you'll learn:** the economic logic driving Google, Amazon, Microsoft, Meta and OpenAI into chip design.
+8. **[Challenge] Build-or-buy memo.** You advise a cloud company spending $20 billion a year on AI accelerators. (1) List the benefits of a custom chip (cost, supply, bargaining power, fit) and the risks (design cost, two-to-three-year delay, software, manufacturing capacity, architecture change). (2) Make a simple spreadsheet: assume a custom chip delivers equal work at 40% lower unit cost after a $1 billion per year program cost, and find the share of purchases it must replace to break even. (Yearly saving = share replaced × $20 billion × 0.4; break-even is the share at which that saving equals the $1 billion program cost.) (3) Write a one-page recommendation. **What you'll learn:** the economic logic driving Google, Amazon, Microsoft, Meta and OpenAI into chip design.
 
 9. **[Challenge] Track a roadmap against reality.** (1) Build a table of every chip on Figure 35.7 with its announced date and headline specs. (2) Each month for six months, record whether it was sampled, generally available or shipping in volume, and whether specs changed. (3) Summarize which vendors hit their dates and how much specs drifted. **What you'll learn:** the habit professional analysts use to discount roadmaps and spot real progress.
 
@@ -728,10 +744,10 @@ print("Speed-up over CPU:", round(cpu_s / gpu_s), "times")
 
 ## Areas of opportunity
 
-- **GPU kernel and performance engineers.** People who write and tune kernels in CUDA, Triton or Google's Pallas (attention, mixture-of-experts routing, FP4 matrix math) are among the scarcest and best-paid in AI, because a 10% speed-up is worth millions of dollars a year at cluster scale. The path runs from Python to PyTorch to Triton to CUDA and profiling tools.
-- **Compiler and porting engineers for new chips.** Every new accelerator (TPU 8, Trainium3, MI455X, Maia 200, startups' chips) needs compilers (MLIR, XLA, Triton back-ends) and engineers who can move models off CUDA. Hyperscalers and labs pay well because portability is how they capture the savings from custom silicon.
+- **GPU kernel and performance engineers.** People who write and tune kernels in CUDA, Triton or Google's Pallas (a JAX add-on for writing custom kernels) (attention, mixture-of-experts routing, FP4 matrix math) are among the scarcest and best-paid in AI, because a 10% speed-up is worth millions of dollars a year at cluster scale. The path runs from Python to PyTorch to Triton to CUDA and profiling tools.
+- **Compiler and porting engineers for new chips.** Every new accelerator (TPU 8, Trainium3, MI455X, Maia 200, startups' chips) needs compilers (MLIR, a shared open toolkit for building compilers; XLA; Triton back-ends) and engineers who can move models off CUDA. Hyperscalers and labs pay well because portability is how they capture the savings from custom silicon.
 - **Multi-vendor inference specialists.** Companies that can serve open-weight models cost-effectively on AMD, TPUs or Trainium can undercut GPU-only providers; the customers are businesses with large, steady inference bills.
-- **Chip design and verification.** RTL design, physical design, verification and test roles are expanding at hyperscalers, design partners and startups, and AI-assisted chip design tools are an emerging niche.
+- **Chip design and verification.** RTL design (RTL, register-transfer level, is the code engineers write to describe a chip's circuits), physical design, verification and test roles are expanding at hyperscalers, design partners and startups, and AI-assisted chip design tools are an emerging niche.
 - **Spec-sheet literacy as a job skill.** Equity analysts, procurement and capacity planners, policy staff working on export controls, and technical salespeople who can read accelerator specs critically (precision, sparsity, rack versus chip) are in demand well beyond engineering.
 - **Independent benchmarking and advisory.** Buyers spending millions need neutral answers to "which chip for my workload at what cost per token." Testing services, consultancies and software that run a customer's own model across vendors fill a real gap left by vendor claims.
 - **Edge AI products.** On-device assistants, private local AI appliances built on large-unified-memory machines, and NPU-powered features in medical, industrial and automotive devices, sold to customers who need privacy, low latency or offline use.
@@ -767,7 +783,7 @@ print("Speed-up over CPU:", round(cpu_s / gpu_s), "times")
 - **NVIDIA's quarterly earnings releases and GTC keynotes (nvidianews.nvidia.com).** The primary source for NVIDIA's revenue, roadmap and product claims; read them alongside the footnotes.
 - **Google Cloud blog, "TPU 8t and TPU 8i technical deep dive" (2026).** A first-party explanation of why Google split training and inference chips.
 - **Jouppi et al., "In-Datacenter Performance Analysis of a Tensor Processing Unit" (ISCA 2017).** The paper that introduced the first TPU and explained why Google built it; readable even for non-specialists in its opening sections.
-- **Hennessy and Patterson, "A New Golden Age for Computer Architecture" (Communications of the ACM, 2019).** Two Turing Award winners explain why domain-specific chips like TPUs are the future of computing.
+- **Hennessy and Patterson, "A New Golden Age for Computer Architecture" (Communications of the ACM, the magazine of the Association for Computing Machinery, the main professional society for computer scientists, 2019).** Two Turing Award winners explain why domain-specific chips like TPUs are the future of computing.
 - **Chris Miller, *Chip War* (2022).** The best popular history of the semiconductor industry and its geopolitics, and the natural bridge to Chapter 36.
 - **Epoch AI, "Trends in Machine Learning" (epoch.ai/trends).** Regularly updated data on compute growth, chip price-performance and energy efficiency.
 - **MLCommons MLPerf results (mlcommons.org).** Standardized training and inference benchmark results across vendors; useful for seeing who participates as well as who wins.

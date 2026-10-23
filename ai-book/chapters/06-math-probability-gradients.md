@@ -454,7 +454,7 @@ In our case, A is "sick" and B is "positive test":
 
 - P(positive | sick) = 0.9 (how well the test catches the disease)
 - P(sick) = 0.01 (the base rate)
-- P(positive) = 0.009 + 0.0891 = 0.0981 (all positives, from sick and healthy people)
+- P(positive) = 0.009 + 0.0891 = 0.0981 (all positives: 0.9 × 0.01 = 0.009 from sick people, plus 0.09 × 0.99 = 0.0891 from healthy people)
 - P(sick | positive) = 0.9 × 0.01 ÷ 0.0981 ≈ 0.092
 
 Same answer, about 9%. The natural-frequency picture and the formula always agree; the picture is just easier to trust.
@@ -800,7 +800,7 @@ The learning rate is the size of the step. It is chosen by people, not learned.
 
 ### Worked: rolling down a parabola
 
-Use the simplest possible landscape: `loss = (x − 3) × (x − 3)`, whose bottom is obviously at x = 3. Its slope at any point is 2 × (x − 3). Start far away, at x = 10, with a learning rate of 0.1:
+Use the simplest possible landscape: `loss = (x − 3) × (x − 3)`, whose bottom is obviously at x = 3. Its slope at any point is 2 × (x − 3). That comes from the chain rule: call u = x − 3, so the loss is u squared with slope 2 × u, and u moves exactly as fast as x (slope 1), so the slope is 2 × u × 1 = 2 × (x − 3). Start far away, at x = 10, with a learning rate of 0.1:
 
 | Step | x | Slope 2 × (x − 3) | Move (−0.1 × slope) | New x |
 |---|---|---|---|---|
@@ -872,7 +872,7 @@ Second, the plain rule "step against the slope" can be improved, for example by 
 
 ### Training the Chapter 5 line
 
-Now train the quiz-score line from Chapter 5 with gradient descent, using all four examples at once. The loss is the mean squared error. For a line, the chain rule gives tidy slopes: the slope for w is the average of 2 × error × x, and the slope for b is the average of 2 × error. Start from w = 0 and b = 0, with a learning rate of 0.05.
+Now train the quiz-score line from Chapter 5 with gradient descent, using all four examples at once. As a reminder, the four friends studied 1, 2, 3 and 4 hours (x) and scored 3, 5, 8 and 9 (y), and the error is the prediction minus the real score. The loss is the mean squared error. For a line, the chain rule gives tidy slopes: the slope for w is the average of 2 × error × x, and the slope for b is the average of 2 × error. Start from w = 0 and b = 0, with a learning rate of 0.05.
 
 **Step 0, by hand.** With w = 0 and b = 0, every prediction is 0, so the errors are −3, −5, −8 and −9.
 
@@ -929,7 +929,7 @@ Scale the line-fitting example up and you have pretraining a chatbot:
 
 And remember the split between training and inference from Chapter 5. Training runs this loop. Inference, every chat you have ever had, runs only the forward pass with the knobs frozen.
 
-> **At the frontier (2026):** The optimizer, frozen on Adam and AdamW for about a decade, is moving again. Muon, introduced by researcher Keller Jordan in December 2024, adjusts each weight matrix's update so that no single direction dominates. Moonshot AI trained its 1-trillion-parameter Kimi K2 (July 2025) with a Muon variant and reported no loss spikes, DeepSeek says its 2026 V4 models use Muon, and PyTorch now ships a built-in Muon optimizer. Chapter 13 explains how these smarter walkers work.
+> **At the frontier (2026):** The optimizer, frozen on Adam and AdamW for about a decade, is moving again. Muon, introduced by researcher Keller Jordan in December 2024, adjusts each weight matrix's update so that no single direction dominates. Moonshot AI, a Chinese AI company, trained its 1-trillion-parameter Kimi K2 (July 2025) with a Muon variant and reported no loss spikes, DeepSeek says its 2026 V4 models use Muon, and PyTorch now ships a built-in Muon optimizer. Chapter 13 explains how these smarter walkers work.
 
 > **Key idea:** Learning is a loop of four steps: predict, measure the surprise, compute the slopes with the chain rule, and nudge every knob a little downhill. Repeat it trillions of times and a pile of random numbers becomes a chatbot.
 
@@ -1026,7 +1026,7 @@ Exponent, Exponential growth, Doubling time, Compound interest, Exponential deca
    2. Fill in the 2 × 2 table: sick or healthy, positive or negative.
    3. Compute the chance that someone who tests positive is sick.
    4. Ask a chatbot the same question in words and check whether it gets the same answer.
-   5. In a spreadsheet, find the prevalence at which a positive test means a 50% chance of being sick.
+   5. In a spreadsheet, find the prevalence (the share of people who have the disease, 2% so far) at which a positive test means a 50% chance of being sick. Put prevalences 0.01, 0.02, 0.03 and so on up to 0.10 in A2:A11. In B2 type `=A2*0.95` (the share of everyone who is sick and tests positive), in C2 type `=(1-A2)*0.05` (healthy and tests positive) and in D2 type `=B2/(B2+C2)` (the chance a positive is sick). Fill B2:D2 down to row 11 and find where column D reaches 0.5.
 
    **What you'll learn:** Base rates dominate even good tests, and you can check an AI's probability reasoning yourself instead of trusting its confident tone.
 
@@ -1076,8 +1076,8 @@ Exponent, Exponential growth, Doubling time, Compound interest, Exponential deca
    1. Put x = 0, 1, 2, 3, 4, 5 in A2:A7.
    2. In B2 type `=A2^2`. In C2 type `=(A2+0.001)^2`. In D2 type `=(C2-B2)/0.001`. Fill all three down. Compare column D with 2 × x.
    3. Repeat with `=EXP(A2)` and `=EXP(A2+0.001)`. The slope should match the function's own value.
-   4. Repeat with `=LN(A2)` for x from 1 to 5. The slope should be close to 1 divided by x.
-   5. Chain-rule check: with `=(3*A2)^2`, the slope at x = 1 should be about 18, which is 6 × 3.
+   4. Repeat with `=LN(A2)` and `=LN(A2+0.001)`, and look at x from 1 to 5 (the x = 0 row shows an error, because ln of 0 does not exist). The slope should be close to 1 divided by x.
+   5. Chain-rule check: repeat with `=(3*A2)^2` and its nudged version `=(3*(A2+0.001))^2`. The slope at x = 1 should be about 18, which is 6 × 3.
 
    **What you'll learn:** A derivative is just "change in output divided by a tiny change in input", and the chain rule really does multiply the slopes of each step.
 
@@ -1086,7 +1086,7 @@ Exponent, Exponential growth, Doubling time, Compound interest, Exponential deca
    2. In C2 compute the slope `=2*(B2-3)` and in D2 the loss `=(B2-3)^2`.
    3. In B3 type `=B2-$F$1*C2`. Fill B, C and D down to row 32. Chart column B against the step.
    4. Try learning rates 0.01, 0.5, 0.9, 1.0 and 1.1. Describe each behavior in one word.
-   5. Now replace the loss with a bumpier curve: loss `=B2^4-3*B2^2+B2`, slope `=4*B2^3-6*B2+1`, learning rate 0.01, 200 steps. Start at x = 2, then at x = −2. Where does each walker end up, and which one found the lower valley?
+   5. Now replace the loss with a bumpier curve: put the slope `=4*B2^3-6*B2+1` in C2 and the loss `=B2^4-3*B2^2+B2` in D2, set the learning rate in F1 to 0.01, and fill B, C and D down to row 202 for 200 steps. Start at x = 2 (in B2), then at x = −2. Where does each walker end up, and which one found the lower valley?
 
    **What you'll learn:** The learning rate decides between crawling, converging and exploding, and where you start can decide which valley you end up in.
 

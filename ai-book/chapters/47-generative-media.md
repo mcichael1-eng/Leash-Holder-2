@@ -172,7 +172,7 @@ Seeds matter for professional work. If you find an image you almost like, keep t
 Because each generation is a random draw, iteration is a numbers game, and a little probability helps you plan. Suppose roughly 1 in 5 generations for a tricky brief is good enough to use. Then:
 
 - The expected number of tries until the first keeper is 1 ÷ 0.2 = **5**.
-- If the tool gives you 4 variations per click, the chance that at least one is usable is 1 − 0.8^4 = 1 − 0.41 = **0.59**, a bit better than a coin flip.
+- If the tool gives you 4 variations per click, each one misses with probability 1 − 0.2 = 0.8, so all four miss with probability 0.8 × 0.8 × 0.8 × 0.8 = 0.8^4 ≈ 0.41. The chance that at least one is usable is therefore 1 − 0.8^4 = 1 − 0.41 = **0.59**, a bit better than a coin flip.
 - Two clicks (8 variations) raise that to 1 − 0.8^8 = 1 − 0.17 = **0.83**.
 
 The same math explains why professionals generate many options and then curate. It also explains why "it took me 40 tries" is normal for demanding briefs: if only 1 in 40 meets the bar, 40 tries is exactly the average.
@@ -233,7 +233,7 @@ flowchart TD
   G --> H["Export with<br/>Content Credentials"]
   D -- "nothing usable" --> B
 ```
-*Figure 47.4: A typical professional image workflow. Most of the time goes into curating and editing, not into the first generation.*
+*Figure 47.4: A typical professional image workflow. Most of the time goes into curating and editing, not into the first generation. Content Credentials, a signed record of how a file was made, are explained in the provenance section later in this chapter.*
 
 > **Key idea:** The skill is not "writing a magic prompt." It is the loop: specify, generate many, curate ruthlessly, edit precisely, check carefully, and label honestly.
 
@@ -301,10 +301,10 @@ The video field in late 2026 has a handful of leading families. Comparison guide
 
 | Model family | Maker | Reputation as of late 2026 |
 |---|---|---|
-| Veo 3.1 | Google DeepMind | Native audio, up to 4K output, short clips that can be extended; inside Gemini and Flow |
+| Veo 3.1 | Google DeepMind | Native audio, up to 4K output (about 3,840 × 2,160 pixels, the resolution of a 4K TV), short clips that can be extended; inside Gemini and Flow |
 | Kling 3.0 and 4.0 | Kuaishou | Multi-shot sequences and multilingual audio (per comparison guides); Kling 4.0, launched globally in October 2026, adds 30-second clips and 4K output (reported) |
 | Runway Gen-4.5 | Runway | Creative control and editing tools for filmmakers (per comparison guides) |
-| Seedance 2.0 and 2.5 | ByteDance | Strong motion and multi-shot storytelling (per comparison guides); Seedance 2.5 (July 2026) makes clips with sound of up to 30 seconds (reported) |
+| Seedance 2.0 and 2.5 | ByteDance (owner of TikTok) | Strong motion and multi-shot storytelling (per comparison guides); Seedance 2.5 (July 2026) makes clips with sound of up to 30 seconds (reported) |
 | Wan | Alibaba | Open weights that studios can run themselves |
 | Gemini Omni | Google | Any input in, video out, with editing by conversation; the August 2026 Omni 1.1 Flash update extends scenes to 40 seconds and outputs up to 4K |
 
@@ -345,7 +345,7 @@ There are three main routes.
 
 > **Definition — Score distillation:** A technique for making 3D content by repeatedly rendering a 3D shape from many angles and using a 2D image generator's judgment to improve it, borrowing 2D knowledge for 3D work.
 
-**Route 2: train directly on 3D.** As collections of 3D models grew, companies trained generators that output meshes or other 3D formats directly, often from a single image. Open models such as Tencent's Hunyuan3D family and Meta's SAM 3D (November 2025, which reconstructs objects and human bodies from a single photo) brought this within reach of anyone with a graphics card.
+**Route 2: train directly on 3D.** As collections of 3D models grew, companies trained generators that output meshes or other 3D formats directly, often from a single image. Open models such as Chinese tech giant Tencent's Hunyuan3D family and Meta's SAM 3D (November 2025, which reconstructs objects and human bodies from a single photo) brought this within reach of anyone with a graphics card.
 
 **Route 3: capture and splat.** For real objects and places, you can skip generation and capture instead: walk around with a phone, then let software reconstruct the scene as a NeRF or, more commonly in 2026, a Gaussian splat (Chapter 45).
 
@@ -427,7 +427,7 @@ Not every world model aims to be a game.
 
 Why would a company spend fortunes on worlds nobody lives in? Three reasons.
 
-1. **Training agents.** Agents need practice, and real-world practice is slow, expensive and sometimes dangerous. DeepMind has used Genie 3 worlds to train and test its game-playing agent SIMA. A world model is an endless supply of practice environments.
+1. **Training agents.** Agents need practice, and real-world practice is slow, expensive and sometimes dangerous. DeepMind has used Genie 3 worlds to train and test its game-playing agent SIMA (Scalable Instructable Multiworld Agent). A world model is an endless supply of practice environments.
 2. **Training robots and cars.** Robots suffer from a data shortage (Chapter 49): there is no "internet of robot actions." A good world model lets a robot rehearse thousands of variations of a task in imagination, and lets a car company generate the rare crash scenarios it cannot ethically film.
 3. **A path to general intelligence.** Many researchers believe that understanding how the world responds to actions is a missing ingredient in today's chatbots, which learned mostly from text. Some lab leaders describe world models as a key step toward artificial general intelligence.
 
@@ -466,7 +466,7 @@ The limits are just as important:
 
 The other approach flips the problem. Instead of marking fakes, sign the truth.
 
-> **Definition — C2PA (Coalition for Content Provenance and Authenticity):** An industry standards group, founded in 2021 by companies including Adobe, Microsoft, Intel, Arm, the BBC and Truepic, that defines how to attach tamper-evident provenance records to media files.
+> **Definition — C2PA (Coalition for Content Provenance and Authenticity):** An industry standards group, founded in 2021 by companies including Adobe, Microsoft, Intel, Arm, the BBC (Britain's public broadcaster) and Truepic, that defines how to attach tamper-evident provenance records to media files.
 
 > **Definition — Content Credentials:** The consumer name for C2PA provenance records: a cryptographically signed "nutrition label" attached to an image, video or audio file that records how it was made and edited, which anyone can inspect with a free verifier.
 
@@ -586,7 +586,7 @@ Generative media, Text encoder, Diffusion model, Latent space, Guidance scale, A
 1. **[Easy] The controlled prompt experiment.** Learn how much each part of a prompt matters.
    1. Pick one prompt, for example "a cozy reading nook at dusk, rain on the window, film photo."
    2. Generate it in two different tools (for example ChatGPT and Gemini, or one chatbot and one free image site).
-   3. In one tool, change exactly one word at a time: the style ("film photo" to "watercolor"), then the lighting ("dusk" to "noon"), then the lens ("wide shot" to "close-up"). Save each result.
+   3. In one tool, change exactly one thing at a time: the style ("film photo" to "watercolor"), then the lighting ("dusk" to "noon"), then the framing (add "wide shot" to the prompt, then change it to "close-up"). Save each result.
    4. Use inpainting or an instruction edit to replace one object (the lamp, the cat, the cup) without changing anything else.
    5. Write two sentences on which single word changed the image most.
    **What you'll learn:** Prompts work as specifications, every generation is a random draw, and editing keeps what you like while regenerating throws it away.
@@ -602,7 +602,7 @@ Generative media, Text encoder, Diffusion model, Latent space, Guidance scale, A
    1. Describe a character in one paragraph (age, hair, clothes, one distinctive item such as a yellow umbrella).
    2. Generate the character in five different scenes using only the text description each time. Score each image 1 if the character is clearly the same person, 0 if not.
    3. Now generate a character sheet (front, side, back) and use it as a reference image for five new scenes. Score again.
-   4. Compute your per-image consistency rate for each method, then raise it to the 10th power to estimate the chance of a fully consistent 10-page book.
+   4. Compute your per-image consistency rate for each method (add up the five scores and divide by 5, so 3 out of 5 gives 0.6), then raise it to the 10th power to estimate the chance of a fully consistent 10-page book. A spreadsheet does this with `=0.6^10` (about 0.006).
    **What you'll learn:** Small per-image failure rates compound across a series, and reference images are the simplest fix.
 
 4. **[Medium] The text-rendering test.** Learn where text in images still breaks.
@@ -618,10 +618,10 @@ Generative media, Text encoder, Diffusion model, Latent space, Guidance scale, A
    **What you'll learn:** Video models learn appearance statistics, not physics, which is why researchers are building world models.
 
 6. **[Medium] The detector spreadsheet.** Learn why "95% accurate" detectors can still mislead.
-   1. In a spreadsheet, set up cells for: total images (10,000), share that are AI-made (1%), detection rate (95%) and false-alarm rate (1%).
-   2. Compute true alarms = total × share × detection rate, and false alarms = total × (1 − share) × false-alarm rate.
-   3. Compute the share of flagged images that are really AI = true alarms ÷ (true alarms + false alarms). You should get about 49%.
-   4. Now change the AI share to 10% and then to 0.1%. Watch what happens.
+   1. In a spreadsheet, type the inputs: total images in B1 (10000), share that are AI-made in B2 (0.01, meaning 1%), detection rate in B3 (0.95) and false-alarm rate in B4 (0.01). Put a label for each in column A.
+   2. Compute true alarms = total × share × detection rate by typing `=B1*B2*B3` in B5, and false alarms = total × (1 − share) × false-alarm rate by typing `=B1*(1-B2)*B4` in B6.
+   3. Compute the share of flagged images that are really AI = true alarms ÷ (true alarms + false alarms) by typing `=B5/(B5+B6)` in B7. You should get about 0.49, or 49%.
+   4. Now change the AI share in B2 to 0.1 (10%) and then to 0.001 (0.1%). Watch what happens to B7.
    **What you'll learn:** When fakes are rare, even good detectors produce many false accusations, so detection alone cannot be the whole answer.
 
 7. **[Easy] Explore a world model.** Learn what "interactive" adds to video generation.

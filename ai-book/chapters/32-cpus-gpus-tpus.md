@@ -106,7 +106,7 @@ Each family of processors speaks its own "vocabulary" of instructions.
 
 > **Definition — Arm:** A company, and the instruction set it licenses, whose energy-efficient designs power nearly all phones, Apple's Macs and a growing share of data-center CPUs such as NVIDIA Grace and Vera and Google Axion.
 
-> **Definition — RISC-V:** A free, open instruction set that anyone can use without paying license fees. It is popular with startups and appears in some AI chips, such as Meta's MTIA and Tenstorrent's processors.
+> **Definition — RISC-V:** A free, open instruction set (pronounced "risk five"; RISC stands for reduced instruction set computer, a style of simple, uniform instructions) that anyone can use without paying license fees. It is popular with startups and appears in some AI chips, such as Meta's MTIA and Tenstorrent's processors.
 
 CPUs also have a small taste of parallel math. Each core contains vector units that apply one instruction to a short row of numbers at once.
 
@@ -124,7 +124,7 @@ Take an illustrative server CPU with 64 cores at 3 GHz, where each core's vector
 
 That sounds like a lot until you compare it with the 3.5 × 10^14 operations of our summary example: almost a minute of perfect, uninterrupted math, for one person's request. Real CPUs rarely sustain their peak, so in practice it would be slower. That is why AI moved to other chips.
 
-In an AI server, the CPU still matters. It is the "host": it loads data, turns text into tokens, schedules work, talks to the network and tells the accelerators what to do. NVIDIA's Grace CPU has 72 Arm cores; its 2026 successor, Vera, has 88 custom Arm "Olympus" cores; AMD's "Venice" EPYC CPU, used in its Helios rack, offers up to 256 cores. These CPUs are paired with GPUs, which do the arithmetic.
+In an AI server, the CPU still matters. It is the "host": it loads data, turns text into tokens, schedules work, talks to the network and tells the accelerators what to do. NVIDIA's Grace CPU has 72 Arm cores; its 2026 successor, Vera, has 88 custom Arm "Olympus" cores; AMD's "Venice" EPYC CPU (EPYC is AMD's brand of server CPUs), used in its Helios rack (AMD's complete AI server rack), offers up to 256 cores. These CPUs are paired with GPUs, which do the arithmetic.
 
 > **Analogy:** A CPU is a few master chefs. Each can cook any dish, improvise, and handle a complicated recipe with many decisions. A GPU is a stadium of line cooks who can each only chop, but there are tens of thousands of them, all chopping at once. Training and running an AI model is a mountain of chopping.
 
@@ -249,6 +249,10 @@ The numbers in AI are so large that we use prefixes. Here is the ladder, with a 
 
 *Table 32.1: The powers of ten of AI compute.*
 
+> **Definition — TFLOPS, PFLOPS (PF) and EFLOPS:** Units of computing speed. A TFLOPS (teraFLOPS) is a trillion (10^12) floating-point operations per second, a PFLOPS (petaFLOPS) is 1,000 TFLOPS (10^15) and an EFLOPS (exaFLOPS) is 1,000 PFLOPS (10^18). Spec sheets often shorten petaFLOPS to "PF", so "35 PF" means 35 petaFLOPS.
+
+> **Definition — GB300 NVL72:** NVIDIA's flagship AI rack from late 2025: 36 GB300 "superchips", each pairing one Grace CPU with two Blackwell Ultra GPUs, so 72 GPUs wired together by NVIDIA's NVLink connection to act like one giant accelerator. "NVL72" means 72 GPUs on NVLink; the GB200 NVL72 is the earlier Blackwell version (Chapter 34 covers both).
+
 ### The peak-speed formula, checked on real chips
 
 Earlier you estimated a CPU's peak with units × operations per tick × ticks per second. The same formula reproduces famous accelerator numbers.
@@ -259,7 +263,7 @@ Earlier you estimated a CPU's peak with units × operations per tick × ticks pe
 
 That is exactly the 125 TFLOPS NVIDIA advertised.
 
-**Google TPU v1 (2015).** It had a 256 × 256 grid of multiply-add cells (65,536 of them), each doing one MAC (2 operations) per tick, at 700 MHz:
+**Google TPU v1 (2015).** It had a 256 × 256 grid of multiply-add cells (65,536 of them), each doing one MAC (2 operations) per tick, at 700 MHz (700 million ticks per second). It worked on 8-bit whole numbers rather than floating point, so its speed is quoted in TOPS, trillions of operations per second (defined below):
 
 `65,536 × 2 × 700,000,000 ≈ 9.2 × 10^13 = 92 TOPS`
 
@@ -277,7 +281,7 @@ A worked example with public numbers: Meta trained Llama 3.1 405B on 16,384 H100
 
 - Achieved per GPU: 0.40 × 989 TFLOPS ≈ 396 TFLOPS.
 - Achieved for the cluster: 16,384 × 396 × 10^12 ≈ 6.5 × 10^18 FLOP/s, or 6.5 exaFLOPS.
-- Training needed about 3.8 × 10^25 FLOP, so time = 3.8 × 10^25 ÷ 6.5 × 10^18 ≈ 5.9 million seconds ≈ 68 days.
+- Training needed about 3.8 × 10^25 FLOP, so time = 3.8 × 10^25 ÷ 6.5 × 10^18 ≈ 5.9 million seconds. A day has 86,400 seconds, so that is 5.9 million ÷ 86,400 ≈ 68 days.
 
 That is why big training runs take months, and why every percentage point of MFU is worth millions of dollars. Chapter 37 goes much deeper into training at scale.
 
@@ -379,7 +383,9 @@ In 2006–07, NVIDIA released a way to program its GPUs directly.
 
 > **Definition — Kernel (GPU kernel):** A small program that runs on the GPU to perform one operation, such as a matrix multiply or the attention step of a Transformer. Thousands of copies run at once, one per thread. Writing fast kernels is one of the most prized skills in AI.
 
-For years, CUDA was used mainly for physics simulations, oil exploration and finance. Then in 2012 a neural network called AlexNet, trained by Alex Krizhevsky, Ilya Sutskever and Geoffrey Hinton on two NVIDIA GTX 580 gaming cards, won the ImageNet image-recognition competition by a wide margin (Chapter 14 tells that story). Deep learning and GPUs have been inseparable ever since. NVIDIA reshaped itself around AI: Volta (2017) added tensor cores, Ampere's A100 (2020) added new number formats and sparsity, Hopper's H100 (2022) added 8-bit floating point, Blackwell (2024–25) joined two dies into one GPU with 4-bit support, and Vera Rubin (2026) moved to HBM4 memory with 336 billion transistors, reportedly on TSMC's 3-nanometer-class process. Chapter 35 covers the industry side of that story.
+For years, CUDA was used mainly for physics simulations, oil exploration and finance. Then in 2012 a neural network called AlexNet, trained by Alex Krizhevsky, Ilya Sutskever and Geoffrey Hinton on two NVIDIA GTX 580 gaming cards, won the ImageNet image-recognition competition by a wide margin (Chapter 14 tells that story). Deep learning and GPUs have been inseparable ever since. NVIDIA reshaped itself around AI: Volta (2017) added tensor cores, Ampere's A100 (2020) added new number formats and sparsity, Hopper's H100 (2022) added 8-bit floating point, Blackwell (2024–25) joined two dies into one GPU with 4-bit support, and Vera Rubin (2026) moved to HBM4 memory with 336 billion transistors, reportedly on TSMC's 3-nanometer-class manufacturing process. Chapter 35 covers the industry side of that story.
+
+> **Definition — TSMC (Taiwan Semiconductor Manufacturing Company):** The Taiwanese company that is the world's largest contract chip manufacturer. It builds the most advanced chips designed by NVIDIA, AMD, Apple, Google and many others, which design chips but do not make them themselves (Chapter 36).
 
 > **Definition — HBM (High Bandwidth Memory):** Memory chips stacked vertically and placed right beside an AI processor in the same package, joined to it by thousands of short wires so they can deliver terabytes of data per second. HBM3, HBM3E and HBM4 are successive generations; Chapter 33 covers HBM in depth.
 
@@ -424,7 +430,7 @@ Count the workers: 132 SMs × 128 CUDA cores = 16,896 ordinary cores, plus 132 �
 
 Ordinary CUDA cores do one multiply-add per thread per instruction. That wastes effort: every instruction must be fetched, decoded and scheduled, and its inputs read from the register file, just to do 2 operations. In 2017, NVIDIA's Volta generation added a circuit that does far more per instruction.
 
-> **Definition — Tensor core:** A specialized circuit inside NVIDIA GPUs (since Volta, 2017) that multiplies two small matrices and adds the result to a third in a single step. AMD's equivalent is the "Matrix Core"; Google's is the MXU.
+> **Definition — Tensor core:** A specialized circuit inside NVIDIA GPUs (since Volta, 2017) that multiplies two small matrices and adds the result to a third in a single step. AMD's equivalent is the "Matrix Core"; Google's is the MXU (matrix multiply unit, described below).
 
 Volta's tensor core did a 4 × 4 × 4 operation each tick: multiply a 4 × 4 matrix by another 4 × 4 matrix and add a third 4 × 4 matrix. That is 4 × 4 × 4 = 64 fused multiply-adds, or FMAs (the hardware name for a MAC done as one step, `a × b + c`, with a single rounding).
 
@@ -539,7 +545,7 @@ You already know scientific notation: Avogadro's number is written 6.02 × 10^23
 
 > **Definition — Floating point:** A way of storing numbers as a sign, an exponent (which sets how big or small the number is, its range) and a mantissa (the significant digits, its detail), like scientific notation in binary. It lets one format hold both tiny and huge values.
 
-For example, 6.5 in binary is 110.1, which is 1.101 × 2^2. A computer stores the sign (positive), the exponent (2) and the digits after the leading 1 (".101"). More exponent bits mean a wider range of sizes; more mantissa bits mean finer detail.
+For example, 6.5 in binary is 110.1 (110 is 6, and the 1 just after the binary point means one half, as 0.5 does in decimal), which is 1.101 × 2^2. A computer stores the sign (positive), the exponent (2) and the digits after the leading 1 (".101"). More exponent bits mean a wider range of sizes; more mantissa bits mean finer detail.
 
 > **Definition — Precision:** How many bits a format uses per number, and therefore how finely it can tell nearby values apart. Higher precision means more detail; lower precision means faster, cheaper math with more rounding error.
 
@@ -629,11 +635,11 @@ The fix is to zoom the ruler. Give the block its own scale factor, chosen so the
 
 Compare with the originals (0.02, −0.11, 0.07, 0.30). The biggest error is now 0.01. Four numbers cost 4 × 4 = 16 bits plus a shared scale, instead of 4 × 16 = 64 bits in BF16.
 
-> **Definition — Microscaling (MX) formats:** An open industry standard from the Open Compute Project (MXFP8, MXFP6, MXFP4) in which each block of 32 low-bit numbers shares one scale factor, a power of two. It lets very small formats cover a wide range of values.
+> **Definition — Microscaling (MX) formats:** An open industry standard from the Open Compute Project, an industry group that publishes open designs for data-center hardware (MXFP8, MXFP6, MXFP4) in which each block of 32 low-bit numbers shares one scale factor, a power of two. It lets very small formats cover a wide range of values.
 
 > **Definition — NVFP4:** NVIDIA's 4-bit format for Blackwell and later chips. It uses smaller blocks of 16 values, each with a finer 8-bit (FP8) scale, plus one scale for the whole tensor, which makes it more accurate than plain FP4.
 
-Why do the details matter? Under MXFP4, the scale must be a power of two. For our block that would be 0.0625 instead of 0.05, and the same weights come back as 0.031, −0.125, 0.0625 and 0.25: still usable, but the largest value has lost 0.05. NVFP4's finer scale and smaller blocks keep more detail, which is one reason NVIDIA introduced it.
+Why do the details matter? Under MXFP4, the scale must be a power of two, such as 1/2, 1/4, 1/8 or 1/16. For our block that would be 0.0625 (1/16) instead of 0.05, because the next power of two down, 1/32 = 0.03125, would push 0.30 past FP4's largest mark (0.30 ÷ 0.03125 = 9.6, more than 6). With a scale of 0.0625, the same weights come back as 0.031, −0.125, 0.0625 and 0.25: still usable, but the largest value has lost 0.05. NVFP4's finer scale and smaller blocks keep more detail, which is one reason NVIDIA introduced it.
 
 > **Analogy:** Precision is a ruler with fewer tick marks. FP32 marks every millimeter, FP8 every centimeter, and FP4 has just a handful of marks. Measuring is faster with fewer marks, and the ruler is lighter to carry. Block scaling is a zoom lens: before you measure each small group of objects, you zoom so they fill the ruler.
 
@@ -660,7 +666,7 @@ flowchart TD
 ```
 *Figure 32.10: Where each precision lives in a typical 2026 training and serving pipeline. Low precision for bulk math, high precision for the few numbers that must not drift.*
 
-> **At the frontier (2026):** BF16 mixed precision became the training standard in the late 2010s. FP8 training arrived with Hopper; DeepSeek-V3 (December 2024) was a prominent public example, trained in FP8 on 2,048 H800 GPUs for about 2.8 million GPU-hours. FP4 is the 2026 frontier: Blackwell and Rubin support NVFP4 training, Moonshot's Kimi K3 ships MXFP4 weights after quantization-aware training that starts at its fine-tuning stage, and DeepSeek-V4 ships its expert weights in FP4 with FP8 elsewhere. Making FP4 pre-training robust at frontier scale is an active research problem.
+> **At the frontier (2026):** BF16 mixed precision became the training standard in the late 2010s. FP8 training arrived with Hopper; DeepSeek-V3 (December 2024) was a prominent public example, trained in FP8 on 2,048 H800 GPUs (a version of the H100 with slower chip-to-chip links, made for sale in China) for about 2.8 million GPU-hours. FP4 is the 2026 frontier: Blackwell and Rubin support NVFP4 training, Moonshot's Kimi K3 ships MXFP4 weights after quantization-aware training that starts at its fine-tuning stage, and DeepSeek-V4 ships its expert weights in FP4 with FP8 elsewhere. Making FP4 pre-training robust at frontier scale is an active research problem.
 
 > **Watch out:** "Lower precision means worse AI" is mostly wrong. With careful scaling, models train and run at nearly the same quality in BF16, FP8 and block-scaled FP4. Precision is a tool. The real risk is careless quantization of a model that was never designed for it, which can quietly hurt accuracy on hard tasks.
 
@@ -691,13 +697,17 @@ The TPU's history shows how AI hardware evolved:
 
 Amazon's Trainium, Microsoft's Maia and Meta's MTIA follow the same logic. A cloud company builds its own chip to lower cost, secure supply and gain bargaining power with NVIDIA. Chapter 35 tells that story.
 
+> **Definition — MTIA (Meta Training and Inference Accelerator):** Meta's own family of AI chips (ASICs), first built to run the recommendation models that rank posts and ads on Facebook and Instagram, and part of Meta's effort to rely less on bought GPUs.
+
 ### Inference specialists
 
 > **Definition — LPU (Language Processing Unit):** Groq's inference chip, which keeps model weights in very fast on-chip memory (SRAM) instead of external memory and runs on a fixed schedule planned in advance by a compiler. It is very fast for one user but needs hundreds of chips to hold a large model.
 
-In late December 2025, NVIDIA paid a reported ~$20 billion for a non-exclusive license to Groq's technology and hired its leadership. At GTC 2026 NVIDIA introduced the Groq 3 LPU, sold in racks of 256 chips, to sit beside Vera Rubin GPUs and generate tokens quickly.
+In late December 2025, NVIDIA paid a reported ~$20 billion for a non-exclusive license to Groq's technology and hired its leadership. At GTC 2026 (NVIDIA's annual GPU Technology Conference, where it announces new products) NVIDIA introduced the Groq 3 LPU, sold in racks of 256 chips, to sit beside Vera Rubin GPUs and generate tokens quickly.
 
-> **Definition — Wafer-scale engine:** Cerebras's approach of using an entire silicon wafer as one giant chip instead of cutting it into many small chips. Its WSE-3 covers 46,225 mm², about 54 times the largest single die a normal lithography machine can print.
+> **Definition — LPX:** NVIDIA's rack of 256 Groq 3 LPUs, introduced at GTC 2026 and designed to work beside Vera Rubin GPU racks, which handle the rest of the work, so that tokens are generated quickly.
+
+> **Definition — Wafer-scale engine (WSE):** Cerebras's approach of using an entire silicon wafer as one giant chip instead of cutting it into many small chips. Its WSE-3 covers 46,225 mm², about 54 times the largest single die a normal lithography machine (the machine that prints circuit patterns onto silicon, Chapter 36) can print.
 
 ### Chips in your pocket
 
@@ -721,6 +731,8 @@ Apple has included a Neural Engine in its phone chips since the A11 (2017). Micr
 
 *Table 32.6: The four main families of chips that run AI, by design philosophy.*
 
+> **Definition — AWS (Amazon Web Services):** Amazon's cloud-computing business, the largest company renting out computing power and storage over the internet. It also designs its own AI chips, Trainium and Inferentia (Chapter 35).
+
 Now the real numbers. These are vendor peak figures as of late 2026, which you should read with the three spec-sheet questions in mind. "Dense" unless marked otherwise.
 
 | Chip (year) | Type | Peak compute | Memory | Memory bandwidth | Notes |
@@ -738,12 +750,14 @@ Now the real numbers. These are vendor peak figures as of late 2026, which you s
 | Microsoft Maia 200 (2026) | ASIC | over 10 PF FP4; over 5 PF FP8 | 216 GB HBM3E | 7 TB/s | 272 MB on-die SRAM; 750 W |
 | Groq 3 LPU (2026) | LPU | ~1.2 PFLOPS FP8 (reported) | ~500 MB SRAM, no HBM | ~150 TB/s (SRAM) | 256 per LPX rack |
 | Cerebras WSE-3 | Wafer-scale | ~125 PF sparse FP16 (vendor) | 44 GB on-wafer SRAM | very high (on-wafer) | 4 trillion transistors, 900,000 cores |
-| NVIDIA Vera (2026) | CPU | not quoted in FLOPS | LPDDR5X, up to 54 TB per 36-CPU rack | (CPU-class) | 88 Arm cores; Rubin's host |
+| NVIDIA Vera (2026) | CPU | not quoted in FLOPS | LPDDR5X (low-power memory of the kind used in phones), up to 54 TB per 36-CPU rack | (CPU-class) | 88 Arm cores; Rubin's host |
 | Copilot+ PC NPU | NPU | 40+ TOPS (usually INT8) | Shares the laptop's memory | Typical laptop: about 60–120 GB/s | Runs on a few watts |
 
-*Table 32.7: Real accelerator specifications (vendor peak figures, late 2026). Rubin's bandwidth is an example of spec drift: launch coverage at CES 2026 cited 22 TB/s per GPU, while NVIDIA's current product page lists 19.2 TB/s. Maia 200 figures come from Microsoft's January 2026 announcement. NVIDIA's LPX page gives the Groq 3 LPU's SRAM figures but not its FP8 rate, which comes from press reports.*
+*Table 32.7: Real accelerator specifications (vendor peak figures, late 2026). "2H 2025" means the second half of 2025, and SXM is the plug-in server-module version of a GPU (Chapter 34). Rubin's bandwidth is an example of spec drift: launch coverage at CES 2026 (the big annual consumer-electronics trade show in Las Vegas) cited 22 TB/s per GPU, while NVIDIA's current product page lists 19.2 TB/s. Maia 200 figures come from Microsoft's January 2026 announcement. NVIDIA's LPX page gives the Groq 3 LPU's SRAM figures but not its FP8 rate, which comes from press reports.*
 
 Three lessons jump out of this table. First, compute numbers differ by precision so much that you must compare like with like. Second, memory capacity and bandwidth vary as much as compute does, and Chapter 33 shows they often matter more. Third, the inference-oriented chips (TPU 8i, Maia 200, Groq) carry unusually large amounts of on-chip SRAM. That is a bet about memory, which is the next chapter's subject.
+
+> **Definition — MI355X and MI455X:** AMD's Instinct data-center GPUs, its rivals to NVIDIA's Blackwell and Rubin. The MI355X (second half of 2025) has 288 GB of HBM3E memory; the MI455X (2026) has 432 GB of HBM4 and ships in AMD's Helios rack.
 
 ```mermaid
 quadrantChart
@@ -782,7 +796,7 @@ If many transistors must rest anyway, the best use for them is specialized circu
 
 | Rule | What TPU v1 (2015) did | The same rule in 2026 |
 |---|---|---|
-| 1. Keep dedicated memory right next to the math | 28 MiB of on-chip memory, managed by software rather than by caches | TPU 8i's 384 MB and Groq's ~500 MB of on-chip SRAM |
+| 1. Keep dedicated memory right next to the math | 28 MiB (mebibytes, each 1,048,576 bytes, so slightly more than MB) of on-chip memory, managed by software rather than by caches | TPU 8i's 384 MB and Groq's ~500 MB of on-chip SRAM |
 | 2. Spend the transistors you save on more math or more memory | No caches, branch prediction or out-of-order tricks; instead 65,536 multiply-add units | Groq's LPU drops runtime scheduling entirely; its compiler plans every step in advance |
 | 3. Use the simplest kind of parallelism that fits | One instruction drives the whole 256 × 256 systolic array in lockstep | MXUs and tensor cores still march in lockstep |
 | 4. Use the smallest number format that works | 8-bit integers for inference | FP8 and block-scaled FP4 (NVFP4, MXFP4) |
@@ -792,7 +806,7 @@ If many transistors must rest anyway, the best use for them is specialized circu
 
 **What the recipe bought.** In Google's 2017 paper, TPU v1 ran Google's own inference workloads about 15 to 30 times faster than the server CPU and GPU of its day, with 30 to 80 times better performance per watt. It had about 25 times as many multiply-add units as the GPU it was compared with, and it went from first design to running in data centers in about 15 months. Latency taught a further lesson. Google's services had to answer within a deadline measured at the 99th percentile (the slowest 1% of requests; Chapter 6 explains percentiles), about 7 milliseconds for one key workload. Caches and the other clever features of CPUs and GPUs make timing unpredictable, so those chips had to shrink their batches to stay inside the deadline and lost much of their throughput. The TPU's simple, predictable timing let it keep large batches under the same deadline. Chapter 37 shows why the slowest requests matter so much at scale.
 
-The textbook's other examples show how far the recipe stretches. Microsoft's **Project Catapult** put an FPGA into servers across large parts of its data centers from the mid-2010s, first to speed up Bing's search ranking and later for networking and neural-network inference: less efficient than an ASIC, but reprogrammable as the algorithms changed. Google's **Pixel Visual Core** (2017) was a small programmable DSA inside Pixel phones for camera processing, such as building HDR+ photos from several exposures, programmed in an image-processing language called Halide and using far less power than the phone's main processor.
+The textbook's other examples show how far the recipe stretches. Microsoft's **Project Catapult** put an FPGA into servers across large parts of its data centers from the mid-2010s, first to speed up Bing's search ranking and later for networking and neural-network inference: less efficient than an ASIC, but reprogrammable as the algorithms changed. Google's **Pixel Visual Core** (2017) was a small programmable DSA inside Pixel phones for camera processing, such as building HDR+ (high dynamic range) photos from several exposures, programmed in an image-processing language called Halide and using far less power than the phone's main processor.
 
 > **Definition — Image signal processor (ISP):** A specialized circuit in every camera phone that turns the raw readings from the camera sensor into a finished photo (adjusting color, removing noise, combining exposures) far more efficiently than the main processor could.
 
@@ -854,7 +868,7 @@ Finally, the chips have become so fast at math that they spend most of their tim
 
 ## Key terms
 
-Accelerator, Transistor, Logic gate, Multiply-accumulate (MAC), Clock speed (GHz), Die, CPU (Central Processing Unit), Core, Thread, Cache, Instruction set architecture (ISA), x86, Arm, RISC-V, SIMD (Single Instruction, Multiple Data), Moore's law, Dennard scaling, Power wall, Multicore processor, Matrix multiplication (GEMM), Tensor, FLOP (floating-point operation), FLOPS (FLOP/s), Peak performance, MFU (Model FLOPs Utilization), Structured sparsity (2:4), TOPS (Tera Operations Per Second), Parallelism, SIMT (Single Instruction, Multiple Threads), Warp, Latency, Throughput, Amdahl's law, GPU (Graphics Processing Unit), CUDA, Kernel (GPU kernel), HBM (High Bandwidth Memory), Streaming multiprocessor (SM), CUDA core, Tensor core, Systolic array, Floating point, Precision, FP32, TF32 (TensorFloat-32), FP16 (half precision), BF16 (bfloat16), FP8, FP4, INT8 / INT4, Microscaling (MX) formats, NVFP4, Mixed precision, Quantization, Ternary weights, ASIC (Application-Specific Integrated Circuit), TPU (Tensor Processing Unit), LPU (Language Processing Unit), Wafer-scale engine, NPU (Neural Processing Unit), FPGA (Field-Programmable Gate Array), Superchip, Domain-specific architecture (DSA), Dark silicon, Image signal processor (ISP), Transcoding
+Accelerator, Transistor, Logic gate, Multiply-accumulate (MAC), Clock speed (GHz), Die, CPU (Central Processing Unit), Core, Thread, Cache, Instruction set architecture (ISA), x86, Arm, RISC-V, SIMD (Single Instruction, Multiple Data), Moore's law, Dennard scaling, Power wall, Multicore processor, Matrix multiplication (GEMM), Tensor, FLOP (floating-point operation), FLOPS (FLOP/s), TFLOPS, PFLOPS (PF) and EFLOPS, GB300 NVL72, Peak performance, MFU (Model FLOPs Utilization), Structured sparsity (2:4), TOPS (Tera Operations Per Second), Parallelism, SIMT (Single Instruction, Multiple Threads), Warp, Latency, Throughput, Amdahl's law, GPU (Graphics Processing Unit), CUDA, Kernel (GPU kernel), TSMC (Taiwan Semiconductor Manufacturing Company), HBM (High Bandwidth Memory), Streaming multiprocessor (SM), CUDA core, Tensor core, Systolic array, Floating point, Precision, FP32, TF32 (TensorFloat-32), FP16 (half precision), BF16 (bfloat16), FP8, FP4, INT8 / INT4, Microscaling (MX) formats, NVFP4, Mixed precision, Quantization, Ternary weights, ASIC (Application-Specific Integrated Circuit), TPU (Tensor Processing Unit), MTIA (Meta Training and Inference Accelerator), LPU (Language Processing Unit), LPX, Wafer-scale engine (WSE), NPU (Neural Processing Unit), FPGA (Field-Programmable Gate Array), Superchip, AWS (Amazon Web Services), MI355X and MI455X, Domain-specific architecture (DSA), Dark silicon, Image signal processor (ISP), Transcoding
 
 ## Exercises
 
@@ -966,7 +980,7 @@ Accelerator, Transistor, Logic gate, Multiply-accumulate (MAC), Clock speed (GHz
 7. **[Medium] The FLOP budget of your own chat.** Take a recent long conversation with your chatbot.
    1. Estimate its tokens: English words × about 1.3, or paste the text into a tokenizer page such as platform.openai.com/tokenizer.
    2. Using 2 × N FLOPs per token, compute the operations for a dense 70B model and for a model with 1 trillion parameters used per token.
-   3. Convert to time at three speeds: a CPU at 6 TFLOPS, one H100 at 989 TFLOPS, and one GB300 NVL72 rack at 1,080 PFLOPS (dense FP4). Assume perfect efficiency.
+   3. Convert to time at three speeds: a CPU at 6 TFLOPS, one H100 at 989 TFLOPS, and one GB300 NVL72 rack at 1,080 PFLOPS (dense FP4). Assume perfect efficiency. Time in seconds = operations ÷ operations per second, where 6 TFLOPS is 6 × 10^12, 989 TFLOPS is 9.89 × 10^14 and 1,080 PFLOPS is 1.08 × 10^18 operations per second (in a spreadsheet, type these as 6E12, 9.89E14 and 1.08E18).
 
    **What you'll learn:** How to turn "a chat" into a number of operations and a number of chip-seconds, the starting point of all AI cost estimates.
 
@@ -977,7 +991,7 @@ Accelerator, Transistor, Logic gate, Multiply-accumulate (MAC), Clock speed (GHz
 
    **What you'll learn:** Spec-sheet numbers are simple multiplications, so you can sanity-check any claim you read.
 
-9. **[Challenge] Which chip is the best deal?** Build a spreadsheet with one row per GPU: A100 (80 GB, ~2 TB/s), H100 SXM (80 GB, 3.35 TB/s, 989 TFLOPS BF16), H200 (141 GB, 4.8 TB/s, 989 TFLOPS BF16), B200 (192 GB, 8 TB/s) and B300 (288 GB, 8 TB/s). Add the October 2026 on-demand rental price ranges from runpod.io/pricing or lambda.ai (for example, RunPod listed H100 SXM at $2.69–3.99 per hour and B300 at $6.94–8.99). Compute gigabytes of memory per dollar-hour and TB/s of bandwidth per dollar-hour. Where you have a BF16 figure, add TFLOPS per dollar-hour too. Which chip wins on each measure?
+9. **[Challenge] Which chip is the best deal?** Build a spreadsheet with one row per GPU: A100 (80 GB, ~2 TB/s), H100 SXM (80 GB, 3.35 TB/s, 989 TFLOPS BF16), H200 (141 GB, 4.8 TB/s, 989 TFLOPS BF16), B200 (192 GB, 8 TB/s) and B300 (288 GB, 8 TB/s). Add the October 2026 on-demand rental price ranges from runpod.io/pricing or lambda.ai (for example, RunPod listed H100 SXM at $2.69–3.99 per hour and B300 at $6.94–8.99). Compute gigabytes of memory per dollar-hour and TB/s of bandwidth per dollar-hour, which means dividing the memory (or bandwidth) by the price of one hour of rental; use the middle of each price range (for example, H100 SXM: 80 ÷ 3.34 ≈ 24 GB per dollar-hour). Where you have a BF16 figure, add TFLOPS per dollar-hour too. Which chip wins on each measure?
    **What you'll learn:** There is no single "best" chip: the answer depends on whether your work is limited by compute, memory capacity or memory bandwidth.
 
 ## Areas of opportunity

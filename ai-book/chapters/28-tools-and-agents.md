@@ -491,7 +491,7 @@ A step that "almost always works" still sinks a long task. This is why the best 
 
 The disappointments share the opposite traits: long, open-ended tasks with no clear test of success, many steps where errors compound, and access to systems where a single wrong action is costly. The MIT NANDA report of July 2025 found that only about 5% of enterprise generative-AI pilots delivered measurable impact on profit and loss, and it blamed brittle workflows rather than weak models (Chapter 61). The practical rule: start with a task you can check, measure it with evals, systematic tests of whether the system does what you want (Chapter 31), and give the agent more rope only as the numbers earn it.
 
-> **Definition — MIT NANDA:** A research initiative at MIT's Media Lab (MIT is the Massachusetts Institute of Technology) that studies networks of AI agents and how organizations adopt AI. Its 2025 report "The GenAI Divide: State of AI in Business 2025" is widely quoted for finding that only about 5% of enterprise generative-AI pilots delivered measurable profit-and-loss impact.
+> **Definition — MIT NANDA:** A research initiative at MIT's Media Lab (MIT is the Massachusetts Institute of Technology) that studies networks of AI agents and how organizations adopt AI. Its July 2025 report "The GenAI Divide: State of AI in Business 2025" is widely quoted for finding that only about 5% of enterprise generative-AI pilots delivered measurable profit-and-loss impact.
 
 ## The Model Context Protocol (MCP)
 
