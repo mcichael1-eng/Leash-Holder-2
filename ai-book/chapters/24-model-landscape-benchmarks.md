@@ -83,7 +83,7 @@ So the honest statement is "80%, give or take about 3.5 points." Now suppose a r
 
 The same formula shows why small benchmarks are risky. With 100 questions the interval is about ±7.8 points; with 2,500 (the size of Humanity's Last Exam) it shrinks to about ±1.6 points.
 
-> **Try it:** Open a spreadsheet. In cell A1 type 0.8 (the accuracy) and in B1 type 500 (the number of questions). In C1 type =1.96*SQRT(A1*(1-A1)/B1). You get about 0.035, or 3.5 points. Change B1 to 100 and then to 2500 and watch the interval shrink. Keep this sheet; the exercises use it.
+> **Try it:** Open a spreadsheet. In cell A1 type 0.8 (the accuracy) and in B1 type 500 (the number of questions). In C1 type =1.96*SQRT(A1*(1-A1)/B1) (SQRT is the spreadsheet's square-root function). You get about 0.035, or 3.5 points. Change B1 to 100 and then to 2500 and watch the interval shrink. Keep this sheet; the exercises use it.
 
 > **Watch out:** Some headline numbers come with very wide intervals that launch posts and social media leave out. METR's estimate for an early version of Claude Mythos Preview is a time horizon of about 17.4 hours, but its confidence interval runs from about 8.5 to 55 hours. The single number is the middle of a very wide range.
 
@@ -109,7 +109,7 @@ flowchart LR
 
 MMLU, a 2020 test covering 57 school and professional subjects in multiple-choice format, was the headline benchmark of the GPT-4 era. It is now saturated for frontier models. GPQA Diamond, a 2023 set of graduate-level science questions written to be "Google-proof," was considered brutally hard when it launched. By late 2026 it is near-saturated: the open-weight Kimi K3 self-reports 93.5%.
 
-The clearest recent story is Humanity's Last Exam (HLE), released in January 2025 by the Center for AI Safety and Scale AI with 2,500 expert-level questions. At launch, frontier models scored under 10%. On October 20, 2026, Artificial Analysis measured Claude Opus 5.5 at 61.4% on its text-only questions. In under two years, a test designed to be the "last exam" went from nearly impossible to more than half solved.
+The clearest recent story is Humanity's Last Exam (HLE), released in January 2025 by the Center for AI Safety (a US nonprofit research group) and the data company Scale AI with 2,500 expert-level questions. At launch, frontier models scored under 10%. On October 20, 2026, Artificial Analysis measured Claude Opus 5.5 at 61.4% on its text-only questions. In under two years, a test designed to be the "last exam" went from nearly impossible to more than half solved.
 
 Saturation also shows in what labs brag about. The Opus 5.5 and Gemini 4 Argon launch tables did not headline SWE-bench Verified, the coding benchmark of 2024 and 2025; they used harder tests such as Terminal-Bench 4.0, DeepSWE, FrontierSWE and CursorBench. When labs stop mentioning a benchmark, everyone usually scores well on it.
 
@@ -192,7 +192,7 @@ Labs choose which benchmarks appear in their launch tables. Google's self-report
 
 *Table 24.1: Five rows from Google's self-reported Gemini 4 Argon comparison table (October 2026). Across all 19 rows of the full table, Argon leads 13.*
 
-Argon wins three of these five rows, Astra wins FrontierSWE and Opus 5.5 wins Terminal-Bench 4.0. Google picked a reasonable set of tests, but every lab's launch table shows its own model winning most rows, because every lab picks the rows. Read only launch posts and every model is the best model.
+(The Vals Index is a combined score from the independent evaluation company Vals AI. DeepSWE, FrontierSWE and Terminal-Bench are agentic coding tests, described in the benchmark zoo below. GraphWalks tests very long inputs, from 256,000 to 1 million tokens, scored with the F1 measure from Chapter 9.) Argon wins three of these five rows, Astra wins FrontierSWE and Opus 5.5 wins Terminal-Bench 4.0. Google picked a reasonable set of tests, but every lab's launch table shows its own model winning most rows, because every lab picks the rows. Read only launch posts and every model is the best model.
 
 > **Key idea:** Trust independent measurements over launch tables, specific benchmark versions over brand names, and your own private tests over both.
 
@@ -245,7 +245,7 @@ Because only questions that early-2025 models failed were kept, low starting sco
 
 *Table 24.3: Humanity's Last Exam, text-only questions, best model per lab, as measured by Artificial Analysis on October 20, 2026.*
 
-Notice the last row: an open-weight model trails the leader by only 12 points.
+Notice the last row: an open-weight model, from the Chinese phone and electronics maker Xiaomi, trails the leader by only 12 points.
 
 ### Math: AIME and FrontierMath
 
@@ -253,11 +253,11 @@ AIME (the American Invitational Mathematics Examination) is a real high-school c
 
 > **Definition — FrontierMath:** A benchmark from Epoch AI of unpublished, expert-written mathematics problems, ranging from hard to research-level, with answers that can be checked automatically. Its Erdős extension contains problems no one had solved before.
 
-FrontierMath beats contamination by never publishing its problems. GPT-5.5 was reported at 35.4% on its hardest tier (Tier 4), and GPT-6 Astra became the first model to solve any FrontierMath Erdős problems: 2 of 68 previously unsolved ones, according to Epoch. That is new mathematics, if only a little of it.
+FrontierMath beats contamination by never publishing its problems. GPT-5.5 was reported at 35.4% on its hardest tier (Tier 4), and GPT-6 Astra became the first model to solve any FrontierMath Erdős problems (named after the mathematician Paul Erdős, who left behind hundreds of open problems): 2 of 68 previously unsolved ones, according to Epoch. That is new mathematics, if only a little of it.
 
 ### Coding and computer use: SWE-bench, Terminal-Bench and OSWorld
 
-> **Definition — SWE-bench:** A benchmark of real GitHub issues from open-source Python projects; the model must change the code so that the project's own tests pass. "Verified" is a 500-task subset checked by humans; harder successors include SWE-bench Pro.
+> **Definition — SWE-bench:** A benchmark of real GitHub issues from open-source Python projects; the model must change the code so that the project's own tests pass. "Verified" is a 500-task subset checked by humans; harder successors include SWE-bench Pro. SWE stands for software engineering.
 
 SWE-bench used real work graded by real tests. But tests can be gamed (making a test pass without fixing the bug is a form of reward hacking; see Chapter 20), and its repositories are public.
 
@@ -269,7 +269,7 @@ SWE-bench used real work graded by real tests. But tests can be gamed (making a 
 
 ### Work that pays: GDPval
 
-> **Definition — GDPval:** An OpenAI benchmark (2025) of realistic work products, such as reports, plans and spreadsheets, drawn from many occupations; expert professionals compare the model's work with work by experienced humans. Artificial Analysis runs a version called GDPval-AA that reports a rating.
+> **Definition — GDPval:** An OpenAI benchmark (2025) of realistic work products, such as reports, plans and spreadsheets, drawn from many occupations; expert professionals compare the model's work with work by experienced humans. Artificial Analysis runs a version called GDPval-AA (AA for Artificial Analysis) that reports a rating.
 
 GDPval asks "could this model do a piece of a real job?" But each task is a snapshot, not a week of shifting requirements, and preference grading lets presentation sway judges.
 
@@ -456,7 +456,7 @@ The size column shows why MoE took over. Kimi K3 has 2.8 trillion parameters, bu
 
 ### How big is the gap?
 
-On the Artificial Analysis index in October 2026, the top open-weight models were Xiaomi's MiMo-V2.6-Pro at 46, DeepSeek V4.1 Flash 1017 at 45, Z.ai's GLM-5.3 at 45 and Kimi K3 at 44. The top closed model, Opus 5.5 at max effort, scored 58. On HLE text-only, MiMo-V2.6-Pro is 12 points behind the leader. The usual summary is that the best open models trail the best closed models by months, not years.
+On the Artificial Analysis index in October 2026, the top open-weight models were Xiaomi's MiMo-V2.6-Pro at 46, DeepSeek V4.1 Flash 1017 at 45, GLM-5.3 from the Chinese lab Z.ai (formerly Zhipu AI) at 45 and Kimi K3 at 44. The top closed model, Opus 5.5 at max effort, scored 58. On HLE text-only, MiMo-V2.6-Pro is 12 points behind the leader. The usual summary is that the best open models trail the best closed models by months, not years.
 
 ```mermaid
 quadrantChart
@@ -484,7 +484,7 @@ quadrantChart
 
 Both sides have strong arguments, and Chapter 60 returns to them.
 
-The case for open weights: data never has to leave your building, which matters for hospitals, law firms and governments; researchers can study the internals; businesses and countries avoid depending on one foreign supplier; and prices fall because anyone can host the same model. Products get built on open models too: Cursor's Composer 2.5 coding model was built on Moonshot's open Kimi K2.5.
+The case for open weights: data never has to leave your building, which matters for hospitals, law firms and governments; researchers can study the internals; businesses and countries avoid depending on one foreign supplier; and prices fall because anyone can host the same model. Products get built on open models too: Composer 2.5, the coding model of the popular AI code editor Cursor, was built on Moonshot's open Kimi K2.5.
 
 The case for keeping the frontier closed: once weights are published, every safeguard can be removed, and nobody can recall them if a dangerous capability is later discovered. Closed labs can monitor misuse, ban accounts and add classifiers. Closed models also fund the enormous training costs that keep the frontier moving.
 
@@ -639,7 +639,7 @@ flowchart LR
 ```
 *Figure 24.8: The main teams inside a frontier lab and how a model passes between them.*
 
-Safety work cuts across the figure: alignment research, safeguards, red teaming and dangerous-capability testing. A few specifics are public. Meta's MSL has four groups: TBD Lab (language models, under Alexandr Wang), FAIR (research), Products and Applied Research, and MSL Infra. OpenAI's chief scientist is Jakub Pachocki. And job boards show that research is a small slice of hiring: on October 21, 2026, research was roughly 5–10% of open roles at both Anthropic (675 open roles) and OpenAI (809), with far more in sales, deployment, scaling and security.
+Safety work cuts across the figure: alignment research, safeguards, red teaming and dangerous-capability testing. A few specifics are public. Meta's MSL has four groups: TBD Lab (language models, under Alexandr Wang; TBD is the usual abbreviation for "to be determined"), FAIR (Fundamental AI Research, Meta's long-standing research lab), Products and Applied Research, and MSL Infra. OpenAI's chief scientist is Jakub Pachocki. And job boards show that research is a small slice of hiring: on October 21, 2026, research was roughly 5–10% of open roles at both Anthropic (675 open roles) and OpenAI (809), with far more in sales, deployment, scaling and security.
 
 ## What a frontier model costs to train
 
@@ -804,17 +804,17 @@ Training a flagship costs on the order of a billion dollars of compute for the f
 
 ## Key terms
 
-Benchmark, Evaluation (eval), Leaderboard, Frontier model, Harness (scaffold), Reasoning effort, Self-reported score, Confidence interval, Benchmark saturation, Benchmark contamination, Decontamination, Held-out set, Label noise, Goodhart's law, ARC-AGI, Compaction, Cost per task, MMLU (Massive Multitask Language Understanding), GPQA Diamond, Humanity's Last Exam (HLE), FrontierMath, SWE-bench, Terminal-Bench, OSWorld, GDPval, Elo rating, METR time horizon, LMArena, Aggregate index, Jagged frontier, Model card, System card, Knowledge cutoff, Safety framework, Dangerous-capability evaluation, Closed (proprietary) model, Open-weight model, Open-source model, API (Application Programming Interface), License (software license), Permissive license, Mixture of experts (MoE), Active parameters, Distillation, Model tier, General availability (GA), Dual-use capability, Trusted access program, Safety classifier, FLOP (floating-point operation), Training compute, GPU-hour, Interpretability, Continual learning, AI R&D automation, Chain-of-thought monitorability, World model, Safety case, Model routing, Batch API.
+Benchmark, Evaluation (eval), Leaderboard, Frontier model, Harness (scaffold), Reasoning effort, Self-reported score, Confidence interval, Benchmark saturation, Benchmark contamination, Decontamination, Held-out set, Label noise, Goodhart's law, ARC-AGI, Compaction, Cost per task, MMLU (Massive Multitask Language Understanding), GPQA Diamond, Humanity's Last Exam (HLE), FrontierMath, SWE-bench, Terminal-Bench, OSWorld, GDPval, Elo rating, METR time horizon, LMArena, Aggregate index, Jagged frontier, Model card, System card, Knowledge cutoff, Safety framework, Dangerous-capability evaluation, Closed (proprietary) model, Open-weight model, Open-source model, API (Application Programming Interface), License (software license), Permissive license, Mixture of experts (MoE), Active parameters, Distillation, Model tier, General availability (GA), Dual-use capability, Trusted access program, Safety classifier, FLOP (floating-point operation), Training compute, GPU-hour, Interpretability, Continual learning, AI R&D automation, Chain-of-thought monitorability, World model, Safety case, Model routing, Batch API, Stanford HAI (Stanford Institute for Human-Centered Artificial Intelligence).
 
 ## Exercises
 
 1. **[Easy] Blind taste test.** Compare models the way Arena (formerly LMArena) does. (1) Go to arena.ai (LMArena's new name and address since January 2026) and open the battle mode, where two anonymous models answer the same prompt. (2) Enter five prompts from your real life: an email you need to write, a question from your work, a recipe adaptation, a tricky fact and a short explanation for a child. (3) Vote for the better answer each time before the names are revealed. (4) Afterwards, note whether you tended to prefer the longer or more formatted answer. **What you'll learn:** how human-preference leaderboards work, and how style sways votes even when accuracy does not differ.
 
-2. **[Easy] Error bars in a spreadsheet.** (1) Build the sheet from the Try it box: accuracy in column A, number of questions in column B, and in column C the formula =1.96*SQRT(A2*(1-A2)/B2). (2) Fill five rows: 0.80 with 100, 500 and 2,500 questions; 0.95 with 200 questions; 0.50 with 500 questions. (3) For two models scoring 0.82 and 0.80 on 500 questions, write down both intervals and decide whether the difference is meaningful. **What you'll learn:** why small benchmarks and small score gaps deserve skepticism.
+2. **[Easy] Error bars in a spreadsheet.** (1) Build the sheet from the Try it box, with headings in row 1 and numbers starting in row 2: accuracy in column A, number of questions in column B, and in column C the formula =1.96*SQRT(A2*(1-A2)/B2), copied down. (2) Fill five rows: 0.80 with 100, 500 and 2,500 questions; 0.95 with 200 questions; 0.50 with 500 questions. (3) For two models scoring 0.82 and 0.80 on 500 questions, write down both intervals (each score minus and plus its column C value) and decide whether the difference is meaningful. **What you'll learn:** why small benchmarks and small score gaps deserve skepticism.
 
 3. **[Easy] Play ARC-AGI-3 yourself.** (1) Go to arcprize.org and play several ARC-AGI-3 games, which come with no instructions. (2) For each, write one sentence on how you worked out the goal. (3) Read ARC Prize's post on GPT-6 Astra and compare the standard-harness and Provider Adapter scores. **What you'll learn:** what fluid-reasoning tests measure, and why the harness belongs in every reported score.
 
-4. **[Medium] Read a leaderboard like an analyst.** (1) Open the Artificial Analysis models leaderboard (artificialanalysis.ai/leaderboards/models). (2) Pick three models: one top closed model, one open-weight model and one cheap small model. (3) Record each one's intelligence index, input and output price per million tokens, and output speed. (4) Estimate how many 1,000-word conversations each would handle for $10, assuming about 1,500 input tokens and 1,500 output tokens per conversation. **What you'll learn:** the price-performance frontier, and why "best" depends on the job.
+4. **[Medium] Read a leaderboard like an analyst.** (1) Open the Artificial Analysis models leaderboard (artificialanalysis.ai/leaderboards/models). (2) Pick three models: one top closed model, one open-weight model and one cheap small model. (3) Record each one's intelligence index, input and output price per million tokens, and output speed. (4) Estimate how many 1,000-word conversations each would handle for $10, assuming about 1,500 input tokens and 1,500 output tokens per conversation: cost of one conversation = 1,500 × input price ÷ 1,000,000 + 1,500 × output price ÷ 1,000,000, then divide $10 by that cost. **What you'll learn:** the price-performance frontier, and why "best" depends on the job.
 
 5. **[Medium] Spot the cherry-pick.** (1) Using Table 24.1, count how many of the five rows each model wins. (2) Imagine you are OpenAI's marketing team: which two rows would you put first? Do the same as Anthropic. (3) Write two sentences on what a fair comparison table would need. (4) Optional: find a current launch post from any lab and count the rows where the launching model is not the winner. **What you'll learn:** how row selection shapes the story a table tells.
 
@@ -822,9 +822,9 @@ Benchmark, Evaluation (eval), Leaderboard, Frontier model, Harness (scaffold), R
 
 7. **[Medium] Build your own private benchmark.** (1) Write 20 questions from your own work or hobby with answers you can verify, mixing easy and hard. Include two questions with no correct answer, to test whether a model will say "I don't know." (2) Run all 20 on three chatbots or three tiers. (3) Score each answer as right, partly right or wrong in a spreadsheet, and compute each model's accuracy and its error bar using your sheet from Exercise 2. (4) Save the file and repeat in three months. **What you'll learn:** evaluation design that cannot be contaminated, which is also a skill employers pay for.
 
-8. **[Medium] Cost per successful task.** (1) In a spreadsheet, list three models with their input and output prices from Table 24.11. (2) For a task of 50,000 input tokens and 5,000 output tokens, compute the cost per attempt for each. (3) Add a column for success rate (make up plausible values like 90%, 80% and 60%) and a column for the cost of a failure in human time ($30). (4) Compute expected cost per task = cost per attempt + (1 − success rate) × failure cost, and see which model wins. Change the failure cost to $1 and to $200. **What you'll learn:** why the cheapest model per token is not always the cheapest per result.
+8. **[Medium] Cost per successful task.** (1) In a spreadsheet, list three models with their input and output prices from Table 24.11. (2) For a task of 50,000 input tokens and 5,000 output tokens, compute the cost per attempt for each: 50,000 × input price ÷ 1,000,000 + 5,000 × output price ÷ 1,000,000 (for Opus 5.5 that is $0.20 + $0.10 = $0.30). (3) Add a column for success rate (make up plausible values like 90%, 80% and 60%) and a column for the cost of a failure in human time ($30). (4) Compute expected cost per task = cost per attempt + (1 − success rate) × failure cost, and see which model wins. Change the failure cost to $1 and to $200. **What you'll learn:** why the cheapest model per token is not always the cheapest per result.
 
-9. **[Challenge] Estimate a training run.** (1) In a spreadsheet, set up cells for active parameters N, training tokens D, number of GPUs, peak FLOP per second per GPU (use 5 × 10^15) and utilization (use 0.25). (2) Compute total compute = 6 × N × D. (3) Compute training seconds = compute ÷ (GPUs × peak × utilization), then convert to days. (4) Compute GPU-hours and cost at $2 and $5 per GPU-hour. (5) Check your sheet with DeepSeek-V4-Pro (N = 49 billion, D = 33 trillion) and then try a hypothetical model with N = 200 billion and D = 60 trillion on 100,000 GPUs. **What you'll learn:** how compute, chips, time and money connect, and why only a few organizations can train frontier models.
+9. **[Challenge] Estimate a training run.** (1) In a spreadsheet, set up cells for active parameters N, training tokens D, number of GPUs, peak FLOP per second per GPU (use 5 × 10^15, typed as 5E15) and utilization (use 0.25). (2) Compute total compute = 6 × N × D (in a spreadsheet, * for × and / for ÷). (3) Compute training seconds = compute ÷ (GPUs × peak × utilization), then convert to days by dividing by 86,400 (the seconds in a day). (4) Compute GPU-hours = GPUs × seconds ÷ 3,600, and cost at $2 and $5 per GPU-hour. (5) Check your sheet with DeepSeek-V4-Pro (N = 49E9, D = 33E12): total compute should come out near the chapter's 9.7 × 10^24 (DeepSeek's GPU count is not public, so try any round number, such as 10,000, for the time and cost cells). Then try a hypothetical model with N = 200 billion and D = 60 trillion on 100,000 GPUs. **What you'll learn:** how compute, chips, time and money connect, and why only a few organizations can train frontier models.
 
 10. **[Challenge] Open versus closed on your own test.** (1) Install Ollama (ollama.com) or LM Studio (lmstudio.ai). (2) Run a small open model, for example by typing ollama run gemma4:e2b in a terminal, or by downloading a small Gemma 4 or Qwen model in LM Studio. (3) Run your 20-question private benchmark from Exercise 7 on the local model with Wi-Fi turned off. (4) Compare its accuracy and speed with a closed frontier model. **What you'll learn:** what open weights mean in practice, how big the gap is for your own tasks, and when a private local model is good enough.
 
@@ -875,3 +875,5 @@ Benchmark, Evaluation (eval), Leaderboard, Frontier model, Harness (scaffold), R
 - **"Why Language Models Hallucinate" by Kalai and colleagues (2025, arXiv 2509.04664).** Shows how benchmarks that reward guessing over admitting uncertainty shape model behavior; a deep lesson about what we measure.
 - **The original benchmark papers: MMLU (arXiv 2009.03300), GPQA (arXiv 2311.12022) and SWE-bench (arXiv 2310.06770).** Short, readable introductions that show how benchmark designers think about difficulty and contamination.
 - **Stanford HAI, AI Index Report (hai.stanford.edu/ai-index).** An annual, well-sourced overview of models, benchmarks, investment and policy, useful for staying current once this chapter's snapshot ages.
+
+> **Definition — Stanford HAI (Stanford Institute for Human-Centered Artificial Intelligence):** A research institute at Stanford University that studies AI and its effects on people and society. It publishes the AI Index, a widely cited annual report of data on AI models, benchmarks, investment and policy.

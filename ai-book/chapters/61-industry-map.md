@@ -58,7 +58,9 @@ The run-rate was about double what the company had booked in nine months, yet cl
 
 OpenAI shows the same pattern: a reported run-rate of about $20 billion at the end of 2025 against reported 2025 revenue of $13.1 billion. Its run-rate was reported at about $50 billion in September 2026 (Financial Times), and Bloomberg reported on October 9 that it expected at least $70 billion by year-end. The FT noted that an earlier "$70 billion" figure had used a different method, which is why you always ask how a run-rate was computed.
 
-> **Watch out:** Even recognized revenue is not always comparable. Anthropic reportedly books sales made through cloud resellers "gross," counting the full price the customer pays even when a cloud partner takes a share, while some peers book similar sales "net." That inflates its top line relative to peers. Compare like with like.
+> **Definition — FT (Financial Times):** A London-based daily business newspaper, one of the main outlets for reported figures on AI companies' revenue, losses and funding. Its figures are reporting, not company filings.
+
+> **Watch out:** Even recognized revenue is not always comparable. Anthropic reportedly books sales made through cloud resellers "gross," counting the full price the customer pays even when a cloud partner takes a share, while some peers book similar sales "net." That inflates its top line (total revenue, the first line of the accounts) relative to peers. Compare like with like.
 
 > **Definition — Bookings, backlog and RPO (remaining performance obligations):** Contracts that have been signed but not yet delivered or paid for. CoreWeave's reported backlog of about $104 billion (June 30, 2026) is future work it has agreed to do, not money in its bank account.
 
@@ -96,6 +98,10 @@ Worked example. In late May 2026 Anthropic reportedly raised $65 billion at a $9
 
 The 2026 IPO wave put these words on front pages (all reported). SpaceX, which had absorbed xAI in February, listed on June 12, 2026 at $135 a share, raised about $75 billion and closed its first day near a $2.1 trillion value. OpenAI filed confidentially with the SEC (the US Securities and Exchange Commission, which regulates stock markets) on June 8 and was said to target a listing "by 2027." Anthropic filed confidentially on June 1 and, in mid-October, was reported to be aiming for a mid-November listing, with reported valuation talk ranging from about $1.5 trillion to $2 trillion.
 
+> **Definition — SEC (Securities and Exchange Commission):** The US government agency that regulates stock markets. Public companies must file audited financial results with it every quarter, and a company planning an IPO files its prospectus there first.
+
+> **Definition — EDGAR:** The SEC's free online database (sec.gov/edgar) of every filing by US public companies, from quarterly results to IPO prospectuses. It is the primary source behind most company figures in the news.
+
 > **Definition — Public benefit corporation (PBC):** A for-profit company legally required to weigh a stated public mission alongside profit. Anthropic is a PBC, and in October 2025 OpenAI's for-profit arm became OpenAI Group PBC, controlled by the nonprofit OpenAI Foundation (reported).
 
 | Kind of number | What it measures | Example (date, status) | The trap |
@@ -103,7 +109,7 @@ The 2026 IPO wave put these words on front pages (all reported). SpaceX, which h
 | Recognized revenue | Money earned for services delivered | OpenAI $13.1B for 2025 (reported) | Lags fast growth; gross vs net differs |
 | Run-rate or ARR | Current pace, annualized | Anthropic over $65B, end of July 2026 (reported) | Method varies; one hot month can inflate it |
 | Backlog or RPO | Signed, undelivered contracts | CoreWeave about $104B, June 2026 (reported) | Not cash; can be delayed or cancelled |
-| "Up to" commitment | A maximum, often conditional | Stargate "up to $500B" | A ceiling, not a forecast |
+| "Up to" commitment | A maximum, often conditional | Stargate, OpenAI's data-center joint venture with partners, "up to $500B" | A ceiling, not a forecast |
 | Valuation | Price of a slice, scaled to the whole | Anthropic $965B post-money, May 2026 (reported) | Not cash the company holds |
 | Capex | Spending on long-lived assets | Big-four hyperscalers about $720–745B, 2026 (reported) | Spent once, depreciated over years |
 
@@ -141,13 +147,15 @@ flowchart BT
 
 ### Layer 0: energy, land and construction
 
-Every AI answer starts as electricity. Data centers worldwide used about 415 terawatt-hours in 2024, roughly 1.5% of global electricity, according to the International Energy Agency, and AI's share is growing fastest. Epoch AI's tracker (data as of October 20, 2026) lists 95 large AI data centers with about 14.2 gigawatts of IT power between them.
+Every AI answer starts as electricity. Data centers worldwide used about 415 terawatt-hours in 2024, roughly 1.5% of global electricity, according to the International Energy Agency, and AI's share is growing fastest. The tracker of Epoch AI, an independent research group that measures AI trends (data as of October 20, 2026), lists 95 large AI data centers with about 14.2 gigawatts of IT power between them.
 
 > **Definition — Gigawatt (GW):** One billion watts, roughly the output of a large power plant. Labs and clouds now describe data-center size in gigawatts.
 
 > **Definition — Powered land:** A site that already has a confirmed connection to enough electricity for a data center. Because new grid connections can take years, powered land became one of the scarcest assets in AI.
 
-This layer includes utilities, turbine and transformer makers, nuclear companies, builders, land developers and the skilled trades. The real-estate firm JLL put the average cost of a data-center shell and core at about $10.7 million per megawatt in 2025, and said AI tenant fit-out can add up to about $25 million per megawatt on top. Including chips, industry statements put a gigawatt of AI capacity at tens of billions of dollars; NVIDIA's chief executive has cited roughly $50–60 billion.
+This layer includes utilities, turbine and transformer makers, nuclear companies, builders, land developers and the skilled trades. The real-estate firm JLL put the average cost of a data-center shell and core (the building and its core power and cooling systems, before a tenant's own equipment goes in) at about $10.7 million per megawatt in 2025, and said AI tenant fit-out can add up to about $25 million per megawatt on top. Including chips, industry statements put a gigawatt of AI capacity at tens of billions of dollars; NVIDIA's chief executive has cited roughly $50–60 billion.
+
+> **Definition — JLL (Jones Lang LaSalle):** A global commercial real-estate services firm whose regular data-center reports are a widely quoted source for construction costs, vacancy rates and capacity under construction.
 
 Power has become the bottleneck: chips can be ordered in months, but a grid connection or power plant can take years. That is why Meta announced nuclear agreements for up to 6.6 GW by 2035 in January 2026, why some sites burn gas in on-site turbines, and why lab job boards now list data-center electrical engineers, technicians and community-engagement managers. Chapters 39 to 42 cover this layer in depth.
 
@@ -155,15 +163,21 @@ Power has become the bottleneck: chips can be ordered in months, but a grid conn
 
 ### Layer 1: chips and hardware
 
-The star of this layer is NVIDIA, whose GPUs (graphics processing units, the highly parallel chips that do most AI math; see Chapter 32) fill most AI data centers. In its fiscal quarter ending July 26, 2026, NVIDIA reported revenue of $96.2 billion, up 106% from a year earlier. Data Center revenue was $89.0 billion, about 92% of the total, and gross margin was 75.0%. It guided to about $108 billion for the next quarter, assuming no data-center compute sales to China. These figures come from NVIDIA's own SEC filing.
+The star of this layer is NVIDIA, whose GPUs (graphics processing units, the highly parallel chips that do most AI math; see Chapter 32) fill most AI data centers. In its fiscal quarter ending July 26, 2026 (a fiscal quarter is a quarter of the company's own accounting year, which need not match the calendar), NVIDIA reported revenue of $96.2 billion, up 106% from a year earlier. Data Center revenue was $89.0 billion, about 92% of the total, and gross margin was 75.0%. It guided to about $108 billion for the next quarter, assuming no data-center compute sales to China. These figures come from NVIDIA's own SEC filing.
 
 > **Definition — Foundry:** A company that manufactures chips designed by others. TSMC in Taiwan manufactures most of the world's leading AI chips for "fabless" designers such as NVIDIA, AMD and Broadcom, which design chips but own no factories.
+
+> **Definition — TSMC (Taiwan Semiconductor Manufacturing Company):** The world's largest contract chip manufacturer, based in Taiwan. It makes the most advanced chips for NVIDIA, AMD, Apple, Google and many others, which makes it a single point the whole AI industry depends on (see Chapter 36).
 
 > **Definition — Custom silicon (ASIC):** A chip designed for one company's own workloads, such as Google's TPU or Amazon's Trainium, rather than sold to everyone. Clouds build them to cut costs, secure supply and gain bargaining power with NVIDIA.
 
 A 75% gross margin is extraordinary for hardware. Of every dollar a customer pays NVIDIA, only about 25 cents covers the direct cost of making the product: wafers from TSMC, high-bandwidth memory (HBM, see Chapter 33) from SK hynix, Samsung or Micron, packaging and boards. The other 75 cents funds research and profit. The margin exists because there is not yet a full substitute: two decades of CUDA software (NVIDIA's platform for programming its chips) and complete rack-scale systems make NVIDIA hard to replace (see Chapter 35).
 
+> **Definition — SK hynix:** A South Korean memory-chip maker, part of the SK business group, and a leading supplier of the high-bandwidth memory (HBM) stacked beside AI chips. Samsung and the US company Micron are the other two HBM makers.
+
 Alternatives are growing: AMD's 6-gigawatt deal with OpenAI (October 2025), Google's TPUs (up to one million promised to Anthropic the same month), Amazon's Trainium, and OpenAI's 10-gigawatt custom-chip plan with Broadcom. Beneath them all sit TSMC's factories, ASML's lithography machines (the only source of extreme-ultraviolet tools) and the three HBM makers.
+
+> **Definition — ASML:** A Dutch company that makes the lithography machines used to print the patterns of chips onto silicon wafers. It is the only maker of the extreme-ultraviolet (EUV) machines needed for the most advanced chips (see Chapter 36).
 
 > **Analogy:** In a gold rush, the sellers of picks and shovels often did better than most miners, because they sold to everyone and never had to strike gold. NVIDIA sells the shovels of the AI rush. Selling to every miner beats betting on one mine, until the rush ends.
 
@@ -172,6 +186,8 @@ Alternatives are growing: AMD's 6-gigawatt deal with OpenAI (October 2025), Goog
 Most labs rent their computing from clouds, often under enormous multi-year contracts.
 
 > **Definition — Hyperscaler:** One of the largest cloud and internet companies building data centers at enormous scale: Amazon (AWS), Microsoft (Azure) and Google, plus Meta and Oracle.
+
+> **Definition — AWS (Amazon Web Services):** Amazon's cloud-computing business, the largest cloud provider, which rents servers, storage and AI chips (including NVIDIA GPUs and Amazon's own Trainium) to companies and AI labs.
 
 > **Definition — Neocloud:** A newer cloud company that specializes in renting GPUs for AI, such as CoreWeave, Nebius, Lambda or Crusoe.
 
@@ -189,7 +205,7 @@ Most labs rent their computing from clouds, often under enormous multi-year cont
 | Meta | $130–145B |
 | **Big four combined** | **about $720–745B** |
 
-*Table 61.2: Hyperscaler capital spending plans for 2026, as reported after the July 2026 earnings calls. FactSet put the total for five companies including Oracle "close to $800bn." Definitions differ, and results due in late October 2026 may change these figures.*
+*Table 61.2: Hyperscaler capital spending plans for 2026, as reported after the July 2026 earnings calls (the quarterly briefings in which public companies present results to investors). The financial-data company FactSet put the total for five companies including Oracle "close to $800bn." Definitions differ, and results due in late October 2026 may change these figures.*
 
 Clouds make money by renting capacity for more than it costs them. The risk is timing: the cloud pays for chips and buildings up front and earns the money back over years. If prices fall faster than expected or customers leave, it is left holding expensive, aging hardware.
 
@@ -247,11 +263,13 @@ The top layer sells expertise and time rather than software.
 
 > **Definition — Systems integrator (SI or GSI):** A large consulting firm, such as Accenture or Deloitte, that implements technology inside big organizations ("GSI" means global systems integrator). They are a major channel through which AI reaches enterprises.
 
-> **Definition — Forward-deployed engineer (FDE):** An engineer embedded with a customer, often on site for weeks or months, to build and deploy solutions on that customer's systems. The role originated at Palantir and became one of the fastest-growing AI jobs of 2025–2026.
+> **Definition — Forward-deployed engineer (FDE):** An engineer embedded with a customer, often on site for weeks or months, to build and deploy solutions on that customer's systems. The role originated at Palantir, a US data-analytics software company, and became one of the fastest-growing AI jobs of 2025–2026.
 
 > **Definition — Pilot (proof of concept):** A small trial that tests whether AI works for one use case before a full rollout.
 
-Services grow because buying AI is easy and getting value from it is hard. Stanford's 2026 AI Index reported that 88% of organizations say they use AI. But the MIT NANDA "GenAI Divide" report (July 2025) found that only about 5% of enterprise generative-AI pilots delivered rapid revenue acceleration or measurable impact on profit and loss (P&L). Media turned that into "95% of AI projects fail"; the report itself blamed brittle workflows and poor fit with daily operations, not weak models.
+Services grow because buying AI is easy and getting value from it is hard. Stanford's 2026 AI Index, published by its Institute for Human-Centered AI (HAI), reported that 88% of organizations say they use AI. But the "GenAI Divide" report (July 2025) from MIT NANDA, a research project at the Massachusetts Institute of Technology, found that only about 5% of enterprise generative-AI pilots delivered rapid revenue acceleration or measurable impact on profit and loss (P&L). Media turned that into "95% of AI projects fail"; the report itself blamed brittle workflows and poor fit with daily operations, not weak models.
+
+> **Definition — HAI (Stanford Institute for Human-Centered Artificial Intelligence):** A Stanford University institute that studies AI and its effects on society. It publishes the AI Index, a widely cited annual report of data on AI research, investment, adoption and jobs.
 
 ```
 Pilot-to-impact funnel (shape, not to scale)

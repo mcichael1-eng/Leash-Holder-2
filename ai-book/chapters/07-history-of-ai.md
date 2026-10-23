@@ -82,8 +82,10 @@ In 1943 the neuroscientist Warren McCulloch and the logician Walter Pitts propos
 Three more pieces fell into place in four years.
 
 - **1945:** ENIAC, a room-sized electronic computer with about 18,000 vacuum tubes, was programmed by rewiring it. John von Neumann described the "stored-program" design, in which instructions live in memory alongside the data, so changing programs means loading new instructions. Nearly every computer since works this way.
-- **1947:** At Bell Labs, John Bardeen, Walter Brattain and William Shockley built the transistor, a tiny electrical switch (see Chapter 2). NVIDIA's 2024 Blackwell GPU packs 208 billion of them.
+- **1947:** At Bell Labs, the research laboratory of the American telephone company AT&T, John Bardeen, Walter Brattain and William Shockley built the transistor, a tiny electrical switch (see Chapter 2). NVIDIA's 2024 Blackwell GPU packs 208 billion of them.
 - **1948:** Claude Shannon's theory of information measured information in bits, single yes-or-no choices.
+
+> **Definition — ENIAC (Electronic Numerical Integrator and Computer):** One of the first general-purpose electronic computers, completed in the United States in 1945. It filled a large room, used about 18,000 vacuum tubes as its switches and was reprogrammed by rewiring.
 
 ```mermaid
 timeline
@@ -143,9 +145,14 @@ Newspaper coverage at the time reported that the US Navy, which funded the work,
 
 ### Checkers, ELIZA and Shakey (1958–1972)
 
+- **1958:** John McCarthy created Lisp, a programming language designed for manipulating symbols and lists. It became the main language of AI research for decades.
 - **1959:** Arthur Samuel at IBM wrote a checkers program that improved by playing many games, including against itself. His paper that year popularized the phrase "machine learning".
 - **1964–66:** Joseph Weizenbaum at MIT wrote ELIZA, which imitated a therapist by matching keywords and turning your statements back into questions ("I am sad about my mother" might get "Tell me more about your family"). It understood nothing, yet people confided in it. Weizenbaum was disturbed by this and became one of the field's first critics.
 - **1966–72:** At SRI, Shakey became the first mobile robot to reason about its own actions; its A* route-planning method (1968) is an ancestor of the routing in today's map apps (see Chapter 48).
+
+> **Definition — IBM:** A large American computer company, founded in 1911, that dominated business computing for much of the 20th century. Its research labs produced Samuel's checkers program, the Deep Blue chess computer and the Watson question-answering system.
+
+> **Definition — SRI (Stanford Research Institute):** A research institute in California, founded in 1946 by Stanford University and now called SRI International. It built Shakey, the first mobile robot to reason about its own actions.
 
 > **Definition — Machine learning (ML):** Making computers learn patterns from examples instead of following rules written by hand. The phrase was popularized by Arthur Samuel in 1959.
 
@@ -176,7 +183,11 @@ timeline
 
 ### The perceptron's limits (1969)
 
-Warning signs came early. In 1966 a US government committee (ALPAC) concluded that machine translation was slower, less accurate and costlier than human translators, and that funding dried up. Then in 1969 Marvin Minsky and Seymour Papert published *Perceptrons*, a careful mathematical book about what single-layer perceptrons can and cannot do. Their most famous example was XOR ("exclusive or"): output 1 if exactly one input is 1.
+Warning signs came early. In 1966 a US government committee (ALPAC) concluded that machine translation was slower, less accurate and costlier than human translators, and funding for it dried up.
+
+> **Definition — ALPAC (Automatic Language Processing Advisory Committee):** A US government committee whose 1966 report judged machine translation slower, less accurate and costlier than human translators, which led to deep cuts in funding for it.
+
+Then in 1969 Marvin Minsky and Seymour Papert published *Perceptrons*, a careful mathematical book about what single-layer perceptrons can and cannot do. Their most famous example was XOR ("exclusive or"): output 1 if exactly one input is 1.
 
 | x1 | x2 | XOR |
 |---|---|---|
@@ -238,7 +249,11 @@ AI came back in the 1980s by narrowing its ambitions. Instead of general intelli
 
 > **Definition — Expert system:** A program from the 1970s and 1980s that encodes a human expert's knowledge as if-then rules in order to give advice in one narrow area, such as diagnosing infections or configuring computers.
 
-MYCIN, built at Stanford in the 1970s, used several hundred rules to diagnose blood infections and suggest antibiotics; in tests it did about as well as specialists, though it was never used routinely on patients. XCON, introduced at Digital Equipment Corporation in 1980 to configure computer orders, grew to thousands of rules and reportedly saved the company tens of millions of dollars a year. "Knowledge engineers" interviewed experts and turned their judgment into rules, and companies bought expensive "Lisp machines" built to run AI software. In 1982 Japan launched its ten-year Fifth Generation project to build logic-based computers, and the US and UK answered with programs of their own: the first international AI race.
+MYCIN, built at Stanford in the 1970s, used several hundred rules to diagnose blood infections and suggest antibiotics; in tests it did about as well as specialists, though it was never used routinely on patients. XCON, introduced at Digital Equipment Corporation (then a major American computer maker) in 1980 to configure computer orders, grew to thousands of rules and reportedly saved the company tens of millions of dollars a year. "Knowledge engineers" interviewed experts and turned their judgment into rules, and companies bought expensive "Lisp machines", computers built to run software written in Lisp, the AI language from Era 2. In 1982 Japan launched its ten-year Fifth Generation project to build logic-based computers, and the US and UK answered with programs of their own: the first international AI race.
+
+> **Definition — MYCIN:** An expert system built at Stanford in the 1970s that used several hundred if-then rules to diagnose blood infections and suggest antibiotics. In tests it did about as well as specialists, but it was never used routinely on patients.
+
+> **Definition — XCON:** An expert system introduced at Digital Equipment Corporation in 1980 to work out which parts each customer's computer order needed. It grew to thousands of rules and was one of the first commercially successful AI programs.
 
 ### Why the boom collapsed (1987–1993)
 
@@ -254,7 +269,7 @@ While expert systems boomed and busted, a small group kept working on networks o
 
 > **Definition — Neural network:** A model made of layers of artificial neurons, each computing a weighted sum followed by a simple squashing step. It is loosely inspired by the brain but is really stacked arithmetic.
 
-In 1982 the physicist John Hopfield showed how a network could store memories as stable patterns. In 1986 David Rumelhart, Geoffrey Hinton and Ronald Williams showed in *Nature* how to train networks with hidden layers using backpropagation. Versions of the method had been found earlier, by Seppo Linnainmaa in 1970 and Paul Werbos in 1974, but the 1986 paper made it famous. Multi-layer networks could now learn XOR and much more.
+In 1982 the physicist John Hopfield showed how a network could store memories as stable patterns. In 1986 David Rumelhart, Geoffrey Hinton and Ronald Williams showed in *Nature*, one of the world's leading science journals, how to train networks with hidden layers using backpropagation. Versions of the method had been found earlier, by Seppo Linnainmaa in 1970 and Paul Werbos in 1974, but the 1986 paper made it famous. Multi-layer networks could now learn XOR and much more.
 
 > **Definition — Backpropagation:** The method for training a multi-layer neural network by working backward from its error to calculate how much each weight should change, using the chain rule from calculus (see Chapter 6 and Chapter 12).
 
@@ -292,7 +307,7 @@ Almost none of this was called "AI" at the time, which is a recurring pattern.
 
 > **Definition — AI effect:** The habit of no longer calling something "AI" once it works reliably. Spam filters, route planning and face unlock were all AI research problems before they became ordinary features.
 
-The web became the data source. In 1991 the World Wide Web went public, and Linux and Python (later the main language of AI) were first released. Storage got cheap, and people began creating enormous amounts of text, images and clicks. In 1998 LeCun and colleagues published MNIST, 70,000 small images of handwritten digits that became the "hello world" of machine learning.
+The web became the data source. In 1991 the World Wide Web went public, and Linux and Python (later the main language of AI) were first released. Storage got cheap, and people began creating enormous amounts of text, images and clicks. In 1998 LeCun and colleagues published MNIST, 70,000 small images of handwritten digits that became the "hello world" of machine learning (the standard first exercise, named after the tiny program that prints "hello world", traditionally the first one a programmer writes).
 
 > **Definition — Benchmark:** A standard test, usually a fixed dataset with a scoring rule, used to compare AI systems. Benchmarks drive progress but can be overfit or outgrown (see Chapter 9 and Chapter 24).
 
@@ -307,7 +322,9 @@ Games are cheap, safe, scorable worlds, which made them the field's favorite pro
 
 > **Definition — Self-play:** Training a game-playing program by having it play against copies of itself, so it always faces an opponent at its own level and can eventually surpass every human teacher.
 
-Neural networks survived in niches: in 1997 Sepp Hochreiter and Jürgen Schmidhuber published the LSTM, a network that remembers information over long sequences and later powered speech recognition on phones. And DARPA's 2004–2005 desert races for driverless cars led to Google's self-driving project in 2009, the ancestor of Waymo (see Chapter 50).
+Neural networks survived in niches: in 1997 Sepp Hochreiter and Jürgen Schmidhuber published the LSTM, a network that remembers information over long sequences and later powered speech recognition on phones. And DARPA's 2004–2005 desert races for driverless cars (Stanford's car Stanley won in 2005) led to Google's self-driving project in 2009, the ancestor of Waymo, today's robotaxi company (see Chapter 50).
+
+> **Definition — DARPA (Defense Advanced Research Projects Agency):** The US Defense Department's agency for funding ambitious, high-risk research. Under its earlier name, ARPA, it funded much early AI research and the ARPANET, the ancestor of the internet.
 
 ### The ingredients arrive (2006–2011)
 

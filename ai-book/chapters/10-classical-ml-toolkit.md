@@ -808,7 +808,7 @@ How often is often enough? Measure it. Train a model on January to June data and
 
 ### Testing a machine-learning system
 
-Ordinary software has unit tests (Chapter 29). A machine-learning system needs those plus three kinds of check of its own.
+Ordinary software has unit tests, small automatic checks that each piece of code does what it should (Chapter 29). A machine-learning system needs those plus three kinds of check of its own.
 
 - **Data tests** run whenever new data arrives, before training or scoring: ages between 0 and 120, no more than 1 percent of emails missing, every customer ID unique, today's row count within 20 percent of yesterday's. Open-source tools such as Great Expectations let you write these as rules. They catch the broken pipelines from the warning above before a model learns from them.
 - **Training tests** check the training code. The most useful is to train on a tiny sample, say 10 examples, and confirm the model can memorize it almost perfectly. A model that cannot even overfit 10 examples has a bug, such as labels shuffled out of line with their rows, a wrong loss or a learning rate of zero, and more data will not fix it.

@@ -929,7 +929,7 @@ Critics point out that companies can rewrite their own commitments, and several 
 flowchart LR
     A["Voluntary pledges<br/>White House 2023, Seoul 2024"] --> B["Companies publish<br/>safety frameworks"]
     B --> C["Codes of practice<br/>EU GPAI code, 2025"]
-    C --> D["Statutes require publishing<br/>and following a framework<br/>CA SB 53, NY RAISE"]
+    C --> D["Statutes require publishing<br/>and following a framework<br/>California SB 53, New York RAISE"]
     D --> E["Enforcement<br/>fines, incident reports,<br/>whistleblower cases"]
 ```
 *Figure 59.11: How soft law hardens. A practice that starts as a voluntary promise becomes a code, then a statutory duty, then something regulators can enforce.*
