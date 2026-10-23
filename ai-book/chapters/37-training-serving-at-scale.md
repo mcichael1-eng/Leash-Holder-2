@@ -929,7 +929,7 @@ Serving you is a different game. Reading your prompt is fast and parallel; writi
 
 ## Key terms
 
-Distributed training, Accelerator, Cluster, FLOP (floating-point operation), FLOP/s (FLOPS), Parameter, Token, 6ND rule, Active parameters, GPU-hour, PUE (power usage effectiveness), H100-equivalent (H100e), Gradient, Optimizer state, Mixed precision, Activations, Activation checkpointing (recomputation), Data parallelism (DP), Global batch size, Sharding, ZeRO / FSDP, Tensor parallelism (TP), Pipeline parallelism (PP), Microbatch, Pipeline bubble, Context parallelism (CP), Mixture of experts (MoE), Expert parallelism (EP), All-to-all, Scale-up vs. scale-out network, Collective communication, All-reduce, Reduce-scatter, All-gather, Ring all-reduce, NCCL / RCCL, Straggler, MFU (model FLOPs utilization), HFU (hardware FLOPs utilization), MTBF (mean time between failures), Checkpoint, Goodput, Silent data corruption, FP8, Block-scaled 4-bit formats (NVFP4, MXFP4), Loss spike, Prefill, Decode, KV cache, TTFT (time to first token), Batching (continuous batching), Throughput, Interactivity (tokens per second per user), Pareto frontier (throughput versus interactivity), Disaggregated serving, Cost per million tokens, TCO (total cost of ownership), Jevons paradox, Gradient accumulation, Communication-bound, Profiler, Trace (profile timeline), ECC (error-correcting code) memory, Tail latency, Fan-out, Hedged request, Queueing delay
+Distributed training, Accelerator, Cluster, FLOP (floating-point operation), FLOP/s (FLOPS), Parameter, Token, 6ND rule, Active parameters, GPU-hour, PUE (power usage effectiveness), H100-equivalent (H100e), Gradient, Optimizer state, Mixed precision, Activations, Activation checkpointing (recomputation), Data parallelism (DP), Global batch size, Sharding, ZeRO / FSDP, Tensor parallelism (TP), Pipeline parallelism (PP), Microbatch, Pipeline bubble, Context parallelism (CP), Mixture of experts (MoE), Expert parallelism (EP), All-to-all, Scale-up vs. scale-out network, Collective communication, All-reduce, Reduce-scatter, All-gather, Ring all-reduce, NCCL / RCCL, Straggler, MFU (model FLOPs utilization), HFU (hardware FLOPs utilization), MTBF (mean time between failures), Checkpoint, Goodput, Silent data corruption, FP8, Block-scaled 4-bit formats (NVFP4, MXFP4), Loss spike, Prefill, Decode, KV cache, TTFT (time to first token), Batching (continuous batching), Throughput, Interactivity (tokens per second per user), Pareto frontier (throughput versus interactivity), Disaggregated serving, Cost per million tokens, TCO (total cost of ownership), LED (light-emitting diode), Jevons paradox, Gradient accumulation, Communication-bound, Profiler, Trace (profile timeline), ECC (error-correcting code) memory, Tail latency, Fan-out, Hedged request, Queueing delay
 
 ## Exercises
 
@@ -947,7 +947,7 @@ Distributed training, Accelerator, Cluster, FLOP (floating-point operation), FLO
 
 3. **[Easy] Training memory budget.** In a spreadsheet, make rows for 8B, 70B and 405B models.
    1. Compute training memory at 16 bytes per parameter (in GB: parameters × 16 ÷ 10^9).
-   2. Divide by 80 (H100) and by 288 (B300 or Rubin), rounding up to a whole GPU (in a spreadsheet, `=ROUNDUP(B2/80, 0)`), to get the minimum number of GPUs just to hold the state.
+   2. Divide by 80 (H100) and by 288 (B300 or Rubin), rounding up to a whole GPU (in a spreadsheet, if B2 holds the memory in GB, `=ROUNDUP(B2/80, 0)`), to get the minimum number of GPUs just to hold the state.
    3. Add columns for ZeRO-1, ZeRO-2 and ZeRO-3 on 64 GPUs using the formulas in Table 37.4 (weights 2 bytes, gradients 2 bytes, optimizer 12 bytes per parameter).
    **What you'll learn:** why memory, not just speed, forces multi-GPU training, and how sharding solves it.
 
@@ -988,7 +988,7 @@ Distributed training, Accelerator, Cluster, FLOP (floating-point operation), FLO
    **What you'll learn:** the logic of matching communication-heavy work to the fastest links.
 
 9. **[Challenge] Reverse-engineer a frontier run.** Use Epoch AI's stated assumptions for GPT-6 Astra (about 100,000 GB200 GPUs, about 90 days, 25 percent utilization at FP8).
-   1. Recompute the training FLOP and compare with Epoch's estimate of `9.4 × 10^26` and its range of `5 × 10^26` to `2 × 10^27`.
+   1. Recompute the training FLOP and compare with Epoch's estimate of `9.4 × 10^26` and its range of `5 × 10^26` to `2 × 10^27`. Use FLOP = GPUs × peak FLOP/s × utilization × seconds, with about 5 × `10^15` dense FP8 FLOP/s per Blackwell GPU (as in this chapter's worked example) and 90 days × 86,400 seconds.
    2. Vary each assumption by plus or minus 30 percent and see how much the answer moves.
    3. Estimate the facility power, energy and electricity cost with your Exercise 4 spreadsheet.
    4. Write a half-page note on which assumption is most uncertain and what public evidence could narrow it.
@@ -997,7 +997,7 @@ Distributed training, Accelerator, Cluster, FLOP (floating-point operation), FLO
 10. **[Challenge] Model the Jevons paradox.** In a spreadsheet, model five years of AI inference.
     1. Start with 1 trillion tokens per day at $1 per million tokens and 0.75 joules per token.
     2. Each year, let the price per token fall 10× and energy per token fall 1.34×. Try three demand scenarios: tokens per day grow 5×, 10× and 20× per year.
-    3. For each scenario, chart total yearly spending and total yearly energy (in GWh).
+    3. For each scenario, chart total yearly spending (tokens per day × 365 ÷ 1,000,000 × price per million) and total yearly energy in GWh (tokens per day × 365 × joules per token ÷ 3.6 trillion, because one GWh is 3.6 trillion joules; type 3.6 trillion as 3.6E12 in a spreadsheet).
     4. Write a paragraph on which scenario you find most plausible and why, presenting the strongest argument for the opposite view.
     **What you'll learn:** how efficiency and demand interact, and why total AI power use can rise even as every token gets cheaper.
 
