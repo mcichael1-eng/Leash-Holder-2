@@ -24,7 +24,7 @@ lines = [
     "data centers and energy, every major branch of AI, safety, law and society, and the skills, careers and "
     "opportunities that come with it.",
     "",
-    f"- **{stats['parts']} parts, {stats['chapters']} chapters, 5 appendices**",
+    f"- **{stats['parts']} parts, {stats['chapters']} chapters, {len(outline.get('appendices', []))} appendices**",
     f"- **{stats['terms']:,} terms** in a searchable glossary (every term is defined where it first appears)",
     f"- **{stats['diagrams']} diagrams**, plus tables and hand-worked numeric examples",
     f"- **{stats['exercises']} exercises** from Easy to Challenge, none of which require prior coding experience",
@@ -83,10 +83,33 @@ lines += [
     "Computer*, Hennessy & Patterson on domain-specific architectures, *How to Scale Your Model*, Hendrycks' *AI Safety, "
     "Ethics, and Society*, BlueDot's alignment course and the EU AI Act. Of 878 topics, 819 are in scope for this "
     "reader (the rest are graduate-level mathematics, named where the reader will meet them). The book taught 541 of "
-    "the 819 before the audit and teaches all 819 after it. Per-standard tables are in `planning/coverage/external-*.md`; "
-    "the tables of contents were reconstructed from the auditors' knowledge because web access was unavailable.",
+    "the 819 before the audit and teaches all 819 after it. Per-standard tables are in `planning/coverage/external-*.md`.",
+    "8. **Verified online.** With web access, every one of those tables of contents was checked against the real "
+    "published contents and syllabi (including newer editions such as the free 4th edition of *The Data Center as a "
+    "Computer* and the 2026 Stanford course pages). Topics the first audit had missed were added and taught; "
+    "the book now covers every in-scope topic of every standard, and every topic judged out of scope is explained "
+    "in plain words in Appendix F, The Advanced Shelf.",
+    "9. **Fact-check against current sources.** Ten fact-checkers, one per Part plus the appendices, checked about "
+    "1,200 time-sensitive claims (models, prices, chips, data-center projects, laws, people) against primary sources "
+    "as of October 2026: about 115 were corrected, about 50 recent developments were added, and claims that only "
+    "the press supports are marked \"reported\". Every web link was checked (`planning/coverage/freshness-*.md`). "
+    "A consistency sweep then made every corrected fact read the same in every chapter "
+    "(`planning/coverage/consistency-sweep.md`).",
+    "10. **Real readers' questions.** 528 questions that people actually ask online (help centers, forums, "
+    "Hacker News, Stack Exchange, Quora) were checked against the book. It fully answered 421 before and 506 after; "
+    "the rest are partly answered or depend on facts no primary source settles "
+    "(`planning/coverage/questions-*.md`).",
+    "11. **Every chapter read as a beginner.** Every chapter and appendix was read start to finish from the "
+    "reader's point of view, fixing about 1,000 places where that reader would get lost, including defining every "
+    "abbreviation and company name at first use, and testing the exercises (`planning/coverage/reader-test-*.md`, "
+    "`earliest-use.md`, `code-tests.md`). Every term defined in more than one chapter was checked so the glossary "
+    "never merges two different meanings (`definitions-*.md`).",
+    "12. **Adversarial review.** Everything added in steps 8 to 11 was reviewed twice more, once for facts and "
+    "arithmetic and once for clarity and integrity, by reviewers told to assume each passage was wrong until "
+    "checked: about 3,000 passages, about 260 problems fixed (`planning/coverage/adversarial-review.md`). A final "
+    "completeness critic re-read every report and closed what was still open.",
     "",
-    "Facts about fast-moving areas (models, chips, data centers, prices, law) reflect sources available in October 2026 "
+    "Facts about fast-moving areas (models, chips, data centers, prices, law) reflect sources available on October 23, 2026 "
     "and will date. Figures from secondary sources are marked as reported; check the Going deeper lists for primary sources.",
     "",
     "## Rebuilding the web version",
