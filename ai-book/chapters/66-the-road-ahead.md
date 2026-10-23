@@ -328,11 +328,11 @@ Chapters 32 to 36 showed that AI runs on one of the most concentrated supply cha
 
 > **Definition — Memory wall:** The long-running gap between how fast processors can calculate and how fast memory can feed them numbers, which leaves AI chips increasingly waiting on data.
 
-Published roadmaps give you dates to check: NVIDIA's Rubin Ultra in "Kyber" racks of around 600 kW with 800-volt DC power for the second half of 2027 and a Feynman generation previewed for 2028; AMD's MI500 in 2027; Huawei's Ascend 960DT pulled forward to early 2027 and the 970 in 2028. Longer-term bets such as co-packaged optics, 3D-stacked logic and memory, and photonic or in-memory computing are real research, but none is yet competitive at frontier scale, and quantum computers are not AI accelerators today (Chapter 35).
+Published roadmaps give you dates to check: NVIDIA's Rubin Ultra in "Kyber" racks of around 600 kW with 800-volt DC power for the second half of 2027 and a Feynman generation previewed for 2028; the MI500, the next Instinct GPU from NVIDIA's main rival AMD (Chapter 35), in 2027; Huawei's Ascend 960DT pulled forward to early 2027 and the 970 in 2028. Longer-term bets such as co-packaged optics, 3D-stacked logic and memory, and photonic or in-memory computing are real research, but none is yet competitive at frontier scale, and quantum computers are not AI accelerators today (Chapter 35).
 
 ### Money: can revenue catch up with capex?
 
-The largest US cloud companies guided to roughly $720–745 billion of 2026 capital spending across four companies, and FactSet put it "close to $800bn" for five once finance leases are counted. In September 2026 the Wall Street Journal put AI investment at about 3.6% of US GDP, against about 2.2% for the railroads of the 1800s. Lab revenue is growing very fast, but so are losses: the Financial Times reported OpenAI projecting cumulative negative free cash flow of about $278 billion from 2026 to 2030.
+The largest US cloud companies guided to roughly $720–745 billion of 2026 capital spending across four companies, and the financial-data firm FactSet put it "close to $800bn" for five once finance leases are counted. In September 2026 the Wall Street Journal put AI investment at about 3.6% of US GDP, against about 2.2% for the railroads of the 1800s. Lab revenue is growing very fast, but so are losses: the Financial Times reported OpenAI projecting cumulative negative free cash flow of about $278 billion from 2026 to 2030.
 
 > **Definition — Capex (capital expenditure):** Money spent on long-lived physical assets such as buildings, power equipment and chips, as opposed to day-to-day operating costs.
 
@@ -344,7 +344,7 @@ The open question is whether the use of AI grows into what is being built for it
 
 This is the author's arithmetic with stated assumptions, not a forecast.
 
-1. **Start.** Epoch estimates GPT-6 Astra's training at about 9.4 × 10^26 FLOP, assuming about 100,000 GB200 GPUs for about 90 days.
+1. **Start.** Epoch estimates GPT-6 Astra's training at about 9.4 × 10^26 FLOP, assuming about 100,000 GB200 GPUs (NVIDIA's Blackwell generation, Chapter 34) for about 90 days.
 2. **Trend.** Epoch measures frontier training compute growing about 5× a year. Four more years: 5 × 5 × 5 × 5 = 625, so a 2030 run of about 9.4 × 10^26 × 625 ≈ 5.9 × 10^29 FLOP.
 3. **Efficiency.** At 1.34× a year better energy efficiency, four years give 1.34^4 ≈ 3.2×. Energy per run grows about 625 ÷ 3.2 ≈ 195×.
 4. **Power today.** A GB200 NVL72 rack draws on the order of 140 kW for 72 GPUs, about 2 kW per GPU, so 100,000 GPUs need roughly 200 MW of IT power.
@@ -392,7 +392,7 @@ A model that finds software vulnerabilities for defenders can find them for atta
 
 > **Definition — Dual-use:** Describes a capability that can serve both helpful and harmful purposes, such as finding security flaws (to patch them, or to exploit them).
 
-The rules are being written as you read (Chapter 59). The EU AI Act phases in through 2028, its high-risk duties delayed by the 2026 Digital Omnibus. In the US, as of October 2026, Congress had passed no law preempting state AI rules, while California's SB 53 is in force and New York's RAISE Act starts on January 1, 2027. On copyright, courts have split by facts: lawfully bought books were fair use in one case, pirated libraries were not, an appeals court ruled in September 2026 that training a competing non-generative legal tool on a rival's content was not fair use, and the New York Times case against OpenAI had no trial date.
+The rules are being written as you read (Chapter 59). The EU AI Act phases in through 2028, its high-risk duties delayed by the 2026 Digital Omnibus. In the US, as of October 2026, Congress had passed no law preempting state AI rules, while California's SB 53 (Senate Bill 53, its frontier-AI transparency law) is in force and New York's RAISE Act, a similar state law for frontier developers, starts on January 1, 2027. On copyright, courts have split by facts: lawfully bought books were fair use in one case, pirated libraries were not, an appeals court ruled in September 2026 that training a competing non-generative legal tool on a rival's content was not fair use, and the New York Times case against OpenAI had no trial date.
 
 > **Definition — Preemption:** When a higher level of government's law overrides a lower level's, as when a US federal statute displaces state laws on the same subject. Only Congress or the courts can do this; an executive order cannot.
 
@@ -473,7 +473,7 @@ In the tables below, the middle column says what has been announced, targeted or
 | Estimates of how much AI speeds up the labs' own research | About 1.5× inside Anthropic: a preliminary estimate by a separate METR team, cited in METR's September 2026 report on Claude Opus 5.5 | METR reports, system cards | Whether AI is accelerating AI development, the engine of the fastest scenarios |
 | Previously unsolved Erdős problems solved by AI | 2 of 68 (GPT-6 Astra, per Epoch, September 2026) | epoch.ai/benchmarks | Whether AI produces original mathematics |
 | Interpretability that "reliably detects most model problems" | A goal Anthropic's CEO set for 2027 | Lab research sites, system cards | Whether safety arguments can rest on looking inside models |
-| A drug discovered and designed with AI approved by a major regulator | None as of late 2026; some reached mid-stage trials | FDA and EMA | Whether AI for science reaches patients |
+| A drug discovered and designed with AI approved by a major regulator | None as of late 2026; some reached mid-stage trials | FDA and EMA (the US and European drug regulators) | Whether AI for science reaches patients |
 
 *Table 66.4: Capability signposts.*
 
@@ -485,7 +485,7 @@ In the tables below, the middle column says what has been announced, targeted or
 | Huawei Ascend 960DT and 970 | First quarter of 2027 and 2028, on Huawei's roadmap | Huawei events | China's domestic chip progress under export controls |
 | Announced campuses actually energized | Epoch projects "over 9 GW" across Stargate sites by about 2029 | Epoch AI data center hub | The gap between announced and delivered gigawatts |
 | Nuclear power for AI | Crane (Three Mile Island Unit 1) restart targeted for 2027; Oklo up to 1.2 GW for Meta as early as 2030 | NRC and utility announcements | Whether firm clean power arrives on AI's timescale |
-| Total data center electricity | IEA base case about 945 TWh by 2030; Lawrence Berkeley National Laboratory (LBNL) projects 6.7–12% of US electricity by 2028 | IEA, EIA, LBNL | Whether demand tracks the high or low forecasts |
+| Total data center electricity | IEA base case about 945 TWh by 2030; Lawrence Berkeley National Laboratory (LBNL) projects 6.7–12% of US electricity by 2028 | IEA, EIA (the US Energy Information Administration, not to be confused with the IEA), LBNL | Whether demand tracks the high or low forecasts |
 | Inference overtaking training | JLL expects around 2027 | Industry reports | Whether spending is driven by use rather than model-building |
 
 *Table 66.5: Infrastructure signposts.*
@@ -497,7 +497,7 @@ In the tables below, the middle column says what has been announced, targeted or
 | EU duties for older general-purpose models; then high-risk (Annex III) duties | August 2, 2027; December 2, 2027 | EU AI Office | Whether the broadest AI law bites on schedule or slips again |
 | A US federal law that preempts state AI rules | None as of October 2026; bills such as the FRONTIER Act pending | congress.gov | One national rulebook or many, and whether it is a floor or a ceiling |
 | Fair-use rulings on generative AI training | New York Times v. OpenAI: summary-judgment motions filed September 2026, no trial date | Court dockets, lawsuit trackers | Whether training needs licenses, reshaping data costs |
-| Hyperscaler capex against AI revenue | Next quarterly reports the week of October 27–30, 2026, then every quarter | Earnings releases and 10-Q filings | The bubble debate's best live data |
+| Hyperscaler capex against AI revenue | Next quarterly reports the week of October 27–30, 2026, then every quarter | Earnings releases and 10-Q filings (quarterly reports to the SEC) | The bubble debate's best live data |
 | AI lab stock listings | Anthropic reportedly targeting a listing as soon as November 2026; OpenAI's finance chief reportedly targets "by 2027" | SEC filings (S-1 prospectuses) | Audited revenue, costs and margins replace press estimates |
 | The young-worker gap in AI-exposed jobs | About 19% in the August 2026 Canaries update | Stanford Digital Economy Lab | Whether labor effects widen, spread or fade |
 
@@ -565,7 +565,7 @@ quadrantChart
 
 **Against.** In mid-2026 the cloud companies said demand still exceeded supply, lab revenue run-rates were compounding at rates rarely seen in business, and the falling cost per answer keeps widening the market. Unlike most bubbles, the product is already used by hundreds of millions of people every week.
 
-**Early signs by 2028.** Capex guidance cut rather than raised; collapsing GPU rental prices; down-round fundraising or troubled listings; cancelled campuses (a planned Abilene expansion already was); spreading laws to shield households from data-center power costs.
+**Early signs by 2028.** Capex guidance cut rather than raised; collapsing GPU rental prices; down-round fundraising (raising money at a lower valuation than the last round) or troubled listings; cancelled campuses (a planned Abilene expansion already was); spreading laws to shield households from data-center power costs.
 
 ### Managed acceleration
 
@@ -825,7 +825,7 @@ Frontier (of AI), Open problem, Jevons paradox, Hallucination, Calibration, Abst
 - **Grid, power and speed-to-power.** Interconnection specialists, power engineers, utility analysts and developers of bridge power, batteries and flexible-load software are the people who decide how fast AI can grow. Utilities, data center developers and regulators all need them, and the trades that build these sites pay large premiums.
 - **Buildout tracking and analysis.** The gap between announced and delivered gigawatts, chips and revenue is where investors and journalists get burned. Analysts who can read filings, satellite images and interconnection queues, in the style of Epoch AI's trackers, are valuable to funds, newsrooms and governments.
 - **Compliance with dated rules.** The EU AI Act's 2027 and 2028 deadlines, New York's RAISE Act and Colorado's automated-decision law in 2027, and California's SB 53 create steady demand for AI governance leads, auditors and documentation tools, especially in regulated industries.
-- **Measuring AI's effects on work.** Economists, HR analysts and workforce-program designers who can measure causal effects of AI on jobs, especially for young workers, are needed by governments, unions, foundations and large employers trying to plan transitions.
+- **Measuring AI's effects on work.** Economists, HR (human resources) analysts and workforce-program designers who can measure causal effects of AI on jobs, especially for young workers, are needed by governments, unions, foundations and large employers trying to plan transitions.
 - **Robot data and deployment.** Teleoperators, robot data collectors, fleet technicians and integration consultants are new job categories as robot foundation models move from pilots to paid work in warehouses and factories.
 - **Forecasting and decision support.** Companies and governments increasingly pay for structured forecasts, scenario planning and signpost dashboards on AI. People with good calibration records and clear writing can do this as analysts, consultants or newsletter writers.
 - **AI literacy for the next wave.** With adoption near-universal in organizations and much of the public uneasy about AI's effects on jobs, teachers, trainers and explainers who can give people an accurate mental model, as this book tries to, are in demand in schools, companies and communities.

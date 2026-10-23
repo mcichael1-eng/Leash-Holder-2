@@ -828,9 +828,9 @@ At the same time, using a model of fixed ability became dramatically cheaper. St
 
 ### Is this time different?
 
-Both earlier booms ended in winters, so it is fair to ask about this one. The strongest case for a bust: five of the biggest US tech companies (Alphabet, Amazon, Meta, Microsoft and Oracle) were on track to spend close to $800 billion on capital projects in 2026, according to FactSet in July 2026, far more than AI products currently earn; some deals are "circular", with chipmakers investing in customers who then buy their chips; reliability problems like hallucination remain unsolved; and careful studies such as METR's 2025 experiment sometimes find smaller productivity gains than people feel.
+Both earlier booms ended in winters, so it is fair to ask about this one. The strongest case for a bust: five of the biggest US tech companies (Alphabet, Amazon, Meta, Microsoft and Oracle) were on track to spend close to $800 billion on capital projects (long-lived things such as data centers, chips and power equipment) in 2026, according to FactSet, a financial data company, in July 2026, far more than AI products currently earn; some deals are "circular", with chipmakers investing in customers who then buy their chips; reliability problems like hallucination remain unsolved; and careful studies such as METR's 2025 experiment sometimes find smaller productivity gains than people feel.
 
-The strongest case against a winter: unlike 1973 or 1987, the technology is in daily use at enormous scale. ChatGPT alone had about 900 million weekly users in February 2026, Stanford's AI Index reports that 88% of organizations use AI, prices for a fixed capability keep collapsing, and measured abilities such as METR's time horizons were still doubling every few months into 2026. A middle view: a financial correction could come without a technical winter, as the dot-com crash of 2000 did not stop the internet. Chapter 43 and Chapter 60 cover both sides in depth.
+The strongest case against a winter: unlike 1973 or 1987, the technology is in daily use at enormous scale. ChatGPT alone had about 900 million weekly users in February 2026, Stanford's AI Index reports that 88% of organizations use AI, prices for a fixed capability keep collapsing, and measured abilities such as METR's time horizons were still doubling every few months into 2026. A middle view: a financial correction could come without a technical winter, as the dot-com crash of 2000 (when the stock prices of internet companies collapsed) did not stop the internet. Chapter 43 and Chapter 60 cover both sides in depth.
 
 > **At the frontier (2026):** The leading labs now argue less about whether scaling works and more about which kind of scaling: bigger pretraining runs (GPT-6 Astra's 100,000-plus GPUs), more reinforcement learning, more thinking at answer time, or agents that run for hours. All four are being pushed at once, on gigawatt campuses that take about two years to build.
 
@@ -887,14 +887,14 @@ Algorithm, Compute, Analytical Engine, Turing machine, Artificial neuron, Turing
 
 6. **[Medium] Plot compute growth on a log scale.** In Google Sheets or Excel, put years in column A and training compute in column B: 2020 = 3.15E+23 (GPT-3), 2023 = 2.1E+25 (GPT-4), 2024 = 3.8E+25 (Llama 3.1 405B), 2025 = 3.8E+26 (GPT-4.5), 2026 = 9.4E+26 (GPT-6 Astra, estimate).
    1. Make a scatter chart, then set the vertical axis to a logarithmic scale.
-   2. In column C, compute the yearly growth multiple between neighboring rows with `=(B3/B2)^(1/(A3-A2))` and fill down.
+   2. In column C, compute the yearly growth multiple between neighboring rows: type `=(B3/B2)^(1/(A3-A2))` in C3 and fill down. B3/B2 is how many times bigger the newer model's compute is, and raising it to the power 1 divided by the number of years between them spreads that jump evenly over those years (for a one-year gap it changes nothing).
    3. Compare your multiples with Epoch AI's long-run average of about 5 times per year.
    **What you'll learn:** why AI trend charts use log axes, and how noisy individual data points are compared with a long-run trend.
 
 7. **[Medium] Forecast agent time horizons, then critique your forecast.** Enter METR's 50% time horizons in a spreadsheet, as months since March 2023 and hours: GPT-4 (0 months, 0.067 h), o1 (21, 0.65), o3 (25, 2.0), GPT-5 (29, 3.4), Claude Opus 4.5 (32, 4.9), GPT-5.2 (33, 5.9), Claude Opus 4.6 (35, 12), Claude Mythos Preview early version (37, 17.4).
-   1. Add a column with `=LOG(B2,2)` (the number of doublings) and chart it against months.
+   1. Put the months in A2:A9 and the hours in B2:B9 (row 1 is for labels). In C2 type `=LOG(B2,2)` (the number of doublings) and fill down to C9, then chart column C against months.
    2. Use `=SLOPE(C2:C9, A2:A9)` to get doublings per month, then 1 divided by that for months per doubling.
-   3. Extend the trend to October 2027 and write down the predicted horizon.
+   3. Extend the trend to October 2027, which is 55 months after March 2023: `=2^FORECAST(55, C2:C9, A2:A9)` gives the predicted horizon in hours (FORECAST extends the straight line to month 55, and 2 to that power turns doublings back into hours). Write it down.
    4. List three reasons the forecast could be wrong (METR itself says measurements above 16 hours are unreliable).
    **What you'll learn:** how forecasters turn messy data into doubling times, and why extrapolation needs humility.
 
@@ -912,7 +912,7 @@ Algorithm, Compute, Analytical Engine, Turing machine, Artificial neuron, Turing
 ## Areas of opportunity
 
 - **AI literacy trainer for companies and schools.** Employers and schools pay for courses that set realistic expectations, and history (the ELIZA effect, hype cycles, the jagged path of progress) is one of the best ways to do that. Stanford's 2026 AI Index reports that over 80% of US high school and college students use AI for schoolwork, while only about half of schools have AI policies.
-- **Technology due diligence for investors.** Funds, family offices and corporate boards need people who can tell a demo from a deployment, a "run-rate" from revenue and an "up to" commitment from a contract. Knowing how the 1980s expert-systems and Lisp-machine boom ended is directly useful when 2026 capital spending is near $800 billion a year.
+- **Technology due diligence for investors.** Funds, family offices (firms that manage one wealthy family's money) and corporate boards need people who can tell a demo from a deployment, a "run-rate" from revenue and an "up to" commitment from a contract. Knowing how the 1980s expert-systems and Lisp-machine boom ended is directly useful when 2026 capital spending is near $800 billion a year.
 - **Benchmark and evaluation design.** Tests now saturate within months (ARC-AGI-3 went from 0.51% to 62.7% in about six months; Humanity's Last Exam from under 10% to about 61% in under two years). Labs, government evaluators and independent groups such as METR and Epoch AI hire people who can design harder, cleaner tests.
 - **Model migration and "model change management".** Models are retired on a schedule: OpenAI removed GPT-4o from ChatGPT in February 2026. Businesses that built on a retired model pay consultants and tools to test, compare and switch to newer models without breaking their products.
 - **Fact-checking and verification services for AI claims.** Disputed results, such as the unverified 2026 math olympiad claims, show demand from newsrooms, publishers and research offices for people who can check what a model actually did.
