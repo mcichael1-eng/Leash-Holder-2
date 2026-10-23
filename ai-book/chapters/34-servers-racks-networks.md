@@ -240,7 +240,7 @@ Starting with Grace Hopper and then Grace Blackwell, NVIDIA changed the building
 
 Why bother putting a CPU so close? Because the CPU's memory becomes a useful extra tier. The GB300 NVL72 rack has 36 Grace CPUs with 2,592 Arm cores in total, which works out to 2,592 ÷ 36 = 72 cores per CPU, and NVIDIA counts 37 TB of "fast memory" per rack: the 20 TB of HBM plus the CPUs' LPDDR5X memory. The Vera Rubin NVL72 rack carries up to 54 TB of LPDDR5X, or 54 ÷ 36 = 1.5 TB per Vera CPU. That CPU memory is slower than HBM but much larger, which helps with things like spilling an oversized KV cache from long conversations (Chapter 33) or staging training data.
 
-> **Definition — LPDDR5X:** The current generation of LPDDR, the low-power DRAM used in phones and laptops (Chapter 33). NVIDIA attaches it to its Grace and Vera CPUs as a large, cheaper and slower memory tier beside the GPUs' HBM.
+> **Definition — LPDDR5X:** A recent generation of LPDDR, the low-power DRAM used in phones and laptops (Chapter 33). NVIDIA attaches it to its Grace and Vera CPUs as a large, cheaper and slower memory tier beside the GPUs' HBM.
 
 Two superchips go into one **compute tray**: a flat, removable server sled about the size of a large pizza box, holding four GPUs and two CPUs. Each tray also carries network cards (ConnectX-8 at 800 Gb/s in the GB300 generation; ConnectX-9 in the 1.6 Tb/s class for Rubin), a BlueField DPU for the outside network, and cold plates instead of most of the fans.
 
@@ -271,7 +271,7 @@ Each tray has coolant pipes running to cold plates on every GPU and CPU, joined 
 
 ### Power at the board
 
-Power arrives at the rack as alternating current, gets converted by **power shelves** in the rack into direct current at about 50 volts, travels down a thick copper bar along the back of the rack, enters each tray, and is converted again by voltage regulators to the roughly 1 volt the chips use.
+Power arrives at the rack as alternating current (AC, electricity that reverses direction many times a second, as in a wall socket; Chapter 39), gets converted by **power shelves** in the rack into direct current at about 50 volts, travels down a thick copper bar along the back of the rack, enters each tray, and is converted again by voltage regulators to the roughly 1 volt the chips use.
 
 > **Definition — Busbar:** A thick, rigid bar of copper (or aluminum) that carries large electrical currents, used along the back of AI racks to feed every tray, instead of many separate cables.
 
@@ -375,7 +375,7 @@ The 2025 Ironwood TPU comes in pods of 256 or 9,216 chips. The TPU 8t training c
 
 **Amazon's Trainium** uses NeuronLink links and, for Trainium3, a NeuronSwitch fabric. A Trainium3 "UltraServer" joins 144 chips with 20.7 TB of HBM3E and 362 PF of MXFP8 compute.
 
-> **Definition — MXFP8:** An 8-bit floating-point format from the open "microscaling" (MX) standard, in which each block of 32 numbers shares one scale factor, so 8 bits per number can still cover a wide range of sizes. Chapter 35 explains the MX family alongside NVIDIA's NVFP4.
+> **Definition — MXFP8:** An 8-bit floating-point format from the open "microscaling" (MX) standard, in which each block of 32 numbers shares one scale factor, so 8 bits per number can still cover a wide range of sizes. Chapter 32 explains the MX family alongside NVIDIA's NVFP4.
 
 **AMD's Helios rack** (shipping from the second half of 2026) joins 72 MI455X GPUs, each with 3.6 TB/s of scale-up bandwidth, using an open protocol called UALink carried ("tunneled") over Ethernet hardware, in a wide rack format designed by Meta.
 
@@ -634,7 +634,7 @@ Google also uses them at the top of Jupiter, the network that ties the ordinary 
 
 > **Definition — Software-defined networking (SDN):** Running a network's decisions (which path each flow of traffic takes) in a central controller program that sees the whole network, instead of inside each switch separately. The switches simply forward traffic the way the controller tells them to.
 
-Re-aiming mirrors on demand only works because one program makes those decisions with a view of the whole building. Google's first production SDN was B4 (described in 2013), the private network linking its data centers to each other. Inside a data center, SDN is a natural partner for the cluster scheduler described later in this chapter, which already manages every job from one place.
+Re-aiming mirrors on demand only works because one program makes those decisions with a view of the whole building. An early production SDN was Google's B4 (described in 2013), the private network linking its data centers to each other. Inside a data center, SDN is a natural partner for the cluster scheduler described later in this chapter, which already manages every job from one place.
 
 ```mermaid
 flowchart LR
@@ -745,7 +745,7 @@ The scheduler raises a puzzle of its own. If the one machine that knows where ev
 
 > **Definition — Consensus (distributed consensus):** A way for a group of machines to agree on one fact, such as which server is currently in charge, even when some of them crash or lose contact. A decision counts once a majority agrees.
 
-Google's Chubby lock service (described in 2006) provides this, and open-source equivalents such as Apache ZooKeeper and etcd (which stores Kubernetes' state) do the same job across much of the cloud. Choosing a leader can be as simple as a race to lock one file: the winner writes its name in it, everyone else sees who won, and if the leader stops checking in, the lock lapses and another machine takes over. Majorities explain why clouds like groups of three. With three copies, any two can outvote a third that has been cut off. With two, neither side can tell whether it is the one that should keep going.
+Google's Chubby lock service (described in 2006) provides this, and open-source equivalents such as Apache ZooKeeper and etcd (which stores Kubernetes' state) do the same job across much of the cloud. Choosing a leader can be as simple as a race to lock one file: the winner writes its name in it, everyone else sees who won, and if the leader stops checking in, the lock lapses and another machine takes over. Majorities explain why these services usually run on three (or five) machines. With three, any two can outvote a third that has been cut off. With two, neither side can tell whether it is the one that should keep going.
 
 **A distributed storage system** holds files too big or too important for one machine. It cuts each file into chunks and spreads them, with copies, across many servers, so reads and writes happen in parallel and a dead disk loses nothing. Google's GFS (the Google File System, described in 2003), its successor Colossus, and cloud object stores such as Amazon S3 (AWS's storage service) work this way. Training data streams out of such systems, and checkpoints stream back in.
 
@@ -822,8 +822,8 @@ NVIDIA, GB200 and GB300, TFLOPS and PFLOPS (PF), EF and ZF (exaFLOPS and zettaFL
 - **Cluster bring-up and reliability engineering.** Turning on a new 100,000-GPU cluster means validating hundreds of thousands of links, finding bad cables and slow GPUs, and keeping goodput high. Companies building or renting clusters pay for tools and people that shorten bring-up from months to weeks.
 - **Liquid-cooled rack technicians.** Data center technicians who can service cold plates, quick-disconnects, busbars and dense fiber are in short supply, and many roles need a two-year technical degree or trade background rather than a university degree.
 - **Optical interconnect.** Co-packaged optics, 1.6T and faster transceivers, optical circuit switches and optical input/output chiplets are a fast-growing supply chain, with demand for photonics engineers, test engineers and manufacturing technicians.
-- **Power electronics for racks.** The move to 800 V DC, solid-state transformers and capacitor or battery smoothing of GPU power swings creates work for power engineers and component makers selling to rack builders.
-- **Cluster observability and GPU FinOps software.** FinOps ("financial operations") means tracking and cutting cloud and hardware spending. Tools that spot stragglers and flaky links, attribute cost per job and raise utilization sell to every company running more than a few racks, because idle GPUs are expensive.
+- **Power electronics for racks.** The move to 800 V DC, solid-state transformers (compact transformers built from power electronics instead of iron cores and copper coils, Chapter 39) and capacitor or battery smoothing of GPU power swings creates work for power engineers and component makers selling to rack builders.
+- **Cluster observability and GPU FinOps software.** FinOps ("financial operations") means tracking and cutting cloud and hardware spending. Tools that spot stragglers (slow GPUs or servers that hold up all the others) and flaky links, attribute cost per job and raise utilization sell to every company running more than a few racks, because idle GPUs are expensive.
 - **Rack integration and testing services.** Rack-scale systems are built, burned in and tested before shipping; contract manufacturers and independent test and logistics firms in this chain are growing quickly.
 - **Open problems worth working on.** Training across distant campuses with rare synchronization, fault-tolerant training at a million chips, reducing interconnect energy per bit, and scale-up fabrics based on open standards (UALink, Ultra Ethernet) are active research and startup areas.
 

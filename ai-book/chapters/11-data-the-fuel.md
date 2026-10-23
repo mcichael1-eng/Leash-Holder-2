@@ -270,7 +270,7 @@ For a missing value you can drop the row, fill the gap with a sensible estimate 
 
 > **Definition — Deduplication:** Finding and removing repeated or near-identical records. At web scale it is critical, because duplicated text makes a model memorize and wastes training compute.
 
-At web scale, cleaning becomes an industrial process: extracting text from HTML, identifying each document's language, removing exact and near-duplicate pages, stripping boilerplate such as menus and cookie banners, filtering for quality (often with a small classifier trained to spot "textbook-like" pages), and removing toxic content and personal information. Most of a raw web crawl is thrown away. Chapter 19 walks through this pipeline for frontier models.
+At web scale, cleaning becomes an industrial process: extracting text from HTML (the markup language web pages are written in), identifying each document's language, removing exact and near-duplicate pages, stripping boilerplate such as menus and cookie banners, filtering for quality (often with a small classifier trained to spot "textbook-like" pages), and removing toxic content and personal information. Most of a raw web crawl is thrown away. Chapter 19 walks through this pipeline for frontier models.
 
 > **Analogy:** Data cleaning is washing and chopping vegetables. It takes most of the kitchen time, nobody sees it, and it matters most.
 

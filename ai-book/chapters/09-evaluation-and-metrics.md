@@ -953,7 +953,7 @@ Evaluation, Training set, Validation set, Test set, Stratified sampling, Margin 
 
    **What you'll learn:** Why accuracy misleads with rare events, what precision and recall each mean, and how base rates turn into real conversations.
 
-2. **[Easy] Which mistake is worse?** (Paper and a chatbot, 15 minutes.) For each scenario, decide whether you would favor precision or recall, and write one sentence on why: (a) detecting gas leaks in a building; (b) flagging social media posts for removal; (c) a job-application filter that rejects candidates automatically; (d) alerting a farmer to possible crop disease; (e) a self-checkout camera that accuses shoppers of theft; (f) flagging emails as phishing; (g) recommending podcasts; (h) screening blood donations for infection. Then ask a chatbot for its answers and discuss any disagreements.
+2. **[Easy] Which mistake is worse?** (Paper and a chatbot, 15 minutes.) For each scenario, decide whether you would favor precision or recall, and write one sentence on why: (a) detecting gas leaks in a building; (b) flagging social media posts for removal; (c) a job-application filter that rejects candidates automatically; (d) alerting a farmer to possible crop disease; (e) a self-checkout camera that accuses shoppers of theft; (f) flagging emails as phishing (scam messages that pretend to come from someone trusted to steal passwords or money); (g) recommending podcasts; (h) screening blood donations for infection. Then ask a chatbot for its answers and discuss any disagreements.
 
    **What you'll learn:** That the right metric depends on the cost of each kind of mistake, which is a human decision, not a mathematical one.
 

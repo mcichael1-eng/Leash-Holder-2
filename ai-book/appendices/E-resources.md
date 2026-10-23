@@ -44,7 +44,7 @@ These match Stage 1 of the roadmap in Chapter 65: understanding how AI works in 
 | TensorFlow Playground | A small neural network you can train in your browser | See layers, learning rate and overfitting change in real time | Free | playground.tensorflow.org |
 | Transformer Explainer | An interactive visualization of a small GPT model | Watch attention and next-token probabilities on your own sentence | Free | poloclub.github.io/transformer-explainer |
 | LLM Visualization | A 3-D walk-through of every computation inside a small GPT | Makes "it is mostly multiplying tables of numbers" concrete | Free | bbycroft.net/llm |
-| Gandalf: Agent Breaker (Lakera) | A game in which you try to trick guarded AI apps and agents into leaking secrets or misusing their tools; the old gandalf.lakera.ai address of the original password game now forwards here | The fastest way to understand why prompt injection is hard to stop | Free | play.lakera.ai |
+| Gandalf: Agent Breaker (Lakera) | A game in which you try to trick guarded AI apps and agents into leaking secrets or misusing their tools; the original Gandalf levels, where you coax a chatbot into revealing a secret password, are still there, and their old address, gandalf.lakera.ai, now forwards here | The fastest way to understand why prompt injection is hard to stop | Free | play.lakera.ai |
 | Quick, Draw! | Google's doodle-guessing game | A playful first look at how a classifier recognizes patterns | Free | quickdraw.withgoogle.com |
 | Arena (formerly LMArena) | Compare two anonymous chatbots side by side and vote | A blind taste test that shows how much style shapes your impressions | Free | arena.ai |
 

@@ -710,7 +710,7 @@ Reasoning model, Chain of thought (CoT), Thinking tokens, Chain-of-thought promp
    1. Open https://colab.research.google.com, create a notebook, and choose Runtime, then Change runtime type, then a GPU (the free T4 works).
    2. Paste the code below and run it. It takes several minutes or more.
    3. Watch the "reward" values in the training log. They should drift upward as the model learns both the arithmetic and the "Answer:" format.
-   4. Try changing `num_generations` to 4 or 16 and compare.
+   4. Try changing `num_generations` to 4, or to 16 together with `per_device_train_batch_size=16` (the batch must hold a whole number of groups, so 16 answers per question with a batch of 8 stops with an error), and compare.
    ```python
    # Install Hugging Face's training library (TRL) and dataset tools
    !pip -q install trl datasets

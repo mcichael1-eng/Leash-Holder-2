@@ -317,7 +317,7 @@ Roles are as of October 2026; leadership changes are frequent.
 | Eliezer Yudkowsky and Nate Soares | MIRI's leading voices on existential risk; co-wrote *If Anyone Builds It, Everyone Dies* (2025). | Chapter 60 |
 | Daniel Kokotajlo | Former OpenAI researcher who leads the AI Futures Project and its "AI 2027" scenario. | Chapter 60 |
 | Max Tegmark | MIT physicist and president of the Future of Life Institute. | Chapter 60 |
-| Helen Toner | Interim executive director of Georgetown's CSET; former OpenAI board member. | Chapter 59 |
+| Helen Toner | Interim executive director of Georgetown's Center for Security and Emerging Technology (CSET); former OpenAI board member. | Chapter 59 |
 | Timnit Gebru | Founder of DAIR; co-author of the Gender Shades and "Stochastic Parrots" papers. | Chapter 58 |
 | Joy Buolamwini | Led the Gender Shades study (2018) showing face-analysis systems erred far more on darker-skinned women; founded the Algorithmic Justice League. | Chapter 58 |
 | Emily M. Bender | Linguist and co-author of "On the Dangers of Stochastic Parrots" (2021). | Chapter 58 |

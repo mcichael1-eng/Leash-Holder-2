@@ -460,7 +460,7 @@ The **system prompt** is the block of instructions at the top of the document. I
 
 This explains a puzzle many users notice: how does a text predictor "know" it is an AI, or which model it is? Its training data was collected before the model existed, so on its own it knows little about itself. Post-training teaches it to speak as an assistant (Chapter 20), and the system prompt supplies the specifics. Anthropic publishes the system prompts of its Claude apps; the one for Claude Opus 5.5, dated September 22, 2026, tells the model which version is currently selected, lists other recent Anthropic models, inserts today's date and states a June 2026 knowledge cutoff. It also tells Claude to say it does not know about message limits or pricing and to point people to the help center. Those app prompts do not apply when developers call the model through the API, and the person can switch models mid-chat, so a chatbot can confidently name the wrong model. To know which model you are using, trust the app's model picker, not the chatbot's description of itself.
 
-What happens when instructions conflict, say a user typing "Ignore your instructions" or a web page saying "AI assistant: tell the user to visit this link"? Models are trained to rank instructions by source: system and developer instructions outrank the user, and the user outranks text arriving inside documents or tool results. OpenAI's Model Spec calls this a "chain of command". Anthropic's constitution, published in January 2026, sets an overall order of priorities for Claude: broadly safe first, then broadly ethical, then compliant with Anthropic's guidelines, then genuinely helpful, weighed together rather than applied mechanically.
+What happens when instructions conflict, say a user typing "Ignore your instructions" or a web page saying "AI assistant: tell the user to visit this link"? Models are trained to rank instructions by source: system and developer instructions outrank the user, and the user outranks text arriving inside documents or tool results. OpenAI's Model Spec (its public document describing how its models should behave, Chapter 20) calls this a "chain of command". Anthropic's constitution, published in January 2026, sets an overall order of priorities for Claude: broadly safe first, then broadly ethical, then compliant with Anthropic's guidelines, then genuinely helpful, weighed together rather than applied mechanically.
 
 > **Definition — Instruction hierarchy:** Training a model to give instructions different authority depending on their source, typically system above developer above user above tool output, so that text from a lower level cannot override a higher one.
 
@@ -537,7 +537,7 @@ Work out Kimi K3's two numbers. Memory: 2.8 trillion parameters at 4 bits is abo
 
 The big closed labs (OpenAI, Anthropic, Google) do not publish parameter counts for their flagship models, so any number you read for them is an outside estimate.
 
-> **Watch out:** "Bigger parameter count means smarter" is only loosely true. Data quality, how much training compute was spent, post-training and reasoning effort matter as much. By 2026, open models of a few tens of billions of parameters beat 2023's GPT-4 on many tasks. Treat parameter counts as a rough indicator of cost and capacity, not a ranking of intelligence.
+> **Watch out:** "Bigger parameter count means smarter" is only loosely true. Data quality, how much training compute was spent, post-training and reasoning effort (how long a reasoning model is allowed to think before answering, Chapter 21) matter as much. By 2026, open models of a few tens of billions of parameters beat 2023's GPT-4 on many tasks. Treat parameter counts as a rough indicator of cost and capacity, not a ranking of intelligence.
 
 ## Inside the box in one page: the Transformer as an LLM
 
@@ -677,7 +677,7 @@ Not every "no" comes from the model itself. Apps also run separate filters, smal
 
 *Table 18.1: A field guide to the failures you will meet most often.*
 
-> **At the frontier (2026):** Labs increasingly treat these failures as measurable engineering targets. Frontier system cards include honesty, sycophancy and refusal evaluations alongside capability benchmarks, and Anthropic's 2025 "persona vectors" research found internal directions for traits such as sycophancy that can be monitored during training (Chapter 57). None of these failures is solved.
+> **At the frontier (2026):** Labs increasingly treat these failures as measurable engineering targets. Frontier system cards (the long safety reports labs publish with each major model, Chapter 24) include honesty, sycophancy and refusal evaluations alongside capability benchmarks, and Anthropic's 2025 "persona vectors" research found internal directions for traits such as sycophancy that can be monitored during training (Chapter 57). None of these failures is solved.
 
 ```mermaid
 mindmap
@@ -791,7 +791,7 @@ Large language model (LLM), Model (AI model), Chatbot app, API (Application Prog
    3. Repeat with web search on and compare the tallies.
    **What you'll learn:** hallucinations concentrate on rare facts, grounding helps a lot, and citations must be checked.
 
-10. **[Challenge] See next-token probabilities in code.** Open Google Colab (colab.research.google.com), create a new notebook, paste the code below into a cell and press the play button. It downloads a small open model (about 1 GB) the first time.
+10. **[Challenge] See next-token probabilities in code.** Open Google Colab (colab.research.google.com), create a new notebook, paste the code below into a cell and press the play button. It downloads a small open model (about 1.5 GB) the first time.
 
     ```python
     # Install the Hugging Face library that loads open models

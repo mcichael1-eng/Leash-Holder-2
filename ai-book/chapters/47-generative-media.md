@@ -588,7 +588,7 @@ Generative media, Text encoder, Diffusion model, Latent space, Guidance scale, A
    2. Generate it in two different tools (for example ChatGPT and Gemini, or one chatbot and one free image site).
    3. In one tool, change exactly one thing at a time: the style ("film photo" to "watercolor"), then the lighting ("dusk" to "noon"), then the framing (add "wide shot" to the prompt, then change it to "close-up"). Save each result.
    4. Use inpainting or an instruction edit to replace one object (the lamp, the cat, the cup) without changing anything else.
-   5. Write two sentences on which single word changed the image most.
+   5. Write two sentences on which single change altered the image most.
    **What you'll learn:** Prompts work as specifications, every generation is a random draw, and editing keeps what you like while regenerating throws it away.
 
 2. **[Easy] Check the label.** Learn what Content Credentials can and cannot tell you.

@@ -430,7 +430,7 @@ What does the 3-to-1 ratio buy? Redo the memory math for our illustrative 60-lay
 
 *Table 17.3: Memory for one conversation in an illustrative 60-layer model. The numbers are worked from this chapter's assumptions, not measured from a specific product.*
 
-Companies report big gains. Moonshot says Kimi Linear cuts KV cache by up to 75% and decodes up to 6 times faster at a 1-million-token context; critics noted its relatively small training budget and baselines, so treat these as company-reported. NVIDIA claims Nemotron 3 Super reaches up to 2.2 times the throughput of gpt-oss-120b.
+Companies report big gains. Moonshot says Kimi Linear cuts KV cache by up to 75% and decodes up to 6 times faster at a 1-million-token context; critics noted its relatively small training budget and baselines, so treat these as company-reported. NVIDIA claims Nemotron 3 Super reaches up to 2.2 times the throughput (total tokens produced per second across all users; Chapter 23) of gpt-oss-120b.
 
 > **At the frontier (2026):** Moonshot's Kimi K3 (July 2026), one of the largest open models, is a hybrid: 69 of its 93 layers use Kimi Delta Attention and 24 use gated MLA, combined with an 896-expert MoE, a 1-million-token context and 4-bit MXFP4 weights; according to its model card, quantization-aware training is applied from the supervised fine-tuning stage onward (the post-training step that learns from example answers, Chapter 20), not during pretraining. Qwen3.5 uses the same 3:1 pattern from its small dense variants (0.8 to 9 billion parameters) up to the 397B flagship. DeepSeek V4 takes the other road, keeping attention in every layer but compressing and sparsifying it.
 

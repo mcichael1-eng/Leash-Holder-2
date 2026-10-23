@@ -541,7 +541,7 @@ Attention's cost grows with the square of the text length. Much of the engineeri
 
 > **Definition — FlashAttention:** A way of computing exact attention in small tiles inside a GPU's fast on-chip memory, without ever storing the full score grid. It makes attention much faster and less memory-hungry with no change to the result.
 
-Since then, new versions have tracked each GPU generation. PyTorch 2.11 (March 2026) added a FlashAttention-4 backend that its developers report is 1.2 to 3.2 times faster on compute-bound workloads (jobs limited by the chip's arithmetic speed rather than by memory).
+Since then, new versions have tracked each GPU generation. PyTorch 2.11 (March 2026) added FlashAttention-4 as a built-in option (a "backend", meaning an alternative engine PyTorch can run attention on) that its developers report is 1.2 to 3.2 times faster on compute-bound workloads (jobs limited by the chip's arithmetic speed rather than by memory).
 
 Other methods change what is computed, accepting some approximation:
 
@@ -567,7 +567,7 @@ Other methods change what is computed, accepting some approximation:
 
 The most dramatic 2026 example is DeepSeek V4. Its hybrid of Compressed Sparse Attention and Heavily Compressed Attention means that at a 1-million-token context, according to DeepSeek's report, V4-Pro needs only 27 percent of the per-token computation and 10 percent of the KV cache of its predecessor, V3.2.
 
-> **At the frontier (2026):** The open question is whether cheaper attention loses something. Several labs build hybrids where most layers use a fixed-size memory and only one in four uses full attention. MiniMax went the other way with M2 (October 2025), returning to full attention because, it said, hybrids looked fine on benchmarks but degraded on multi-hop reasoning at scale. Chapter 17 lays out both sides.
+> **At the frontier (2026):** The open question is whether cheaper attention loses something. Several labs build hybrids where most layers use a fixed-size memory and only one in four uses full attention. MiniMax, a Shanghai AI company, went the other way with M2 (October 2025), returning to full attention because, it said, hybrids looked fine on benchmarks but degraded on multi-hop reasoning (chaining several facts that sit far apart in the text) at scale. Chapter 17 lays out both sides.
 
 ## Transformers beyond text
 
@@ -620,7 +620,7 @@ The core idea has barely changed since 2017: tokens, embeddings, attention, feed
 
 *Table 15.7: Same skeleton, new organs. Every row of the right-hand column is still recognizably the 2017 design.*
 
-For a concrete 2026 example, take Kimi K3 from Moonshot AI, released in July 2026 with open weights. According to its model card, it has 93 layers: 69 use Kimi Delta Attention, a linear-attention design with a fixed-size memory, and 24 use gated multi-head latent attention. Its feed-forward layers are mixtures of 896 experts, of which 16 plus 2 shared experts are used for each token, giving about 2.8 trillion parameters in total but about 104 billion active per token. It has a 160,000-token vocabulary and a 1-million-token context. Every one of those terms is now in your vocabulary.
+For a concrete 2026 example, take Kimi K3 from Moonshot AI, released in July 2026 with open weights. According to its model card, it has 93 layers: 69 use Kimi Delta Attention, a linear-attention design with a fixed-size memory, and 24 use gated multi-head latent attention. Its feed-forward layers are mixtures of 896 experts, of which 16 plus 2 shared experts (experts that process every token, holding broadly useful knowledge; Chapter 17) are used for each token, giving about 2.8 trillion parameters in total but about 104 billion active per token. It has a 160,000-token vocabulary and a 1-million-token context. Every one of those terms is now in your vocabulary.
 
 > **At the frontier (2026):** Frontier open models tend to combine the same ingredients: sparse mixture of experts, attention cheaper than the full version (GQA or MLA, sliding windows, sparse or compressed attention, or linear hybrids), 1-million-token contexts, 4-bit to 8-bit number formats, stability tricks such as gated attention, Muon-family optimizers and multi-token prediction. The closed labs (OpenAI, Anthropic, Google) do not publish their architectures, so any confident claim about what is inside GPT-6, Claude or Gemini is speculation unless the company has said so.
 

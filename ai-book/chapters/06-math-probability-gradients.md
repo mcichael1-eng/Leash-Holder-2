@@ -929,7 +929,7 @@ Scale the line-fitting example up and you have pretraining a chatbot:
 
 And remember the split between training and inference from Chapter 5. Training runs this loop. Inference, every chat you have ever had, runs only the forward pass with the knobs frozen.
 
-> **At the frontier (2026):** The optimizer, frozen on Adam and AdamW for about a decade, is moving again. Muon, introduced by researcher Keller Jordan in December 2024, adjusts each weight matrix's update so that no single direction dominates. Moonshot AI, a Chinese AI company, trained its 1-trillion-parameter Kimi K2 (July 2025) with a Muon variant and reported no loss spikes, DeepSeek says its 2026 V4 models use Muon, and PyTorch now ships a built-in Muon optimizer. Chapter 13 explains how these smarter walkers work.
+> **At the frontier (2026):** The optimizer, frozen on Adam and AdamW for about a decade, is moving again. Muon, introduced by researcher Keller Jordan in December 2024, adjusts each weight matrix's update so that no single direction dominates. Moonshot AI, a Chinese AI company, trained its 1-trillion-parameter Kimi K2 (July 2025) with a Muon variant and reported no loss spikes (sudden jumps in the training loss that can waste a run; Chapter 13), DeepSeek says its 2026 V4 models use Muon, and PyTorch now ships a built-in Muon optimizer. Chapter 13 explains how these smarter walkers work.
 
 > **Key idea:** Learning is a loop of four steps: predict, measure the surprise, compute the slopes with the chain rule, and nudge every knob a little downhill. Repeat it trillions of times and a pile of random numbers becomes a chatbot.
 

@@ -206,7 +206,7 @@ Other ways to shrink the cache include storing it in 8 bits instead of 16 (halvi
 
 ### Prompt caching: keeping the notes between requests
 
-Normally the KV cache is thrown away when your request finishes. But think about how a chat actually works. Every time you send a message, the app re-sends the system prompt, the tool definitions, any attached documents and the whole conversation so far. The first 95% of each request is identical to the previous one. Recomputing it every time is wasteful.
+Normally the KV cache is thrown away when your request finishes. But think about how a chat actually works. Every time you send a message, the app re-sends the system prompt, the tool definitions (descriptions of each tool the model may call, Chapter 28), any attached documents and the whole conversation so far. The first 95% of each request is identical to the previous one. Recomputing it every time is wasteful.
 
 > **Definition — Prompt caching:** Keeping the KV cache for the beginning (prefix) of a prompt after a request finishes, so a later request that starts with exactly the same tokens can skip prefill for that part. Providers bill cached input tokens at a steep discount.
 
@@ -567,7 +567,7 @@ Every technique above lives inside a serving engine.
 | Engine | Origin | Known for |
 |---|---|---|
 | vLLM | Open source, from UC Berkeley researchers (2023) | PagedAttention; broad model and hardware support; very widely used |
-| SGLang | Open source (2024) | RadixAttention prefix sharing; fast structured outputs |
+| SGLang | Open source (2024) | RadixAttention prefix sharing; fast structured outputs (answers forced into an exact data format, Chapter 26) |
 | TensorRT-LLM | NVIDIA | Heavily optimized kernels for NVIDIA GPUs |
 | NVIDIA Dynamo | NVIDIA (2025) | Orchestrating disaggregated serving across many GPUs |
 | llama.cpp, Ollama, LM Studio, MLX | Open source and Apple | Running quantized models on laptops and desktops (see Chapter 30) |

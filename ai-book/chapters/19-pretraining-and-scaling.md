@@ -605,7 +605,7 @@ At 5 times growth per year, going from 10^27 to 10^29 (a factor of 100) takes on
 
 The strongest version of the optimist case is that labs have many ways around the wall:
 
-- **Synthetic data.** Models generate text, and verifiers or filters keep the good parts: textbooks, worked problems, code that passes its tests. Qwen3 already used synthetic textbooks and question-answer pairs.
+- **Synthetic data.** Models generate text, and verifiers (programs or models that check whether an output is correct, Chapter 21) or filters keep the good parts: textbooks, worked problems, code that passes its tests. Qwen3 already used synthetic textbooks and question-answer pairs.
 - **Reinforcement learning on verifiable tasks.** Instead of reading more text, models practice on problems with checkable answers: math, code with tests, simulated software environments. Industry commentary in 2025–26 calls RL environments "the new training data", and DeepSeek described large-scale synthetic task generation for its agent training. Chapter 21 covers this.
 - **Other modalities.** Video, audio and images hold vast amounts of information about the world.
 - **Private and licensed data.** Books, archives, company data and paid expert-written material (Chapter 11).
@@ -693,7 +693,7 @@ Pretraining, Training run, Corpus, Self-supervised learning, Loss, Cross-entropy
    3. Repeat in column D assuming labs over-train at 200 tokens per parameter instead of 20, with =200*SQRT(A2/1200). (Why 1200: with D = 200 × N, compute is 6 × N × 200 × N = 1,200 × N², so N = SQRT(C/1200).)
    **What you'll learn:** why the data wall is a live debate, and how sensitive its timing is to assumptions.
 
-8. **[Challenge] Meet a base model.** Open Google Colab (colab.research.google.com), start a new notebook, choose Runtime, then Change runtime type, and pick a GPU if available (the code also runs, more slowly, without one). Paste this into a cell and run it. It downloads two small open models of about 1 GB each.
+8. **[Challenge] Meet a base model.** Open Google Colab (colab.research.google.com), start a new notebook, choose Runtime, then Change runtime type, and pick a GPU if available (the code also runs, more slowly, without one). Paste this into a cell and run it. It downloads two small open models of about 1.2 GB and 1.5 GB.
 
     ```python
     # Install the library that loads open models
@@ -724,9 +724,9 @@ Pretraining, Training run, Corpus, Self-supervised learning, Loss, Cross-entropy
     print("CHAT MODEL:\n", tok.decode(out[0]))
     ```
 
-    1. Compare the two outputs. Does the base model answer, or continue as if writing a quiz or a web page?
+    1. Compare the two outputs. Does the base model answer, or continue as if writing a quiz or a web page? (When we ran it in October 2026, the base model simply wrote more quiz questions, and the chat model replied in a tidy sentence but named the wrong city, Osaka: post-training taught it to answer like an assistant, but a model this small still gets facts wrong.)
     2. Change the question to "Dear hiring manager," and run again.
-    3. Give the base model a few-shot prompt: "Q: What is the capital of France? A: Paris. Q: What is the capital of Japan? A:" and see whether it now answers.
+    3. Give the base model a few-shot prompt: "Q: What is the capital of France? A: Paris. Q: What is the capital of Japan? A:" and see whether it now answers. (In our run it answered Tokyo.)
     **What you'll learn:** what pretraining alone produces, and what post-training and chat templates add.
 
 9. **[Challenge] Pretrain a tiny language model yourself.** In a new Colab notebook with a GPU runtime, paste and run the code below. It downloads about 1 MB of Shakespeare, builds a character-level tokenizer, and trains a small Transformer for a few minutes, printing the loss and a sample every 500 steps.

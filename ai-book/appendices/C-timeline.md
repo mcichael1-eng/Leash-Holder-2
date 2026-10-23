@@ -2,7 +2,7 @@
 
 This appendix lists the milestones of AI history in one place, from Ada Lovelace's notes to October 2026: models and methods, games, chips and hardware, data centers and energy, and laws and policy. Chapter 7 tells the story behind these dates.
 
-How to read it. Recent rows give the month and day where they matter. Facts before 2023 are long-settled history. Facts from 2023 to October 2026 come from company announcements, official documents and trackers (such as Epoch AI and the Stanford AI Index) as gathered in October 2026. Where sources disagree about a date, the row gives a range or says "around". Rows marked "reportedly" or "per press reports" rest on news coverage that had not been confirmed by a primary source at the time of writing. Compute and cost figures are outside estimates unless the developer published them.
+How to read it. Recent rows give the month and day where they matter. Facts before 2023 are long-settled history. Facts from 2023 to October 2026 come from company announcements, official documents and trackers (such as Epoch AI and the Stanford AI Index) as gathered in October 2026. Where sources disagree about a date, the row gives a range, says "around" or notes the difference. Rows marked "reported", "reportedly" or "per press reports" rest on news coverage that had not been confirmed by a primary source at the time of writing. Compute and cost figures are outside estimates unless the developer published them.
 
 ```mermaid
 timeline
@@ -349,12 +349,12 @@ timeline
 | May 14, 2026 | Colorado repeals and replaces its AI Act with a narrower law | States shift to transparency-style rules |
 | May 19, 2026 | Gemini 3.5 family announced at Google I/O | Google's mid-2026 lineup |
 | May 28, 2026 | Claude Opus 4.8 | Monthly frontier releases continue |
-| Jun 2026 | Anthropic (June 1, reported) and OpenAI (confirmed June 8) file confidentially for stock-market listings; Alphabet announces an $80 billion equity program, later priced at about $85 billion | AI labs and their backers turn to public markets for capital |
+| Jun 2026 | Anthropic (June 1, reported) and OpenAI (confirmed June 8) file confidentially for stock-market listings; Alphabet announces an $80 billion plan to raise money by selling new shares, enlarged to about $85 billion the next day | AI labs and their backers turn to public markets for capital |
 | Jun 9, 2026 | Claude Fable 5 (public) and Mythos 5 (vetted partners) | Same model, two levels of safeguards: tiered release |
-| Jun 12, 2026 | Mythos-class access suspended under a US Commerce Department directive; restored for over 100 US organizations on June 26 and fully on June 30, with Fable 5 back on July 1 (per Anthropic's notes, as reported) | Government intervenes in model access |
-| Jun 12, 2026 | SpaceX, owner of xAI, goes public at $135 a share, raising $75 billion, or about $86 billion with the underwriters' extra shares (per its SEC filings) | The largest stock-market debut to date |
+| Jun 12, 2026 | All access to Mythos-class models, Fable 5 included, suspended under a US Commerce Department directive; Mythos 5 restored for over 100 US organizations on June 26, the directive lifted on June 30, and Fable 5 back on July 1 (per Anthropic's notes, as reported) | Government intervenes in model access |
+| Jun 12, 2026 | SpaceX, owner of xAI, goes public at $135 a share, raising $75 billion, or about $86 billion including extra shares bought by the banks running the sale (per its SEC filings) | The largest stock-market debut to date |
 | Jun 16, 2026 | SpaceX agrees to buy Cursor's maker, Anysphere, in an all-stock deal of about $60 billion (closed August 14) | Coding tools become strategic assets |
-| Jun 2026 | TOP500 list topped by China's LineShine at 2.198 exaflop/s; GPT-5.6 limited preview (June 26) | Supercomputing race; tiered model families |
+| Jun 2026 | TOP500 list topped by China's LineShine at 2.198 exaflop/s; GPT-5.6 limited preview (June 26) | Supercomputing race; models previewed before wide release |
 | Jun 30, 2026 | Claude Sonnet 5; Gemini Omni Flash for video | Mid-tier models catch up; any-to-any models |
 
 ## 2026: July to October
@@ -371,29 +371,29 @@ timeline
 | Jul 21, 2026 | Gemini 3.6 Flash; Gemini 3.5 Pro reported delayed, and still not generally released by October | Not every planned model ships on time |
 | Jul 23, 2026 | FactSet: five big US tech companies on track for close to $800 billion of 2026 capital spending | Scale of the build-out |
 | Jul 24, 2026 | Claude Opus 5 | Anthropic's fifth-generation flagship |
-| Jul 27, 2026 | EU Digital Omnibus on AI in force | Delays high-risk rules to December 2027 (Annex III uses) and August 2028 (Annex I products); adds bans on intimate deepfakes and AI-generated CSAM from December 2, 2026 |
+| Jul 27, 2026 | EU Digital Omnibus on AI in force | Delays high-risk rules to December 2027 for uses such as hiring and credit (Annex III) and to August 2028 for AI inside regulated products such as medical devices (Annex I); adds bans on intimate deepfakes and AI-generated child sexual abuse material (CSAM) from December 2, 2026 |
 | Jul 2026 | IMO 2026: several perfect-score claims by AI models, none officially certified as of October | A lesson in verifying dramatic claims |
-| Jul 28, 2026 | New Model Context Protocol specification (version 2026-07-28), with a twelve-month minimum deprecation window | Agent standards mature |
+| Jul 28, 2026 | New Model Context Protocol specification (version 2026-07-28), with a twelve-month minimum deprecation window (a feature marked for retirement keeps working for at least a year) | Agent standards mature |
 | Jul 30, 2026 | Gemini Robotics 2; Zoox reportedly receives the first US commercial exemption for a purpose-built robotaxi | Whole-body humanoid control; cars without steering wheels |
 | Late Jul 2026 | Bipartisan FRONTIER Act introduced in the US House | Federal preemption debate continues |
 | Aug 2, 2026 | EU enforcement powers over general-purpose AI and transparency duties begin | EU AI Act gains teeth |
-| Aug 7, 2026 | OpenAI reportedly says it cannot rule out Critical cyber capability in its unreleased Astra model, which it had determined "might reach the Critical level of cyber capability" (per its later system card) | Cyber capability becomes the leading safety concern |
-| Aug 10, 2026 | Zoox begins paid robotaxi rides in Las Vegas (reported); Meta's Muse Glimmer, a 30-billion-parameter open-weight model | Purpose-built robotaxis enter commercial service; Meta keeps one open model |
+| Aug 7, 2026 | OpenAI shares early cyber test results for its unreleased Astra model and reportedly says it cannot rule out Critical cyber capability, the top level of its internal risk scale (its later system card says Astra "might reach the Critical level of cyber capability") | Cyber capability becomes the leading safety concern |
+| Aug 10, 2026 | Zoox begins paid robotaxi rides in Las Vegas (reported); Meta's Muse Glimmer, a 30-billion-parameter open-weight model | Purpose-built robotaxis enter commercial service; Meta still releases some open-weight models |
 | Aug 13, 2026 | DeepSeek-V4-Pro generally available; Gemini 3.7 Flash | Open-weight frontier model released; rapid Flash updates |
-| Jul–Aug 2026 | Qwen3.8 family: the open Qwen3.8-2.4T-A95B, its hosted version Qwen3.8-Max, and the small open Qwen3.8-27B (sources differ on the days: Epoch lists Max on July 19 and the 2.4T weights on August 8; other reports give August 3 and August 12) | Chinese open-weight scale-up |
+| Jul–Aug 2026 | Qwen3.8 family: the open Qwen3.8-2.4T-A95B, its hosted version Qwen3.8-Max, and the small open Qwen3.8-27B (Max previewed on July 19 and offered in Alibaba's cloud from August 3, as reported; sources give August 8 or August 12 for the 2.4T weights and August 14 for the 27B) | Chinese open-weight scale-up |
 | Aug 2026 | Stanford "Canaries" update: young workers in AI-exposed jobs about 19% below trend | Early labor-market signal, described as not causal |
 | Aug 26, 2026 | NVIDIA reports quarterly revenue of $96.2 billion and says Vera Rubin is "ramping into full production," with racks running at several clouds | AI hardware demand still doubling year over year |
 | Sep 1–2, 2026 | US Justice Department files a statement of interest arguing that copying works to train AI can be fair use, in the OpenAI copyright cases (sources differ on the day) | Government weighs in on AI copyright |
 | Sep 2, 2026 | Gemini 3.8 Flash | Google's fast-model line keeps updating |
 | Sep 3, 2026 | OpenAI unveils GPT-6 Astra, its first pretraining run on more than 100,000 GPUs (about 9.4 × 10^26 FLOP, per Epoch) | Largest known training run; released first as a limited preview, then to paid users |
-| Sep 3, 2026 | GPT-6 Astra scores 62.7% on ARC-AGI-3 with the standard harness and 98.6% with a "Provider Adapter" harness that keeps the model's reasoning state between steps using the model maker's own context-management features, both at maximum effort (99.9% with the adapter at high effort), per ARC Prize | Benchmark falls within six months; harness choice matters |
+| Sep 3, 2026 | GPT-6 Astra scores 62.7% on ARC-AGI-3 with the standard harness and 98.6% with a "Provider Adapter" harness that keeps the model's reasoning state between steps using the model maker's own context-management features, both at maximum reasoning effort (99.9% with the adapter at "high" effort, a lower setting), per ARC Prize | Benchmark falls within six months; harness choice matters |
 | Sep 8, 2026 | METR marks its time-horizon page as no longer updated; its last addition, in May, came with a warning that measurements above about 16 hours are unreliable | The best-known agent yardstick runs out of room |
 | Sep 15, 2026 | Claude Fable 5.1 and Mythos 5.1 (the date on Anthropic's announcement; some trackers list September 1) | Updated tiered models |
 | Sep 21, 2026 | Grok 4.7 | SpaceX's AI unit releases a new model |
 | Sep 22, 2026 | Claude Opus 5.5 | Tops several capability indices as of October 2026 |
 | Sep 22, 2026 | GPT-6 Sol and GPT-6 Luna | Cheaper GPT-6 tiers built on Astra's advances |
 | Sep 28, 2026 | Claude Sonnet 5.5 | Mid-tier update |
-| Sep 29, 2026 | GPT-6.1 Sol; appeals court rules in Thomson Reuters v. Ross that copying for a competing legal-search AI was not fair use; NRC announces the first US construction permit for a BWRX-300 small modular reactor (TVA, Tennessee) | Price drops for near-frontier models; a copyright loss for AI training; new nuclear for the grid |
+| Sep 29, 2026 | GPT-6.1 Sol; appeals court rules in Thomson Reuters v. Ross that copying for a competing legal-search AI was not fair use; the Nuclear Regulatory Commission (NRC) announces the first US construction permit for a BWRX-300 small modular reactor (the Tennessee Valley Authority's Clinch River site) | Price drops for near-frontier models; a copyright loss for AI training; new nuclear for the grid |
 | Around Sep 30, 2026 | Gemini 4 Argon announced (per Epoch) | Google's fourth-generation flagship |
 | Oct 2, 2026 | Anthropic's Claude Frontier Academy: $100 million to train 10,000 deployment engineers | Demand for people who put AI to work |
 | Oct 5, 2026 | US Defense Department says it has stopped using Anthropic products (reported) | A lab's limits on military use of its models collide with a government customer |
@@ -404,4 +404,4 @@ timeline
 | Oct 16, 2026 | China reportedly proposes export controls on 40 technologies, including AI | Tech controls become two-way |
 | Oct 17, 2026 | DeepSeek V4.1 Flash update | Open-weight models update monthly too |
 | Oct 20, 2026 | Epoch AI tracks 95 large AI data centers with about 14.2 GW of IT power | A snapshot of the gigawatt era |
-| Oct 2026 | Mistral Large 4 preview (October 6); SpaceXAI renames itself SpaceX Super Intelligence, "SpaceXSI" (announced October 4, as reported; the new name is on its website by October 12, and SpaceX's quarterly report now calls the unit its "Super Intelligence" segment); Anthropic reported to be targeting a mid-November stock-market listing | Europe's flagship, with open weights promised; corporate reshuffles; labs head toward public markets |
+| Oct 2026 | Mistral Large 4 preview (October 6); SpaceXAI renames itself SpaceX Super Intelligence, "SpaceXSI" (announced October 4, as reported; the new name was on its website by mid-October, and SpaceX's quarterly report now calls the unit its "Super Intelligence" segment); Anthropic reported to be aiming for a November stock-market listing | Europe's flagship, with open weights promised; corporate reshuffles; labs head toward public markets |

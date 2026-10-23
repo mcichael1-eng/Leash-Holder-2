@@ -692,7 +692,7 @@ Discriminative model, Generative model, Probability distribution, Sampling, Mani
    from diffusers import AutoPipelineForText2Image       # a ready-made text-to-image pipeline
    pipe = AutoPipelineForText2Image.from_pretrained(
        "stabilityai/sdxl-turbo",                         # a distilled model built for 1 to 4 steps
-       torch_dtype=torch.float16, variant="fp16").to("cuda")  # 16-bit numbers, placed on the GPU
+       dtype=torch.float16, variant="fp16").to("cuda")  # 16-bit numbers, placed on the GPU
    g = torch.Generator("cuda").manual_seed(42)           # the seed fixes the starting static
    image = pipe("a watercolor fox reading a book",
                 num_inference_steps=1,                   # number of denoising steps

@@ -267,7 +267,7 @@ There is nothing magical about a server. It is a computer like your laptop, usua
 
 ## Data centers: where the servers live
 
-Servers live in data centers: buildings packed with racks of servers, network equipment, power gear and cooling. A rack is a standard metal cabinet, about the size of a tall refrigerator, holding servers stacked like pizza boxes. Rows of racks fill large halls. Outside sit the substation, backup generators and cooling equipment.
+Servers live in data centers: buildings packed with racks of servers, network equipment, power gear and cooling. A rack is a standard metal cabinet, about the size of a tall refrigerator, holding servers stacked like pizza boxes. Rows of racks fill large halls. Outside sit the substation (a fenced yard of equipment that steps high-voltage grid power down for the site; Chapter 38), backup generators and cooling equipment.
 
 > **Definition — Data center:** A building packed with servers, network equipment, power systems and cooling. Your chatbot's model runs in one.
 
@@ -642,11 +642,14 @@ Network, Router, ISP (Internet service provider), Internet, Internet exchange po
    print("Format:", response.headers["Content-Type"]) # the response is JSON
    print("Requests left this hour:", response.headers.get("X-RateLimit-Remaining"))
    data = response.json()                             # turn the JSON into a dictionary
-   print("Stars:", data["stargazers_count"])          # read one field
-   print("License:", data["license"]["name"])         # a field inside a field
+   if response.status_code == 200:                    # only a success has these fields
+       print("Stars:", data["stargazers_count"])      # read one field
+       print("License:", data["license"]["name"])     # a field inside a field
+   else:
+       print("Error message:", data.get("message"))   # the reason GitHub gives
    ```
 
-   2. Read the output. GitHub allows a limited number of requests per hour without a key; watch "Requests left" drop each time you run the cell.
+   2. Read the output. GitHub allows 60 requests per hour from each internet address without a key; watch "Requests left" drop each time you run the cell. If you get status 403 or 429 with a rate-limit message, the limit for that address has run out; wait and try again later.
    3. Change the URL to a repository that does not exist, such as ".../repos/pytorch/no-such-repo", run again and note the status code.
    4. Ask a chatbot to explain each line, then ask how an AI API call would differ (hint: POST instead of GET, a JSON body, and an API key in the headers). Chapter 26 shows the real thing.
    **What you'll learn:** an API call is just an HTTP request with a status code, headers and a JSON body, and rate limits are visible in the headers.
@@ -661,7 +664,7 @@ Network, Router, ISP (Internet service provider), Internet, Internet exchange po
 
 ## Areas of opportunity
 
-- **Cloud and site reliability engineering.** Companies running AI products need engineers who understand networks, DNS, load balancing, regions and failures. These roles exist at every company with an online product, not just at AI labs.
+- **Cloud and site reliability engineering.** Companies running AI products need engineers who understand networks, DNS, load balancing (spreading requests evenly across many servers), regions and failures. These roles exist at every company with an online product, not just at AI labs.
 - **AI infrastructure networking.** Training clusters and inference fleets depend on fast optical links and specialized networks (Chapter 34). Network engineers and fiber technicians who understand both classic internet networking and AI cluster networks are scarce and well paid.
 - **Data center construction and operations trades.** Gigawatt campuses need electricians, fiber splicers, cooling technicians and operations staff. These jobs need practical training rather than degrees and are in demand wherever new sites are built (Chapter 38 and Chapter 63).
 - **AI cost optimization.** Many companies overspend on GPU rentals and API bills. Consultants and engineers who can cut costs with caching, batching, smaller models and the right cloud contracts can show savings directly, which makes the value easy to sell (Chapter 31 and Chapter 43).

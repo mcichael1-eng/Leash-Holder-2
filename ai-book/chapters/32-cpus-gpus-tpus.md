@@ -674,7 +674,7 @@ How low can it go? In February 2024 researchers at Microsoft Research and the Un
 
 > **Definition — Ternary weights:** Weights restricted to three values, −1, 0 and +1, which need about 1.58 bits each. Multiplying by them is just subtracting, skipping or adding, so most of the multiplications in a layer disappear.
 
-That is why 1-bit and 1.58-bit models prompt the question of whether future chips will need today's multiplier-heavy designs. So far, though, the published BitNet models are small, and frontier models use FP8 and FP4 (see the box above), so the idea has not changed what the big labs buy.
+That is why these "1-bit" models (the paper's own nickname, though strictly they use 1.58 bits) prompt the question of whether future chips will need today's multiplier-heavy designs. So far, though, the published BitNet models are small, and frontier models use FP8 and FP4 (see the box above), so the idea has not changed what the big labs buy.
 
 ## The accelerator zoo: CPU, GPU, TPU, NPU and friends
 
@@ -690,7 +690,7 @@ The TPU's history shows how AI hardware evolved:
 
 - **v1 (2015):** inference only, 8-bit integers, one 256 × 256 systolic array, 28 nm.
 - **v2 (2017):** added BF16 and HBM memory, so it could train.
-- **v4 (2021):** pods of 4,096 chips connected through optical circuit switches.
+- **v4 (2021):** pods (large groups of chips wired together to work as one unit) of 4,096 chips connected through optical circuit switches (switches that steer beams of light between fibers; Chapter 34).
 - **Trillium / v6e (2024):** 918 TFLOPS BF16, 32 GB HBM, 256-chip pods.
 - **Ironwood / v7 (announced April 2025, generally available late 2025):** 4,614 TFLOPS FP8, 192 GB HBM3E at 7.37 TB/s, pods of up to 9,216 chips.
 - **TPU 8t and 8i (announced April 2026):** separate chips for training and inference (details in the tables below).
@@ -703,11 +703,11 @@ Amazon's Trainium, Microsoft's Maia and Meta's MTIA follow the same logic. A clo
 
 > **Definition — LPU (Language Processing Unit):** Groq's inference chip, which keeps model weights in very fast on-chip memory (SRAM) instead of external memory and runs on a fixed schedule planned in advance by a compiler. It is very fast for one user but needs hundreds of chips to hold a large model.
 
-In late December 2025, NVIDIA paid a reported ~$20 billion for a non-exclusive license to Groq's technology and hired its leadership. At GTC 2026 (NVIDIA's annual GPU Technology Conference, where it announces new products) NVIDIA introduced the Groq 3 LPU, sold in racks of 256 chips, to sit beside Vera Rubin GPUs and generate tokens quickly.
+In late December 2025, NVIDIA paid a reported ~$20 billion for a non-exclusive license to Groq's technology and hired its leadership. At GTC 2026 (NVIDIA's annual GPU Technology Conference, where it announces new products) NVIDIA introduced the Groq 3 LPU, sold in racks of 256 chips called LPX, to sit beside Vera Rubin GPUs and generate tokens quickly.
 
 > **Definition — LPX:** NVIDIA's rack of 256 Groq 3 LPUs, introduced at GTC 2026 and designed to work beside Vera Rubin GPU racks, which handle the rest of the work, so that tokens are generated quickly.
 
-> **Definition — Wafer-scale engine (WSE):** Cerebras's approach of using an entire silicon wafer as one giant chip instead of cutting it into many small chips. Its WSE-3 covers 46,225 mm², about 54 times the largest single die a normal lithography machine (the machine that prints circuit patterns onto silicon, Chapter 36) can print.
+> **Definition — Wafer-scale engine (WSE):** Cerebras's approach of using nearly an entire silicon wafer as one giant chip instead of cutting it into many small chips. Its WSE-3 covers 46,225 mm², about 54 times the largest single die a normal lithography machine (the machine that prints circuit patterns onto silicon, Chapter 36) can print.
 
 ### Chips in your pocket
 

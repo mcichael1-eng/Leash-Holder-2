@@ -367,7 +367,7 @@ There is a geometric limit too.
 
 > **Definition — Beachfront (shoreline):** The length of a chip's edge available for connections to memory and other chips. HBM stacks must sit along the edges of the compute die, so the perimeter limits how many stacks, and how much bandwidth, a package can have.
 
-A single die cannot be larger than about 858 mm², the most a lithography machine can print in one exposure (the "reticle limit," Chapter 36). Its edge is therefore limited, and so is the number of HBM stacks that can touch it. NVIDIA's Blackwell and Rubin join two large dies and surround them with 8 stacks. To get more bandwidth, designers can make each wire faster, make the interface wider (HBM4's doubling), build bigger packages from several chiplets, or eventually stack memory directly on top of logic. NVIDIA has previewed "custom HBM" and reportedly 3D die stacking for its 2028 Feynman generation.
+A single die cannot be larger than about 858 mm², the most a lithography machine can print in one exposure (the "reticle limit," Chapter 36). Its edge is therefore limited, and so is the number of HBM stacks that can touch it. NVIDIA's Blackwell and Rubin join two large dies and surround them with 8 stacks. To get more bandwidth, designers can make each wire faster, make the interface wider (HBM4's doubling), build bigger packages from several chiplets (smaller dies designed to be combined in one package, Chapter 34), or eventually stack memory directly on top of logic. NVIDIA has previewed "custom HBM" and reportedly 3D die stacking for its 2028 Feynman generation.
 
 ### The generations
 
@@ -640,7 +640,7 @@ quadrantChart
 ```
 *Figure 33.10: A rough map of AI workloads. Positions are qualitative. Chips are increasingly designed for one corner rather than all four, which is why 2026 brought separate training and inference chips.*
 
-> **At the frontier (2026):** The memory wall is now shaping the whole industry's product lines. Google split TPU 8 into a training chip (8t: 12.6 PFLOPS FP4, 216 GB HBM, 6.5 TB/s) and an inference chip (8i: 10.1 PFLOPS FP4, 288 GB HBM, 8.6 TB/s, 384 MB SRAM). NVIDIA licensed Groq's SRAM-based technology and pairs Groq 3 LPX racks with Vera Rubin, claiming up to 35 times more throughput per megawatt at high interactivity (a vendor claim). Open research problems include HBM beyond HBM4E, custom base dies, processing near memory, CXL memory pooling and better KV-cache compression.
+> **At the frontier (2026):** The memory wall is now shaping the whole industry's product lines. Google split TPU 8 into a training chip (8t: 12.6 PFLOPS FP4, 216 GB HBM, 6.5 TB/s) and an inference chip (8i: 10.1 PFLOPS FP4, 288 GB HBM, 8.6 TB/s, 384 MB SRAM). NVIDIA licensed Groq's SRAM-based technology and pairs Groq 3 LPX racks with Vera Rubin, claiming up to 35 times more throughput per megawatt at high interactivity, meaning a fast stream of tokens for each user (a vendor claim; Chapter 37). Open research problems include HBM beyond HBM4E, custom base dies, processing near memory, CXL memory pooling and better KV-cache compression.
 
 ## In plain English
 
@@ -747,7 +747,7 @@ Von Neumann architecture, Von Neumann bottleneck, Memory capacity, Memory bandwi
 ## Areas of opportunity
 
 - **Inference optimization engineer.** Companies serving models at scale need people who manage KV caches, batching, quantization, speculative decoding and disaggregated serving with engines such as vLLM, SGLang, TensorRT-LLM and NVIDIA Dynamo. Because decode is memory-bound, each improvement shows up directly in cost per token, so the value is easy to prove, and demand is growing as inference outgrows training.
-- **Kernel and performance engineering for memory-bound code.** Engineers who can profile where bytes go and write tiled, fused kernels (the FlashAttention style of thinking) save labs and clouds millions of dollars. Profilers such as NVIDIA Nsight and an understanding of rooflines are the core skills.
+- **Kernel and performance engineering for memory-bound code.** Engineers who can profile where bytes go and write tiled, fused kernels (the FlashAttention style of thinking) save labs and clouds millions of dollars. Profilers (tools that record which operations run, for how long and when the chips sit idle), such as NVIDIA Nsight, and an understanding of rooflines are the core skills.
 - **Memory-system research.** The memory wall is one of the field's central open problems: HBM beyond HBM4E, custom HBM base dies, processing near memory, CXL memory pooling, SRAM-heavy designs and better KV-cache compression all need researchers and engineers, at memory makers, chip companies, hyperscalers and startups.
 - **Memory and packaging manufacturing.** SK hynix, Samsung and Micron, plus packaging houses, need process, test, TSV and stacking engineers and technicians. HBM supply directly caps how many AI accelerators the world can build, so these roles sit at a choke point of the industry.
 - **Optimization consultancies.** Many organizations run GPUs at low utilization or serve models at batch size one. A consultant who can apply batching, quantization, caching and the right GPU choice can often cut bills dramatically, and clients can measure the savings.

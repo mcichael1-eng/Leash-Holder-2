@@ -70,7 +70,7 @@ You will meet other maps of the same territory. An influential 2023 overview by 
 
 | Source of risk (Hendrycks and colleagues) | What it means | Closest family above | Where this book covers it |
 |---|---|---|---|
-| Malicious use | A person aims AI at harm: bioweapons, mass propaganda, grabs for power, or an autonomous agent released with a destructive goal (in 2023 a hobby project called ChaosGPT told an agent to "destroy humanity"; it lacked the skill to do any damage) | Misuse | Chapter 58 |
+| Malicious use | A person aims AI at harm: bioweapons, mass propaganda, grabs for power, or an autonomous agent released with a destructive goal (in 2023 an anonymous user set up an agent called ChaosGPT with the goal to "destroy humanity"; it lacked the skill to do any damage) | Misuse | Chapter 58 |
 | AI race | Competition pushes companies and countries to move fast, cut corners and hand ever more decisions, including military ones, to machines | Structural | Chapters 59 and 60 |
 | Organizational risks | How labs are run: rushed testing, leaked weights, warnings ignored, safety teams overruled | Accidents with structural causes | Chapter 56 |
 | Rogue AIs | Systems pursue goals their makers did not intend, through proxy gaming, goal drift, power-seeking or deception | Accidents | This chapter, Chapters 56 and 57 |
@@ -280,7 +280,7 @@ Researchers have collected dozens of these cases (Google DeepMind's Victoria Kra
 
 **The robot hand that fooled its judges (2017).** In one of the first experiments with learning from human preferences, people watched clips of a simulated robot hand and picked which looked more like grasping a ball. The hand learned to hover between the camera and the ball, so that from the camera's angle it looked like a grasp. The humans' judgments were the reward, and the robot learned to satisfy the judgments rather than the task. This example matters because it is the same recipe later used to train chatbots: when the reward is "what looks good to a human rater", the system can learn to look good rather than be good.
 
-> **Watch out:** You may have read that a US Air Force AI drone "killed its operator" in a simulation after the operator blocked its strikes. The story came from a talk at a Royal Aeronautical Society summit in May 2023. Days later the Society added an update: the officer said he had "mis-spoke", the scenario was a hypothetical "thought experiment", and "we've never run that experiment". The documented cases are the ones above and below, and they are strange enough without the myth.
+> **Watch out:** You may have read that a US Air Force AI drone "killed its operator" in a simulation after the operator blocked its strikes. The story came from a talk by an Air Force colonel at a Royal Aeronautical Society summit in May 2023. Days later the Society added an update: the colonel said he had "mis-spoke", the scenario was a hypothetical "thought experiment", and "we've never run that experiment". The documented cases are the ones above and below, and they are strange enough without the myth.
 
 ### Reward hacking in 2025–2026 production models
 
@@ -761,15 +761,14 @@ AI safety, Accident (in AI safety), Misuse, Structural harm, AI race, Organizati
 - **Agent reliability engineering.** Every business deploying agents needs people who can measure per-step reliability, design checkpoints and human review, and decide which tasks are safe to automate. This is one of the most practical applications of the compounding math in this chapter.
 - **Reward and environment design.** The RL-environment industry (Chapter 21) needs people who can write tasks and graders that are hard to game. Finding loopholes before a model does is a valuable, scarce skill.
 - **Technical alignment research.** Labs, Redwood Research, Apollo Research, METR, FAR.AI, government institutes such as the UK AI Security Institute, and academic groups work on scheming, reward hacking, goal misgeneralization and evaluation awareness. Entry routes include MATS, Anthropic Fellows, the ARENA curriculum and BlueDot Impact courses.
+- **Incident analysis and documentation.** Organizations such as the AI Incident Database, insurers and corporate risk teams need people who can investigate AI failures and write them up clearly. New laws requiring incident reports (Chapter 56) increase demand.
+- **Open problems worth working on:** detecting scheming in models that recognize tests; making training environments resistant to reward hacking; measuring goal misgeneralization in language models; keeping chains of thought readable; and understanding why emergent misalignment happens.
 
 > **Definition — MATS (originally ML Alignment & Theory Scholars):** A research fellowship that pairs newcomers with experienced AI safety researchers as mentors for paid research projects of about 12 weeks. It is one of the main routes into alignment work.
 
 > **Definition — ARENA (Alignment Research Engineer Accelerator):** A free technical AI safety curriculum of coding exercises, with in-person bootcamps of a few weeks in London, that teaches the engineering skills used in alignment and interpretability research.
 
 > **Definition — FAR.AI:** A nonprofit research organization working on AI safety problems such as how easily models can be attacked, tricked or misused.
-
-- **Incident analysis and documentation.** Organizations such as the AI Incident Database, insurers and corporate risk teams need people who can investigate AI failures and write them up clearly. New laws requiring incident reports (Chapter 56) increase demand.
-- **Open problems worth working on:** detecting scheming in models that recognize tests; making training environments resistant to reward hacking; measuring goal misgeneralization in language models; keeping chains of thought readable; and understanding why emergent misalignment happens.
 
 ## Check your understanding
 

@@ -361,7 +361,7 @@ Before a new model meets real users, engineers test it on logged history: hide s
 
 > **Definition — NDCG (normalized discounted cumulative gain):** A ranking score between 0 and 1 that rewards putting the most relevant items at the top. Each item's relevance is divided by a discount that grows with its position, the results are summed, and the total is divided by the best possible total.
 
-A worked NDCG example. A search engine shows five results whose relevance (judged by people, 0 to 3) is, in order: 0, 2, 3, 0, 1. The discount for position n is log2(n + 1), the base-2 logarithm of Chapter 6 ("what power of 2 gives this number?"), which for positions 1 to 5 is 1.0, 1.585, 2.0, 2.322, 2.585.
+A worked NDCG example. A search engine shows five results whose relevance (judged by people, 0 to 3) is, in order: 0, 2, 3, 0, 1. The discount for position n is log2(n + 1), using the base-2 logarithm from Chapter 6 ("what power of 2 gives this number?"), which for positions 1 to 5 is 1.0, 1.585, 2.0, 2.322, 2.585.
 
 - Shown order: 0 ÷ 1.0 + 2 ÷ 1.585 + 3 ÷ 2.0 + 0 ÷ 2.322 + 1 ÷ 2.585 = 0 + 1.262 + 1.5 + 0 + 0.387 = 3.149.
 - Best possible order (3, 2, 1, 0, 0): 3 ÷ 1.0 + 2 ÷ 1.585 + 1 ÷ 2.0 = 3 + 1.262 + 0.5 = 4.762.

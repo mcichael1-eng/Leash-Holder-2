@@ -34,7 +34,7 @@ Chip companies split the work in three different ways. Some only design chips an
 
 > **Definition — Foundry:** A company that manufactures chips designed by other companies. TSMC is by far the largest; Samsung Foundry, Intel Foundry and China's SMIC are others.
 
-> **Definition — SMIC (Semiconductor Manufacturing International Corporation):** China's largest foundry (contract chipmaker). Export controls keep the most advanced chipmaking machines (EUV, explained later in this chapter) out of its reach, so it makes its most advanced chips (7 nm-class, and reportedly 5 nm-class), including, reportedly, Huawei's Ascend AI chips, with older equipment and extra steps.
+> **Definition — SMIC (Semiconductor Manufacturing International Corporation):** China's largest foundry (contract chipmaker). Export controls keep the most advanced chipmaking machines (EUV, explained later in this chapter) out of its reach, so it makes its most advanced chips (7 nm-class, and reportedly 5 nm-class) with older equipment and extra steps. Teardown reports say these include Huawei's Ascend AI chips.
 
 > **Definition — IDM (integrated device manufacturer):** A company that both designs and manufactures its own chips. Intel, Samsung and the memory makers SK hynix and Micron are IDMs.
 
@@ -812,7 +812,7 @@ Semiconductor, Integrated circuit (IC) / chip, Die, Fabless company, Foundry, SM
 
 5. **[Medium] Dies per wafer and the cost of a giant chip.** Build a small spreadsheet.
    1. Put labels in column A and enter: in B1 the wafer diameter (300), in B2 the die area in mm² (814), in B3 the defect density per cm² (0.1), and in B4 the wafer price (17000).
-   2. Dies per wafer, in B5: `=PI()*(300/2)^2/B2 - PI()*300/SQRT(2*B2)`.
+   2. Dies per wafer, in B5: `=PI()*(B1/2)^2/B2 - PI()*B1/SQRT(2*B2)`.
    3. Yield, in B6: `=EXP(-(B2/100)*B3)` (the B2/100 turns mm² into cm²). Good dies, in B7: `=B5*B6`. Cost per good die, in B8: `=B4/B7`.
    4. Repeat for 100 mm², 400 mm² and 858 mm² dies, and for defect densities of 0.05 and 0.2, by changing B2 and B3 and noting the results.
    5. Compute "good silicon per wafer" (good dies × die area) for each case and compare.

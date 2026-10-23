@@ -150,7 +150,7 @@ Step inside one of the buildings. The industry splits a data center's floor area
 
 > **Definition — White space:** The floor area where the IT equipment (racks of servers, storage and network gear) actually sits. The name comes from the clean, brightly lit look of classic computer rooms.
 
-> **Definition — Gray space:** The rooms that hold support equipment: electrical rooms with switchgear and UPS systems, battery rooms, mechanical rooms with pumps and heat exchangers, and fire-suppression gear.
+> **Definition — Gray space:** The rooms that hold support equipment: electrical rooms with switchgear (cabinets of breakers and switches that route and cut power) and UPS systems (uninterruptible power supplies, battery backups that bridge outages; Chapter 39), battery rooms, mechanical rooms with pumps and heat exchangers, and fire-suppression gear.
 
 > **Definition — Data hall:** One large room of white space inside a data center building, often designed for 5 to 30 or more megawatts of IT equipment in AI designs.
 
@@ -779,7 +779,7 @@ Data center, Campus, Megawatt (MW) and gigawatt (GW), NVIDIA, JLL (Jones Lang La
 - **Commissioning agents.** Testing every system from factory to integrated load-bank tests is a specialized profession; delays in commissioning delay revenue, so owners pay for experienced firms.
 - **DCIM, digital twin and monitoring software.** Tools that model power and cooling capacity rack by rack, predict hot spots, spot failing parts early and raise GPU utilization sell to every operator, because idle or stranded capacity is very expensive.
 - **Physical and model-weight security.** As frontier model weights become strategic assets, demand grows for security designers, guards, access-control integrators and auditors who understand both buildings and AI.
-- **Site selection and OSINT analysis.** Analysts who can read satellite imagery, permits and utility filings to estimate who is building what (the Epoch AI style of work) are valued by investors, journalists and policymakers.
+- **Site selection and OSINT (open-source intelligence) analysis.** Analysts who can read satellite imagery, permits and utility filings to estimate who is building what (the Epoch AI style of work) are valued by investors, journalists and policymakers.
 - **Neocloud and colocation operations.** Smaller operators need people who can run GPU fleets efficiently, sign customers on reserved contracts and keep utilization high; converted crypto-mining sites need staff who can retrofit them for AI.
 - **Open problems.** Serviceable 600 kW to 1 MW racks, fast and reliable multi-site training, leak-proof liquid cooling at scale, and simple standards for measuring and reporting data center efficiency are all unsolved and attract startups and research funding.
 

@@ -393,7 +393,7 @@ Finish Stage 1, and in the last month start DeepLearning.AI's "AI Python for Beg
 
 > **Definition — Python:** The most widely used programming language for AI work, popular for its readable code and its huge collection of ready-made libraries for math, data and neural networks. Almost every AI course, tool and research codebase uses it.
 
-A common question is "Python or R?" R is a language built for statistics and is still common in statistics, academic research and some data-analysis jobs. But the major model providers all offer official Python libraries, the main deep-learning frameworks such as PyTorch are Python-first, and nearly every course in this chapter uses Python, so learn Python first.
+A common question is "Python or R?" R is a language built for statistics and is still common among statisticians, in academic research and in some data-analysis jobs. But the major model providers all offer official Python libraries, the main deep-learning frameworks such as PyTorch are Python-first, and nearly every course in this chapter uses Python, so learn Python first.
 
 ### 3–12 months: the core stack
 
@@ -553,7 +553,7 @@ Anthropic Fellows: about 4 months, or roughly 17 weeks
 
 > **Definition — Fellowship:** A time-boxed, paid program in which newcomers do research with mentorship, such as MATS or the Anthropic Fellows Program. Fellowships are a common bridge into research roles.
 
-**Do you need a PhD?** For research scientist roles, a PhD remains typical. For research engineering it often is not required: frontier-lab postings commonly ask for "a Bachelor's degree or an equivalent combination of education, training, and/or experience." A strong public record of replications, open-source contributions and write-ups can substitute for credentials. Stanford's 2026 AI Index reports that new AI PhDs in the US and Canada rose 22% between 2022 and 2024, but the extra graduates took jobs in academia rather than industry, so a PhD is far from the only path into industry research.
+**Do you need a PhD?** For research scientist roles, a PhD remains typical. For research engineering it often is not required: frontier-lab postings commonly ask for "a Bachelor's degree or an equivalent combination of education, training, and/or experience." A strong public record of replications, open-source contributions and write-ups can substitute for credentials. Stanford's 2026 AI Index reports that new AI PhDs in the US and Canada rose 22% between 2022 and 2024, but the extra graduates took jobs in academia rather than industry, so a PhD on its own does not guarantee an industry research job; the public record described above matters either way.
 
 ## Track D: compute, chips and data centers
 

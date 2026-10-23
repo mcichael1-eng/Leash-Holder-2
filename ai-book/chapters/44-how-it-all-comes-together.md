@@ -437,7 +437,7 @@ The base model can continue any document but does not reliably follow instructio
 - **Supervised fine-tuning.** The model trains on curated examples of ideal responses, many written or checked by paid experts.
 - **Preference training.** People or AI judges compare pairs of answers; the model learns to prefer the better ones, through RLHF, DPO or AI feedback guided by a written constitution.
 - **Reinforcement learning with verifiable rewards.** The model attempts tens of thousands of tasks in sandboxes (math problems with checkable answers, code repositories with unit tests, browsers, terminals, spreadsheets) and is rewarded when it succeeds. This is what teaches it to think at length, and it is the stage that has grown fastest since 2024.
-- **Safety training.** Calibrating refusals, training on the lab's model specification, and adversarial examples.
+- **Safety training.** Calibrating refusals, training on the lab's model specification, and adversarial examples (inputs deliberately crafted to make a model fail).
 
 > **Definition — RLVR (reinforcement learning with verifiable rewards):** Training a model by trial and error on tasks whose answers a program can check automatically, such as math problems or code with tests, rewarding attempts that pass.
 

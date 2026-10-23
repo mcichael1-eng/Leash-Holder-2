@@ -57,7 +57,7 @@ Let us put a number on "trillions of multiplications," because it is the first o
 
 The machines in the data center do it in a few seconds. That gap, between 3 million years of human arithmetic and a few seconds of machine arithmetic, is a good first sense of what modern AI is: not magic, but an astonishing amount of very simple math done very fast.
 
-> **Key idea:** Your chatbot is not a database of answers and not a little person in your phone. It is a mathematical function with billions of learned numbers, running on specialized chips in a distant building, that predicts text one piece at a time.
+> **Key idea:** Your chatbot is not a database of answers and not a little person in your phone. It is a mathematical function (a rule that turns each input into an output; Chapter 5) with billions of learned numbers, running on specialized chips in a distant building, that predicts text one piece at a time.
 
 > **Watch out:** A common belief is that the chatbot "looks up" answers in a giant database. It does not. It generates text from patterns stored in its parameters. Some products add a web search or a document lookup on top (Chapter 27 explains how), but the core is prediction, not retrieval. This is also why it can produce fluent, confident text that is simply wrong.
 
@@ -374,9 +374,11 @@ Here is a one-paragraph tour of each branch, so you know what lives where.
 
 **Speech and audio** covers turning speech into text, text into natural-sounding speech, cloning voices, holding real-time voice conversations, generating music and recognizing sounds from coughs to whale songs (Chapter 46).
 
-**Language** is the branch your chatbot comes from. Natural language processing once meant separate tools for translation, sentiment analysis and so on; today one large model does most of these with a single prompt, though small specialized models still run at huge scale because they are cheap (Chapter 18, Chapter 54).
+**Language** is the branch your chatbot comes from. Natural language processing once meant separate tools for translation, sentiment analysis (judging whether a review or post sounds positive or negative) and so on; today one large model does most of these with a single prompt, though small specialized models still run at huge scale because they are cheap (Chapter 18, Chapter 54).
 
 > **Definition — Natural language processing (NLP):** The branch of AI that deals with human language: reading, writing, translating and extracting meaning from text.
+
+> **Definition — Prompt:** Everything you send a model to get a response: your question or instruction, plus any background, examples or files. Chapter 25 shows how to write prompts that work.
 
 **Generative media** covers image, video, 3D and "world model" generators that create interactive environments frame by frame (Chapter 16 explains the internals, Chapter 47 the products and their effects).
 
@@ -414,7 +416,7 @@ flowchart TD
 
 | Layer | What it is | One number to remember | Where in this book |
 |---|---|---|---|
-| Silicon and chips | Tiny electrical switches (transistors) etched on silicon | NVIDIA's Blackwell B200 package holds 208 billion transistors | Chapter 2, Part VI |
+| Silicon and chips | Tiny electrical switches (transistors) etched on silicon | A Blackwell B200 package from NVIDIA, the leading AI-chip designer, holds 208 billion transistors | Chapter 2, Part VI |
 | Servers and racks | Chips wired together into machines and cabinets | A modern AI rack can hold 72 GPUs acting as one | Chapter 34 |
 | Data centers and power | Buildings full of racks, plus power and cooling | The largest AI sites approach 1 gigawatt, roughly the electricity of a million US homes | Part VII |
 | Training data | Text, images, code and audio that models learn from | Meta's Llama 3 was trained on about 15.6 trillion tokens | Chapter 11, Chapter 19 |
@@ -422,7 +424,7 @@ flowchart TD
 | Apps and agents | Products built on models | Hugging Face, the main website for sharing models, hosts about 3.17 million of them (October 2026) | Part V |
 | You | Users, builders, workers, citizens | About 900 million weekly ChatGPT users (February 2026) | Parts IX and X |
 
-> **Definition — Chip (integrated circuit):** A small slice of silicon with billions of microscopic switches and wires manufactured onto it. Processors, memory and AI accelerators are all chips.
+> **Definition — Chip (integrated circuit):** A small slice of silicon with billions of microscopic switches and wires manufactured onto it. Processors, memory and AI accelerators (chips specialized for AI math, such as GPUs) are all chips.
 
 > **Definition — GPU (graphics processing unit):** A chip with thousands of small processing cores that do the same math on lots of data at once. Built originally for video-game graphics, GPUs are now the main engine of AI.
 
@@ -525,7 +527,7 @@ This book has 66 chapters in ten Parts, plus five appendices. It is built as a s
 |---|---|---|---|
 | I | Foundations: How Computers Work and the Math Behind AI | 1–7 | What is a computer, how does everything become numbers, how does your message reach a data center, what math does AI use, and how did the field get here? |
 | II | How Machines Learn | 8–11 | What does it mean for a machine to learn, how do we know if it learned well, what are the classic tools, and where does data come from? |
-| III | Neural Networks and Deep Learning | 12–17 | How do neural networks work, how are deep networks trained, and how do CNNs, Transformers, diffusion models and newer designs work? |
+| III | Neural Networks and Deep Learning | 12–17 | How do neural networks work, how are deep networks trained, and how do CNNs (convolutional neural networks, the classic design for images), Transformers, diffusion models and newer designs work? |
 | IV | Large Language Models: How Frontier Models Are Made | 18–24 | How does an LLM work, and how is a frontier model pretrained, post-trained, taught to reason, made multimodal, served cheaply and compared? |
 | V | Using and Building With AI | 25–31 | How do you get the most from chatbots, call models with code, add your own knowledge, build agents, code with AI, customize models and ship reliable products? |
 | VI | Compute: The Machines Behind AI | 32–37 | How do GPUs and other AI chips work, why is memory the bottleneck, how are thousands of chips wired together, who makes them and how, and what does training really cost? |
@@ -553,7 +555,7 @@ flowchart TD
 
 **Path A: the complete beginner.** Read Parts I through X in order. At one chapter a week you will finish in a little over a year; at two a week, in about eight months. You will be able to explain AI at every layer, from the chip to the policy debate.
 
-**Path B: "I want to build."** Read Chapter 3 (software and data), Chapter 4 (the internet and APIs), Chapter 8 (what learning means) and Chapter 18 (how language models behave). Then read all of Part V (Chapters 25 to 31), from expert prompting to code, retrieval, agents, fine-tuning and shipping reliable products, and finish with Chapters 62 to 65. Dip into Chapters 21, 23 and 24 when you need to choose a model.
+**Path B: "I want to build."** Read Chapter 3 (software and data), Chapter 4 (the internet and APIs, the standard ways one program requests services from another), Chapter 8 (what learning means) and Chapter 18 (how language models behave). Then read all of Part V (Chapters 25 to 31), from expert prompting to code, retrieval, agents, fine-tuning (further training a model on your own examples) and shipping reliable products, and finish with Chapters 62 to 65. Dip into Chapters 21, 23 and 24 when you need to choose a model.
 
 **Path C: "I want to understand the industry and compute."** Read Chapters 2, 4, 7, the memory-math sections of Chapter 5, and Chapters 18, 19, 23 and 24 on how models are built and served. Then read Parts VI and VII in full (Chapters 32 to 44), from transistors to gigawatt campuses and the money behind them, and finish with Chapters 60 and 61.
 
@@ -577,7 +579,7 @@ All of it rests on a physical stack: sand becomes chips, chips fill servers, ser
 
 ## Key terms
 
-Chatbot, Program, Data center, Model, Parameter, Token, Artificial intelligence (AI), Algorithm, Rational agent, Symbolic AI, Machine learning (ML), Training, Inference, Neural network, Deep learning, Generative AI, Large language model (LLM), Transformer, Agent, Multimodal, Rule-based system, Expert system, Training data, Label, Classifier, Reinforcement learning (RL), Reward, RLHF (reinforcement learning from human feedback), Prediction (in AI), Recommender system, Narrow AI, Artificial general intelligence (AGI), Artificial superintelligence (ASI), Jagged frontier, Supervised learning, Unsupervised learning, Knowledge graph, Computer vision, Natural language processing (NLP), Chip (integrated circuit), GPU (graphics processing unit), Compute, Gigawatt (GW), AI winter, Reasoning model, Frontier model, Open-weight model, Frontier lab
+Chatbot, Program, Data center, Model, Parameter, Token, Artificial intelligence (AI), Algorithm, Rational agent, Symbolic AI, Machine learning (ML), Training, Inference, Neural network, Deep learning, Generative AI, Large language model (LLM), Transformer, Agent, Multimodal, Rule-based system, Expert system, Training data, Label, Classifier, Reinforcement learning (RL), Reward, RLHF (reinforcement learning from human feedback), Prediction (in AI), Recommender system, Narrow AI, Artificial general intelligence (AGI), Artificial superintelligence (ASI), Jagged frontier, Supervised learning, Unsupervised learning, Knowledge graph, Computer vision, Natural language processing (NLP), Prompt, Chip (integrated circuit), GPU (graphics processing unit), Compute, Gigawatt (GW), AI winter, Reasoning model, Frontier model, Open-weight model, Frontier lab
 
 ## Exercises
 

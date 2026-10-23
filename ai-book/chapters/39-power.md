@@ -262,7 +262,7 @@ These transformers are among the hardest things to buy in the AI build-out. They
 
 From the substation, power enters medium-voltage switchgear: rows of steel cabinets holding breakers that can route power to different buildings or cut it off instantly if something goes wrong. Underground medium-voltage cables then carry it across the campus. Microsoft says its first Fairwater site used 120 miles of such cable.
 
-> **Definition — Switchgear:** Rows of cabinets containing circuit breakers, switches and protective relays that route power and disconnect it safely during faults or maintenance. It comes in medium- and low-voltage versions and is a long-lead item.
+> **Definition — Switchgear:** Rows of cabinets containing circuit breakers, switches and protective relays that route power and disconnect it safely during faults or maintenance. It comes in medium- and low-voltage versions and is a long-lead item (equipment that takes many months or years to build and deliver).
 
 > **Definition — Circuit breaker:** An automatic switch that opens a circuit when the current becomes dangerously high, for example during a short circuit, and can be reset afterwards.
 
@@ -538,7 +538,7 @@ Now put it all together. Every calculation below uses the same four assumptions,
 | Electricity price | 7 cents per kWh | an illustrative large-customer price; real contracts vary widely by region and deal |
 | Average US home | 10,500 kWh per year (about 1.2 kW) | for "homes' worth" comparisons |
 
-*Table 39.4: Assumptions for the worked examples. Big industrial customers usually pay much less per kWh than households (about 18.2 cents in 2026, per the EIA), because they buy at high voltage, in huge and steady amounts.*
+*Table 39.4: Assumptions for the worked examples. Big industrial customers usually pay much less per kWh than households (about 18.2 cents in 2026, per the EIA, the US Energy Information Administration), because they buy at high voltage, in huge and steady amounts.*
 
 The recipe is always the same chain of multiplications:
 
@@ -682,8 +682,8 @@ Watt (W), Kilowatt (kW), Megawatt (MW) and gigawatt (GW), Watt-hour (Wh), Kilowa
 - **Electrical equipment manufacturing.** Transformers and switchgear have multi-year lead times and limited domestic production in the US, so new factories, refurbishers and suppliers of components such as transformer steel have a long runway.
 - **Generator, UPS and battery service technicians.** Every site needs people to maintain and test its backup fleet; this is skilled trade work with steady demand once a site is running.
 - **Commissioning and electrical testing firms.** Integrated load-bank tests of a gigawatt campus are huge projects, and experienced commissioning agents shorten the time to first revenue.
-- **Energy procurement and power analysts.** Data center owners need people who understand tariffs, capacity charges, PPAs and wholesale prices; the difference between a 5-cent and a 10-cent contract on a 100 MW site is tens of millions of dollars a year.
-- **Software for power-aware computing.** Tools that cap GPU power, smooth training load, shift work to cheaper or cleaner hours, or participate in demand response sell to operators and are a live research area.
+- **Energy procurement and power analysts.** Data center owners need people who understand tariffs, capacity charges, PPAs (power purchase agreements, long-term contracts to buy a plant's electricity; Chapter 41) and wholesale prices; the difference between a 5-cent and a 10-cent contract on a 100 MW site is tens of millions of dollars a year.
+- **Software for power-aware computing.** Tools that cap GPU power, smooth training load, shift work to cheaper or cleaner hours, or participate in demand response (cutting power use when the grid is stressed, usually for payment; Chapter 41) sell to operators and are a live research area.
 - **Safety training.** High-voltage and arc-flash safety (for example NFPA 70E training) and new DC safety practices for 800 V systems are needed by every contractor and operator.
 
 ## Check your understanding

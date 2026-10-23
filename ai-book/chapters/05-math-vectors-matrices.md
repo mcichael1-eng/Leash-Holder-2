@@ -540,7 +540,7 @@ When a support chatbot finds the help article that answers "I forgot my login", 
 
 > **Watch out:** High cosine similarity means "about similar things", not "says the same thing". "I love this phone" and "I hate this phone" can have quite similar embeddings, because they are both short opinions about a phone. Systems that rely on similarity need other checks for meaning.
 
-> **At the frontier (2026):** Attention compares tokens to each other with dot products, so the number of comparisons grows with the square of the conversation length: double the length and there are four times as many comparisons. That is a big problem for million-token contexts (the context is all the text the model reads at once; Chapter 7 and Chapter 18 explain it). DeepSeek's V4 models use compressed and sparse attention to cut this down; according to DeepSeek's technical report, at a 1-million-token context V4-Pro needs only 27% of the per-token computation of its predecessor, V3.2. Chapter 15 and Chapter 23 explain these tricks.
+> **At the frontier (2026):** Attention compares tokens to each other with dot products, so the number of comparisons grows with the square of the conversation length: double the length and there are four times as many comparisons. That is a big problem for million-token contexts (the context is all the text the model reads at once; Chapter 7 and Chapter 18 explain it). DeepSeek's V4 models use compressed and sparse attention (each token compares itself with a summary or a selected subset of earlier tokens instead of all of them) to cut this down; according to DeepSeek's technical report, at a 1-million-token context V4-Pro needs only 27% of the per-token computation of its predecessor, V3.2. Chapter 15 and Chapter 23 explain these tricks.
 
 ## Matrices: tables of numbers
 
@@ -802,7 +802,7 @@ How many knobs does a layer have? A layer that turns n inputs into m outputs has
 `parameters = m × n + m`
 
 - Our worked layer (2 inputs, 3 outputs): 3 × 2 + 3 = **9**.
-- A small network with 3 inputs, a hidden layer of 4, and 2 outputs: (4 × 3 + 4) + (2 × 4 + 2) = 16 + 10 = **26**.
+- A small network with 3 inputs, a hidden layer (one between input and output) of 4, and 2 outputs: (4 × 3 + 4) + (2 × 4 + 2) = 16 + 10 = **26**.
 - One square layer of width 4,096: 4,096 × 4,096 + 4,096 = 16,777,216 + 4,096 = **16,781,312**, about 16.8 million.
 
 A large language model contains several hundred matrices of this kind of size (some of them three or four times wider), stacked in dozens of layers, plus the embedding table. Add them up and you reach the tens or hundreds of billions. When someone says "a 70-billion-parameter model", they mean 70 billion numbers like the 0.5 and −1 in our worked layer, every one set by training. Chapter 12 builds such networks from scratch, and Chapter 15 shows exactly which matrices a Transformer contains.
@@ -811,7 +811,7 @@ A large language model contains several hundred matrices of this kind of size (s
 
 ## Counting the cost: two rules of thumb that size the AI industry
 
-You can now estimate what it costs, in raw arithmetic, to run and to train a model. Two rules of thumb, popularized by a 2020 paper on scaling laws by Jared Kaplan and colleagues at OpenAI, are used everywhere from research papers to investment memos. Let N be the number of parameters.
+You can now estimate what it costs, in raw arithmetic, to run and to train a model. Two rules of thumb, popularized by a 2020 paper on scaling laws (formulas showing how a model improves predictably as it gets more compute, data and parameters; Chapter 19) by Jared Kaplan and colleagues at OpenAI, are used everywhere from research papers to investment memos. Let N be the number of parameters.
 
 ### Rule 1: about 2 × N FLOPs to generate one token
 
@@ -1053,7 +1053,8 @@ Token, Mathematical function, Mathematical variable, Parameter, Weight, Bias, Mo
 
       ```python
       # Install gensim, a free library for working with word vectors
-      !pip install -q gensim
+      # (version 4.4 or newer: older versions do not work with today's Colab)
+      !pip install -q "gensim>=4.4"
       import gensim.downloader as api               # a helper that downloads ready-made vectors
       wv = api.load("glove-wiki-gigaword-100")       # 400,000 words, each a vector of 100 numbers
       # king - man + woman: "positive" words are added, "negative" words are subtracted
@@ -1064,7 +1065,7 @@ Token, Mathematical function, Mathematical variable, Parameter, Weight, Bias, Mo
       print(wv.similarity("coffee", "tea"), wv.similarity("coffee", "airplane"))
       ```
 
-      Invent five analogies of your own and note which ones fail. Note that `most_similar` quietly leaves out the words you typed in.
+      Invent five analogies of your own and note which ones fail. Note that `most_similar` quietly leaves out the words you typed in. (When we ran it in October 2026, the top answers were "queen" and "tokyo".)
 
    **What you'll learn:** Embeddings place meaning in space, vector arithmetic on them works only approximately, and real learned vectors behave like your hand-made ones but messier.
 
@@ -1164,13 +1165,13 @@ Token, Mathematical function, Mathematical variable, Parameter, Weight, Bias, Mo
 
 - **AI cost and capacity analysts.** Companies buying AI services or GPUs need people who can turn "70 billion parameters at 8 bits on H200s" into memory, speed and dollars using the math in this chapter. Cloud providers, consultancies and corporate IT departments hire for this, often under titles like AI infrastructure analyst or FinOps for AI.
 - **Quantization and inference optimization.** Every halving of bytes per parameter halves memory and can roughly double serving speed, so engineers who can shrink models to FP8 or FP4 without hurting quality save their employers real money. Model providers, chip companies and businesses running their own open-weight models pay for this skill.
-- **Embedding-based search and recommendations for small businesses.** Semantic search over a company's documents, "customers who liked this also liked", and duplicate detection all run on dot products and cosine similarity. The technology is mature and cheap, but most small and medium businesses still do not use it, which leaves room for consultants and productized services.
+- **Embedding-based search and recommendations for small businesses.** Semantic search (search by meaning rather than exact keywords) over a company's documents, "customers who liked this also liked", and duplicate detection all run on dot products and cosine similarity. The technology is mature and cheap, but most small and medium businesses still do not use it, which leaves room for consultants and productized services.
 - **On-device and private AI setups.** Law firms, clinics and other privacy-sensitive organizations want models that never leave their building. Knowing which model fits on which machine (the memory table in this chapter) is the first step in selling and installing these systems.
 - **GPU kernel and performance engineering.** Someone has to write the code that makes matrix multiplication and attention fast on each new chip and number format. These engineers are chronically scarce and highly paid at chip makers and AI labs.
 - **Technical due diligence and AI journalism.** Investors, analysts and reporters regularly face claims like "trained for $5 million" or "runs on a phone". The ability to check them with 2 × N, 6 × N × D and memory math is rare and valuable.
 - **Math and AI-literacy education.** Clear, visual teaching of vectors, matrices and dot products for working adults is in demand from companies rolling out AI, from schools, and from online learners, and few explainers connect the math to real chatbots.
 - **Open problem: faster and cheaper arithmetic.** AlphaEvolve's 2025 result shows that even the number of multiplications needed to multiply small matrices is not settled. Better algorithms, stable 4-bit training and ways around the memory wall (memory bandwidth improves more slowly than compute) are active research areas with industrial payoff.
-- **Open problem: understanding embedding spaces.** What the directions inside a model's vectors mean, how biases get encoded in them, and how to remove those biases are open questions for interpretability and fairness researchers (Chapter 57).
+- **Open problem: understanding embedding spaces.** What the directions inside a model's vectors mean, how biases get encoded in them, and how to remove those biases are open questions for interpretability researchers (who study what goes on inside models) and fairness researchers (Chapter 57).
 
 ## Check your understanding
 

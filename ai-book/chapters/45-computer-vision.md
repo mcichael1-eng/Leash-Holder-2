@@ -384,7 +384,7 @@ Beyond "who is where," video models also ask "what is happening?"
 
 Action recognition needs time. A single frame of someone with an arm raised could be a wave, a throw or a stretch; only the motion tells you which. Deep video models have taken three main routes to it. 3-D CNNs use filters that span a few frames as well as a patch of pixels (Chapter 14), so a single filter can respond to movement; the C3D network of late 2014 used small 3 × 3 × 3 cubes throughout. Two-stream networks, introduced by Karen Simonyan and Andrew Zisserman in 2014, run two CNNs side by side, one on ordinary frames for what things look like and one on optical flow for how they move, and combine their answers. Since 2021, video Transformers such as ViViT and TimeSformer cut a clip into small patches across both space and time and let attention relate any patch to any other, the same spacetime-patch idea that video generators use (Chapter 16).
 
-> **Definition — 3-D CNN:** A convolutional network whose filters are small cubes spanning height, width and a few video frames, so it learns motion and appearance together.
+> **Definition — 3-D CNN:** A convolutional neural network whose filters (the small pattern detectors it slides over its input) are cubes spanning height, width and a few video frames, so it learns motion and appearance together.
 
 > **Definition — Two-stream network:** A video model that runs two networks in parallel, one on the raw frames (appearance) and one on optical flow (motion), and merges their predictions.
 

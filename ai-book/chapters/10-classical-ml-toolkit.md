@@ -288,7 +288,7 @@ Real data is noisy, so too many rounds start fitting noise; practitioners stop w
 
 > **Definition — XGBoost, LightGBM and CatBoost:** The three most popular open-source gradient-boosting libraries. XGBoost was released in 2014; LightGBM comes from Microsoft and CatBoost from Yandex, Russia's largest search-engine company.
 
-For about a decade, gradient-boosted trees have been the default winner on tabular data, in industry and in Kaggle competitions: fraud scoring, credit risk, ad click prediction, insurance pricing, demand planning. Careful 2022 research comparing them with deep neural networks on typical business tables still found the trees ahead in most cases.
+For about a decade, gradient-boosted trees have been the default winner on tabular data, in industry and in Kaggle competitions (public modeling contests on the Kaggle website, Chapter 65): fraud scoring, credit risk, ad click prediction, insurance pricing, demand planning. Careful 2022 research comparing them with deep neural networks on typical business tables still found the trees ahead in most cases.
 
 ```mermaid
 flowchart LR

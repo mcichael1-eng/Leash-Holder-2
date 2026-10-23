@@ -316,7 +316,7 @@ flowchart TD
 
 **Data engineering.** *What:* pipelines, warehouses (Snowflake, BigQuery, Databricks), orchestration (Airflow, Dagster) and data quality. *Why:* it supplies the data that makes AI work, and it is a large, steady job market. *Learn:* DeepLearning.AI and AWS's "Data Engineering" (about 107 hours), *Fundamentals of Data Engineering* by Reis and Housley. *Prove:* a scheduled pipeline with data-quality checks.
 
-> **Definition — AWS (Amazon Web Services):** Amazon's cloud-computing business, the world's largest cloud provider, which rents out computing power, storage and AI chips over the internet. It is ahead of Microsoft Azure and Google Cloud, also rents databases and AI services by the hour, and runs training courses and certifications.
+> **Definition — AWS (Amazon Web Services):** Amazon's cloud-computing business, the world's largest cloud provider, which rents out computing power, storage and AI chips over the internet. It also sells ready-made databases and AI services, and it runs its own training courses and certifications.
 
 > **Definition — Distributed system:** Software that splits one job across many machines and keeps working when some of them fail. Frontier training runs are distributed systems spanning tens of thousands of chips (see Chapter 37).
 
@@ -358,7 +358,7 @@ Level 6 is where the models themselves improve. It often takes two to five years
 
 **Alignment and safety research.** *What:* scalable oversight, AI control, adversarial robustness, model welfare and misuse safeguards. *Why:* it is small but growing: the career-advice nonprofit 80,000 Hours estimated only about 300 people (a range of 76 to 536 full-time equivalents) worked on technical AI safety aimed at catastrophic risks as of 2022. *Learn:* BlueDot Impact's free courses, ARENA bootcamps, MATS, the Anthropic Fellows Program, the 80,000 Hours career guide. *Prove:* a small public project in one safety area, such as a replicated AI-control or evaluation experiment written up with code and honest limitations, which doubles as a fellowship application.
 
-> **Definition — MATS (originally ML Alignment & Theory Scholars):** A research fellowship that pairs newcomers with experienced mentors for paid projects of about 12 weeks in AI alignment, interpretability, security and governance. It is one of the main routes into safety research.
+> **Definition — MATS (originally ML Alignment & Theory Scholars):** A research fellowship that pairs newcomers with experienced mentors for paid projects of about 12 weeks in AI alignment, interpretability, security and governance.
 
 > **Definition — Fellowship (research residency):** A paid, time-boxed program in which newcomers do research with mentorship, such as MATS or the Anthropic Fellows Program. Fellowships are the main on-ramp into safety research.
 
@@ -380,7 +380,7 @@ The on-ramps are unusually well funded, as of October 2026. MATS runs 12 weeks w
 
 The main ladder is not the only route. Five branches cross it, and each one multiplies whatever level you have reached.
 
-**AI policy and governance.** *What:* laws (the EU AI Act, US state laws, export controls), risk frameworks (NIST AI RMF, ISO/IEC 42001), compute governance and lab safety frameworks (Chapter 59). *Why:* every large organization now needs AI governance, and governments need technical literacy. *Learn:* the AIGP (AI Governance Professional) certification from the IAPP, the main professional body for privacy specialists, BlueDot's governance courses, publications from GovAI, CSET and RAND, and lab policy job descriptions as syllabi. *Prove:* a written AI-use policy or risk assessment for a real organization.
+**AI policy and governance.** *What:* laws (the EU AI Act, US state laws, export controls), risk frameworks (NIST AI RMF, ISO/IEC 42001), compute governance and lab safety frameworks (Chapter 59). *Why:* every large organization now needs AI governance, and governments need technical literacy. *Learn:* the AIGP (AI Governance Professional) certification from the IAPP (the main professional body for privacy specialists), BlueDot's governance courses, publications from GovAI, CSET and RAND, and lab policy job descriptions as syllabi. *Prove:* a written AI-use policy or risk assessment for a real organization.
 
 > **Definition — AI governance:** The rules, institutions and processes that shape how AI is built and used. Inside an organization, it means the policies, processes and controls used to manage AI risk, comply with laws and decide which AI uses are allowed.
 

@@ -476,7 +476,7 @@ The AI world runs on a handful of famous libraries. You only need to recognize t
 - **NumPy**: fast arrays and matrices of numbers.
 - **pandas**: tables of data, like a spreadsheet you control with code.
 - **PyTorch** and **JAX**: building and training neural networks on GPUs (Chapter 13).
-- **Hugging Face Transformers**: downloading and running thousands of pretrained models.
+- **Hugging Face Transformers**: downloading and running thousands of pretrained models (models someone else has already trained, ready to reuse).
 - **scikit-learn**: classical machine learning (Chapter 10).
 - **Matplotlib**: drawing charts.
 

@@ -504,7 +504,7 @@ Constitutional AI's short list of principles grew, across the industry, into lon
 Two documents matter most as of late 2026:
 
 - **OpenAI's Model Spec**, public and versioned, revised several times since its first release in 2024. It sets out a "chain of command" in which instructions from the platform (OpenAI) outrank the developer, which outranks the user, along with default behaviors that developers and users can adjust within limits.
-- **Anthropic's constitution for Claude**, published in January 2026 under a CC0 (Creative Commons Zero) license, which places it in the public domain so anyone may copy and reuse it. It lists Claude's priorities as being (1) broadly safe, (2) broadly ethical, (3) compliant with Anthropic's guidelines and (4) genuinely helpful, and says these should be weighed holistically rather than as a strict ranking. It includes a short list of hard constraints that no instruction can override (for example, never providing significant uplift to a bioweapons attack) and a section on Claude's nature, including uncertainty about its moral status and wellbeing.
+- **Anthropic's constitution for Claude**, published in January 2026 under a CC0 (Creative Commons Zero) license, which places it in the public domain so anyone may copy and reuse it. It lists Claude's priorities as being (1) broadly safe, (2) broadly ethical, (3) compliant with Anthropic's guidelines and (4) genuinely helpful, and says these should be weighed holistically rather than as a strict ranking. It includes a short list of hard constraints that no instruction can override (for example, never providing significant uplift to a bioweapons attack) and a section on Claude's nature, including uncertainty about its moral status (whether its interests could matter morally for their own sake, Chapter 60) and wellbeing.
 
 > **Definition — Chain of command (principal hierarchy):** The rules for whose instructions a model follows when they conflict: typically the AI developer first, then the operator (the business that deploys the model with its own system prompt, such as a bank running an AI helper), then the user, each within limits set by the level above.
 
@@ -896,7 +896,7 @@ Base model, Post-training, Alignment, Fine-tuning, SFT (Supervised Fine-Tuning),
    new_tokens = out2[0][inputs2["input_ids"].shape[1]:]       # keep only the reply
    print("CHAT MODEL ANSWERS:\n", tok2.decode(new_tokens, skip_special_tokens=True))
    ```
-   In plain words: the first block loads a small model that has only been pretrained and lets it continue your text; the second block loads the post-trained version of the same model, wraps your question in its chat template (printed so you can see the special role tokens), and prints only its reply. If a library update causes an error, paste the error into a chatbot and ask it to fix the code.
+   In plain words: the first block loads a small model that has only been pretrained and lets it continue your text; the second block loads the post-trained version of the same model, wraps your question in its chat template (printed so you can see the special role tokens), and prints only its reply. When we ran it in October 2026, the base model simply wrote more quiz questions, and the chat model answered in a tidy sentence but named the wrong city (Osaka): post-training taught it to behave like an assistant, but a model this small still gets facts wrong. If a library update causes an error, paste the error into a chatbot and ask it to fix the code.
    **What you'll learn:** the difference between a text continuer and an assistant, with your own eyes.
 
 8. **[Medium] Blind taste test for style bias.** Measure how much formatting sways you.
@@ -919,7 +919,7 @@ Base model, Post-training, Alignment, Fine-tuning, SFT (Supervised Fine-Tuning),
 
    name = "Qwen/Qwen2.5-0.5B-Instruct"        # a small chat model to start from
    tok = AutoTokenizer.from_pretrained(name)
-   model = AutoModelForCausalLM.from_pretrained(name)
+   model = AutoModelForCausalLM.from_pretrained(name, dtype="float32")   # 32-bit numbers, so tiny updates are not rounded away
 
    # Your preference pairs: replace these with your own (15 or more)
    pairs = [
@@ -930,7 +930,12 @@ Base model, Post-training, Alignment, Fine-tuning, SFT (Supervised Fine-Tuning),
         "chosen": "Fun idea with real demand in some cities. Biggest risks: health rules about animals near food, cleaning costs, and pets that do not get along. Check local regulations first.",
         "rejected": "What an amazing idea! You are clearly a visionary. This will definitely succeed!"},
    ]
-   dataset = Dataset.from_list(pairs)
+   # Wrap each pair as a short chat, so training uses the same chat template the model sees when answering
+   dataset = Dataset.from_list([
+       {"prompt": [{"role": "user", "content": p["prompt"]}],
+        "chosen": [{"role": "assistant", "content": p["chosen"]}],
+        "rejected": [{"role": "assistant", "content": p["rejected"]}]}
+       for p in pairs])
 
    args = DPOConfig(
        output_dir="dpo-out",            # where checkpoints are saved
@@ -949,6 +954,7 @@ Base model, Post-training, Alignment, Fine-tuning, SFT (Supervised Fine-Tuning),
    # Second block (step 4): run in a new cell after training has finished
    my_prompt = "Explain inflation to a 10-year-old."      # replace with one of your prompts
    dev = trainer.model.device                             # where the trained model lives (the GPU)
+   trainer.model.eval()                                   # leave training mode, or the replies come out garbled
    fresh = AutoModelForCausalLM.from_pretrained(name).to(dev)   # the original model, before DPO, for comparison
    text = tok.apply_chat_template([{"role": "user", "content": my_prompt}],
                                   tokenize=False, add_generation_prompt=True)  # wrap in the chat template
@@ -958,7 +964,7 @@ Base model, Post-training, Alignment, Fine-tuning, SFT (Supervised Fine-Tuning),
        reply = out[0][ids["input_ids"].shape[1]:]          # keep only the new tokens
        print(label, "MODEL:\n", tok.decode(reply, skip_special_tokens=True), "\n")
    ```
-   In plain words: the first block loads a small chat model, turns your pairs into a dataset, and runs DPO, which nudges the model to make each chosen answer more likely than the rejected one compared with a frozen copy of itself. The second block loads a fresh copy of the original model and prints both models' replies to the same prompt. With so few pairs the effect will be small; the point is to see the mechanics. If the library has changed and an error appears, paste it into a chatbot and ask for the fix.
+   In plain words: the first block loads a small chat model, turns your pairs into a dataset of short chats, and runs DPO, which nudges the model to make each chosen answer more likely than the rejected one compared with a frozen copy of itself. The second block switches the trained model from training mode to answering mode, loads a fresh copy of the original model and prints both models' replies to the same prompt. With so few pairs the effect will be small; the point is to see the mechanics. If the library has changed and an error appears, paste it into a chatbot and ask for the fix.
    **What you'll learn:** that preference tuning is an ordinary, runnable training job, and what its loss means.
 
 10. **[Challenge] Write a mini-constitution for a homework helper.** Design values, then test them.

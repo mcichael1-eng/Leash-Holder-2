@@ -759,9 +759,9 @@ Pixel, Channel, MNIST, MLP (Multilayer Perceptron), Inductive bias, Convolution,
    3. Search "doctor" and "nurse," isolate the nearby points, and look for gender or other stereotypes among the neighbors.
    **What you'll learn:** meaning as geometry, why flattened pictures of embedding space are only shadows, and how embeddings absorb social biases from text.
 
-8. **[Medium] Do arithmetic on meaning in Google Colab.** Open https://colab.research.google.com, click New notebook, paste this into a cell and press the play button. The first line installs a word-vector library; the second loads it; the third downloads GloVe vectors (about 130 MB, 100 numbers per word); the last three lines ask for analogies and similarities.
+8. **[Medium] Do arithmetic on meaning in Google Colab.** Open https://colab.research.google.com, click New notebook, paste this into a cell and press the play button. The first line installs a word-vector library, gensim, asking for version 4.4 or newer: that is the first version that works with the NumPy 2 and Python 3.13 that Colab now runs (older versions demanded NumPy 1 and broke the install). The second line loads it; the third downloads GloVe vectors (about 130 MB, 100 numbers per word); the last three lines ask for analogies and similarities. When we ran it in October 2026, the top answers were "queen" and "tokyo", and "coffee" scored about 0.77 with "tea" but only 0.21 with "airplane".
    ```python
-   !pip install -q gensim
+   !pip install -q "gensim>=4.4"
    import gensim.downloader as api
    wv = api.load("glove-wiki-gigaword-100")
    print(wv.most_similar(positive=["king", "woman"], negative=["man"], topn=5))
