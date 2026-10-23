@@ -447,7 +447,7 @@ timeline
     title How fast hard new tests fall
     2025 : Jan - Humanity's Last Exam launches, frontier models under 10 percent
     2026 : Mar 25 - ARC-AGI-3 launches, humans 100 percent, best AI 0.51 percent
-         : Sep - GPT-6 Astra scores 62.7 percent standard, up to 99.9 percent with a new harness
+         : Sep - GPT-6 Astra scores 62.7 percent standard, 98.6 percent with a new harness
          : Oct - Best text-only HLE score about 61 percent
 ```
 *Figure 60.7: Two benchmarks designed to be hard for AI went from near zero to well over half in under two years. Saturation is a sign of progress and also a sign that benchmarks alone cannot settle the AGI question.*
