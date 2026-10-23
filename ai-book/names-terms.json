@@ -1,0 +1,1327 @@
+[
+ {
+  "term": "AA (Artificial Analysis)",
+  "definition": "An independent company that benchmarks AI models and publishes leaderboards of their scores, speed and price, including the Artificial Analysis Intelligence Index; GDPval-AA is its version of OpenAI's GDPval benchmark. (In credit ratings, AA is instead the grade just below AAA; see Credit rating.)",
+  "first": "ch7"
+ },
+ {
+  "term": "AAAI (Association for the Advancement of Artificial Intelligence)",
+  "definition": "A major scientific society for AI research that runs a large yearly AI conference. With ACM and the IEEE Computer Society it published Computer Science Curricula 2023 (CS2023), the guide universities use to design computer science programs, whose AI section lists what university AI courses should cover.",
+  "first": "appF"
+ },
+ {
+  "term": "ABB",
+  "definition": "A Swiss-Swedish engineering company (originally ASEA Brown Boveri) that makes electrical and automation equipment such as switchgear, circuit breakers and uninterruptible power supplies. The book lists it among the suppliers of power gear for data centers.",
+  "first": "ch38"
+ },
+ {
+  "term": "ADK (Agent Development Kit)",
+  "definition": "Google's open-source framework for building AI agents, available in Python, TypeScript, Go, Java and Kotlin.",
+  "first": "ch28"
+ },
+ {
+  "term": "ADP (Automatic Data Processing)",
+  "definition": "One of the largest US payroll processors. Its payroll records were the data behind the Stanford \"Canaries in the Coal Mine?\" study of AI and young workers' employment.",
+  "first": "ch60"
+ },
+ {
+  "term": "AEP (American Electric Power)",
+  "definition": "One of the largest US electric utilities, serving customers in 11 states. The book mentions its deals with Bloom Energy for fuel cells that give data centers fast on-site power.",
+  "first": "ch41"
+ },
+ {
+  "term": "AI2 (Allen Institute for AI)",
+  "definition": "A nonprofit AI research lab in Seattle, founded in 2014 by Microsoft cofounder Paul Allen, that releases fully open models such as OLMo along with their training data and code. It now writes its name Ai2.",
+  "first": "ch3"
+ },
+ {
+  "term": "AI21 Labs",
+  "definition": "An Israeli AI company that builds language models. Its Jamba (March 2024) was an early large hybrid model mixing Transformer and Mamba layers with mixture-of-experts.",
+  "first": "ch17"
+ },
+ {
+  "term": "AIFS (Artificial Intelligence Forecasting System)",
+  "definition": "The AI weather-forecasting model of ECMWF (the European Centre for Medium-Range Weather Forecasts), which went into daily operational use in February 2025. It runs alongside the centre's physics-based model, the IFS (Integrated Forecasting System).",
+  "first": "ch52"
+ },
+ {
+  "term": "AIME (American Invitational Mathematics Examination)",
+  "definition": "A hard US mathematics competition for top high-school students, with 30 problems a year whose answers are whole numbers from 0 to 999. Because the answers can be checked automatically, AI labs use it as a math benchmark.",
+  "first": "ch21"
+ },
+ {
+  "term": "ALD (atomic layer deposition)",
+  "definition": "The most precise way of depositing material on a chip wafer: gases are let in to react with the surface in turns, so the film grows one layer of atoms at a time.",
+  "first": "ch36"
+ },
+ {
+  "term": "ALOHA (A Low-cost Open-source HArdware system)",
+  "definition": "A 2023 Stanford teleoperation rig in which a person moves two small \"leader\" arms by hand while two \"follower\" robot arms copy every motion, recording demonstrations for robots to learn from. It cost roughly $20,000 in parts; ALOHA 2 is its successor.",
+  "first": "ch49"
+ },
+ {
+  "term": "ALS (amyotrophic lateral sclerosis)",
+  "definition": "A disease that gradually paralyzes the muscles, including those used for speech. The book mentions it as a case where voice banking and brain-computer interfaces can help people keep communicating.",
+  "first": "ch46"
+ },
+ {
+  "term": "AMI Labs (Advanced Machine Intelligence Labs)",
+  "definition": "The startup Yann LeCun founded after leaving Meta in November 2025. It builds world models along the JEPA path, which predicts meaning rather than pixels, as an alternative to large language models.",
+  "first": "ch16"
+ },
+ {
+  "term": "AOL (America Online)",
+  "definition": "One of the biggest US internet companies of the 1990s and 2000s. In 2006 it released about 20 million \"anonymous\" search queries, and New York Times reporters identified a user from her searches alone, a landmark lesson that removing names does not make data anonymous.",
+  "first": "ch11"
+ },
+ {
+  "term": "AP2 (Agent Payments Protocol)",
+  "definition": "An open protocol introduced by Google in 2025 and backed by more than 60 organizations that builds on A2A so AI agents can make purchases on a person's behalf in a way merchants and payment companies can verify.",
+  "first": "ch28"
+ },
+ {
+  "term": "AR (augmented reality)",
+  "definition": "Technology that overlays digital images on your view of the real world, through a headset, glasses or a phone camera, for example to show how a piece of furniture would look in your room.",
+  "first": "ch45"
+ },
+ {
+  "term": "ARPANET (Advanced Research Projects Agency Network)",
+  "definition": "One of the first networks linking distant computers, funded by the US Defense Department's research agency ARPA (now DARPA); it sent its first messages in 1969. It is the ancestor of today's internet.",
+  "first": "ch4"
+ },
+ {
+  "term": "ASE (Advanced Semiconductor Engineering)",
+  "definition": "A Taiwanese company that packages and tests chips designed and made by others (an OSAT). With the US-based Amkor, it is one of the two largest companies doing this work.",
+  "first": "ch36"
+ },
+ {
+  "term": "AT&T (American Telephone and Telegraph Company)",
+  "definition": "The large American telephone company whose research laboratory, Bell Labs, invented the transistor in 1947 and produced many other landmark advances in computing and communications.",
+  "first": "ch7"
+ },
+ {
+  "term": "ATM (automated teller machine)",
+  "definition": "A cash machine. Economists cite it as automation that did not wipe out a job: US bank-teller jobs did not collapse as ATMs spread, partly because cheaper branches let banks open more of them.",
+  "first": "ch60"
+ },
+ {
+  "term": "AV1 (AOMedia Video 1)",
+  "definition": "A royalty-free video codec released in 2018 by the Alliance for Open Media, a group of technology companies. It compresses video better than the older, widely used H.264, so streaming services use it to save bandwidth.",
+  "first": "ch3"
+ },
+ {
+  "term": "AWQ (activation-aware weight quantization)",
+  "definition": "A popular method for compressing a model's weights to 4 bits that uses the values flowing through the model (its activations) to find the small share of weights that matter most and protect them during rounding. AWQ is also the name of the model files it produces.",
+  "first": "ch30"
+ },
+ {
+  "term": "BBC (British Broadcasting Corporation)",
+  "definition": "Britain's public broadcaster. It was one of the founding members of C2PA, the industry group that sets standards for attaching tamper-evident provenance records to media.",
+  "first": "ch47"
+ },
+ {
+  "term": "BEAD (Broadband Equity, Access, and Deployment program)",
+  "definition": "A US federal program of about $42 billion that pays for internet connections in underserved areas. A December 2025 executive order attached conditions to some BEAD money for states with AI laws the administration considers onerous.",
+  "first": "ch59"
+ },
+ {
+  "term": "BIS (Bureau of Industry and Security)",
+  "definition": "The part of the US Commerce Department that writes and enforces export controls, including the rules on which AI chips and chipmaking tools may be sold to China and other countries.",
+  "first": "ch36"
+ },
+ {
+  "term": "BLIP-2 (Bootstrapping Language-Image Pre-training)",
+  "definition": "A 2023 vision-language model from the business-software company Salesforce that connects an image encoder to a language model. It summarizes each image into a small, fixed number of vectors that the language model can read.",
+  "first": "ch22"
+ },
+ {
+  "term": "BMG",
+  "definition": "A Berlin-based music company controlled by the German media group Bertelsmann that combines music publishing with releasing recordings; its name comes from its predecessor, the Bertelsmann Music Group. The book mentions it as a licensed partner of the AI music company Suno for its v6 models (2026).",
+  "first": "ch46"
+ },
+ {
+  "term": "BMW (Bayerische Motoren Werke)",
+  "definition": "The German carmaker. The book mentions it because Figure AI's humanoid robots have worked on parts handling for BMW, starting with a pilot at its plant in Spartanburg, South Carolina.",
+  "first": "ch49"
+ },
+ {
+  "term": "BSL (biosafety level)",
+  "definition": "The four-step containment scale for laboratories that handle microbes, from BSL-1 (ordinary teaching labs) to BSL-4 (the most dangerous pathogens, handled in sealed suits). Anthropic's AI Safety Levels borrow this idea of stricter safeguards for more dangerous capabilities.",
+  "first": "ch56"
+ },
+ {
+  "term": "CAIS (Center for AI Safety)",
+  "definition": "A US nonprofit research group, led by Dan Hendrycks, that works on reducing large-scale risks from AI. It co-created the Humanity's Last Exam benchmark and organized the 2023 one-sentence statement on the risk of extinction from AI.",
+  "first": "ch24"
+ },
+ {
+  "term": "CAISO (California Independent System Operator)",
+  "definition": "The nonprofit that runs most of California's high-voltage power grid and its wholesale electricity market.",
+  "first": "ch41"
+ },
+ {
+  "term": "CAPTCHA (Completely Automated Public Turing test to tell Computers and Humans Apart)",
+  "definition": "A \"prove you are human\" puzzle, such as typing distorted letters or picking out pictures of traffic lights, that websites use to block automated programs. Browser agents still struggle with them.",
+  "first": "ch28"
+ },
+ {
+  "term": "Carl Zeiss SMT (Zeiss Semiconductor Manufacturing Technology)",
+  "definition": "The chip-equipment arm of the German optics company Zeiss. It builds the ultra-precise mirrors inside ASML's EUV lithography machines and is ASML's key optics supplier.",
+  "first": "ch36"
+ },
+ {
+  "term": "CART (classification and regression trees)",
+  "definition": "A classic 1984 method for learning decision trees that predict either a category (classification) or a number (regression). Many tree-based methods still in daily use build on it.",
+  "first": "ch10"
+ },
+ {
+  "term": "CC0 (Creative Commons Zero)",
+  "definition": "A public-domain dedication from Creative Commons, the nonprofit that publishes free copyright licenses: it lets anyone copy, change and reuse a work without asking permission. Anthropic published its constitution for Claude under CC0 in January 2026.",
+  "first": "ch20"
+ },
+ {
+  "term": "CCTV (closed-circuit television)",
+  "definition": "Security-camera systems whose video goes to a limited set of monitors or recorders rather than being broadcast. The EU AI Act bans scraping face images from CCTV footage to build face-recognition databases.",
+  "first": "ch45"
+ },
+ {
+  "term": "CCW (Convention on Certain Conventional Weapons)",
+  "definition": "A United Nations treaty that restricts weapons considered excessively injurious or indiscriminate. Governments have discussed lethal autonomous weapons under it since 2014, and in 2026 a CCW expert group drafted elements of a possible agreement.",
+  "first": "ch53"
+ },
+ {
+  "term": "CDNA (Compute DNA)",
+  "definition": "AMD's name for the chip design (architecture) of its Instinct data-center GPUs, numbered by generation: CDNA 4 in the MI355X, CDNA 5 in the MI455X and CDNA 6 in the planned MI500.",
+  "first": "ch35"
+ },
+ {
+  "term": "CDT (Center for Democracy and Technology)",
+  "definition": "A nonprofit based in Washington, DC that advocates for civil rights, privacy and free expression in technology policy, including AI.",
+  "first": "ch63"
+ },
+ {
+  "term": "CEN-CENELEC (European Committee for Standardization and European Committee for Electrotechnical Standardization)",
+  "definition": "The joint name of two of Europe's official standards bodies, which work together: CEN for most fields and CENELEC for electrical and electronic standards. Their joint AI committee, JTC 21 (Joint Technical Committee 21), is writing the harmonised standards that companies will use to show they comply with the EU AI Act.",
+  "first": "ch59"
+ },
+ {
+  "term": "CERN (European Organization for Nuclear Research)",
+  "definition": "The particle-physics laboratory near Geneva, funded by many countries, that runs the Large Hadron Collider. It is often proposed as a model for an international shared laboratory for frontier or safety AI research.",
+  "first": "ch59"
+ },
+ {
+  "term": "CETI (Cetacean Translation Initiative)",
+  "definition": "Project CETI, a research effort that uses machine learning to study the click patterns sperm whales use to communicate, with the aim of decoding whale communication.",
+  "first": "ch46"
+ },
+ {
+  "term": "CFET (complementary field-effect transistor)",
+  "definition": "A future transistor design, still in research labs, that stacks the two kinds of transistors every logic gate pairs together directly on top of each other, to fit more circuitry into the same area.",
+  "first": "ch36"
+ },
+ {
+  "term": "CFM (cubic feet per minute)",
+  "definition": "The usual US unit for airflow, used to rate fans and data-center air cooling. One cubic meter per second is about 2,119 CFM.",
+  "first": "ch40"
+ },
+ {
+  "term": "CHI (ACM Conference on Human Factors in Computing Systems)",
+  "definition": "The main academic conference on human-computer interaction, the study of how people use computers and how to design for them.",
+  "first": "ch31"
+ },
+ {
+  "term": "CIFAR-10 / CIFAR-100",
+  "definition": "Two classic image-classification benchmarks, each made of 60,000 tiny 32-by-32-pixel color photos of everyday objects sorted into 10 or 100 classes. They are named after the Canadian Institute for Advanced Research (CIFAR).",
+  "first": "ch9"
+ },
+ {
+  "term": "CMOS (complementary metal-oxide-semiconductor)",
+  "definition": "The way virtually all modern chips build their logic gates: each gate pairs two opposite kinds of transistor so that almost no current flows except at the moment of switching, which keeps power use low.",
+  "first": "ch2"
+ },
+ {
+  "term": "CNET",
+  "definition": "A long-running US technology news website. In 2023 it had to correct many of the finance explainers it had published using AI after errors were found in them, an early warning about publishing unchecked AI text.",
+  "first": "ch53"
+ },
+ {
+  "term": "CO2 (carbon dioxide)",
+  "definition": "The main greenhouse gas released by burning fossil fuels; emissions are often reported as CO2-equivalent, which counts every greenhouse gas as the amount of CO2 that would warm the planet as much. Chapter 36 also meets a CO2 laser, whose beam is produced in carbon-dioxide gas and which EUV machines use to turn tin droplets into plasma.",
+  "first": "ch36"
+ },
+ {
+  "term": "COCO (Common Objects in Context)",
+  "definition": "A Microsoft-led image dataset released in 2014 that outlines 80 kinds of everyday objects in cluttered real-world scenes. It became a standard benchmark for object detection, segmentation and body-pose (keypoint) estimation.",
+  "first": "ch11"
+ },
+ {
+  "term": "COMPAS (Correctional Offender Management Profiling for Alternative Sanctions)",
+  "definition": "A commercial risk-score tool used in some US courts to estimate whether a defendant will reoffend. In 2016 the US newsroom ProPublica found that Black defendants who did not reoffend were nearly twice as likely as white defendants to be labeled high risk, while the maker showed its scores were equally accurate for both groups, a landmark case showing that different definitions of fairness can conflict.",
+  "first": "ch11"
+ },
+ {
+  "term": "COVID-19 (coronavirus disease 2019)",
+  "definition": "The disease caused by a coronavirus that spread worldwide as a pandemic from 2020. The book mentions it for early AI models that read chest X-rays and learned misleading shortcuts, and for a vaccine built on a computer-designed protein.",
+  "first": "ch9"
+ },
+ {
+  "term": "CO₂ (carbon dioxide)",
+  "definition": "The main greenhouse gas released by burning fossil fuels such as coal and gas. The book measures the climate cost of electricity and data centers in kilograms or grams of CO₂ per kilowatt-hour; CO₂e (\"CO₂-equivalent\") also counts other greenhouse gases, converted to the amount of CO₂ that would cause the same warming. (A CO₂ laser, used in EUV chipmaking machines, makes its powerful beam from carbon dioxide gas.)",
+  "first": "ch36"
+ },
+ {
+  "term": "CR2032 (coin cell battery)",
+  "definition": "A standard flat lithium coin battery, 20 mm across and 3.2 mm thick, used in watches and car keys. It stores about 225 milliamp-hours at 3 volts.",
+  "first": "ch53"
+ },
+ {
+  "term": "CRM (customer relationship management)",
+  "definition": "Software where businesses keep track of their customers, contacts and sales. AI assistants and agents are often connected to a company's CRM so they can look up or update customer records.",
+  "first": "ch28"
+ },
+ {
+  "term": "CS2023 (Computer Science Curricula 2023)",
+  "definition": "Guidelines for university computer-science degrees, published in 2023 jointly by ACM, the IEEE Computer Society and AAAI. Its Artificial Intelligence knowledge area is the checklist many universities use to design AI courses.",
+  "first": "appF"
+ },
+ {
+  "term": "CS224N",
+  "definition": "Stanford University's course \"Natural Language Processing with Deep Learning\", whose lectures are free online. It is a well-known grounding in language models and the Transformer; CS stands for computer science and the rest is the course number.",
+  "first": "ch65"
+ },
+ {
+  "term": "CS229 (Stanford machine-learning course)",
+  "definition": "Stanford University's main machine-learning course, covering methods from logistic regression and generative models to reinforcement learning and control. Its lecture notes and many recorded lectures are freely available online.",
+  "first": "appF"
+ },
+ {
+  "term": "CT (computed tomography)",
+  "definition": "A medical scan that combines many X-ray images taken from different angles into thin cross-section images of the body. AI tools read CT scans to flag problems such as bleeding in the brain.",
+  "first": "ch14"
+ },
+ {
+  "term": "CUTLASS (CUDA Templates for Linear Algebra Subroutines and Solvers)",
+  "definition": "NVIDIA's open-source library of building blocks for writing fast GPU kernels for matrix multiplication and related math. Kernel engineers use it alongside CUDA and Triton.",
+  "first": "ch32"
+ },
+ {
+  "term": "CV (curriculum vitae)",
+  "definition": "Another name for a résumé: a document listing a person's education, work experience and skills, sent when applying for jobs. The term is more common in the UK and in academia.",
+  "first": "ch25"
+ },
+ {
+  "term": "CVPR (Conference on Computer Vision and Pattern Recognition)",
+  "definition": "The leading annual research conference for computer vision, where many landmark image-AI papers are presented.",
+  "first": "ch13"
+ },
+ {
+  "term": "CVSS (Common Vulnerability Scoring System)",
+  "definition": "A standard scale that rates how severe a known software security flaw is, from 0 to 10. It is used alongside the IDs in the CVE catalog.",
+  "first": "ch31"
+ },
+ {
+  "term": "CXMT (ChangXin Memory Technologies)",
+  "definition": "China's main maker of DRAM memory chips. It matters to China's effort to supply its own memory for AI chips after US restrictions on selling HBM to China.",
+  "first": "ch36"
+ },
+ {
+  "term": "DAG (directed acyclic graph)",
+  "definition": "A network of points joined by one-way arrows that never loop back to where they started. Causal diagrams are DAGs: each arrow means \"directly causes\", and nothing can end up causing itself.",
+  "first": "ch54"
+ },
+ {
+  "term": "DAIR (Distributed AI Research Institute)",
+  "definition": "An independent research institute founded by Timnit Gebru in 2021 that studies the harms and biases of AI systems. It is unrelated to DAIR.AI, the group that publishes the free Prompt Engineering Guide.",
+  "first": "ch25"
+ },
+ {
+  "term": "DAX Copilot (Dragon Ambient eXperience Copilot)",
+  "definition": "Microsoft's ambient AI scribe for doctors, which listens to a patient visit and drafts the clinical note. In March 2025 Microsoft combined it with Dragon Medical One into Dragon Copilot.",
+  "first": "ch52"
+ },
+ {
+  "term": "DDPM (denoising diffusion probabilistic model)",
+  "definition": "The 2020 method by Jonathan Ho, Ajay Jain and Pieter Abbeel that made diffusion models practical: a network learns to remove noise from an image step by step, originally over 1,000 small steps. Later samplers such as DDIM produce good images in far fewer steps.",
+  "first": "ch16"
+ },
+ {
+  "term": "DDR (double data rate memory)",
+  "definition": "The standard type of DRAM used as main memory in PCs and servers, named for moving data twice on every tick of its clock. DDR5 is the current generation; LPDDR and GDDR are its low-power and graphics relatives.",
+  "first": "ch23"
+ },
+ {
+  "term": "DDR5 (Double Data Rate 5)",
+  "definition": "The current generation of ordinary DRAM memory in desktop PCs, laptops and servers (\"double data rate\" means it moves data twice per clock tick). Each module connects to the processor over a channel only 64 bits wide, about 51 GB/s, so a typical DDR5 laptop gets about 60 to 120 GB/s, far less than the HBM stacked beside AI chips.",
+  "first": "ch23"
+ },
+ {
+  "term": "DEF CON",
+  "definition": "A large hacker conference held every year in Las Vegas since 1993. The finals of DARPA's AI Cyber Challenge took place there in August 2025.",
+  "first": "ch53"
+ },
+ {
+  "term": "DETR (DEtection TRansformer)",
+  "definition": "An object detector published in 2020 by Facebook AI researchers that uses a Transformer to output the set of object boxes directly, with no hand-chosen anchor boxes and no step to clean up duplicate boxes.",
+  "first": "ch45"
+ },
+ {
+  "term": "DINO (self-distillation with no labels)",
+  "definition": "A family of Meta vision models (first released in 2021, with DINOv2 in 2023) trained by self-supervised learning on images alone, with no labels, that learn strong general-purpose visual features.",
+  "first": "ch45"
+ },
+ {
+  "term": "DNN (deep neural network)",
+  "definition": "A neural network with many layers between its input and output, the kind of model behind deep learning.",
+  "first": "ch10"
+ },
+ {
+  "term": "DOI (digital object identifier)",
+  "definition": "A permanent ID code given to a journal article or other publication, such as 10.1000/xyz123, that always leads to the same work even if its web address changes.",
+  "first": "ch25"
+ },
+ {
+  "term": "DOJ (Department of Justice)",
+  "definition": "The US federal government's legal department, which enforces federal law and represents the government in court. Its AI Litigation Task Force, formalized in January 2026, challenges state AI laws, and in September 2026 it argued in court that training AI on copyrighted works can be fair use.",
+  "first": "ch7"
+ },
+ {
+  "term": "DOM (Document Object Model)",
+  "definition": "The browser's internal, tree-shaped description of everything on a web page: every heading, paragraph, link, button and form field. Browser agents can read it instead of, or alongside, screenshots.",
+  "first": "ch28"
+ },
+ {
+  "term": "DPM-Solver (diffusion probabilistic model solver)",
+  "definition": "A fast sampler for diffusion image generators, introduced in 2022, that treats the path from noise to image as a smooth curve and follows it accurately in large steps, so good images need far fewer steps. DPM stands for diffusion probabilistic model, as in DDPM (denoising diffusion probabilistic models), the 2020 method that made diffusion practical.",
+  "first": "ch16"
+ },
+ {
+  "term": "DTE Energy",
+  "definition": "The electric and gas utility serving the Detroit area of Michigan. The book mentions it as the grid supplier for a planned 1.4 GW data-center campus in Saline Township.",
+  "first": "ch42"
+ },
+ {
+  "term": "DVC (Data Version Control)",
+  "definition": "A free, open-source tool that records versions of datasets and models alongside Git, so a model can be rebuilt from exactly the data that trained it.",
+  "first": "ch10"
+ },
+ {
+  "term": "EAGLE (Extrapolation Algorithm for Greater Language-model Efficiency)",
+  "definition": "A 2024 speculative-decoding method that adds a small extra prediction head to a large language model to draft several upcoming tokens cheaply; the full model then checks them in one pass, which speeds up generation without changing the output.",
+  "first": "ch23"
+ },
+ {
+  "term": "ECG (electrocardiogram)",
+  "definition": "A recording of the heart's electrical rhythm, made with electrodes on the skin or, in simpler form, by a smartwatch. AI can read ECGs to spot problems such as atrial fibrillation, a common irregular heartbeat.",
+  "first": "ch53"
+ },
+ {
+  "term": "ECMWF (European Centre for Medium-Range Weather Forecasts)",
+  "definition": "An intergovernmental organization, supported by more than 30 European countries, that runs one of the world's best physics-based global weather forecasts on a supercomputer. It also produces ERA5, the reanalysis that AI weather models train on, and runs its own AI forecasting model, AIFS (Artificial Intelligence Forecasting System).",
+  "first": "ch52"
+ },
+ {
+  "term": "ELVIS Act (Ensuring Likeness Voice and Image Security Act)",
+  "definition": "A Tennessee law of March 2024 that added protection for a person's voice, alongside their name and likeness, against unauthorized AI imitation.",
+  "first": "ch46"
+ },
+ {
+  "term": "EMA (European Medicines Agency)",
+  "definition": "The European Union's drug regulator, which evaluates and supervises medicines; it is Europe's counterpart to the US FDA. The book asks when the FDA or EMA will first approve a drug discovered and designed with AI.",
+  "first": "ch66"
+ },
+ {
+  "term": "EMBL-EBI (European Bioinformatics Institute of the European Molecular Biology Laboratory)",
+  "definition": "The European Bioinformatics Institute, near Cambridge, England, part of EMBL, an intergovernmental European research organization; bioinformatics means using computers to store and analyze biological data. With DeepMind it runs the free AlphaFold Protein Structure Database, opened in 2021.",
+  "first": "ch52"
+ },
+ {
+  "term": "EMIB (Embedded Multi-die Interconnect Bridge)",
+  "definition": "Intel's advanced packaging method that links chips sitting side by side through small silicon bridges embedded in the package base (substrate). Intel offers it to other companies through Intel Foundry.",
+  "first": "ch36"
+ },
+ {
+  "term": "EO (Earth observation)",
+  "definition": "Gathering information about the planet from satellite and aerial images; the free Sentinel Hub EO Browser used in the book's exercises shows recent satellite images by date. In Chapter 59, EO instead abbreviates a US presidential executive order, as in EO 14110.",
+  "first": "ch38"
+ },
+ {
+  "term": "EPFL (École polytechnique fédérale de Lausanne)",
+  "definition": "The Swiss Federal Institute of Technology in Lausanne, a leading Swiss technical university. In 2022 its Swiss Plasma Center and DeepMind reported a reinforcement-learning controller, trained in simulation, that shaped the plasma in a real tokamak fusion reactor.",
+  "first": "ch48"
+ },
+ {
+  "term": "EPIC (Electronic Privacy Information Center)",
+  "definition": "A US nonprofit research and advocacy group, based in Washington, DC, that works on privacy, surveillance and accountability, including in AI.",
+  "first": "ch63"
+ },
+ {
+  "term": "EPRI (Electric Power Research Institute)",
+  "definition": "A US non-profit research organization funded mainly by electric utilities. The book cites its estimates of how much electricity data centers use: about a quarter of Virginia's in 2023, and 4.6 to 9.1 percent of all US electricity by 2030.",
+  "first": "ch41"
+ },
+ {
+  "term": "EPYC (AMD server CPUs)",
+  "definition": "AMD's brand of server processors (CPUs). The \"Venice\" EPYC, with up to 256 cores, is the CPU in AMD's Helios AI rack.",
+  "first": "ch32"
+ },
+ {
+  "term": "ERA5 (ECMWF's fifth-generation reanalysis)",
+  "definition": "ECMWF's consistent, hour-by-hour reconstruction of the global weather back to 1940, made by feeding historical observations through one modern forecasting system. It is the main training data for AI weather models.",
+  "first": "ch52"
+ },
+ {
+  "term": "ERCOT (Electric Reliability Council of Texas)",
+  "definition": "The organization that runs the power grid and wholesale electricity market for most of Texas, on a grid largely separate from the rest of the US. It is handling a flood of requests to connect large data centers.",
+  "first": "ch41"
+ },
+ {
+  "term": "ESM3 (Evolutionary Scale Modeling 3)",
+  "definition": "A protein language model from the startup EvolutionaryScale, announced in 2024, trained on protein sequences, structures and functions together. Its developers used it to generate a new green fluorescent protein.",
+  "first": "ch52"
+ },
+ {
+  "term": "ETAP (Electrical Transient Analyzer Program)",
+  "definition": "Commercial software that engineers use to model, simulate and design electrical power systems, such as a data center's medium- and high-voltage network and its protection settings.",
+  "first": "ch39"
+ },
+ {
+  "term": "ETH Zurich (Swiss Federal Institute of Technology in Zurich)",
+  "definition": "A leading Swiss technical university that is strong in robotics. Its researchers helped pioneer training walking robots in simulation and transferring the skill to real machines, such as the four-legged ANYmal.",
+  "first": "ch49"
+ },
+ {
+  "term": "EV (electric vehicle)",
+  "definition": "A car or truck powered by batteries and electric motors instead of a fuel-burning engine.",
+  "first": "ch49"
+ },
+ {
+  "term": "EVE Online",
+  "definition": "A space-themed online game, running since 2003, in which many players share one persistent world. In 2026 Google DeepMind described using an offline copy of it to study memory, planning over long stretches of time and many interacting agents.",
+  "first": "ch48"
+ },
+ {
+  "term": "FCC (Federal Communications Commission)",
+  "definition": "The US government agency that regulates telephone, radio, television and internet communications. In February 2024 it ruled that AI-generated voices in robocalls fall under existing robocall law.",
+  "first": "ch46"
+ },
+ {
+  "term": "FERPA (Family Educational Rights and Privacy Act)",
+  "definition": "A 1974 US law that protects the privacy of student education records and limits whom schools may share them with.",
+  "first": "ch53"
+ },
+ {
+  "term": "FET (field-effect transistor)",
+  "definition": "The technical name for the kind of transistor in every chip, in which a voltage on the gate controls the current flowing through a channel. FinFET, gate-all-around and CFET are all designs of FET.",
+  "first": "ch36"
+ },
+ {
+  "term": "FIFA (Fédération Internationale de Football Association)",
+  "definition": "The international governing body of soccer, which runs the World Cup. It used semi-automated offside technology, which tracks players' limbs with stadium cameras, at the 2022 World Cup.",
+  "first": "ch53"
+ },
+ {
+  "term": "FMA (fused multiply-add)",
+  "definition": "A multiply-add (a × b + c) that the hardware does as one instruction, rounding the result only once. Spec sheets count each FMA as 2 floating-point operations, so a tensor core doing 64 FMAs per tick does 128 operations.",
+  "first": "ch32"
+ },
+ {
+  "term": "FOUP (front-opening unified pod)",
+  "definition": "A sealed plastic pod that carries up to 25 silicon wafers between tools in a chip factory, moved by robots on ceiling tracks so the wafers stay far cleaner than the room around them.",
+  "first": "ch36"
+ },
+ {
+  "term": "FRVT (Face Recognition Vendor Test)",
+  "definition": "Long-running independent tests by the US National Institute of Standards and Technology (NIST) of how accurate face recognition systems are, including how accuracy differs across demographic groups. The program is now called the Face Recognition Technology Evaluation (FRTE).",
+  "first": "ch45"
+ },
+ {
+  "term": "FSD (Full Self-Driving)",
+  "definition": "Tesla's driver-assistance software for its consumer cars, officially named \"FSD (Supervised)\". Despite the name it is a Level 2 system: the person in the driver's seat is legally the driver and must watch the road at all times.",
+  "first": "ch50"
+ },
+ {
+  "term": "GB10 (NVIDIA Grace Blackwell chip)",
+  "definition": "A small NVIDIA chip that pairs Arm CPU cores (the \"Grace\" side) with a Blackwell-generation GPU, both sharing one pool of memory. It powers the DGX Spark desktop AI computer.",
+  "first": "ch35"
+ },
+ {
+  "term": "GEMA",
+  "definition": "Germany's music-rights society (Gesellschaft für musikalische Aufführungs- und mechanische Vervielfältigungsrechte), which licenses songs and collects royalties for songwriters and publishers. The book mentions its copyright cases against OpenAI and Suno in Munich courts.",
+  "first": "ch58"
+ },
+ {
+  "term": "GFP (green fluorescent protein)",
+  "definition": "A jellyfish protein, shaped like a barrel, that glows green under blue or ultraviolet light; biologists attach it to other proteins to watch them inside cells. The book uses it in an AlphaFold exercise and in the story of esmGFP, a new glowing protein designed with the ESM3 model.",
+  "first": "ch52"
+ },
+ {
+  "term": "GFS (Google File System)",
+  "definition": "Google's distributed file system, described in 2003, which splits files into chunks and spreads copies across many servers, so reads and writes run in parallel and a failed disk loses nothing. Its successor is named Colossus, unrelated to xAI's Colossus data center.",
+  "first": "ch34"
+ },
+ {
+  "term": "GHG Protocol (Greenhouse Gas Protocol)",
+  "definition": "The main international standard for how companies count and report their greenhouse gas emissions, including the Scope 1, 2 and 3 categories. It has been reviewing its rules for electricity, with proposals to require hour-by-hour matching of clean power.",
+  "first": "ch41"
+ },
+ {
+  "term": "GIC",
+  "definition": "One of Singapore's sovereign wealth funds (originally the Government of Singapore Investment Corporation), which invests the government's reserves around the world. It co-led, with the investment firm Coatue, Anthropic's $30 billion funding round in February 2026.",
+  "first": "ch43"
+ },
+ {
+  "term": "GIFT-Eval (General Time Series Forecasting Model Evaluation)",
+  "definition": "A public benchmark from Salesforce AI Research (2024) that tests forecasting models, especially time-series foundation models, on many real-world time series from different domains.",
+  "first": "ch10"
+ },
+ {
+  "term": "GIS (geographic information system)",
+  "definition": "Software for building, storing and analyzing digital maps and location data, used for example to find sites with enough power for data centers or to build the maps self-driving cars rely on.",
+  "first": "ch42"
+ },
+ {
+  "term": "GM (General Motors)",
+  "definition": "A large US carmaker. The first industrial robot arm, Unimate, went to work in one of its factories in 1961. Its Super Cruise is a Level 2 hands-free driver-assistance system, and in December 2024 it ended the robotaxi program of Cruise, its self-driving subsidiary.",
+  "first": "ch49"
+ },
+ {
+  "term": "GNMT (Google Neural Machine Translation)",
+  "definition": "The neural-network translation system that Google switched Google Translate to in 2016, which brought a large jump in translation quality.",
+  "first": "ch54"
+ },
+ {
+  "term": "GPL (GNU General Public License)",
+  "definition": "The best-known \"copyleft\" software license: anyone may use, change and share the code, but anyone who distributes a changed version must release its source code under the same license.",
+  "first": "ch3"
+ },
+ {
+  "term": "GPTQ (a 4-bit quantization method)",
+  "definition": "A popular method, published in 2022, for shrinking a trained model's weights to about 4 bits each with little loss of quality, without retraining the model. \"GPTQ files\" are model weights saved in this form, mostly for running on GPU servers.",
+  "first": "ch30"
+ },
+ {
+  "term": "GR00T (Generalist Robot 00 Technology)",
+  "definition": "NVIDIA's family of foundation models and tools for humanoid robots, pronounced \"Groot\". GR00T N1 (March 2025) was billed as the first open foundation model for humanoid robots.",
+  "first": "ch49"
+ },
+ {
+  "term": "Grad-CAM (gradient-weighted class activation mapping)",
+  "definition": "A 2017 method that shows which parts of an image a convolutional neural network relied on for its answer. It weights the feature maps of the network's last convolutional layer by their gradients (how strongly each one moves the answer's score) and turns the result into a coarse heat map, a popular kind of saliency map.",
+  "first": "ch14"
+ },
+ {
+  "term": "GTX 580 (NVIDIA GeForce GTX 580)",
+  "definition": "A 2010 NVIDIA gaming graphics card. Two of them trained AlexNet in 2012, the result that showed GPUs could power deep learning.",
+  "first": "ch14"
+ },
+ {
+  "term": "GXO (GXO Logistics)",
+  "definition": "A large logistics company that runs warehouses for other businesses. Agility Robotics' Digit humanoid robots moved 100,000 totes in one of its warehouses by November 2025, according to Agility.",
+  "first": "ch49"
+ },
+ {
+  "term": "HB (House Bill)",
+  "definition": "The label for a bill introduced in the House of Representatives of a US state, followed by its number. Bills that start in a state senate are labeled SB, and in states whose lower chamber is called an Assembly, AB.",
+  "first": "ch59"
+ },
+ {
+  "term": "HDR (high dynamic range)",
+  "definition": "Capturing or showing a wider range of brightness than a normal photo, from deep shadows to bright highlights. Phones build HDR photos by combining several exposures.",
+  "first": "ch32"
+ },
+ {
+  "term": "HELM (Holistic Evaluation of Language Models)",
+  "definition": "A Stanford project led by Percy Liang that tests language models on many tasks and many measures at once, such as accuracy, robustness and fairness, instead of reporting a single score.",
+  "first": "appD"
+ },
+ {
+  "term": "HEVC (High Efficiency Video Coding)",
+  "definition": "A video codec, also called H.265, that succeeded H.264 and stores video of similar quality in roughly half the space. It is widely used for 4K video and phone recordings.",
+  "first": "ch3"
+ },
+ {
+  "term": "Hi-ONE",
+  "definition": "Huawei's optical engine with a built-in light source, announced in September 2026, which sits close to the chips (near-packaged optics) in its Atlas 960E SuperPoD AI system. Huawei claims about 5,500 Hi-ONE units replace roughly 48,000 conventional 800G optical modules and save over 550 kW.",
+  "first": "ch34"
+ },
+ {
+  "term": "HN (Hacker News)",
+  "definition": "A popular technology discussion website run by the startup investor Y Combinator. Its monthly \"Ask HN: Who is hiring?\" thread is a well-known place where startups post jobs.",
+  "first": "ch63"
+ },
+ {
+  "term": "HPC (high-performance computing)",
+  "definition": "The field of building and programming supercomputers and large computer clusters for heavy scientific and engineering calculations. Its skills in parallel programming and fast networks carry over directly to AI infrastructure jobs.",
+  "first": "ch62"
+ },
+ {
+  "term": "HPE (Hewlett Packard Enterprise)",
+  "definition": "A US company, split off from Hewlett-Packard in 2015, that makes servers, storage and networking equipment, including GPU systems it sells to companies, cloud providers and governments.",
+  "first": "appD"
+ },
+ {
+  "term": "HR (human resources)",
+  "definition": "The part of an organization that handles hiring, pay, training and other employee matters. The book mentions HR teams as buyers and users of AI tools, and as the departments that filter job applicants on certifications.",
+  "first": "ch25"
+ },
+ {
+  "term": "HVDC (high-voltage direct current)",
+  "definition": "Delivering electricity as direct current at high voltage. In this book it mainly means NVIDIA's 800-volt DC power design for AI racks, which carries more power through the same copper than AC; power grids also use HVDC lines, at far higher voltages, to move power over long distances.",
+  "first": "ch34"
+ },
+ {
+  "term": "IAEA (International Atomic Energy Agency)",
+  "definition": "The international agency, based in Vienna and linked to the United Nations, that inspects nuclear facilities to check that nuclear material is not diverted to weapons. People often propose it as a model for an agency that could inspect large AI training runs or data centers.",
+  "first": "ch59"
+ },
+ {
+  "term": "ICLR (International Conference on Learning Representations)",
+  "definition": "One of the major yearly machine-learning research conferences, alongside NeurIPS and ICML, where many important deep-learning papers are presented.",
+  "first": "ch17"
+ },
+ {
+  "term": "IEEE (Institute of Electrical and Electronics Engineers)",
+  "definition": "The largest professional association for engineers, including electrical engineers and computer scientists. It publishes journals and magazines, runs conferences and sets technical standards such as Wi-Fi; its IEEE Computer Society is the branch devoted to computing.",
+  "first": "ch51"
+ },
+ {
+  "term": "IFS (Integrated Forecasting System)",
+  "definition": "ECMWF's traditional, physics-based weather forecasting model, which solves the equations of the atmosphere on supercomputers. ECMWF's AI model, AIFS (Artificial Intelligence Forecasting System), is compared against it.",
+  "first": "ch52"
+ },
+ {
+  "term": "IMF (International Monetary Fund)",
+  "definition": "An international organization of nearly 200 member countries that monitors the world economy and lends to countries in financial trouble. The book cites its estimate that about 40% of jobs worldwide are exposed to AI and its warnings about stretched AI stock valuations.",
+  "first": "ch60"
+ },
+ {
+  "term": "IO or I/O (input/output)",
+  "definition": "Moving data into and out of a processor, a chip or a computer, for example between a GPU and its memory or between chips. \"IO-aware\" methods such as FlashAttention are designed to cut memory traffic, which often slows a computation more than the math itself.",
+  "first": "ch23"
+ },
+ {
+  "term": "IPCC (Intergovernmental Panel on Climate Change)",
+  "definition": "The United Nations body that assesses and summarizes climate science for governments. The book uses its estimates of the greenhouse gases each power source emits over its whole life to compare energy sources, and notes that the International AI Safety Report is loosely modeled on its reports.",
+  "first": "ch41"
+ },
+ {
+  "term": "ISCA (International Symposium on Computer Architecture)",
+  "definition": "The top yearly research conference on computer architecture, the design of processors and computer systems. Google's TPU papers and Meta's MTIA results cited in the book were presented there.",
+  "first": "ch34"
+ },
+ {
+  "term": "ISO (International Organization for Standardization)",
+  "definition": "The main worldwide standards body, a federation of national standards organizations based in Geneva, Switzerland, whose standards in the book include ISO/IEC 42001 for AI management and ISO 10218 for robot safety. It is unrelated to the ISO grid operators (independent system operators) of the power chapters.",
+  "first": "ch31"
+ },
+ {
+  "term": "ISO/TS 15066",
+  "definition": "A technical specification (TS) from ISO, the International Organization for Standardization, for collaborative robots (cobots), which work alongside people without a cage. It adds to the industrial-robot safety standard ISO 10218, including limits on how much force and pressure a robot may apply to different parts of the human body.",
+  "first": "ch49"
+ },
+ {
+  "term": "ISSCC (International Solid-State Circuits Conference)",
+  "definition": "The leading yearly conference on chip circuit design, run by the IEEE, the large professional society for electrical and electronics engineers. Mark Horowitz's widely cited 2014 talk there showed that moving data costs far more energy than doing arithmetic.",
+  "first": "ch2"
+ },
+ {
+  "term": "JAMA (Journal of the American Medical Association)",
+  "definition": "A leading medical journal published by the American Medical Association, which also publishes specialty journals such as JAMA Internal Medicine. That journal published the 2021 independent evaluation of Epic's sepsis-prediction model.",
+  "first": "ch52"
+ },
+ {
+  "term": "JLARC (Joint Legislative Audit and Review Commission)",
+  "definition": "The Virginia state legislature's watchdog agency, which studies state programs and policy issues. Its study of data centers put Northern Virginia at about 13% of the world's reported operating data center capacity in 2024.",
+  "first": "ch42"
+ },
+ {
+  "term": "JSR (JSR Corporation)",
+  "definition": "A Japanese chemicals company, originally Japan Synthetic Rubber, that is one of the world's main makers of photoresists, the light-sensitive coatings used to pattern chips.",
+  "first": "ch36"
+ },
+ {
+  "term": "JTC 21 (CEN-CENELEC Joint Technical Committee 21)",
+  "definition": "The committee set up by Europe's standards bodies CEN and CENELEC to write AI standards, including the harmonised standards that will help companies show they comply with the EU AI Act.",
+  "first": "ch59"
+ },
+ {
+  "term": "KLA (KLA Corporation)",
+  "definition": "A US company that leads the market for machines that inspect wafers for defects and measure chip features during manufacturing (the measuring work is called metrology).",
+  "first": "ch36"
+ },
+ {
+  "term": "KLAS Research",
+  "definition": "A US firm that rates health-care software and services based on surveys of the hospitals and clinicians who use them. Its annual \"Best in KLAS\" awards are widely cited in the industry.",
+  "first": "ch52"
+ },
+ {
+  "term": "LAION (Large-scale Artificial Intelligence Open Network)",
+  "definition": "A German nonprofit that builds large open AI datasets. Its LAION-5B collection of about 5.85 billion image-text pairs was used to train open image generators such as Stable Diffusion.",
+  "first": "ch11"
+ },
+ {
+  "term": "LDL (low-density lipoprotein)",
+  "definition": "A type of particle that carries cholesterol in the blood; the cholesterol it carries is often called \"bad\" cholesterol, and routine blood tests report its level. The book uses it as an example of a test result to ask a chatbot about.",
+  "first": "ch52"
+ },
+ {
+  "term": "LIMA (Less Is More for Alignment)",
+  "definition": "A 2023 study showing that fine-tuning a strong base model on only about 1,000 carefully chosen examples could produce a surprisingly capable assistant. It suggested that the quality of post-training data matters more than its quantity.",
+  "first": "ch20"
+ },
+ {
+  "term": "LLC (limited liability company)",
+  "definition": "A common US form of company whose owners are not personally responsible for its debts. OpenAI's data-center venture, Stargate LLC, is set up this way.",
+  "first": "appD"
+ },
+ {
+  "term": "MASAI trial (Mammography Screening with Artificial Intelligence)",
+  "definition": "A Swedish randomized trial of about 80,000 women in breast-cancer screening. Interim results in 2023 found that AI-supported screening detected about 20 percent more cancers than two radiologists reading each scan, while cutting their reading workload by about 44 percent.",
+  "first": "ch52"
+ },
+ {
+  "term": "MCMC (Markov chain Monte Carlo)",
+  "definition": "A family of sampling methods that wander step by step through the possible values of a model's unknowns, visiting each about as often as it is probable, so probabilities can be estimated by counting. It is the workhorse of modern Bayesian statistics.",
+  "first": "ch54"
+ },
+ {
+  "term": "MCPA (Model Context Protocol Associate)",
+  "definition": "A certification for MCP expertise, launched in September 2026 by the Agentic AI Foundation, the Linux Foundation organization that governs MCP.",
+  "first": "ch28"
+ },
+ {
+  "term": "MDN Web Docs (Mozilla Developer Network)",
+  "definition": "Free online documentation for web technologies such as HTML, CSS, JavaScript and HTTP, run by Mozilla, the organization behind the Firefox browser. Web developers treat it as the standard reference.",
+  "first": "ch4"
+ },
+ {
+  "term": "MEM (Multi-Scale Embodied Memory)",
+  "definition": "A memory system that the robotics startup Physical Intelligence announced on March 3, 2026. It gives its robot models short-term memory (recent video) and long-term memory (a running text summary of progress) so they can carry out tasks lasting ten minutes or more.",
+  "first": "ch49"
+ },
+ {
+  "term": "MI325X",
+  "definition": "An AMD Instinct data-center AI GPU from late 2024, a memory upgrade of the MI300X with 256 GB of HBM3E. A January 2026 US export rule moved it, together with NVIDIA's H200, to case-by-case review for sales to China.",
+  "first": "ch35"
+ },
+ {
+  "term": "MI430X (AMD Instinct MI430X)",
+  "definition": "An AMD Instinct data-center GPU with 432 GB of HBM4 memory, aimed at supercomputers that mix traditional scientific simulation, which needs high-precision FP64 math, with AI work.",
+  "first": "ch35"
+ },
+ {
+  "term": "MI440X",
+  "definition": "An AMD Instinct data-center AI GPU of 2026, in the same MI400 family as the MI455X, sold in a server of eight GPUs rather than in a full rack.",
+  "first": "ch35"
+ },
+ {
+  "term": "MI450 (AMD Instinct MI450 series)",
+  "definition": "AMD's 2026 family of Instinct data-center GPUs, which includes the flagship MI455X and ships in AMD's 72-GPU Helios racks. OpenAI, Meta and Anthropic have announced gigawatt-scale deals for MI450-series or MI450-based chips.",
+  "first": "ch35"
+ },
+ {
+  "term": "MISO (Midcontinent Independent System Operator)",
+  "definition": "The grid operator (an ISO/RTO) that runs the high-voltage grid and wholesale electricity market across a large part of the central US, from Louisiana north to Minnesota and Michigan.",
+  "first": "ch41"
+ },
+ {
+  "term": "MITRE ATT&CK (Adversarial Tactics, Techniques, and Common Knowledge)",
+  "definition": "A public catalog, run by the US nonprofit MITRE, of the tactics and techniques real attackers use against computer systems. Security teams use it to plan defenses and red-team exercises, and MITRE ATLAS applies the same layout to attacks on AI systems.",
+  "first": "ch31"
+ },
+ {
+  "term": "MLIR (Multi-Level Intermediate Representation)",
+  "definition": "A shared open-source toolkit for building compilers. It was started at Google, is now part of the LLVM compiler project, and many ML compilers for new AI chips are built with it.",
+  "first": "ch32"
+ },
+ {
+  "term": "MP (megapixel)",
+  "definition": "One million pixels, the usual measure of a digital photo's resolution. A 12 MP phone photo has about 12 million pixels.",
+  "first": "ch2"
+ },
+ {
+  "term": "MRI (magnetic resonance imaging)",
+  "definition": "A hospital scanner that uses strong magnets and radio waves to make detailed pictures of the inside of the body. Anthropic's CEO used \"an MRI for AI\" to describe interpretability tools that could reliably see inside a model.",
+  "first": "ch57"
+ },
+ {
+  "term": "MSL (Meta Superintelligence Labs)",
+  "definition": "Meta's AI organization, formed in mid-2025 and led by Alexandr Wang, which includes the FAIR research lab and TBD Lab, its frontier language-model group. Its Muse models (from April 2026) are now Meta's main model family; Meta has released no new Llama model since Llama 4 (April 2025).",
+  "first": "ch24"
+ },
+ {
+  "term": "MXU (matrix multiply unit)",
+  "definition": "Google's name for each systolic-array block inside a TPU: a grid of multiply-add cells that performs the matrix multiplications at the heart of neural networks. It is Google's counterpart to NVIDIA's tensor cores and AMD's Matrix Cores.",
+  "first": "ch32"
+ },
+ {
+  "term": "NAACP (National Association for the Advancement of Colored People)",
+  "definition": "A long-established US civil rights organization, founded in 1909. In April 2026 it sued under the Clean Air Act over the gas turbines powering xAI's data centers in the Memphis area.",
+  "first": "ch41"
+ },
+ {
+  "term": "NBER (National Bureau of Economic Research)",
+  "definition": "A private US nonprofit research organization whose working papers are a main channel for new economics research, including early studies of AI's effects on workers.",
+  "first": "ch53"
+ },
+ {
+  "term": "NCMEC (National Center for Missing & Exploited Children)",
+  "definition": "A US nonprofit child-protection organization that runs the CyberTipline, where tech companies and the public report child sexual abuse material, and Take It Down, a service that helps remove intimate images of people under 18.",
+  "first": "ch58"
+ },
+ {
+  "term": "NEO (1X humanoid robot)",
+  "definition": "A humanoid robot for homes made by 1X, a US-Norwegian company; pre-orders opened in October 2025 at $20,000 or $499 a month. For tasks it has not yet learned, a remote human operator can take over in what 1X calls expert mode.",
+  "first": "ch49"
+ },
+ {
+  "term": "NERC (North American Electric Reliability Corporation)",
+  "definition": "A non-profit that sets and enforces reliability standards for the power grids of the United States, Canada and part of Mexico. It regularly warns when regions risk running short of power.",
+  "first": "ch41"
+ },
+ {
+  "term": "NFPA (National Fire Protection Association)",
+  "definition": "A US nonprofit that writes widely used fire and electrical safety codes. Its NFPA 70E standard sets the rules for electrical safety in US workplaces, including protection from arc flashes, the explosive bursts of heat and light that can happen when electricity jumps through the air.",
+  "first": "ch39"
+ },
+ {
+  "term": "NGO (non-governmental organization)",
+  "definition": "A nonprofit group that is independent of government, such as a charity or an aid organization. The book mentions NGOs as funders and customers of AI work for under-served languages and for bringing offline communities online.",
+  "first": "ch3"
+ },
+ {
+  "term": "NIR (near-infrared)",
+  "definition": "Light with wavelengths just beyond red, invisible to human eyes. Healthy plants reflect a lot of it, which is why crop-health indexes such as NDVI compare near-infrared with red light.",
+  "first": "ch53"
+ },
+ {
+  "term": "NLLB (No Language Left Behind)",
+  "definition": "Meta's 2022 translation project and its NLLB-200 model, which translates between 200 languages, including many with little text online.",
+  "first": "ch54"
+ },
+ {
+  "term": "NOAA (National Oceanic and Atmospheric Administration)",
+  "definition": "The US government agency for weather, oceans and climate. Google worked with it to detect humpback whale songs in years of underwater recordings.",
+  "first": "ch46"
+ },
+ {
+  "term": "NP (nondeterministic polynomial time)",
+  "definition": "In computer science, NP is the set of problems whose proposed answers a computer can check quickly, while P is the set it can solve quickly; whether the two sets are really the same is the famous unsolved \"P versus NP\" question. NP-complete problems are the hardest problems in NP and NP-hard problems are at least as hard (in Chapter 54's parse-tree figure, NP instead means noun phrase).",
+  "first": "ch48"
+ },
+ {
+  "term": "NSA (National Security Agency)",
+  "definition": "The US intelligence agency responsible for intercepting foreign communications and for protecting US government computer systems. In May 2026 it published a report warning that the security of MCP had not kept pace with its rapid spread.",
+  "first": "ch28"
+ },
+ {
+  "term": "NTSB (National Transportation Safety Board)",
+  "definition": "The independent US government agency that investigates transportation accidents, including crashes involving self-driving test cars, such as Uber's fatal 2018 crash in Tempe, Arizona.",
+  "first": "ch50"
+ },
+ {
+  "term": "NVL144",
+  "definition": "A name for NVIDIA rack systems in which NVL stands for NVLink and the number counts the GPUs joined. NVIDIA first announced its Rubin rack as NVL144 (counting dies) before shipping it as NVL72 (counting packages), and reports from GTC 2026 use NVL144 for the Rubin Ultra rack of 144 packages.",
+  "first": "ch34"
+ },
+ {
+  "term": "NVL576",
+  "definition": "The name NVIDIA used when it announced its 2027 Rubin Ultra rack, counting 576 GPU dies (144 packages of four dies each). NVL stands for NVLink, NVIDIA's chip-to-chip connection.",
+  "first": "ch34"
+ },
+ {
+  "term": "NYISO (New York Independent System Operator)",
+  "definition": "The organization (an ISO) that runs New York State's high-voltage grid and wholesale electricity market.",
+  "first": "ch41"
+ },
+ {
+  "term": "NYU (New York University)",
+  "definition": "A large private university in New York City. Its Center for Mind, Ethics, and Policy studies questions such as whether AI systems could have moral status.",
+  "first": "ch60"
+ },
+ {
+  "term": "OCI (Oracle Cloud Infrastructure)",
+  "definition": "Oracle's cloud computing service. It operates the Stargate data center campus in Abilene, Texas, which Crusoe built, for OpenAI.",
+  "first": "ch32"
+ },
+ {
+  "term": "OECD (Organisation for Economic Co-operation and Development)",
+  "definition": "An international policy forum of 38 mostly wealthy democracies that publishes economic research and shared policy guidelines. Its AI Principles (2019) are an early, non-binding international guideline that many national AI strategies cite, and it runs the OECD.AI Policy Observatory, a database of countries' AI policies.",
+  "first": "ch59"
+ },
+ {
+  "term": "OG (Dota 2 team)",
+  "definition": "A professional esports team that won Dota 2's world championship, The International, in 2018 and 2019. OpenAI Five beat it in April 2019, while it was the reigning champion.",
+  "first": "ch48"
+ },
+ {
+  "term": "ONNX (Open Neural Network Exchange)",
+  "definition": "A vendor-neutral file format for trained models, so a model built with one framework can run elsewhere. ONNX Runtime runs such models on many kinds of hardware, including inside a web browser.",
+  "first": "ch53"
+ },
+ {
+  "term": "ORION (On-Road Integrated Optimization and Navigation)",
+  "definition": "The route-optimization system of the delivery company UPS (United Parcel Service, not the uninterruptible power supply), used since the 2010s to plan the order of stops for its US drivers. It is mostly operations research rather than deep learning, an example of AI meaning very good optimization.",
+  "first": "ch53"
+ },
+ {
+  "term": "OSFP (Octal Small Form-factor Pluggable)",
+  "definition": "A standard shape for the plug-in transceiver modules that connect network cables to switches and servers; \"octal\" refers to its eight electrical lanes. 800G OSFP optical modules (800 gigabits per second each) are common in AI clusters.",
+  "first": "ch34"
+ },
+ {
+  "term": "OWL (Web Ontology Language)",
+  "definition": "A World Wide Web Consortium (W3C) standard for writing ontologies, formal vocabularies of concepts and the relationships allowed between them, built on description logics (formal versions of semantic networks and frames). It is part of the Semantic Web standards and is used for large medical and scientific vocabularies.",
+  "first": "ch54"
+ },
+ {
+  "term": "PBS (Public Broadcasting Service)",
+  "definition": "The US public television broadcaster. Its online video arm, PBS Digital Studios, co-produced Crash Course Computer Science, the YouTube series that Chapter 2 recommends.",
+  "first": "ch2"
+ },
+ {
+  "term": "PEAS (Performance measure, Environment, Actuators, Sensors)",
+  "definition": "A four-part checklist from the textbook \"Artificial Intelligence: A Modern Approach\" for describing any task an agent faces: how success is measured, where it acts, how it acts and what it can perceive.",
+  "first": "ch48"
+ },
+ {
+  "term": "PFAS (per- and polyfluoroalkyl substances)",
+  "definition": "A large family of human-made fluorine chemicals nicknamed \"forever chemicals\" because they barely break down in nature. Some classic engineered cooling fluids belong to it, and regulators in Europe and the US are restricting them.",
+  "first": "ch40"
+ },
+ {
+  "term": "PNAS (Proceedings of the National Academy of Sciences)",
+  "definition": "A leading US science journal. The book cites studies published there on racial gaps in speech-recognition accuracy and on the limits of predicting people's life outcomes.",
+  "first": "ch46"
+ },
+ {
+  "term": "PNG (Portable Network Graphics)",
+  "definition": "A common image file format for screenshots and graphics. Unlike JPEG it uses lossless compression, so it keeps every pixel exactly.",
+  "first": "ch3"
+ },
+ {
+  "term": "PORTS-Pike campus",
+  "definition": "A planned AI data-center campus of up to 8 GW at the decommissioned Portsmouth uranium enrichment plant (known as PORTS) in Pike County, Ohio. SoftBank's SB Energy will build and run it and lease it to OpenAI for 20 years; it was announced in August 2026 with NVIDIA's backing.",
+  "first": "ch35"
+ },
+ {
+  "term": "PRM800K",
+  "definition": "A dataset released by OpenAI in 2023 with about 800,000 human labels marking individual steps of math solutions as correct, incorrect or neutral. It was used to train process reward models, which grade each step of a solution.",
+  "first": "ch21"
+ },
+ {
+  "term": "PSS/E (Power System Simulator for Engineering)",
+  "definition": "Siemens software that engineers use to model and simulate high-voltage power grids, for example to check whether a new data center or power plant can connect safely.",
+  "first": "ch39"
+ },
+ {
+  "term": "QA (quality assurance)",
+  "definition": "Systematic testing of a product before and after release, to catch errors before customers do.",
+  "first": "ch3"
+ },
+ {
+  "term": "QTS (Quality Technology Services)",
+  "definition": "A large US data center developer and operator, now called QTS Data Centers and owned by the investment firm Blackstone since 2021, that builds data centers and leases the space to cloud and AI companies.",
+  "first": "ch38"
+ },
+ {
+  "term": "QUIC (internet transport protocol)",
+  "definition": "A newer protocol for moving data reliably across the internet. It does the same job as TCP but needs fewer back-and-forth messages to get going, and HTTP/3, the latest version of the web's main protocol, runs on top of it.",
+  "first": "ch4"
+ },
+ {
+  "term": "RBM (restricted Boltzmann machine)",
+  "definition": "A simplified Boltzmann machine whose units connect only between two layers, never within a layer. Stacked RBMs trained one layer at a time formed the 2006 deep belief networks, an early way to train deep networks successfully.",
+  "first": "ch16"
+ },
+ {
+  "term": "RDF (Resource Description Framework)",
+  "definition": "A World Wide Web Consortium (W3C) standard format for publishing facts as subject-relation-object triples, such as \"France - capital - Paris\", so that programs can read and combine them. It is a building block of the Semantic Web and is queried with SPARQL.",
+  "first": "ch54"
+ },
+ {
+  "term": "RDU (Reconfigurable Dataflow Unit)",
+  "definition": "SambaNova's name for its AI chips, which use a dataflow design: the hardware is configured so data streams through a fixed arrangement of compute units for each model, instead of fetching instructions one at a time. The SN40L is one.",
+  "first": "ch35"
+ },
+ {
+  "term": "README",
+  "definition": "The introduction file at the top of a software project, usually named README.md, that explains what the project does and how to install and use it. Code-hosting sites such as GitHub show it on the project's front page.",
+  "first": "ch3"
+ },
+ {
+  "term": "RMS (root mean square)",
+  "definition": "A way to measure the typical size of a list of numbers: square each one, average the squares, then take the square root (for [2, 4, 6, 8] it is about 5.48). RMSNorm works by dividing values by their RMS.",
+  "first": "ch13"
+ },
+ {
+  "term": "RNA (ribonucleic acid)",
+  "definition": "A close chemical cousin of DNA that carries working copies of genetic instructions around the cell. AlphaFold 3 predicts how proteins fit together with RNA, DNA and other molecules.",
+  "first": "ch52"
+ },
+ {
+  "term": "ROI (return on investment)",
+  "definition": "How much a project or purchase earns or saves compared with what it cost, often given as a percentage. Buyers usually ask for an ROI case before paying for an AI project.",
+  "first": "ch62"
+ },
+ {
+  "term": "RSL (Really Simple Licensing)",
+  "definition": "An open standard, launched in September 2025 by a group backed by Reddit, Yahoo, Medium, Quora and others, that lets websites state, in a form software can read automatically, the licensing and payment terms on which AI companies may use their content.",
+  "first": "ch11"
+ },
+ {
+  "term": "RT (Robotics Transformer)",
+  "definition": "Google's family of robot-control models. RT-1 (2022) learned from about 130,000 recorded robot demonstrations, and RT-2 (2023), the first widely known vision-language-action model (VLA), taught a vision-language model to write robot actions as tokens.",
+  "first": "ch49"
+ },
+ {
+  "term": "RTL (register-transfer level)",
+  "definition": "The level of detail at which engineers describe a chip's circuits in code, written in hardware description languages such as Verilog, specifying how data moves between storage slots (registers) on each clock tick. Design software then turns the RTL into the physical layout of transistors.",
+  "first": "ch35"
+ },
+ {
+  "term": "RTX (NVIDIA graphics brand)",
+  "definition": "NVIDIA's brand for its gaming and workstation graphics cards and chips, such as GeForce RTX cards. RTX Spark is a Windows PC chip, made with Microsoft, that NVIDIA announced under the brand in 2026.",
+  "first": "ch35"
+ },
+ {
+  "term": "SA-1B (Segment Anything 1 Billion)",
+  "definition": "The dataset Meta built to train its Segment Anything Model: about 1.1 billion object masks (outlines) on 11 million images, far larger than earlier segmentation datasets.",
+  "first": "ch45"
+ },
+ {
+  "term": "SAFE for Kids Act (Stop Addictive Feeds Exploitation for Kids Act)",
+  "definition": "A New York law passed in 2024 that restricts algorithmic \"addictive feeds\" for minors unless a parent consents.",
+  "first": "ch51"
+ },
+ {
+  "term": "SAP (German business-software company)",
+  "definition": "A German company whose software runs core business tasks such as accounting, purchasing and payroll for many large companies. In May 2026 it announced it would buy Prior Labs, the startup behind the TabPFN tabular foundation model.",
+  "first": "ch10"
+ },
+ {
+  "term": "SB26-189 (Colorado Senate Bill 189 of 2026)",
+  "definition": "The Colorado law signed on May 14, 2026 that repealed and replaced the state's earlier AI Act with a narrower transparency law for automated decision-making technology. It takes effect on January 1, 2027, the deadline for the attorney general's rules under it, and requires notice before AI is used in consequential decisions such as hiring or lending, and an explanation after an adverse outcome.",
+  "first": "ch59"
+ },
+ {
+  "term": "SBG2 (OVHcloud Strasbourg data center)",
+  "definition": "A data-center building of the French cloud provider OVHcloud in Strasbourg, France, destroyed by fire on the night of March 9 to 10, 2021. Customers who kept their data and backups only in that building lost them, the book's example of why backups belong in another building or region.",
+  "first": "ch38"
+ },
+ {
+  "term": "SDXL (Stable Diffusion XL)",
+  "definition": "Stability AI's larger 2023 version of its Stable Diffusion image generator. A distilled fast version, SDXL-Turbo (November 2023), could make a usable image in a single step.",
+  "first": "ch16"
+ },
+ {
+  "term": "SHRDLU",
+  "definition": "A program built by Terry Winograd at MIT around 1970 that followed typed English instructions about a small world of toy blocks. It was impressive inside that world but could not cope with anything outside it.",
+  "first": "ch54"
+ },
+ {
+  "term": "SIGCOMM (ACM Special Interest Group on Data Communication)",
+  "definition": "A group within the ACM (the main professional society for computer scientists) and its yearly conference, the top research venue for computer networking.",
+  "first": "ch34"
+ },
+ {
+  "term": "SIMA (Scalable Instructable Multiworld Agent)",
+  "definition": "Google DeepMind's game-playing AI agent, which follows plain-language instructions across many different 3D video games. DeepMind has trained and tested it inside worlds generated by its Genie 3 world model.",
+  "first": "ch22"
+ },
+ {
+  "term": "SME (small and medium-sized enterprise)",
+  "definition": "A business below set limits on staff and turnover; the EU's definition covers firms with fewer than 250 employees. The EU AI Act sets lower caps on fines for SMEs.",
+  "first": "ch59"
+ },
+ {
+  "term": "SN40L",
+  "definition": "SambaNova's AI chip, a reconfigurable dataflow unit (RDU) with three tiers of memory: on-chip SRAM, HBM and ordinary DDR DRAM. The large memory lets it hold many models at once and switch between them quickly.",
+  "first": "ch35"
+ },
+ {
+  "term": "SNARC (Stochastic Neural Analog Reinforcement Calculator)",
+  "definition": "A learning machine of about 40 artificial neurons built in 1951 by Marvin Minsky and Dean Edmonds, one of the first neural-network machines.",
+  "first": "appC"
+ },
+ {
+  "term": "SPARQL (SPARQL Protocol and RDF Query Language)",
+  "definition": "The standard query language, pronounced \"sparkle\", for asking questions of knowledge stored as RDF triples, as in Wikidata's public query service.",
+  "first": "ch54"
+ },
+ {
+  "term": "SPP (Southwest Power Pool)",
+  "definition": "The organization that runs the high-voltage grid and wholesale power market across much of the central US Great Plains, including Kansas and Oklahoma, a region rich in wind power.",
+  "first": "ch41"
+ },
+ {
+  "term": "SR 11-7",
+  "definition": "The US Federal Reserve's 2011 guidance letter on model risk management, under which banks must have the models they rely on, including AI models, independently tested. SR stands for \"supervision and regulation\".",
+  "first": "ch53"
+ },
+ {
+  "term": "SSI (Safe Superintelligence)",
+  "definition": "An AI company founded in 2024 by Ilya Sutskever, OpenAI's former chief scientist, and colleagues, with the stated aim of building safe superintelligence before releasing any products.",
+  "first": "appD"
+ },
+ {
+  "term": "STRIPS (Stanford Research Institute Problem Solver)",
+  "definition": "A 1971 planning system from the Shakey robot project at SRI that introduced a simple, influential way to describe actions: each action lists its preconditions (what must be true before) and its effects (what becomes true or false after). A planner then searches for a sequence of actions that reaches the goal.",
+  "first": "ch48"
+ },
+ {
+  "term": "SUMCO (Japanese wafer maker)",
+  "definition": "A Japanese company that is one of the world's largest makers of silicon wafers. Together with Shin-Etsu, it supplies a large share of the 300 mm wafers that chips are built on.",
+  "first": "ch36"
+ },
+ {
+  "term": "SUMPRODUCT (spreadsheet function)",
+  "definition": "A function in Excel and Google Sheets that multiplies matching cells of equal-sized ranges and adds up the results, which makes it a dot product: with 2, 1, 3 and 1.5, 4, 0.5, =SUMPRODUCT(A1:C1, A2:C2) gives 8.5. The book's spreadsheet exercises also use it to add up a calculation over a whole column, such as a loss, in one cell.",
+  "first": "ch5"
+ },
+ {
+  "term": "SVG (Scalable Vector Graphics)",
+  "definition": "A text format that describes a drawing as lines, shapes and colors rather than pixels, so it stays sharp at any size. Chatbots can write SVG code to produce diagrams and charts.",
+  "first": "ch22"
+ },
+ {
+  "term": "SYSTRAN",
+  "definition": "One of the oldest machine-translation systems, a rule-based system begun in 1968 to translate Russian into English for the US Air Force. It survived the cuts in US translation funding after the 1966 ALPAC report and served governments for decades.",
+  "first": "ch54"
+ },
+ {
+  "term": "TBD Lab",
+  "definition": "The group inside Meta Superintelligence Labs (MSL) that builds Meta's frontier language models, led by Alexandr Wang. TBD is the usual abbreviation for \"to be determined\".",
+  "first": "ch24"
+ },
+ {
+  "term": "TEL (Tokyo Electron)",
+  "definition": "A Japanese maker of chipmaking equipment, such as tools that coat, deposit, etch and clean the layers on a wafer. It is one of the handful of toolmakers that every advanced chip factory depends on.",
+  "first": "ch36"
+ },
+ {
+  "term": "TIES-merging (trim, elect sign and merge)",
+  "definition": "A 2023 model-merging method that drops each fine-tune's tiny weight changes, picks the majority direction for each weight where fine-tunes disagree, and merges only the changes that agree, so merged skills cancel each other less.",
+  "first": "ch20"
+ },
+ {
+  "term": "TIOBE index",
+  "definition": "A monthly ranking of how popular programming languages are, published by the Dutch software-quality company TIOBE and based on how many web pages search engines find about each language. Python topped it in October 2026.",
+  "first": "ch3"
+ },
+ {
+  "term": "TMI-1 (Three Mile Island Unit 1)",
+  "definition": "A nuclear reactor in Pennsylvania that closed in 2019 and is being restarted as the Crane Clean Energy Center, selling its output to Microsoft under a 20-year agreement. The 1979 partial meltdown happened at its sister unit, TMI-2.",
+  "first": "ch41"
+ },
+ {
+  "term": "TNIK (TRAF2- and NCK-interacting kinase)",
+  "definition": "A protein (a kinase, a kind of enzyme that switches other proteins on or off) that Insilico Medicine's AI picked as a drug target for idiopathic pulmonary fibrosis, a deadly scarring of the lungs. Insilico's AI-designed drug, rentosertib, is built to block it.",
+  "first": "ch52"
+ },
+ {
+  "term": "TOEFL (Test of English as a Foreign Language)",
+  "definition": "A standardized English test taken by non-native speakers, often for university admission. A Stanford study found that AI-text detectors wrongly labeled most human-written TOEFL essays as AI-written.",
+  "first": "ch58"
+ },
+ {
+  "term": "TOK (Tokyo Ohka Kogyo)",
+  "definition": "A Japanese chemical company that is one of the main makers of photoresists, the light-sensitive coatings used to print chip patterns.",
+  "first": "ch36"
+ },
+ {
+  "term": "TRAIGA (Texas Responsible Artificial Intelligence Governance Act)",
+  "definition": "A Texas state AI law in effect since January 1, 2026. It deals mostly with government use of AI, plus bans on certain intentionally harmful uses.",
+  "first": "ch59"
+ },
+ {
+  "term": "TREWS (Targeted Real-time Early Warning System)",
+  "definition": "A sepsis early-warning system developed at Johns Hopkins University that monitors hospital patients' records and alerts staff to likely sepsis. In a large 2022 prospective study, death rates were lower when clinicians confirmed its alerts promptly.",
+  "first": "ch52"
+ },
+ {
+  "term": "TVA (Tennessee Valley Authority)",
+  "definition": "A power company owned by the US government that serves Tennessee and parts of neighboring states. The book mentions it as the utility for the region around xAI's Colossus data center in Memphis and as the owner of the Clinch River site where the first US construction permit for a small modular nuclear reactor was approved in September 2026.",
+  "first": "ch7"
+ },
+ {
+  "term": "TVM (Apache TVM)",
+  "definition": "An open-source machine-learning compiler that turns models into efficient code for many kinds of chips. It was started at the University of Washington and is now an Apache Software Foundation project.",
+  "first": "ch32"
+ },
+ {
+  "term": "UAE (United Arab Emirates)",
+  "definition": "A federation of seven emirates on the Persian Gulf whose capital is Abu Dhabi. The book mentions it as a close US partner whose government and approved companies were allowed in July 2026 to receive advanced AI chips without an export license. It is also the home of Stargate UAE, a planned 1 GW AI cluster built with the Abu Dhabi AI company G42.",
+  "first": "ch36"
+ },
+ {
+  "term": "UCLA (University of California, Los Angeles)",
+  "definition": "The University of California's campus in Los Angeles, one of the system's major research universities.",
+  "first": "ch49"
+ },
+ {
+  "term": "UCSF (University of California, San Francisco)",
+  "definition": "The University of California's campus devoted to medicine and health sciences. The book mentions it for 2023 brain-computer-interface research that decoded the attempted speech of a person with paralysis and voiced it through a talking digital avatar.",
+  "first": "ch54"
+ },
+ {
+  "term": "USB (Universal Serial Bus)",
+  "definition": "The standard plug and connection for linking devices such as keyboards, drives and phones to computers; USB-C is its newest, reversible shape. The book uses it as an analogy for MCP, one standard connector between AI apps and the tools and data they use.",
+  "first": "ch7"
+ },
+ {
+  "term": "USENIX",
+  "definition": "A US nonprofit computing association (formally the Advanced Computing Systems Association) that runs research conferences, including the USENIX Security Symposium, a leading academic conference on computer security.",
+  "first": "ch29"
+ },
+ {
+  "term": "UX (user experience)",
+  "definition": "How a product feels to use: whether people can understand it, trust it and get done what they came for. UX designers shape screens, flows and messages around those goals.",
+  "first": "ch31"
+ },
+ {
+  "term": "VALL-E",
+  "definition": "A Microsoft text-to-speech model from January 2023 that treated speech as a sequence of audio codec tokens predicted by a Transformer, the way a language model predicts words. It could imitate a new voice from a three-second sample.",
+  "first": "ch46"
+ },
+ {
+  "term": "VASA-1",
+  "definition": "A 2024 Microsoft research model that generated lifelike talking-head videos from a single photo and an audio clip. Microsoft chose not to release it publicly because of deepfake risks.",
+  "first": "ch47"
+ },
+ {
+  "term": "VCU (Video Coding Unit)",
+  "definition": "Google's custom chip for compressing and converting video, used for years by YouTube, Google Meet and Google Photos. Google reports it gives about 8 to 20 times the throughput of software encoding on CPUs, an example of a specialized chip beating general-purpose ones.",
+  "first": "ch32"
+ },
+ {
+  "term": "VGG (Visual Geometry Group)",
+  "definition": "A 2014 image-recognition network from the University of Oxford's Visual Geometry Group, 16 or 19 layers deep, whose convolutional layers use nothing but small 3 × 3 filters. Its simple, deep design showed that adding layers improves accuracy; TinyVGG is a miniature version used for teaching.",
+  "first": "ch14"
+ },
+ {
+  "term": "VP (verb phrase)",
+  "definition": "In grammar, a verb together with the words that complete it, such as \"saw the man with the telescope\". Parse trees label it VP, just as they label a noun phrase NP.",
+  "first": "ch54"
+ },
+ {
+  "term": "VR (virtual reality)",
+  "definition": "Technology, usually a headset, that surrounds you with a computer-generated or remote view that moves as you turn your head. Robot companies use VR headsets so a human operator can see through a robot's eyes and steer it, which produces demonstrations to train robot models on.",
+  "first": "ch49"
+ },
+ {
+  "term": "WMDP (Weapons of Mass Destruction Proxy benchmark)",
+  "definition": "A 2024 benchmark from the Center for AI Safety and collaborators: thousands of multiple-choice questions that measure hazardous knowledge in biosecurity, cybersecurity and chemistry without revealing the most dangerous details. It is used to test methods that remove such knowledge from models.",
+  "first": "ch56"
+ },
+ {
+  "term": "WRI (World Resources Institute)",
+  "definition": "A global environmental research nonprofit. Its Aqueduct maps show water stress (how much of an area's available water is already being used) around the world, which the book suggests using when judging data-center sites.",
+  "first": "ch42"
+ },
+ {
+  "term": "ZIP file",
+  "definition": "A common file format that squeezes one or more files into a single smaller file using lossless compression, so the originals can be restored exactly. Office files such as .docx are really ZIP bundles of small text files.",
+  "first": "ch3"
+ }
+]

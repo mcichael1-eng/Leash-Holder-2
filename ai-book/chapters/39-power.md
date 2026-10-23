@@ -676,7 +676,7 @@ Watt (W), Kilowatt (kW), Megawatt (MW) and gigawatt (GW), Watt-hour (Wh), Kilowa
 ## Areas of opportunity
 
 - **Electricians and high-voltage lineworkers.** Inside wiremen who install switchgear, busways and rack power are reported to be one of the biggest constraints at AI construction sites, and megaprojects often pay large premiums, per diem and overtime; lineworkers build the substations and transmission connections.
-- **Power systems engineers.** Engineers who design medium- and high-voltage systems, protection schemes and single-line diagrams, using tools such as ETAP and PSS/E, are needed by developers, utilities and consulting firms on every project.
+- **Power systems engineers.** Engineers who design medium- and high-voltage systems, protection schemes and single-line diagrams, using power-system modeling and simulation software such as ETAP and PSS/E, are needed by developers, utilities and consulting firms on every project.
 - **Power electronics engineers.** The move to 800 V DC, solid-state transformers, DC breakers and in-rack converters is creating demand for engineers and startups, with NVIDIA's partner ecosystem as an early buyer.
 - **Energy storage for smoothing and backup.** Companies that integrate batteries and supercapacitors to absorb GPU power swings, replace diesel ride-through or help sites connect sooner sell to operators who face grid limits on how much their load may swing.
 - **Electrical equipment manufacturing.** Transformers and switchgear have multi-year lead times and limited domestic production in the US, so new factories, refurbishers and suppliers of components such as transformer steel have a long runway.
@@ -684,7 +684,7 @@ Watt (W), Kilowatt (kW), Megawatt (MW) and gigawatt (GW), Watt-hour (Wh), Kilowa
 - **Commissioning and electrical testing firms.** Integrated load-bank tests of a gigawatt campus are huge projects, and experienced commissioning agents shorten the time to first revenue.
 - **Energy procurement and power analysts.** Data center owners need people who understand tariffs, capacity charges, PPAs (power purchase agreements, long-term contracts to buy a plant's electricity; Chapter 41) and wholesale prices; the difference between a 5-cent and a 10-cent contract on a 100 MW site is tens of millions of dollars a year.
 - **Software for power-aware computing.** Tools that cap GPU power, smooth training load, shift work to cheaper or cleaner hours, or participate in demand response (cutting power use when the grid is stressed, usually for payment; Chapter 41) sell to operators and are a live research area.
-- **Safety training.** High-voltage and arc-flash safety (for example NFPA 70E training) and new DC safety practices for 800 V systems are needed by every contractor and operator.
+- **Safety training.** High-voltage and arc-flash safety (for example training in NFPA 70E, the US workplace electrical-safety standard from the National Fire Protection Association) and new DC safety practices for 800 V systems are needed by every contractor and operator.
 
 ## Check your understanding
 

@@ -278,7 +278,7 @@ AMD is the only other company selling high-end AI GPUs to all comers at large sc
 | MI440X (2026) | — | — | — | Sold in an 8-GPU server |
 | MI500 (2027, CDNA 6) | HBM4E | — | — | TSMC 2 nm |
 
-*Table 35.3: AMD Instinct accelerators, vendor figures. Dashes mean the figure is not in this book's sources.*
+*Table 35.3: AMD Instinct accelerators, vendor figures. CDNA is AMD's name for each generation of its data-center GPU design. Dashes mean the figure is not in this book's sources.*
 
 > **Definition — MI500:** AMD's next Instinct GPU generation after the MI400 family (which includes the MI455X), planned for 2027 on TSMC's 2 nm process with HBM4E memory. It uses CDNA 6; CDNA is AMD's name for each design generation of its data-center GPUs (CDNA 4 in the MI355X, CDNA 5 in the MI455X).
 

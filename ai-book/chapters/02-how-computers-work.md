@@ -883,9 +883,9 @@ Exponent (power), Scientific notation, Order of magnitude, Metric prefix, Fermi 
 
 - **Charles Petzold, *Code: The Hidden Language of Computer Hardware and Software* (2nd edition, 2022).** The classic book that builds a computer from flashlights and telegraph relays up to a working processor, at exactly the pace of this chapter.
 - **Noam Nisan and Shimon Schocken, *The Elements of Computing Systems* and the free "Nand to Tetris" course (nand2tetris.org).** You build a complete computer from NAND gates, then write software for it; the best hands-on next step after Exercise 5.
-- **Crash Course Computer Science (YouTube, PBS Digital Studios).** Short, lively videos covering transistors, logic gates, binary, the ALU, memory and the CPU, ideal for review.
+- **Crash Course Computer Science (YouTube, PBS Digital Studios, the online video arm of the US public broadcaster PBS).** Short, lively videos covering transistors, logic gates, binary, the ALU, memory and the CPU, ideal for review.
 - **Ben Eater, "Building an 8-bit breadboard computer" (YouTube).** A video series that builds a working computer from individual chips on breadboards, showing every gate and clock tick.
 - **Chris Miller, *Chip War: The Fight for the World's Most Critical Technology* (2022).** A readable history of the transistor, the chip industry and its geopolitics, bridging to Part VI.
-- **Mark Horowitz, "Computing's Energy Problem (and what we can do about it)," ISSCC 2014.** The widely cited talk and paper showing that moving data costs far more energy than arithmetic.
+- **Mark Horowitz, "Computing's Energy Problem (and what we can do about it)," ISSCC 2014.** The widely cited talk and paper, from the International Solid-State Circuits Conference (ISSCC, the main yearly meeting of chip circuit designers), showing that moving data costs far more energy than arithmetic.
 - **Epoch AI, "Trends" (epoch.ai/trends).** Up-to-date charts on AI training compute, chip performance per dollar, energy efficiency and memory bandwidth.
 - **David Patterson and John Hennessy, *Computer Organization and Design*.** The standard university textbook on how processors and memory work, for readers who want the full engineering picture.

@@ -7,7 +7,7 @@
 - How AlphaFold predicts a protein's 3D shape from its sequence, what its confidence colors mean, and why it earned a share of the 2024 Nobel Prize in Chemistry.
 - How protein design, DNA language models and variant-effect predictors run biology in reverse and read the genome.
 - Why an "AI-discovered drug" still takes about a decade, with the clinical-trial phases and attrition worked out in numbers.
-- How AI weather models such as GraphCast, GenCast, WeatherNext 2 and ECMWF's AIFS forecast in minutes what supercomputers take hours to compute, and what they still depend on.
+- How AI weather models such as GraphCast, GenCast, WeatherNext 2 and AIFS (from ECMWF, the European weather-forecasting centre) forecast in minutes what supercomputers take hours to compute, and what they still depend on.
 - What AI has actually achieved in mathematics, from formal proofs in Lean to olympiad gold, and how to read the claims.
 - Where AI stands in medicine: imaging, pathology, the first autonomous diagnostic, ambient scribes, a famous sepsis-prediction failure, the FDA's list of AI devices and chatbots answering patients.
 
@@ -140,7 +140,7 @@ flowchart LR
 4. **Recycle.** The draft structure is fed back through the network a few times, refining it.
 5. **Report confidence.** For each amino acid, AlphaFold outputs a confidence score from 0 to 100, and for each pair of regions, an estimate of how sure it is about their relative position.
 
-> **Definition — AlphaFold:** Google DeepMind's family of protein-structure prediction systems. AlphaFold 2 (2020) predicts the shape of single protein chains from their sequences with near-experimental accuracy; AlphaFold 3 (2024) extends prediction to complexes of proteins with DNA, RNA and small drug-like molecules.
+> **Definition — AlphaFold:** Google DeepMind's family of protein-structure prediction systems. AlphaFold 2 (2020) predicts the shape of single protein chains from their sequences with near-experimental accuracy; AlphaFold 3 (2024) extends prediction to complexes of proteins with DNA, RNA (a close chemical cousin of DNA) and small drug-like molecules.
 
 > **Definition — pLDDT (predicted local distance difference test):** AlphaFold's confidence score for each amino acid, from 0 to 100, usually shown as colors on the structure: dark blue for very confident (above 90), light blue, yellow, and orange for low confidence (below 50).
 
@@ -643,7 +643,7 @@ Surrogate model, simulation, in silico, wet lab, protein, amino acid, protein fo
    2. Rotate the 3D structure with your mouse. Read the color key and note which parts are dark blue (very confident) and which, if any, are orange (low confidence).
    3. Search "green fluorescent protein" and open an entry. Describe the overall shape in one sentence (it is a barrel).
    4. Search "p53 human." Find the long orange, low-confidence stretches and write down roughly where they are in the chain (the page shows the sequence positions).
-   5. Optional: at rcsb.org, search "1EMA," an experimentally measured GFP structure, and compare its shape with AlphaFold's prediction.
+   5. Optional: at rcsb.org, search "1EMA," an experimentally measured structure of GFP (green fluorescent protein), and compare its shape with AlphaFold's prediction.
    **What you'll learn:** what a predicted structure looks like, how to read pLDDT colors, and that low confidence often marks genuinely floppy, disordered regions rather than a failure.
 
 2. **[Easy] Tour the FDA's list of AI medical devices.** See what medical AI is actually authorized for.
