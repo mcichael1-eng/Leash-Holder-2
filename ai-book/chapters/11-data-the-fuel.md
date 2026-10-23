@@ -492,6 +492,8 @@ When real data is scarce, private or expensive, you can make more. Synthetic dat
 
 Synthetic data works best where results can be checked. A model can generate a million math problems with worked solutions, and a program can verify which answers are correct, keeping only those. The same goes for code that must pass tests. Where nothing checks the output, the generator's errors, biases and blind spots flow straight into the next model, and generated text tends to be cleaner, blander and more repetitive than real human writing. The commercial market is consolidating: NVIDIA acquired the synthetic-data company Gretel in 2025.
 
+> **Definition — NVIDIA:** The American company that designs most of the chips (GPUs) used to train and run AI models, along with the software and networking that tie them together. AI demand made it one of the most valuable companies in the world in the mid-2020s; Part VI covers its chips in depth.
+
 The extreme risk is model collapse. In a 2024 paper in *Nature*, Ilia Shumailov and colleagues showed that when models are trained generation after generation on the output of earlier models, without fresh human data, they progressively lose the rare and unusual parts of the original distribution, and eventually produce narrow, degraded output. A toy calculation shows why rare things vanish first: if each generation keeps only 90 percent of the previous generation's rare phrasings, after 10 generations only 0.9¹⁰ ≈ 35 percent remain. Exercise 9 lets you watch a simple version happen in Colab, and shows that mixing in a steady share of fresh real data prevents it.
 
 > **Definition — Model collapse:** The degradation that can occur when models are trained repeatedly on model-generated data without enough fresh human data, losing rare patterns and diversity with each generation.
@@ -519,7 +521,7 @@ The legal picture as of October 2026 is mixed and unsettled:
 | Thomson Reuters v. Ross (US) | Copying Westlaw legal summaries to train a competing, non-generative search tool | First appeals-court ruling on AI training (Third Circuit, made public at the end of September 2026): not fair use |
 | New York Times v. OpenAI and Microsoft (US) | Newspapers allege copying of millions of articles | Still pending; no trial date |
 | Getty Images v. Stability AI (UK) | Court found model weights that never stored copies are not "infringing copies" (November 2025) | Getty largely lost; appeal permitted |
-| Music labels v. Suno and Udio | Universal and Warner settled (late 2025) and moved to licensed models | Partly settled |
+| Music labels v. Suno and Udio (AI song generators) | Universal and Warner settled (late 2025) and moved to licensed models | Partly settled |
 
 Alongside the lawsuits runs a licensing market. Reported deals include Reddit with Google (about $60 million a year, reported in 2024), News Corp with OpenAI (more than $250 million over five years, reported 2024), the New York Times with Amazon (2025) and News Corp with Meta (up to $50 million a year for three years, March 2026). OpenAI alone had signed roughly two dozen publisher deals by mid-2026. In December 2025 Disney agreed to let OpenAI's Sora video app generate short videos with more than 200 Disney characters, alongside a $1 billion Disney investment in OpenAI.
 
@@ -533,7 +535,7 @@ Here is the debate that ties this chapter together. Frontier language models hav
 
 > **Definition — Data wall:** The idea that AI progress could stall because the supply of high-quality, human-generated training data is running out.
 
-In 2024 the research group Epoch AI estimated that the stock of high-quality, publicly available human text is about 300 trillion tokens (with a wide range of 100 to 1,000 trillion), and that at current trends models would use it all up sometime between 2026 and 2032, around 2028 for the most compute-efficient training, earlier if labs train smaller models on extra data. In December 2024 the OpenAI co-founder Ilya Sutskever told the NeurIPS conference that pretraining "as we know it will end," because "we have but one internet," calling data the "fossil fuel of AI."
+In 2024 the research group Epoch AI estimated that the stock of high-quality, publicly available human text is about 300 trillion tokens (with a wide range of 100 to 1,000 trillion), and that at current trends models would use it all up sometime between 2026 and 2032, around 2028 for the most compute-efficient training, earlier if labs train smaller models on extra data. In December 2024 the OpenAI co-founder Ilya Sutskever told the NeurIPS conference (one of the largest yearly AI research meetings) that pretraining "as we know it will end," because "we have but one internet," calling data the "fossil fuel of AI."
 
 ```
 tokens (log scale)
@@ -597,7 +599,7 @@ When real data runs short, synthetic data can help, especially where answers can
 
 ## Key terms
 
-Data, dataset, structured data, semi-structured data, unstructured data, categorical feature, token, data exhaust, Common Crawl, web crawler, web scraping, robots.txt, annotation (labeling), bounding box, segmentation mask, preference data, RL environment, gold standard, inter-annotator agreement, natural label, programmatic labeling, expert data, data cleaning, deduplication, feature engineering, one-hot encoding, standardization, TF-IDF, bucketing (binning), feature selection, database, relational database, SQL, primary key, join, vector database, data pipeline, ETL, ELT, batch and streaming processing, orchestration, data warehouse, data lake, lakehouse, data quality, datasheet (data card), sampling bias, nonprobability sampling, convenience sampling, historical bias, proxy variable, feedback loop, evaluation bias, algorithmic fairness, PII, re-identification, GDPR, CCPA, differential privacy, federated learning, memorization, synthetic data, model collapse, copyright, fair use, TDM exception, data wall.
+Data, dataset, structured data, semi-structured data, unstructured data, categorical feature, token, data exhaust, Common Crawl, web crawler, web scraping, robots.txt, annotation (labeling), bounding box, segmentation mask, preference data, RL environment, gold standard, inter-annotator agreement, natural label, programmatic labeling, expert data, data cleaning, deduplication, feature engineering, one-hot encoding, standardization, TF-IDF, bucketing (binning), feature selection, database, relational database, SQL, primary key, join, vector database, data pipeline, ETL, ELT, batch and streaming processing, orchestration, data warehouse, data lake, lakehouse, data quality, datasheet (data card), sampling bias, nonprobability sampling, convenience sampling, historical bias, proxy variable, feedback loop, evaluation bias, algorithmic fairness, PII, re-identification, GDPR, CCPA, differential privacy, federated learning, memorization, synthetic data, NVIDIA, model collapse, copyright, fair use, TDM exception, data wall, ACM (Association for Computing Machinery).
 
 ## Exercises
 
@@ -624,7 +626,7 @@ Data, dataset, structured data, semi-structured data, unstructured data, categor
 
 4. **[Easy] Explore a famous dataset without code.** Kaggle, 30 minutes.
    1. Create a free account at kaggle.com and open the Titanic competition dataset.
-   2. Read its data description, then use the column previews to answer: who survived more often, by sex and by passenger class? Which columns have missing values?
+   2. Read its data description and use the column previews to see which columns have missing values. Then download train.csv (you may first need to click Join Competition and accept the rules) and open it in Google Sheets. Choose Insert, then Pivot table; put Sex under Rows and Survived under Values, summarized by AVERAGE. Because Survived is 1 or 0, the average is the survival rate. Who survived more often? Repeat with Pclass (passenger class) under Rows.
    3. Open three public notebooks and read only their text cells. What cleaning and feature engineering did their authors do?
 
    **What you'll learn:** exploratory data analysis, missing values, and how real datasets are documented and shared.
@@ -682,8 +684,8 @@ Data, dataset, structured data, semi-structured data, unstructured data, categor
    **What you'll learn:** SELECT, WHERE, GROUP BY and JOIN, and that databases are just organized tables you can question precisely.
 
 7. **[Medium] Bias audit of a toy hiring dataset.** Chatbot plus spreadsheet, 45 minutes.
-   1. Ask a chatbot: "Create a 100-row CSV of fictional past job applicants with columns gender, university, hobby, years_experience and hired (yes/no), where past decisions favored men even at equal experience, and where one hobby is much more common among women."
-   2. In Sheets, build a pivot table of hire rate by gender, then by hobby.
+   1. Ask a chatbot: "Create a 100-row CSV of fictional past job applicants with columns gender, university, hobby, years_experience and hired (1 for yes, 0 for no), where past decisions favored men even at equal experience, and where one hobby is much more common among women."
+   2. Paste it into Sheets (as in Exercise 5), then choose Insert, then Pivot table. Put gender under Rows and hired under Values, summarized by AVERAGE: the average of the 1s and 0s is the hire rate. Then make a second pivot table with hobby under Rows.
    3. Imagine training a model on this data with the gender column deleted. Which column would act as a proxy? What would the model learn?
    4. Write three sentences on what you would change before using such data.
 
@@ -692,7 +694,7 @@ Data, dataset, structured data, semi-structured data, unstructured data, categor
 8. **[Medium] Differential privacy with a coin flip.** Google Sheets, 30 minutes.
    1. In cell A2 type `=IF(RAND()<0.3,1,0)` (the hidden truth: 30 percent "yes"). In B2, `=IF(RAND()<0.5,1,0)` (first coin). In C2, `=IF(RAND()<0.5,1,0)` (second coin). In D2, `=IF(B2=1,A2,C2)` (the answer actually reported). Copy row 2 down to row 1001.
    2. In F1, compute the true rate: `=AVERAGE(A2:A1001)`. In F2, the reported "yes" rate: `=AVERAGE(D2:D1001)`. In F3, the private estimate: `=(F2-0.25)/0.5`.
-   3. Compare F1 and F3. Press Delete in an empty cell a few times to re-randomize and watch how close the estimate stays. Then try only 100 rows.
+   3. Compare F1 and F3. Re-randomize a few times (type any number into an empty cell and press Enter, since every edit redraws all the random numbers; in Excel you can also press F9) and watch how close the estimate stays. Then try only 100 rows (change 1001 to 101 in the three formulas).
    4. Explain why no single row of column D reveals the truth about that person.
 
    **What you'll learn:** the randomized-response idea behind differential privacy, and the trade-off between privacy, noise and sample size.
@@ -782,6 +784,8 @@ Data, dataset, structured data, semi-structured data, unstructured data, categor
 ## Going deeper
 
 - **"Datasheets for Datasets"** (Gebru and colleagues, 2018, later in Communications of the ACM): the short paper that started modern dataset documentation; its questions are a ready-made checklist.
+
+> **Definition — ACM (Association for Computing Machinery):** The world's largest professional society for computer scientists. It publishes many of the field's journals, including the magazine Communications of the ACM, and gives the Turing Award, computing's best-known prize.
 - **Ghost Work** (Mary L. Gray and Siddharth Suri, 2019): a readable investigation of the hidden human workforce behind AI and online platforms.
 - **Weapons of Math Destruction** (Cathy O'Neil, 2016): accessible stories of how biased data and feedback loops cause real harm.
 - **Atlas of AI** (Kate Crawford, 2021): a wide-angle look at the material, labor and data costs of AI.

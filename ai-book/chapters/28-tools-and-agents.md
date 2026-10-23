@@ -398,23 +398,23 @@ Sometimes one agent is not the best shape for a job. A lead agent can spin up he
 
 > **Definition — Multi-agent system:** A system in which several agents, often with different instructions, tools or models, work on parts of a task and pass results between them.
 
-> **Definition — Subagent:** A helper agent started by a main agent to handle a focused subtask in its own fresh context window. It does its work and returns only a short summary, which keeps the main agent's context clean.
+> **Definition — Sub-agent:** A helper agent started by a main agent to handle a focused subtask in its own fresh context window. It does its work and returns only a short summary, which keeps the main agent's context clean.
 
 > **Definition — Handoff:** Passing a conversation or task from one agent to another, more specialized agent, for example from a general support agent to a billing agent.
 
 ```mermaid
 flowchart TD
-  L["Lead agent<br/>holds the plan"] --> S1["Subagent: search papers<br/>own context"]
-  L --> S2["Subagent: analyze data<br/>own context"]
-  L --> S3["Subagent: check citations<br/>own context"]
+  L["Lead agent<br/>holds the plan"] --> S1["Sub-agent: search papers<br/>own context"]
+  L --> S2["Sub-agent: analyze data<br/>own context"]
+  L --> S3["Sub-agent: check citations<br/>own context"]
   S1 -->|"short summary"| L
   S2 -->|"short summary"| L
   S3 -->|"short summary"| L
   L --> F["Final report"]
 ```
-*Figure 28.5: Orchestrator and subagents. Each helper reads widely in its own context and sends back only what the lead needs.*
+*Figure 28.5: Orchestrator and sub-agents. Each helper reads widely in its own context and sends back only what the lead needs.*
 
-The benefits are real: subagents can work in parallel, and each sees only what is relevant, so none of them drowns in a giant context. The costs are also real: every subagent re-reads instructions and documents, so total token use multiplies, and information gets lost or garbled at each handoff. At the extreme, Moonshot's open-weight Kimi K3 model is described in its model card as supporting "agent swarms" of up to 300 sub-agents.
+The benefits are real: sub-agents can work in parallel, and each sees only what is relevant, so none of them drowns in a giant context. The costs are also real: every sub-agent re-reads instructions and documents, so total token use multiplies, and information gets lost or garbled at each handoff. At the extreme, Moonshot says its Agent Swarm mode, which runs on its open-weight Kimi K3 model, can coordinate up to 300 sub-agents.
 
 Orchestrators and handoffs are about splitting up work. Two other multi-agent shapes are about checking it. In a critique setup, one agent produces something (a plan, a piece of code, a research summary) and a second agent, given different instructions such as "find every claim without a source" or "look for security holes", reviews it and sends back objections until the work passes or a round limit is reached. It is the evaluator-optimizer pattern from earlier in this chapter, with a full agent rather than a single model call on each side. In a debate setup, two or more agents are told to argue for different answers to the same question, and a judge (another model or a person) reads the exchange and decides. The hope is that each side exposes the other's weak points, so a mistake one agent would glide past gets challenged. Chapter 56 describes debate as a research idea for supervising AI systems that may one day be smarter than the people checking them. Both shapes cost several times the tokens of a single answer, and agents built on the same model can share the same blind spots, so test whether the extra reviewer actually catches more mistakes on your task before you keep it.
 
@@ -750,7 +750,7 @@ You can build an agent with nothing but the loop shown earlier. Frameworks exist
 
 | Name | From | Character |
 |---|---|---|
-| Claude Agent SDK | Anthropic | The harness behind Claude Code as a Python and TypeScript library: built-in tools, hooks, subagents, MCP, permissions, skills |
+| Claude Agent SDK | Anthropic | The harness behind Claude Code as a Python and TypeScript library: built-in tools, hooks, sub-agents, MCP, permissions, skills |
 | OpenAI Agents SDK | OpenAI | Agents, handoffs, guardrails, sessions and tracing; described as a production-ready upgrade of its earlier Swarm project |
 | Google ADK | Google | Agent Development Kit in Python, TypeScript, Go, Java and Kotlin |
 | Hosted agents | Anthropic Managed Agents, OpenAI AgentKit and Responses API | The provider runs the loop and the sandbox for you |
@@ -779,7 +779,7 @@ Put that in a loop and you have an agent: the model looks at the goal, picks an 
 MCP is the standard plug that lets any AI app connect to any tool or data source: hosts create clients, clients talk to servers, and servers offer tools, resources and prompts, locally or over the internet with OAuth sign-in. Around it sit A2A for agent-to-agent work, Agent Skills for playbooks loaded only when needed, AGENTS.md files for house rules, and plugins that bundle it all. Computer-use and browser agents can operate any software by looking at screenshots, but every web page they read could contain hidden instructions, so give agents the least access they need and approve anything you cannot undo.
 
 ## Key terms
-Function, Tool, Tool use (function calling), Tool definition, JSON Schema, Tool call, Stop reason, Tool result, Tool choice, Parallel tool calls, Client-side tool, Server-side tool, Code execution (code interpreter), Sandbox, Workflow, Agent, Prompt chaining, Routing, Parallelization, Orchestrator-workers, Evaluator-optimizer, Agent loop, ReAct, Code agent (code actions), Planning (agents), Short-term memory (agents), Long-term memory (agents), Episodic, semantic and procedural memory, Cognitive architecture, Generative agents, Compaction, Stop condition, Human-in-the-loop, Mixed-initiative interaction, Multi-agent system, Subagent, Handoff, Critic agent, Multi-agent debate, Believable agent, Harness (scaffold), Background agent, Time horizon (METR), MIT NANDA, MCP (Model Context Protocol), MCP host, client and server, MCP tools, resources and prompts, JSON-RPC, Transport (stdio and Streamable HTTP), OAuth, Connector, MCP Apps, Tool poisoning, A2A (Agent2Agent protocol), Agent Card, Agent Skill, Progressive disclosure, AGENTS.md (and CLAUDE.md), Plugin (agent plugin), Agentic AI Foundation (AAIF), Computer use, Browser agent, Indirect prompt injection, Lethal trifecta, Least privilege, Agent SDK, Agent framework
+Function, Tool, Tool use (function calling), Tool definition, JSON Schema, Tool call, Stop reason, Tool result, Tool choice, Parallel tool calls, Client-side tool, Server-side tool, Code execution (code interpreter), Sandbox, Workflow, Agent, Prompt chaining, Routing, Parallelization, Orchestrator-workers, Evaluator-optimizer, Agent loop, ReAct, Code agent (code actions), Planning (agents), Short-term memory (agents), Long-term memory (agents), Episodic, semantic and procedural memory, Cognitive architecture, Generative agents, Compaction, Stop condition, Human-in-the-loop, Mixed-initiative interaction, Multi-agent system, Sub-agent, Handoff, Critic agent, Multi-agent debate, Believable agent, Harness (scaffold), Background agent, Time horizon (METR), MIT NANDA, MCP (Model Context Protocol), MCP host, client and server, MCP tools, resources and prompts, JSON-RPC, Transport (stdio and Streamable HTTP), OAuth, Connector, MCP Apps, Tool poisoning, A2A (Agent2Agent protocol), Agent Card, Agent Skill, Progressive disclosure, AGENTS.md (and CLAUDE.md), Plugin (agent plugin), Agentic AI Foundation (AAIF), Computer use, Browser agent, Indirect prompt injection, Lethal trifecta, Least privilege, Agent SDK, Agent framework
 
 ## Exercises
 

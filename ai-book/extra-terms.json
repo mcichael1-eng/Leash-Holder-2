@@ -3700,7 +3700,7 @@
   "source": "05-building-with-ai.md"
  },
  {
-  "term": "Subagent",
+  "term": "Sub-agent",
   "definition": "A helper agent spawned by a main agent for a focused subtask, with its own clean context, that reports back a summary.",
   "source": "05-building-with-ai.md"
  },

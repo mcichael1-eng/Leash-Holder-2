@@ -509,7 +509,7 @@ Model names change every few weeks, so treat this section as a dated snapshot an
 | SpaceXSI, formerly xAI (US) | Grok 4.7 | Closed | SpaceX acquired xAI on February 2, 2026 |
 | DeepSeek (China) | DeepSeek V4-Pro, V4-Flash, V4.1-Flash | Open (MIT) | 1M context; compressed sparse attention |
 | Alibaba Qwen (China) | Qwen3.8-Max; Qwen3.8-2.4T-A95B; Qwen3.8-27B | Mixed (Max is the hosted version of the open 2.4T-A95B) | Largest Qwen open model, August 2026 |
-| Moonshot AI (China) | Kimi K3 | Open | 2.8T total parameters; agent swarms of up to 300 sub-agents |
+| Moonshot AI (China) | Kimi K3 | Open | 2.8T total parameters; Moonshot's Agent Swarm mode, running on K3, coordinates up to 300 sub-agents |
 | Mistral AI (France) | Mistral Large 4 (preview); Medium 3.5 | Mostly open | Large 4 open weights promised for the end of October |
 | Others | Xiaomi MiMo-V2.6-Pro; Z.ai GLM-5.3; StepFun Step 5; NVIDIA Nemotron 3.5; Thinking Machines Inkling; Reflection Beam 1.0 | Mixed | MiMo-V2.6-Pro and GLM-5.3 are among the top open-weight models |
 

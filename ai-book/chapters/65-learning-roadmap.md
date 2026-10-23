@@ -92,14 +92,14 @@ Course providers publish rough lengths for their courses. Here are the well-know
 | Data Engineering (with AWS) | DeepLearning.AI | about 107 hours | 21 |
 | Practical Deep Learning for Coders, Part 1 | fast.ai | 9 lessons of about 90 minutes | 3 for the videos alone |
 
-Listed lengths usually count only the videos and quizzes. A sensible planning rule is to double them for real practice, and triple them for project-heavy courses. Applied to the Machine Learning Specialization:
+Listed lengths usually count only the videos and quizzes. A sensible planning rule is to double them for real practice, and triple them for project-heavy courses. Applied to the Machine Learning Specialization, for someone who steps up to 8 hours a week (a common pace once you start a deeper track):
 
 ```
 95 listed hours x 2 = 190 real hours
 190 hours / 8 hours per week = about 24 weeks, or six months
 ```
 
-This is why the deeper tracks take years at a part-time pace, and why choosing a track matters: you cannot do everything, so you choose what to do first.
+At the 5 hours a week assumed above, the same course would take 190 ÷ 5 = 38 weeks, about nine months. This is why the deeper tracks take years at a part-time pace, and why choosing a track matters: you cannot do everything, so you choose what to do first.
 
 > **Try it:** Ask your chatbot: "I can study AI for [X] hours a week. Here is the course list from my book with listed hours: [paste the table]. Using a rule of doubling the listed hours for practice, how many weeks would each take, and which two should I start with if my goal is [your goal]?" Check its arithmetic.
 
@@ -207,7 +207,7 @@ Here is a five-hour week you can copy. Each slot ends with a small output, becau
 | Saturday | 90 min | Project block: one of the seven exercises, end to end | A 150-word note on what you learned |
 | Sunday | 45 min | Read a chapter of your book, then plan next week | Next week's plan |
 
-The total is 30 + 30 + 30 + 45 + 30 + 90 + 45 = 300 minutes, which is five hours. If you have only three hours, keep Tuesday, Wednesday, Saturday and Sunday: the practice slots matter more than the watching slots.
+The total is 30 + 30 + 30 + 45 + 30 + 90 + 45 = 300 minutes, which is five hours. If you have only about three hours, keep Tuesday, Wednesday, Saturday and Sunday (30 + 30 + 90 + 45 = 195 minutes): the practice slots matter more than the watching slots.
 
 Across the 13 weeks, a good sequence looks like this:
 
@@ -312,7 +312,7 @@ The big shift in this stage is from AI you talk to toward AI that runs while you
 
 > **Definition — Vibe coding:** Building software by describing what you want in plain language to an AI tool (such as Lovable, Replit, Bolt or Claude Code) and iterating on what it produces, often without reading the code it writes. Chapter 29 explains when this is safe and when to call a professional.
 
-> **Definition — MCP (Model Context Protocol):** An open standard for connecting AI assistants to tools and data sources such as email, calendars, drives and databases, sometimes called a "USB-C port for AI." Chapter 28 explains how it works.
+> **Definition — MCP (Model Context Protocol):** An open standard for connecting AI assistants to tools and data sources such as email, calendars, drives and databases, sometimes called a "USB-C port for AI," after the one standard plug that now fits most phones and laptops. Chapter 28 explains how it works.
 
 > **Definition — AI agent:** An AI system that takes several steps toward a goal on its own, using tools such as web search, a browser or code, instead of answering once. Deep-research tools and coding agents are agents.
 
@@ -401,8 +401,8 @@ This is the heart of Track B. Work through it as a series of projects, using cou
 
 | Skill | Well-known resources | Cost |
 |---|---|---|
-| Python fluency | Harvard CS50P "Introduction to Programming with Python"; Kaggle Learn Python and Pandas | Free (CS50 offers an optional paid certificate) |
-| Command line and Git | MIT "The Missing Semester of Your CS Education"; GitHub Skills | Free |
+| Python fluency | Harvard CS50P "Introduction to Programming with Python"; Kaggle Learn Python and Pandas | Free (CS50, the Harvard course family it belongs to, offers an optional paid certificate) |
+| Command line and Git | MIT "The Missing Semester of Your CS Education" (CS means computer science); GitHub Skills | Free |
 | SQL | SQLBolt; Kaggle Learn SQL; the Mode SQL tutorial | Free |
 | Model APIs | Anthropic Academy "Claude Platform 101" and "Building with the Claude API"; OpenAI Academy "Build with AI"; each provider's documentation and cookbook | Free to learn; API calls cost money (usually a few dollars for learning projects) |
 | LLM applications and agents | Hugging Face LLM Course, Agents Course and Context Course (huggingface.co/learn); DeepLearning.AI "Agentic AI" (about 10 hours); Anthropic's "Building effective agents" guidance | Free |
@@ -501,7 +501,7 @@ This is where you build real depth. Well-known, stable resources for this stage:
 | Resource | What it is | Cost |
 |---|---|---|
 | Andrej Karpathy, "Neural Networks: Zero to Hero" (karpathy.ai/zero-to-hero.html) | 8 lectures that build from a tiny automatic-differentiation engine (micrograd) to a GPT and its tokenizer, typing every line | Free |
-| Karpathy's nanochat (github.com/karpathy/nanochat) | A minimal full-stack harness covering tokenizer, pretraining, fine-tuning, RL, evaluation and inference | Code free; rented GPU time about $48 |
+| Karpathy's nanochat (github.com/karpathy/nanochat) | A minimal full-stack harness (one small codebase for every step of making a chatbot) covering tokenizer, pretraining, fine-tuning, RL, evaluation and inference | Code free; rented GPU time about $48 |
 | Simon Prince, *Understanding Deep Learning* (udlbook.github.io/udlbook) | A clear, modern, well-illustrated textbook | Free PDF; print edition paid |
 | *Dive into Deep Learning* (d2l.ai) | An interactive textbook with runnable code for every chapter | Free |
 | Sebastian Raschka, *Build a Large Language Model (From Scratch)* | Builds a GPT-style model step by step | Book paid; code free on GitHub |
@@ -1006,6 +1006,8 @@ Reported run-rate at the end of July 2026: over $65 billion
 
 Both figures can be true at once, because a fast-growing company's current pace is far above what it booked earlier in the year. Methods matter too: Anthropic reportedly books sales made through cloud resellers at their gross value, which inflates its top line relative to companies that report such sales net. And OpenAI's annualized revenue was reported at about $50 billion in September 2026 by the Financial Times, with Bloomberg reporting a company expectation of $70 billion or more by the end of 2026; the FT noted that an earlier $70 billion figure came from a different method. Compare like with like.
 
+> **Definition — FT (Financial Times):** A London-based daily business newspaper, often called the FT, whose reporting on company finances is a frequent source for AI labs' revenues, losses and deals. Like any news outlet it is a secondary source, so check its figures against filings where possible.
+
 **2. Who says so, and what do they gain?** Venture-capital surveys come from firms with portfolio interests. Company blogs are marketing. Short-sellers profit when a stock falls. Rival labs have reasons to talk each other down. A source with an incentive can still be right, so the response is not to dismiss it but to look for independent corroboration.
 
 **3. Find the primary source.** Read the filing, the paper, the system card or the official blog, not the post about the article about the paper. NVIDIA's quarterly earnings release is a model of a clear primary source: for the quarter ending July 26, 2026 it reported revenue of $96.2 billion, of which $89.0 billion came from its data-center business.
@@ -1113,7 +1115,7 @@ To stay current, keep a small information diet of about three hours a week: one 
 
 ## Key terms
 
-Learning roadmap, track, milestone, top-down learning, retrieval practice (active recall), spaced repetition, deliberate practice, tutorial hell, power user, jagged frontier, reusable assistant, trust rules, T-shaped skills, domain expertise, workflow automation, vibe coding, MCP (Model Context Protocol), AI agent, eval set (golden set), AI engineer, Python, RAG (retrieval-augmented generation), evals (evaluations), error analysis, FDE (forward-deployed engineer), ML engineer (MLE), research engineer, Kaggle competition, preprint, peer review, replication, ablation, research taste, fellowship, CUDA, GPU kernel, registered apprenticeship, critical facilities technician, AI governance, risk management framework, interpretability, alignment, system card, certification, certificate of completion, portfolio, case study, building in public, information diet, RSS feed, leaderboard, hype cycle, primary source, recognized revenue, run-rate (annualized revenue), base rate, benchmark contamination, "up to" deal, circular deal, valuation (post-money).
+Learning roadmap, track, milestone, top-down learning, retrieval practice (active recall), spaced repetition, deliberate practice, tutorial hell, power user, jagged frontier, reusable assistant, trust rules, T-shaped skills, domain expertise, workflow automation, vibe coding, MCP (Model Context Protocol), AI agent, eval set (golden set), AI engineer, Python, RAG (retrieval-augmented generation), evals (evaluations), error analysis, FDE (forward-deployed engineer), ML engineer (MLE), research engineer, Kaggle competition, preprint, peer review, replication, ablation, research taste, fellowship, CUDA, GPU kernel, registered apprenticeship, critical facilities technician, AI governance, risk management framework, interpretability, alignment, system card, certification, certificate of completion, portfolio, case study, building in public, information diet, RSS feed, leaderboard, hype cycle, primary source, recognized revenue, run-rate (annualized revenue), FT (Financial Times), base rate, benchmark contamination, "up to" deal, circular deal, valuation (post-money).
 
 ## Exercises
 
@@ -1127,7 +1129,7 @@ Learning roadmap, track, milestone, top-down learning, retrieval practice (activ
 
 5. **[Medium] Dissect a real headline.** (1) Find one AI headline this week about revenue, funding, a compute deal or a benchmark result. (2) List every number in it and label each as recognized revenue, run-rate or ARR, valuation, an "up to" amount, or a benchmark score. (3) Find the primary source (an SEC filing at sec.gov, the company's own post, the paper or the system card). (4) Run all ten checklist questions and note which ones the article answered and which it skipped. (5) Write three sentences: what the headline said, what it did not say, and what you would want to know next. **What you'll learn:** Most misleading AI news is technically true; the skill is spotting what kind of number you are looking at and what is missing.
 
-6. **[Medium] Start a prediction log and score it.** (1) In a spreadsheet, write ten specific predictions about AI that will resolve within three to twelve months (for example, "A major lab releases a new flagship model before March"), each with a probability between 0 and 1. (2) When each resolves, enter 1 if it happened and 0 if not. (3) Score each with (probability − outcome) squared: a 0.7 prediction that came true scores (0.7 − 1)² = 0.09; a 0.9 prediction that did not scores (0.9 − 0)² = 0.81. (4) Average the scores. This average is called a Brier score; lower is better, and someone who always says 0.5 scores 0.25. (5) Do the same for two pundits you follow, using their public statements. **What you'll learn:** Tracking predictions turns vague impressions of who is "usually right" into evidence, including about yourself.
+6. **[Medium] Start a prediction log and score it.** (1) In a spreadsheet, write ten specific predictions about AI that will resolve within three to twelve months in cells A2 to A11 (for example, "A major lab releases a new flagship model before March"), each with a probability between 0 and 1 in column B. (2) When each resolves, enter 1 in column C if it happened and 0 if not. (3) Score each with (probability − outcome) squared: in D2 type `=(B2-C2)^2` and copy it down to D11. For example, a 0.7 prediction that came true scores (0.7 − 1)² = 0.09; a 0.9 prediction that did not scores (0.9 − 0)² = 0.81. (4) Average the scores with `=AVERAGE(D2:D11)`. This average is called a Brier score; lower is better, and someone who always says 0.5 scores 0.25. (5) Do the same for two pundits you follow, using their public statements. **What you'll learn:** Tracking predictions turns vague impressions of who is "usually right" into evidence, including about yourself.
 
 7. **[Medium] Course time-and-cost audit.** (1) Choose three courses or books for your track from this chapter. (2) For each, record the listed hours, whether it is free, free to audit with a paid certificate, or paid, and any certificate cost, from the provider's own page. (3) Double the listed hours for practice (triple for project-heavy courses). (4) Divide by your weekly hours to get weeks: for example, a 40-hour course becomes 80 real hours, which at 5 hours a week is 16 weeks. (5) Put the three in order and check that the total fits your stage. **What you'll learn:** Realistic time estimates prevent the most common failure, which is starting too many things and finishing none.
 
@@ -1168,7 +1170,7 @@ Learning roadmap, track, milestone, top-down learning, retrieval practice (activ
 2. $6 billion × 12 = a $72 billion run-rate. It may mislead because it assumes one month repeats all year, which flatters fast growth or a single strong month; it is not money already earned (recognized revenue may be much lower); and companies calculate it differently, for example counting reseller sales gross or net.
 3. 30 × 2 = 60 real hours; 60 ÷ 4 = 15 weeks, or about three and a half months.
 4. Any four of: it solves a real problem for a real user; it has an eval set with numbers; it includes an error analysis with failure types counted; it shows a before-and-after improvement; it reports cost per use; it is honest about limitations; it is clearly written up so a busy reader understands it in minutes.
-5. They matter most where a buyer or HR filter requires them: cloud-centered enterprises (for example, the AWS Certified AI Practitioner in an AWS shop), consulting and systems integrators, government contracting, and governance and compliance (the IAPP AIGP). They matter least in frontier research, research engineering and startup engineering, where public work dominates. In the trades, licenses and apprenticeships are essential.
+5. They matter most where a buyer or HR (human resources) filter requires them: cloud-centered enterprises (for example, the AWS Certified AI Practitioner in an AWS shop), consulting and systems integrators, government contracting, and governance and compliance (the IAPP AIGP). They matter least in frontier research, research engineering and startup engineering, where public work dominates. In the trades, licenses and apprenticeships are essential.
 6. $20 billion − $14 billion = $6 billion unconditional, which is 6 ÷ 20 = 30% of the headline.
 7. Retrieval practice means strengthening memory by recalling information without looking, for example by answering quiz questions or explaining an idea from memory. A chatbot helps when it quizzes you and grades your answers; it undermines learning when it explains everything and you simply nod along, because then the effort of recall, which is what builds memory, never happens.
 8. Your errors tend to come from the side you do not read. Skeptics catch inflated claims and weak evidence; enthusiasts and practitioners catch real capability changes that skeptics may dismiss. Reading both keeps your judgment calibrated, and lets you state each side's best argument fairly.
