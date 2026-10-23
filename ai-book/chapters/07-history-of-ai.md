@@ -590,7 +590,7 @@ On October 22, 2024 Anthropic gave Claude "computer use": it could look at scree
 
 > **Definition — AI agent:** An AI system that pursues a goal over many steps by taking actions, such as searching, clicking, running code or calling tools, rather than giving a single answer (see Chapter 28).
 
-> **Definition — MCP (Model Context Protocol):** An open standard introduced by Anthropic in November 2024 that lets AI applications plug into outside tools and data sources in a uniform way, like a USB port for AI.
+> **Definition — MCP (Model Context Protocol):** An open standard introduced by Anthropic in November 2024 that lets AI applications plug into outside tools and data sources in a uniform way, like a USB port (the standard plug on computers and phones) for AI.
 
 ### The DeepSeek shock (December 2024 to January 2025)
 
@@ -600,7 +600,9 @@ In December 2024 the Chinese lab DeepSeek released V3, an open-weight model whos
 
 ### The compute race goes to gigawatts
 
-On January 21, 2025 OpenAI and partners announced Stargate, a plan for up to $500 billion of AI infrastructure and 10 gigawatts by 2029, with its first campus in Abilene, Texas. The rest of 2025 brought deals measured in gigawatts rather than in chips: NVIDIA (a September letter of intent for at least 10 GW, later reportedly restructured), AMD (6 GW, October 6) and Broadcom (10 GW of custom chips, October 13) with OpenAI; up to a million Google TPUs for Anthropic (October); and Amazon's Project Rainier in Indiana, which came online in October with about 500,000 Trainium2 chips for Anthropic, according to Amazon. Microsoft unveiled its Fairwater AI data center in Wisconsin. NVIDIA became the first public company worth $4 trillion (July 9) and then $5 trillion (October 29).
+On January 21, 2025 OpenAI and partners announced Stargate, a plan for up to $500 billion of AI infrastructure and 10 gigawatts by 2029, with its first campus in Abilene, Texas. The rest of 2025 brought deals measured in gigawatts rather than in chips: NVIDIA (a September letter of intent, a non-binding agreement to work out a deal, for at least 10 GW, later reportedly restructured), AMD (6 GW, October 6) and Broadcom (a chip company that designs custom chips for other firms; 10 GW of custom chips, October 13) with OpenAI; up to a million Google TPUs for Anthropic (October); and Amazon's Project Rainier in Indiana, which came online in October with about 500,000 Trainium2 chips (Amazon's own AI chips) for Anthropic, according to Amazon. Microsoft unveiled its Fairwater AI data center in Wisconsin. NVIDIA became the first public company worth $4 trillion (July 9) and then $5 trillion (October 29).
+
+> **Definition — AMD (Advanced Micro Devices):** An American chip company that designs processors for computers and, since the AI boom, GPUs for AI data centers. It is NVIDIA's main rival in AI GPUs.
 
 > **Definition — Gigawatt (GW):** A billion watts. A 1 GW data center draws about as much power as a million US homes. Frontier AI campuses are now planned in gigawatts (see Chapter 39).
 

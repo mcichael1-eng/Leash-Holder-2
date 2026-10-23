@@ -119,7 +119,7 @@ Every layer of the city is built with the same basic loop, repeated over and ove
 5. **Etch** away the film wherever the resist is gone, usually with a reactive plasma, carving the pattern into the material.
 6. **Strip** off the leftover resist.
 7. **Implant** atoms of other elements where needed to tune how the silicon conducts, then heat the wafer to settle them in (this heating step is called annealing).
-8. **Polish** the surface flat so the next layer starts level.
+8. **Polish** the surface flat so the next layer starts level (CMP, defined below).
 9. **Inspect and measure** to catch mistakes before more money is spent on a bad wafer.
 
 ```mermaid
@@ -161,7 +161,7 @@ How long does all this take? A leading-edge logic chip needs dozens of patterned
 
 ### Why every step must be nearly perfect
 
-A thousand steps in a row creates a brutal math problem. Suppose each step has a small chance of ruining a given chip. The chance that a chip survives every step is the per-step success rate multiplied by itself a thousand times.
+A thousand steps in a row creates a brutal math problem. Suppose each step has a small chance of ruining a given chip. The chance that a chip survives every step is the per-step success rate multiplied by itself a thousand times. In the table, the ^ sign means "to the power of": 0.999^1000 is 0.999 multiplied by itself 1,000 times (type =0.999^1000 into any spreadsheet to check it).
 
 | Success rate per step | Chance a chip survives 1,000 steps |
 |---|---|
@@ -213,7 +213,7 @@ The next big change moves the power wires. In a traditional chip, the wires that
 
 > **Definition — Backside power delivery:** Building a chip's power-supply wiring on the back of the wafer, under the transistors, instead of mixing it in with the signal wiring on top. It frees space and delivers power more efficiently.
 
-Further out, research labs are stacking the two kinds of transistors that every logic gate pairs together directly on top of each other (a design called CFET). It is not yet in production.
+Further out, research labs are stacking the two kinds of transistors that every logic gate pairs together directly on top of each other (a design called CFET, short for complementary FET). It is not yet in production.
 
 ### "3 nm" is a brand, not a ruler
 
@@ -255,7 +255,7 @@ Here *wavelength* is the color of the light, *NA* (numerical aperture) is how wi
 
 > **Definition — Numerical aperture (NA):** A measure of how wide a cone of light a lens or mirror system can gather and focus. Higher NA means finer detail, but it requires larger and more precise optics.
 
-Now we can work three real examples. The k1 values below are typical aggressive values, chosen to match the resolutions ASML quotes for its machines.
+Now we can work three real examples. The k1 values below are typical aggressive values, chosen to match the resolutions ASML quotes for its machines. In the table, λ (the Greek letter lambda) is the standard symbol for wavelength.
 
 | Tool | Wavelength | NA | k1 | Resolution ≈ k1 × λ ÷ NA |
 |---|---|---|---|---|
@@ -370,7 +370,7 @@ A simple, widely used model says that if defects are scattered at random:
 
 `yield ≈ e^(−die area in cm² × defect density)`
 
-Here *e* is the mathematical constant 2.718 (see Chapter 6 on exponentials). Let's work it with a defect density of 0.1 per cm²:
+Here *e* is the mathematical constant 2.718 (see Chapter 6 on exponentials). To use the formula, first turn the die area into square centimeters (1 cm² is 100 mm², so divide by 100), multiply by the defect density, and raise e to minus that number: the e^x key on a phone calculator, or =EXP(-0.814) in a spreadsheet for the H100 row below. Let's work it with a defect density of 0.1 per cm²:
 
 | Die area | Area in cm² | Yield at D0 = 0.1 | Yield at D0 = 0.05 |
 |---|---|---|---|
@@ -548,7 +548,7 @@ Now you have every piece. Here is the whole chain, step by step. It starts with 
 
 > **Definition — EDA (electronic design automation):** The software used to design and verify chips. Three companies dominate: Synopsys and Cadence (US) and Siemens EDA (owned by Germany's Siemens). No leading-edge chip can be designed without their tools.
 
-Designers also license proven building blocks; Arm (UK) licenses the CPU designs used in NVIDIA's Grace and Vera CPUs, Google's Axion and nearly every phone. The designers themselves are NVIDIA, AMD, Broadcom (which co-designs Google's TPUs and chips for Meta and OpenAI), Marvell (AWS and Microsoft work) and the cloud giants' own teams. When a design is finished, it is "taped out."
+Designers also license proven building blocks, which the industry calls IP (short for intellectual property, not the internet's IP addresses); Arm (UK) licenses the CPU designs used in NVIDIA's Grace and Vera CPUs, Google's Axion and nearly every phone. The designers themselves are NVIDIA, AMD, Broadcom (which co-designs Google's TPUs and chips for Meta and OpenAI), Marvell (AWS and Microsoft work) and the cloud giants' own teams. When a design is finished, it is "taped out."
 
 > **Definition — Tape-out:** The moment a chip design is finalized and sent to the foundry to make photomasks and start manufacturing. The name comes from the days when designs were shipped on magnetic tape.
 
