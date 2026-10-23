@@ -96,7 +96,7 @@ Table 64.1 adds what each layer sells, where newcomers can win and one dated hea
 | Layer | What it sells | Where newcomers can win | A headline number (source, date) |
 |---|---|---|---|
 | Energy, land and construction | Power, sites, buildings, cooling and electrical systems | Skilled trades, commissioning, local suppliers, permitting and community services, powered-land development, workforce training | Building and electromechanical systems cost about $10–18M per megawatt (industry estimates); Epoch AI estimates about $38B of capital per gigawatt for the largest campuses |
-| Chips and hardware | GPUs, custom accelerators, memory, networking, cooling hardware | Component niches (cooling parts, power conversion, test equipment), refurbishing and reselling older GPUs | Nvidia: quarterly revenue $96.2B, of which data center $89.0B, gross margin 75.0% (SEC filing, quarter ended July 26, 2026) |
+| Chips and hardware | GPUs, custom accelerators, memory, networking, cooling hardware | Component niches (cooling parts, power conversion, test equipment), refurbishing and reselling older GPUs | NVIDIA: quarterly revenue $96.2B, of which data center $89.0B, gross margin 75.0% (SEC filing, quarter ended July 26, 2026) |
 | Cloud and compute | Rented chips and managed AI services | Cost optimization, utilization dashboards, compute brokering, inference on cheaper or alternative chips | Microsoft, Alphabet, Amazon and Meta guided to (told investors to expect) about $720–745B of combined 2026 capital spending (reported, 2026) |
 | Foundation models | Model access through APIs, subscriptions and enterprise deals | Fine-tuned open-weight models for one industry, private and local deployments, model selection and routing | OpenAI run-rate about $50B (Sept 2026) and Anthropic over $65B (July 2026), both reported and measured differently |
 | Data and tooling | Human data, RL environments, evals, observability, security, connectors | Expert-data niches, eval packs, agent security, MCP servers, provenance tools | Mercor about $2B gross run-rate (June 2026, reported), of which contractors receive 60–70% |
@@ -105,7 +105,7 @@ Table 64.1 adds what each layer sells, where newcomers can win and one dated hea
 
 *Table 64.1: The stack as an opportunity map. Numbers marked "reported" come from secondary sources.*
 
-> **Definition — Picks and shovels:** Selling tools, equipment or services to everyone in a boom instead of betting on one winner, like selling shovels to gold miners. Nvidia is the classic AI example, but small businesses can play the same strategy one level down.
+> **Definition — Picks and shovels:** Selling tools, equipment or services to everyone in a boom instead of betting on one winner, like selling shovels to gold miners. NVIDIA is the classic AI example, but small businesses can play the same strategy one level down.
 
 > **Definition — Hyperscaler:** One of the very largest cloud and computing companies, such as Amazon Web Services, Microsoft Azure and Google Cloud, plus Meta and Oracle for their own buildouts, which build data centers at enormous scale.
 
@@ -115,7 +115,7 @@ Table 64.1 adds what each layer sells, where newcomers can win and one dated hea
 
 > **Definition — Open-weight model:** A model whose trained parameters are published so anyone can download, run and modify it, within its license. The weights are free, but running them still costs compute and engineering (Chapter 30).
 
-> **Definition — SEC (Securities and Exchange Commission):** The US government agency that regulates stock markets. Public companies must file detailed financial reports with it, such as quarterly and annual reports and, before first listing their shares, a document called an S-1; anyone can read these filings free on its website.
+> **Definition — SEC (Securities and Exchange Commission):** The US government agency that regulates stock and bond markets. Public companies must file detailed financial reports with it, such as quarterly and annual reports and, before first listing their shares, a document called an S-1; anyone can read these filings free on its website.
 
 Three patterns stand out in Table 64.1.
 
@@ -211,8 +211,8 @@ This subsection is educational, not investment advice. Ordinary investors can re
 
 - **Understand the layer you are buying.** Chipmakers ride capex cycles; neoclouds carry debt and customer concentration (Microsoft was about 67% of CoreWeave's 2025 revenue, as reported); labs carry heavy losses while they grow; utilities carry regulatory risk.
 - **Watch the bridge between capex and revenue.** The big four cloud and platform companies guided to about $720–745 billion of 2026 capex (reported). Enterprise spending on generative AI was about $37 billion in 2025 (Menlo Ventures estimate), and OpenAI's projected cumulative negative free cash flow for 2026 to 2030 was reported by the Financial Times at $278 billion. The big question is whether application revenue grows into the infrastructure.
-- **Read primary documents.** Quarterly reports, S-1 filings and earnings releases say exactly what is revenue, what is backlog and what is conditional. Nvidia's quarterly release is a model of clarity.
-- **Keep hype-cycle discipline.** Hot listings swing wildly. SpaceX priced its June 2026 IPO at $135 a share and closed its first day at about $161; it reportedly peaked near $211, and by mid-July it had fallen below its $135 offer price, according to Fortune.
+- **Read primary documents.** Quarterly reports, S-1 filings and earnings releases say exactly what is revenue, what is backlog and what is conditional. NVIDIA's quarterly release is a model of clarity.
+- **Keep hype-cycle discipline.** Hot listings swing wildly. SpaceX priced its June 2026 IPO at $135 a share (per its filings). Nasdaq's own price history shows it opening at $150 and closing its first day at about $161, trading as high as about $226 two trading days later (June 16, also its highest close, about $202), first closing below its $135 offer price on July 16, and closing between about $108 and $116 in the last week of July.
 
 **First move this month:** take one AI company you are curious about and find its latest primary filing; write down which of its numbers are recognized revenue, run-rate, backlog or "up to" commitments (the vocabulary is in Chapter 61 and the pitfalls section below). **Trap:** confusing a valuation or a run-rate with money in the bank.
 
@@ -359,7 +359,7 @@ Idea 2 makes a good worked example because both its value and its costs are easy
 
 > **Definition — LTV (customer lifetime value):** The total profit you expect from a customer over the whole time they stay. A healthy business earns much more from a customer than it spends to win them.
 
-> **Definition — Payback period:** How long it takes for the profit from a new customer to repay the cost of acquiring them.
+> **Definition — Payback period:** How long it takes for the cash an investment brings in to repay what it cost. For a new customer, it is how long their profit takes to repay the cost of acquiring them.
 
 Now stress-test it, as you should every model. If a busy practice gets 2,000 calls a month instead of 600, compute cost rises to 2,000 × 3 × $0.10 = $600, more than the $500 price: that customer loses you money. This is why AI products add usage tiers and caps (Chapter 31 works through the same problem for a chatbot subscription). And if a big phone-system vendor bundles a similar receptionist for free, your price collapses; the defense is depth in one niche, such as dental-specific scheduling rules, insurance questions and integration with the practice's booking software.
 
@@ -382,7 +382,7 @@ Chapter 61 tells these companies' stories; here are the lessons for anyone looki
 - **Harvey (legal):** domain experts on staff and deep workflow integration justify premium per-seat prices (around $1,200 per lawyer per month). Vertical depth beats general cleverness.
 - **Sierra (customer-service agents):** charging per resolution ties price to value and escapes the shrinking-seats problem. It was reported at about $200 million of annual recurring revenue in May 2026.
 - **Lovable (app builder):** mixing a subscription ($25 to $50 a month) with usage credits keeps heavy users from destroying margins. It was reported at about $600 million of annualized revenue in September 2026.
-- **Cursor (coding):** a product built on other companies' models reached a multi-billion-dollar run-rate and a reported $60 billion acquisition by SpaceX in June 2026. "Wrapper" is not an insult when workflow depth, speed and distribution are real.
+- **Cursor (coding):** a product built on other companies' models reached a multi-billion-dollar run-rate and a $60 billion all-stock acquisition by SpaceX, agreed in June and completed in August 2026 (per SpaceX's SEC filings). "Wrapper" is not an insult when workflow depth, speed and distribution are real.
 - **Mercor (expert data):** a marketplace's gross revenue overstates what it keeps; read the take rate (the share of each payment the marketplace keeps).
 - **Scale AI (data labeling):** after Meta bought 49% of it for $14.3 billion in June 2025, Google, OpenAI and other customers reportedly left. Depending on a few customers who are also competitors of your investor is a structural risk.
 
@@ -532,7 +532,7 @@ Two questions follow almost every validated idea: "How do I find customers when 
 
 Early customers rarely come from advertising. They come from the people you interviewed in step 3, the pilot customer from step 8 and the people those customers know. Founders typically sell the first few deals themselves, by direct outreach to a narrow, named list of buyers, because every early conversation also teaches you what to build. Publishing useful, tested material for one audience brings the next ones; Chapter 65's advice on building in public applies to founders too. An AI product that solves a painful problem for one industry is far easier to sell than a general tool for everyone.
 
-Funding comes in three broad forms. Bootstrapping means paying your own way from savings and early revenue; an AI application that runs on rented model APIs can often start this way, because there is no model to train and no hardware to buy. Angel investors are individuals who invest their own money in very young companies. Accelerators and venture capital funds (firms that invest in young, risky companies, Chapter 61) invest in exchange for part of the company and expect a chance at a very large outcome, so they suit ideas that can grow very big, not every good business. As one published benchmark, Y Combinator's standard deal, as listed on its website in October 2026, is $500,000: $125,000 for 7% of the company plus $375,000 on a second agreement whose terms are set by the company's next round. Whatever the route, money from paying customers is the cheapest funding there is, and the strongest evidence for any later investor.
+Funding comes in three broad forms. Bootstrapping means paying your own way from savings and early revenue; an AI application that runs on rented model APIs can often start this way, because there is no model to train and no hardware to buy. Angel investors are individuals who invest their own money in very young companies. Accelerators and venture capital funds (firms that invest in young, risky companies, Chapter 61) invest in exchange for part of the company and expect a chance at a very large outcome, so they suit ideas that can grow very big, not every good business. As one published benchmark, Y Combinator's standard deal, as listed on its website in October 2026, is $500,000: $125,000 for 7% of the company plus $375,000 on a second agreement with no set price, which turns into shares at the company's first priced funding round on the best terms the company gives any similar early investor before then. Whatever the route, money from paying customers is the cheapest funding there is, and the strongest evidence for any later investor.
 
 > **Definition — Bootstrapping:** Building a company with the founders' own money and its early revenue instead of outside investment, so the founders keep full ownership and control but grow only as fast as revenue allows.
 
@@ -566,7 +566,7 @@ Some of the largest opportunities are not businesses yet. They are unsolved prob
 
 > **Definition — Open problem:** A question that experts have not yet solved and that is widely recognized as important. Contributing even a small, careful result on an open problem is strong evidence of skill.
 
-> **Definition — IEA (International Energy Agency):** An international organization, founded in 1974 and based in Paris, that tracks and forecasts energy supply and demand for its member countries. Its estimates of data-center electricity use are among the most widely cited.
+> **Definition — IEA (International Energy Agency):** A Paris-based organization, set up by governments in 1974, that publishes widely used data and forecasts on world energy, tracking supply and demand for its member countries. Its estimates of data-center electricity use are among the most widely cited.
 
 > **At the frontier (2026):** Several of these problems have turned into markets before they were solved. Agent security, evaluation and RL environments each attracted dedicated startups in 2025 and 2026, and large security vendors reportedly bought AI-security startups in 2025. Labs' system cards describe their safety testing and known limitations in detail; reading them is a free map of where the hardest work, and often the next wave of jobs, will be.
 

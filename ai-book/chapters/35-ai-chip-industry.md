@@ -64,7 +64,7 @@ mindmap
 
 *Figure 35.1: The AI chip industry in six groups. Nearly all of them depend on the same few manufacturers: TSMC for chips and packaging, and SK hynix, Samsung and Micron for HBM memory.*
 
-> **Definition — SK hynix:** A South Korean memory-chip maker, part of the SK business group, that leads the market for the HBM stacked beside AI chips and has been NVIDIA's main HBM supplier since HBM3. Samsung (also South Korean) and Micron (American) are the other two HBM makers (Chapter 33).
+> **Definition — SK hynix:** A South Korean memory-chip maker, part of the SK business group, that leads the market for the high-bandwidth memory (HBM) stacked beside AI chips and has been NVIDIA's main HBM supplier since HBM3. Samsung (also South Korean) and Micron (American) are the other two HBM makers (Chapter 33).
 
 A few terms organize this map.
 
@@ -194,7 +194,7 @@ NVIDIA also announced, in September 2025, the **Rubin CPX**, a GPU using cheaper
 
 ### Beyond the data center
 
-NVIDIA also sells smaller machines. The **DGX Spark**, a desktop computer built on a GB10 chip (a small Grace Blackwell chip that pairs Arm CPU cores with a Blackwell GPU) with 128 GB of memory shared by CPU and GPU, reportedly began shipping in October 2025. **RTX Spark** (RTX is NVIDIA's brand for its gaming and workstation graphics), a roughly 1-petaflop Windows PC chip made with Microsoft, launched in 2026 according to NVIDIA's earnings release. In September 2025 NVIDIA invested $5 billion in Intel to co-develop x86 CPUs that connect over NVLink, along with PC chips. And in the MLPerf Training 6.0 results (2026), NVIDIA says Blackwell systems led every category.
+NVIDIA also sells smaller machines. The **DGX Spark**, a desktop computer built on a GB10 chip (a small Grace Blackwell chip that pairs Arm CPU cores with a Blackwell GPU) with 128 GB of memory shared by CPU and GPU, reportedly began shipping in October 2025. **RTX Spark** (RTX is NVIDIA's brand for its gaming and workstation graphics), a roughly 1-petaflop Windows PC chip made with Microsoft, was announced in 2026, according to NVIDIA's earnings release. In September 2025 NVIDIA invested $5 billion in Intel to co-develop x86 CPUs that connect over NVLink, along with PC chips. And in the MLPerf Training 6.0 results (2026), NVIDIA says Blackwell systems led every category.
 
 > **Definition — MLPerf:** A set of standardized AI training and inference benchmarks run by the MLCommons industry group, where vendors submit results under shared rules. It is the closest thing to an independent, apples-to-apples comparison of AI hardware, though not every vendor participates.
 
@@ -218,7 +218,7 @@ flowchart TD
 
 *Figure 35.3: The software stack between a chatbot and a GPU. NVIDIA owns or leads most of the lower layers; that is the moat.*
 
-> **Definition — CUDA:** NVIDIA's programming platform, available since 2006–07, for running general computations on its GPUs. It includes a programming language extension, compilers, libraries, tools and documentation, and only runs on NVIDIA hardware.
+> **Definition — CUDA:** NVIDIA's software platform, released in 2007, that lets programmers run general calculations on its GPUs. It includes a programming language extension, compilers, libraries, tools and documentation, and only runs on NVIDIA hardware.
 
 > **Definition — Kernel (GPU kernel):** A small program that runs on the GPU to perform one operation, such as a matrix multiplication or an attention step. Writing fast kernels is one of the most prized skills in AI engineering.
 
@@ -314,7 +314,7 @@ Around 2013, Google engineers estimated that if users talked to voice search for
 
 > **Definition — Systolic array:** A grid of multiply-add units through which numbers flow from neighbor to neighbor, like a bucket brigade, so each number fetched from memory is reused many times. It is the core of Google's TPU (see Chapter 32).
 
-> **Definition — TPU (Tensor Processing Unit):** Google's family of AI ASICs, first deployed in 2015 and in its eighth generation in 2026, built around systolic arrays and linked into large pods by Google's own interconnect.
+> **Definition — TPU (Tensor Processing Unit):** Google's family of chips designed specifically for neural-network math, first deployed in Google's data centers in 2015. They are AI ASICs built around systolic arrays and linked into large pods by Google's own interconnect, and reached their eighth generation in 2026.
 
 | Generation | Year | Key facts |
 |---|---|---|
@@ -360,7 +360,7 @@ In April 2026, Anthropic and Amazon announced an agreement for **up to 5 GW**, w
 
 > **Definition — RISC-V:** A free, open instruction set (the basic vocabulary of commands a processor understands) that anyone can use without license fees. It is popular with startups and appears in AI chips such as Meta's MTIA and Tenstorrent's designs.
 
-> **Definition — MTIA (Meta Training and Inference Accelerator):** Meta's in-house AI chips, RISC-V-based and designed with Broadcom, built first to run the recommendation and ranking models behind Facebook and Instagram feeds.
+> **Definition — MTIA (Meta Training and Inference Accelerator):** Meta's own family of custom AI chips, built first to run the recommendation and ranking models behind Facebook and Instagram feeds. They are based on RISC-V and designed with Broadcom.
 
 **OpenAI and Broadcom** announced on October 13, 2025 that OpenAI would design custom AI accelerators, with Broadcom developing them and supplying Ethernet networking, for **10 GW** deployed from the second half of 2026 through 2029. Whether the first chips had been deployed by October 2026 was not confirmed in this book's sources. OpenAI has said it used its own AI models to help with parts of the chip design.
 
@@ -570,7 +570,7 @@ From September 2025 onward, AI labs signed chip deals measured not in chips but 
 
 > **Definition — Letter of intent:** A document stating that two parties plan to make a deal on certain terms, which is not yet a binding contract. Several headline AI compute "deals" began as letters of intent.
 
-> **Definition — SB Energy:** A US developer of solar farms, battery storage and AI data center campuses, backed by Japan's SoftBank Group, a lead partner in OpenAI's Stargate project (Chapter 42).
+> **Definition — SB Energy:** A US developer of solar farms, battery storage and AI data center campuses, backed by Japan's SoftBank Group (a technology investment company and a lead partner in OpenAI's Stargate project, Chapter 42).
 
 **Worked example: translating a gigawatt deal.** A deal in gigawatts describes *power*, not chips. Using Chapter 34's rule of thumb (about 1.8 kW per GPU slot and a PUE of 1.2, meaning the building uses 20% extra power for cooling and power conversion), one gigawatt holds roughly 460,000 accelerators.
 

@@ -229,7 +229,7 @@ Often you track two random variables at once. Suppose 100 emails are sorted two 
 | Not spam | 5 | 65 | 70 |
 | Column total | 25 | 75 | 100 |
 
-Each inner cell gives a joint probability, the chance of two things together: P(spam and "free") = 20 ÷ 100 = 0.20. Add across a row or down a column and you get a marginal probability, the chance of one variable on its own with the other added away: P(spam) = 0.20 + 0.10 = 0.30, and P("free") = 0.20 + 0.05 = 0.25. The odd name comes from writing those totals in the margins of the table. Dividing one by the other previews the conditional probability you will meet later in this chapter: of the 25 emails containing "free", 20 are spam, so 20 ÷ 25 = 0.8.
+Each inner cell gives a joint probability, the chance of two things together: P(spam and "free") = 20 ÷ 100 = 0.20. Add across a row or down a column and you get a marginal probability, the chance of one variable on its own with the other added away: P(spam) = 0.20 + 0.10 = 0.30, and P("free") = 0.20 + 0.05 = 0.25. The odd name comes from writing those totals in the margins of the table. Dividing a joint probability by a marginal one previews the conditional probability you will meet later in this chapter: of the 25 emails containing "free", 20 are spam, so P(spam and "free") ÷ P("free") = 0.20 ÷ 0.25 = 0.8.
 
 > **Definition — Joint probability:** The probability that two (or more) things are true together, such as an email being spam and containing "free". It is written P(A and B).
 
@@ -777,7 +777,7 @@ What you usually care about is accuracy: how often the model's top answer is rig
 
 A second gap sits underneath. Training can only shrink the average loss on the examples it has (the empirical risk), while the real goal is a low loss on future data nobody has seen yet. That is why the held-out test set from earlier in this chapter matters, and why learning is not quite the same thing as pure optimization.
 
-> **Definition — Surrogate loss:** A smooth loss that training minimizes in place of the measure people actually care about, such as cross-entropy in place of accuracy, because the real measure gives gradient descent no useful slope.
+> **Definition — Surrogate loss:** A smooth loss that training minimizes in place of the measure people actually care about, such as cross-entropy in place of accuracy, because the real measure usually does not change at all when the model's settings are nudged slightly, so training has no useful slope to follow.
 
 > **Definition — Empirical risk:** The average loss of a model on its training examples. Training minimizes it as a stand-in for the true goal, low loss on new data, which can only be estimated with held-out examples.
 

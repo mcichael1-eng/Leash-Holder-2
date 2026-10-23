@@ -39,7 +39,7 @@ How many chips is that? Start from one GPU. NVIDIA's H100 is rated at 700 watts;
 
 That simple division is why the industry talks in megawatts: the power budget sets the chip count.
 
-> **Definition — NVIDIA:** The American chip company whose GPUs, networking gear and rack designs dominate AI computing. Its data center GPU generations are named after scientists: Hopper (the H100, 2022), Blackwell (the B200 and B300, 2024–2025) and Rubin (2026).
+> **Definition — NVIDIA:** An American chip company that designs most of the GPUs used to train and run AI models, along with the networking gear that links them and CUDA, the software for programming them. It also designs complete AI racks. Its data center GPU generations are named after scientists: Hopper (the H100, 2022), Blackwell (the B200 and B300, 2024–2025) and Rubin (2026).
 
 > **Key idea:** A data center is a machine for turning electricity into computation and then getting rid of the heat. Nearly every structure you will see on this tour exists either to deliver power, to remove heat, to move data, or to protect the first three.
 
@@ -47,7 +47,7 @@ That simple division is why the industry talks in megawatts: the power budget se
 
 As of October 20, 2026, Epoch AI tracked 95 large AI data centers with about 14.2 GW of IT power between them (about 18.5 GW including cooling and other overhead). The property firm JLL expects total global data center capacity to roughly double from about 103 GW in 2025 to about 200 GW by 2030.
 
-> **Definition — JLL (Jones Lang LaSalle):** A large global commercial property firm. Its data center research team publishes widely quoted estimates of data center capacity, construction and costs.
+> **Definition — JLL (Jones Lang LaSalle):** A global commercial real-estate services firm. Its data center research team publishes widely quoted estimates of data center capacity, construction and costs.
 
 > **Watch out:** "Data centers are all AI now" is not true. By JLL's estimate AI was about a quarter of data center workloads in 2025; email, streaming, banking and ordinary business software fill most of the rest. What is true is that AI drives most of the *new* giant buildings, and they look different from the old ones.
 
@@ -108,7 +108,7 @@ Next to the transmission line sits a gravel yard full of large gray transformers
 
 > **Definition — Substation:** A fenced yard of transformers, breakers and switches that steps transmission-line voltage down to a lower voltage and routes it onward. Big AI campuses usually build their own substation on site.
 
-> **Definition — Transformer:** A device with no moving parts that uses coils of wire around an iron core to raise or lower the voltage of alternating-current electricity. Large power transformers take years to deliver and are a key bottleneck of the AI build-out.
+> **Definition — Electrical transformer:** A device with no moving parts that uses coils of wire around an iron core to raise or lower the voltage of alternating-current electricity. Large power transformers take years to deliver and are a key bottleneck of the AI build-out.
 
 A gigawatt campus may have several substations, each fed by more than one line, so losing a single line does not black out the site. From there, medium-voltage cables run underground to the buildings; Microsoft says its Wisconsin Fairwater site used 120 miles of them. Chapter 39 follows this electricity all the way to the chip.
 
@@ -182,7 +182,7 @@ Two things killed the raised floor for AI halls: weight and water.
 
 `3,000 kg ÷ 0.72 m² ≈ 4,200 kg per square meter`
 
-For comparison, building codes typically design office floors for a live load (the people, furniture and equipment a floor carries) of about 2.4 kN/m² (kilonewtons per square meter, an engineer's unit of force; 50 pounds per square foot), which is roughly 245 kg per square meter. A heavy AI rack loads its own footprint more than fifteen times harder than an office floor is designed for. Tiles on pedestals can be built that strong, but a thick concrete slab is simpler, cheaper and safer, especially when the rack has to roll in on wheels.
+For comparison, building codes typically design office floors for a live load (the people, furniture and equipment a floor carries) of about 2.4 kN/m² (kilonewtons per square meter, the force pressing down on each square meter of floor), or 50 pounds per square foot, which is roughly 245 kg per square meter. A heavy AI rack loads its own footprint more than fifteen times harder than an office floor is designed for. Tiles on pedestals can be built that strong, but a thick concrete slab is simpler, cheaper and safer, especially when the rack has to roll in on wheels.
 
 **Water.** Liquid-cooled racks need coolant pipes. Running water pipes under a floor full of power cables is risky and makes leaks hard to see. Overhead pipes and trenches are easier to inspect and service.
 
@@ -368,7 +368,7 @@ What does such a rack produce? Microsoft says each 72-GPU rack in its Fairwater 
 
 > **At the frontier (2026):** NVIDIA says Vera Rubin NVL72 racks were ramping into production in 2026, and AMD's competing Helios rack (72 MI455X GPUs in Meta's wider Open Rack Wide form factor) begins shipping in the second half of 2026. Rack designs are now negotiated between chipmakers, clouds and building designers years ahead, because a new rack can force changes to floors, pipes and power rooms.
 
-> **Definition — AMD (Advanced Micro Devices):** An American chip designer that makes CPUs and GPUs. Its Instinct GPUs, such as the MI355X and MI455X, are the main rival to NVIDIA's in AI data centers.
+> **Definition — AMD (Advanced Micro Devices):** An American company that designs CPUs for PCs and servers and is NVIDIA's main rival in AI GPUs, with its Instinct line of data-center accelerators, such as the MI355X and MI455X.
 
 > **Definition — MI455X:** AMD's flagship AI GPU for 2026, with 432 GB of HBM4 memory, sold in AMD's 72-GPU Helios rack as a rival to NVIDIA's Vera Rubin NVL72.
 
@@ -457,7 +457,7 @@ flowchart LR
   GA --> ACROSS
 ```
 
-*Figure 38.8: Multi-site training. Chatty, every-layer traffic (tensor and expert parallelism, Chapter 37) stays inside each campus; only patient, occasional synchronization crosses the long link.*
+*Figure 38.8: Multi-site training. Chatty, every-layer traffic (tensor and expert parallelism, Chapter 37) stays inside each campus; only patient, occasional synchronization between whole copies of the model (data parallelism) crosses the long link.*
 
 > **Analogy:** Scale-up is a team in one room, scale-out is teams in one building on phone calls, and scale-across is offices in different cities on video calls. You would never ask two cities to co-write every sentence together, but they can each write chapters and compare notes once a day.
 
@@ -534,11 +534,11 @@ Redundant power and cooling protect against the failures you can see in the buil
 
 That is why operators release changes gradually (a staged rollout, Chapter 44), watch closely and roll back fast, and why they design services to bend rather than break.
 
-Rare physical disasters still happen, and fire is the one people ask about. Data centers are full of electrical gear and large battery rooms, which is why fire suppression is part of the gray space described earlier. The best-known case came on the night of March 9, 2021, when fire destroyed the French cloud provider OVHcloud's SBG2 building in Strasbourg, France, and damaged a neighboring building. The company told customers to activate their business recovery plans, and customers who kept their data and backups only in that building lost them (as reported). The lesson is the one in this section: the backup that saves you is the one in another building, ideally another region.
-
 > **Definition — Graceful degradation:** Designing a service so that when parts fail or are overloaded, it keeps working with reduced quality or fewer features instead of failing completely, for example by switching to a smaller model or pausing non-essential features.
 
 > **Watch out:** "A Tier IV building means a service that never goes down." The Tier rating covers the building's power and cooling only. Software, configuration, networks and the model itself can fail too, and a service that needs all of its parts is only as available as their product: three parts at 99.9% each give 0.999 × 0.999 × 0.999 ≈ 99.7%.
+
+Rare physical disasters still happen, and fire is the one people ask about. Data centers are full of electrical gear and large battery rooms, which is why fire suppression is part of the gray space described earlier. The best-known case came on the night of March 9 to 10, 2021, when fire destroyed the French cloud provider OVHcloud's SBG2 building in Strasbourg, France, and damaged a neighboring building. The company told customers to activate their business recovery plans, and customers who kept their data and backups only in that building lost them (as reported). The lesson is the geographic redundancy described above: the backup that saves you is the one in another building, ideally another region.
 
 ## Running the place: operations
 
@@ -606,7 +606,7 @@ Other habits complete the picture: addresses are often not publicized, buildings
 
 Walls and guards cannot protect against everything, so the last layers of security are built into the chips themselves. The first question is whether a server is running the software it should be running: if its lowest-level startup code (the firmware) has been tampered with, everything above it can be fooled.
 
-> **Definition — Root of trust (silicon root of trust):** A small, tamper-resistant security chip on a server board that starts before everything else, checks the digital signature of each piece of startup code before letting it run, and holds the machine's secret keys. Google's version is called Titan.
+> **Definition — Root of trust (silicon root of trust):** A small, tamper-resistant security chip on a server board that starts before everything else, checks each piece of startup code for its maker's digital signature (a cryptographic seal that no longer matches if the code is altered) before letting it run, and holds the machine's secret keys. Google's version is called Titan.
 
 The second question is who can see data while it is being processed. Encryption normally protects data on disks and on networks, but not while a processor is working on it in memory.
 
@@ -624,7 +624,7 @@ Not every data center is a gigawatt AI campus. Here are the main types you will 
 
 > **Definition — Hyperscaler:** A giant cloud and internet company operating data centers at massive scale: in AI, mainly Amazon (AWS), Microsoft, Google, Meta and Oracle.
 
-> **Definition — AWS (Amazon Web Services):** Amazon's cloud computing business, the largest cloud provider in the world. It rents computing, storage and AI chips, including its own Trainium chips, to other companies.
+> **Definition — AWS (Amazon Web Services):** Amazon's cloud-computing business, the world's largest cloud provider, which rents out computing power, storage and AI chips over the internet. Its chips include Amazon's own Trainium.
 
 > **Definition — AI training campus ("AI factory"):** A data center, often hundreds of megawatts to gigawatts in size, built mainly to train or serve AI models on tightly networked accelerators. "AI factory" is NVIDIA's marketing term, stressing that the product is tokens.
 
@@ -669,7 +669,7 @@ quadrantChart
 
 Converted crypto-mining sites deserve a note. Bitcoin miners such as IREN, Cipher, TeraWulf and Core Scientific had already secured power, substations and land, and several have turned parts of their sites into AI data centers. Their biggest asset is the power connection, which can take years to get from scratch.
 
-> **Definition — IREN:** A company, formerly called Iris Energy, that began as a bitcoin miner and has turned its power-connected sites into AI data centers, renting GPUs to AI companies as a neocloud.
+> **Definition — IREN:** A company, formerly called Iris Energy, that began as a bitcoin miner and has turned its power-connected sites into AI data centers, where it rents out GPUs to AI companies.
 
 ## The players
 
@@ -681,7 +681,7 @@ Who builds, owns and fills all these buildings? Think of it as a stack of compan
 - **Equipment makers** supply chips and networking (NVIDIA, AMD, Broadcom) and power and cooling gear (Vertiv, Schneider Electric, Eaton, ABB, Siemens, GE Vernova, Hitachi Energy).
 - **Utilities and grid operators** deliver the power (Chapter 41), and **financiers** (private equity, infrastructure funds, private credit, sovereign wealth funds) pay for much of it (Chapter 43).
 
-> **Definition — GE (General Electric):** A long-established American industrial company that split into separate companies in 2023–2024. GE Vernova makes power equipment such as gas turbines and grid gear; GE Hitachi, its nuclear partnership with Japan's Hitachi, designs the BWRX-300 small reactor.
+> **Definition — GE (General Electric):** A long-established American industrial company that split into separate companies in 2023–2024. GE Vernova makes power equipment such as gas turbines and grid gear; GE Vernova Hitachi, its nuclear partnership with Japan's Hitachi, designs the BWRX-300 small modular reactor (Chapter 41).
 
 > **Definition — Neocloud:** A newer cloud company that specializes in renting AI accelerators, such as CoreWeave, Nebius, Lambda or Crusoe, as opposed to a general-purpose hyperscale cloud.
 
@@ -731,7 +731,7 @@ Put the tour together and the frontier campus of 2026 is:
 - **Built huge.** Epoch AI lists the Anthropic–Amazon site at New Carlisle, Indiana at about 1,037 MW of IT power, the largest tracked site by power as of October 2026, and xAI's Colossus 2 at about 946 MW, the largest by compute (roughly 1.1 million H100-equivalents, a unit that counts computing power in multiples of one NVIDIA H100 GPU, so a newer chip that does three times the math counts as about three).
 - **Dense and joined up.** Microsoft's Wisconsin Fairwater site holds hundreds of thousands of GB200 GPUs, cools more than 90% of its capacity with a closed liquid loop filled once, and acts as one system with its Atlanta sibling.
 
-> **Definition — GB200 and GB300:** NVIDIA superchips that each pair one Grace CPU with two Blackwell GPUs (B200 GPUs in the GB200, the upgraded B300 in the GB300). Thirty-six of them make an NVL72 rack, so news reports of "GB200 GPUs" usually mean the Blackwell GPUs inside these systems.
+> **Definition — GB200 and GB300:** NVIDIA's "Grace Blackwell" superchips, each pairing one Grace CPU with two Blackwell GPUs (the original B200 in the GB200, the upgraded B300 in the GB300). Thirty-six of them make an NVL72 rack, so news reports of "GB200 GPUs" usually mean the Blackwell GPUs inside these systems.
 
 > **Key idea:** The unit of AI infrastructure has grown from the server to the rack to the building to the campus, and now to groups of campuses joined by fiber. The physical constraints at each level (weight, heat, power, distance) shape what AI companies can build and how fast.
 
@@ -749,7 +749,7 @@ Data centers are joined by fiber, and light needs about 5 microseconds per kilom
 
 ## Key terms
 
-Data center, Campus, Megawatt (MW) and gigawatt (GW), NVIDIA, JLL (Jones Lang LaSalle), Substation, Transformer, Backup generator, White space, Gray space, Data hall, Stranded capacity, Raised floor, Slab-on-grade, Rack, Rack unit (U), Row, pod and cluster (data center layout), Hot aisle and cold aisle, Containment, CDU (coolant distribution unit), Cable tray (ladder rack), Busway (busbar trunking), Structured cabling, Optical transceiver, Single-mode and multimode fiber, Meet-me room (MMR), Cross-connect, Carrier hotel, Internet exchange point (IXP), Rack density, PDU (power distribution unit), Rack power shelf, Manifold and quick disconnect, GTC (GPU Technology Conference), AMD (Advanced Micro Devices), MI455X, NIC (network interface card), Leaf-spine network (Clos network), Non-blocking network, Scale-up, scale-out and front-end networks, Out-of-band management network, Dark fiber, DCI (data center interconnect), Scale-across (AI WAN), Redundancy, N and N+1, 2N, Concurrently maintainable, Fault tolerant, Uptime Institute Tiers (I to IV), Availability ("the nines"), SLA (service-level agreement), BMS and DCIM, NOC and SOC, Remote hands, Rack and stack, Commissioning (Cx), Mantrap, Root of trust (silicon root of trust), Confidential computing, Enterprise data center, Colocation (colo), Hyperscaler, AWS (Amazon Web Services), AI training campus ("AI factory"), Edge data center, IREN, GE (General Electric), Neocloud, Powered land and powered shell, Build-to-suit and turnkey, GPU-as-a-service, Take-or-pay contract, GB200 and GB300, Graceful degradation
+Data center, Campus, Megawatt (MW) and gigawatt (GW), NVIDIA, JLL (Jones Lang LaSalle), Substation, Electrical transformer, Backup generator, White space, Gray space, Data hall, Stranded capacity, Raised floor, Slab-on-grade, Rack, Rack unit (U), Row, pod and cluster (data center layout), Hot aisle and cold aisle, Containment, CDU (coolant distribution unit), Cable tray (ladder rack), Busway (busbar trunking), Structured cabling, Optical transceiver, Single-mode and multimode fiber, Meet-me room (MMR), Cross-connect, Carrier hotel, Internet exchange point (IXP), Rack density, PDU (power distribution unit), Rack power shelf, Manifold and quick disconnect, GTC (GPU Technology Conference), AMD (Advanced Micro Devices), MI455X, NIC (network interface card), Leaf-spine network (Clos network), Non-blocking network, Scale-up, scale-out and front-end networks, Out-of-band management network, Dark fiber, DCI (data center interconnect), Scale-across (AI WAN), Redundancy, N and N+1, 2N, Concurrently maintainable, Fault tolerant, Uptime Institute Tiers (I to IV), Availability ("the nines"), SLA (service-level agreement), BMS and DCIM, NOC and SOC, Remote hands, Rack and stack, Commissioning (Cx), Mantrap, Root of trust (silicon root of trust), Confidential computing, Enterprise data center, Colocation (colo), Hyperscaler, AWS (Amazon Web Services), AI training campus ("AI factory"), Edge data center, IREN, GE (General Electric), Neocloud, Powered land and powered shell, Build-to-suit and turnkey, GPU-as-a-service, Take-or-pay contract, GB200 and GB300, Graceful degradation
 
 ## Exercises
 
@@ -809,7 +809,7 @@ Data center, Campus, Megawatt (MW) and gigawatt (GW), NVIDIA, JLL (Jones Lang La
 
 ## Going deeper
 
-- **Barroso, Hölzle and Ranganathan, *The Data Center as a Computer* (4th edition, Springer, December 2025; free open-access download).** The classic Google engineers' book on designing a whole building as one machine, from power and cooling to reliability and security.
+- **Barroso, Hölzle and Ranganathan, *The Data Center as a Computer* (4th edition, Springer, December 2025; free open-access download; earlier editions, cited in this chapter, were titled *The Datacenter as a Computer*).** The classic Google engineers' book on designing a whole building as one machine, from power and cooling to reliability and security.
 - **Microsoft, "Inside the world's most powerful AI datacenter" (September 2025).** A readable first-party tour of the Fairwater design, with construction numbers, cooling and rack layout.
 - **Epoch AI data center hub (epoch.ai/data/data-centers).** Live estimates of the largest AI sites by power and compute, with satellite-based methodology you can learn from.
 - **Uptime Institute (uptimeinstitute.com).** The source of the Tier standard, plus annual surveys on outages and industry practice.

@@ -23,7 +23,7 @@ Try a small test. Open your chatbot and ask, "What does section 4 of my apartmen
 
 The reason is simple. Everything a model "knows" was squeezed into its parameters during training (Chapter 19). Training stopped on a particular date, and the model saw only what was in its training data. Anything private, anything newer, and anything rare is missing or blurry.
 
-> **Definition — Knowledge cutoff:** The date after which a model saw no training data. Anything that happened or was written after it, such as last week's news or this year's price list, must come from search or from documents you provide. As of late 2026, Anthropic lists a June 2026 cutoff for its current Claude models.
+> **Definition — Knowledge cutoff:** The date after which a model saw little or no training data. Anything that happened or was written after it, such as last week's news or this year's price list, must come from search or from documents you provide. As of late 2026, Anthropic lists a June 2026 cutoff for its current Claude models.
 
 Three kinds of knowledge are out of reach for a model on its own:
 
@@ -385,7 +385,7 @@ A RAG system has two separate pipelines. The **indexing pipeline** runs ahead of
 
 **2. Parse.** Extract clean text from each file format. This is harder than it sounds. PDFs often store text in a jumbled order; two-column layouts get mixed together; tables turn into streams of numbers; headers and page numbers interrupt sentences. Scanned contracts are just pictures of text and need optical character recognition.
 
-> **Definition — Parsing:** Extracting usable text and structure (headings, tables, lists) from files such as PDFs, web pages, slides and spreadsheets.
+> **Definition — Document parsing:** Extracting usable text and structure (headings, tables, lists) from files such as PDFs, web pages, slides and spreadsheets.
 
 > **Definition — OCR (Optical Character Recognition):** Software that reads text from images, such as scanned pages or photos of documents, and turns it into machine-readable characters.
 
@@ -771,7 +771,7 @@ To find relevant passages, computers use two kinds of search. Keyword search, sc
 A good system is mostly careful plumbing: parse documents cleanly, cut them into sensible chunks, label each chunk with its context, search broadly, rerank carefully, and demand citations and an honest "not found". For harder questions the model can run the searches itself (agentic RAG) or work from a map of the whole collection (GraphRAG). Small, stable document sets can now often be pasted whole into a million-token window with caching. Whatever you build, measure it with a golden set of questions, because most failures happen at the retrieval step, before the model writes a word.
 
 ## Key terms
-Knowledge cutoff, Hallucination, Retrieval, RAG (Retrieval-Augmented Generation), Grounding, Corpus, Embedding, Vector, Dimension, Embedding model, MTEB (Massive Text Embedding Benchmark), Contrastive learning, Dot product, Cosine similarity, Nearest neighbor, Top-k, Inverted index, Keyword search, IDF (Inverse Document Frequency), BM25 (Best Matching 25), Semantic search, Hybrid search, Reciprocal rank fusion (RRF), ANN (Approximate Nearest Neighbor) search, HNSW (Hierarchical Navigable Small World), Vector database, Metadata, Metadata filtering, Permission-aware retrieval, Indexing pipeline, Parsing, OCR (Optical Character Recognition), Query pipeline, Retriever, Citation, Chunking, Chunk overlap, Structure-aware chunking, Parent-child retrieval, Contextual retrieval, Bi-encoder, Cross-encoder, Reranker, Query rewriting, Query decomposition, HyDE (Hypothetical Document Embeddings), Agentic RAG, Knowledge graph, GraphRAG, Text-to-SQL, Multimodal RAG, Context window, Prompt caching, Lost in the middle, Context rot, Golden dataset, Recall@k, Precision@k, Faithfulness (groundedness), LLM-as-judge, Indirect prompt injection, Data poisoning
+Knowledge cutoff, Hallucination, Retrieval, RAG (Retrieval-Augmented Generation), Grounding, Corpus, Embedding, Vector, Dimension, Embedding model, MTEB (Massive Text Embedding Benchmark), Contrastive learning, Dot product, Cosine similarity, Nearest neighbor, Top-k, Inverted index, Keyword search, IDF (Inverse Document Frequency), BM25 (Best Matching 25), Semantic search, Hybrid search, Reciprocal rank fusion (RRF), ANN (Approximate Nearest Neighbor) search, HNSW (Hierarchical Navigable Small World), Vector database, Metadata, Metadata filtering, Permission-aware retrieval, Indexing pipeline, Document parsing, OCR (Optical Character Recognition), Query pipeline, Retriever, Citation, Chunking, Chunk overlap, Structure-aware chunking, Parent-child retrieval, Contextual retrieval, Bi-encoder, Cross-encoder, Reranker, Query rewriting, Query decomposition, HyDE (Hypothetical Document Embeddings), Agentic RAG, Knowledge graph, GraphRAG, Text-to-SQL, Multimodal RAG, Context window, Prompt caching, Lost in the middle, Context rot, Golden dataset, Recall@k, Precision@k, Faithfulness (groundedness), LLM-as-judge, Indirect prompt injection, Data poisoning
 
 ## Exercises
 

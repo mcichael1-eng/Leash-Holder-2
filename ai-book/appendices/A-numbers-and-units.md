@@ -100,7 +100,7 @@ A FLOP is one floating-point operation (one multiply or one add): a count of wor
 
 | Training run | Estimated total compute | Source |
 |---|---|---|
-| GPT-3 (2020) | about `3.1 × 10^23` | 6ND from published size and tokens (6 × 175 billion × 300 billion); Epoch AI lists `3.14 × 10^23` |
+| GPT-3 (2020) | about `3.15 × 10^23` | 6ND from published size and tokens (6 × 175 billion × 300 billion); Epoch AI lists `3.14 × 10^23` |
 | DeepSeek-V4-Pro (2026) | about `9.7 × 10^24` | 6ND with 49 billion active parameters and about 33 trillion tokens |
 | GPT-4 (2023) | about `2.1 × 10^25` | Epoch AI estimate |
 | Llama 3.1 405B (2024) | about `3.8 × 10^25` | Meta |
@@ -176,7 +176,7 @@ Vendor peak figures as of October 2026, from the research behind Chapters 32 to 
 | NVIDIA H200 (2024) | 141 GB HBM3E | 4.8 TB/s | same as H100 | More and faster memory |
 | NVIDIA B200 (2024–25) | 192 GB HBM3E | 8 TB/s | | Two dies, 208 billion transistors; about 1 kW or more |
 | NVIDIA B300 (late 2025) | 288 GB HBM3E | 8 TB/s | about 15 PFLOPS dense FP4 | Blackwell Ultra |
-| NVIDIA Rubin (2026) | 288 GB HBM4 | about 19–22 TB/s | 35 PFLOPS dense NVFP4; 17.5 PFLOPS FP8; 4 PFLOPS BF16 | 336 billion transistors, TSMC N3 (reported) |
+| NVIDIA Rubin (2026) | 288 GB HBM4 | about 19–22 TB/s | 35 PFLOPS dense NVFP4; 17.5 PFLOPS FP8; 4 PFLOPS BF16 | 336 billion transistors (NVIDIA); TSMC N3 (reported) |
 | AMD MI300X (2023) | 192 GB HBM3 | 5.3 TB/s | | Chiplet design |
 | AMD MI355X (2025) | 288 GB HBM3E | 8 TB/s | 10.1 PFLOPS dense MXFP4 | 1,400 W, liquid-cooled |
 | AMD MI455X (2026) | 432 GB HBM4 | about 19.6 TB/s (up to 23.3 cited) | about 40 PFLOPS dense FP4; about 20 PFLOPS FP8 | In the Helios rack |

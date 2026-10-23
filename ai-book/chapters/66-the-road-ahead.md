@@ -274,7 +274,7 @@ Labs answer with layers: training (constitutions, deliberative alignment), safeg
 
 > **Definition — Safety case:** A structured, evidence-backed written argument that a specific AI system is acceptably safe for a specific use, similar to the safety cases required for aircraft or nuclear plants.
 
-> **At the frontier (2026):** Capability thresholds are now crossed in the open. Anthropic restricted Claude Mythos Preview (April 2026) to vetted cyber defenders after it reportedly found thousands of serious software vulnerabilities, and according to coverage of an August 2026 notice, OpenAI said it could no longer rule out its "Critical" cybersecurity threshold for the model that became GPT-6 Astra; at release in September, OpenAI's own safety card confirmed Astra as its first model at the Critical level of cybersecurity capability. A public version with safeguards plus a restricted version for trusted users is now a standard pattern.
+> **At the frontier (2026):** Capability thresholds are now crossed in the open. Anthropic restricted Claude Mythos Preview (April 2026) to vetted cyber defenders after it reportedly found thousands of serious software vulnerabilities, and on August 7, 2026 OpenAI reportedly said it could not rule out Critical cyber capability in the model that became GPT-6 Astra, having determined that it "might reach the Critical level of cyber capability"; at release in September, OpenAI's own safety card confirmed Astra as its first model at the Critical level of cybersecurity capability. A public version with safeguards plus a restricted version for trusted users is now a standard pattern.
 
 ### 9. Measuring any of it: the science of evaluation
 
@@ -473,7 +473,7 @@ In the tables below, the middle column says what has been announced, targeted or
 | Estimates of how much AI speeds up the labs' own research | About 1.5× inside Anthropic: a preliminary estimate by a separate METR team, cited in METR's September 2026 report on Claude Opus 5.5 | METR reports, system cards | Whether AI is accelerating AI development, the engine of the fastest scenarios |
 | Previously unsolved Erdős problems solved by AI | 2 of 68 (GPT-6 Astra, per Epoch, September 2026) | epoch.ai/benchmarks | Whether AI produces original mathematics |
 | Interpretability that "reliably detects most model problems" | A goal Anthropic's CEO set for 2027 | Lab research sites, system cards | Whether safety arguments can rest on looking inside models |
-| A drug discovered and designed with AI approved by a major regulator | None as of late 2026; some reached mid-stage trials | FDA and EMA (the US and European drug regulators) | Whether AI for science reaches patients |
+| A drug discovered and designed with AI approved by a major regulator | None as of late 2026; some reached late-stage trials (rentosertib began Phase III in September 2026) | FDA and EMA (the US and European drug regulators) | Whether AI for science reaches patients |
 
 *Table 66.4: Capability signposts.*
 
@@ -666,7 +666,7 @@ stateDiagram-v2
 Imagine the headline "AI scores 99.9% on ARC-AGI-3. Is this AGI?"
 
 1. **Claim.** A model can solve novel puzzle games. The AGI framing is the headline's; ARC Prize explicitly declined to call the result AGI.
-2. **Number.** 99.9% used a harness that let GPT-6 Astra keep its reasoning state, at high effort. A fair comparison holds the effort fixed: at maximum effort it scored 98.6% with that harness and 62.7% with the standard one, at a reported cost of about $26,000.
+2. **Number.** 99.9% used a harness that let GPT-6 Astra keep its reasoning state, at high effort. A fair comparison holds the effort fixed: at maximum effort it scored 98.6% with that harness (a reported cost of about $17,000) and 62.7% with the standard one (about $26,000).
 3. **Source.** ARC Prize's own blog, independent of the model's maker.
 4. **Compared with what?** Humans scored 100%; frontier AI scored 0.51% at launch in March 2026. The jump is real and fast.
 5. **Stage.** A measured lab result, not a deployment.

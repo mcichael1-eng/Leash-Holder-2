@@ -345,7 +345,7 @@ Same computer, same data, 25,000 times faster, purely from a better method. Comp
 
 This matters for AI in two ways. First, AI's cost is dominated by a few algorithms run trillions of times, above all multiplying tables of numbers (Chapter 5), so small improvements save fortunes. Second, machine learning flips who writes the algorithm: a person writes a learning method (gradient descent, Chapter 6), and the data shapes the final behavior (Chapter 8).
 
-> **At the frontier (2026):** AI systems now help discover algorithms. In May 2025, Google DeepMind's AlphaEvolve found a way to multiply two 4 × 4 matrices (grids of numbers, Chapter 5) of complex numbers (a kind of number used in physics and engineering) using 48 scalar multiplications (multiplications of one single number by another), the first improvement for that case in 56 years on the method built from Volker Strassen's famous 1969 shortcut. Since AI training is mostly matrix multiplication, even tiny gains like this are worth chasing.
+> **At the frontier (2026):** AI systems now help discover algorithms. In May 2025, Google DeepMind's AlphaEvolve found a way to multiply two 4 × 4 matrices (grids of numbers, Chapter 5) of complex numbers (a kind of number used in physics and engineering) using 48 scalar multiplications (multiplications of one single number by another). That was the first improvement for that case in 56 years: the best method until then was built on a shortcut for multiplying matrices with fewer multiplications, found by the mathematician Volker Strassen in 1969. Since AI training is mostly matrix multiplication, even tiny gains like this are worth chasing.
 
 ## Code and programming languages
 
@@ -365,9 +365,9 @@ flowchart TD
 
 *Figure 3.9: The ladder from a line of Python to transistor switches. Each step down is more detailed and harder for humans to read.*
 
-There are two ways to translate code down the ladder. A compiler translates the whole program ahead of time, like translating a book before publishing it. An interpreter translates and runs it as it goes, like a live interpreter at a meeting. Compiled programs usually run faster; interpreted ones are quicker to write and change. Python is normally run by an interpreter. C, C++ and Rust are compiled. Nvidia's CUDA, released in 2007, lets programmers write compiled code that runs on GPUs, and it is one reason Nvidia dominates AI hardware (Chapter 35).
+There are two ways to translate code down the ladder. A compiler translates the whole program ahead of time, like translating a book before publishing it. An interpreter translates and runs it as it goes, like a live interpreter at a meeting. Compiled programs usually run faster; interpreted ones are quicker to write and change. Python is normally run by an interpreter. C, C++ and Rust are compiled. NVIDIA's CUDA, released in 2007, lets programmers write compiled code that runs on GPUs, and it is one reason NVIDIA dominates AI hardware (Chapter 35).
 
-> **Definition — NVIDIA:** An American chip company, founded in 1993, that designs the GPUs most AI is trained and run on. It started out making graphics chips for video games; its CUDA software and its data-center chips such as the H100 and B200 made it the dominant supplier of AI hardware.
+> **Definition — NVIDIA:** An American chip company that designs most of the GPUs used to train and run AI models, along with the networking gear that links them and CUDA, the software for programming them. Founded in 1993 to make graphics chips for video games, it became the dominant supplier of AI hardware with data-center chips such as the H100 and B200.
 
 > **Definition — Compiler:** A program that translates a whole program from a programming language into machine code before it runs.
 
@@ -375,9 +375,9 @@ There are two ways to translate code down the ladder. A compiler translates the 
 
 ### Why Python runs AI
 
-Python, first released in 1991, is the language of AI. It topped the TIOBE popularity index (a monthly ranking of programming languages based largely on how often they are searched for online) in October 2026 at about 19%. On GitHub (the website where programmers share code, described later in this chapter), TypeScript (popular for web apps) overtook Python by monthly contributors in August 2025, but Python still led AI projects by a wide margin and powered nearly half of new AI repositories (project folders), according to GitHub's 2025 Octoverse report.
+Python, first released in 1991, is the language of AI. It topped the TIOBE popularity index (a monthly ranking of programming languages based on how many web pages search engines find about each one) in October 2026 at about 19%. On GitHub (the website where programmers share code, described later in this chapter), TypeScript (popular for web apps) overtook Python by monthly contributors in August 2025, but Python still led AI projects by a wide margin and powered nearly half of new AI repositories (project folders), according to GitHub's 2025 Octoverse report.
 
-> **Definition — Python:** A popular, readable programming language that dominates AI work, largely because of its huge collection of ready-made libraries for math, data and neural networks.
+> **Definition — Python:** The most widely used programming language for AI work, popular for its readable code and its huge collection of ready-made libraries for math, data and neural networks.
 
 Why Python? Three reasons. It reads almost like English, so researchers who are not professional programmers can use it. It has an enormous collection of free, ready-made code for every AI task. And it is the steering wheel, not the engine. Python itself is slow, but when you ask it to multiply two huge matrices, it hands the job to fast compiled code written in C, C++ or CUDA that runs on the GPU. You get the ease of Python with the speed of machine code.
 
@@ -385,7 +385,7 @@ Why Python? Three reasons. It reads almost like English, so researchers who are 
 |---|---|---|
 | Python | Research, training scripts, data work, almost everything | Interpreted |
 | C and C++ | Fast inference engines, math libraries | Compiled |
-| CUDA | Programs that run directly on Nvidia GPUs | Compiled |
+| CUDA | Programs that run directly on NVIDIA GPUs | Compiled |
 | JavaScript and TypeScript | Chatbot web apps and their screens | Interpreted (in the browser) |
 | SQL | Asking databases for data | Run by the database |
 | Rust | Fast, safe tools such as tokenizers | Compiled |
@@ -520,7 +520,7 @@ Chatbots are excellent debugging partners if you give them what a human expert w
 3. What you expected to happen.
 4. What you have already tried.
 
-> **Watch out:** Code written by AI can look perfect and still be wrong, especially with logic errors that produce plausible but incorrect numbers. Always test it on a case where you already know the right answer. In one careful 2025 study, METR (an independent nonprofit that tests AI systems, Chapter 57) found that experienced open-source developers using early-2025 AI tools took 19% longer on their tasks, even though they expected to be faster. Tools have improved since: METR's February 2026 follow-up suggested that late-2025 tools probably sped developers up, though it called its own new data an unreliable signal. The lesson stands: checking matters (Chapter 29).
+> **Watch out:** Code written by AI can look perfect and still be wrong, especially with logic errors that produce plausible but incorrect numbers. Always test it on a case where you already know the right answer. In one careful 2025 study, METR (an independent nonprofit that tests AI systems, Chapter 57) found that experienced open-source developers using early-2025 AI tools took 19% longer on their tasks, even though they expected to be faster. Tools have improved since: METR's February 2026 follow-up, with tools from late 2025, found some evidence of a speedup and judged that developers probably gained more from AI by early 2026 than in early 2025, though it called its own new data an unreliable signal. The lesson stands: checking matters (Chapter 29).
 
 ## Operating systems: the building manager
 
@@ -528,7 +528,7 @@ When you open three apps at once, who decides which one gets the processor this 
 
 > **Definition — Operating system (OS):** The master program (Windows, macOS, Linux, Android, iOS) that manages the hardware and lets apps run and share the processor, memory, files and devices safely.
 
-The OS shares the processor by switching between programs many times per second, gives each app its own private memory, keeps track of where every file's bytes live, controls devices through small programs called drivers (AI servers need Nvidia's GPU driver before any CUDA code can run), and asks your permission before an app uses the camera or microphone.
+The OS shares the processor by switching between programs many times per second, gives each app its own private memory, keeps track of where every file's bytes live, controls devices through small programs called drivers (AI servers need NVIDIA's GPU driver before any CUDA code can run), and asks your permission before an app uses the camera or microphone.
 
 > **Analogy:** The operating system is the manager of an apartment building. It assigns rooms (memory), schedules the elevator (processor time) and makes sure no tenant (app) can walk into another's apartment.
 
@@ -538,9 +538,9 @@ You use several operating systems every day. Windows and macOS run most laptops.
 
 > **Definition — TOP500:** A ranking of the world's 500 fastest supercomputers, published twice a year since 1993 by a small team of researchers, based on how fast each machine runs a standard math test.
 
-> **At the frontier (2026):** Operating systems are some of the most heavily tested code in the world, and AI is now finding bugs that decades of human review missed. On April 7, 2026, Anthropic announced Project Glasswing, giving defenders limited access to an unreleased model, Claude Mythos Preview. According to Anthropic, it found thousands of high-severity vulnerabilities (security flaws an attacker could exploit) across every major operating system and web browser, including a 27-year-old bug in OpenBSD (a free operating system known for its focus on security) and a 16-year-old bug in FFmpeg (free software used almost everywhere to play and convert audio and video) that automated testing had hit five million times without catching. Partners included AWS, Apple, Google, Microsoft, Nvidia and the Linux Foundation (the nonprofit that looks after Linux). Chapter 58 discusses what this means for security.
+> **At the frontier (2026):** Operating systems are some of the most heavily tested code in the world, and AI is now finding bugs that decades of human review missed. On April 7, 2026, Anthropic announced Project Glasswing, giving defenders limited access to an unreleased model, Claude Mythos Preview. According to Anthropic, it found thousands of high-severity vulnerabilities (security flaws an attacker could exploit) across every major operating system and web browser, including a 27-year-old bug in OpenBSD (a free operating system known for its focus on security) and a 16-year-old bug in FFmpeg (free software used almost everywhere to play and convert audio and video) that automated testing had hit five million times without catching. Partners included AWS, Apple, Google, Microsoft, NVIDIA and the Linux Foundation (the nonprofit that looks after Linux). Chapter 58 discusses what this means for security.
 
-> **Definition — AWS (Amazon Web Services):** Amazon's cloud-computing business, launched in 2006 and one of the biggest companies that rent out computers, storage and AI chips over the internet by the hour. Chapter 4 explains the cloud.
+> **Definition — AWS (Amazon Web Services):** Amazon's cloud-computing business, the world's largest cloud provider, which rents out computing power, storage and AI chips over the internet. It launched in 2006; Chapter 4 explains the cloud.
 
 ## The app stack: from chip to chat
 
@@ -627,7 +627,7 @@ flowchart LR
 
 GitHub is a website, owned by Microsoft since 2018, where people store Git repositories online and collaborate on them. It is the public square of software. GitHub's 2025 Octoverse report counted more than 180 million developers, more than 4.3 million AI-related repositories, and over 1.1 million public repositories that use a software kit for calling a large language model.
 
-> **Definition — GitHub:** A website for storing Git repositories online and collaborating on them through issues, reviews and pull requests. Most open-source AI code lives there.
+> **Definition — GitHub:** The largest website for storing Git repositories online and collaborating on them, owned by Microsoft. People work together there through issues, reviews and pull requests, and most open-source AI code lives there.
 
 > **Analogy:** Git is save points in a video game combined with "track changes" in a word processor: you can return to any earlier save, see exactly what changed, and let a friend try a risky path on their own copy.
 
@@ -778,7 +778,7 @@ Encoding, ASCII, Unicode, Code point, UTF-8, Token, Tokenizer, Pixel, RGB, Resol
    ```
 
    3. Change "Ada" to your name and add your favorite numbers to the list. Run it again.
-   4. Add a new cell (click "+ Code") and write `print(2 ** 20)`. In Python `**` means "to the power of", so this multiplies 2 by itself 20 times. Check that the answer matches the binary search number from this chapter.
+   4. Add a new cell (click "+ Code") and write `print(2 ** 20)`. In Python `**` means "to the power of", so this multiplies twenty 2s together (2 × 2 × 2 and so on). Check that the answer matches the binary search number from this chapter.
    **What you'll learn:** variables, lists, functions and loops in practice, and that running code is no more mysterious than running a calculator.
 
 5. **[Medium] Have a chatbot explain code line by line.** Use AI as a patient code tutor, then check it.

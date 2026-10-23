@@ -24,7 +24,7 @@ Every chatbot you use went through a long assembly line. Pretraining is the firs
 
 > **Definition — Training run:** One large training job, from the first random weights to the final saved model, often lasting weeks or months on thousands of chips.
 
-> **Definition — Corpus:** A large collection of text used for training. The plural is corpora.
+> **Definition — Corpus:** A large collection of text or documents, such as the text gathered to train a model. The plural is corpora.
 
 ```mermaid
 flowchart LR
@@ -105,7 +105,7 @@ A frontier pretraining corpus is a blend of many kinds of text:
 - **Books and academic papers.** Long, carefully edited text. Also the most legally contested (Chapter 11).
 - **Math.** Textbooks, worked solutions, competition problems and proofs.
 - **Many languages.** Alibaba said its Qwen3 models were pretrained on about 36 trillion tokens across 119 languages.
-- **Licensed data.** Labs pay publishers and platforms for access, such as the Reddit–Google deal (about $60 million per year, as reported in 2024) or Meta's March 2026 deal with News Corp, the publisher of The Wall Street Journal (up to $50 million per year for three years).
+- **Licensed data.** Labs pay publishers and platforms for access, such as the Reddit–Google deal (about $60 million per year, as reported in 2024) or Meta's March 2026 deal with News Corp, the publisher of The Wall Street Journal (reported at up to $50 million per year for three years).
 - **Transcribed and extracted text.** Speech from video transcribed to text, and text pulled out of PDFs. Qwen3 used a vision model to extract text from PDFs, for example.
 - **Synthetic data.** Text written by other AI models, then filtered. Qwen3 used Alibaba's earlier Qwen2.5 math and code models to generate synthetic textbooks and question-answer pairs.
 
@@ -255,7 +255,7 @@ A frontier pretraining run uses thousands to more than 100,000 GPUs or TPUs work
 - **Llama 3 405B (Meta, 2024):** 16,384 NVIDIA H100 GPUs, about 15.6 trillion tokens, with a carefully documented 54-day stretch of training.
 - **GPT-6 Astra (OpenAI, September 2026):** described as OpenAI's largest training run "by far" and OpenAI's first pretraining run on more than 100,000 GPUs, at the Stargate site in Abilene, Texas. Epoch AI estimates about 9.4 × 10^26 FLOP (with a wide uncertainty range of roughly 5 × 10^26 to 2 × 10^27), assuming about 100,000 GB200 GPUs for about 90 days at 25% utilization in 8-bit precision.
 
-> **Definition — NVIDIA:** An American chip company whose GPUs, first built for video-game graphics, became the main chips used to train and run AI models. It dominates sales of AI accelerators (Chapter 35).
+> **Definition — NVIDIA:** An American chip company that designs most of the GPUs used to train and run AI models, along with the networking gear that links them and CUDA, the software for programming them. Its GPUs were first built for video-game graphics, and it dominates sales of AI accelerators (Chapter 35).
 
 > **Definition — GB200:** NVIDIA's Blackwell-generation "superchip": one NVIDIA Grace CPU and two Blackwell GPUs on one board, usually installed 72 GPUs to a rack (the GB200 NVL72). When estimates count "GB200 GPUs", they count the Blackwell GPUs, the generation after the H100.
 
@@ -263,7 +263,7 @@ A frontier pretraining run uses thousands to more than 100,000 GPUs or TPUs work
 
 No single GPU can hold a frontier model and its training state, and no single GPU is fast enough anyway. So the work is split across chips in several ways at once: each group of GPUs processes different data (**data parallelism**), each big matrix is split across several GPUs (**tensor parallelism**), the layers are split into stages like an assembly line (**pipeline parallelism**), and in mixture-of-experts models different experts live on different GPUs (**expert parallelism**). Chapter 37 explains each with diagrams.
 
-> **Definition — Parallelism (distributed training):** Splitting one training job across many chips: by data, by pieces of each matrix, by groups of layers or by experts. The chips must constantly exchange results.
+> **Definition — Training parallelism (distributed training):** Splitting one training job across many chips: by data, by pieces of each matrix, by groups of layers or by experts. The chips must constantly exchange results.
 
 ### The settings
 
@@ -282,7 +282,7 @@ How do teams choose these numbers for a run they can afford only once? Mostly th
 
 > **Definition — Hyperparameter transfer:** Choosing training settings such as the learning rate on small, cheap models and reusing them, unchanged or adjusted by formula, for a much larger model.
 
-> **Definition — μP (maximal update parametrization):** A 2022 recipe for scaling each layer's initial weights and learning rate with the model's width, so that the best hyperparameters found on a small model also work on a large one.
+> **Definition — Maximal update parametrization (μP):** A 2022 recipe for scaling each layer's initial weights and learning rate with the model's width, so that the best hyperparameters found on a small model also work on a large one.
 
 ### Watching the loss
 
@@ -342,7 +342,7 @@ Two numbers describe how well a run uses its machine. **MFU** is the share of th
 
 ### Fewer bits, more speed
 
-Training math does not need every decimal place. BF16, a 16-bit format, became the standard for large models. **FP8** (8-bit) training followed on NVIDIA's Hopper chips (the H100 generation); DeepSeek-V3, trained on 2,048 H800 GPUs (a version of the H100 with slower chip-to-chip links, made for sale in China under US export rules), was a prominent public example in late 2024. In 2026, 4-bit formats have arrived: Moonshot's Kimi K3 ships MXFP4 weights, using quantization-aware training (training while simulating the 4-bit rounding, so the model learns to cope with it; Chapter 23) from the fine-tuning stage onward (its pretraining was not in 4-bit), and DeepSeek-V4-Pro stores its expert weights in FP4 with FP8 elsewhere. NVIDIA went furthest with its open Nemotron 3 Super (March 2026), pretrained on 25 trillion tokens in its 4-bit NVFP4 format. Each halving of bits roughly doubles the math a chip can do and halves memory traffic, if the training stays stable.
+Training math does not need every decimal place. BF16, a 16-bit format, became the standard for large models. **FP8** (8-bit) training followed on NVIDIA's Hopper chips (the H100 generation); DeepSeek-V3, trained on 2,048 H800 GPUs (a version of the H100 with slower chip-to-chip links, made for sale in China under US export rules), was a prominent public example in late 2024. In 2026, 4-bit formats have arrived. Moonshot's Kimi K3 ships MXFP4 weights, using quantization-aware training (training while simulating the 4-bit rounding, so the model learns to cope with it; Chapter 23) from the fine-tuning stage onward; Moonshot does not describe its pretraining as 4-bit. DeepSeek-V4-Pro stores its expert weights in FP4 with FP8 elsewhere. NVIDIA went furthest with its open Nemotron 3 Super (March 2026), pretrained on 25 trillion tokens in its 4-bit NVFP4 format. Each halving of bits roughly doubles the math a chip can do and halves memory traffic, if the training stays stable.
 
 > **Definition — FP8 and FP4:** 8-bit and 4-bit number formats. Newer AI chips do math in them much faster than in 16-bit, at the cost of more rounding, which careful scaling tricks keep under control.
 
@@ -581,7 +581,7 @@ timeline
 
 The hardware behind this is growing just as fast. Epoch lists xAI's Colossus 2 site in Memphis as the largest known AI data center, at about 1.1 million H100-equivalents (its total computing power expressed as a number of H100 chips), and estimates that a gigawatt-scale site costs about $38 billion up front per gigawatt. Part VII of this book covers the buildings and the power, and Chapter 43 the economics.
 
-> **At the frontier (2026):** GPT-6 Astra, released in September 2026, was OpenAI's first pretraining run on more than 100,000 GPUs (xAI had already trained Grok 3 on a cluster of that size in 2025). Labs rarely disclose compute any more, so outside estimates like Epoch's are the main public window. Pretraining is now one of several large compute sinks: reinforcement learning keeps growing (Chapter 21), and serving models to users is a large share of the bill (Epoch estimates that about 30% of OpenAI's 2024 compute spending went to inference; see Chapter 23).
+> **At the frontier (2026):** GPT-6 Astra, released in September 2026, was OpenAI's first pretraining run on more than 100,000 GPUs (xAI had already trained Grok 3, released in February 2025, on its Colossus cluster of roughly 100,000 GPUs). Labs rarely disclose compute any more, so outside estimates like Epoch's are the main public window. Pretraining is now one of several large compute sinks: reinforcement learning keeps growing (Chapter 21), and serving models to users is a large share of the bill (Epoch estimates that about 30% of OpenAI's 2024 compute spending went to inference; see Chapter 23).
 
 ## The data wall and how labs climb it
 
@@ -646,7 +646,7 @@ Abilities that seem to appear suddenly are often smooth improvements seen throug
 
 ## Key terms
 
-Pretraining, Training run, Corpus, Self-supervised learning, Loss, Cross-entropy loss, Perplexity, Gradient descent, Learning rate, Batch and step, Common Crawl, Web crawler, Synthetic data, TiB (tebibyte), robots.txt, Data curation, Text extraction (boilerplate removal), Language identification, Deduplication, Jaccard similarity, Near-duplicate detection (MinHash), Heuristic filter, Quality classifier, PII (Personally Identifiable Information), Decontamination, Benchmark contamination, Data mixture, Upsampling, Epoch (training pass), Proxy model, Ablation, Curriculum (training curriculum), NVIDIA, GB200, GPU-hour, Parallelism (distributed training), Learning-rate schedule, Warmup, Hyperparameter transfer, μP (maximal update parametrization), Loss spike, Checkpoint, MFU (Model FLOPs Utilization), Goodput, FP8 and FP4, Mixed precision, Few-shot prompting, Scaling law, Power law, Log-log plot, Training compute, Compute-optimal (Chinchilla-optimal), 6ND rule, H100, Over-training, Inference-aware scaling, Emergent abilities, Exact match, Data wall, Model collapse, Mid-training, Annealing, Context extension.
+Pretraining, Training run, Corpus, Self-supervised learning, Loss, Cross-entropy loss, Perplexity, Gradient descent, Learning rate, Batch and step, Common Crawl, Web crawler, Synthetic data, TiB (tebibyte), robots.txt, Data curation, Text extraction (boilerplate removal), Language identification, Deduplication, Jaccard similarity, Near-duplicate detection (MinHash), Heuristic filter, Quality classifier, PII (Personally Identifiable Information), Decontamination, Benchmark contamination, Data mixture, Upsampling, Epoch (training pass), Proxy model, Ablation, Curriculum (training curriculum), NVIDIA, GB200, GPU-hour, Training parallelism (distributed training), Learning-rate schedule, Warmup, Hyperparameter transfer, Maximal update parametrization (μP), Loss spike, Checkpoint, MFU (Model FLOPs Utilization), Goodput, FP8 and FP4, Mixed precision, Few-shot prompting, Scaling law, Power law, Log-log plot, Training compute, Compute-optimal (Chinchilla-optimal), 6ND rule, H100, Over-training, Inference-aware scaling, Emergent abilities, Exact match, Data wall, Model collapse, Mid-training, Annealing, Context extension.
 
 ## Exercises
 

@@ -349,7 +349,7 @@ The angry clip jumps from last to first. Nothing about the model's predictions c
 
 If the ranker's top 10 were shown as-is, you might get ten nearly identical videos from one creator. Re-ranking fixes the list as a whole rather than item by item. It enforces variety (no more than a couple of items in a row on the same topic), gives fresh items a chance, removes content that breaks policies or that you have blocked, applies regional rules, and slots in ads at set intervals. It also corrects for position: items at the top get more clicks simply because they are at the top.
 
-> **Definition — Position bias:** The tendency of people to click or watch items shown at the top of a list more, regardless of quality. Systems must correct for it, or they learn that "whatever we showed first is best" and keep showing it.
+> **Definition — Position bias in rankings:** The tendency of people to click or watch items shown at the top of a list more, regardless of quality. Systems must correct for it, or they learn that "whatever we showed first is best" and keep showing it.
 
 > **Watch out:** "The feed shows me what I like" is only half true. The feed shows what its models predict you will engage with, filtered by business and safety rules, mixed with exploration and ads. What you see also shapes what you come to like. Your feed is a conversation between you and a set of objectives you did not choose.
 
@@ -455,7 +455,7 @@ Most of the free internet is paid for by advertising, and advertising provides t
 
 > **Definition — Conversion:** The action an advertiser actually wants after a click, such as a purchase, sign-up or app install.
 
-> **Definition — CPM, CPC and CPA:** Three ways of pricing ads. CPM is cost per thousand impressions (M is the Roman numeral for a thousand), CPC is cost per click and CPA is cost per acquisition (per conversion).
+> **Definition — CPM, CPC and CPA:** Three ways of pricing ads. CPM is cost per thousand impressions (M stands for mille, Latin for a thousand, as in the Roman numeral M), CPC is cost per click and CPA is cost per acquisition (per conversion).
 
 ### Predicting the click
 
@@ -706,7 +706,7 @@ Ads add an auction: the platform ranks ads by bid times predicted click, so a re
 Search went from counting links (PageRank) to learned ranking, to Transformers that read your question, to answer engines that write the reply themselves. That shift means fewer clicks for websites and a new craft, GEO: being the source an AI chooses to quote.
 
 ## Key terms
-Recommender system, ranking, feed, explicit feedback, implicit feedback, engagement, content-based filtering, collaborative filtering, cosine similarity, rating matrix, sparsity, latent factor, matrix factorization, stochastic gradient descent (SGD), learning rate, bias term (recommenders), regularization, cold-start problem, exploration vs exploitation, multi-armed bandit, embedding, two-tower model, approximate nearest neighbor (ANN) search, embedding table, sequential recommendation, candidate generation (retrieval), ranking model, re-ranking, latency, multi-task learning, position bias, NDCG (normalized discounted cumulative gain), A/B test, guardrail metric, proxy metric, filter bubble, echo chamber, polarization, infinite scroll, autoplay, Digital Services Act (DSA), feedback loop, popularity bias, impression, click-through rate (CTR), conversion, CPM, CPC and CPA, ad auction, second-price auction, first-price auction, real-time bidding (RTB), ad exchange, lookalike audience, automated campaign, third-party cookie, App Tracking Transparency (ATT), first-party data, retail media network, web crawler, search index, inverted index, PageRank, learning to rank, answer engine, AI Overview, retrieval-augmented generation (RAG), search engine optimization (SEO), zero-click search, generative engine optimization (GEO)
+Recommender system, ranking, feed, explicit feedback, implicit feedback, engagement, content-based filtering, collaborative filtering, cosine similarity, rating matrix, sparsity, latent factor, matrix factorization, stochastic gradient descent (SGD), learning rate, bias term (recommenders), regularization, cold-start problem, exploration vs exploitation, multi-armed bandit, embedding, two-tower model, approximate nearest neighbor (ANN) search, embedding table, sequential recommendation, candidate generation (retrieval), ranking model, re-ranking, latency, multi-task learning, position bias in rankings, NDCG (normalized discounted cumulative gain), A/B test, guardrail metric, proxy metric, filter bubble, echo chamber, polarization, infinite scroll, autoplay, Digital Services Act (DSA), feedback loop, popularity bias, impression, click-through rate (CTR), conversion, CPM, CPC and CPA, ad auction, second-price auction, first-price auction, real-time bidding (RTB), ad exchange, lookalike audience, automated campaign, third-party cookie, App Tracking Transparency (ATT), first-party data, retail media network, web crawler, search index, inverted index, PageRank, learning to rank, answer engine, AI Overview, retrieval-augmented generation (RAG), search engine optimization (SEO), zero-click search, generative engine optimization (GEO)
 
 ## Exercises
 

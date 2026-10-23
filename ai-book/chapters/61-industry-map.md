@@ -56,7 +56,7 @@ A worked example with reported 2026 figures for Anthropic. Its run-rate was repo
 
 The run-rate was about double what the company had booked in nine months, yet close to its latest quarter times four. Both numbers are honest; they answer different questions.
 
-OpenAI shows the same pattern: a reported run-rate of about $20 billion at the end of 2025 against reported 2025 revenue of $13.1 billion. Its run-rate was reported at about $50 billion in September 2026 (Financial Times), and Bloomberg reported on October 9 that it expected at least $70 billion by year-end. The FT noted that an earlier "$70 billion" figure had used a different method, which is why you always ask how a run-rate was computed.
+OpenAI shows the same pattern: a run-rate reported at over $20 billion at the end of 2025 (Reuters, citing OpenAI's finance chief) against reported 2025 revenue of $13.1 billion. Its run-rate was reported at about $50 billion in September 2026 (Financial Times), and Bloomberg reported on October 9 that it expected at least $70 billion by year-end. The FT noted that an earlier "$70 billion" figure had used a different method, which is why you always ask how a run-rate was computed.
 
 > **Definition — FT (Financial Times):** A London-based daily business newspaper, one of the main outlets for reported figures on AI companies' revenue, losses and funding. Its figures are reporting, not company filings.
 
@@ -96,11 +96,11 @@ Worked example. In late May 2026 Anthropic reportedly raised $65 billion at a $9
 
 > **Definition — Revenue multiple:** A company's valuation divided by its revenue or run-rate. It shows how many dollars investors pay for each dollar of sales, which reflects how fast they expect it to grow.
 
-The 2026 IPO wave put these words on front pages (all reported). SpaceX, which had absorbed xAI in February, listed on June 12, 2026 at $135 a share, raised about $75 billion and closed its first day near a $2.1 trillion value. OpenAI filed confidentially with the SEC (the US Securities and Exchange Commission, which regulates stock markets) on June 8 and was said to target a listing "by 2027." Anthropic filed confidentially on June 1 and, in mid-October, was reported to be aiming for a mid-November listing, with reported valuation talk ranging from about $1.5 trillion to $2 trillion.
+The 2026 IPO wave put these words on front pages. SpaceX, which had absorbed xAI in February, listed on June 12, 2026. Its filings with the SEC (the US Securities and Exchange Commission, which regulates stock markets) show it sold new shares at $135 each, raising $75 billion, or about $86 billion once the underwriters (the banks running the sale) bought the extra shares they had an option on. Its first-day close was reported near a $2.1 trillion value. OpenAI reportedly filed confidentially with the SEC on June 8 and was said to target a listing "by 2027." Anthropic reportedly filed confidentially on June 1 and, in mid-October, was reported to be aiming for a mid-November listing, with reported valuation talk ranging from about $1.5 trillion to $2 trillion.
 
-> **Definition — SEC (Securities and Exchange Commission):** The US government agency that regulates stock markets. Public companies must file audited financial results with it every quarter, and a company planning an IPO files its prospectus there first.
+> **Definition — SEC (Securities and Exchange Commission):** The US government agency that regulates stock and bond markets. Public companies must file financial results with it every quarter (the yearly report's accounts are audited by outside accountants; the three quarterly reports are only reviewed), and a company planning an IPO files its prospectus there first.
 
-> **Definition — EDGAR:** The SEC's free online database (sec.gov/edgar) of every filing by US public companies, from quarterly results to IPO prospectuses. It is the primary source behind most company figures in the news.
+> **Definition — EDGAR:** The SEC's free online database of company filings (sec.gov/edgar), where you can search any US public company's reports, from quarterly results to IPO prospectuses. It is the primary source behind most company figures in the news.
 
 > **Definition — Public benefit corporation (PBC):** A for-profit company legally required to weigh a stated public mission alongside profit. Anthropic is a PBC, and in October 2025 OpenAI's for-profit arm became OpenAI Group PBC, controlled by the nonprofit OpenAI Foundation (reported).
 
@@ -167,13 +167,13 @@ The star of this layer is NVIDIA, whose GPUs (graphics processing units, the hig
 
 > **Definition — Foundry:** A company that manufactures chips designed by others. TSMC in Taiwan manufactures most of the world's leading AI chips for "fabless" designers such as NVIDIA, AMD and Broadcom, which design chips but own no factories.
 
-> **Definition — TSMC (Taiwan Semiconductor Manufacturing Company):** The world's largest contract chip manufacturer, based in Taiwan. It makes the most advanced chips for NVIDIA, AMD, Apple, Google and many others, which makes it a single point the whole AI industry depends on (see Chapter 36).
+> **Definition — TSMC (Taiwan Semiconductor Manufacturing Company):** The Taiwanese company that is the world's largest contract chipmaker (foundry) and manufactures nearly all advanced AI chips to their designers' blueprints. Because its customers include NVIDIA, AMD, Apple and Google, it is a single point the whole AI industry depends on (see Chapter 36).
 
 > **Definition — Custom silicon (ASIC):** A chip designed for one company's own workloads, such as Google's TPU or Amazon's Trainium, rather than sold to everyone. Clouds build them to cut costs, secure supply and gain bargaining power with NVIDIA.
 
 A 75% gross margin is extraordinary for hardware. Of every dollar a customer pays NVIDIA, only about 25 cents covers the direct cost of making the product: wafers from TSMC, high-bandwidth memory (HBM, see Chapter 33) from SK hynix, Samsung or Micron, packaging and boards. The other 75 cents funds research and profit. The margin exists because there is not yet a full substitute: two decades of CUDA software (NVIDIA's platform for programming its chips) and complete rack-scale systems make NVIDIA hard to replace (see Chapter 35).
 
-> **Definition — SK hynix:** A South Korean memory-chip maker, part of the SK business group, and a leading supplier of the high-bandwidth memory (HBM) stacked beside AI chips. Samsung and the US company Micron are the other two HBM makers.
+> **Definition — SK hynix:** A South Korean memory-chip maker, part of the SK business group, that leads the market for the high-bandwidth memory (HBM) stacked beside AI chips and has been NVIDIA's main HBM supplier since HBM3. Samsung and the US company Micron are the other two HBM makers.
 
 Alternatives are growing: AMD's 6-gigawatt deal with OpenAI (October 2025), Google's TPUs (up to one million promised to Anthropic the same month), Amazon's Trainium, and OpenAI's 10-gigawatt custom-chip plan with Broadcom. Beneath them all sit TSMC's factories, ASML's lithography machines (the only source of extreme-ultraviolet tools) and the three HBM makers.
 
@@ -187,7 +187,7 @@ Most labs rent their computing from clouds, often under enormous multi-year cont
 
 > **Definition — Hyperscaler:** One of the largest cloud and internet companies building data centers at enormous scale: Amazon (AWS), Microsoft (Azure) and Google, plus Meta and Oracle.
 
-> **Definition — AWS (Amazon Web Services):** Amazon's cloud-computing business, the largest cloud provider, which rents servers, storage and AI chips (including NVIDIA GPUs and Amazon's own Trainium) to companies and AI labs.
+> **Definition — AWS (Amazon Web Services):** Amazon's cloud-computing business, the world's largest cloud provider, which rents out computing power, storage and AI chips over the internet. Its customers include companies and AI labs, and its chips include NVIDIA GPUs and Amazon's own Trainium.
 
 > **Definition — Neocloud:** A newer cloud company that specializes in renting GPUs for AI, such as CoreWeave, Nebius, Lambda or Crusoe.
 

@@ -154,7 +154,7 @@ ARC-AGI-3 launched on March 25, 2026. Each task is a small interactive game with
 By September 2026, ARC Prize reported these results for OpenAI's GPT-6 Astra:
 
 - **62.7%** at maximum reasoning effort under the standard harness, at a cost of about $26,000 for the run.
-- **98.6%** at the same maximum effort under a "Provider Adapter" harness that let the model keep its reasoning state between steps and use compaction. Its best adapter score, **99.9%**, came at high effort.
+- **98.6%** at the same maximum effort under a "Provider Adapter" harness that let the model keep its reasoning state between steps and use compaction. Its best adapter score, **99.9%**, came at high effort, two settings below maximum.
 - With the adapter harness at maximum effort, Astra used fewer actions than the median human on 96% of levels.
 
 > **Definition — Compaction:** Summarizing older parts of a long task so it fits in the model's context window and the model can keep working without losing the thread.
@@ -233,7 +233,7 @@ GPQA's lesson: "hard for humans" does not mean "hard for models for long." Three
 
 > **Definition — Humanity's Last Exam (HLE):** A public benchmark of 2,500 expert-level questions across many fields, released in January 2025 by the Center for AI Safety and Scale AI. Questions were crowdsourced from experts and kept only if frontier models of the time failed them.
 
-Because only questions that early-2025 models failed were kept, low starting scores were guaranteed, and the test was tuned against those older models. Here is the best-scoring model from each of the top five labs on the text-only questions (2,158 of the 2,500), as Artificial Analysis measured them in October 2026. Anthropic's second model, Fable 5.1, also scored 59.1%, above every other lab's best:
+Because only questions that early-2025 models failed were kept, low starting scores were guaranteed, and the test was tuned against those older models. Here is the best-scoring model from each of the top five labs on the text-only questions (2,158 of the 2,500), as Artificial Analysis measured them in October 2026. (Showing one model per lab leaves out Anthropic's Fable 5.1, which scored 59.1%, still above every other lab's best.)
 
 | Model (maker) | HLE text-only score |
 |---|---|
@@ -527,7 +527,7 @@ Its 2026 pace shows how fast the frontier moves: Opus 4.6 (February 5), Mythos P
 
 OpenAI reached GPT-6 through the reasoning models of Chapter 21: o1 (2024), o3 and GPT-5 with its router (2025), then GPT-5.1 to GPT-5.6 (November 2025 to July 2026; GPT-5.6 had a limited preview on June 26 and a public release on July 9). **GPT-6 Astra** arrived on September 3, 2026: OpenAI's largest training run "by far," and OpenAI's first pretraining run on more than 100,000 GPUs, at the Stargate site in Abilene, Texas (see Chapter 42). Astra offers a 1,050,000-token context, 128K output and an April 30, 2026 knowledge cutoff, at $10/$50. **GPT-6 Sol and Luna** (September 22) are cheaper tiers priced 50% below GPT-5.6's promotional API prices, and **GPT-6.1 Sol** (September 29) offers near-Astra intelligence at about one-fifth of Astra's price, per OpenAI's summaries. ChatGPT had 900 million weekly active users in February 2026.
 
-Two Astra claims need care. The first is now confirmed: OpenAI's own deployment-safety page calls Astra its first model to reach the "Critical" level of cybersecurity capability under its Preparedness Framework, and the version paid users received refuses some cybersecurity requests. The second is not: an anonymous insider's claim that Astra uses a "recurrent depth" technique, making its reasoning harder to monitor, is unconfirmed. OpenAI's newest open-weight models are still gpt-oss-120b and gpt-oss-20b (August 2025).
+Two Astra claims need care. The first is now confirmed: OpenAI's own deployment-safety page calls Astra its first model to reach the "Critical" level of cybersecurity capability under its Preparedness Framework (press reports add that the version paid users received refuses some cybersecurity requests). The second is not: an anonymous insider's claim that Astra uses a "recurrent depth" technique, making its reasoning harder to monitor, is unconfirmed. OpenAI's newest open-weight models are still gpt-oss-120b and gpt-oss-20b (August 2025).
 
 ### Google DeepMind
 
@@ -539,7 +539,7 @@ Meta reorganized its AI work into Meta Superintelligence Labs (MSL) in mid-2025.
 
 ### SpaceXSI (formerly xAI)
 
-SpaceX acquired xAI on February 2, 2026, renamed the AI unit SpaceXAI in July and then SpaceXSI in October 2026. Its current flagship is **Grok 4.7** (September 21, 2026); Grok 5 had not been released as of mid-October. Its Colossus 2 site in Memphis is the largest known AI data center by compute, at about 1.1 million H100-equivalents according to Epoch (see Chapter 42).
+SpaceX acquired xAI on February 2, 2026 (SpaceX's own filings confirm the date). The AI unit was rebranded SpaceXAI by July (reported), and in October 2026 it began calling itself SpaceXSI, short for SpaceX Super Intelligence: its website now uses that name, and SpaceX's October quarterly report renamed its AI business the "Super Intelligence" segment. The legal company name is still SpaceXAI. Its current flagship is **Grok 4.7** (September 21, 2026); Grok 5 had not been released as of mid-October. Its Colossus 2 site in Memphis is the largest known AI data center by compute, at about 1.1 million H100-equivalents according to Epoch (see Chapter 42).
 
 ### The Chinese open-weight labs
 
@@ -715,7 +715,7 @@ The landscape keeps changing because several hard problems remain open. These ar
 
 > **Definition — AI R&D automation:** AI systems doing the work of AI researchers and engineers, which could speed up AI progress itself. Labs and evaluators now measure it directly.
 
-As noted earlier, METR judged Opus 5.5 "unlikely to be able to fully automate AI R&D," citing its own preliminary estimate of about 1.5× research acceleration inside Anthropic: significant, but far from the runaway loop some forecasts imagine (Chapter 60 presents that debate).
+As noted earlier, METR judged Opus 5.5 "unlikely to be able to fully automate AI R&D," citing its own preliminary estimate that AI was speeding up progress inside Anthropic by about 1.5×: significant, but far from the runaway loop some forecasts imagine (Chapter 60 presents that debate).
 
 - **Monitoring how models reason.** Labs treat readable chains of thought as a safety asset. Any shift toward hidden or internal reasoning (such as the unconfirmed "recurrent depth" report about Astra) would make monitoring harder.
 
@@ -804,7 +804,7 @@ Training a flagship costs on the order of a billion dollars of compute for the f
 
 ## Key terms
 
-Benchmark, Evaluation (eval), Leaderboard, Frontier model, Harness (scaffold), Reasoning effort, Self-reported score, Confidence interval, Benchmark saturation, Benchmark contamination, Decontamination, Held-out set, Label noise, Goodhart's law, ARC-AGI, Compaction, Cost per task, MMLU (Massive Multitask Language Understanding), GPQA Diamond, Humanity's Last Exam (HLE), FrontierMath, SWE-bench, Terminal-Bench, OSWorld, GDPval, Elo rating, METR time horizon, LMArena, Aggregate index, Jagged frontier, Model card, System card, Knowledge cutoff, Safety framework, Dangerous-capability evaluation, Closed (proprietary) model, Open-weight model, Open-source model, API (Application Programming Interface), License (software license), Permissive license, Mixture of experts (MoE), Active parameters, Distillation, Model tier, General availability (GA), Dual-use capability, Trusted access program, Safety classifier, FLOP (floating-point operation), Training compute, GPU-hour, Interpretability, Continual learning, AI R&D automation, Chain-of-thought monitorability, World model, Safety case, Model routing, Batch API, Stanford HAI (Stanford Institute for Human-Centered Artificial Intelligence).
+Benchmark, Evaluation (eval), Leaderboard, Frontier model, Harness (scaffold), Reasoning effort, Self-reported score, Confidence interval, Benchmark saturation, Benchmark contamination, Decontamination, Held-out set, Label noise, Goodhart's law, ARC-AGI, Compaction, Cost per task, MMLU (Massive Multitask Language Understanding), GPQA Diamond, Humanity's Last Exam (HLE), FrontierMath, SWE-bench, Terminal-Bench, OSWorld, GDPval, Elo rating, METR time horizon, LMArena, Aggregate index, Jagged frontier, Model card, System card, Knowledge cutoff, Safety framework, Dangerous-capability evaluation, Closed (proprietary) model, Open-weight model, Open-source model, API (Application Programming Interface), License (software license), Permissive license, Mixture of experts (MoE), Active parameters, Distillation, Model tier, General availability (GA), Dual-use capability, Trusted access program, Safety classifier, FLOP (floating-point operation), Training compute, GPU-hour, Interpretability, Continual learning, AI R&D automation, Chain-of-thought monitorability, World model, Safety case, Model routing, Batch API, HAI (Stanford Institute for Human-Centered Artificial Intelligence).
 
 ## Exercises
 
@@ -826,7 +826,7 @@ Benchmark, Evaluation (eval), Leaderboard, Frontier model, Harness (scaffold), R
 
 9. **[Challenge] Estimate a training run.** (1) In a spreadsheet, set up cells for active parameters N, training tokens D, number of GPUs, peak FLOP per second per GPU (use 5 × 10^15, typed as 5E15) and utilization (use 0.25). (2) Compute total compute = 6 × N × D (in a spreadsheet, * for × and / for ÷). (3) Compute training seconds = compute ÷ (GPUs × peak × utilization), then convert to days by dividing by 86,400 (the seconds in a day). (4) Compute GPU-hours = GPUs × seconds ÷ 3,600, and cost at $2 and $5 per GPU-hour. (5) Check your sheet with DeepSeek-V4-Pro (N = 49E9, D = 33E12): total compute should come out near the chapter's 9.7 × 10^24 (DeepSeek's GPU count is not public, so try any round number, such as 10,000, for the time and cost cells). Then try a hypothetical model with N = 200 billion and D = 60 trillion on 100,000 GPUs. **What you'll learn:** how compute, chips, time and money connect, and why only a few organizations can train frontier models.
 
-10. **[Challenge] Open versus closed on your own test.** (1) Install Ollama (ollama.com) or LM Studio (lmstudio.ai). (2) Run a small open model, for example by typing ollama run gemma4:e2b in a terminal, or by downloading a small Gemma 4 or Qwen model in LM Studio. (3) Run your 20-question private benchmark from Exercise 7 on the local model with Wi-Fi turned off. (4) Compare its accuracy and speed with a closed frontier model. **What you'll learn:** what open weights mean in practice, how big the gap is for your own tasks, and when a private local model is good enough.
+10. **[Challenge] Open versus closed on your own test.** (1) Install Ollama (ollama.com) or LM Studio (lmstudio.ai). (2) Run a small open model, for example by typing `ollama run gemma4:e2b` in a terminal (Google's smallest Gemma 4 model; a download of about 5 to 7.5 GB), or by downloading a small Gemma 4 or Qwen model in LM Studio. (3) Run your 20-question private benchmark from Exercise 7 on the local model with Wi-Fi turned off. (4) Compare its accuracy and speed with a closed frontier model. **What you'll learn:** what open weights mean in practice, how big the gap is for your own tasks, and when a private local model is good enough.
 
 ## Areas of opportunity
 
@@ -876,4 +876,4 @@ Benchmark, Evaluation (eval), Leaderboard, Frontier model, Harness (scaffold), R
 - **The original benchmark papers: MMLU (arXiv 2009.03300), GPQA (arXiv 2311.12022) and SWE-bench (arXiv 2310.06770).** Short, readable introductions that show how benchmark designers think about difficulty and contamination.
 - **Stanford HAI, AI Index Report (hai.stanford.edu/ai-index).** An annual, well-sourced overview of models, benchmarks, investment and policy, useful for staying current once this chapter's snapshot ages.
 
-> **Definition — Stanford HAI (Stanford Institute for Human-Centered Artificial Intelligence):** A research institute at Stanford University that studies AI and its effects on people and society. It publishes the AI Index, a widely cited annual report of data on AI models, benchmarks, investment and policy.
+> **Definition — HAI (Stanford Institute for Human-Centered Artificial Intelligence):** A research institute at Stanford University that studies AI and its effects on people and society. It publishes the AI Index, a widely cited annual report of data on AI models, benchmarks, investment and policy.

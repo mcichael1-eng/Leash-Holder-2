@@ -419,7 +419,7 @@ Plain DPO's main weakness is that it is offline: its pairs usually came from oth
 
 Researchers quickly built variations on DPO, each fixing a specific complaint.
 
-> **Definition — IPO (Identity Preference Optimization):** A 2023 variant of DPO that adds a regularizing term so the model does not push probabilities to extremes when the same answer is always preferred, a failure mode of plain DPO.
+> **Definition — Identity Preference Optimization (IPO):** A 2023 variant of DPO that adds a regularizing term so the model does not push probabilities to extremes when the same answer is always preferred, a failure mode of plain DPO.
 
 > **Definition — KTO (Kahneman–Tversky Optimization):** A 2024 method that learns from single responses labeled simply "good" or "bad" (like thumbs-up and thumbs-down) instead of pairs. It borrows ideas from prospect theory, the psychologists Daniel Kahneman and Amos Tversky's finding that people feel losses more than equal gains.
 
@@ -816,7 +816,7 @@ Finally, big models teach small ones (distillation), models generate their own t
 
 ## Key terms
 
-Base model, Post-training, Alignment, Fine-tuning, SFT (Supervised Fine-Tuning), Instruction tuning, Loss masking, On-policy and off-policy data, Preference data, Pairwise comparison, Reward model, Bradley–Terry model, Sigmoid, Reinforcement learning (RL), Policy, RLHF (Reinforcement Learning from Human Feedback), Reference model, Value model (critic), Advantage, KL divergence (Kullback–Leibler divergence), KL penalty, PPO (Proximal Policy Optimization), Clipping (in PPO), DPO (Direct Preference Optimization), IPO (Identity Preference Optimization), KTO (Kahneman–Tversky Optimization), ORPO (Odds Ratio Preference Optimization), SimPO (Simple Preference Optimization), RLAIF (Reinforcement Learning from AI Feedback), LLM-as-judge, Constitutional AI, Model spec, Constitution (for an AI), Chain of command (principal hierarchy), Hard constraint, Over-refusal, Refusal calibration, Deliberative alignment, Character training, Safety classifier, Constitutional classifiers, Goodhart's law, Sycophancy, Reward hacking, Reward model over-optimization, Verbosity bias, Alignment tax, Distillation, Soft labels, On-policy distillation, Distillation attack, Anti-distillation safeguard, Synthetic data, Rejection sampling, STaR (Self-Taught Reasoner), LoRA (Low-Rank Adaptation), Reinforcement fine-tuning (RFT), Model merging, Task vector
+Base model, Post-training, Alignment, Fine-tuning, SFT (Supervised Fine-Tuning), Instruction tuning, Loss masking, On-policy and off-policy data, Preference data, Pairwise comparison, Reward model, Bradley–Terry model, Sigmoid, Reinforcement learning (RL), Policy, RLHF (Reinforcement Learning from Human Feedback), Reference model, Value model (critic), Advantage, KL divergence (Kullback–Leibler divergence), KL penalty, PPO (Proximal Policy Optimization), Clipping (in PPO), DPO (Direct Preference Optimization), Identity Preference Optimization (IPO), KTO (Kahneman–Tversky Optimization), ORPO (Odds Ratio Preference Optimization), SimPO (Simple Preference Optimization), RLAIF (Reinforcement Learning from AI Feedback), LLM-as-judge, Constitutional AI, Model spec, Constitution (for an AI), Chain of command (principal hierarchy), Hard constraint, Over-refusal, Refusal calibration, Deliberative alignment, Character training, Safety classifier, Constitutional classifiers, Goodhart's law, Sycophancy, Reward hacking, Reward model over-optimization, Verbosity bias, Alignment tax, Distillation, Soft labels, On-policy distillation, Distillation attack, Anti-distillation safeguard, Synthetic data, Rejection sampling, STaR (Self-Taught Reasoner), LoRA (Low-Rank Adaptation), Reinforcement fine-tuning (RFT), Model merging, Task vector
 
 
 ## Exercises
@@ -909,7 +909,7 @@ Base model, Post-training, Alignment, Fine-tuning, SFT (Supervised Fine-Tuning),
    1. Prepare at least 15 preference pairs (you can reuse Exercise 1): each needs a prompt, a chosen answer and a rejected answer.
    2. In a Colab notebook with a GPU, paste the code below, replacing the two example pairs with yours (keep the same format).
    3. Run it and watch the "loss" column in the log fall from about 0.69.
-   4. Afterwards, paste the second code block below into a new cell, put one of your prompts in its first line, and run it. It asks the trained model and a fresh, untrained copy the same question so you can compare their answers.
+   4. Afterwards, paste the second code block below into a new cell, replace the example question on its my_prompt line with one of your prompts, and run it. It asks the DPO-trained model and a fresh copy of the original model (as it was before your training) the same question so you can compare their answers.
    ```python
    # Install Hugging Face's training library (TRL) and its dataset tools
    !pip -q install trl datasets
@@ -949,11 +949,11 @@ Base model, Post-training, Alignment, Fine-tuning, SFT (Supervised Fine-Tuning),
    # Second block (step 4): run in a new cell after training has finished
    my_prompt = "Explain inflation to a 10-year-old."      # replace with one of your prompts
    dev = trainer.model.device                             # where the trained model lives (the GPU)
-   fresh = AutoModelForCausalLM.from_pretrained(name).to(dev)   # an untrained copy, for comparison
+   fresh = AutoModelForCausalLM.from_pretrained(name).to(dev)   # the original model, before DPO, for comparison
    text = tok.apply_chat_template([{"role": "user", "content": my_prompt}],
                                   tokenize=False, add_generation_prompt=True)  # wrap in the chat template
    ids = tok(text, return_tensors="pt").to(dev)           # text -> token IDs, on the same device
-   for label, m in [("TRAINED", trainer.model), ("UNTRAINED", fresh)]:
+   for label, m in [("DPO-TRAINED", trainer.model), ("ORIGINAL", fresh)]:
        out = m.generate(**ids, max_new_tokens=80, do_sample=False)
        reply = out[0][ids["input_ids"].shape[1]:]          # keep only the new tokens
        print(label, "MODEL:\n", tok.decode(reply, skip_special_tokens=True), "\n")

@@ -177,7 +177,7 @@ Ten times the voltage means one-tenth the current and one-hundredth the loss. Th
 
 > **Definition — Alternating current (AC):** Electricity that reverses direction many times a second, following a smooth wave. The grid uses AC because transformers can change its voltage easily.
 
-> **Definition — Frequency (Hz):** How many times per second alternating current completes a full cycle: 60 hertz in North America, 50 hertz in Europe and most of the world. Every generator on a grid must spin in step at that frequency.
+> **Definition — Frequency (Hz):** How many times per second something repeats, measured in hertz. For alternating current it is the number of full cycles per second: 60 hertz in North America, 50 hertz in Europe and most of the world. Every generator on a grid must spin in step at that frequency.
 
 In the 1880s Thomas Edison built city power systems on DC. George Westinghouse, using transformer technology and Nikola Tesla's AC motor patents, backed AC. AC won the "war of currents" for one reason: transformers. With AC you could raise the voltage for long-distance transmission and lower it again for homes, cutting losses exactly as in the worked example above. With 1880s technology, DC could not be stepped up or down efficiently, so DC plants had to sit within a mile or two of their customers.
 
@@ -194,7 +194,7 @@ timeline
 
 *Figure 39.2: AC won the grid because of transformers. Modern power electronics have brought DC back for special jobs, from undersea links to the inside of AI racks.*
 
-> **Definition — Transformer:** A device with two or more coils of wire wound around an iron core that changes the voltage of AC electricity with no moving parts. The ratio of turns in the coils sets the ratio of voltages: a 10-to-1 transformer turns 345,000 V into 34,500 V.
+> **Definition — Electrical transformer:** A device with two or more coils of wire wound around an iron core that changes the voltage of AC electricity with no moving parts. The ratio of turns in the coils sets the ratio of voltages: a 10-to-1 transformer turns 345,000 V into 34,500 V.
 
 > **Analogy:** A transformer is a gearbox for electricity. A bicycle's gears trade pedal speed for force; a transformer trades voltage for current, keeping the power (minus a little loss) the same.
 
@@ -498,7 +498,7 @@ Look back at the current ladder (Table 39.2). A 130 kW rack fed at 54 V DC alrea
 
 That is the logic of the war of currents again, inside a single cabinet: raise the voltage, cut the current, save copper and losses. NVIDIA and its partners have announced an 800-volt DC architecture, to enter production alongside the Kyber racks in 2027.
 
-> **Definition — 800 V DC distribution:** NVIDIA's announced power architecture for 2027-era AI racks, which sends 800-volt direct current to the rack instead of AC. NVIDIA says it carries 85% more power through the same conductor than 415 V AC, cuts copper use by about 45%, improves end-to-end efficiency by up to 5% and allows racks of around 1 MW.
+> **Definition — 800 V DC distribution:** NVIDIA's announced power architecture for 2027-era AI racks, which sends 800-volt direct current to the racks instead of alternating current (AC). NVIDIA says it carries 85% more power through the same conductor than 415 V AC, cuts copper use by about 45%, improves end-to-end efficiency by up to 5% and allows racks of around 1 MW.
 
 It also removes conversion steps. Today, power is converted from AC to DC and back in the UPS, then from AC to DC again in the rack power shelf, then down to 1 V. In the 800 V design, medium-voltage AC is converted to 800 V DC once, at the edge of the facility; storage can sit directly on the DC bus; and compact converters in the rack step 800 V down toward the chip.
 
@@ -649,7 +649,7 @@ The math is simple: IT power × PUE × utilization × hours × price. A Blackwel
 
 ## Key terms
 
-Watt (W), Kilowatt (kW), Megawatt (MW) and gigawatt (GW), Watt-hour (Wh), Kilowatt-hour (kWh), MWh, GWh and TWh, Logarithmic scale, Nameplate capacity, Capacity factor (utilization, load factor), Load, Peak demand, IT load, Critical IT capacity, Voltage (V), Current (A), Resistance (Ω), Ohm's law, Resistive loss (I²R loss), Direct current (DC), Alternating current (AC), Frequency (Hz), Transformer, Three-phase power, Rectifier, inverter and PSU, Power factor and harmonics, High, medium and low voltage (HV, MV, LV), Single-line diagram (one-line), Utility interconnection, Substation, Switchgear, Circuit breaker, Unit substation, UPS (uninterruptible power supply), PDU (power distribution unit), RPP (remote power panel), Rack power shelf, Busbar, Voltage regulator module (VRM), Conversion efficiency, PUE (power usage effectiveness), Battery energy storage system (BESS), Backup generator, Automatic transfer switch (ATS), Load oscillation (power swing), Ramp rate, Capacitor and supercapacitor, Power oversubscription, Power capping, DVFS (dynamic voltage and frequency scaling), 800 V DC distribution, Solid-state transformer (SST)
+Watt (W), Kilowatt (kW), Megawatt (MW) and gigawatt (GW), Watt-hour (Wh), Kilowatt-hour (kWh), MWh, GWh and TWh, Logarithmic scale, Nameplate capacity, Capacity factor (utilization, load factor), Load, Peak demand, IT load, Critical IT capacity, Voltage (V), Current (A), Resistance (Ω), Ohm's law, Resistive loss (I²R loss), Direct current (DC), Alternating current (AC), Frequency (Hz), Electrical transformer, Three-phase power, Rectifier, inverter and PSU, Power factor and harmonics, High, medium and low voltage (HV, MV, LV), Single-line diagram (one-line), Utility interconnection, Substation, Switchgear, Circuit breaker, Unit substation, UPS (uninterruptible power supply), PDU (power distribution unit), RPP (remote power panel), Rack power shelf, Busbar, Voltage regulator module (VRM), Conversion efficiency, PUE (power usage effectiveness), Battery energy storage system (BESS), Backup generator, Automatic transfer switch (ATS), Load oscillation (power swing), Ramp rate, Capacitor and supercapacitor, Power oversubscription, Power capping, DVFS (dynamic voltage and frequency scaling), 800 V DC distribution, Solid-state transformer (SST)
 
 ## Exercises
 

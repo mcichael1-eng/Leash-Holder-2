@@ -964,7 +964,7 @@ Distributed training, Accelerator, Cluster, FLOP (floating-point operation), FLO
 
 5. **[Medium] Pipeline bubble calculator.** In a spreadsheet, put the number of stages (2, 4, 8, 16) down column A and microbatches (4, 8, 16, 32, 64, 128) across row 1.
    1. With stages in A2 to A5 and microbatches in B1 to G1, type `=($A2-1)/(B$1+$A2-1)` in B2, copy it across the grid (the $ signs keep it reading the stages from column A and the microbatches from row 1), and format as percentages.
-   2. Find the smallest number of microbatches that keeps the bubble under 10 percent for 16 stages. None of the columns quite does it (128 gives about 10.5 percent), so add columns with larger values, such as 130, 135 and 140, until you find it.
+   2. Find the smallest number of microbatches that keeps the bubble under 10 percent for 16 stages. None of the columns quite does it (128 gives about 10.5 percent), so add columns with larger values, such as 130, 135, 136 and 140, until you find it (a result of exactly 10 percent is not under 10 percent).
    3. Draw your own version of Figure 37.7 on paper for 3 stages and 6 microbatches, and count the idle slots to check your formula.
    **What you'll learn:** why pipeline parallelism needs many microbatches and where its idle time comes from.
 

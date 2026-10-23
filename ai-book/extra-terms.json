@@ -856,7 +856,7 @@
  },
  {
   "term": "CUDA",
-  "definition": "Nvidia's software platform (2007) that lets programmers use GPUs for general math. It is a major reason Nvidia dominates AI.",
+  "definition": "NVIDIA's software platform (2007) that lets programmers use GPUs for general math. It is a major reason NVIDIA dominates AI.",
   "source": "01-foundations.md"
  },
  {
@@ -4941,12 +4941,12 @@
  },
  {
   "term": "800 V DC (HVDC) distribution",
-  "definition": "Nvidia's announced architecture for 2027-era racks. It sends high-voltage DC to the rack to cut copper and conversion losses, so racks can reach ~1 MW. [V]",
+  "definition": "NVIDIA's announced architecture for 2027-era racks. It sends high-voltage DC to the rack to cut copper and conversion losses, so racks can reach ~1 MW. [V]",
   "source": "07-datacenters-energy.md"
  },
  {
   "term": "Solid-state transformer (SST)",
-  "definition": "A power-electronics replacement for the classic copper-and-iron transformer. Nvidia and partners are evaluating it for AI data centers. [V]",
+  "definition": "A power-electronics replacement for the classic copper-and-iron transformer. NVIDIA and partners are evaluating it for AI data centers. [V]",
   "source": "07-datacenters-energy.md"
  },
  {
@@ -7051,7 +7051,7 @@
  },
  {
   "term": "Strategic investor",
-  "definition": "A company (not a pure financial fund) that invests for business reasons. Nvidia, Amazon, Google and Microsoft investing in AI labs are examples.",
+  "definition": "A company (not a pure financial fund) that invests for business reasons. NVIDIA, Amazon, Google and Microsoft investing in AI labs are examples.",
   "source": "10-skills-careers-opportunity.md"
  },
  {
@@ -7216,12 +7216,12 @@
  },
  {
   "term": "GPU / accelerator",
-  "definition": "Chips specialized for the parallel math AI needs. Nvidia GPUs dominate, while Google TPUs and Amazon Trainium are alternatives.",
+  "definition": "Chips specialized for the parallel math AI needs. NVIDIA GPUs dominate, while Google TPUs and Amazon Trainium are alternatives.",
   "source": "10-skills-careers-opportunity.md"
  },
  {
   "term": "CUDA / kernel",
-  "definition": "CUDA is Nvidia's programming platform for GPUs. A kernel is a small program that runs on the GPU, and writing faster kernels makes AI cheaper.",
+  "definition": "CUDA is NVIDIA's programming platform for GPUs. A kernel is a small program that runs on the GPU, and writing faster kernels makes AI cheaper.",
   "source": "10-skills-careers-opportunity.md"
  },
  {
@@ -7351,7 +7351,7 @@
  },
  {
   "term": "Picks and shovels",
-  "definition": "Selling tools and infrastructure to everyone in a boom (as in the gold rush) instead of betting on one winner. Nvidia is the classic AI example.",
+  "definition": "Selling tools and infrastructure to everyone in a boom (as in the gold rush) instead of betting on one winner. NVIDIA is the classic AI example.",
   "source": "10-skills-careers-opportunity.md"
  },
  {

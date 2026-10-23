@@ -60,7 +60,7 @@ sequenceDiagram
 
 *Figure 23.1: The life of one chat request inside a provider. Chapter 44 follows the same request all the way from your phone, with energy and cost at each step.*
 
-> **Key idea:** Inference is not a side issue. Training happens once per model, but inference runs every time anyone uses it. In aggregate, inference spending now rivals or exceeds training at the major labs, which is why so much engineering goes into making it faster and cheaper.
+> **Key idea:** Inference is not a side issue. Training happens once per model, but inference runs every time anyone uses it. In aggregate, serving models is a large and growing share of the major labs' computing bills (Chapter 19 gives Epoch AI's estimate for OpenAI), which is why so much engineering goes into making it faster and cheaper.
 
 ## Two different jobs: prefill and decode
 
@@ -345,7 +345,7 @@ Drafts come in several forms: a small model from the same family; extra predicti
 
 > **Definition — Multi-token prediction (MTP):** Training a model to predict several future tokens at each position, not just the next one. It can improve learning, and the extra predictions make a built-in draft for speculative decoding. DeepSeek-V3 (2024) and NVIDIA's Nemotron 3 Super use it.
 
-A more radical route to speed is to stop writing left to right at all. Diffusion language models refine many tokens in parallel over a few passes (see Chapter 16); Inception reports about 1,000 tokens per second for its Mercury diffusion models, including 1,068 tokens per second for Mercury 3 (October 2026), which it claims matches GPT-6 Luna and Claude Haiku 5.5 on a range of benchmarks (company-reported).
+A more radical route to speed is to stop writing left to right at all. Diffusion language models refine many tokens in parallel over a few passes (see Chapter 16); Inception reports about 1,000 tokens per second for its Mercury diffusion models, including 1,068 tokens per second for Mercury 3 (October 2026), which it claims matches or beats GPT-6 Luna and Claude Haiku 5.5 on a range of benchmarks (company-reported).
 
 > **Key idea:** Speculative decoding exploits idle math: the GPU is waiting for memory anyway, so it might as well check several guesses at once. Done properly, it changes speed, not answers.
 
@@ -532,7 +532,7 @@ When providers, benchmarks and engineers talk about inference performance, they 
 
 > **Definition — Inter-token latency (ITL):** The time between successive output tokens once streaming has started, also called time per output token. Its inverse is output speed: 20 milliseconds per token is 50 tokens per second.
 
-> **Definition — Goodput:** The share of requests served within the promised speed targets, or the throughput counting only those requests. A system with high throughput but many slow, late answers has poor goodput.
+> **Definition — Serving goodput:** The share of requests served within the promised speed targets, or the throughput counting only those requests. A system with high throughput but many slow, late answers has poor goodput.
 
 > **Definition — Service-level objective (SLO):** A target a service commits to internally or to customers, such as "95% of requests get their first token within 1 second."
 
@@ -621,7 +621,7 @@ Together with better chips and smaller, smarter models, these tricks make the sa
 
 ## Key terms
 
-Inference, Serving, Replica, Prefill, Decode, HBM (high-bandwidth memory), Memory bandwidth, Compute-bound, Memory-bound, Arithmetic intensity, Output speed (tokens per second), Time to first token (TTFT), KV cache, GQA (grouped-query attention), MQA (multi-query attention), MLA (multi-head latent attention), Prompt caching, Cache hit, Cache lifetime (TTL), Batching, Throughput, Continuous batching, Chunked prefill, Memory fragmentation, PagedAttention, Speculative decoding, Draft model, Acceptance rate, Multi-token prediction (MTP), Quantization, Block scaling (microscaling), Post-training quantization (PTQ), Quantization-aware training (QAT), RoPE scaling, FlashAttention, Sparse attention, Linear and hybrid attention, Context parallelism (ring attention), Needle in a haystack, RULER, Disaggregated serving, Tensor parallelism, Expert parallelism, Model router, Batch API, Fast mode (priority tier), Inter-token latency (ITL), Goodput, Service-level objective (SLO), Cost per million tokens, Serving engine, Kernel, Jevons paradox
+Inference, Serving, Replica, Prefill, Decode, HBM (high-bandwidth memory), Memory bandwidth, Compute-bound, Memory-bound, Arithmetic intensity, Output speed (tokens per second), Time to first token (TTFT), KV cache, GQA (grouped-query attention), MQA (multi-query attention), MLA (multi-head latent attention), Prompt caching, Cache hit, Cache lifetime (TTL), Batching, Throughput, Continuous batching, Chunked prefill, Memory fragmentation, PagedAttention, Speculative decoding, Draft model, Acceptance rate, Multi-token prediction (MTP), Quantization, Block scaling (microscaling), Post-training quantization (PTQ), Quantization-aware training (QAT), RoPE scaling, FlashAttention, Sparse attention, Linear and hybrid attention, Context parallelism (ring attention), Needle in a haystack, RULER, Disaggregated serving, Tensor parallelism, Expert parallelism, Model router, Batch API, Fast mode (priority tier), Inter-token latency (ITL), Serving goodput, Service-level objective (SLO), Cost per million tokens, Serving engine, Kernel, Jevons paradox
 
 ## Exercises
 

@@ -200,7 +200,7 @@ flowchart LR
 
 **Spreadsheet plus AI analysis.** *What:* formulas, pivot tables, cleaning data and charting, with AI writing formulas and spotting patterns. *Why:* the spreadsheet is still the most universal business data tool. *Learn:* Excel or Google Sheets with Copilot or Gemini. *Prove:* a five-bullet insight memo from a messy public dataset, with every AI-computed number checked.
 
-> **Definition — MCP (Model Context Protocol):** An open standard for connecting AI assistants to tools and data sources. A service builds one MCP server, and any compatible assistant can use it (see Chapter 28).
+> **Definition — MCP (Model Context Protocol):** An open standard for connecting AI applications to outside tools and data sources, introduced by Anthropic in November 2024 and governed since December 2025 by the Agentic AI Foundation, part of the nonprofit Linux Foundation. A service builds one MCP server, and any compatible assistant can use it (see Chapter 28).
 
 **Connecting tools to AI.** *What:* plugging your assistant into email, drive, calendar, CRM (customer-relationship management software) or databases through connectors or MCP servers. *Why:* access to context is what makes assistants useful at work. *Learn:* Anthropic's free "Introduction to Model Context Protocol." *Prove:* a task that needs three connected sources, plus a one-paragraph privacy assessment.
 
@@ -214,7 +214,7 @@ flowchart LR
 
 Level 3 is where you start writing code. It takes three to twelve months part-time, and AI coding assistants make it far easier than it was a few years ago. Each skill exists for a reason: it is the layer every later skill stands on.
 
-> **Definition — Python:** The programming language most AI work is done in, chosen for its readable syntax and huge collection of AI and data libraries (see Chapter 3).
+> **Definition — Python:** The most widely used programming language for AI work, popular for its readable code and its huge collection of ready-made libraries for math, data and neural networks (see Chapter 3).
 
 > **Definition — Notebook (Jupyter, Google Colab):** A document that mixes runnable code, its output and notes, so you can experiment one step at a time in a browser.
 
@@ -304,7 +304,7 @@ flowchart TD
 
 **Classical machine learning.** *What:* regression, decision trees and gradient boosting, train-validation-test splits, overfitting and metrics (Chapters 8 to 10). *Why:* it still powers most production machine learning (fraud detection, ranking, forecasting) and builds intuition. *Learn:* Andrew Ng's Machine Learning Specialization (about 95 hours) and Aurélien Géron's *Hands-On Machine Learning*. *Prove:* a Kaggle notebook with an honest validation setup.
 
-> **Definition — PyTorch:** The most widely used software library for building and training neural networks, with JAX as the main alternative (see Chapter 13).
+> **Definition — PyTorch:** The most widely used deep-learning framework, a software library for building and training neural networks, originally developed at Meta and now governed by the PyTorch Foundation. JAX is the main alternative (see Chapter 13).
 
 **Deep learning and PyTorch.** *What:* neural networks, backpropagation, optimizers, CNNs, transformers and training loops (Chapters 12 to 15). *Why:* it is the core of modern AI. *Learn:* fast.ai's "Practical Deep Learning for Coders" (free, nine lessons of about 90 minutes, assumes about a year of coding), Karpathy's "Neural Networks: Zero to Hero" (eight lectures from a tiny autograd engine to GPT), Simon Prince's free *Understanding Deep Learning*. *Prove:* a small model trained from scratch, with a blog post explaining backpropagation to your past self.
 
@@ -316,7 +316,7 @@ flowchart TD
 
 **Data engineering.** *What:* pipelines, warehouses (Snowflake, BigQuery, Databricks), orchestration (Airflow, Dagster) and data quality. *Why:* it supplies the data that makes AI work, and it is a large, steady job market. *Learn:* DeepLearning.AI and AWS's "Data Engineering" (about 107 hours), *Fundamentals of Data Engineering* by Reis and Housley. *Prove:* a scheduled pipeline with data-quality checks.
 
-> **Definition — AWS (Amazon Web Services):** Amazon's cloud-computing business, one of the three biggest cloud providers alongside Microsoft Azure and Google Cloud. It rents out computers, storage, databases and AI services (including its own Trainium chips) by the hour, and runs training courses and certifications.
+> **Definition — AWS (Amazon Web Services):** Amazon's cloud-computing business, the world's largest cloud provider, which rents out computing power, storage and AI chips over the internet. It is ahead of Microsoft Azure and Google Cloud, also rents databases and AI services by the hour, and runs training courses and certifications.
 
 > **Definition — Distributed system:** Software that splits one job across many machines and keeps working when some of them fail. Frontier training runs are distributed systems spanning tens of thousands of chips (see Chapter 37).
 
@@ -330,7 +330,7 @@ flowchart TD
 
 > **Definition — CUDA and Triton:** CUDA is NVIDIA's platform for programming its GPUs directly; Triton is a Python-like language for writing fast GPU kernels with less effort (see Chapter 35).
 
-> **Definition — NVIDIA:** The American chip company whose GPUs, together with the CUDA software for programming them, power most AI training and inference worldwide (see Chapter 35).
+> **Definition — NVIDIA:** An American chip company that designs most of the GPUs used to train and run AI models, along with the networking gear that links them and CUDA, the software for programming them. Its chips power most AI training and inference worldwide (see Chapter 35).
 
 **Kernels and inference optimization.** *What:* writing GPU kernels in CUDA or Triton, quantization, batching, managing the KV cache, speculative decoding, and serving engines such as vLLM, SGLang and TensorRT-LLM (Chapters 23 and 33). *Why:* small gains on an enormous fleet are worth millions of dollars, which is why Anthropic's posted base-salary range for performance engineers reached $850,000 in October 2026. *Learn:* *Programming Massively Parallel Processors* (Hwu, Kirk and El Hajj), the GPU MODE lectures, the Triton tutorials, and Stanford CS336's systems assignment (writing FlashAttention-2 in Triton). *Prove:* a kernel benchmarked against PyTorch's built-in version, published with the numbers.
 
@@ -382,9 +382,9 @@ The main ladder is not the only route. Five branches cross it, and each one mult
 
 **AI policy and governance.** *What:* laws (the EU AI Act, US state laws, export controls), risk frameworks (NIST AI RMF, ISO/IEC 42001), compute governance and lab safety frameworks (Chapter 59). *Why:* every large organization now needs AI governance, and governments need technical literacy. *Learn:* the AIGP (AI Governance Professional) certification from the IAPP, the main professional body for privacy specialists, BlueDot's governance courses, publications from GovAI, CSET and RAND, and lab policy job descriptions as syllabi. *Prove:* a written AI-use policy or risk assessment for a real organization.
 
-> **Definition — AI governance:** The policies, processes and controls an organization uses to manage AI risk, comply with laws and decide which AI uses are allowed.
+> **Definition — AI governance:** The rules, institutions and processes that shape how AI is built and used. Inside an organization, it means the policies, processes and controls used to manage AI risk, comply with laws and decide which AI uses are allowed.
 
-> **Definition — IAPP (International Association of Privacy Professionals):** The main professional body for privacy specialists. It runs widely recognized certifications, including the AIGP (AI Governance Professional).
+> **Definition — IAPP (International Association of Privacy Professionals):** The largest professional association for people who work in privacy and, increasingly, AI governance. It runs widely recognized certifications, including the AIGP (AI Governance Professional).
 
 > **Definition — CSET (Center for Security and Emerging Technology):** A research center at Georgetown University in Washington, D.C., that studies AI, chips and national security and publishes data-driven policy reports.
 

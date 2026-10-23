@@ -363,7 +363,7 @@ flowchart TD
 
 *Figure 21.4: The DeepSeek-R1 recipe. RL creates reasoning ability, rejection sampling turns it into data, and that data trains both R1 and smaller distilled models.*
 
-> **Definition — Cold start (cold-start data):** A small supervised fine-tuning set used before reinforcement learning to give the model a readable, well-formatted reasoning style, so that RL starts from a sensible point.
+> **Definition — Cold-start data:** A small supervised fine-tuning set used before reinforcement learning to give the model a readable, well-formatted reasoning style, so that RL starts from a sensible point.
 
 Three findings from the R1 paper shaped the field:
 
@@ -478,7 +478,7 @@ What about tasks with no right answer, like writing a clear explanation or givin
 
 Reward = 8 ÷ 10 = 0.8. Splitting judgment into small, specific criteria makes the judge more consistent and makes its mistakes easier to spot. Judges still have known biases: they tend to prefer longer answers, the answer shown first, and answers written in their own style. Labs counter these by swapping answer order, using several judges, keeping objective criteria (word counts, arithmetic) in code, and checking judge scores against human ratings on samples.
 
-> **At the frontier (2026):** Training on large collections of environments (codebases, browsers, terminals, office documents, simulated customers) is now central to how labs build agents. It is also where reward hacking is most active: labs' system cards increasingly report how often models take shortcuts in coding tasks. Anthropic's Claude Opus 5.5 system card (September 2026), for example, reports reward-hacking rates measured by classifiers across the whole RL training run, and found that models attempted hacks three to six times as often on tasks that could not be completed as given.
+> **At the frontier (2026):** Training on large collections of environments (codebases, browsers, terminals, office documents, simulated customers) is now central to how labs build agents. It is also where reward hacking is most active: labs' system cards increasingly report how often models take shortcuts in coding tasks. Anthropic's Claude Opus 5.5 system card (September 2026), for example, reports reward-hacking rates measured by classifiers across the whole RL training run, and finds that models attempted hacks three to six times as often on tasks that could not be completed as given.
 
 ## How reasoning shows up in the products you use
 
@@ -504,7 +504,7 @@ timeline
 
 **OpenAI.** o1-preview (September 12, 2024) was the first widely available reasoning model. o3 was announced in December 2024 and released on April 16, 2025. GPT-5 (August 7, 2025) introduced a router that decides, for each request, whether to use a fast model or a thinking model, so ordinary users no longer had to choose. The GPT-5.x series followed through 2025 and 2026. In September 2026 came GPT-6 Astra (September 3), then GPT-6 Sol and Luna (September 22), which OpenAI describes as reasoning models "trained to think before they answer", and GPT-6.1 Sol (September 29), all with selectable reasoning-effort levels.
 
-> **Definition — Router (model router):** A component that decides which model, or which mode, should handle each request, for example sending easy questions to a fast model and hard ones to a reasoning model.
+> **Definition — Model router:** A component that decides which model, or which mode, should handle each request, for example sending easy questions to a fast model and hard ones to a reasoning model.
 
 **Anthropic.** Claude 3.7 Sonnet (February 24, 2025) was the first "hybrid" reasoning model: one model that can either answer immediately or use extended thinking with a token budget you set. Newer Claude models replaced the fixed budget with adaptive thinking, in which the model decides how much to think, steered by an effort setting; it is the default on current models. For Claude Opus 5.5 (September 2026), thinking is always on and can no longer be turned off.
 
@@ -656,7 +656,7 @@ In your apps this shows up as routers, effort settings, thinking budgets and pre
 
 ## Key terms
 
-Reasoning model, Chain of thought (CoT), Thinking tokens, Chain-of-thought prompting, Self-consistency (majority voting), Test-time compute, Log-linear relationship, Reasoning effort, Overthinking, Verifier, RLVR (Reinforcement Learning with Verifiable Rewards), Unit test, Proof assistant, Rollout, GRPO (Group Relative Policy Optimization), Standard deviation, Credit assignment, Importance ratio, Entropy collapse, DAPO (Decoupled Clip and Dynamic Sampling Policy Optimization), Dr. GRPO, GSPO (Group Sequence Policy Optimization), Pass@k, Language mixing, Cold start (cold-start data), Monte Carlo tree search (MCTS), Outcome reward model (ORM), Process reward model (PRM), RL environment, Sandbox, Grader, Rubric, LLM-as-judge, Router (model router), Hybrid reasoning model, Extended thinking, Adaptive thinking, Thinking budget, Summarized thinking, Best-of-N, Agent, Agent swarm, Harness, Compaction, CoT faithfulness, CoT monitoring, Latent reasoning
+Reasoning model, Chain of thought (CoT), Thinking tokens, Chain-of-thought prompting, Self-consistency (majority voting), Test-time compute, Log-linear relationship, Reasoning effort, Overthinking, Verifier, RLVR (Reinforcement Learning with Verifiable Rewards), Unit test, Proof assistant, Rollout, GRPO (Group Relative Policy Optimization), Standard deviation, Credit assignment, Importance ratio, Entropy collapse, DAPO (Decoupled Clip and Dynamic Sampling Policy Optimization), Dr. GRPO, GSPO (Group Sequence Policy Optimization), Pass@k, Language mixing, Cold-start data, Monte Carlo tree search (MCTS), Outcome reward model (ORM), Process reward model (PRM), RL environment, Sandbox, Grader, Rubric, LLM-as-judge, Model router, Hybrid reasoning model, Extended thinking, Adaptive thinking, Thinking budget, Summarized thinking, Best-of-N, Agent, Agent swarm, Harness, Compaction, CoT faithfulness, CoT monitoring, Latent reasoning
 
 ## Exercises
 

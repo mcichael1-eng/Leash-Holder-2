@@ -71,7 +71,7 @@ A job is not one thing. It is a bundle of tasks. A marketing coordinator writes 
 
 > **Definition — Labor market:** The system in which workers offer their time and skills and employers hire them, setting how many people are employed and what they are paid.
 
-> **Definition — Exposure (to AI):** How much of a job's tasks AI could technically perform or assist with. High exposure does not mean the job will disappear.
+> **Definition — AI exposure:** How much of a job's tasks AI could technically perform or assist with. High exposure does not mean the job will disappear.
 
 > **Definition — Displacement:** Workers actually losing jobs, hours or pay because their work has been taken over by technology.
 
@@ -81,7 +81,7 @@ A job is not one thing. It is a bundle of tasks. A marketing coordinator writes 
 
 A tool can be a **substitute** for a worker (it replaces them) or a **complement** (it makes them more valuable). A spreadsheet substituted for clerks who added columns by hand but complemented financial analysts, whose models became more powerful.
 
-> **Definition — Complement (economics):** Something that makes another thing more valuable. A technology that complements workers raises their productivity and often their pay; a substitute replaces them.
+> **Definition — Economic complement:** Something that makes another thing more valuable. A technology that complements workers raises their productivity and often their pay; a substitute replaces them.
 
 ### Worked example: one person's week
 
@@ -241,7 +241,7 @@ Whatever the long-run payoff, the spending is already historic.
 
 - The Wall Street Journal (September 2026, as relayed by Wikipedia's "AI bubble" article) put AI investment at about 3.6% of US GDP, compared with about 2.2% for railroads in the 1800s and 1.1% for the interstate highways of the 1950s.
 - The four largest US cloud companies guided to roughly $720 to $745 billion of combined capital spending for 2026, mostly on AI data centers, according to one tracker (company definitions differ, and these figures should be checked against the latest earnings).
-- Nvidia's quarter ending July 26, 2026 brought revenue of $96.2 billion, up 106% from a year earlier, with $89.0 billion from data centers and a 75% gross margin (company filing).
+- NVIDIA's quarter ending July 26, 2026 brought revenue of $96.2 billion, up 106% from a year earlier, with $89.0 billion from data centers and a 75% gross margin (company filing).
 
 > **Definition — Capex (capital expenditure):** Money spent on long-lasting assets such as buildings, chips and power equipment, as opposed to day-to-day operating costs.
 
@@ -262,7 +262,7 @@ On the other side of the ledger, AI revenue is growing faster than almost any bu
 
 > **Definition — Recognized revenue:** Revenue a company has actually earned and booked in its accounts for a period, following accounting rules.
 
-As of October 2026, all from secondary reports: OpenAI's run-rate was reported at about $50 billion in September 2026, against $13.1 billion of recognized revenue in 2025; the Financial Times reported projected cumulative negative free cash flow of about $278 billion for 2026 to 2030. Anthropic's run-rate was reported above $65 billion at the end of July 2026, with recognized quarterly revenue of $4.8 billion, $11.5 billion and $16.8 billion in the first three quarters of 2026 and two quarters of adjusted operating profit. Chapter 61 explains how to read these numbers.
+As of October 2026, all from secondary reports: OpenAI's run-rate was reported to have passed $20 billion by the end of 2025 (Reuters, citing its finance chief) and to be about $50 billion in September 2026, against $13.1 billion of recognized revenue in 2025; the Financial Times reported projected cumulative negative free cash flow of about $278 billion for 2026 to 2030. Anthropic's run-rate was reported above $65 billion at the end of July 2026, with recognized quarterly revenue of $4.8 billion, $11.5 billion and $16.8 billion in the first three quarters of 2026 and two quarters of adjusted operating profit. Chapter 61 explains how to read these numbers.
 
 > **Analogy:** A run-rate is a speedometer: how fast the car is going right now. Recognized revenue is the odometer: how far it actually went. A fast-accelerating car can show a speedometer reading far above its average speed so far.
 
@@ -276,13 +276,13 @@ Some of the biggest deals have an unusual shape: a supplier invests in a custome
 
 > **Definition — Circular deal:** An arrangement in which a supplier invests in a customer that then uses the money to buy the supplier's products, such as a chipmaker investing in an AI lab that buys its chips. It is real business, but it can make demand look larger than independent demand.
 
-Examples include Nvidia's announced investment of up to $100 billion in OpenAI tied to GPU purchases (September 2025); a warrant deal giving OpenAI the right to buy AMD shares alongside a chip-purchase agreement (October 2025); Oracle's roughly $300 billion contract with OpenAI; and the Stargate project's $500 billion target. OpenAI's multi-year compute commitments were reported at around $1.4 trillion, far above its revenues.
+Examples include NVIDIA's announced investment of up to $100 billion in OpenAI tied to GPU purchases (September 2025); a warrant deal giving OpenAI the right to buy AMD shares alongside a chip-purchase agreement (October 2025); Oracle's roughly $300 billion contract with OpenAI; and the Stargate project's $500 billion target. OpenAI's multi-year compute commitments were reported at around $1.4 trillion, far above its revenues.
 
-> **Definition — AMD (Advanced Micro Devices):** An American chip designer, long known for the processors in PCs and servers, that is NVIDIA's main rival in AI GPUs with its Instinct line. Chapter 35 compares the two companies.
+> **Definition — AMD (Advanced Micro Devices):** An American company that designs CPUs for PCs and servers and is NVIDIA's main rival in AI GPUs, with its Instinct line of data-center accelerators. Chapter 35 compares the two companies.
 
 ```mermaid
 flowchart LR
-    NV["Nvidia"] -- "invests up to $100B" --> OA["OpenAI"]
+    NV["NVIDIA"] -- "invests up to $100B" --> OA["OpenAI"]
     OA -- "buys GPUs" --> NV
     AMD["AMD"] -- "share warrants" --> OA
     OA -- "buys chips" --> AMD
@@ -679,13 +679,13 @@ Some experts think advanced AI could be catastrophic; others think that view is 
 Your job is not to pick a team. It is to find the crux, watch the evidence and update.
 
 ## Key terms
-Steelman, Strawman, Crux, Calibration, Forecast, Task, Labor market, Exposure (to AI), Displacement, Automation, Augmentation, Complement (economics), Entry-level job, Descriptive (vs causal) evidence, Null result, Productivity, Randomized controlled trial (RCT), Jagged frontier, Universal basic income (UBI), GDP (gross domestic product), Total factor productivity (TFP), Capex (capital expenditure), Depreciation, Run-rate (annualized revenue), Recognized revenue, Free cash flow, Circular deal, AMD (Advanced Micro Devices), Credit default swap (CDS), Bubble, Jevons paradox, Market concentration, Super PAC, Gradual disempowerment, Regulatory capture, Public benefit corporation (PBC), Corporate governance, Open-weight model, Open-source AI, Closed model, Structured access, Marginal risk, Narrow AI, AGI (artificial general intelligence), ASI (artificial superintelligence), Levels of AGI, Benchmark saturation, Harness, Time horizon (METR), Doubling time, Recursive self-improvement, Technological singularity, Catastrophic risk, Existential risk (x-risk), Loss of control, P(doom), Racing dynamics, Instrumental convergence, Pascal's mugging, Consciousness, Sentience, Moral status (moral patient), Model welfare, Anthropomorphism, Chinese room argument, Strong AI and weak AI (philosophy), Argument from informality, Gödel's incompleteness theorem
+Steelman, Strawman, Crux, Calibration, Forecast, Task, Labor market, AI exposure, Displacement, Automation, Augmentation, Economic complement, Entry-level job, Descriptive (vs causal) evidence, Null result, Productivity, Randomized controlled trial (RCT), Jagged frontier, Universal basic income (UBI), GDP (gross domestic product), Total factor productivity (TFP), Capex (capital expenditure), Depreciation, Run-rate (annualized revenue), Recognized revenue, Free cash flow, Circular deal, AMD (Advanced Micro Devices), Credit default swap (CDS), Bubble, Jevons paradox, Market concentration, Super PAC, Gradual disempowerment, Regulatory capture, Public benefit corporation (PBC), Corporate governance, Open-weight model, Open-source AI, Closed model, Structured access, Marginal risk, Narrow AI, AGI (artificial general intelligence), ASI (artificial superintelligence), Levels of AGI, Benchmark saturation, Harness, Time horizon (METR), Doubling time, Recursive self-improvement, Technological singularity, Catastrophic risk, Existential risk (x-risk), Loss of control, P(doom), Racing dynamics, Instrumental convergence, Pascal's mugging, Consciousness, Sentience, Moral status (moral patient), Model welfare, Anthropomorphism, Chinese room argument, Strong AI and weak AI (philosophy), Argument from informality, Gödel's incompleteness theorem
 
 ## Exercises
 
 1. **[Easy] Audit your own job.** (1) List 15 tasks from your own job, or a job you know well, with rough hours per week for each. (2) Mark each as "AI automates," "AI assists" or "AI can't help yet." (3) Compute your exposure (hours automated plus assisted, divided by total hours) and, using the assumptions in the Dana example, the time AI might save. (4) Write two sentences on what your employer would most likely do with that time. **What you'll learn:** task-based thinking and why exposure is not the same as job loss.
 
-2. **[Easy] Speedometer versus odometer.** (1) Add Anthropic's reported recognized revenue for the first three quarters of 2026: $4.8 billion, $11.5 billion and $16.8 billion. (2) Multiply the third quarter alone by 4 and compare it with the reported run-rate of over $65 billion at the end of July 2026. (3) Compare OpenAI's $13.1 billion of 2025 recognized revenue with its reported run-rate of about $20 billion at the end of 2025. (4) Write one sentence explaining to a friend why the headline numbers are larger than money earned over the period. **What you'll learn:** to read AI revenue claims critically, and how fast growth makes run-rates look large.
+2. **[Easy] Speedometer versus odometer.** (1) Add Anthropic's reported recognized revenue for the first three quarters of 2026: $4.8 billion, $11.5 billion and $16.8 billion. (2) Multiply the third quarter alone by 4 and compare it with the reported run-rate of over $65 billion at the end of July 2026. (3) Compare OpenAI's $13.1 billion of 2025 recognized revenue with its reported run-rate of over $20 billion at the end of 2025. (4) Write one sentence explaining to a friend why the headline numbers are larger than money earned over the period. **What you'll learn:** to read AI revenue claims critically, and how fast growth makes run-rates look large.
 
 3. **[Medium] Run a mini productivity experiment.** (1) Pick a type of task you do often (emails, short reports, spreadsheet formulas). (2) For eight tasks, flip a coin to decide whether to use AI. (3) Before each, write your predicted time; afterwards, record the actual time and rate the quality from 1 to 5. (4) Compare average actual times and quality with and without AI, and compare predictions with reality. **What you'll learn:** how randomized experiments work, and whether your own sense of AI speed-up matches the clock, as in the METR study.
 

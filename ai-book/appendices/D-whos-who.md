@@ -12,7 +12,7 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | Anthropic | San Francisco lab founded in 2021 by former OpenAI researchers, including Dario and Daniela Amodei; a public benefit corporation with a safety focus. | Claude Fable 5.1 and Mythos 5.1, Opus 5.5, Sonnet 5.5, Haiku 5.5; Claude Code; created the Model Context Protocol (MCP) | Chapter 24 |
 | Google DeepMind | Google's AI lab, formed in 2023 by merging DeepMind (founded in London in 2010, bought by Google in 2014) with Google Brain. | Gemini 4 Argon, Gemini 3.8 Flash; open-weight Gemma 4; Genie 3 world model; AlphaFold | Chapter 24 |
 | Meta Superintelligence Labs (MSL) | Meta's AI organization, formed in mid-2025; includes the FAIR research lab and TBD Lab. | Muse Wonder and Wonder Full, Muse Spark, open-weight Muse Glimmer; the earlier Llama family (last: Llama 4, 2025) | Chapter 24 |
-| SpaceXSI (formerly xAI) | Founded by Elon Musk in 2023; acquired by SpaceX on February 2, 2026, rebranded SpaceXAI in July 2026, and reported in October 2026 to be renaming itself SpaceX Super Intelligence (SpaceXSI). | Grok 4.7; the Colossus supercomputers in Memphis | Chapter 24 |
+| SpaceXSI (formerly xAI) | Founded by Elon Musk in 2023; acquired by SpaceX on February 2, 2026, rebranded SpaceXAI by July 2026 (reported), and renamed SpaceX Super Intelligence (SpaceXSI) in October 2026, the name now on its website; the legal company name is still SpaceXAI. | Grok 4.7; the Colossus supercomputers in Memphis | Chapter 24 |
 | Microsoft AI | Microsoft's in-house AI group; Microsoft was OpenAI's earliest large backer and is also an Anthropic compute partner. | Copilot assistants in Windows and Office; in-house models | Chapter 61 |
 | Amazon | Builds its own Nova models and the Bedrock platform that serves many labs' models; Anthropic's main cloud and training partner. | Nova models; Bedrock; Alexa | Chapter 61 |
 | DeepSeek | Hangzhou lab founded in 2023 by Liang Wenfeng and funded by the quantitative hedge fund High-Flyer; known for efficient open-weight models. | DeepSeek V4-Pro, V4-Flash, V4.1-Flash (MIT license); the R1 reasoning model (2025) | Chapter 24 |
@@ -154,7 +154,7 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 
 | Company | Who they are and why they matter | More in |
 |---|---|---|
-| Cursor (Anysphere) | AI-first code editor; acquired by SpaceX in an all-stock deal announced in June 2026, reported at about $60 billion and closed in August 2026. | Chapter 29 |
+| Cursor (Anysphere) | AI-first code editor; acquired by SpaceX in an all-stock deal agreed on June 16, 2026 at an implied value of $60 billion and completed on August 14, 2026 (per SpaceX's SEC filings). | Chapter 29 |
 | Cognition | Maker of Devin, an autonomous coding agent; bought the Windsurf code editor in 2025. | Chapter 29 |
 | GitHub (Microsoft) | Copilot (2021) was the first mass-market AI coding assistant; now includes cloud coding agents. | Chapter 29 |
 | Replit | Browser-based coding platform with Replit Agent for building apps from descriptions. | Chapter 29 |
@@ -180,7 +180,7 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | Unitree, AgiBot | Chinese robot makers that led humanoid shipments in 2025. | Chapter 49 |
 | Boston Dynamics, Agility Robotics, Apptronik, 1X | Makers of the Atlas, Digit, Apollo and NEO robots. | Chapter 49 |
 | Isomorphic Labs | Google DeepMind spin-out (2021) using AI for drug discovery. | Chapter 52 |
-| Insilico Medicine | Drug-discovery company whose AI-designed drug rentosertib reported small Phase IIa trial results in 2025. | Chapter 52 |
+| Insilico Medicine | Drug-discovery company whose AI-designed drug rentosertib reported small Phase IIa trial results in 2025 and began a Phase III trial in China in September 2026. | Chapter 52 |
 
 *Table D.7: Companies that build products on top of AI models.*
 

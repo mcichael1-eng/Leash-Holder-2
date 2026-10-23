@@ -245,7 +245,7 @@ This recipe has a strong track record. In 2019 OpenAI trained a robot hand calle
 
 > **Watch out:** An acrobatics video tells you about the legs and the simulator. It tells you almost nothing about whether the robot can do useful work with its hands in a messy room, which is where the real difficulty lies.
 
-> **At the frontier (2026):** The newest models control the whole body at once instead of treating legs and arms separately. Gemini Robotics 2 (July 30, 2026) was shown walking, crouching and manipulating objects together, and the US humanoid start-up Figure AI says its Helix 02 model coordinates hands, arms, torso and feet for its Figure 03 robot's work at the German carmaker BMW.
+> **At the frontier (2026):** The newest models control the whole body at once instead of treating legs and arms separately. Gemini Robotics 2 (July 30, 2026) was shown walking, crouching and manipulating objects together, and the US humanoid start-up Figure AI says its Helix 02 model (announced in January 2026, the successor to its upper-body-only Helix model described later in this chapter) coordinates hands, arms, torso and feet for its Figure 03 robot's work at the German carmaker BMW.
 
 Reward design has its own traps, the "reward hacking" of Chapter 48 and Chapter 55: simulated robots often learn odd gaits or exploit glitches in the simulated physics, because the reward never said "and walk like a sensible robot". Extra penalties rule these out.
 
@@ -271,7 +271,7 @@ Why is manipulation so much harder than walking? Five reasons:
 
 > **Definition — Deformable object:** An object that changes shape when handled, such as cloth, rope, cables, food or plastic bags. These are among the hardest things for robots to manipulate.
 
-Grippers come in a few families. Two-finger parallel grippers are cheap and reliable and handle a surprising range of objects. Suction cups dominate warehouse picking, because boxes and packages have flat faces. Multi-fingered hands are the most capable and the hardest to control and keep working; NVIDIA's 2026 reference humanoid for researchers, for example, uses tactile hands from a company called Sharpa. Google DeepMind's Gemini Robotics 2, announced on July 30, 2026, was shown on dexterous tasks such as screwing in a light bulb and tying knots.
+Grippers come in a few families. Two-finger parallel grippers are cheap and reliable and handle a surprising range of objects. Suction cups dominate warehouse picking, because boxes and packages have flat faces. Multi-fingered hands are the most capable and the hardest to control and keep working; NVIDIA's 2026 reference humanoid for researchers, for example, uses tactile hands (hands with touch sensors) from Sharpa, a company that makes human-like robot hands, along with humanoid robots and the AI models that drive them. Google DeepMind's Gemini Robotics 2, announced on July 30, 2026, was shown on dexterous tasks such as screwing in a light bulb and tying knots.
 
 ### Worked example: why 99.9 percent matters
 
@@ -402,7 +402,7 @@ flowchart LR
         V3 --> V4["Action chunk<br/>next second of motion"]
     end
 ```
-*Figure 49.5: Robot control the old way, as a chain of hand-built modules, and the VLA way, as one model trained end to end that turns images and words into motion.*
+*Figure 49.5: Robot control the old way, as a chain of hand-built modules, and the VLA way, as one model trained end to end that turns images and words into motion. A "head" is the final part of a network that produces one kind of output; a diffusion or flow head produces motion by refining random noise step by step, as explained below.*
 
 Here is what happens inside a VLA, step by step, when you tell a robot "put the red cup in the sink".
 
@@ -461,7 +461,7 @@ A few milestones deserve a sentence each.
 
 - **π0.5 (April 22, 2025)** aimed, in Physical Intelligence's words, at "open-world generalization": chores in homes the robot had never been trained in.
 - **Gemini Robotics 1.5 (September 25, 2025)** transferred skills across different bodies (a two-armed ALOHA 2 robot, Apptronik's Apollo humanoid and Franka arms).
-- **NVIDIA GR00T N1 (March 2025)**, from NVIDIA's GR00T (pronounced "Groot") family of humanoid-robot models, was billed as the first open humanoid foundation model. In June 2026 NVIDIA announced an Isaac GR00T reference humanoid for academic research: a Unitree H2 Plus body, Sharpa tactile hands and a Jetson Thor onboard computer, with Ai2 (the Allen Institute for AI, a non-profit research lab), ETH Zurich, Stanford and UC San Diego named as users.
+- **NVIDIA GR00T N1 (March 2025)**, from NVIDIA's GR00T (pronounced "Groot") family of humanoid-robot models, was billed as the first open humanoid foundation model. In June 2026 NVIDIA announced an Isaac GR00T reference humanoid for academic research: a Unitree H2 Plus body, Sharpa tactile hands (the touch-sensing hands mentioned earlier) and a Jetson Thor onboard computer (NVIDIA's computer for robots, on sale since August 2025; onboard compute is defined just below), with Ai2 (the Allen Institute for AI, a non-profit research lab), ETH Zurich, Stanford and UC San Diego named as users.
 - **π0.7 (April 16, 2026)** was described as "a steerable model with emergent capabilities".
 - **Gemini Robotics 2, ER 2 and On-Device 2 (July 30, 2026)** added whole-body humanoid control (walking, crouching and manipulating together), dexterous tasks and multi-robot collaboration, with Apptronik, Agile Robots and Boston Dynamics among named partners plus more than 100 trusted testers.
 
@@ -475,7 +475,7 @@ A few milestones deserve a sentence each.
 
 > **Watch out:** "Foundation model" does not mean "can do anything". Even the best VLAs in late 2026 succeed far less often on brand-new tasks in brand-new places than on rehearsed ones, and companies' demo videos show best cases. When a company says a capability is "emergent", read that as "we saw it happen in some tests", not "it works reliably".
 
-> **At the frontier (2026):** Robot models are becoming platforms. On October 13, 2026, Physical Intelligence opened a beta of its Pi API under the banner "Frontier Models for Every Robot", and Google offers Gemini Robotics-ER 2 in preview to developers; on the same day Google made its new Gemini 4 Argon model available to robotics developers as a general model for physical reasoning, robot code and simulation. If this follows the path chatbots took, robotics developers will increasingly rent a robot "brain" through an API instead of training their own, and compete on hardware, data and the specific job.
+> **At the frontier (2026):** Robot models are becoming platforms. On October 13, 2026, Physical Intelligence opened a beta of its Pi API under the banner "Frontier Models for Every Robot", and Google offers Gemini Robotics-ER 2 in preview to developers; on the same day Google made its new Gemini 4 Argon model (Google's fourth-generation flagship general-purpose model, the kind that powers chatbots; Chapter 24 compares it with other frontier models) available to robotics developers as a general model for physical reasoning, robot code and simulation. If this follows the path chatbots took, robotics developers will increasingly rent a robot "brain" through an API instead of training their own, and compete on hardware, data and the specific job.
 
 ## World models: practicing in imagination
 
@@ -539,7 +539,7 @@ Put those numbers in context. AgiBot's share is 5,168 ÷ 13,318 = about 39 perce
 | Agility Robotics (US) | Digit | Deployed or committed at nine customer sites with 65,000+ operating hours; at logistics firm GXO it reached 100,000 totes moved in November 2025; customers include Schaeffler, Toyota Canada and Mercado Libre. In June 2026 Agility announced a merger that would make it a publicly listed company | Company claims, from its June 2026 listing announcement |
 | Boston Dynamics (owned by Hyundai) | Electric Atlas | Production version unveiled at CES on January 5, 2026. 2026 units go to Hyundai's robotics application center and Google DeepMind; factory work at Hyundai's Georgia EV (electric-vehicle) plant is planned from 2028 | Company announcement |
 | Tesla (US) | Optimus V3 | On the April 2026 earnings call, Elon Musk said production at Fremont would begin in late July or August 2026, slowly at first, and that the rate was impossible to predict; a Texas factory is expected around summer 2027. Output figures were not independently confirmed as of October 2026 | Company statements; output unconfirmed |
-| 1X (US/Norway) | NEO, for homes | Pre-orders opened October 28, 2025 at $20,000 or $499 per month, with US deliveries planned for 2026. Tasks it cannot do alone can be done by a remote 1X operator. Its Hayward, California factory began full-scale production on April 30, 2026, with a target of 100,000+ per year by end-2027. Consumer deliveries not confirmed as of October 2026 | Company claims |
+| 1X (US/Norway) | NEO, for homes | Pre-orders opened October 28, 2025 at $20,000 or $499 per month, with US deliveries planned for 2026. Tasks it cannot do alone can be done by a remote 1X operator. On April 30, 2026 it said its Hayward, California factory had begun full-scale production, with a target of 100,000+ per year by end-2027. Consumer deliveries not confirmed as of October 2026 | Company claims |
 | Apptronik (US) | Apollo | Gemini Robotics partner; Apollo was one of the bodies in Google's cross-embodiment results. No public deployment count found | Partner announcements |
 | Unitree (China) | G1, H2 and others | 4,200 shipped in 2025 per Omdia (5,500+ per the company). Its H2 Plus body was chosen for NVIDIA's academic reference humanoid | Analyst estimate and company claim |
 | AgiBot (China) | Several models | Largest shipper in 2025 per Omdia, with 5,168 units | Analyst estimate |
@@ -634,7 +634,7 @@ Robotics is the branch of AI where the gap between excitement and deployment is 
 
 **The skeptical case.** Data remains the bottleneck and the physical world's long tail is endless. Products need 99.9 percent reliability across thousands of tasks, not 90 percent on a rehearsed demo, and humanoid safety standards are unfinished. Self-driving cars, one task on roads built for it, took about 15 years from the DARPA challenges (government-sponsored races for driverless vehicles in 2004 to 2007, told in Chapter 50) to robotaxis at scale. General-purpose home robots are a harder problem.
 
-> **Definition — DARPA (Defense Advanced Research Projects Agency):** The US Department of Defense's agency for funding high-risk, high-reward research. It helped create the internet and early AI research, and its 2004 to 2007 Grand Challenge and Urban Challenge races launched the self-driving car industry.
+> **Definition — DARPA (Defense Advanced Research Projects Agency):** The US Department of Defense's agency for funding ambitious, high-risk research. It helped create the internet and early AI research, and its 2004 to 2007 Grand Challenge and Urban Challenge races launched the self-driving car industry.
 
 Signals worth watching in 2027 and beyond:
 

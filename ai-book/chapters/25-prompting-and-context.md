@@ -42,7 +42,7 @@ Here is how the three layers line up for the three biggest consumer chat apps, a
 
 Why should you care? Three reasons. First, the same app can quietly switch models (through a model picker, a router or a plan change), and answers change with it. Second, the same model appears in many products: the Claude models that power the Claude app also power coding tools, office add-ins and thousands of company chatbots. Third, when someone tells you "ChatGPT said X", the honest follow-up questions are: which model, with which settings, with web search on or off? Those details often matter more than the brand name. Chapter 24 covers how to compare models; this chapter is about getting the most out of whichever one you use.
 
-The first reason also explains why a chatbot can feel different from one week to the next. New versions arrive under the same app name and old ones are retired (OpenAI removed GPT-4o from ChatGPT in February 2026), and each version has its own tone, length and habits, which is why some people miss a retired model. Anthropic's help pages note that it has historically retired most models about a year after release, and that custom instructions and memory "can only go so far" toward recreating an old model's feel. Some switches happen inside a single chat: as of late 2026, Claude Opus 5 and Opus 5.5 run automated safety checks on every request and may fall back to an earlier Opus model for flagged requests in areas such as cybersecurity and biology, a behavior you can turn off in settings so that flagged requests pause instead. And many "it got worse" moments are not the model at all, but a long, cluttered conversation (see context rot, later in this chapter).
+The first reason also explains why a chatbot can feel different from one week to the next. New versions arrive under the same app name and old ones are retired (OpenAI removed GPT-4o from ChatGPT in February 2026), and each version has its own tone, length and habits, which is why some people miss a retired model. Anthropic's help pages note that it has historically deprecated most models (announced that they will be retired) about a year after release, and that custom instructions and memory "can only go so far" toward recreating an old model's feel. Some switches happen inside a single chat: as of late 2026, Claude Opus 5 and Opus 5.5 run automated safety checks on every request and may fall back to an earlier Opus model for flagged requests in areas such as cybersecurity and biology, a behavior you can turn off in settings so that flagged requests pause instead. And many "it got worse" moments are not the model at all, but a long, cluttered conversation (see context rot, later in this chapter).
 
 ### Tokens: what the model reads and what everyone pays for
 
@@ -140,9 +140,9 @@ How can a free tier exist? Every answer costs the provider real computing time (
 
 > **Definition — Usage limit:** A cap on how much you can use a chat app over a period of time. Anthropic's paid Claude plans, for example, have a five-hour session limit and a weekly limit, both shown in the app's usage settings.
 
-> **Definition — Length limit:** The most a single conversation can hold, set by the context window described above. When a chat reaches it, some apps summarize earlier messages so you can keep going (Claude does this automatically when code execution is on); otherwise you must start a new conversation.
+> **Definition — Length limit:** The most a single conversation can hold, set by the model's context window (the amount of text it can consider at once). When a chat reaches it, some apps summarize earlier messages so you can keep going (Claude does this automatically when code execution is on); otherwise you must start a new conversation.
 
-Because the model re-reads the whole chat on every turn, usage limits are token limits in disguise, and what drains them is predictable. Anthropic's list of factors includes message length, attachment size, conversation length, tools such as web search and research, model choice, effort level, and multi-step tasks such as running code or browsing. The habits that give better answers also stretch your allowance: start a fresh chat for each new topic, keep stable material in a project, and group related questions into one message. Errors such as "at capacity" or "overloaded" are different: they mean the provider's GPUs are fully booked at that moment, because no company sizes its fleet for every spike in demand (Chapter 4 and Chapter 43). And do not ask the chatbot about its own limits or prices: the instructions Anthropic gives Claude in its apps tell it to say it does not know and to point you to the help center.
+A usage limit caps how much you use over hours or a week; a length limit caps a single chat. Usage limits, as the tokens section said, are token limits in disguise, and because the model re-reads the whole chat on every turn, what drains them is predictable. Anthropic's list of factors includes message length, attachment size, conversation length, tools such as web search and research, model choice, effort level, and multi-step tasks such as running code or browsing. The habits that give better answers also stretch your allowance: start a fresh chat for each new topic, keep stable material in a project (a reusable workspace, covered later in this chapter), and group related questions into one message. Errors such as "at capacity" or "overloaded" are different: they mean the provider's GPUs are fully booked at that moment, because no company sizes its fleet for every spike in demand (Chapter 4 and Chapter 43). And do not ask the chatbot about its own limits or prices: the instructions Anthropic gives Claude in its apps tell it to say it does not know and to point you to the help center.
 
 ### Why models make things up
 
@@ -150,7 +150,7 @@ Because the model re-reads the whole chat on every turn, usage limits are token 
 
 A language model is trained to produce plausible continuations of text (Chapter 18). Plausible and true usually overlap, which is why chatbots are so useful, but they are not the same thing. Fluent, confident prose is exactly what the model is best at, whether or not the facts behind it are right. Research summarized in Chapter 18 also shows that training and testing have tended to reward a confident guess over an honest "I don't know".
 
-> **Definition — Knowledge cutoff:** The date after which a model saw no training data. Anything newer, from last week's news to this morning's prices, must come from web search or documents you provide. As of late 2026, Anthropic lists June 2026 as the reliable knowledge cutoff for its current models.
+> **Definition — Knowledge cutoff:** The date after which a model saw little or no training data. Anything newer, from last week's news to this morning's prices, must come from web search or documents you provide. As of late 2026, Anthropic lists June 2026 as the reliable knowledge cutoff for its current models.
 
 > **Definition — Grounding:** Tying a model's answer to specific sources you supply or it retrieves (documents, search results), rather than to its memory of training data. Grounded answers can be checked; ungrounded ones have to be trusted.
 
@@ -668,7 +668,7 @@ Because custom instructions ride along in every conversation, keep them short an
 
 ### Memory: notes the app keeps about you
 
-> **Definition — Memory (in chat apps):** Facts the app saves about you, or past chats it can search, which it inserts into the context of new conversations. Memory does not retrain the model; it is a set of notes pasted onto the desk.
+> **Definition — Chat memory:** Facts the app saves about you, or past chats it can search, which it inserts into the context of new conversations. Memory does not retrain the model; it is a set of notes pasted onto the desk.
 
 > **Definition — Incognito or temporary chat:** A chat mode that is not saved to your history and does not read from or write to memory. Useful for sensitive topics or for testing how the model behaves without your personal context.
 
@@ -742,9 +742,9 @@ The hard engineering problem in voice is speed: a conversation feels natural onl
 
 > **Definition — Connector:** An add-on that lets a chat app reach another service, such as Gmail, Google Drive, Slack, a calendar or GitHub, so the model can search or act on your data there. Different apps call these connectors, apps or plugins.
 
-> **Definition — MCP (Model Context Protocol):** An open standard, introduced by Anthropic in November 2024 and now governed under the Linux Foundation, that lets AI apps connect to outside tools and data through one common "plug". Most connectors are built on it (Chapter 28).
+> **Definition — MCP (Model Context Protocol):** An open standard for connecting AI applications to outside tools and data sources, introduced by Anthropic in November 2024 and governed since December 2025 by the Agentic AI Foundation, part of the nonprofit Linux Foundation. It works as one common "plug", and most connectors are built on it (Chapter 28).
 
-> **Definition — Linux Foundation:** A nonprofit organization that hosts and looks after hundreds of open-source projects, starting with the Linux operating system (Chapter 3), so that no single company controls them. Several open AI standards, including MCP, now live there.
+> **Definition — Linux Foundation:** A nonprofit organization that hosts and looks after more than a thousand open-source projects, starting with the Linux operating system (Chapter 3), so that no single company controls them. Several open AI standards, including MCP, now live there.
 
 > **Definition — OAuth:** The standard "Sign in with..." and "Allow access" system that lets one app use your account on another service without ever seeing your password, with permissions you can later revoke.
 
@@ -756,7 +756,7 @@ Connectors turn a chatbot into an assistant that can answer "What did the landlo
 
 > **Definition — Agent:** A system in which a model works toward a goal by repeatedly deciding on an action, using a tool, observing the result and continuing, with little step-by-step direction from a human.
 
-> **Definition — Agent mode:** A chat-app feature in which the AI carries out multi-step tasks, such as browsing websites, filling in forms or creating and editing files, rather than only answering.
+> **Definition — Agent mode:** A setting in a chat app or coding tool in which the AI carries out multi-step tasks, such as browsing websites, filling in forms, running commands or creating and editing files, rather than only answering.
 
 Agent features arrived in chat apps through 2025 and 2026. OpenAI's ChatGPT agent (July 2025) works on a virtual computer, its Atlas browser (October 2025) has an agent mode, and ChatGPT Work (July 2026) creates documents from your connected apps and files. Anthropic's Claude Cowork works in folders and tools you choose, shows each step, can run scheduled tasks while your laptop is closed, and asks for approval before significant actions and always before deleting anything; as of late 2026, Anthropic's product page says Cowork "is now just Claude", rolling out to Pro and Max subscribers. Google offers Gemini Agent and Gemini in Chrome.
 
@@ -915,7 +915,7 @@ For long work, the question becomes what is on the desk at each step. Long chats
 
 ## Key terms
 
-Large language model (LLM), Model, Chat app, Token, Tokenizer, Context window, KV cache, Stateless, Inference, Usage limit, Length limit, Hallucination, Knowledge cutoff, Grounding, Prompt, Prompt engineering, Zero-shot, one-shot and few-shot prompting, Delimiter, XML tags, Markdown, Prompt injection, System prompt, Role prompting, Chain-of-thought (CoT), Reasoning model, Effort, Adaptive thinking, Prompt chaining, Lost in the middle, Prefilling the response, Meta-prompting, Automatic prompt optimization, Sycophancy, Leading question, Silent truncation, Custom instructions, Memory (in chat apps), Incognito or temporary chat, Project, Custom GPT or Gem, Agent Skill, Artifact or Canvas, Multimodal, Code execution, Citation, Deep research, Voice mode, Connector, MCP (Model Context Protocol), Linux Foundation, OAuth, Agent, Agent mode, Data retention, Training opt-out, PII (personally identifiable information), Context engineering, Context rot, Compaction, Structured note-taking, Just-in-time retrieval, Sub-agent, Progressive disclosure
+Large language model (LLM), Model, Chat app, Token, Tokenizer, Context window, KV cache, Stateless, Inference, Usage limit, Length limit, Hallucination, Knowledge cutoff, Grounding, Prompt, Prompt engineering, Zero-shot, one-shot and few-shot prompting, Delimiter, XML tags, Markdown, Prompt injection, System prompt, Role prompting, Chain-of-thought (CoT), Reasoning model, Effort, Adaptive thinking, Prompt chaining, Lost in the middle, Prefilling the response, Meta-prompting, Automatic prompt optimization, Sycophancy, Leading question, Silent truncation, Custom instructions, Chat memory, Incognito or temporary chat, Project, Custom GPT or Gem, Agent Skill, Artifact or Canvas, Multimodal, Code execution, Citation, Deep research, Voice mode, Connector, MCP (Model Context Protocol), Linux Foundation, OAuth, Agent, Agent mode, Data retention, Training opt-out, PII (personally identifiable information), Context engineering, Context rot, Compaction, Structured note-taking, Just-in-time retrieval, Sub-agent, Progressive disclosure
 
 ## Exercises
 

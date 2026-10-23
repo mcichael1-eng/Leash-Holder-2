@@ -418,7 +418,7 @@ Models learn whatever patterns their data contains, including unfair ones. Bias 
 - **Measurement and label bias:** what is recorded is a poor stand-in for what matters. Using "was arrested" as a label for "committed a crime" bakes in patterns of policing.
 - **Proxies:** removing a sensitive column does not remove its signal if another column stands in for it.
 - **Feedback loops:** a model's decisions shape the next round of data.
-- **Evaluation bias:** the test set or benchmark used to judge the model does not represent the people it will serve, so its failures for some groups never show up in the score. The Gender Shades study described below found that two widely used face benchmarks were 79.6 and 86.2 percent lighter-skinned faces.
+- **Evaluation bias:** the test set or benchmark used to judge the model does not represent the people it will serve, so its failures for some groups never show up in the score. The Gender Shades study described below found that the faces in two widely used face benchmarks were 79.6 and 86.2 percent lighter-skinned.
 
 > **Definition — Sampling bias:** When collected data does not represent the population a model will be used on, so the model works worse for under-represented groups.
 
@@ -432,7 +432,7 @@ Models learn whatever patterns their data contains, including unfair ones. Bias 
 
 Sampling bias usually creeps in through the way data was gathered. Statisticians separate probability sampling, where every member of the population has a known chance of being picked (a random or stratified sample, Chapter 9), from nonprobability sampling, where something else decides who ends up in the data. The commonest kind is convenience sampling: using whatever is easiest to get. A clinic builds a skin-condition model from its own patients' photos, an app trains on the users who opted in, a survey counts whoever clicked the link. Two other kinds are snowball sampling, where each participant recruits the next so the data stays inside one social circle, and quota sampling, which fills a fixed number of places per group but picks people within each group however is convenient. Much of the data behind machine learning, including the web text that trains chatbots, is a convenience sample in this sense: it over-represents people who write online, in a handful of widely used languages (Chapter 19). Such data is not useless, but before trusting a model, ask who could never have ended up in its data.
 
-> **Definition — Nonprobability sampling:** Any way of collecting data in which people or items are not picked by chance with known odds, but by convenience, referral, quotas or someone's judgment. It is cheap and common, and it is where most sampling bias comes from.
+> **Definition — Nonprobability sampling:** Any way of collecting data in which people or items are not picked by chance with known odds, but by convenience, referral, quotas or someone's judgment. It is cheap and common, and a frequent source of sampling bias.
 
 > **Definition — Convenience sampling:** Collecting data from whatever sources are easiest to reach, such as existing customers, volunteers or one hospital's records, instead of drawing a random sample from the population the model will serve.
 
@@ -492,7 +492,7 @@ When real data is scarce, private or expensive, you can make more. Synthetic dat
 
 Synthetic data works best where results can be checked. A model can generate a million math problems with worked solutions, and a program can verify which answers are correct, keeping only those. The same goes for code that must pass tests. Where nothing checks the output, the generator's errors, biases and blind spots flow straight into the next model, and generated text tends to be cleaner, blander and more repetitive than real human writing. The commercial market is consolidating: NVIDIA acquired the synthetic-data company Gretel in 2025.
 
-> **Definition — NVIDIA:** The American company that designs most of the chips (GPUs) used to train and run AI models, along with the software and networking that tie them together. AI demand made it one of the most valuable companies in the world in the mid-2020s; Part VI covers its chips in depth.
+> **Definition — NVIDIA:** An American chip company that designs most of the GPUs used to train and run AI models, along with the networking gear that links them and CUDA, the software for programming them. AI demand made it one of the most valuable companies in the world in the mid-2020s; Part VI covers its chips in depth.
 
 The extreme risk is model collapse. In a 2024 paper in *Nature*, Ilia Shumailov and colleagues showed that when models are trained generation after generation on the output of earlier models, without fresh human data, they progressively lose the rare and unusual parts of the original distribution, and eventually produce narrow, degraded output. A toy calculation shows why rare things vanish first: if each generation keeps only 90 percent of the previous generation's rare phrasings, after 10 generations only 0.9¹⁰ ≈ 35 percent remain. Exercise 9 lets you watch a simple version happen in Colab, and shows that mixing in a steady share of fresh real data prevents it.
 
@@ -626,7 +626,7 @@ Data, dataset, structured data, semi-structured data, unstructured data, categor
 
 4. **[Easy] Explore a famous dataset without code.** Kaggle, 30 minutes.
    1. Create a free account at kaggle.com and open the Titanic competition dataset.
-   2. Read its data description and use the column previews to see which columns have missing values. Then download train.csv (you may first need to click Join Competition and accept the rules) and open it in Google Sheets. Choose Insert, then Pivot table; put Sex under Rows and Survived under Values, summarized by AVERAGE. Because Survived is 1 or 0, the average is the survival rate. Who survived more often? Repeat with Pclass (passenger class) under Rows.
+   2. Read its data description and use the column previews to see which columns have missing values. Then download train.csv (you may first need to click Join Competition and accept the rules) and open it in Google Sheets (File, Import, Upload). Choose Insert, then Pivot table; put Sex under Rows and Survived under Values, summarized by AVERAGE. Because Survived is 1 or 0, the average is the survival rate. Who survived more often? Repeat with Pclass (passenger class) under Rows.
    3. Open three public notebooks and read only their text cells. What cleaning and feature engineering did their authors do?
 
    **What you'll learn:** exploratory data analysis, missing values, and how real datasets are documented and shared.
@@ -694,7 +694,7 @@ Data, dataset, structured data, semi-structured data, unstructured data, categor
 8. **[Medium] Differential privacy with a coin flip.** Google Sheets, 30 minutes.
    1. In cell A2 type `=IF(RAND()<0.3,1,0)` (the hidden truth: 30 percent "yes"). In B2, `=IF(RAND()<0.5,1,0)` (first coin). In C2, `=IF(RAND()<0.5,1,0)` (second coin). In D2, `=IF(B2=1,A2,C2)` (the answer actually reported). Copy row 2 down to row 1001.
    2. In F1, compute the true rate: `=AVERAGE(A2:A1001)`. In F2, the reported "yes" rate: `=AVERAGE(D2:D1001)`. In F3, the private estimate: `=(F2-0.25)/0.5`.
-   3. Compare F1 and F3. Re-randomize a few times (type any number into an empty cell and press Enter, since every edit redraws all the random numbers; in Excel you can also press F9) and watch how close the estimate stays. Then try only 100 rows (change 1001 to 101 in the three formulas).
+   3. Compare F1 and F3. Re-randomize a few times (type any number into an empty cell and press Enter, since every edit redraws all the random numbers; in Excel you can also press F9) and watch how close the estimate stays. Then try only 100 rows (change 1001 to 101 in the two AVERAGE formulas in F1 and F2).
    4. Explain why no single row of column D reveals the truth about that person.
 
    **What you'll learn:** the randomized-response idea behind differential privacy, and the trade-off between privacy, noise and sample size.
@@ -783,9 +783,9 @@ Data, dataset, structured data, semi-structured data, unstructured data, categor
 
 ## Going deeper
 
-- **"Datasheets for Datasets"** (Gebru and colleagues, 2018, later in Communications of the ACM): the short paper that started modern dataset documentation; its questions are a ready-made checklist.
-
 > **Definition — ACM (Association for Computing Machinery):** The world's largest professional society for computer scientists. It publishes many of the field's journals, including the magazine Communications of the ACM, and gives the Turing Award, computing's best-known prize.
+
+- **"Datasheets for Datasets"** (Gebru and colleagues, 2018, later in Communications of the ACM): the short paper that started modern dataset documentation; its questions are a ready-made checklist.
 - **Ghost Work** (Mary L. Gray and Siddharth Suri, 2019): a readable investigation of the hidden human workforce behind AI and online platforms.
 - **Weapons of Math Destruction** (Cathy O'Neil, 2016): accessible stories of how biased data and feedback loops cause real harm.
 - **Atlas of AI** (Kate Crawford, 2021): a wide-angle look at the material, labor and data costs of AI.

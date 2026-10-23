@@ -34,7 +34,7 @@ Chip companies split the work in three different ways. Some only design chips an
 
 > **Definition — Foundry:** A company that manufactures chips designed by other companies. TSMC is by far the largest; Samsung Foundry, Intel Foundry and China's SMIC are others.
 
-> **Definition — SMIC (Semiconductor Manufacturing International Corporation):** China's largest foundry. Export controls keep the most advanced chipmaking machines (EUV, explained later in this chapter) out of its reach, so it makes its most advanced 7 nm-class chips, reportedly including Huawei's Ascend AI chips, with older equipment and extra steps.
+> **Definition — SMIC (Semiconductor Manufacturing International Corporation):** China's largest foundry (contract chipmaker). Export controls keep the most advanced chipmaking machines (EUV, explained later in this chapter) out of its reach, so it makes its most advanced chips (7 nm-class, and reportedly 5 nm-class), including, reportedly, Huawei's Ascend AI chips, with older equipment and extra steps.
 
 > **Definition — IDM (integrated device manufacturer):** A company that both designs and manufactures its own chips. Intel, Samsung and the memory makers SK hynix and Micron are IDMs.
 
@@ -181,7 +181,7 @@ Chapter 2 introduced the transistor as a switch with a **source**, a **drain**, 
 
 But shrinking created a problem. When the channel gets very short, the gate starts losing control of it. Current leaks through even when the switch is supposed to be off. This "leakage current" wastes power and turns into heat, and an AI chip already draws 700 to 1,400 watts. The fix, over and over, has been to wrap the gate around more of the channel, so it can squeeze the current off from more sides.
 
-> **Definition — Gate (of a transistor):** The control terminal of a transistor. A voltage on the gate switches the channel beneath it between conducting (on) and blocking (off), like a hand squeezing a garden hose.
+> **Definition — Transistor gate:** The control terminal of a transistor. A voltage on the gate switches the channel beneath it between conducting (on) and blocking (off), like a hand squeezing a garden hose.
 
 ```
 PLANAR             FINFET             GATE-ALL-AROUND
@@ -251,7 +251,7 @@ Here *wavelength* is the color of the light, *NA* (numerical aperture) is how wi
 
 > **Definition — Wavelength:** The distance between successive peaks of a light wave. Shorter wavelengths can draw finer details, the way a fine pen draws thinner lines than a marker.
 
-> **Definition — Resolution (lithography):** The smallest feature, or the tightest spacing of lines, that a lithography tool can print in a single exposure.
+> **Definition — Lithography resolution:** The smallest feature, or the tightest spacing of lines, that a lithography tool can print in a single exposure.
 
 > **Definition — Numerical aperture (NA):** A measure of how wide a cone of light a lens or mirror system can gather and focus. Higher NA means finer detail, but it requires larger and more precise optics.
 
@@ -466,7 +466,7 @@ TSMC's version of this is called CoWoS, short for chip-on-wafer-on-substrate. It
 - **CoWoS-L** uses small "local silicon interconnect" bridges embedded in a larger organic interposer. The bridges provide dense wiring only where dies meet, which allows much bigger packages than one slab of silicon would. Blackwell and Rubin use it.
 - **CoWoS-R** uses an organic interposer with fine redistribution wiring and no silicon at all, trading some density for cost.
 
-> **Definition — CoWoS (Chip-on-Wafer-on-Substrate):** TSMC's family of 2.5D packaging technologies that place processor dies and HBM stacks side by side on an interposer. Its capacity has been a key bottleneck for AI accelerators since 2023.
+> **Definition — CoWoS (Chip-on-Wafer-on-Substrate):** TSMC's family of advanced (2.5D) packaging technologies that place processor dies and HBM stacks side by side on an interposer, a thin slab with dense wiring. Its limited capacity has been a key bottleneck for AI chip supply since 2023.
 
 The next step is to stack dies directly on top of each other. TSMC's SoIC technology does this with **hybrid bonding**: the copper pads on two polished dies are pressed together and fused directly, with no solder bumps in between. That allows many times more connections per square millimeter than solder bumps. AMD already stacks dies this way, for example placing extra cache memory on top of processor dies, and stacking compute dies on top of input/output dies in its MI300 family.
 
@@ -548,7 +548,7 @@ Now you have every piece. Here is the whole chain, step by step. It starts with 
 
 > **Definition — EDA (electronic design automation):** The software used to design and verify chips. Three companies dominate: Synopsys and Cadence (US) and Siemens EDA (owned by Germany's Siemens). No leading-edge chip can be designed without their tools.
 
-Designers also license proven building blocks, which the industry calls IP (short for intellectual property, not the internet's IP addresses); Arm (UK) licenses the CPU designs used in NVIDIA's Grace and Vera CPUs, Google's Axion and nearly every phone. The designers themselves are NVIDIA, AMD, Broadcom (which co-designs Google's TPUs and chips for Meta and OpenAI), Marvell (AWS and Microsoft work) and the cloud giants' own teams. When a design is finished, it is "taped out."
+Designers also license proven building blocks, which the industry calls IP (short for intellectual property, not the internet's IP addresses); Arm (UK) licenses ready-made CPU designs, used in NVIDIA's Grace, Google's Axion and most phones, and also licenses its instruction set to companies that design their own Arm-compatible cores, such as NVIDIA for its Vera CPU and Apple for the iPhone. The designers themselves are NVIDIA, AMD, Broadcom (which co-designs Google's TPUs and chips for Meta and OpenAI), Marvell (AWS and Microsoft work) and the cloud giants' own teams. When a design is finished, it is "taped out."
 
 > **Definition — Tape-out:** The moment a chip design is finalized and sent to the foundry to make photomasks and start manufacturing. The name comes from the days when designs were shipped on magnetic tape.
 
@@ -780,7 +780,7 @@ Because a few companies in a few countries control these steps, chips are now ge
 
 ## Key terms
 
-Semiconductor, Integrated circuit (IC) / chip, Die, Fabless company, Foundry, SMIC (Semiconductor Manufacturing International Corporation), IDM (integrated device manufacturer), Silicon, Polysilicon, Ingot, Wafer, Cleanroom, Fab (fabrication plant), Front-end-of-line (FEOL), Back-end-of-line (BEOL), Deposition, Photoresist, Photolithography, Photomask (reticle), Etching, Doping, CMP (chemical mechanical planarization), Gate (of a transistor), Planar transistor, FinFET, Gate-all-around (GAA) / nanosheet transistor, Backside power delivery, Process node, Lithography scanner, Wavelength, Resolution (lithography), Numerical aperture (NA), DUV (deep ultraviolet) lithography, Immersion lithography, Multi-patterning, EUV (extreme ultraviolet) lithography, High-NA EUV, Reticle limit, Yield, Defect density (D0), Binning, Chiplet, Advanced packaging, Interposer, CoWoS (Chip-on-Wafer-on-Substrate), Hybrid bonding, UCIe (Universal Chiplet Interconnect Express), OSAT (outsourced semiconductor assembly and test), HBM (High Bandwidth Memory), TSV (through-silicon via), Base die (logic die), EDA (electronic design automation), Tape-out, ODM (original design manufacturer), Choke point, Export controls, Entity List, TPP (Total Processing Performance), Reshoring, CHIPS and Science Act, Section 232 tariff
+Semiconductor, Integrated circuit (IC) / chip, Die, Fabless company, Foundry, SMIC (Semiconductor Manufacturing International Corporation), IDM (integrated device manufacturer), Silicon, Polysilicon, Ingot, Wafer, Cleanroom, Fab (fabrication plant), Front-end-of-line (FEOL), Back-end-of-line (BEOL), Deposition, Photoresist, Photolithography, Photomask (reticle), Etching, Doping, CMP (chemical mechanical planarization), Transistor gate, Planar transistor, FinFET, Gate-all-around (GAA) / nanosheet transistor, Backside power delivery, Process node, Lithography scanner, Wavelength, Lithography resolution, Numerical aperture (NA), DUV (deep ultraviolet) lithography, Immersion lithography, Multi-patterning, EUV (extreme ultraviolet) lithography, High-NA EUV, Reticle limit, Yield, Defect density (D0), Binning, Chiplet, Advanced packaging, Interposer, CoWoS (Chip-on-Wafer-on-Substrate), Hybrid bonding, UCIe (Universal Chiplet Interconnect Express), OSAT (outsourced semiconductor assembly and test), HBM (High Bandwidth Memory), TSV (through-silicon via), Base die (logic die), EDA (electronic design automation), Tape-out, ODM (original design manufacturer), Choke point, Export controls, Entity List, TPP (Total Processing Performance), Reshoring, CHIPS and Science Act, Section 232 tariff
 
 ## Exercises
 
@@ -893,7 +893,7 @@ Semiconductor, Integrated circuit (IC) / chip, Die, Fabless company, Foundry, SM
 - **Asianometry (YouTube channel).** Hundreds of well-researched videos on semiconductor history, lithography, packaging, memory and the Asian chip industry.
 - **Wikipedia, "Semiconductor device fabrication" and "Extreme ultraviolet lithography."** Solid, well-referenced starting points with links to the underlying technical sources.
 - **TSMC's technology pages (tsmc.com).** The foundry's own descriptions of N2, A16 and its CoWoS and SoIC packaging families.
-- **CSET (Center for Security and Emerging Technology), "AI Chips: What They Are and Why They Matter" (2020) and later reports.** Accessible policy-oriented analysis of AI chips, supply chains and export controls.
+- **CSET (Center for Security and Emerging Technology, a research center at Georgetown University in Washington, D.C., that studies AI, chips and national security), "AI Chips: What They Are and Why They Matter" (2020) and later reports.** Accessible policy-oriented analysis of AI chips, supply chains and export controls.
 - **SemiAnalysis (newsletter).** Detailed, industry-focused analysis of packaging, HBM and fab capacity; some articles are paywalled, but free posts are useful.
 - **Epoch AI, "Trends" (epoch.ai/trends).** Data on compute growth, chip price-performance and data-center costs that connects manufacturing to the AI boom.
 - **T. R. Reid, *The Chip* (revised 2001).** A readable history of the invention of the integrated circuit, for readers who want the origin story.

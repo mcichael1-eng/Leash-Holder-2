@@ -18,7 +18,7 @@ Chapter 32 (From Transistor to Accelerator: CPUs, GPUs, TPUs and FLOPs) is essen
 
 ## The waiting chef
 
-At the end of Chapter 32 we found a puzzle. One token from a 70-billion-parameter model needs about 140 billion operations. An H100 GPU does about 989 trillion operations per second in 16-bit math, so the arithmetic for one token takes about 0.14 milliseconds. Yet a single user chatting with such a model on one GPU sees tens of tokens per second, which is tens of milliseconds per token. The GPU spends more than 99% of its time not doing math.
+At the end of Chapter 32 we found a puzzle. One token from a 70-billion-parameter model needs about 140 billion operations. An H100 GPU does about 989 trillion operations per second in 16-bit math, so the arithmetic for one token takes about 0.14 milliseconds. Yet a single user chatting with such a model on one GPU (on an 80 GB H100 that means 8-bit or 4-bit weights, since the 140 GB of 16-bit weights do not fit) sees tens of tokens per second, which is tens of milliseconds per token. The GPU spends more than 99% of its time not doing math.
 
 What is it doing? Waiting. To produce each token, the model must use every one of its 70 billion weights, and those weights live in memory, not inside the tensor cores. Each token requires streaming the whole model from memory to the compute units. The math is fast; the delivery is slow.
 
@@ -330,7 +330,7 @@ The dies are joined by tiny solder bumps (microbumps) and the TSVs. The finished
 
 > **Definition — Interposer:** A thin slab of silicon (or organic material with small silicon bridges) with very fine wiring, on which the GPU dies and HBM stacks sit side by side. It carries thousands of connections between them over a few millimeters.
 
-> **Definition — CoWoS (Chip-on-Wafer-on-Substrate):** TSMC's packaging technology that places GPU dies and HBM stacks side by side on a silicon interposer. Its limited capacity has been a key bottleneck for AI accelerators since 2023.
+> **Definition — CoWoS (Chip-on-Wafer-on-Substrate):** TSMC's family of advanced packaging technologies that place GPU dies and HBM stacks side by side on an interposer, a thin slab with dense wiring. Its limited capacity has been a key bottleneck for AI chip supply since 2023.
 
 ```mermaid
 flowchart TD

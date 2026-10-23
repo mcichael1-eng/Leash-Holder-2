@@ -379,13 +379,13 @@ NVIDIA marketed its GeForce 256 (1999) as the first GPU. In the early 2000s, GPU
 
 In 2006–07, NVIDIA released a way to program its GPUs directly.
 
-> **Definition — CUDA:** NVIDIA's programming platform, available since 2006–07, for running general calculations on its GPUs. Around it grew nearly two decades of libraries, tools and developer habits, which together form NVIDIA's biggest competitive advantage.
+> **Definition — CUDA:** NVIDIA's software platform, released in 2007, that lets programmers run general calculations on its GPUs. Around it grew nearly two decades of libraries, tools and developer habits, which together form NVIDIA's biggest competitive advantage.
 
 > **Definition — Kernel (GPU kernel):** A small program that runs on the GPU to perform one operation, such as a matrix multiply or the attention step of a Transformer. Thousands of copies run at once, one per thread. Writing fast kernels is one of the most prized skills in AI.
 
 For years, CUDA was used mainly for physics simulations, oil exploration and finance. Then in 2012 a neural network called AlexNet, trained by Alex Krizhevsky, Ilya Sutskever and Geoffrey Hinton on two NVIDIA GTX 580 gaming cards, won the ImageNet image-recognition competition by a wide margin (Chapter 14 tells that story). Deep learning and GPUs have been inseparable ever since. NVIDIA reshaped itself around AI: Volta (2017) added tensor cores, Ampere's A100 (2020) added new number formats and sparsity, Hopper's H100 (2022) added 8-bit floating point, Blackwell (2024–25) joined two dies into one GPU with 4-bit support, and Vera Rubin (2026) moved to HBM4 memory with 336 billion transistors, reportedly on TSMC's 3-nanometer-class manufacturing process. Chapter 35 covers the industry side of that story.
 
-> **Definition — TSMC (Taiwan Semiconductor Manufacturing Company):** The Taiwanese company that is the world's largest contract chip manufacturer. It builds the most advanced chips designed by NVIDIA, AMD, Apple, Google and many others, which design chips but do not make them themselves (Chapter 36).
+> **Definition — TSMC (Taiwan Semiconductor Manufacturing Company):** The Taiwanese company that is the world's largest contract chipmaker (foundry) and manufactures nearly all advanced AI chips to their designers' blueprints. Its customers include NVIDIA, AMD, Apple and Google, which design chips but do not make them themselves (Chapter 36).
 
 > **Definition — HBM (High Bandwidth Memory):** Memory chips stacked vertically and placed right beside an AI processor in the same package, joined to it by thousands of short wires so they can deliver terabytes of data per second. HBM3, HBM3E and HBM4 are successive generations; Chapter 33 covers HBM in depth.
 
@@ -547,7 +547,7 @@ You already know scientific notation: Avogadro's number is written 6.02 × 10^23
 
 For example, 6.5 in binary is 110.1 (110 is 6, and the 1 just after the binary point means one half, as 0.5 does in decimal), which is 1.101 × 2^2. A computer stores the sign (positive), the exponent (2) and the digits after the leading 1 (".101"). More exponent bits mean a wider range of sizes; more mantissa bits mean finer detail.
 
-> **Definition — Precision:** How many bits a format uses per number, and therefore how finely it can tell nearby values apart. Higher precision means more detail; lower precision means faster, cheaper math with more rounding error.
+> **Definition — Numerical precision:** How many bits a format uses per number, and therefore how finely it can tell nearby values apart. Higher precision means more detail; lower precision means faster, cheaper math with more rounding error.
 
 > **Try it:** Ask your chatbot: "Show step by step how the decimal number 0.1 is stored in FP32, BF16 and FP8 E4M3, and what value each format actually holds." You will see that none of them can store 0.1 exactly, and that the error grows as the bits shrink. Then ask why that rarely matters for a neural network.
 
@@ -684,7 +684,7 @@ We now have all the pieces: parallel workers, matrix units, data reuse and low p
 
 > **Definition — ASIC (Application-Specific Integrated Circuit):** A chip designed for one job. AI ASICs such as Google's TPU, Amazon's Trainium, Microsoft's Maia and Meta's MTIA trade the flexibility of a GPU for better efficiency on AI math.
 
-> **Definition — TPU (Tensor Processing Unit):** Google's family of AI ASICs, built around large systolic arrays and linked by Google's own chip-to-chip network. First deployed in 2015, it reached its eighth generation (TPU 8t and TPU 8i) in 2026.
+> **Definition — TPU (Tensor Processing Unit):** Google's family of chips designed specifically for neural-network math, first deployed in Google's data centers in 2015. They are AI ASICs built around large systolic arrays and linked by Google's own chip-to-chip network, and reached their eighth generation (TPU 8t and TPU 8i) in 2026.
 
 The TPU's history shows how AI hardware evolved:
 
@@ -697,7 +697,7 @@ The TPU's history shows how AI hardware evolved:
 
 Amazon's Trainium, Microsoft's Maia and Meta's MTIA follow the same logic. A cloud company builds its own chip to lower cost, secure supply and gain bargaining power with NVIDIA. Chapter 35 tells that story.
 
-> **Definition — MTIA (Meta Training and Inference Accelerator):** Meta's own family of AI chips (ASICs), first built to run the recommendation models that rank posts and ads on Facebook and Instagram, and part of Meta's effort to rely less on bought GPUs.
+> **Definition — MTIA (Meta Training and Inference Accelerator):** Meta's own family of custom AI chips (ASICs), built first to run the recommendation and ranking models behind Facebook and Instagram feeds. They are part of Meta's effort to rely less on bought GPUs.
 
 ### Inference specialists
 
@@ -717,7 +717,7 @@ Apple has included a Neural Engine in its phone chips since the A11 (2017). Micr
 
 > **Definition — FPGA (Field-Programmable Gate Array):** A chip whose circuitry can be rewired after manufacturing. It is slower than an ASIC but flexible, and is used for prototyping new designs and for niche, low-latency AI tasks.
 
-> **Definition — Superchip:** NVIDIA's term for a CPU and one or more GPUs tightly linked on one board with a fast chip-to-chip connection, such as Grace plus two Blackwell GPUs (GB200) or Vera plus two Rubin GPUs.
+> **Definition — Superchip:** NVIDIA's term for a CPU and one or two GPUs tightly linked on one board with a fast chip-to-chip connection, such as Grace plus two Blackwell GPUs (GB200) or Vera plus two Rubin GPUs.
 
 ### The families compared
 
@@ -731,7 +731,7 @@ Apple has included a Neural Engine in its phone chips since the A11 (2017). Micr
 
 *Table 32.6: The four main families of chips that run AI, by design philosophy.*
 
-> **Definition — AWS (Amazon Web Services):** Amazon's cloud-computing business, the largest company renting out computing power and storage over the internet. It also designs its own AI chips, Trainium and Inferentia (Chapter 35).
+> **Definition — AWS (Amazon Web Services):** Amazon's cloud-computing business, the world's largest cloud provider, which rents out computing power, storage and AI chips over the internet. It also designs its own AI chips, Trainium and Inferentia (Chapter 35).
 
 Now the real numbers. These are vendor peak figures as of late 2026, which you should read with the three spec-sheet questions in mind. "Dense" unless marked otherwise.
 
@@ -814,7 +814,7 @@ The recipe is not only for AI. After the TPU, Google applied it to video, the la
 
 > **Definition — Transcoding:** Converting a video from one compressed format, resolution or quality level into another, for example turning one uploaded 4K file into a dozen versions for different screens and network speeds. It is one of the heaviest computing jobs in a video service.
 
-Google's answer was the VCU (Video Coding Unit), a chip full of video encoder and decoder cores, with two chips per board and ten boards per server. Google reports that VCUs gave about 8 to 20 times the throughput of software encoding on CPUs for its main video formats, an order-of-magnitude gain in efficiency, and that they have been used for years by YouTube, Google Meet and Google Photos. The fourth edition of Barroso, Hölzle and Ranganathan's *The Data Center as a Computer* (December 2025) presents video and networking chips as the next wave of accelerators beyond machine learning.
+Google's answer was the VCU (Video Coding Unit), a chip full of video encoder and decoder cores, with two chips per board and ten boards per server. Google reports that VCUs gave about 8 to 20 times the throughput of software encoding on CPUs for its main video formats, an order-of-magnitude gain in efficiency, and that they have been used for years by YouTube, Google Meet and Google Photos. The fourth edition of Barroso, Hölzle and Ranganathan's *The Data Center as a Computer* (December 2025) adds video and networking chips as new kinds of accelerator beyond machine learning.
 
 > **Key idea:** A domain-specific chip wins by doing less: it drops general-purpose machinery, keeps data close, uses small numbers and lets a compiler plan the work. The price is flexibility, so the bet pays only when the domain, like neural networks, is huge and stable.
 
@@ -850,7 +850,7 @@ sequenceDiagram
 ```
 *Figure 32.12: One decode step on a GPU. Notice how often the SMs wait on HBM; Chapter 33 is about that wait.*
 
-Now a puzzle to carry into the next chapter. One token of our 70B model needs 140 billion operations. At the H100's ~989 TFLOPS, that is 140 × 10^9 ÷ 989 × 10^12 ≈ 0.14 milliseconds of math. But real chatbots running such a model on one GPU produce something like tens of tokens per second for a single user, which is tens of milliseconds per token, a hundred times slower than the math alone. Where does the time go?
+Now a puzzle to carry into the next chapter. One token of our 70B model needs 140 billion operations. At the H100's ~989 TFLOPS, that is 140 × 10^9 ÷ 989 × 10^12 ≈ 0.14 milliseconds of math. But real chatbots running such a model on one H100 (which works only with 8-bit or 4-bit weights, because in BF16 its 140 GB of weights do not fit in 80 GB; see Table 32.5) produce something like tens of tokens per second for a single user, which is tens of milliseconds per token, a hundred times slower than the math alone. Where does the time go?
 
 The answer is step 3. To produce each token, the GPU must read every one of the model's weights from memory, and memory is far slower than the tensor cores. That is the memory wall, and it is the subject of Chapter 33.
 
@@ -868,7 +868,7 @@ Finally, the chips have become so fast at math that they spend most of their tim
 
 ## Key terms
 
-Accelerator, Transistor, Logic gate, Multiply-accumulate (MAC), Clock speed (GHz), Die, CPU (Central Processing Unit), Core, Thread, Cache, Instruction set architecture (ISA), x86, Arm, RISC-V, SIMD (Single Instruction, Multiple Data), Moore's law, Dennard scaling, Power wall, Multicore processor, Matrix multiplication (GEMM), Tensor, FLOP (floating-point operation), FLOPS (FLOP/s), TFLOPS, PFLOPS (PF) and EFLOPS, GB300 NVL72, Peak performance, MFU (Model FLOPs Utilization), Structured sparsity (2:4), TOPS (Tera Operations Per Second), Parallelism, SIMT (Single Instruction, Multiple Threads), Warp, Latency, Throughput, Amdahl's law, GPU (Graphics Processing Unit), CUDA, Kernel (GPU kernel), TSMC (Taiwan Semiconductor Manufacturing Company), HBM (High Bandwidth Memory), Streaming multiprocessor (SM), CUDA core, Tensor core, Systolic array, Floating point, Precision, FP32, TF32 (TensorFloat-32), FP16 (half precision), BF16 (bfloat16), FP8, FP4, INT8 / INT4, Microscaling (MX) formats, NVFP4, Mixed precision, Quantization, Ternary weights, ASIC (Application-Specific Integrated Circuit), TPU (Tensor Processing Unit), MTIA (Meta Training and Inference Accelerator), LPU (Language Processing Unit), LPX, Wafer-scale engine (WSE), NPU (Neural Processing Unit), FPGA (Field-Programmable Gate Array), Superchip, AWS (Amazon Web Services), MI355X and MI455X, Domain-specific architecture (DSA), Dark silicon, Image signal processor (ISP), Transcoding
+Accelerator, Transistor, Logic gate, Multiply-accumulate (MAC), Clock speed (GHz), Die, CPU (Central Processing Unit), Core, Thread, Cache, Instruction set architecture (ISA), x86, Arm, RISC-V, SIMD (Single Instruction, Multiple Data), Moore's law, Dennard scaling, Power wall, Multicore processor, Matrix multiplication (GEMM), Tensor, FLOP (floating-point operation), FLOPS (FLOP/s), TFLOPS, PFLOPS (PF) and EFLOPS, GB300 NVL72, Peak performance, MFU (Model FLOPs Utilization), Structured sparsity (2:4), TOPS (Tera Operations Per Second), Parallelism, SIMT (Single Instruction, Multiple Threads), Warp, Latency, Throughput, Amdahl's law, GPU (Graphics Processing Unit), CUDA, Kernel (GPU kernel), TSMC (Taiwan Semiconductor Manufacturing Company), HBM (High Bandwidth Memory), Streaming multiprocessor (SM), CUDA core, Tensor core, Systolic array, Floating point, Numerical precision, FP32, TF32 (TensorFloat-32), FP16 (half precision), BF16 (bfloat16), FP8, FP4, INT8 / INT4, Microscaling (MX) formats, NVFP4, Mixed precision, Quantization, Ternary weights, ASIC (Application-Specific Integrated Circuit), TPU (Tensor Processing Unit), MTIA (Meta Training and Inference Accelerator), LPU (Language Processing Unit), LPX, Wafer-scale engine (WSE), NPU (Neural Processing Unit), FPGA (Field-Programmable Gate Array), Superchip, AWS (Amazon Web Services), MI355X and MI455X, Domain-specific architecture (DSA), Dark silicon, Image signal processor (ISP), Transcoding
 
 ## Exercises
 

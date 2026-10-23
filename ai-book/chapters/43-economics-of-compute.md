@@ -87,9 +87,9 @@ Call it roughly **$10 to 18 million per MW** for the building and its electromec
 
 The chips cost several times more than the building. Prices are rarely published, but reported figures give the scale: an H100 reportedly sold for about $25,000 to $40,000, and a GB200 or GB300 NVL72 rack (72 GPUs plus CPUs, switches and cooling) reportedly for about $3 to 4 million. Third-party estimates (low confidence) put a Vera Rubin NVL72 rack at about $5 to 7 million.
 
-> **Definition — NVIDIA:** The US company that designs most of the GPUs used for AI, along with the software (CUDA) and networking that tie them together. It does not manufacture its chips; the Taiwanese contract chipmaker TSMC does. Its data-center GPU generations (H100, Blackwell, Vera Rubin) fill most AI data centers.
+> **Definition — NVIDIA:** An American chip company that designs most of the GPUs used to train and run AI models, along with the networking gear that links them and CUDA, the software for programming them. It does not manufacture its chips; the Taiwanese contract chipmaker TSMC does. Its data-center GPU generations (Hopper, which includes the H100, then Blackwell and Rubin) fill most AI data centers.
 
-> **Definition — GB200 and GB300:** NVIDIA's "Grace Blackwell" modules, each pairing one Grace CPU with two Blackwell GPUs (the original Blackwell in the GB200, the upgraded Blackwell Ultra in the GB300). An NVL72 rack holds 36 of them, so 72 GPUs.
+> **Definition — GB200 and GB300:** NVIDIA's "Grace Blackwell" superchips, each pairing one Grace CPU with two Blackwell GPUs (the original B200 in the GB200, the upgraded B300, or Blackwell Ultra, in the GB300). An NVL72 rack holds 36 of them, so 72 GPUs.
 
 **Worked example: IT cost per MW.** A Blackwell-class GPU slot draws about 1.8 kW as its share of an NVL72 rack (Chapter 39). Add its share of the network switches, storage and other gear outside the rack, plus some headroom, and plan on about 2.2 kW of IT capacity per slot, so a megawatt holds roughly **450 GPU slots**. At about **$50,000 per slot** all-in, that is 450 × $50,000 ≈ **$22.5 million per MW**, more than the building.
 
@@ -174,7 +174,7 @@ Notice also the **cluster premium**: an H100 in Lambda's pre-wired multi-node cl
 
 **Neoclouds versus hyperscalers.** Neoclouds (CoreWeave, Lambda, Nebius, RunPod and others) compete on price, availability and simplicity. Hyperscalers (AWS, Azure, Google Cloud, Oracle) usually charge more for on-demand GPUs but bundle storage, security, databases and enterprise contracts. For the biggest customers, every provider negotiates private multi-year deals, and those prices are what really drive the industry.
 
-> **Definition — AWS (Amazon Web Services):** Amazon's cloud-computing business, one of the three biggest hyperscalers alongside Microsoft Azure and Google Cloud. It rents out servers, storage, NVIDIA GPUs and Amazon's own AI chips (Trainium) by the hour or on long contracts.
+> **Definition — AWS (Amazon Web Services):** Amazon's cloud-computing business, the world's largest cloud provider, which rents out computing power, storage and AI chips over the internet. It is the biggest of the three largest public clouds, ahead of Microsoft Azure and Google Cloud, and rents NVIDIA GPUs and Amazon's own Trainium chips by the hour or on long contracts.
 
 **Worked example: renting a cluster.**
 
@@ -346,9 +346,9 @@ TCO is also why the biggest buyers design their own chips. NVIDIA's gross margin
 - Microsoft claims its Maia 200, its in-house AI chip, has 30% better performance per dollar than its existing fleet.
 - AMD claims its Helios rack, its rack-scale rival to NVIDIA's, delivers up to 30% more tokens per dollar than an NVIDIA Vera Rubin NVL72.
 
-> **Definition — MTIA (Meta Training and Inference Accelerator):** Meta's own custom AI chip, designed with Broadcom and used mainly to run the recommendation and ranking models behind Facebook and Instagram feeds.
+> **Definition — MTIA (Meta Training and Inference Accelerator):** Meta's own family of custom AI chips, built first to run the recommendation and ranking models behind Facebook and Instagram feeds. They are designed with Broadcom.
 
-> **Definition — AMD (Advanced Micro Devices):** A US chip designer that is NVIDIA's main rival in AI GPUs (its Instinct line and Helios racks) and a major maker of ordinary computer processors.
+> **Definition — AMD (Advanced Micro Devices):** An American company that designs CPUs for PCs and servers and is NVIDIA's main rival in AI GPUs, with its Instinct line of data-center accelerators. It also sells whole AI racks, called Helios.
 
 > **Try it:** Ask a chatbot: "Build me a table of every cost that goes into the total cost of ownership of an AI GPU over five years, and mark which ones are usually left out of simple estimates." Compare its list with Figure 43.3. Which costs did it add that this chapter skipped?
 
@@ -449,9 +449,9 @@ Follow the money from your subscription back to the silicon. Each layer takes it
 
 **Layer 1: chips.** NVIDIA is the clearest winner of the buildout so far. In its quarter ending July 26, 2026, it reported revenue of **$96.2 billion** (up 106% from a year earlier), of which **$89.0 billion** was data center revenue, a GAAP gross margin (GAAP: measured under standard US accounting rules) of **75.0%** and net income of **$59.7 billion**. It guided to (gave investors a forecast of) about $108 billion for the next quarter. Margins this high are a sign of scarcity and of the CUDA software moat (Chapter 35). Memory makers (SK hynix, Samsung, Micron) also benefit from tight HBM supply, and TSMC from manufacturing nearly all of the chips (Chapter 36).
 
-> **Definition — TSMC (Taiwan Semiconductor Manufacturing Company):** The Taiwanese contract chipmaker (foundry) that manufactures nearly all advanced AI chips, including NVIDIA's, AMD's and Google's, to their customers' designs.
+> **Definition — TSMC (Taiwan Semiconductor Manufacturing Company):** The Taiwanese company that is the world's largest contract chipmaker (foundry) and manufactures nearly all advanced AI chips to their designers' blueprints. Its customers include NVIDIA, AMD and Google.
 
-> **Definition — SK hynix:** A South Korean memory-chip maker, part of the SK business group, that has led the market for the high-bandwidth memory (HBM) stacked beside AI GPUs and is NVIDIA's main HBM supplier.
+> **Definition — SK hynix:** A South Korean memory-chip maker, part of the SK business group, that leads the market for the high-bandwidth memory (HBM) stacked beside AI chips and has been NVIDIA's main HBM supplier since HBM3.
 
 **Layer 2: servers and racks.** Contract manufacturers such as Foxconn, Quanta, Wistron and Wiwynn, and brands such as Supermicro and Dell, assemble racks. They handle enormous volumes but keep a much thinner slice of each dollar, because most of a rack's value is the chips they buy.
 
@@ -493,7 +493,7 @@ Here is what the five biggest spenders said they would spend, as of their earnin
 | Alphabet (Google) | About $91.5 billion | $195–205 billion, raised twice during 2026 |
 | Amazon | About $131–135 billion | About $220 billion, including non-AI spending; higher memory prices cited |
 | Meta | About $72.2 billion | $130–145 billion |
-| Microsoft | About $118 billion (calendar basis unclear) | About $175 billion, after a lease reclassification cut an April guide of about $190 billion for calendar 2026 (reports differ on whether the new figure is calendar 2026 or fiscal 2027); $41 billion including finance leases in April–June 2026 alone, about two-thirds on short-lived assets such as GPUs |
+| Microsoft | About $118 billion (calendar basis unclear) | About $175 billion, after a lease reclassification cut an April forecast of about $190 billion for calendar 2026 (reports differ on whether the new figure is calendar 2026 or fiscal 2027); $41 billion including finance leases in April–June 2026 alone, about two-thirds on short-lived assets such as GPUs |
 | Oracle | Financed fiscal 2026 with about $43 billion of debt and $5 billion of equity | Plans about $40 billion of combined debt and equity in fiscal 2027 (to May 2027), roughly half of it debt (FactSet) |
 
 *Table 43.7: Big Tech capital spending, 2025 and 2026 plans. 2025 figures and several 2026 figures come from news reports; company definitions vary.*
@@ -537,7 +537,7 @@ Amazon placed a $25 billion bond that was 2.5 times oversubscribed, meaning inve
 
 > **Definition — Equity offering:** Selling new shares to raise cash. An "at-the-market" program sells shares gradually into the stock market over time instead of all at once.
 
-On June 1, 2026, Alphabet announced an **$80 billion equity program**: $30 billion of underwritten public offerings (half common stock, half mandatory convertible preferred shares), a $40 billion at-the-market program, and a $10 billion private placement to Berkshire Hathaway; when the offerings were priced the next day, the total grew to about $84.75 billion. (In an underwritten offering, banks buy the new shares and resell them to investors. Preferred shares are a special class of share; "mandatory convertible" ones must turn into ordinary shares by a set date. A private placement sells shares directly to one buyer, here Warren Buffett's company Berkshire Hathaway.) According to its SEC filings, the underwritten offerings and the Berkshire placement fund general corporate purposes, including capital spending on AI infrastructure, while about $30 billion of the at-the-market proceeds was earmarked for Alphabet's 2026 tax obligations. A company that used to buy back its own shares was now selling new ones.
+On June 1, 2026, Alphabet announced an **$80 billion equity program**: $30 billion of underwritten public offerings (half common stock, half mandatory convertible preferred shares), a $40 billion at-the-market program, and a $10 billion private placement to Berkshire Hathaway; when the offerings were priced the next day, the total grew to about $84.75 billion. (In an underwritten offering, banks buy the new shares and resell them to investors. Preferred shares are a special class of share; "mandatory convertible" ones must turn into ordinary shares by a set date. A private placement sells shares directly to one buyer, here Warren Buffett's company Berkshire Hathaway.) According to its SEC filings, the underwritten offerings and the Berkshire placement fund general corporate purposes, including capital spending on AI infrastructure, while about $30 billion of the at-the-market proceeds was earmarked for 2026 tax obligations tied to employees' stock awards. A company that used to buy back its own shares was now selling new ones.
 
 > **Definition — SEC (Securities and Exchange Commission):** The US government agency that regulates stock and bond markets. Public companies must file regular financial reports with it (a yearly 10-K and three quarterly 10-Qs) plus documents for every share or bond sale, and anyone can read them free.
 
@@ -595,7 +595,7 @@ The weakness of GPU collateral is the depreciation debate again: if GPUs lose va
 
 Examples from 2025 and 2026:
 
-- **NVIDIA and OpenAI.** In September 2025 NVIDIA signed a letter of intent to invest "up to $100 billion" as OpenAI deployed 10 GW of NVIDIA systems. That plan was reportedly shelved in favor of a **$30 billion** NVIDIA equity investment in OpenAI's 2026 funding round. OpenAI's round closed on March 31, 2026 at **$122 billion** and an $852 billion post-money valuation (the company's agreed value just after the round, defined below), with Amazon reportedly committing $50 billion (of which $35 billion was contingent on an IPO, an initial public offering, meaning a company's first sale of shares on a stock exchange, or on a technical milestone) and NVIDIA and SoftBank $30 billion each. The relationship changed shape again on August 17, 2026: NVIDIA agreed to provide credit support for SoftBank's SB Energy to build an 8 GW campus in Pike County, Ohio, leased to OpenAI for 20 years and reserved for NVIDIA systems, and to invest $1.5 billion in SB Energy (Reuters, the news agency, reported a guarantee of up to about $105 billion).
+- **NVIDIA and OpenAI.** In September 2025 NVIDIA signed a letter of intent to invest "up to $100 billion" as OpenAI deployed 10 GW of NVIDIA systems. That plan was reportedly shelved in favor of a **$30 billion** NVIDIA equity investment in OpenAI's 2026 funding round. OpenAI's round closed on March 31, 2026 at **$122 billion** and an $852 billion post-money valuation (the company's agreed value just after the round, defined below), with Amazon reportedly committing $50 billion (of which $35 billion was contingent on an IPO, an initial public offering, meaning a company's first sale of shares on a stock exchange, or on a technical milestone) and NVIDIA and SoftBank $30 billion each. The relationship changed shape again on August 17, 2026: NVIDIA agreed to provide credit support for the first 4.25 GW of an 8 GW campus that SoftBank's SB Energy will build in Pike County, Ohio, leased to OpenAI for 20 years and reserved for NVIDIA systems, and to invest $1.5 billion in SB Energy (Reuters, the news agency, reported a guarantee of up to about $105 billion).
 - **AMD and OpenAI.** In October 2025, alongside a 6 GW GPU purchase, AMD gave OpenAI warrants for up to about 10% of AMD.
 - **Microsoft, NVIDIA and Anthropic.** In November 2025, Microsoft and NVIDIA committed up to $5 billion and $10 billion respectively to Anthropic, as Anthropic committed about $30 billion to Azure compute.
 - **NVIDIA and neoclouds.** NVIDIA invested $2 billion in CoreWeave (January 2026) and $2 billion in Nebius (March 2026), both large NVIDIA customers.
@@ -621,11 +621,11 @@ flowchart LR
 
 Abu Dhabi's MGX is a Stargate partner and invested in OpenAI's 2026 round; Singapore's GIC co-led Anthropic's $30 billion Series G (a late-stage private funding round; each new round takes the next letter) in February 2026 (reported); Saudi Arabia's Public Investment Fund owns Humain (Chapter 42). Private rounds reached sizes once seen only in public markets: Anthropic's Series H was reported at $65 billion at a $965 billion post-money valuation in May 2026.
 
-> **Definition — MGX:** A state-backed Abu Dhabi technology investment company, set up in 2024, that invests in AI companies and AI infrastructure. It is a partner in OpenAI's Stargate project.
+> **Definition — MGX:** An Abu Dhabi investment firm backed by the government of the United Arab Emirates, founded in 2024 to invest in AI and AI infrastructure. It is a partner in OpenAI's Stargate project.
 
 > **Definition — Valuation (post-money):** The value investors assign to a whole company immediately after a funding round, based on the price they paid for a small slice. It is an agreed estimate of future value, not cash the company holds.
 
-Public markets opened too. SpaceX, which owns xAI, listed on June 12, 2026, raising about $75 billion; OpenAI and Anthropic both reportedly filed confidentially for IPOs in June 2026. In September 2026 OpenAI's chief executive said it would not go public in 2026 (Fortune), while Anthropic was reported in October 2026 to be targeting a mid-November listing.
+Public markets opened too. SpaceX, which owns xAI, listed on June 12, 2026, raising $75 billion at $135 a share, or about $86 billion including extra shares the underwriters bought (per its SEC filings); OpenAI and Anthropic both reportedly filed confidentially for IPOs in June 2026. In September 2026 OpenAI's chief executive said it would not go public in 2026 (Fortune), while Anthropic was reported in October 2026 to be targeting a mid-November listing.
 
 > **Watch out:** "Up to" figures are maximums, not commitments. When a headline says a company will invest "up to $100 billion," look for the conditions, the timeline, and whether the money flows back to the investor as purchases. Several 2025 headline deals were later restructured or shelved.
 

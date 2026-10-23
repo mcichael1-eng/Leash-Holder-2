@@ -393,7 +393,7 @@ Now the big run. Model F's 100,000 GPUs train as one machine for about 90 days, 
 
 *Table 44.3: The budget of one illustrative frontier pretraining run. Compare the electricity bill (tens of millions) with the hardware (billions): power is a small share of cost but a hard limit on where and when you can build.*
 
-> **Definition — MFU (Model FLOPs Utilization):** The fraction of the hardware's peak arithmetic speed actually used for the model's necessary math. Large training runs typically reach about 25 to 50%, depending on the number format and how hard the scaling is.
+> **Definition — MFU (Model FLOPs Utilization):** The fraction of the hardware's peak arithmetic speed actually used for the model's necessary math. Large training runs typically reach about 35 to 50% of their 16-bit peak, and less of the faster 8-bit peak: Epoch AI assumes about 25% (Chapter 37).
 
 **Things break, constantly.** Meta's Llama 3 paper is the best public record: on 16,384 H100 GPUs, its team saw 419 unexpected interruptions in 54 days, about 78% of them hardware faults. That is 419 ÷ (16,384 × 54) ≈ 0.00047 interruptions per GPU per day. Scale it to 100,000 GPUs: about 47 per day, or one every half hour. Over 90 days, more than 4,000.
 
@@ -552,7 +552,7 @@ The finest layers are printed with extreme ultraviolet light, 13.5 nanometers in
 
 A single die can be no larger than about 858 mm², the most a lithography machine can print at once, so NVIDIA's Blackwell joins two dies (208 billion transistors in all) into one GPU. Next to them sit stacks of HBM made by SK hynix, Samsung or Micron, each stack 8 to 16 memory dies high and wired vertically with through-silicon vias. TSMC's CoWoS packaging bonds the GPU dies and HBM stacks side by side on a silicon interposer so they can exchange terabytes per second (Chapter 34).
 
-> **Definition — CoWoS (Chip-on-Wafer-on-Substrate):** TSMC's advanced packaging method that places GPU dies and HBM stacks side by side on a thin silicon slab with dense wiring. Its limited capacity has been a key brake on AI chip supply since 2023.
+> **Definition — CoWoS (Chip-on-Wafer-on-Substrate):** TSMC's family of advanced packaging technologies that place GPU dies and HBM stacks side by side on an interposer, a thin slab with dense wiring. Its limited capacity has been a key brake on AI chip supply since 2023.
 
 ```mermaid
 flowchart LR

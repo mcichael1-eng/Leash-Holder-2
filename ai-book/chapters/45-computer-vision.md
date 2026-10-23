@@ -118,7 +118,7 @@ A **Vision Transformer (ViT)** cuts the image into small square patches (often 1
 
 Whichever design is used, most applied systems are built in two parts.
 
-> **Definition — Backbone:** The large, general-purpose part of a vision model that turns an image into rich feature vectors. Task-specific "heads" are attached on top to produce labels, boxes or masks.
+> **Definition — Model backbone:** The large, general-purpose part of a vision model that turns an image into rich feature vectors. Task-specific "heads" are attached on top to produce labels, boxes or masks.
 
 > **Definition — Transfer learning:** Taking a model already trained on a big general dataset and adapting it to a new, smaller task. In vision, you keep the pretrained backbone and train a small head on a few hundred or thousand of your own images.
 
@@ -374,7 +374,7 @@ Underneath much video work sits a lower-level measurement: optical flow, an esti
 
 > **Definition — Optical flow:** The apparent motion of each pixel between two video frames, estimated as a small arrow per pixel showing direction and distance. It is used for tracking, video stabilization, frame interpolation and drone navigation.
 
-> **Definition — Re-identification (re-ID):** Recognizing that a person or object seen by one camera is the same one seen earlier or by a different camera, usually from appearance such as clothing, gait or vehicle color.
+> **Definition — Visual re-identification (re-ID):** Recognizing that a person or object seen by one camera is the same one seen earlier or by a different camera, usually from appearance such as clothing, gait or vehicle color.
 
 Re-identification makes multi-camera tracking possible in stores, airports and cities. It is also one of the most privacy-sensitive capabilities in vision, because it can follow a person across a city without ever using their face.
 
@@ -718,7 +718,7 @@ Vision models fail when the world differs from their training data, when they le
 
 ## Key terms
 
-Computer vision, Pixel, RGB, Resolution, Backbone, Transfer learning, Fine-tuning, Vision foundation model, Image classification, Top-1 and top-5 accuracy, Zero-shot classification, Object detection, Bounding box, Confidence score, YOLO (You Only Look Once), Non-maximum suppression (NMS), Open-vocabulary detection, IoU (Intersection over Union), mAP (mean average precision), Frames per second (FPS), Edge deployment, Segmentation, Mask, Semantic segmentation, Instance segmentation, Panoptic segmentation, Promptable segmentation, Segment Anything Model (SAM), Data engine, Object tracking, Optical flow, Re-identification (re-ID), Action recognition, 3-D CNN, Two-stream network, Pose estimation, Keypoint, OCR (optical character recognition), License plate recognition (ANPR), Document AI, Key-value extraction, Face detection, Face verification, Face identification, Biometrics, Face embedding, False match rate and false non-match rate, Emotion recognition, Depth estimation, Point cloud, SLAM (simultaneous localization and mapping), Photogrammetry, NeRF (neural radiance field), Gaussian splatting, Vision-language model (VLM), Visual grounding, Distribution shift, Shortcut learning, Adversarial example, Long tail, Automation bias, Data annotation
+Computer vision, Pixel, RGB, Resolution, Model backbone, Transfer learning, Fine-tuning, Vision foundation model, Image classification, Top-1 and top-5 accuracy, Zero-shot classification, Object detection, Bounding box, Confidence score, YOLO (You Only Look Once), Non-maximum suppression (NMS), Open-vocabulary detection, IoU (Intersection over Union), mAP (mean average precision), Frames per second (FPS), Edge deployment, Segmentation, Mask, Semantic segmentation, Instance segmentation, Panoptic segmentation, Promptable segmentation, Segment Anything Model (SAM), Data engine, Object tracking, Optical flow, Visual re-identification (re-ID), Action recognition, 3-D CNN, Two-stream network, Pose estimation, Keypoint, OCR (optical character recognition), License plate recognition (ANPR), Document AI, Key-value extraction, Face detection, Face verification, Face identification, Biometrics, Face embedding, False match rate and false non-match rate, Emotion recognition, Depth estimation, Point cloud, SLAM (simultaneous localization and mapping), Photogrammetry, NeRF (neural radiance field), Gaussian splatting, Vision-language model (VLM), Visual grounding, Distribution shift, Shortcut learning, Adversarial example, Long tail, Automation bias, Data annotation
 
 ## Exercises
 

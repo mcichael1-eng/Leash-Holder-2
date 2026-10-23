@@ -195,7 +195,7 @@ Modern systems usually combine every camera and sensor into a single top-down pi
 
 Knowing where a cyclist is now is not enough. The car must guess where she will be in the next few seconds.
 
-> **Definition — Prediction (motion forecasting):** Estimating the likely future paths of every other road user over the next several seconds, usually as several possible futures, each with a probability.
+> **Definition — Motion prediction (motion forecasting):** Estimating the likely future paths of every other road user over the next several seconds, usually as several possible futures, each with a probability.
 
 Prediction is hard because road users interact. Whether a pedestrian steps off the curb depends on whether your car is slowing down. Whether a driver lets you merge depends on how you merge. Good systems predict several futures ("the cyclist continues straight, 70 percent; turns left across our lane, 25 percent; stops, 5 percent") and plan to be safe in all of them.
 
@@ -375,7 +375,7 @@ timeline
     2025 : Tesla Robotaxi launches in Austin with safety monitors : Waymo reaches 250,000 paid rides a week
     2026 : Waymo serves riders in 15 US metros by October : Zoox begins paid rides in Las Vegas
 ```
-*Figure 50.6: Twenty-two years from a desert race nobody finished to robotaxi networks in a dozen cities.*
+*Figure 50.6: Twenty-two years from a desert race nobody finished to robotaxi networks in more than a dozen cities.*
 
 ### The desert races (2004–2007)
 
@@ -408,11 +408,11 @@ Here is where the field stood as of October 2026. Almost all of these figures co
 Waymo is the clear leader in driverless miles and rides.
 
 - **Rides:** about **500,000 paid rides per week** in spring 2026, up from 250,000 in April 2025, with a target of **1 million per week by the end of 2026** (company figures as reported by the press). More than 20 million cumulative trips.
-- **Fleet:** about 3,800 vehicles: a May 2026 software recall covered 3,791 of them (reported by Bloomberg).
+- **Fleet:** about 3,800 vehicles in May 2026, when a software recall covered 3,791 of them (reported by Bloomberg).
 - **Miles:** **271.3 million rider-only miles** through June 2026 (company safety data).
-- **Cities:** as of October 2026 Waymo listed 15 US metro areas where the public can ride: Phoenix, the San Francisco Bay Area, Los Angeles, Austin, Atlanta, Miami, Dallas, Houston, San Antonio, Orlando, Nashville, Las Vegas, Denver, San Diego and Tampa. The last four began fully driverless driving in July 2026, with employees as the first riders, and opened to the public from September.
+- **Cities:** as of October 2026 Waymo listed 15 US metro areas where the public can ride: Phoenix, the San Francisco Bay Area, Los Angeles, Austin, Atlanta, Miami, Dallas, Houston, San Antonio, Orlando, Nashville, Las Vegas, Denver, San Diego and Tampa. In July 2026 Waymo said it would soon begin fully driverless driving in the last four, with employees riding first (Las Vegas started that month, according to press reports). Public riders followed from September, at first through waitlists, and San Diego and Tampa opened to everyone on October 14.
 - **Abroad:** London and Tokyo are listed as "up next", with testing underway. In October 2026 Waymo announced Madrid, with first riders targeted for 2027, and Toronto, targeted for 2028. As of October 2026 there were no paid driverless Waymo rides outside the United States.
-- **Setbacks:** growth has not been smooth. In May 2026 Waymo recalled the software in 3,791 vehicles (a formal safety fix reported to regulators and delivered as a software update) after unoccupied robotaxis drove into flooded roads in San Antonio and Atlanta, paused service in several cities during storms, and briefly stopped freeway rides in four cities to improve driving through construction zones (reported by Bloomberg and TechCrunch).
+- **Setbacks:** growth has not been smooth. In May 2026 Waymo recalled the software in 3,791 vehicles (a formal safety fix reported to regulators and delivered as a software update) after an unoccupied robotaxi drove into a flooded lane in San Antonio in April and was swept into a creek; days after the recall another got stuck on a flooded road in Atlanta. Waymo also paused service in several cities during storms and temporarily stopped freeway rides in four cities to improve driving through construction zones (reported by Bloomberg and TechCrunch).
 
 > **Definition — Rider-only miles:** Miles driven by an automated vehicle with no human driver or safety monitor on board, only passengers or nobody at all.
 
@@ -624,7 +624,7 @@ When you see "X percent fewer crashes", convert it to rates, check the compariso
 
 ## Key terms
 
-Autonomous vehicle (AV), Automated driving system (ADS), Advanced driver-assistance system (ADAS), Robotaxi, Long tail (edge cases), Dynamic driving task (DDT), Fallback, Operational design domain (ODD), SAE levels of driving automation, Adaptive cruise control, Lane centering, Minimal risk condition, Driver monitoring system, Automation complacency, Geofence, Modular driving stack, GNSS (GPS), IMU (inertial measurement unit), Localization, HD map, Perception, Object tracking, Bird's-eye view (BEV), Occupancy grid, Prediction (motion forecasting), Motion planning, Cost function, Control (vehicle control), End-to-end driving, Imitation learning (behavior cloning), Shadow mode, Lidar, Point cloud, Time of flight, Radar, Ultrasonic sensor, Sensor fusion, Scenario simulation, Closed-course testing, Safety driver (safety monitor), Disengagement, Remote assistance, Remote driving (teleoperation), Rider-only miles, Purpose-built robotaxi, Hub-to-hub autonomous trucking, Crash rate, Human benchmark, Underreporting, Confidence interval, Rule of three, NHTSA (National Highway Traffic Safety Administration), FMVSS (Federal Motor Vehicle Safety Standards), Vehicle safety recall, Over-the-air (OTA) update, Standing General Order (crash reporting)
+Autonomous vehicle (AV), Automated driving system (ADS), Advanced driver-assistance system (ADAS), Robotaxi, Long tail (edge cases), Dynamic driving task (DDT), Fallback, Operational design domain (ODD), SAE levels of driving automation, Adaptive cruise control, Lane centering, Minimal risk condition, Driver monitoring system, Automation complacency, Geofence, Modular driving stack, GNSS (GPS), IMU (inertial measurement unit), Localization, HD map, Perception, Object tracking, Bird's-eye view (BEV), Occupancy grid, Motion prediction (motion forecasting), Motion planning, Cost function, Control (vehicle control), End-to-end driving, Imitation learning (behavior cloning), Shadow mode, Lidar, Point cloud, Time of flight, Radar, Ultrasonic sensor, Sensor fusion, Scenario simulation, Closed-course testing, Safety driver (safety monitor), Disengagement, Remote assistance, Remote driving (teleoperation), Rider-only miles, Purpose-built robotaxi, Hub-to-hub autonomous trucking, Crash rate, Human benchmark, Underreporting, Confidence interval, Rule of three, NHTSA (National Highway Traffic Safety Administration), FMVSS (Federal Motor Vehicle Safety Standards), Vehicle safety recall, Over-the-air (OTA) update, Standing General Order (crash reporting)
 
 ## Exercises
 

@@ -83,7 +83,7 @@ Course providers publish rough lengths for their courses. Here are the well-know
 | Course | Provider | Listed length | Weeks at 5 hours/week |
 |---|---|---|---|
 | Generative AI for Everyone | DeepLearning.AI | about 5 hours | 1 |
-| AI Prompting for Everyone | DeepLearning.AI | about 7 hours | 1.5 |
+| AI Prompting for Everyone | DeepLearning.AI | about 7 hours | 1.4 |
 | AI Python for Beginners | DeepLearning.AI | about 11.5 hours | 2.3 |
 | Agentic AI | DeepLearning.AI | about 10 hours | 2 |
 | Machine Learning Specialization | DeepLearning.AI and Stanford | about 95 hours | 19 |
@@ -312,7 +312,7 @@ The big shift in this stage is from AI you talk to toward AI that runs while you
 
 > **Definition — Vibe coding:** Building software by describing what you want in plain language to an AI tool (such as Lovable, Replit, Bolt or Claude Code) and iterating on what it produces, often without reading the code it writes. Chapter 29 explains when this is safe and when to call a professional.
 
-> **Definition — MCP (Model Context Protocol):** An open standard for connecting AI assistants to tools and data sources such as email, calendars, drives and databases, sometimes called a "USB-C port for AI," after the one standard plug that now fits most phones and laptops. Chapter 28 explains how it works.
+> **Definition — MCP (Model Context Protocol):** An open standard for connecting AI applications to outside tools and data sources, introduced by Anthropic in November 2024 and governed since December 2025 by the Agentic AI Foundation, part of the nonprofit Linux Foundation. It links assistants to sources such as email, calendars, drives and databases and is sometimes called a "USB-C port for AI," after the one standard plug that now fits most phones and laptops. Chapter 28 explains how it works.
 
 > **Definition — AI agent:** An AI system that takes several steps toward a goal on its own, using tools such as web search, a browser or code, instead of answering once. Deep-research tools and coding agents are agents.
 
@@ -391,7 +391,7 @@ flowchart LR
 
 Finish Stage 1, and in the last month start DeepLearning.AI's "AI Python for Beginners" (about 11.5 hours). Run your code in Google Colab, a free Google website that runs Python in your browser (Chapter 3), so you install nothing. Learn the basics of Git, the tool that records every version of your code, and GitHub, the website where most people store and share it; a GitHub profile is the standard place to show your code to employers. Chapter 26 walks through a complete first API call.
 
-> **Definition — Python:** The most widely used programming language in AI, known for readable code and a huge collection of ready-made libraries. Almost every AI course, tool and research codebase uses it.
+> **Definition — Python:** The most widely used programming language for AI work, popular for its readable code and its huge collection of ready-made libraries for math, data and neural networks. Almost every AI course, tool and research codebase uses it.
 
 A common question is "Python or R?" R is a language built for statistics and is still common in statistics, academic research and some data-analysis jobs. But the major model providers all offer official Python libraries, the main deep-learning frameworks such as PyTorch are Python-first, and nearly every course in this chapter uses Python, so learn Python first.
 
@@ -603,7 +603,7 @@ This lane assumes about a year of Track B or Track C first, because you need sol
 | Stanford CS336, systems assignment | Writing FlashAttention-2 in Triton | Free |
 | Kleppmann, *Designing Data-Intensive Applications* | How software that runs across many coordinating machines is built and kept reliable | Paid |
 
-> **Definition — CUDA:** NVIDIA's programming platform for its GPUs. Much of the AI software world is built on it, which is a large part of NVIDIA's competitive advantage (Chapter 35).
+> **Definition — CUDA:** NVIDIA's software platform, released in 2007, that lets programmers run general calculations on its GPUs. Much of the AI software world is built on it, which is a large part of NVIDIA's competitive advantage (Chapter 35).
 
 > **Definition — GPU kernel:** A small program that runs on a GPU, performing one operation such as a matrix multiplication across thousands of cores at once. Faster kernels make training and inference cheaper.
 
@@ -635,7 +635,7 @@ Good projects for this lane: build a spreadsheet that tracks the big four hypers
 
 Track E is for people who want to shape how AI is governed and made safe. It has two lanes. The governance and policy lane suits people from law, policy, compliance, privacy, audit and government, and needs technical literacy rather than coding. The technical safety lane is research: interpretability, alignment, evaluations and control. It needs the foundations of Track C.
 
-> **Definition — AI governance:** The policies, processes and controls an organization uses to manage AI risks and comply with laws, such as approving use cases, reviewing vendors, testing systems and keeping records.
+> **Definition — AI governance:** The rules, institutions and processes that shape how AI is built and used. Inside an organization, it means the policies, processes and controls used to manage AI risks and comply with laws, such as approving use cases, reviewing vendors, testing systems and keeping records.
 
 > **Definition — Risk management framework:** A structured method for identifying, measuring and reducing risks. The NIST AI Risk Management Framework, free from the US National Institute of Standards and Technology, is a widely used example for AI.
 

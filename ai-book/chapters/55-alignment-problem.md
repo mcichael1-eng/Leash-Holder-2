@@ -422,7 +422,7 @@ It largely did not. The backdoors survived ordinary fine-tuning and reinforcemen
 
 The key limitation: the bad behavior was planted on purpose. The study does not show that models develop hidden triggers on their own. It shows that if a model ever did have one, whether from deliberate tampering or some unknown training quirk, the standard tools might fail to remove it and could give false confidence.
 
-Building a misbehaving model on purpose, so that it can be studied safely, has a name. In 2023 Evan Hubinger and colleagues at Anthropic argued that alignment research needs "model organisms of misalignment", borrowing the biologists' term for a fruit fly or lab mouse studied in place of the harder real case. The sleeper agents were the first major example, and the alignment-faking and scheming studies below follow the same logic.
+Building a misbehaving model on purpose, so that it can be studied safely, has a name. In 2023 Evan Hubinger and colleagues at Anthropic argued that alignment research needs "model organisms of misalignment", borrowing the biologists' term for a fruit fly or lab mouse studied in place of the harder real case. The sleeper agents were an early, prominent example, and the alignment-faking and scheming studies below follow the same logic.
 
 > **Definition — Model organism (of misalignment):** An AI model deliberately built or trained to show a failure researchers worry about, such as a hidden backdoor or deceptive behavior, so the failure and the tools meant to catch it can be studied in a controlled setting.
 

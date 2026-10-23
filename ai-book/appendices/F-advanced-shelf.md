@@ -456,7 +456,7 @@ Chapter 5 teaches matrices as tables of numbers and shows how to multiply them. 
 
 > **Definition — Determinant:** A single number computed from a square matrix that says by what factor the matrix scales area or volume. A determinant of zero means the matrix flattens space and has no inverse.
 
-> **Definition — Trace (of a matrix):** The sum of the numbers on a square matrix's main diagonal, from top left to bottom right.
+> **Definition — Trace of a matrix:** The sum of the numbers on a square matrix's main diagonal, from top left to bottom right.
 
 > **Definition — Span (of vectors):** All the vectors that can be built by scaling and adding a given set of vectors.
 

@@ -58,7 +58,7 @@ The idea is older than you might think. Robert Jacobs, Michael Jordan, Steven No
 
 > **Definition — Expert:** One of the sub-networks inside an MoE layer, usually a feed-forward block of its own. Experts specialize in statistical token patterns, not in neat human subjects.
 
-> **Definition — Router (gating network):** The small network in an MoE layer that scores every expert for the current token and picks which ones will process it.
+> **Definition — MoE router (gating network):** The small network in an MoE layer that scores every expert for the current token and picks which ones will process it.
 
 > **Definition — Conditional computation (sparse activation):** Running only part of a network for each input, chosen by the input itself. MoE is the main example: most experts sit idle for any given token.
 
@@ -151,7 +151,7 @@ Because only a few experts run per token, an MoE model has two sizes. Total para
 
 Work through DeepSeek V4-Pro, the largest open model from DeepSeek as of late 2026.
 - **Compute per token:** 2 × 49 billion ≈ 98 billion operations. A dense 1.6T model would need 2 × 1.6 trillion = 3.2 trillion, about 33 times more.
-- **Training compute:** with the 6 × N × D rule (Chapter 19: training costs about 6 operations per parameter per training token, the 2 of the forward pass plus about 4 for the backward pass), using active parameters for N and about 33 trillion training tokens for D: 6 × 49e9 × 33e12 ≈ 9.7 × 10^24 operations (49e9 is computer shorthand for 49 × 10^9, that is 49 billion), matching the estimate of Epoch AI, a research group that tracks AI training runs. A dense 1.6T model trained on the same data would need about 3.2 × 10^26, again about 33 times more.
+- **Training compute:** with the 6 × N × D rule (Chapter 19: training costs about 6 operations per parameter per training token, the 2 of the forward pass plus about 4 for the backward pass), using active parameters for N and about 33 trillion training tokens for D: 6 × 49e9 × 33e12 ≈ 9.7 × 10^24 operations (49e9 is computer shorthand for 49 × 10^9, that is 49 billion, and 33e12 means 33 trillion), matching the estimate of Epoch AI, a research group that tracks AI training runs. A dense 1.6T model trained on the same data would need about 3.2 × 10^26, again about 33 times more.
 - **Memory:** all 1.6 trillion parameters must sit in fast memory. DeepSeek stores the expert weights in a 4-bit format (FP4) and most other weights in 8-bit (FP8). At half a byte per parameter, 1.6T is about 0.8 TB; at one byte, 1.6 TB. Either way, that is a multi-GPU server, not a laptop.
 
 Precision matters for MoE because the expert weights are most of the memory. OpenAI's open gpt-oss-120b stores its MoE weights in MXFP4, about 4.25 bits per number, which is how a 116.8-billion-parameter model fits on a single 80 GB GPU. Roughly: 116.8 billion × 4.25 bits ÷ 8 ≈ 62 GB, if every weight used that format (Chapter 23 covers quantization).
@@ -321,7 +321,7 @@ The more radical line of defense replaces most attention layers with layers that
 
 Recall the RNN from Chapter 14. It read text one token at a time while carrying a hidden state, a fixed-size memory vector. Its memory never grew, which is exactly what we want now. But RNNs had two problems: training was slow because each step waited for the previous one, and they forgot long-range information.
 
-> **Definition — State (memory state):** A fixed-size set of numbers a layer carries from token to token as its running summary of everything it has read. Unlike a KV cache, it does not grow with the length of the text.
+> **Definition — Memory state:** A fixed-size set of numbers a layer carries from token to token as its running summary of everything it has read. Unlike a KV cache, it does not grow with the length of the text.
 
 The new families aim for the best of both worlds: train in parallel like a Transformer, but generate like an RNN, with constant memory and constant work per new token.
 
@@ -339,7 +339,7 @@ The modern line runs:
 - **S4 (2021).** Albert Gu and colleagues borrowed state-space equations from control engineering and found a way to train them in parallel like a convolution. S4 was strong on very long sequences but weak on language, because its update rule was the same for every token.
 - **Mamba (December 2023).** Gu and Tri Dao made the state updates selective (input-dependent), with a GPU-friendly algorithm to keep training fast. Mamba was among the first such models to match Transformers of similar size on language.
 - **Mamba-2 (2024).** A reformulation showing that SSMs and attention are mathematically close relatives, which made training much faster on GPUs.
-- **Mamba-3 (2026, an oral paper at ICLR 2026, a major machine-learning research conference).** Adds a more expressive recurrence, complex-valued state updates and a "multi-input, multi-output" design. At 1.5 billion parameters it beat Gated DeltaNet on average downstream accuracy and matched Mamba-2's perplexity (a standard score of how well a model predicts text, where lower is better; Chapter 12) with half the state size.
+- **Mamba-3 (2026, one of the few papers chosen for a full talk at ICLR 2026, a major machine-learning research conference).** Adds a more expressive recurrence, complex-valued state updates and a "multi-input, multi-output" design. At 1.5 billion parameters it beat Gated DeltaNet on average downstream accuracy and matched Mamba-2's perplexity (a standard score of how well a model predicts text, where lower is better; Chapter 12) with half the state size.
 
 > **Definition — Mamba:** A selective state-space model introduced in December 2023 whose state updates depend on the input, letting it choose what to remember. Successors are Mamba-2 (2024) and Mamba-3 (2026).
 
@@ -452,7 +452,7 @@ The diversity shows in the numbers. Sebastian Raschka's LLM Architecture Gallery
 | Sliding-window and global patterns | ~31% |
 | Multi-head latent attention family | ~23% |
 | DeltaNet, Lightning or KDA hybrids | ~14% |
-| Mamba or mLSTM (xLSTM's memory layer) layers | ~7% |
+| Mamba or mLSTM (the matrix-memory layer of xLSTM) layers | ~7% |
 | DeepSeek Sparse Attention | ~6% |
 | Classic full multi-head attention | ~4% |
 
@@ -595,11 +595,11 @@ Around these big ideas sits plumbing that keeps giant training runs stable: cons
 By 2026 the open frontier has converged on a recipe of sparse MoE, cheaper attention, million-token contexts, 4-to-8-bit numbers and stability tricks. Closed labs don't say what they use, and data and training matter at least as much as the blueprint.
 
 ## Key terms
-Feed-forward block (FFN), Dense model, KV cache, Quadratic cost, Mixture of experts (MoE), Expert, Router (gating network), Conditional computation (sparse activation), Top-k routing, Gating weight, Total parameters, Active parameters, MXFP4 and NVFP4, Shared expert, Fine-grained experts, Routing collapse (expert collapse), Load balancing, Expert capacity (capacity factor), Token dropping, Auxiliary loss (load-balancing loss), Auxiliary-loss-free balancing, Expert parallelism, All-to-all communication, Graph, Node and edge, Graph neural network (GNN), Message passing, Graph convolutional network (GCN), Sparse and compressed attention, State (memory state), Selectivity (selective state), State-space model (SSM), Mamba, Linear attention, Delta rule, Gated DeltaNet, Kimi Delta Attention (KDA), RWKV and xLSTM, Multi-hop reasoning, Hybrid architecture, Gated attention, Kernel (GPU kernel), Loss spike, Residual stream, Hyper-connections, mHC (manifold-constrained hyper-connections), Attention logit, QK-norm, QK-clip (MuonClip), Attention sink, DyT (Dynamic Tanh), Looped (recursive) model, Memory-augmented neural network, Test-time memory, Multi-token prediction (MTP), Inductive bias, Quantization-aware training (QAT)
+Feed-forward block (FFN), Dense model, KV cache, Quadratic cost, Mixture of experts (MoE), Expert, MoE router (gating network), Conditional computation (sparse activation), Top-k routing, Gating weight, Total parameters, Active parameters, MXFP4 and NVFP4, Shared expert, Fine-grained experts, Routing collapse (expert collapse), Load balancing, Expert capacity (capacity factor), Token dropping, Auxiliary loss (load-balancing loss), Auxiliary-loss-free balancing, Expert parallelism, All-to-all communication, Graph, Node and edge, Graph neural network (GNN), Message passing, Graph convolutional network (GCN), Sparse and compressed attention, Memory state, Selectivity (selective state), State-space model (SSM), Mamba, Linear attention, Delta rule, Gated DeltaNet, Kimi Delta Attention (KDA), RWKV and xLSTM, Multi-hop reasoning, Hybrid architecture, Gated attention, Kernel (GPU kernel), Loss spike, Residual stream, Hyper-connections, mHC (manifold-constrained hyper-connections), Attention logit, QK-norm, QK-clip (MuonClip), Attention sink, DyT (Dynamic Tanh), Looped (recursive) model, Memory-augmented neural network, Test-time memory, Multi-token prediction (MTP), Inductive bias, Quantization-aware training (QAT)
 
 ## Exercises
 
-1. **[Easy] Decode model names.** Model names often encode both sizes: "Qwen3.5-397B-A17B," "Nemotron 3 Nano 30B-A3B" and "Gemma 4 26B-A4B." For each, write down the total and active parameters, the active share (active ÷ total), the operations per token (2 × active) and the memory needed at 4 bits (half a byte per parameter). Which would fit on a single 80 GB GPU at 4 bits? (Expected: about 4.3%, 10% and 15% active; about 199 GB, 15 GB and 13 GB, so the last two fit.) **What you'll learn:** to read total versus active parameters straight off a model card.
+1. **[Easy] Decode model names.** Model names often encode both sizes: "Qwen3.5-397B-A17B," "Nemotron 3 Nano 30B-A3B" and "Gemma 4 26B-A4B." For each, write down the total and active parameters, the active share (active ÷ total), the operations per token (2 × active) and the memory needed at 4 bits (half a byte per parameter). Which would fit on a single 80 GB GPU at 4 bits? (Expected: about 4.3%, 10% and 15% active; about 199 GB, 15 GB and 13 GB, so the last two fit. Names are rounded: NVIDIA's model card lists about 3.5 billion active parameters for the Nemotron model, the figure in Table 17.2, so check the card when precision matters.) **What you'll learn:** to read total versus active parameters straight off a model card.
 
 2. **[Easy] Route a token by hand.** A token's router scores for six experts are E1 1.2, E2 0.3, E3 2.1, E4 −0.5, E5 1.8, E6 0.0. (1) Pick the top 2. (2) Compute their gating weights with softmax over the two winners: e^2.1 ÷ (e^2.1 + e^1.8), and so on (use the e^x key on a calculator, or `=EXP(2.1)` in a spreadsheet). (3) If Expert 3 outputs [1, 0] and Expert 5 outputs [0, 1], what is the blended output? (4) Now E3 is overloaded (selection bias −0.4) and E1 underused (bias +0.7). Which two experts win now, and what are their gating weights if they still come from the original scores? (Expected: E3 and E5 with about 0.57 and 0.43, output [0.57, 0.43]; then E1 and E5 with about 0.35 and 0.65.) **What you'll learn:** exactly what a router does, and how bias-based balancing changes choices without changing the mixing math.
 

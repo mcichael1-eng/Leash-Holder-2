@@ -25,7 +25,7 @@ Three numbers explain why.
 
 **Memory.** Frontier models have hundreds of billions to trillions of parameters. Take a round trillion. Stored at 8 bits (1 byte) each, the weights alone take 1 TB. The largest single NVIDIA GPU shipping in volume in late 2025, the B300, holds 288 GB of fast memory. So you need at least four of them (1,000 ÷ 288 ≈ 3.5, rounded up) just to hold the weights, before you leave any room for the KV cache that stores everyone's conversations (Chapter 33). Training needs far more: roughly 16 bytes per parameter once you count the weights, gradients and optimizer state, so about 16 TB for a trillion-parameter model. That is at least 56 B300s just to *hold* the numbers, before doing any math.
 
-> **Definition — NVIDIA:** The American company that designs most of the GPUs used to train and run AI models, together with the networking chips, rack designs and CUDA software around them. It designs its chips but does not manufacture them; the Taiwanese contract chipmaker TSMC does (Chapters 35 and 36).
+> **Definition — NVIDIA:** An American chip company that designs most of the GPUs used to train and run AI models, along with the networking gear that links them and CUDA, the software for programming them. It also designs complete AI racks, but it does not manufacture its chips; the Taiwanese contract chipmaker TSMC does (Chapters 35 and 36).
 
 **Time.** Frontier training runs in 2025–26 are believed to use around `10^26` FLOP or more. An H100 GPU does about 989 trillion floating-point operations per second in dense BF16 ("dense" means counting every multiplication, with none assumed skipped; Chapter 32), and real training software gets roughly 40% of that. One H100 would therefore need:
 
@@ -116,7 +116,7 @@ The machines that print circuits onto wafers expose one rectangle at a time, and
 
 AI chip designers hit this wall years ago. NVIDIA's H100 die is about 814 mm², already about 95% of the limit, with 80 billion transistors on TSMC's 4N process (a "process" is one generation of chip-manufacturing technology; Chapter 36 explains these names). Making dies even bigger has a second problem: yield. Every wafer has a few random defects, and one defect can ruin a whole die. A huge die is like one giant cookie on a tray with a few burnt spots: it is almost certain to include one. Chapter 36 works through the yield math.
 
-> **Definition — TSMC (Taiwan Semiconductor Manufacturing Company):** The Taiwanese contract chipmaker (foundry) that manufactures nearly all advanced AI chips, including NVIDIA's, AMD's and Google's, to their designers' blueprints. It also makes the CoWoS packages described below.
+> **Definition — TSMC (Taiwan Semiconductor Manufacturing Company):** The Taiwanese company that is the world's largest contract chipmaker (foundry) and manufactures nearly all advanced AI chips to their designers' blueprints. Its customers include NVIDIA, AMD and Google. It also makes the CoWoS packages described below.
 
 ### Chiplets: when one die is not enough
 
@@ -124,11 +124,11 @@ So the industry split chips into pieces.
 
 > **Definition — Chiplet:** A smaller die designed to be combined with other dies inside one package, instead of building one huge die. Chiplets raise yield and let companies mix different manufacturing processes.
 
-NVIDIA's Blackwell GPU is two reticle-sized dies, joined by an extremely fast die-to-die link, that present themselves to software as one GPU with 208 billion transistors. Vera Rubin, shipping in 2026, has 336 billion transistors on TSMC's N3 process, again with two GPU dies per package. That is why NVIDIA once planned to call its Rubin rack "NVL144" (counting dies) before branding it "NVL72" (counting packages). In these rack names, NVL stands for NVLink, NVIDIA's chip-to-chip connection (explained below), and the number counts the GPUs (or, in the NVL144 name, GPU dies) it joins. AMD went further, earlier: the MI300X (2023) is built from many chiplets stacked and tiled together, 153 billion transistors in all, and the 2026 MI455X uses chiplets made on TSMC's 2 nm and 3 nm processes.
+NVIDIA's Blackwell GPU is two reticle-sized dies, joined by an extremely fast die-to-die link, that present themselves to software as one GPU with 208 billion transistors. Vera Rubin, shipping in 2026, has 336 billion transistors, reportedly on TSMC's N3 process (NVIDIA does not name the node), again with two GPU dies per package. That is why NVIDIA once planned to call its Rubin rack "NVL144" (counting dies) before branding it "NVL72" (counting packages). In these rack names, NVL stands for NVLink, NVIDIA's chip-to-chip connection (explained below), and the number counts the GPUs (or, in the NVL144 name, GPU dies) it joins. AMD went further, earlier: the MI300X (2023) is built from many chiplets stacked and tiled together, 153 billion transistors in all, and the 2026 MI455X uses chiplets made on TSMC's 2 nm and 3 nm processes.
 
-> **Definition — AMD (Advanced Micro Devices):** An American chip designer that makes CPUs for PCs and servers and is NVIDIA's main rival in AI GPUs. Like NVIDIA, it has its chips manufactured by TSMC.
+> **Definition — AMD (Advanced Micro Devices):** An American company that designs CPUs for PCs and servers and is NVIDIA's main rival in AI GPUs, with its Instinct line of data-center accelerators. Like NVIDIA, it has its chips manufactured by TSMC.
 
-> **Definition — AMD Instinct (MI300X, MI355X, MI455X):** AMD's line of data-center AI GPUs. The MI300X (2023, the first of the MI300 family) has 192 GB of HBM3, the MI355X (2025) 288 GB of HBM3E and the MI455X (2026) 432 GB of HBM4, sold in AMD's 72-GPU Helios rack. Chapter 35 compares them with NVIDIA's chips.
+> **Definition — AMD Instinct (MI300X, MI355X, MI455X):** AMD's line of data-center AI GPUs. The MI300X (2023) has 192 GB of HBM3, the MI355X (2025) 288 GB of HBM3E and the MI455X (2026) 432 GB of HBM4, sold in AMD's 72-GPU Helios rack. Chapter 35 compares them with NVIDIA's chips.
 
 Splitting a chip only works if the pieces can talk to each other almost as fast as wires inside one die. That link has to carry terabytes per second while using very little energy per bit, which is a hard engineering problem in its own right. To let chiplets from different companies work together, the industry created an open standard.
 
@@ -148,7 +148,7 @@ That something is a slab of silicon under the chips, patterned with wiring almos
 
 > **Definition — Interposer:** A thin slab of silicon (or organic material with embedded silicon bridges) carrying dense wiring that connects the dies sitting on top of it, such as a GPU and its HBM stacks.
 
-> **Definition — CoWoS (Chip-on-Wafer-on-Substrate):** TSMC's family of advanced packaging methods that place GPU dies and HBM stacks side by side on an interposer. Its limited capacity has been a key bottleneck for AI chip supply since 2023.
+> **Definition — CoWoS (Chip-on-Wafer-on-Substrate):** TSMC's family of advanced packaging technologies that place GPU dies and HBM stacks side by side on an interposer, a thin slab with dense wiring. Its limited capacity has been a key bottleneck for AI chip supply since 2023.
 
 CoWoS comes in flavors. CoWoS-S uses one continuous silicon interposer. CoWoS-L, used for Blackwell and Rubin, embeds small "local" silicon bridges in a larger base, so the package can be much bigger than a single reticle while still giving the dense wiring exactly where dies meet. Below the interposer sits the package substrate.
 
@@ -347,7 +347,7 @@ Here are the published rack-level specs for NVIDIA's two current designs, straig
 
 Two traps hide in this table. The Rubin numbers changed after launch: CES 2026 coverage quoted 22 TB/s of HBM and 3.6 TB/s of NVLink per GPU, while the current page lists 19.2 TB/s and 3 TB/s. And the GB300's FP8 and BF16 lines are not labeled dense: 360 PF ÷ 72 = 5 PF of BF16 per GPU, about double the roughly 2.5 PF dense usually assumed for a Blackwell GPU, which suggests sparse figures. The footnote confirms it: all of the page's tensor figures include sparsity unless marked otherwise, and NVIDIA's own Blackwell Ultra description lists 5 PF of dense FP8 per GPU, so the dense rack figures are about 360 PF of FP8 and 180 PF of BF16 (Exercise 1 asks you to check the footnotes yourself).
 
-> **Definition — CES:** The Consumer Electronics Show, a huge technology trade show held every January in Las Vegas, where companies including NVIDIA launch new products. NVIDIA launched Vera Rubin at CES 2026.
+> **Definition — CES:** The large consumer-technology trade show held every January in Las Vegas (originally the Consumer Electronics Show), where companies including NVIDIA launch new products. NVIDIA launched Vera Rubin at CES 2026.
 
 Now the payoff. Why does it matter that 72 GPUs act as one?
 
@@ -387,7 +387,7 @@ And NVIDIA, seeing customers build their own chips, opened its fabric a little.
 
 > **Definition — NVLink Fusion:** NVIDIA's program that lets other companies' CPUs or accelerators connect into NVLink fabrics. AWS has said its future Trainium4 chip will support it.
 
-> **Definition — AWS (Amazon Web Services):** Amazon's cloud-computing business, the largest company renting out computers, storage and AI chips over the internet (Chapter 4). Through its Annapurna Labs unit it designs its own AI chips, Trainium and Inferentia.
+> **Definition — AWS (Amazon Web Services):** Amazon's cloud-computing business, the world's largest cloud provider, which rents out computing power, storage and AI chips over the internet (Chapter 4). Through its Annapurna Labs unit it designs its own AI chips, Trainium and Inferentia.
 
 | Scale-up design | Chips in one domain | How it is wired |
 |---|---|---|
@@ -427,7 +427,7 @@ At 1 MW per rack, even the 50-volt busbar runs into physics. Do the arithmetic w
 
 Fifteen times less current means far thinner copper and far less heat lost in the wires. NVIDIA says a 1 MW rack fed at 54 V could need about 200 kg of copper busbar, which is why it is moving to a new design.
 
-> **Definition — 800 V DC distribution:** NVIDIA's announced power architecture, planned for production alongside its next-generation Kyber racks (NVIDIA's rack design for its Rubin Ultra chips, around 600 kW each) in 2027, that delivers 800-volt direct current to racks. NVIDIA says it carries 85% more power through the same conductor than 415 V AC (alternating current, the kind the grid supplies), cuts copper use by about 45% and improves end-to-end efficiency by up to 5%.
+> **Definition — 800 V DC distribution:** NVIDIA's announced power architecture for 2027-era AI racks, which sends 800-volt direct current to the racks instead of alternating current (AC, the kind the grid supplies). Full-scale production is planned alongside NVIDIA's Kyber racks (its rack design for Rubin Ultra chips, around 600 kW each). NVIDIA says it carries 85% more power through the same conductor than 415 V AC, cuts copper use by about 45% and improves end-to-end efficiency by up to 5%.
 
 There is one more power problem unique to AI. In a training run, thousands of GPUs compute, then all pause to exchange numbers, then compute again, in lockstep. The whole site's power draw can swing by tens of megawatts within seconds; Meta reported exactly this during Llama 3 training. Designers now add capacitors (components that store a small amount of electrical energy and release it almost instantly) near racks to absorb millisecond spikes and batteries at the facility to handle swings of seconds to minutes. Chapter 39 covers the full power chain and Chapter 40 the cooling.
 

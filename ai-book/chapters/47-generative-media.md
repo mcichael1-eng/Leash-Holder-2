@@ -96,7 +96,7 @@ timeline
 
 **2023: into the professional toolkit.** Adobe launched Firefly and put "Generative Fill" into Photoshop, marketing it as trained on licensed and public-domain images so businesses could use it with less legal worry (Adobe's claim). DALL·E 3 moved inside ChatGPT: you described what you wanted in conversation, and ChatGPT wrote a detailed prompt for the image model.
 
-**2024–2026: quality, control and chat.** Stable Diffusion 3 and FLUX.1 (from Black Forest Labs, a company founded by former Stable Diffusion researchers) brought flow matching and Transformer denoisers. Then the chatbots started drawing directly. GPT-4o's native image generation in March 2025 set off a viral wave of portraits redrawn in the style of animated films. Google's "Nano Banana" (Gemini 2.5 Flash Image, August 2025) became famous for editing a photo by instruction while keeping faces the same, and Nano Banana Pro (Gemini 3 Pro Image) followed in November 2025. In April 2026 OpenAI released gpt-image-2, which, according to press coverage, plans the composition before drawing and renders text much better, and it followed with GPT Image 2.5 in September 2026 (reported).
+**2024–2026: quality, control and chat.** Stable Diffusion 3 and FLUX.1 (from Black Forest Labs, a company founded by former Stable Diffusion researchers) brought flow matching and Transformer denoisers. Then the chatbots started drawing directly. GPT-4o's native image generation in March 2025 set off a viral wave of portraits redrawn in the style of animated films. Google's "Nano Banana" (Gemini 2.5 Flash Image, August 2025) became famous for editing a photo by instruction while keeping faces the same, and Nano Banana Pro (Gemini 3 Pro Image) followed in November 2025. In April 2026 OpenAI released gpt-image-2, which, according to press coverage, plans the composition before drawing and renders text much better, and it followed with GPT Image 2.5 on September 8, 2026.
 
 ### The tools you will meet
 
@@ -293,7 +293,7 @@ Google released Veo 3 with a filmmaking tool called Flow, aimed at stringing cli
 
 **September 2025 to March 2026: Sora 2 and the app that closed.** On September 30, 2025, OpenAI launched Sora 2 together with a social app, a feed of generated videos where users could put themselves and consenting friends into scenes. It was an instant hit, and an instant source of controversy, with deepfake and copyright concerns raised almost from the first day. Usage then declined. In March 2026, OpenAI announced that it would shut down the Sora app, amid falling usage and a shift of its computing resources toward coding and business products. Reports say the app closed on April 26, 2026 and that access for developers through OpenAI's paid interface ended on September 24, 2026; Sora research was reported to continue as a world-model effort.
 
-> **Watch out:** "The best-known product is the safe bet." Sora was the most famous video model in the world in 2024, and its consumer app lasted about six months in its Sora 2 form. Anyone building a business or a workflow on generative video should expect tools to change, merge or disappear, and should keep their source files and prompts so they can move.
+> **Watch out:** "The best-known product is the safe bet." Sora was the most famous video model in the world in 2024, and its consumer app lasted about seven months in its Sora 2 form. Anyone building a business or a workflow on generative video should expect tools to change, merge or disappear, and should keep their source files and prompts so they can move.
 
 ### The 2026 landscape
 
@@ -306,7 +306,7 @@ The video field in late 2026 has a handful of leading families. Comparison guide
 | Runway Gen-4.5 | Runway | Creative control and editing tools for filmmakers (per comparison guides) |
 | Seedance 2.0 and 2.5 | ByteDance (owner of TikTok) | Strong motion and multi-shot storytelling (per comparison guides); Seedance 2.5 (July 2026) makes clips with sound of up to 30 seconds (reported) |
 | Wan | Alibaba | Open weights that studios can run themselves |
-| Gemini Omni | Google | Any input in, video out, with editing by conversation; the August 2026 Omni 1.1 Flash update extends scenes to 40 seconds and outputs up to 4K |
+| Gemini Omni | Google | Any input in, video out, with editing by conversation; the August 2026 Omni 1.1 Flash update extends scenes to 40 seconds and can upscale output to 4K |
 
 *Table 47.2: Leading video-generation families as of late 2026. Version numbers and rankings change quickly; check current comparisons before choosing.*
 

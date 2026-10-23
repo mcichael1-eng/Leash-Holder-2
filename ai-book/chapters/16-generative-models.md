@@ -75,7 +75,7 @@ In self-supervised learning, the model hides part of an example from itself and 
 
 This produces the strong representations (embeddings) that generators build on, and, as you will see later, "fill in the blanks" can itself become a way to generate text.
 
-These made-up exercises are called pretext tasks. Nobody needs a model that can repaint hidden patches; the point is that solving the puzzle forces it to learn what the world looks like, and that knowledge is what gets reused. Before masking took over, vision researchers tried many such puzzles, for example cutting a photo into shuffled tiles and asking the network to solve the jigsaw (2016), or rotating a photo and asking which way up it was (2018). You can only tell that a picture is upside down if you know what a right-way-up cat looks like.
+Made-up hide-and-predict exercises like these are called pretext tasks. Nobody needs a model that can repaint hidden patches; the point is that solving the puzzle forces it to learn what the world looks like, and that knowledge is what gets reused. Before masking took over, vision researchers tried many such puzzles, for example cutting a photo into shuffled tiles and asking the network to solve the jigsaw (2016), or rotating a photo and asking which way up it was (2018). You can only tell that a picture is upside down if you know what a right-way-up cat looks like.
 
 > **Definition — Pretext task:** A made-up training exercise, such as filling in hidden words or guessing how far an image was rotated, that a model solves not for its own sake but because solving it teaches representations that are useful for other tasks.
 
@@ -200,7 +200,7 @@ Around 2021–2022, diffusion models overtook GANs for most image generation. Di
 
 A third way to generate an image is the one your chatbot already uses for words: treat the image as a sequence and predict it one piece at a time. Early versions (PixelRNN and PixelCNN, 2016) predicted raw pixels one by one, which was painfully slow: a 256 × 256 image has 65,536 positions to fill in order.
 
-The breakthrough was to tokenize images first. An image tokenizer (an autoencoder variant, often called a VQ-VAE, where VQ stands for "vector quantized": each region's vector is snapped to the nearest entry in a fixed list) cuts the image into a grid and replaces each cell with the closest entry from a learned codebook of visual patterns, the way a mosaic artist picks tiles from a fixed box. OpenAI's first DALL·E (January 2021) turned a 256 × 256 image into a 32 × 32 grid of tokens, 1,024 in all, each chosen from a codebook of 8,192 entries. A Transformer then learned to predict those image tokens one after another after reading the text prompt, exactly as a language model predicts words.
+The breakthrough was to tokenize images first. An image tokenizer (an autoencoder variant, often called a VQ-VAE, for "vector-quantized" VAE, where quantized means snapped to the nearest of a limited set of allowed values) cuts the image into a grid and replaces each cell with the closest entry from a learned codebook of visual patterns, the way a mosaic artist picks tiles from a fixed box. OpenAI's first DALL·E (January 2021) turned a 256 × 256 image into a 32 × 32 grid of tokens, 1,024 in all, each chosen from a codebook of 8,192 entries. A Transformer then learned to predict those image tokens one after another after reading the text prompt, exactly as a language model predicts words.
 
 > **Definition — DALL·E:** OpenAI's family of text-to-image models: DALL·E (January 2021), DALL·E 2 (2022) and DALL·E 3 (2023). The name blends the painter Salvador Dalí and the Pixar robot WALL·E.
 
@@ -214,7 +214,7 @@ The appeal is unity: one Transformer, text and images in one stream. That is why
 
 ## Diffusion, step by step
 
-Now the centerpiece. Diffusion models and their close relatives power most image and video generators you have used: Stable Diffusion, Midjourney, Google's Imagen and Veo, Black Forest Labs' FLUX. The idea was proposed in 2015 and made practical by Jonathan Ho, Ajay Jain and Pieter Abbeel's DDPM paper (short for denoising diffusion probabilistic models) in 2020. It is surprisingly simple.
+Now the centerpiece. Diffusion models and their close relatives power most image and video generators you have used: Stable Diffusion, Midjourney, Google's Imagen and Veo, Black Forest Labs' FLUX. The idea was proposed in 2015 and made practical by Jonathan Ho, Ajay Jain and Pieter Abbeel's 2020 DDPM paper (DDPM is short for denoising diffusion probabilistic models). It is surprisingly simple.
 
 > **Definition — Diffusion model:** A generator trained to reverse a gradual noising process. It creates data by starting from pure random static and removing noise step by step until a clean image (or sound, or video) remains.
 
@@ -330,7 +330,7 @@ flowchart TD
 
 ### Samplers and step counts
 
-The original DDPM recipe (DDPM stands for denoising diffusion probabilistic model) took 1,000 small steps per image: 1,000 passes through a large network. DDIM (2020) showed you can take bigger, non-random strides and get good images in about 50 steps. Later samplers (Euler, DPM-Solver, where DPM stands for diffusion probabilistic model, and UniPC in image apps) treat the denoising path as a smooth curve and follow it accurately with even fewer steps. In image tools they appear as the "sampler" menu and the "steps" slider.
+The original DDPM recipe took 1,000 small steps per image: 1,000 passes through a large network. DDIM (2020) showed you can take bigger, non-random strides and get good images in about 50 steps. Later samplers found in image apps, such as Euler, DPM-Solver (DPM, as in DDPM, stands for diffusion probabilistic model) and UniPC, treat the denoising path as a smooth curve and follow it accurately with even fewer steps. In image tools they appear as the "sampler" menu and the "steps" slider.
 
 > **Definition — Sampler (scheduler):** The algorithm that decides how big each denoising step is and how predictions are combined to move from noise to image. Better samplers reach good images in fewer steps.
 

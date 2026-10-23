@@ -51,7 +51,7 @@ Almost nobody writes everything from scratch. Programs lean on code that other p
 
 > **Definition — Dependency:** A piece of outside code (a library or package) that your project relies on. A typical web app has dozens or hundreds of dependencies, each one a possible source of bugs or security problems.
 
-> **Definition — Framework:** A large, opinionated set of ready-made code that gives a project its basic structure, such as React for web frontends or Django for Python backends. You fill in your parts; the framework handles the plumbing.
+> **Definition — Software framework:** A large, opinionated set of ready-made code that gives a project its basic structure, such as React for web frontends or Django for Python backends. You fill in your parts; the framework handles the plumbing.
 
 For the Book Club Picker, version 1 can be a single web page with no backend and no database: the book list lives in your browser. Version 2 needs a backend, a database and logins, because many people must see the same list. That jump, from "one file on my computer" to "a system other people depend on", is the most important line in this whole chapter.
 
@@ -115,7 +115,7 @@ feature         o-------o-------o-----o
 
 Git runs on your computer. To share a repository, people use a hosting site.
 
-> **Definition — GitHub:** The most popular website for storing Git repositories online and collaborating on them, owned by Microsoft. GitLab and Bitbucket are alternatives.
+> **Definition — GitHub:** The largest website for storing Git repositories online and collaborating on them, owned by Microsoft. GitLab and Bitbucket are alternatives.
 
 > **Definition — Push and pull:** Pushing sends your new commits from your computer up to the shared copy online; pulling brings other people's new commits down to you. Cloning makes your first full copy of a repository.
 
@@ -154,7 +154,7 @@ def test_split_cost():
 
 The word `assert` means "this must be true, or the test fails". Running the suite takes a fraction of a second. Now imagine someone, human or AI, later changes the default shipping to $7 without telling anyone. The first check computes (60 + 7) / 5 = 13.40, which is not 13.00, so the test fails and points at the exact line. That is the whole point.
 
-> **Definition — Regression:** A change that breaks something that used to work. Test suites exist largely to catch regressions automatically.
+> **Definition — Software regression:** A change that breaks something that used to work. Test suites exist largely to catch regressions automatically.
 
 > **Key idea:** Tests are the eyes of a coding agent. A model cannot see whether its code works just by reading it, any more than you can tell whether a cake is cooked by reading the recipe. Running the tests is how it finds out. A project with good tests can be handed to an agent; a project with none is a gamble.
 
@@ -168,7 +168,7 @@ Code on your laptop helps nobody else. Getting it onto servers is called deployi
 
 > **Definition — Production:** The live version of an app that real users depend on. Careful teams first try changes on "staging", a private copy of production.
 
-Where does a beginner's AI project actually go to be shared? For a quick demo, such as a chat box around a model, a Hugging Face Space (Chapter 30) is built for exactly this. As of late 2026, Hugging Face's documentation says plain static pages are free, while Spaces that run code, such as apps built with Gradio (a free Python library for quick web interfaces), need a paid plan, except that free personal accounts can host up to two Gradio Spaces on shared GPUs. Spaces also have a settings page for storing secrets such as API keys. AI app builders, later in this chapter, deploy and host the app for you with one click. A real product usually runs on a cloud hosting service, with the frontend served to browsers and the backend on a server. Whichever you choose, the model's API key lives only on the server side, never in code that reaches the user's browser (Chapter 26 explains why).
+Where does a beginner's AI project actually go to be shared? For a quick demo, such as a chat box around a model, a Hugging Face Space, a small demo app hosted on the Hugging Face website (Chapter 30), is built for exactly this. As of late 2026, Hugging Face's documentation says plain static pages (pages that run no code of their own on Hugging Face's servers) are free, while Spaces that run code, such as apps built with Gradio (a free Python library for quick web interfaces), need a paid plan, except that free personal accounts can host up to two Gradio Spaces on shared GPUs. Spaces also have a settings page for storing secrets such as API keys. AI app builders, later in this chapter, deploy and host the app for you with one click. A real product usually runs on a cloud hosting service, with the frontend served to browsers and the backend on a server. Whichever you choose, the model's API key lives only on the server side, never in code that reaches the user's browser (Chapter 26 explains why).
 
 Modern teams automate the checks between "I changed something" and "users see it".
 
@@ -369,10 +369,10 @@ Coding agents became the fastest-moving market in AI during 2025 and 2026. Produ
 | Product | Maker | Where it runs | Notable features (as of late 2026) |
 |---|---|---|---|
 | Claude Code | Anthropic | Terminal, VS Code and JetBrains, desktop app, web, mobile, Slack, GitHub Actions | CLAUDE.md (also reads AGENTS.md), skills, hooks, MCP, sub-agents, background agents, cloud scheduled tasks, an Agent SDK |
-| Codex | OpenAI | ChatGPT apps, Codex CLI, IDE extension, Codex Cloud | OpenAI recommends GPT-6.1 Sol for most coding (Astra and Luna also offered); plugins, skills, MCP, a built-in browser, computer use, code review, sub-agents, scheduled tasks |
+| Codex | OpenAI | ChatGPT apps, Codex CLI, IDE extension, Codex Cloud | OpenAI recommends GPT-6.1 Sol for complex coding and agentic work and Luna for focused, repeatable tasks (Astra also offered); plugins, skills, MCP, a built-in browser, computer use, code review, sub-agents, scheduled tasks |
 | Cursor | Anysphere | Desktop editor and CLI | Cloud agents that run in parallel for hours, Bugbot code review, its own Composer models plus models from several labs |
 | GitHub Copilot | GitHub (Microsoft) | VS Code and other editors, GitHub website, Copilot CLI | Agent mode, a cloud agent you assign issues to (Copilot, Claude or Codex), PR review; plans from Free to Enterprise |
-| Antigravity | Google | Desktop app, CLI, IDE, SDK | Manages multiple local agents, browser-in-the-loop testing, Gemini 3.8 Flash, and Gemini 4 Argon for Google AI Pro and Ultra subscribers; available at no charge to individual developers |
+| Antigravity | Google | Desktop app, CLI, IDE, SDK | Manages multiple local agents, browser-in-the-loop testing; runs Gemini 3.8 Flash, plus Gemini 4 Argon for Google AI Pro and Ultra subscribers; available at no charge to individual developers |
 | Devin and Windsurf | Cognition | Web, desktop, editor | Devin pitched as an autonomous software engineer; own SWE-series models (SWE is short for software engineering) |
 | Open-source agents | Community | Terminal or editor | Cline, Aider and others let you plug in any model, including local ones (Chapter 30) |
 
@@ -551,9 +551,9 @@ Every automation has the same shape.
 
 > **Definition — Trigger:** The event that starts an automation, such as "a new email arrives with the label Receipts", "a form is submitted" or "every Monday at 9 a.m.".
 
-> **Definition — Action:** A step an automation performs, such as adding a row to a spreadsheet, sending a message or creating a calendar event.
+> **Definition — Automation action:** A step an automation performs, such as adding a row to a spreadsheet, sending a message or creating a calendar event.
 
-> **Definition — Workflow:** The full chain of a trigger followed by one or more actions, filters and branches. Zapier calls a workflow a "Zap" and Make calls it a "scenario".
+> **Definition — Automation workflow:** The full chain of a trigger followed by one or more actions, filters and branches. Zapier calls a workflow a "Zap" and Make calls it a "scenario".
 
 How does the automation platform find out that something happened? Either it keeps asking every few minutes ("polling", which is simple but slow), or it gets told.
 
@@ -696,7 +696,7 @@ If you cannot code, you can still build. Automation platforms like Zapier, Make 
 
 ## Key terms
 
-Source code, frontend, HTML and CSS, backend, database, hosting, dependency, framework, version control, Git, repository, commit, diff, branch, merge, GitHub, push and pull, pull request, code review, automated test, unit test, test suite, regression, localhost, deploy, production, CI (continuous integration), terminal, IDE, code completion, agent mode, coding agent, background agent, harness, plan mode, permission prompt, sandbox, instruction file, reward hacking, vibe coding, prototype, package hallucination, security vulnerability, technical debt, agentic engineering, spec, randomized controlled trial, personal data, authentication, authorization, no-code, automation platform, trigger, action, workflow, webhook, AI step, AI agent node, self-hosting, AI app builder, access rules, vendor lock-in.
+Source code, frontend, HTML and CSS, backend, database, hosting, dependency, software framework, version control, Git, repository, commit, diff, branch, merge, GitHub, push and pull, pull request, code review, automated test, unit test, test suite, software regression, localhost, deploy, production, CI (continuous integration), terminal, IDE, code completion, agent mode, coding agent, background agent, harness, plan mode, permission prompt, sandbox, instruction file, reward hacking, vibe coding, prototype, package hallucination, security vulnerability, technical debt, agentic engineering, spec, randomized controlled trial, personal data, authentication, authorization, no-code, automation platform, trigger, automation action, automation workflow, webhook, AI step, AI agent node, self-hosting, AI app builder, access rules, vendor lock-in.
 
 ## Exercises
 

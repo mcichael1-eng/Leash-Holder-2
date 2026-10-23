@@ -171,7 +171,7 @@ Muon is meant for the 2-D weight matrices of hidden layers. The recommended prac
 
 The results came quickly:
 
-- Muon set speed records on two community benchmarks, the NanoGPT "speedrun" (a public race to train a small GPT-style language model to a fixed quality as fast as possible) and training a small image classifier on CIFAR-10 (a standard set of 60,000 tiny 32-by-32-pixel color photos in ten classes such as cat, ship and truck), reaching 94% accuracy in 2.6 seconds of time on an A100 (NVIDIA's 2020 data-center GPU) instead of 3.3.
+- Muon set speed records on two community benchmarks, the NanoGPT "speedrun" (a public race to train a small GPT-style language model to a fixed quality as fast as possible) and training a small image classifier on CIFAR-10 (a standard set of 60,000 tiny 32-by-32-pixel color photos in ten classes such as cat, ship and truck), reaching 94% accuracy in 2.6 seconds on an A100 (NVIDIA's 2020 data-center GPU), down from the previous record of 3.3 seconds.
 - In February 2025, Moonshot AI published "Muon is Scalable for LLM Training", showing that with weight decay and a per-matrix adjustment of the update size, Muon works for large language models.
 - In July 2025, Moonshot's Kimi K2 (about 1 trillion total parameters, 32 billion active) was pre-trained on 15.5 trillion tokens with **MuonClip**, Muon plus a fix that stops attention scores from growing out of control, and Moonshot reported zero loss spikes during the run.
 - DeepSeek V4 (2026) states that it uses Muon "for faster convergence and greater training stability".
@@ -398,7 +398,7 @@ Classical statistics says that as a model grows more flexible, its test error fi
 ```
 *Figure 13.6: Double descent. Past the danger zone where the model can barely fit its training data, making it even bigger lowers the test error again.*
 
-Another surprise, **grokking** (reported in 2022), happens on some small, puzzle-like tasks: a network memorizes the training set quickly, its validation accuracy stays poor for a long time, and then, thousands of steps later, it suddenly "gets" the underlying rule and validation accuracy jumps. One of the best papers at NeurIPS 2025 (the largest yearly AI research conference), "Why Diffusion Models Don't Memorize", found a related pattern in image generators: generalization appears on one timescale during training, and memorization only on a later, slower one.
+Another surprise, **grokking** (reported in 2022), happens on some small, puzzle-like tasks: a network memorizes the training set quickly, its validation accuracy stays poor for a long time, and then, thousands of steps later, it suddenly "gets" the underlying rule and validation accuracy jumps. One of the best papers at NeurIPS 2025 (one of the largest yearly AI research conferences), "Why Diffusion Models Don't Memorize", found a related pattern in image generators: generalization appears on one timescale during training, and memorization only on a later, slower one.
 
 > **Definition — Double descent:** The observation that as models grow, test error can fall, rise to a peak near the size where the model just fits its training data, and then fall again for even larger models.
 
@@ -435,7 +435,7 @@ The result always has a mean of 0 and a spread of 1, whether the input was [2, 4
 
 **Batch normalization** (Sergey Ioffe and Christian Szegedy, 2015) was a breakthrough for image networks, but it depends on the other examples in the batch, which is awkward for text of varying lengths and for small batches. **Layer normalization** (Jimmy Ba, Jamie Kiros and Geoffrey Hinton, 2016) normalizes each example on its own and became the Transformer standard. **RMSNorm** (Biao Zhang and Rico Sennrich, 2019) simplified it and is now used in most open large language models.
 
-Where the normalization sits also matters. The original 2017 Transformer normalized *after* each sub-layer (**post-norm**); the sub-layers are the attention part and the feed-forward part of each block, shown in Figure 13.8. Later models such as GPT-2 moved it *before* each sub-layer (**pre-norm**), which trains much more stably in deep stacks and is the norm today. And in 2025, a paper titled "Transformers without Normalization" (presented at CVPR 2025, the leading computer-vision research conference) showed that replacing normalization layers with a simple learned squash, tanh(α × x), where α (the Greek letter alpha) is a number the network learns, called **DyT**, matches normalized Transformers in many settings, a reminder that even basic plumbing is still being rethought.
+Where the normalization sits also matters. The original 2017 Transformer normalized *after* each sub-layer (**post-norm**); the sub-layers are the attention part and the feed-forward part of each block, shown later in Figure 13.8. Later models such as GPT-2 moved it *before* each sub-layer (**pre-norm**), which trains much more stably in deep stacks and is the norm today. And in 2025, a paper titled "Transformers without Normalization" (presented at CVPR 2025, the leading computer-vision research conference) showed that a simple learned squash called **DyT**, tanh(α × x), where α (the Greek letter alpha) is a number the network learns, can replace the normalization layers and still match normalized Transformers in many settings, a reminder that even basic plumbing is still being rethought.
 
 > **Definition — Normalization layer:** A layer that rescales a group of numbers to a standard range (for example mean 0 and spread 1) before passing them on, so that training stays stable as values flow through many layers.
 
@@ -652,7 +652,7 @@ Around the frameworks sits an ecosystem: **Hugging Face** hosts open models and 
 
 > **Definition — Framework (deep-learning framework):** A software library that handles tensors on GPUs, automatic differentiation, ready-made layers, optimizers and data loading, so researchers can describe a model in a few lines instead of writing all the math by hand.
 
-> **Definition — PyTorch:** The most widely used deep-learning framework, originally developed at Meta and now governed by the PyTorch Foundation. It is Python-first and dominates research and open-model development.
+> **Definition — PyTorch:** The most widely used deep-learning framework, a software library for building and training neural networks, originally developed at Meta and now governed by the PyTorch Foundation. It is Python-first and dominates research and open-model development.
 
 > **Definition — JAX:** Google's library for fast numerical computing with automatic differentiation and compilation, widely used at Google DeepMind and on Google's TPU chips.
 
@@ -860,7 +860,7 @@ Put the chapter together and you can read the "recipe card" of a modern model. H
 | Initialization | He initialization | Small random values, residual branches scaled down |
 | Normalization | Batch normalization | RMSNorm in pre-norm position, often extra norms inside attention (QK-norm) |
 | Shortcuts | Residual connections (ResNet) | Residual stream; some use hyper-connections such as DeepSeek's mHC |
-| Activation | ReLU | SwiGLU (a gated form of SiLU, Chapter 15) |
+| Activation | ReLU | SwiGLU (a gated form of SiLU; see Chapter 15) |
 | Regularization | Dropout, data augmentation, weight decay | Weight decay; little or no dropout; enormous data seen about once |
 | Precision | FP32 | BF16 mixed precision, FP8, and the first FP4 runs |
 | Scale | Tens of millions of parameters, a few GPUs | Hundreds of billions to over a trillion parameters, thousands of chips |
@@ -1077,7 +1077,7 @@ Optimizer, loss landscape, saddle point, momentum, Adam, optimizer state, weight
 - **Open problem: why big networks generalize.** Double descent, grokking and the memorization timescales in diffusion models remain only partly explained. Better theory would help predict when a model will memorize sensitive or copyrighted data.
 - **Open problem: continual learning.** Today's models are trained once and then frozen. Methods that let a model keep learning from new data without forgetting what it knew would change how AI products work.
 
-> **Definition — AMD (Advanced Micro Devices):** An American chip company that makes processors for PCs and servers and is NVIDIA's main rival in GPUs for AI, with its Instinct line of data-center accelerators.
+> **Definition — AMD (Advanced Micro Devices):** An American company that designs CPUs for PCs and servers and is NVIDIA's main rival in AI GPUs, with its Instinct line of data-center accelerators.
 
 ## Check your understanding
 

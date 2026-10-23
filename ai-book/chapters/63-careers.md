@@ -40,12 +40,12 @@ Headlines focus on the top rung, because that is where the dramatic pay packages
 AI work happens in five broad places, and the same job title can look quite different in each.
 
 - **Frontier labs.** The companies that train the most capable models: OpenAI, Anthropic, Google DeepMind, Meta and xAI (now part of SpaceX), with Chinese labs such as DeepSeek, Alibaba's Qwen team and Moonshot close behind. They employ relatively few people for their size and pay at the very top of the market.
-- **Big tech and chipmakers.** Microsoft, Google, Amazon, Meta, Apple and Nvidia employ large numbers of machine-learning and infrastructure staff, often at pay close to the labs'.
+- **Big tech and chipmakers.** Microsoft, Google, Amazon, Meta, Apple and NVIDIA employ large numbers of machine-learning and infrastructure staff, often at pay close to the labs'.
 - **AI startups.** Application companies such as Cursor (coding), Harvey (law), Lovable (app building) and Sierra (customer service), plus tooling and data companies. Pay mixes salary with riskier equity.
 - **Every other organization.** Banks, hospitals, retailers, law firms, schools, governments and small businesses adopting AI. This is where the largest number of AI-touched jobs are, usually under existing titles with new responsibilities.
 - **The physical buildout.** Data-center developers, construction firms, electrical and mechanical contractors and utilities building the gigawatt-scale campuses described in Part VII (Chapters 38 to 43).
 
-> **Definition — Frontier lab:** A company that trains frontier models, the most capable AI models in existence at a given time. In late 2026 the usual list includes OpenAI, Anthropic, Google DeepMind, Meta and xAI, with several Chinese labs close behind.
+> **Definition — Frontier lab:** A company that trains frontier models, the most capable AI models in existence at a given time. In late 2026 the usual list includes OpenAI, Anthropic, Google DeepMind, Meta and xAI (now part of SpaceX), with several Chinese labs close behind.
 
 ### What the labs are actually hiring for
 
@@ -133,7 +133,7 @@ AI pay spans four tiers that differ by factors of ten or more. Figure 63.2 puts 
 *Figure 63.2: The four tiers of AI pay on a log scale (TC means total compensation, defined below). Headlines describe the far right; most careers live on the left.*
 
 - **Tier 1, national medians (BLS, May 2025).** A median is the middle value, with half of workers earning more and half less, so a few huge salaries cannot drag it upward. Software developers $135,980, with 10% projected growth from 2025 to 2035. Computer and information research scientists $140,300 (22% growth; the typical entry credential is a master's degree). Data scientists $120,230 (35% growth). Electricians $63,190 (9% growth, with data-center electricity demand cited as a driver).
-- **Tier 2, big tech (Levels.fyi, self-reported, Oct 2026).** Median total compensation for US machine-learning engineers was about $465K at Meta, $420K at Apple, $333K at Google and $261K at Nvidia.
+- **Tier 2, big tech (Levels.fyi, self-reported, Oct 2026).** Median total compensation for US machine-learning engineers was about $465K at Meta, $420K at Apple, $333K at Google and $261K at NVIDIA.
 - **Tier 3, frontier-lab posted ranges (lab job boards, Oct 2026).** Base salary commonly $200K to $500K, with some research and performance roles reaching $850K, plus equity on top.
 - **Tier 4, outliers (reported, 2025).** In mid-2025 Meta reportedly offered a small number of top researchers packages worth up to $300 million over four years, and one reported offer was said to reach $1.5 billion over six or more years. Meta's chief technology officer said such sums went to only a few senior leaders and were multi-year stock, not signing bonuses.
 
@@ -259,7 +259,7 @@ Engineering roles build the software that turns models into products, keeps them
 
 > **Definition — MLOps (machine-learning operations):** The practices and tools for deploying, monitoring and updating models in production reliably: pipelines, model registries, scheduling and monitoring. The LLM-era version is often called LLMOps.
 
-> **Definition — Kernel:** A small, highly tuned program that runs one operation, such as a matrix multiplication, on a GPU (graphics processing unit, the parallel chip that does most AI math). Kernels are usually written in CUDA, Nvidia's GPU programming platform, or in Triton, a Python-like alternative, and faster kernels make every training run and every answer cheaper.
+> **Definition — Kernel:** A small, highly tuned program that runs one operation, such as a matrix multiplication, on a GPU (graphics processing unit, the parallel chip that does most AI math). Kernels are usually written in CUDA, NVIDIA's GPU programming platform, or in Triton, a Python-like alternative, and faster kernels make every training run and every answer cheaper.
 
 | Role | Day to day | Core skills and backgrounds | Pay data (source, date) |
 |---|---|---|---|
@@ -389,7 +389,7 @@ How fast is forward-deployed engineering growing? Solid public numbers are scarc
 
 Every powerful technology needs people who decide the rules, enforce them and check that they are working. In AI this family spans company policy teams, investigators who catch misuse, auditors, and government bodies that test models. Their reference points include voluntary frameworks such as the US NIST AI Risk Management Framework and laws such as the European Union's risk-based AI Act, whose obligations phase in from 2025 onward (Chapter 59 covers both, including the delays the EU adopted in 2026). Most roles here value law, policy, investigation and domain expertise more than programming, although technical literacy is increasingly expected.
 
-> **Definition — AI governance:** The policies, processes and controls an organization uses to manage the risks of AI and comply with the law, from an inventory of AI systems to approval rules and audits.
+> **Definition — AI governance:** The rules, institutions and processes that shape how AI is built and used. Inside an organization, it means the policies, processes and controls used to manage the risks of AI and comply with the law, from an inventory of AI systems to approval rules and audits.
 
 > **Definition — Trust and safety (safeguards):** The teams and systems that detect and prevent misuse of a product, such as fraud, cyberattacks, child-safety violations or weapons-related requests. At AI labs the team is often called Safeguards.
 
@@ -424,7 +424,7 @@ Industry bodies such as the Frontier Model Forum, the Partnership on AI and MLCo
 
 > **Definition — MIRI (Machine Intelligence Research Institute):** One of the oldest AI-risk organizations, a Berkeley nonprofit co-founded by Eliezer Yudkowsky in 2000. It pioneered theoretical alignment research and now focuses on warning about catastrophic risk and calling for an international halt to the race toward superhuman AI.
 
-> **Definition — FAR.AI:** A nonprofit AI-safety research institute that studies how robust and safe models really are, for example how easily their safeguards can be attacked, and runs workshops that connect safety researchers with policymakers.
+> **Definition — FAR.AI:** A nonprofit research organization working on AI safety problems, such as how robust models really are and how easily their safeguards can be attacked. It also runs workshops that connect safety researchers with policymakers.
 
 > **Definition — IAPS (Institute for AI Policy and Strategy):** A nonprofit think tank that researches AI policy, with a focus on compute governance (how chips and computing power can be tracked and controlled), national security and international competition.
 
@@ -646,7 +646,7 @@ The evidence on AI and jobs sits between the two loudest claims, "AI will take a
 - **Growth in AI-adjacent occupations.** The BLS projects 2025 to 2035 growth of 35% for data scientists, 22% for computer and information research scientists, 10% for software developers and 9% for electricians.
 - **A perception gap.** In the 2026 AI Index, 73% of AI experts but only 23% of the public expected AI's impact on jobs to be positive, a 50-point gap.
 
-> **Definition — NANDA (MIT's Networked Agents and Decentralized AI initiative):** A research project at the MIT Media Lab on networks of AI agents. Its July 2025 report, "The GenAI Divide," found that only about 5% of enterprise generative-AI pilots delivered measurable profit impact, a figure widely quoted in debates about AI adoption.
+> **Definition — MIT NANDA:** A research initiative that began at the MIT Media Lab and studies networks of AI agents; its name stands for Networked AI Agents in Decentralized Architecture. Its July 2025 report, "The GenAI Divide," found that only about 5% of enterprise generative-AI pilots delivered measurable profit impact, a figure widely quoted in debates about AI adoption.
 
 > **Key idea:** Exposure is not the same as displacement. So far the clearest damage is concentrated on young workers in highly exposed, automatable tasks, while experienced workers and less-exposed roles have held steady and new roles are growing. The entry-level rung is where you most need a plan.
 
@@ -703,7 +703,7 @@ The roles fall into nine families: research, engineering, infrastructure and dat
 For the job you already have, think in tasks, not jobs. Test which of your tasks AI does well, because its abilities are jagged. Let it draft where you can verify, automate where mistakes are cheap, and spend the time you get back on judgment, relationships and the decisions only you can own.
 
 ## Key terms
-Role family, Frontier lab, Pay-transparency law, BLS (Bureau of Labor Statistics), Levels.fyi, Base salary, Bonus, Equity, RSU (restricted stock unit), Stock option, Vesting, Cliff, Total compensation (TC), Liquidity, Tender offer, Dilution, Research scientist, Research engineer, Evals (evaluations), Fellowship (residency), AI engineer (LLM application engineer), ML engineer (MLE), MLOps (machine-learning operations), Kernel, Prompt engineering, Site reliability engineering (SRE), Critical facilities, Powered land, Product manager (PM), Conversation designer, TPM (technical program manager), Data analyst, Data scientist, Data engineer, Human data, Expert contractor (AI trainer), RL environment, Go-to-market (GTM), Account executive (AE), OTE (on-target earnings), Customer success manager (CSM), Solutions architect (Applied AI architect), Proof of concept (POC), FDE (forward-deployed engineer), AI governance, Trust and safety (safeguards), AISI and CAISI, AIGP (Artificial Intelligence Governance Professional), Think tank, Civil society, MIRI (Machine Intelligence Research Institute), FAR.AI, IAPS (Institute for AI Policy and Strategy), AI adoption lead (AI transformation lead), Change management, Commissioning, Apprenticeship, Developer relations (DevRel), Technical writer, Portfolio, T-shaped skills, Coding interview, System-design interview, Take-home assignment, Task, AI exposure, Automation, Augmentation, Jagged frontier, HAI (Stanford Institute for Human-Centered Artificial Intelligence), NANDA (MIT's Networked Agents and Decentralized AI initiative).
+Role family, Frontier lab, Pay-transparency law, BLS (Bureau of Labor Statistics), Levels.fyi, Base salary, Bonus, Equity, RSU (restricted stock unit), Stock option, Vesting, Cliff, Total compensation (TC), Liquidity, Tender offer, Dilution, Research scientist, Research engineer, Evals (evaluations), Fellowship (residency), AI engineer (LLM application engineer), ML engineer (MLE), MLOps (machine-learning operations), Kernel, Prompt engineering, Site reliability engineering (SRE), Critical facilities, Powered land, Product manager (PM), Conversation designer, TPM (technical program manager), Data analyst, Data scientist, Data engineer, Human data, Expert contractor (AI trainer), RL environment, Go-to-market (GTM), Account executive (AE), OTE (on-target earnings), Customer success manager (CSM), Solutions architect (Applied AI architect), Proof of concept (POC), FDE (forward-deployed engineer), AI governance, Trust and safety (safeguards), AISI and CAISI, AIGP (Artificial Intelligence Governance Professional), Think tank, Civil society, MIRI (Machine Intelligence Research Institute), FAR.AI, IAPS (Institute for AI Policy and Strategy), AI adoption lead (AI transformation lead), Change management, Commissioning, Apprenticeship, Developer relations (DevRel), Technical writer, Portfolio, T-shaped skills, Coding interview, System-design interview, Take-home assignment, Task, AI exposure, Automation, Augmentation, Jagged frontier, HAI (Stanford Institute for Human-Centered Artificial Intelligence), MIT NANDA.
 
 ## Exercises
 

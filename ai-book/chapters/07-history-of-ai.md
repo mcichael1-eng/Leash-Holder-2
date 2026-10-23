@@ -150,7 +150,7 @@ Newspaper coverage at the time reported that the US Navy, which funded the work,
 - **1964–66:** Joseph Weizenbaum at MIT wrote ELIZA, which imitated a therapist by matching keywords and turning your statements back into questions ("I am sad about my mother" might get "Tell me more about your family"). It understood nothing, yet people confided in it. Weizenbaum was disturbed by this and became one of the field's first critics.
 - **1966–72:** At SRI, Shakey became the first mobile robot to reason about its own actions; its A* route-planning method (1968) is an ancestor of the routing in today's map apps (see Chapter 48).
 
-> **Definition — IBM:** A large American computer company, founded in 1911, that dominated business computing for much of the 20th century. Its research labs produced Samuel's checkers program, the Deep Blue chess computer and the Watson question-answering system.
+> **Definition — IBM (International Business Machines):** A large American computer company, founded in 1911, that dominated business computing for much of the 20th century. Its research labs produced Samuel's checkers program, the Deep Blue chess computer and the Watson question-answering system.
 
 > **Definition — SRI (Stanford Research Institute):** A research institute in California, founded in 1946 by Stanford University and now called SRI International. It built Shakey, the first mobile robot to reason about its own actions.
 
@@ -324,7 +324,7 @@ Games are cheap, safe, scorable worlds, which made them the field's favorite pro
 
 Neural networks survived in niches: in 1997 Sepp Hochreiter and Jürgen Schmidhuber published the LSTM, a network that remembers information over long sequences and later powered speech recognition on phones. And DARPA's 2004–2005 desert races for driverless cars (Stanford's car Stanley won in 2005) led to Google's self-driving project in 2009, the ancestor of Waymo, today's robotaxi company (see Chapter 50).
 
-> **Definition — DARPA (Defense Advanced Research Projects Agency):** The US Defense Department's agency for funding ambitious, high-risk research. Under its earlier name, ARPA, it funded much early AI research and the ARPANET, the ancestor of the internet.
+> **Definition — DARPA (Defense Advanced Research Projects Agency):** The US Department of Defense's agency for funding ambitious, high-risk research. Under its earlier name, ARPA, it funded much early AI research and the ARPANET, the ancestor of the internet.
 
 ### The ingredients arrive (2006–2011)
 
@@ -336,7 +336,7 @@ Between 2006 and 2011 the three ingredients of the coming boom fell into place, 
 
 > **Definition — GPU (Graphics Processing Unit):** A chip with thousands of small cores that do the same math on lots of data at once. Built for video-game graphics, it became the main engine of AI (see Chapter 32).
 
-> **Definition — CUDA:** NVIDIA's software platform, released in 2007, that lets programmers use GPUs for general calculations. Two decades of software built on it are a big reason NVIDIA dominates AI hardware.
+> **Definition — CUDA:** NVIDIA's software platform, released in 2007, that lets programmers run general calculations on its GPUs. Two decades of software built on it are a big reason NVIDIA dominates AI hardware.
 
 In 2011 IBM's Watson beat two champions at the quiz show *Jeopardy!* and Apple launched Siri, putting AI back in the headlines.
 
@@ -481,7 +481,7 @@ That is about 315 sextillion operations. We will compare it with later models in
 
 In 2020 DeepMind's AlphaFold 2 predicted the 3D shapes of proteins with accuracy close to lab experiments, cracking a 50-year-old problem in biology (see Chapter 52). In 2021 OpenAI showed DALL·E, which drew images from text descriptions, and CLIP, which learned to match images with their captions; GitHub Copilot began suggesting code inside programmers' editors, and former OpenAI researchers founded Anthropic. In 2022 DALL·E 2, Midjourney and Stable Diffusion (with downloadable weights) made image generation a consumer hobby, and OpenAI openly released Whisper for speech recognition.
 
-> **Definition — DALL·E:** OpenAI's family of image generators that draw pictures from text descriptions, first shown in 2021. The name blends the painter Salvador Dalí and the robot WALL-E.
+> **Definition — DALL·E:** OpenAI's family of text-to-image models, which draw pictures from text descriptions: DALL·E (January 2021), DALL·E 2 (2022) and DALL·E 3 (2023). The name blends the painter Salvador Dalí and the Pixar robot WALL·E.
 
 > **Definition — Diffusion model:** An image (or video) generator that learns to turn random noise into a picture step by step, guided by a text description (see Chapter 16).
 
@@ -590,7 +590,7 @@ On October 22, 2024 Anthropic gave Claude "computer use": it could look at scree
 
 > **Definition — AI agent:** An AI system that pursues a goal over many steps by taking actions, such as searching, clicking, running code or calling tools, rather than giving a single answer (see Chapter 28).
 
-> **Definition — MCP (Model Context Protocol):** An open standard introduced by Anthropic in November 2024 that lets AI applications plug into outside tools and data sources in a uniform way, like a USB port (the standard plug on computers and phones) for AI.
+> **Definition — MCP (Model Context Protocol):** An open standard for connecting AI applications to outside tools and data sources, introduced by Anthropic in November 2024 and governed since December 2025 by the Agentic AI Foundation, part of the nonprofit Linux Foundation. It works like a USB port (the standard plug on computers and phones) for AI.
 
 ### The DeepSeek shock (December 2024 to January 2025)
 
@@ -602,9 +602,9 @@ In December 2024 the Chinese lab DeepSeek released V3, an open-weight model whos
 
 On January 21, 2025 OpenAI and partners announced Stargate, a plan for up to $500 billion of AI infrastructure and 10 gigawatts by 2029, with its first campus in Abilene, Texas. The rest of 2025 brought deals measured in gigawatts rather than in chips: NVIDIA (a September letter of intent, a non-binding agreement to work out a deal, for at least 10 GW, later reportedly restructured), AMD (6 GW, October 6) and Broadcom (a chip company that designs custom chips for other firms; 10 GW of custom chips, October 13) with OpenAI; up to a million Google TPUs for Anthropic (October); and Amazon's Project Rainier in Indiana, which came online in October with about 500,000 Trainium2 chips (Amazon's own AI chips) for Anthropic, according to Amazon. Microsoft unveiled its Fairwater AI data center in Wisconsin. NVIDIA became the first public company worth $4 trillion (July 9) and then $5 trillion (October 29).
 
-> **Definition — AMD (Advanced Micro Devices):** An American chip company that designs processors for computers and, since the AI boom, GPUs for AI data centers. It is NVIDIA's main rival in AI GPUs.
+> **Definition — AMD (Advanced Micro Devices):** An American company that designs CPUs for PCs and servers and is NVIDIA's main rival in AI GPUs, with its Instinct line of data-center accelerators.
 
-> **Definition — Gigawatt (GW):** A billion watts. A 1 GW data center draws about as much power as a million US homes. Frontier AI campuses are now planned in gigawatts (see Chapter 39).
+> **Definition — Gigawatt (GW):** A billion watts. A 1 GW data center draws about as much power as roughly 800,000 average US homes. Frontier AI campuses are now planned in gigawatts (see Chapter 39).
 
 ### Agents and assistants go mainstream
 
@@ -624,7 +624,7 @@ On May 14, 2025 Google DeepMind's AlphaEvolve found a way to multiply 4 × 4 com
 
 ### GPT-5 and the end-of-year flagships
 
-On August 7, 2025 OpenAI launched GPT-5, a system with a fast model, a reasoning model and a router that decides which one answers you. The end of the year brought a new flagship from each big lab within weeks: GPT-5.1 (November), Gemini 3 Pro (November 18), Claude Opus 4.5 (November 24) and GPT-5.2 (December). METR's time horizons (the length of task, measured in skilled-human working time, that an AI agent can complete half the time; defined properly in Era 10) kept climbing: about 2 hours for o3, 3.4 hours for GPT-5, 4.9 hours for Opus 4.5 and 5.9 hours for GPT-5.2.
+On August 7, 2025 OpenAI launched GPT-5, a system with a fast model, a reasoning model and a router that decides which one answers you. The end of the year brought a new flagship from each big lab within weeks: GPT-5.1 (November), Gemini 3 Pro (November 18), Claude Opus 4.5 (November 24) and GPT-5.2 (December). METR, an independent nonprofit that tests AI systems, measures each model's time horizon (the length of task, measured in skilled-human working time, that an AI agent can complete half the time; defined properly in Era 10), and these kept climbing: about 2 hours for o3, 3.4 hours for GPT-5, 4.9 hours for Opus 4.5 and 5.9 hours for GPT-5.2.
 
 ### Reality checks and rules
 
@@ -661,13 +661,13 @@ By 2026 the big labs were releasing new models roughly every month. Rather than 
 
 *Table 7.5: The 2026 frontier at a glance, as of October 21, 2026.*
 
-Two other launches appear in the timeline at the end of this era. In January Anthropic released Claude Cowork as a research preview, an agent for everyday non-coding office work, and published a new constitution for Claude, a public document setting out how it should weigh safety, ethics, Anthropic's guidelines and helpfulness (Chapter 20). In May Google announced Gemini Omni, which combines Gemini with Google's image and video models so that any input can be turned into video (Chapter 22).
+The timeline at the end of this era also shows three events that are not in the table. In January Anthropic released Claude Cowork as a research preview, an agent for everyday non-coding office work, and published a new constitution for Claude, a public document setting out how it should weigh safety, ethics, Anthropic's guidelines and helpfulness (Chapter 20). In May Google announced Gemini Omni, which, in Google's words, combines Gemini's intelligence with its generative-media models, so that any input (text, image, audio or video) can be turned into video (Chapter 22).
 
 ### Restricted models: Mythos and Astra
 
 On April 7, 2026 Anthropic announced Claude Mythos Preview and Project Glasswing. Anthropic said the unreleased model, given only to defenders such as AWS, Apple, Google, Microsoft, NVIDIA and the Linux Foundation, had found thousands of high-severity security flaws across every major operating system and web browser, including a 27-year-old bug in OpenBSD. In June Anthropic released Fable 5 and Mythos 5, the same underlying model with different safeguards: Fable for the public, with classifiers that redirect risky requests, and Mythos for vetted partners.
 
-On September 3, 2026 OpenAI unveiled GPT-6 Astra. OpenAI described it as its largest training run by far and its first pretraining run on more than 100,000 GPUs, at the Stargate site in Abilene. Epoch AI estimates about 9.4 × 10^26 FLOP. It rolled out first to vetted organizations in OpenAI's trusted-access program, because of its cyber capabilities, and a day later to paid ChatGPT and API customers in a version that refuses some cybersecurity requests. OpenAI's safety card for Astra calls it "our first model to reach the Critical level of cybersecurity capability under our Preparedness Framework," the company's internal risk scale. Some commentary called it AGI (artificial general intelligence, defined near the end of this chapter); treat that as marketing or speculation, not a finding.
+On September 3, 2026 OpenAI unveiled GPT-6 Astra. OpenAI described it as its largest training run by far and its first pretraining run on more than 100,000 GPUs, at the Stargate site in Abilene. Epoch AI estimates about 9.4 × 10^26 FLOP. It rolled out first to vetted organizations in OpenAI's trusted-access program, because of its cyber capabilities, and a day later to paid ChatGPT and API customers in a version that, according to press reports, refuses some cybersecurity requests. OpenAI's safety card for Astra calls it "our first model to reach the Critical level of cybersecurity capability under our Preparedness Framework," the company's internal risk scale. Some commentary called it AGI (artificial general intelligence, defined near the end of this chapter); treat that as marketing or speculation, not a finding.
 
 > **Definition — Restricted (trusted-access) model:** A model released only to vetted organizations, or in a safer public version with extra safeguards, because its full capabilities in areas like cyberattacks are judged too risky for open release.
 
@@ -675,11 +675,11 @@ On September 3, 2026 OpenAI unveiled GPT-6 Astra. OpenAI described it as its lar
 
 ### Open weights and new players
 
-DeepSeek-V4-Pro has 1.6 trillion total parameters (49 billion active per token), a 1-million-token context window and a permissive MIT license. Moonshot's Kimi K3 (July 16) has 2.8 trillion parameters. Stanford's 2026 AI Index found the top US model led the top Chinese model by only 2.7% on Arena scores (ratings from a public website where people vote between two anonymous models' answers) as of March 2026. Meta moved on from its Llama line (last release: Llama 4, April 2025) to a new "Muse" family, which now powers its Meta AI assistant, and released Muse Wonder on October 13, 2026, according to press reports. SpaceX acquired xAI in February 2026 (an all-stock deal, per reports), and the combined company released Grok 4.7, the latest version of xAI's chatbot, in September. Not every plan shipped: Google's Gemini 3.5 Pro reportedly never got a general release, and OpenAI announced in March 2026 that it would shut down its Sora video app.
+DeepSeek-V4-Pro has 1.6 trillion total parameters (49 billion active per token), a 1-million-token context window and a permissive MIT license. Moonshot's Kimi K3 (July 16) has 2.8 trillion parameters. Stanford's 2026 AI Index found the top US model led the top Chinese model by only 2.7% on Arena scores (ratings from a public website where people vote between two anonymous models' answers) as of March 2026. Meta moved on from its Llama line (last release: Llama 4, April 2025) to a new "Muse" family, which now powers its Meta AI assistant, and released Muse Wonder on October 13, 2026, according to press reports. SpaceX acquired xAI in February 2026 (an all-stock deal, per reports), and the combined company released Grok 4.7, the latest version of xAI's chatbot, in September. Not every plan shipped: Google's API changelog still listed no general release of Gemini 3.5 Pro as of October 2026 (the family's Flash model did ship), and OpenAI announced in March 2026 that it would shut down its Sora video app.
 
 ### Measuring a moving target
 
-Benchmarks now fall within months. ARC-AGI-3, launched March 25, 2026, used interactive puzzle games with no instructions; at launch humans scored 100% and frontier AI 0.51%. By September GPT-6 Astra at maximum effort scored 62.7% using the standard setup, and 98.6% at the same effort with a different "harness" that let it keep its reasoning between steps (its best score, 99.9%, came with that harness at high effort). ARC Prize, the nonprofit that runs the test, declined to call this AGI. Humanity's Last Exam, a set of very hard expert-written questions launched in January 2025 when frontier models scored under 10%, saw Claude Opus 5.5 reach about 61% by October 2026 (text-only, per Artificial Analysis, an independent company that benchmarks AI models).
+Benchmarks now fall within months. ARC-AGI-3, launched March 25, 2026, used interactive puzzle games with no instructions; at launch humans scored 100% and frontier AI 0.51%. By September GPT-6 Astra at maximum effort scored 62.7% using the standard setup, and 98.6% at the same effort with a different "harness" that let it keep its reasoning between steps (its best score, 99.9%, came with that harness at the lower "high" effort setting). ARC Prize, the nonprofit that runs the test, declined to call this AGI. Humanity's Last Exam, a set of very hard expert-written questions launched in January 2025 when frontier models scored under 10%, saw Claude Opus 5.5 reach about 61% by October 2026 (text-only, per Artificial Analysis, an independent company that benchmarks AI models).
 
 > **Definition — Benchmark saturation:** The point at which top models score so high on a test that it can no longer tell them apart, forcing the field to build harder tests.
 
@@ -693,9 +693,9 @@ A worked example with METR's numbers: GPT-4 (March 2023) had a time horizon of a
 
 NVIDIA launched its Vera Rubin platform at CES in January 2026 (336 billion transistors per GPU, HBM4 memory), saying it was already in full production with partner systems due in the second half of the year; by August, racks were running at several clouds. Google announced its eighth-generation TPUs, split into a training chip and an inference chip, on April 22. For the quarter ending July 2026, NVIDIA reported revenue of $96.2 billion, more than double a year earlier.
 
-> **Definition — CES:** The giant consumer-electronics trade show held every January in Las Vegas, where technology companies announce new products, from TVs and laptops to AI chips.
+> **Definition — CES:** The large consumer-technology trade show held every January in Las Vegas (originally the Consumer Electronics Show), where technology companies announce new products, from TVs and laptops to AI chips.
 
-The buildings grew to match. Epoch AI lists xAI's Colossus 2 in Memphis as the largest AI data center by compute, at about 1.1 million H100-equivalents. Anthropic and Amazon agreed on April 20 to up to 5 GW. On July 13 Meta said its Hyperion campus in Louisiana would scale to 5 GW. As of October 20, 2026 Epoch tracked 95 large AI data centers totaling about 14.2 GW of IT power. Power became a story in its own right: in January Meta signed nuclear deals for up to 6.6 GW by 2035, and in late September (announced September 29) US regulators approved the first construction permit for a small modular reactor (a smaller nuclear reactor designed to be built largely from factory-made parts) of its type, at a site of the Tennessee Valley Authority, a US government-owned power company.
+The buildings grew to match. Epoch AI lists xAI's Colossus 2 in Memphis as the largest AI data center by compute, at about 1.1 million H100-equivalents. Anthropic and Amazon agreed on April 20 to up to 5 GW. On July 13 Meta said its Hyperion campus in Louisiana would scale to 5 GW. As of October 20, 2026 Epoch tracked 95 large AI data centers totaling about 14.2 GW of IT power. Power became a story in its own right: in January Meta signed nuclear deals for up to 6.6 GW by 2035, and in late September (announced September 29) US regulators approved the first construction permit for a small modular reactor of its type, at a site of the Tennessee Valley Authority, a US government-owned power company. Small modular reactors are smaller nuclear reactors designed to be built largely from factory-made parts.
 
 A quick worked example of why gigawatts matter: a 1 GW campus running all year uses up to 1 GW × 8,760 hours = 8,760 GWh, or 8.76 terawatt-hours. Epoch estimates a gigawatt campus costs about $38 billion up front and takes about two years to build (see Chapter 42).
 
@@ -848,7 +848,7 @@ The lessons: progress comes in bursts when ideas meet data and compute; methods 
 
 ## Key terms
 
-Algorithm, Compute, Analytical Engine, Turing machine, Artificial neuron, ENIAC (Electronic Numerical Integrator and Computer), Turing test (imitation game), Artificial intelligence (AI), Symbolic AI (GOFAI), Perceptron, IBM, SRI (Stanford Research Institute), Machine learning (ML), ELIZA effect, Moore's law, ALPAC (Automatic Language Processing Advisory Committee), XOR problem, Combinatorial explosion, AI winter, Expert system, MYCIN, XCON, Brittleness, Connectionism, Neural network, Backpropagation, Convolutional neural network (CNN), Statistical machine learning, AI effect, Benchmark, Reinforcement learning (RL), Self-play, DARPA (Defense Advanced Research Projects Agency), GPU (Graphics Processing Unit), CUDA, Deep learning, Embedding, GAN (generative adversarial network), Attention, Monte Carlo tree search, Transformer, Pretraining, Large language model (LLM), Parameter, Bitter Lesson, CICERO, Scaling laws, FLOP (floating-point operation), DALL·E, Diffusion model, Export controls, RLHF (reinforcement learning from human feedback), Chain-of-thought, Open-weight model, Frontier model, Multimodal model, Context window, Reasoning model, Test-time compute, AI agent, MCP (Model Context Protocol), AMD (Advanced Micro Devices), Gigawatt (GW), Vibe coding, Restricted (trusted-access) model, Benchmark saturation, METR time horizon, CES, Hype cycle, AGI (artificial general intelligence).
+Algorithm, Compute, Analytical Engine, Turing machine, Artificial neuron, ENIAC (Electronic Numerical Integrator and Computer), Turing test (imitation game), Artificial intelligence (AI), Symbolic AI (GOFAI), Perceptron, IBM (International Business Machines), SRI (Stanford Research Institute), Machine learning (ML), ELIZA effect, Moore's law, ALPAC (Automatic Language Processing Advisory Committee), XOR problem, Combinatorial explosion, AI winter, Expert system, MYCIN, XCON, Brittleness, Connectionism, Neural network, Backpropagation, Convolutional neural network (CNN), Statistical machine learning, AI effect, Benchmark, Reinforcement learning (RL), Self-play, DARPA (Defense Advanced Research Projects Agency), GPU (Graphics Processing Unit), CUDA, Deep learning, Embedding, GAN (generative adversarial network), Attention, Monte Carlo tree search, Transformer, Pretraining, Large language model (LLM), Parameter, Bitter Lesson, CICERO, Scaling laws, FLOP (floating-point operation), DALL·E, Diffusion model, Export controls, RLHF (reinforcement learning from human feedback), Chain-of-thought, Open-weight model, Frontier model, Multimodal model, Context window, Reasoning model, Test-time compute, AI agent, MCP (Model Context Protocol), AMD (Advanced Micro Devices), Gigawatt (GW), Vibe coding, Restricted (trusted-access) model, Benchmark saturation, METR time horizon, CES, Hype cycle, AGI (artificial general intelligence).
 
 ## Exercises
 
@@ -885,7 +885,7 @@ Algorithm, Compute, Analytical Engine, Turing machine, Artificial neuron, ENIAC 
    4. Paste your corrections back and ask the chatbot why it might have made those errors.
    **What you'll learn:** the arc of AI history, and the habit of verifying AI output, especially dates, names and numbers.
 
-6. **[Medium] Plot compute growth on a log scale.** In Google Sheets or Excel, put years in column A and training compute in column B: 2020 = 3.15E+23 (GPT-3), 2023 = 2.1E+25 (GPT-4), 2024 = 3.8E+25 (Llama 3.1 405B), 2025 = 3.8E+26 (GPT-4.5), 2026 = 9.4E+26 (GPT-6 Astra, estimate).
+6. **[Medium] Plot compute growth on a log scale.** In Google Sheets or Excel, put years in A2:A6 and training compute in B2:B6 (row 1 is for labels): 2020 = 3.15E+23 (GPT-3), 2023 = 2.1E+25 (GPT-4), 2024 = 3.8E+25 (Llama 3.1 405B), 2025 = 3.8E+26 (GPT-4.5), 2026 = 9.4E+26 (GPT-6 Astra, estimate).
    1. Make a scatter chart, then set the vertical axis to a logarithmic scale.
    2. In column C, compute the yearly growth multiple between neighboring rows: type `=(B3/B2)^(1/(A3-A2))` in C3 and fill down. B3/B2 is how many times bigger the newer model's compute is, and raising it to the power 1 divided by the number of years between them spreads that jump evenly over those years (for a one-year gap it changes nothing).
    3. Compare your multiples with Epoch AI's long-run average of about 5 times per year.

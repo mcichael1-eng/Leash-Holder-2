@@ -66,9 +66,9 @@ Imagine a machine with a slot on one side and a chute on the other. You drop a n
 
 Mathematicians write this rule as `f(x) = 2 × x + 1`. Read it aloud as "f of x equals two times x plus one". The letter `f` is just a name for the machine. The letter `x` stands for whatever number you put in.
 
-> **Definition — Function:** A rule that turns each input into exactly one output, like a machine that always gives the same result for the same input. `f(x) = 2 × x + 1` is a function that doubles its input and adds one.
+> **Definition — Mathematical function:** A rule that turns each input into exactly one output, like a machine that always gives the same result for the same input. `f(x) = 2 × x + 1` is a function that doubles its input and adds one.
 
-> **Definition — Variable:** A letter, such as x or y, that stands for a number that can change. In `f(x) = 2 × x + 1`, x is the variable you feed in.
+> **Definition — Mathematical variable:** A letter, such as x or y, that stands for a number that can change. In `f(x) = 2 × x + 1`, x is the variable you feed in.
 
 A table makes a function concrete. Here is our machine at work:
 
@@ -849,7 +849,7 @@ Training is more expensive per token for a simple reason. For every training tok
 
 How long does that take? Divide by how fast the computers really run. Meta trained Llama 3.1 405B on 16,384 NVIDIA H100 GPUs. Each H100 can do about 989 trillion FLOPs per second at the 16-bit precision used for training, but no real job runs at full speed; Meta reported using roughly 40% of it.
 
-> **Definition — Utilization (MFU):** The fraction of a chip's theoretical top speed that a real job actually achieves. Large training runs typically reach about 35 to 50%, because time is lost to communication, memory waits and failures. MFU stands for model FLOPs utilization.
+> **Definition — MFU (model FLOPs utilization):** The fraction of a chip's theoretical top speed that a real training job actually achieves on the model's necessary math. Large training runs typically reach about 35 to 50%, because time is lost to communication, memory waits and failures.
 
 16,384 GPUs × 989 × 10^12 FLOPs per second × 0.40 ≈ 6.5 × 10^18 FLOPs per second for the whole cluster.
 
@@ -871,7 +871,7 @@ Every parameter is a decimal number like 0.0372 or −1.58, and the computer has
 
 > **Definition — Exponent and mantissa:** The two main parts of a floating-point number. The exponent sets how big or small the number is (its range); the mantissa holds its significant digits (its detail).
 
-> **Definition — Precision:** How finely a number format can distinguish nearby values, set mostly by how many bits it uses. Higher precision means more significant digits and smaller rounding errors.
+> **Definition — Numerical precision:** How finely a number format can distinguish nearby values, set mostly by how many bits it uses. Higher precision means more significant digits and smaller rounding errors.
 
 ### The precision ladder
 
@@ -997,7 +997,7 @@ A matrix is a table of numbers. Multiplying a vector by a matrix is just a batch
 
 ## Key terms
 
-Token, Function, Variable, Parameter, Weight, Bias, Model, Vocabulary, Training, Inference, Composition (of functions), Linear function, Nonlinear function, Coordinate, Slope, Intercept, Error (residual), Mean squared error (MSE), Line of best fit, Vector, Dimension, Scalar, Square root, Magnitude, Euclidean distance, Embedding, word2vec, Embedding table, Dot product, Weighted sum, FLOP (floating-point operation), Multiply-add, Cosine similarity, Matrix, Shape, Matrix-vector multiplication, Linear transformation, Matrix multiplication, Tensor, Batch, Hidden size, Layer, Activation function, ReLU (Rectified Linear Unit), Neural network, Deep learning, Forward pass, Mixture of experts (MoE), Active parameters, Utilization (MFU), Floating point, Exponent and mantissa, Precision, FP32, BF16 (bfloat16), FP16, FP8, FP4, INT8 and INT4, Mixed precision, Quantization, Memory bandwidth
+Token, Mathematical function, Mathematical variable, Parameter, Weight, Bias, Model, Vocabulary, Training, Inference, Composition (of functions), Linear function, Nonlinear function, Coordinate, Slope, Intercept, Error (residual), Mean squared error (MSE), Line of best fit, Vector, Dimension, Scalar, Square root, Magnitude, Euclidean distance, Embedding, word2vec, Embedding table, Dot product, Weighted sum, FLOP (floating-point operation), Multiply-add, Cosine similarity, Matrix, Shape, Matrix-vector multiplication, Linear transformation, Matrix multiplication, Tensor, Batch, Hidden size, Layer, Activation function, ReLU (Rectified Linear Unit), Neural network, Deep learning, Forward pass, Mixture of experts (MoE), Active parameters, MFU (model FLOPs utilization), Floating point, Exponent and mantissa, Numerical precision, FP32, BF16 (bfloat16), FP16, FP8, FP4, INT8 and INT4, Mixed precision, Quantization, Memory bandwidth
 
 ## Exercises
 

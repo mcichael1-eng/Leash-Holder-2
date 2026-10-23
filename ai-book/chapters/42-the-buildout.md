@@ -125,7 +125,7 @@ The risk travels along the chain. If an AI lab's demand falls, its take-or-pay c
 
 Imagine you have been asked to find a home for a 1 GW AI campus. Where do you even start?
 
-Ten years ago the answer was "near a big city with lots of fiber," which is why Northern Virginia became the world's largest data center market. Virginia's legislative watchdog, JLARC, put the region at about 13% of the world's reported operating data center capacity in 2024 and credited five things: a strong fiber network, a supply of reliable and cheap energy, available land, nearness to major national customers, and a state sales-and-use tax exemption on data center equipment (servers, cooling gear, generators) offered since 2010, worth about $928 million to the industry in fiscal 2023 (the state's budget year) alone. Once a cluster forms, it attracts more: every new building wants to sit next to the networks and customers already there. Today the first question is different: **where can I get a gigawatt of power, soon?**
+Ten years ago the answer was "near a big city with lots of fiber," which is why Northern Virginia became the world's largest data center market. Virginia's legislative watchdog, JLARC (the Joint Legislative Audit and Review Commission), put the region at about 13% of the world's reported operating data center capacity in 2024 and credited five things: a strong fiber network, a supply of reliable and cheap energy, available land, nearness to major national customers, and a state sales-and-use tax exemption on data center equipment (servers, cooling gear, generators) offered since 2010, worth about $928 million to the industry in fiscal 2023 (the state's budget year) alone. Once a cluster forms, it attracts more: every new building wants to sit next to the networks and customers already there. Today the first question is different: **where can I get a gigawatt of power, soon?**
 
 > **Definition — Site selection:** The process of choosing where to build a data center by weighing power, land, fiber, water, climate, taxes, permitting, labor and community attitudes.
 
@@ -375,9 +375,9 @@ Even with a finished building, you need chips, and the chip supply chain has its
 
 > **Definition — Optical transceiver:** A plug-in module that converts electrical signals into pulses of light for fiber-optic cables, and back again. A large AI cluster uses hundreds of thousands of them.
 
-> **Definition — SK hynix:** A South Korean memory-chip maker, part of the SK industrial group, and the leading supplier of HBM in recent years. Samsung and Micron are the other two HBM makers.
+> **Definition — SK hynix:** A South Korean memory-chip maker, part of the SK business group, that leads the market for the high-bandwidth memory (HBM) stacked beside AI chips and has been NVIDIA's main HBM supplier since HBM3. Samsung and Micron are the other two HBM makers.
 
-> **Definition — TSMC (Taiwan Semiconductor Manufacturing Company):** The Taiwanese contract chip factory (foundry) that manufactures most of the world's most advanced chips, including NVIDIA's and AMD's AI chips, and runs the CoWoS packaging lines that join GPU dies to HBM.
+> **Definition — TSMC (Taiwan Semiconductor Manufacturing Company):** The Taiwanese company that is the world's largest contract chipmaker (foundry) and manufactures nearly all advanced AI chips to their designers' blueprints. Its customers include NVIDIA and AMD, and its CoWoS packaging lines, which join each AI chip to its HBM memory, have been a key limit on AI chip supply.
 
 ### Grid and transmission
 
@@ -431,7 +431,7 @@ Now the stories. For each, ask the same questions: who, where, how much power, w
 
 **The announcement.** On January 21, 2025, at the White House, OpenAI and partners announced "Stargate," a plan described as "up to $500 billion" and 10 GW of US AI infrastructure by 2029. The partners have included Oracle, SoftBank (the Japanese technology investment group), MGX (an Abu Dhabi investment firm), Crusoe, Vantage, SB Energy (SoftBank's solar, storage and power developer), Related Digital and STACK.
 
-> **Definition — MGX:** An Abu Dhabi investment firm backed by the government of the United Arab Emirates, founded in 2024 to invest in AI and AI infrastructure. It is a partner in OpenAI's Stargate.
+> **Definition — MGX:** An Abu Dhabi investment firm backed by the government of the United Arab Emirates, founded in 2024 to invest in AI and AI infrastructure. It is a partner in OpenAI's Stargate project.
 
 **Abilene, Texas: the flagship.** Crusoe built the campus; Oracle operates it for OpenAI. It is a 1.2 GW campus of eight buildings filled with NVIDIA GPUs, opening in phases as described above. A planned expansion to about 2.1 GW was cancelled; Microsoft later partnered with Crusoe on an adjacent site of about 900 MW.
 
@@ -444,7 +444,7 @@ Now the stories. For each, ask the same questions: who, where, how much power, w
 - **Saline Township, Michigan:** Related Digital's "The Barn," about 1.4 GW, powered from the grid of DTE Energy (the Detroit-area utility) plus batteries.
 - **Lordstown, Ohio:** under 0.3 GW.
 
-Epoch projects **over 9 GW** across these sites by about 2029, with most new capacity arriving in 2027 and 2028. A further giant site was announced on August 17, 2026: SoftBank's SB Energy will build, own and run the PORTS-Pike campus at the decommissioned Portsmouth uranium enrichment plant in Pike County, Ohio, and lease it to OpenAI for 20 years. NVIDIA says the campus is planned for 8 GW of IT capacity, with an initial phase designed for about 4.25 GW coming online in stages from 2028, and that it is providing credit support for the land, power and buildings (Reuters reported a guarantee of up to about $105 billion). Treat the gigawatts as a plan, not a fact.
+Epoch projects **over 9 GW** across these sites by about 2029, with most new capacity arriving in 2027 and 2028. A further giant site was announced on August 17, 2026: SoftBank's SB Energy will build, own and run the PORTS-Pike campus at the decommissioned Portsmouth uranium enrichment plant in Pike County, Ohio, and lease it to OpenAI for 20 years. NVIDIA says the campus is planned for 8 GW of IT capacity, with an initial phase designed for about 4.25 GW coming online in stages from 2028, and that it is providing credit support for that first phase's land, power and buildings (Reuters reported a guarantee of up to about $105 billion). Treat the gigawatts as a plan, not a fact.
 
 **Overseas.** Stargate UAE, in the United Arab Emirates (UAE), is a planned 1 GW cluster inside a planned 5 GW UAE–US AI campus in Abu Dhabi, built with G42 (an Abu Dhabi AI company), Oracle, NVIDIA, Cisco and SoftBank; its first 200 MW was targeted for 2026 (announced May 2025). Stargate Norway, in Narvik with Nscale and Aker, was announced in July 2025 with about 230 MW of initial capacity. Stargate Argentina had reportedly not progressed beyond a letter of intent as of May 2026, and OpenAI reportedly paused Stargate UK in April 2026, citing energy costs.
 
@@ -462,7 +462,7 @@ Epoch projects **over 9 GW** across these sites by about 2029, with most new cap
 
 > **Definition — Clean Air Act:** The main US federal law limiting air pollution. It requires permits for large sources such as power plants and turbines, and lets citizens sue when they believe permits were not obtained.
 
-**Corporate changes.** SpaceX acquired xAI in an all-stock deal on February 2, 2026, valuing xAI at $250 billion, and the AI business was later rebranded SpaceXAI (July 2026) and then SpaceXSI (October 2026).
+**Corporate changes.** SpaceX acquired xAI in an all-stock deal (a share exchange, per SpaceX's filings) on February 2, 2026, reportedly valuing xAI at $250 billion. The AI business was later rebranded SpaceXAI (reported in July 2026) and then SpaceXSI, for SpaceX Super Intelligence (October 2026; SpaceX now reports it as its "Super Intelligence" segment, and the legal company name is still SpaceXAI).
 
 **What it teaches.** Speed is possible when you reuse an existing building and bring your own power, but the shortcuts carry legal, health and reputational costs that can follow a project for years.
 
@@ -641,7 +641,7 @@ The buildout is still accelerating, and engineers are working on ideas that rang
 
 A rack held about 5 to 10 kW in 2015 and about 120 to 140 kW in a 2026 NVIDIA GB200 or GB300 NVL72. NVIDIA is designing for **more than 1 MW per rack**, with **800 V DC** power distribution entering production alongside its Kyber racks in **2027**.
 
-> **Definition — 800 V DC distribution:** A data center power design that sends high-voltage direct current (800 volts) straight to the racks, instead of lower-voltage alternating current, to cut copper, conversion losses and space. NVIDIA plans it for 2027-era racks.
+> **Definition — 800 V DC distribution:** NVIDIA's announced power architecture for 2027-era AI racks, which sends 800-volt direct current to the racks instead of alternating current (AC). The higher voltage cuts copper, conversion losses and space.
 
 **Worked example: why the voltage must rise.** Power = voltage × current (Chapter 39). For a 1 MW rack:
 
@@ -659,7 +659,7 @@ Nuclear is attractive because it is firm (runs day and night), carbon-free and c
 - **This decade:** restarts and uprates of existing plants. Microsoft's Crane (Three Mile Island Unit 1) restart targeted 2027; Google's Duane Arnold restart by 2029; Meta's Vistra uprates; Amazon's reported deal with Talen at the Susquehanna plant (about 1.9 GW).
 - **Around 2030 and after:** new designs. In late September 2026 (announced September 29), the US Nuclear Regulatory Commission approved the first US construction permit for a BWRX-300 small modular reactor, at the Tennessee Valley Authority's Clinch River site; in March it had approved construction of TerraPower's first Natrium plant in Wyoming. Meta's Oklo deal targets 2030 at the earliest; its TerraPower units 2032; Google's Kairos reactors 2030 to 2035. As of 2026, only China and Russia operate small modular reactors, according to public sources.
 
-> **Definition — SMR (small modular reactor):** A nuclear reactor of up to about 300 MW designed to be built largely in factories as standard modules, which could make reactors cheaper and faster to build. The first US units are expected around the end of the 2020s.
+> **Definition — SMR (small modular reactor):** A nuclear reactor of up to about 300 MW designed to be built largely in factories as standard modules, which could make reactors cheaper and faster to build. The first US units are expected around 2030 at the earliest.
 
 **Feasibility: real but slow.** Expect existing plants to supply AI this decade and new reactors to matter in the 2030s. A reactor inside a data center's fence, powering it directly, is further off still, because of licensing, security and the need to keep the reactor running even when the data center doesn't need the power.
 
@@ -679,7 +679,7 @@ Texas already requires large loads (75 MW and up) to be curtailable in grid emer
 
 If no single site can get enough power, train across several. Microsoft's two Fairwater sites, about 700 miles apart, are linked by a dedicated AI WAN, and Google says its software (JAX and Pathways) can scale one training cluster past a million TPU chips.
 
-**Worked example: the speed-of-light tax.** About 1,200 km of fiber between Wisconsin and Atlanta at about 5 microseconds per km gives about **6 milliseconds** one way. GPUs inside one rack exchange data in a few microseconds, a thousand times faster. So engineers split the job so that the chattiest communication (tensor and pipeline parallelism, Chapter 37) stays inside each site, and only less frequent exchanges, such as averaging updates between whole copies of the model, cross the long link.
+**Worked example: the speed-of-light tax.** About 1,200 km of fiber between Wisconsin and Atlanta at about 5 microseconds per km gives about **6 milliseconds** one way. GPUs inside one rack exchange data in a few microseconds, a thousand times faster. So engineers split the job so that the chattiest communication (tensor and expert parallelism, which exchange data in every layer, Chapter 37) stays inside each site, and only less frequent exchanges, such as averaging updates between whole copies of the model (data parallelism), cross the long link.
 
 **Feasibility: already happening** for some workloads, and likely to become standard for the largest runs.
 

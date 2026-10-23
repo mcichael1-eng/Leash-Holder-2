@@ -539,7 +539,7 @@ Chapter 32 introduced the neural processing unit. Here is a quick recap and the 
 
 Apple has put a Neural Engine in its phone chips since the A11 in 2017. In 2024 Microsoft defined "Copilot+ PCs" as Windows laptops with an NPU of at least 40 TOPS, from Qualcomm, Intel and AMD. Apple's M5 chip (October 2025) added a "Neural Accelerator" inside each GPU core. Google's Pixel phones run its small Gemini Nano model on the phone's own Tensor chip.
 
-> **Definition — AMD (Advanced Micro Devices):** An American chip designer that makes processors for PCs and servers and is NVIDIA's main rival in data-center GPUs for AI. Chapter 35 covers its accelerators.
+> **Definition — AMD (Advanced Micro Devices):** An American company that designs CPUs for PCs and servers and is NVIDIA's main rival in AI GPUs, with its Instinct line of data-center accelerators. Chapter 35 covers its accelerators.
 
 **Worked example: why TOPS is not the bottleneck.** Take a 3-billion-parameter language model on a laptop NPU rated at 40 TOPS. Chapter 5's rule says a model needs about 2 × N operations per token, here 2 × 3 billion = 6 billion.
 

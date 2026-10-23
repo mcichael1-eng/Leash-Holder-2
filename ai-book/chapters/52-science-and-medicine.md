@@ -60,7 +60,7 @@ timeline
   2023 : GraphCast weather model : GNoME predicts 2.2 million crystals : RFdiffusion protein design
   2024 : AlphaFold 3 : Nobel Prizes for AlphaFold and protein design : AlphaProof IMO silver
   2025 : ECMWF runs its AI forecast model operationally : Gemini Deep Think IMO gold : Evo 2 and AlphaGenome : rentosertib Phase IIa results
-  2026 : AlphaFold DB passes 260 million predictions : WeatherNext 3 and AlphaGenome Atlas in September
+  2026 : AlphaFold DB passes 260 million predictions : WeatherNext 3 and AlphaGenome Atlas in September : rentosertib enters Phase III
 ```
 *Figure 52.2: A decade of AI-for-science landmarks covered in this chapter.*
 
@@ -243,7 +243,7 @@ Every person carries millions of small differences from the reference genome. Mo
 
 **DNA language models: Evo 2 (2025).** The Arc Institute, a nonprofit biomedical research institute in California, with the chip company NVIDIA, trained Evo 2 on DNA itself, roughly 9 trillion letters from more than 100,000 species across the tree of life, according to its developers. Like a language model reading text, it learns which DNA sequences are "grammatical" in nature, and it can read up to about a million letters at once. It can score whether a mutation looks damaging and generate new DNA sequences.
 
-> **Definition — NVIDIA:** The American company that designs most of the chips used to train and run AI models, the graphics processing units (GPUs) introduced in Chapter 1, along with the software and networking that tie them together. Chapter 35 tells its story.
+> **Definition — NVIDIA:** An American chip company that designs most of the GPUs (graphics processing units, introduced in Chapter 1) used to train and run AI models, along with the networking gear that links them and CUDA, the software for programming them. Chapter 35 tells its story.
 
 > **Definition — DNA language model:** A model trained to predict DNA letters from their surroundings across many genomes, so it learns which sequences are biologically plausible and can estimate the effect of changes.
 
@@ -331,11 +331,11 @@ The bigger prize would be raising the success rate in Phase II and III, because 
 
 **Halicin (2020).** A team at MIT trained a neural network to predict whether molecules would kill bacteria, then screened a library of over 100 million compounds. It flagged halicin, a molecule originally studied for diabetes, which killed many drug-resistant bacteria in lab and mouse tests. It showed the power of AI screening; as of late 2026 it had not become an approved medicine.
 
-**Rentosertib (Insilico Medicine).** This is the most advanced case where AI chose both the target and the molecule. Insilico's AI identified a protein called TNIK as a target for idiopathic pulmonary fibrosis, a deadly scarring of the lungs, and its generative chemistry software designed a molecule to block it. In June 2025 the company published Phase IIa results (Phase IIa is the small, early part of Phase II that looks for a first sign the drug works) in *Nature Medicine*: in 71 patients over 12 weeks, lung capacity rose by an average of 98.4 mL in the group taking 60 mg daily, compared with a fall of 20.3 mL on placebo. That is an encouraging signal. It was also a small, short trial, and larger, longer trials are needed before anyone can say the drug works.
+**Rentosertib (Insilico Medicine).** This is the most advanced case where AI chose both the target and the molecule. Insilico's AI identified a protein called TNIK as a target for idiopathic pulmonary fibrosis, a deadly scarring of the lungs, and its generative chemistry software designed a molecule to block it. In June 2025 the company published Phase IIa results (Phase IIa is the small, early part of Phase II that looks for a first sign the drug works) in *Nature Medicine*: in 71 patients over 12 weeks, lung capacity rose by an average of 98.4 mL in the group taking 60 mg daily, compared with a fall of 20.3 mL on placebo. That is an encouraging signal. It was also a small, short trial, and larger, longer trials are needed before anyone can say the drug works. The first of those is now running: according to its ClinicalTrials.gov record (NCT07687459), a Phase III trial began on September 9, 2026, aiming to enroll about 320 patients at hospitals in China and compare the drug with a placebo over 52 weeks; the record estimates that measurements for its main outcome will be complete in late 2029.
 
 **Isomorphic Labs.** Google DeepMind's drug-discovery spin-out, led by Demis Hassabis, builds on AlphaFold 3 and has partnerships with large drug companies including Eli Lilly and Novartis. According to secondary reporting, it had not yet dosed a human by May 2026, with first-in-human trials expected by the end of 2026 after slipping from 2025. In late September 2026 the company itself still described its work as preclinical, writing that its data were helping it "gear up for clinical developments." If accurate, that timeline is itself a lesson: even the best-funded, most capable AI drug company needs years to reach the clinic.
 
-> **Watch out:** "AI-designed drug" covers very different claims: a molecule screened by AI from an existing library, a molecule generated by AI against a target humans chose, or a target and molecule both chosen by AI. Ask which one, then ask which trial phase it has reached and how many patients were in it. As of late 2026, AI-discovered drugs had reached mid-stage trials but none had been approved.
+> **Watch out:** "AI-designed drug" covers very different claims: a molecule screened by AI from an existing library, a molecule generated by AI against a target humans chose, or a target and molecule both chosen by AI. Ask which one, then ask which trial phase it has reached and how many patients were in it. As of late 2026, AI-discovered drugs had reached late-stage trials (rentosertib's Phase III began in September 2026) but none had been approved.
 
 ## Materials and chemistry: searching for new stuff
 
@@ -363,7 +363,7 @@ In the same issue of *Nature*, a team at Lawrence Berkeley National Laboratory d
 
 Language models have also learned to drive lab equipment. In a 2023 *Nature* paper, a Carnegie Mellon team showed "Coscientist," a GPT-4-based agent that read equipment manuals, planned chemistry experiments and ran them on automated lab hardware.
 
-Molecule models have even reached the sense of smell, the hardest human sense to put into numbers, because there is no simple physical scale for it the way wavelength underlies color. In a 2023 *Science* paper, a team led by Brian Lee and Alexander Wiltschko used graph neural networks to build a "principal odor map", a space in which molecules that smell alike sit close together, so that the smell of a new molecule can be predicted from its structure. On 400 molecules the model had never seen, its predicted odor profiles matched the average of a trained human panel more closely than the median panelist did. The authors see it as a step toward digitizing odors. It is a reminder that machine perception reaches beyond sight and sound: touch and body sense are just as central for robots (Chapter 49).
+Molecule models have even reached the sense of smell, often called the hardest human sense to put into numbers, because there is no simple physical scale for it the way wavelength underlies color. In a 2023 *Science* paper, a team led by Brian Lee and Alexander Wiltschko used graph neural networks to build a "principal odor map", a space in which molecules that smell alike sit close together, so that the smell of a new molecule can be predicted from its structure. On 400 molecules the model had never seen, its predicted odor profiles matched the average of a trained human panel more closely than the median panelist did. The authors see it as a step toward digitizing odors. It is a reminder that machine perception reaches beyond sight and sound: touch and body sense are just as central for robots (Chapter 49).
 
 > **Definition — Principal odor map:** A map, learned by a neural network from molecular structures and human odor ratings, that places molecules with similar smells close together, so the smell of an untested molecule can be predicted from its position.
 
@@ -416,7 +416,7 @@ Other groups reached similar results: Huawei's Pangu-Weather and NVIDIA's FourCa
 | GenCast | Google DeepMind | December 2024 | A diffusion-based ensemble for 15 days ahead, more skillful than ECMWF's physics ensemble on about 97 percent of targets tested |
 | AIFS (Artificial Intelligence Forecasting System) | ECMWF | Operational February 2025 | Europe's main forecasting center running an AI model in daily operations alongside its physics model |
 | WeatherNext 2 | Google DeepMind | November 2025 | Hundreds of forecast scenarios in under a minute on one TPU, 8 times faster than its predecessor, powering forecasts in Google Search, Gemini and Google's Pixel phones |
-| WeatherNext 3 | Google DeepMind and Google Research | September 2026 | A new forecast every hour, made directly from raw satellite observations, with temperature and moisture at 5 km detail; Google reports much better rain forecasts and uses it in Search, Gemini and Maps |
+| WeatherNext 3 | Google DeepMind and Google Research | September 2026 | A new forecast every hour, fed with live satellite observations, with temperature and moisture at 5 km detail; Google reports much better rain forecasts and uses it in Search, Gemini and Maps |
 
 GenCast matters because a single forecast is less useful than a probability. It uses diffusion (Chapter 16) to generate many plausible weather futures, an ensemble, which lets forecasters say "70 percent chance of heavy rain" or show a spread of possible hurricane tracks. In 2025 Google DeepMind said the US National Hurricane Center was evaluating its experimental tropical-cyclone model during that season. In August 2026, with a paper in *Nature*, DeepMind reported that the model's three-day forecasts of a storm's track, strength and wind field were as good as earlier models' two-day forecasts, and said it had helped the Hurricane Center anticipate the rapid strengthening of Hurricane Melissa before it struck Jamaica in 2025.
 
@@ -424,7 +424,7 @@ GenCast matters because a single forecast is less useful than a probability. It 
 
 ### What AI weather models still depend on
 
-- **They need the physics system.** They are trained on reanalysis that the physics system produced, and each forecast starts from data assimilation, which still uses traditional methods. They have replaced one expensive step, not the whole chain. A newer generation is starting to test that limit: Google says WeatherNext 3 (September 2026) forecasts directly from raw satellite observations, issuing a new forecast every hour instead of waiting for the traditional analysis.
+- **They need the physics system.** They are trained on reanalysis that the physics system produced, and each forecast starts from data assimilation, which still uses traditional methods. They have replaced one expensive step, not the whole chain. A newer generation is starting to test that limit: Google says WeatherNext 3 (September 2026) learns directly from raw satellite observations and weather-station readings, feeding live satellite images into every forecast alongside the traditional analysis, so it can issue a new forecast every hour instead of waiting for the next analysis, which arrives about six hours late.
 - **Extremes are hard.** Record-breaking events are, by definition, rare or absent in the training data. Early AI models also tended to smooth out the peak intensity of storms.
 - **Climate is a different problem.** Forecasting the next two weeks is about following today's weather forward. Projecting the climate of 2080 means simulating a world with conditions no training data covers, and physical consistency (conserving energy and water) matters over decades. Hybrid approaches, such as Google's NeuralGCM (2024), which pairs a physics core with learned components, are one answer.
 
@@ -503,7 +503,7 @@ AI is now routine across the physical sciences, usually as a specialized tool ra
 
 > **Definition — Trigger system:** The fast filter at a particle collider that decides, in millionths of a second, which collision events to record and which to discard forever.
 
-> **Definition — NASA (National Aeronautics and Space Administration):** The US government's space agency, which runs space missions, telescopes and satellites and makes much of their data freely available to researchers and the public.
+> **Definition — NASA (National Aeronautics and Space Administration):** The United States government's space agency, which runs space missions, satellites, space telescopes and robotic probes such as the Mars rovers. It makes much of their data freely available to researchers and the public.
 
 ## AI in medicine
 
@@ -629,7 +629,7 @@ AI is changing science by doing three things: giving fast answers where experime
 
 The clearest success is AlphaFold. Proteins are strings of amino acids that fold into shapes, and the shape decides the job. By learning from evolution's patterns and from known structures, AlphaFold predicts shapes with near-lab accuracy, and its free database now holds over 260 million predictions. That earned a share of the 2024 Nobel Prize in Chemistry. Designers now run the problem backwards to invent new proteins, and DNA models read the genome to guess which mutations matter.
 
-Drugs are harder. AI can shrink the discovery stage from years to months, but every drug must still pass Phase I, II and III trials in people, which take years, and only about 8 in 100 drugs entering trials are approved. The most advanced AI-designed drug, rentosertib, showed a promising signal in a small trial; none had been approved by late 2026.
+Drugs are harder. AI can shrink the discovery stage from years to months, but every drug must still pass Phase I, II and III trials in people, which take years, and only about 8 in 100 drugs entering trials are approved. The most advanced AI-designed drug, rentosertib, showed a promising signal in a small trial and entered a Phase III trial in September 2026; none had been approved by late 2026.
 
 AI weather models trained on decades of reconstructed weather now forecast in minutes, and Europe's main forecasting center runs one daily, though they still rely on traditional observations and physics. In math, AI went from olympiad silver in 2024 to gold in 2025; claims of perfect 2026 scores were unverified. In medicine there are over a thousand FDA-authorized AI devices, mostly in radiology, plus scribes that write doctors' notes. But a famous sepsis model failed outside its developer's tests, a reminder to ask how any medical AI was validated and whether patients actually benefit.
 
@@ -671,7 +671,7 @@ Surrogate model, simulation, in silico, wet lab, protein, amino acid, protein fo
    **What you'll learn:** late-stage failures drive the cost of drugs, so improving the odds of success matters more than speeding up early discovery.
 
 5. **[Medium] Read a real clinical trial record.** Learn to check an "AI drug" headline against the source.
-   1. Go to clinicaltrials.gov and search for "rentosertib" (you can also try its code name, ISM001-055).
+   1. Go to clinicaltrials.gov and search for "rentosertib" (you can also try its code name, INS018_055, which finds the earlier trials too).
    2. Open one trial record. Write down: the phase, the number of participants (enrollment), the condition, the primary outcome measure, the trial's status and where it is running.
    3. Compare with this chapter's description of the Phase IIa results. Is the trial you found the same one, or a later one?
    4. Search for one other drug described in the news as "AI-discovered" and repeat steps 2 and 3.

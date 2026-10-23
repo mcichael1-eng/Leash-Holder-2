@@ -103,11 +103,11 @@ That is the whole request. Everything else in this chapter is variations on it.
 
 ### Notebooks and Python, in five minutes
 
-> **Definition — Python:** The most popular programming language for AI work, known for being readable. Lines of Python often read almost like English.
+> **Definition — Python:** The most widely used programming language for AI work, popular for its readable code and its huge collection of ready-made libraries for math, data and neural networks. Lines of Python often read almost like English.
 
 > **Definition — Notebook:** A document that mixes text with runnable blocks of code, showing each block's output right underneath it.
 
-> **Definition — Google Colab:** Google's free notebook service at colab.research.google.com. It runs Python on Google's computers, in your browser, with nothing to install. Think of it as a Word document that can run code.
+> **Definition — Google Colab:** A free Google website (colab.research.google.com) where you can write and run Python code in your browser, with nothing to install. The code runs on Google's computers; think of it as a Word document that can run code.
 
 > **Definition — Cell:** One block in a notebook, either text or code. You run a code cell by clicking its play button or pressing Shift+Enter, and its output appears below it.
 
@@ -400,7 +400,7 @@ The vocabulary shifts (`instructions` instead of `system`, `input` instead of `m
 
 > **Definition — Top-p (nucleus sampling):** A second randomness control that limits the model's choices to the most likely tokens whose probabilities add up to p, such as the top 90%.
 
-For years, temperature was the first setting every tutorial taught: low for factual extraction, high for brainstorming. In 2026 the picture has changed. Many reasoning models fix or restrict these dials, because their training assumes a particular sampling setup. As of late 2026, Anthropic's current Claude models reject custom temperature and top-p values, and steer behavior through the effort setting and the prompt instead; API version 2026-10-21 (October 2026) goes further and returns an error if a request includes temperature, top-p or top-k at all. Older and open-weight models, and some other providers' models, still accept them.
+For years, temperature was the first setting every tutorial taught: low for factual extraction, high for brainstorming. In 2026 the picture has changed. Many reasoning models fix or restrict these dials, because their training assumes a particular sampling setup. As of late 2026, Anthropic's current Claude models reject custom temperature and top-p values, and steer behavior through the effort setting and the prompt instead; API version 2026-10-21 (October 2026) goes further and returns an error if a request includes temperature, top-p or top-k (a similar control that keeps only the k most likely tokens, Chapter 18) at all. Older and open-weight models, and some other providers' models, still accept them.
 
 > **Watch out:** "Temperature 0 means the output is always identical" is false. Even at the lowest setting, outputs can differ slightly between runs because of how servers batch and compute requests (Chapter 18). If you are testing a prompt, run it several times and look at the spread, not one lucky answer.
 
@@ -428,7 +428,7 @@ Here are standard per-million-token prices for current models, as published on t
 | Google | Gemini 3.8 Flash | 0.75 | 3.75 | Free tier available; price rises January 1, 2027 |
 | Google | Gemini 4 Argon | 2.00 | 10.00 | Rises to $4 / $20 from December 1, 2026 |
 
-Two patterns jump out. First, the three labs' tiers line up closely: a small tier around $0.10 / $0.50, a middle tier around $2 / $10, and a top tier around $10 / $50. Second, output costs five times input on most of these models. Prices for a given level of capability have generally fallen fast (Chapter 23 explains why), but not always: Google's announced increases for Gemini 4 Argon and Gemini 3.8 Flash are a reminder to re-check prices before you commit to a budget. Are today's prices propped up by investors' money, and could they jump? Chapter 61 follows the money: estimates suggest the labs take in more from selling tokens than it costs to serve them (a gross margin, the share of revenue left after the direct cost of serving, of about a third in one estimate for OpenAI), but the business as a whole, including training ever-larger models, still burns investors' cash at some labs.
+Two patterns jump out. First, the three labs' tiers line up closely: a small tier around $0.10 / $0.50, a middle tier around $2 / $10, and a top tier around $10 / $50. Second, output costs five times input on most of these models. Prices for a given level of capability have generally fallen fast (Chapter 23 explains why), but not always: Google's announced increases for Gemini 4 Argon and Gemini 3.8 Flash are a reminder to re-check prices before you commit to a budget. Are today's prices propped up by investors' money, and could they jump? Chapter 61 follows the money: estimates suggest the labs take in more from selling tokens than it costs to serve them. One estimate puts OpenAI's gross margin (the share of revenue left after the direct cost of serving) at about a third. But the business as a whole, including training ever-larger models, still burns investors' cash at some labs.
 
 ### A worked cost example: 1,000 customer emails
 
@@ -515,7 +515,7 @@ A worked example: with waits of 1, 2, 4, 8 and 16 seconds, five retries add up t
 
 > **Definition — Time to first token (TTFT):** How long until the first piece of the answer appears. It dominates how fast an app feels.
 
-> **Definition — Throughput (tokens per second):** How fast the model produces text once it has started.
+> **Definition — Tokens per second (output speed):** How fast the model produces text once it has started.
 
 > **Definition — Streaming:** Receiving the response token by token as it is generated, instead of waiting for the whole thing to finish.
 
@@ -885,7 +885,7 @@ Structured outputs force answers into an exact JSON shape so programs can use th
 
 ## Key terms
 
-Client, Server, HTTP (HyperText Transfer Protocol), URL, Endpoint, HTTP method, Header, Request body, Status code, JSON (JavaScript Object Notation), Key-value pair, Python, Notebook, Google Colab, Cell, Variable, Library (package), pip, API (application programming interface), SDK (software development kit), API key, Secret (environment variable), Spending limit, User and assistant messages, Max tokens, Content block, Stop reason, Refusal, Usage, Temperature, Top-p (nucleus sampling), MTok, Input tokens and output tokens, Thinking tokens, Tokenizer, Rate limit, RPM and TPM, Exponential backoff, Jitter, Latency, Time to first token (TTFT), Throughput (tokens per second), Streaming, Server-sent events (SSE), Batch API, Prompt caching, Cache hit and cache miss, Service tier, Fast mode, Data residency, Zero data retention (ZDR), Structured outputs, JSON Schema, Constrained decoding, Pydantic, Files API, Model tier, Open-weight model, Closed model, Routing, Model cascade, Eval (evaluation), Model snapshot (pinning), Deprecation
+Client, Server, HTTP (HyperText Transfer Protocol), URL, Endpoint, HTTP method, Header, Request body, Status code, JSON (JavaScript Object Notation), Key-value pair, Python, Notebook, Google Colab, Cell, Variable, Library (package), pip, API (application programming interface), SDK (software development kit), API key, Secret (environment variable), Spending limit, User and assistant messages, Max tokens, Content block, Stop reason, Refusal, Usage, Temperature, Top-p (nucleus sampling), MTok, Input tokens and output tokens, Thinking tokens, Tokenizer, Rate limit, RPM and TPM, Exponential backoff, Jitter, Latency, Time to first token (TTFT), Tokens per second (output speed), Streaming, Server-sent events (SSE), Batch API, Prompt caching, Cache hit and cache miss, Service tier, Fast mode, Data residency, Zero data retention (ZDR), Structured outputs, JSON Schema, Constrained decoding, Pydantic, Files API, Model tier, Open-weight model, Closed model, Routing, Model cascade, Eval (evaluation), Model snapshot (pinning), Deprecation
 
 ## Exercises
 
