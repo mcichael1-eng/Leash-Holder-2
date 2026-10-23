@@ -263,7 +263,7 @@ Lossy methods go further by deciding what you won't miss. JPEG keeps the broad s
 | Data | Uncompressed | Typical compressed | Roughly smaller by |
 |---|---|---|---|
 | 1,000-word essay (text, ZIP) | 6 KB | about 2 KB | 3 times |
-| 12 MP photo (JPEG) | 36 MB | a few MB | about 10 times |
+| 12 MP (megapixel) photo (JPEG) | 36 MB | a few MB | about 10 times |
 | 3-minute song (MP3, 128 kbps) | 31.8 MB | 2.9 MB | 11 times |
 | 1 second of HD video (streaming) | 187 MB | about 0.6 MB | about 300 times |
 
@@ -823,7 +823,7 @@ Encoding, ASCII, Unicode, Code point, UTF-8, Token, Tokenizer, Pixel, RGB, Resol
 
 9. **[Medium] The compression experiment.** See where lossless compression works and where it does not.
    1. Copy a long article from Wikipedia into a plain-text file (Notepad on Windows, or TextEdit set to "Make Plain Text" on Mac) and save it. Note its size.
-   2. Compress it: on Windows right-click, then "Send to", then "Compressed (zipped) folder"; on Mac right-click, then "Compress". Note the new size and compute the ratio.
+   2. Compress it: on Windows right-click, then "Send to", then "Compressed (zipped) folder" (on Windows 11 you may first need to click "Show more options"); on Mac right-click, then "Compress". Note the new size and compute the ratio.
    3. Do the same with a JPEG photo and with an .mp4 video.
    4. Explain to a chatbot why the text shrank but the photo and video barely changed, and check its explanation against this chapter.
    **What you'll learn:** lossless compression removes predictable patterns, so text shrinks a lot while already-compressed files hardly shrink at all.
