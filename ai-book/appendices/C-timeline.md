@@ -368,7 +368,7 @@ timeline
 | Jul 13, 2026 | Meta says its Hyperion campus in Louisiana will scale to 5 GW | Single campuses reach multiple gigawatts |
 | Jul 16, 2026 | Chinese lab Moonshot AI's Kimi K3 (2.8T parameters, open weights) | Open-weight models at multi-trillion scale |
 | Jul 20, 2026 | Final court approval of the $1.5 billion Bartz v. Anthropic settlement | Sets a price on training with pirated books |
-| Jul 21, 2026 | Gemini 3.6 Flash; Gemini 3.5 Pro reported delayed, and still not generally released by October | Not every planned model ships on time |
+| Jul 21, 2026 | Gemini 3.6 Flash and 3.5 Flash-Lite; Gemini 3.5 Flash Cyber, tuned to find and fix security flaws, offered only to governments and trusted partners in a limited-access pilot; Gemini 3.5 Pro reported delayed, and still not generally released by October | Not every planned model ships on time; cyber-capable models get restricted access |
 | Jul 23, 2026 | FactSet, a financial-data company: five big US tech companies on track for close to $800 billion of 2026 capital spending | Scale of the build-out |
 | Jul 24, 2026 | Claude Opus 5 | Anthropic's fifth-generation flagship |
 | Jul 27, 2026 | EU Digital Omnibus on AI in force | Delays high-risk rules to December 2027 for uses such as hiring and credit (Annex III) and to August 2028 for AI inside regulated products such as medical devices (Annex I); adds bans on intimate deepfakes and AI-generated child sexual abuse material (CSAM) from December 2, 2026 |
@@ -392,6 +392,7 @@ timeline
 | Sep 21, 2026 | Grok 4.7 | SpaceX's AI unit releases a new model |
 | Sep 22, 2026 | Claude Opus 5.5 | Tops several capability indices as of October 2026 |
 | Sep 22, 2026 | GPT-6 Sol and GPT-6 Luna | Cheaper GPT-6 tiers built on Astra's advances |
+| Sep 25, 2026 | A US appeals court in Washington, D.C. upholds, 2 to 1, the Defense Department's exclusion of Anthropic's Claude from its supply chain, imposed after Anthropic refused to drop its limits on use for autonomous weapons and domestic surveillance | An appeals court backs the government in a dispute over a lab's limits on military use |
 | Sep 28, 2026 | Claude Sonnet 5.5 | Mid-tier update |
 | Sep 29, 2026 | GPT-6.1 Sol; appeals court rules in Thomson Reuters v. Ross that copying for a competing legal-search AI was not fair use; the Nuclear Regulatory Commission (NRC) announces the first US construction permit for a BWRX-300 small modular reactor, a 300-megawatt GE Vernova Hitachi design (the Tennessee Valley Authority's Clinch River site) | Price drops for near-frontier models; a copyright loss for AI training; new nuclear for the grid |
 | Around Sep 30, 2026 | Gemini 4 Argon announced (per Epoch) | Google's fourth-generation flagship |
@@ -401,7 +402,8 @@ timeline
 | Oct 7, 2026 | Claude Haiku 5.5 | Small, cheap model in the 5.5 family |
 | Oct 7–8, 2026 | GPT-6 reaches all ChatGPT users, including free | Frontier model for hundreds of millions |
 | Oct 13, 2026 | Gemini 4 Argon generally available in Google's API; Meta's Muse Wonder (per press reports); Physical Intelligence's Pi API beta | New flagships from Google and Meta; robot models via API |
+| Oct 15, 2026 | Meta's Muse Spark Open: open weights for an 816-billion-parameter Muse Spark model (42 billion active), under Meta's own license with limited commercial terms | Meta releases a large open-weight model again, on custom terms |
 | Oct 16, 2026 | China reportedly proposes export controls on 40 technologies, including AI | Tech controls become two-way |
 | Oct 17, 2026 | DeepSeek V4.1 Flash update | Open-weight models update monthly too |
 | Oct 20, 2026 | Epoch AI tracks 95 large AI data centers with about 14.2 GW of IT power | A snapshot of the gigawatt era |
-| Oct 2026 | Mistral Large 4 preview (October 6); SpaceXAI renames itself SpaceX Super Intelligence, "SpaceXSI" (announced October 4, as reported; the new name was on its website by mid-October, and SpaceX's quarterly report now calls the unit its "Super Intelligence" segment); Anthropic reported to be aiming for a November stock-market listing | Europe's flagship, with open weights promised; corporate reshuffles; labs head toward public markets |
+| Oct 2026 | Mistral Large 4 preview (October 6); SpaceXAI renames itself SpaceX Super Intelligence, "SpaceXSI" (announced October 4, as reported; the new name was on its website by mid-October, and SpaceX's quarterly report now calls the unit its "Super Intelligence" segment); Anthropic reported (October 15) to be aiming for a November stock-market listing, with marketing to investors as early as the week of November 9 and trading before Thanksgiving (November 26), plans described as fluid | Europe's flagship, with open weights promised; corporate reshuffles; labs head toward public markets |

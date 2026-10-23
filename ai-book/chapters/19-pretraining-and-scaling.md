@@ -105,7 +105,7 @@ A frontier pretraining corpus is a blend of many kinds of text:
 - **Books and academic papers.** Long, carefully edited text. Also the most legally contested (Chapter 11).
 - **Math.** Textbooks, worked solutions, competition problems and proofs.
 - **Many languages.** Alibaba said its Qwen3 models were pretrained on about 36 trillion tokens across 119 languages.
-- **Licensed data.** Labs pay publishers and platforms for access, such as the Reddit–Google deal (about $60 million per year, as reported in 2024) or Meta's March 2026 deal with News Corp, the publisher of The Wall Street Journal (reported at up to $50 million per year for three years).
+- **Licensed data.** Labs pay publishers and platforms for access, such as the Reddit–Google deal (about $60 million per year, as reported in 2024) or Meta's deal with News Corp, the publisher of The Wall Street Journal, reported in March 2026. News Corp confirmed the deal in its own earnings release but gave no terms; The Wall Street Journal reported it at up to $50 million per year for three years.
 - **Transcribed and extracted text.** Speech from video transcribed to text, and text pulled out of PDFs. Qwen3 used a vision model to extract text from PDFs, for example.
 - **Synthetic data.** Text written by other AI models, then filtered. Qwen3 used Alibaba's earlier Qwen2.5 math and code models to generate synthetic textbooks and question-answer pairs.
 

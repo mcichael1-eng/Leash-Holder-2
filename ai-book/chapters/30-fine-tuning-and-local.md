@@ -378,14 +378,14 @@ Everything so far works best with models whose files you can download. Here is w
 
 | Family (maker) | Recent open releases | Sizes | License notes |
 |---|---|---|---|
-| DeepSeek V4 (DeepSeek, China) | V4-Pro, general release August 2026; V4-Flash; V4.1-Flash (multimodal, September 2026, updated October 2026) | V4-Pro: 1.6T total and 49B active; V4-Flash: 284B total and 13B active; V4.1-Flash: a different, larger design (see its model card) | MIT license; 1M-token context |
+| DeepSeek V4 (DeepSeek, China) | V4-Pro, general release August 2026; V4-Flash; V4.1-Flash (multimodal, September 2026, updated October 2026) | V4-Pro: 1.6T total and 49B active; V4-Flash: 284B total and 13B active; V4.1-Flash: a different design, with 552B in its main network plus a separate memory module, and 8B to 16B active | MIT license; 1M-token context |
 | Qwen3.8 (Alibaba, China) | August 2026 | 27B dense; 2.4T total and 95B active | 27B under Apache 2.0; the 2.4T model needs a commercial license for providers above US$50 million in revenue |
 | Kimi K3 (Moonshot AI, China) | July 2026 | 2.8T total and 104B active | See the model card |
 | GLM-5.3 (Z.ai) and MiMo-V2.6-Pro (Xiaomi) | 2026 | Large models | Among the top open models on independent indexes |
 | gpt-oss (OpenAI) | August 2025 | 120B and 20B | Apache 2.0 |
 | Gemma 4 (Google DeepMind) | Late March 2026; 12B added June 2026 | E2B, E4B, 12B, 31B dense, 26B-A4B mixture-of-experts | Apache 2.0 |
 | Mistral (Mistral AI, France) | Large 4 (preview October 2026, weights promised by the end of that month); Medium 3.5 (128B, April 2026); Large 3 (December 2025) | Large 4: 1T total and 52B active; Large 3: 675B total and 41B active | Large 3 under Apache 2.0; Medium 3.5 under a modified MIT license |
-| Meta | Llama 4 (April 2025) was the last Llama; Meta's newer Muse family is mostly closed, with one open 30B model (Muse Glimmer, August 2026) according to public reports | Various | Llama community license for Llama models |
+| Meta | Llama 4 (April 2025) was the last Llama; Meta's newer Muse family is mostly closed, with two open-weight models: Muse Glimmer (August 2026) and Muse Spark Open (October 2026) | Glimmer: 30B; Spark Open: 816B total and 42B active | Llama community license for Llama models; Glimmer under Apache 2.0; Spark Open under Meta's own Muse Model License, with limited commercial terms |
 | NVIDIA | Nemotron 3.5 | Various | See the model card |
 
 How far behind are they? On Artificial Analysis's Intelligence Index on October 21, 2026, the best open-weight model (Xiaomi's MiMo-V2.6-Pro) scored 46, with DeepSeek, Z.ai and Moonshot models close behind, against 58 for the best closed model (Claude Opus 5.5). The usual summary is that the top open models trail the top closed ones by months, not years. Notice also that most of the strongest open models now come from Chinese labs, a point Chapter 24 and Chapter 59 discuss.

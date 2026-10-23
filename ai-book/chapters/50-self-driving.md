@@ -62,7 +62,7 @@ To read the levels, you need three ideas.
 |---|---|---|---|---|---|---|
 | 0 | No driving automation | Human | Human | Human | Anywhere | Warnings; automatic emergency braking acts only for a moment |
 | 1 | Driver assistance | Human, with the system helping on steering *or* speed | Human | Human | Most roads | Adaptive cruise control on its own |
-| 2 | Partial automation | System does steering *and* speed | **Human, at all times** | **Human, instantly** | Where the feature allows | Tesla FSD (Supervised), where FSD stands for Full Self-Driving; General Motors' (GM's) Super Cruise |
+| 2 | Partial automation | System does steering *and* speed | **Human, at all times** | **Human, instantly** | Where the feature allows | Tesla Full Self-Driving (Supervised), or FSD; General Motors' (GM's) Super Cruise |
 | 3 | Conditional automation | System | System, while engaged | **Human, when the system asks** | Limited conditions only | Mercedes-Benz Drive Pilot |
 | 4 | High automation | System | System | **System** (it stops safely by itself) | Limited conditions only | Waymo, Zoox, Baidu Apollo Go robotaxis |
 | 5 | Full automation | System | System | System | Everywhere a human could drive | None exists |

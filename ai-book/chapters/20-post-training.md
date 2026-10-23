@@ -595,7 +595,7 @@ flowchart LR
 
 *Figure 20.6: Defense in depth. Safety training inside the model is backed by classifiers on the way in and on the way out, plus monitoring.*
 
-> **At the frontier (2026):** Tiered releases have become a pattern across labs: one model, several sets of safeguards depending on who is using it. Examples include Anthropic's Fable and Mythos; OpenAI's GPT-5.5-Cyber (May 2026) and GPT-5.6-Cyber (August 2026), offered to vetted security teams; and Google's Fairwind program, which gives vetted cybersecurity defenders Gemini 4 Argon without its cyber guardrails. Chapter 56 covers safety frameworks and Chapter 58 covers misuse.
+> **At the frontier (2026):** Tiered releases have become a pattern across labs: one model, several sets of safeguards depending on who is using it. Examples include Anthropic's Fable and Mythos; OpenAI's GPT-5.5-Cyber (May 2026) and GPT-5.6-Cyber (August 2026), offered to vetted security teams; and Google's Gemini 3.5 Flash Cyber (July 2026), offered only to governments and trusted partners, and its Fairwind program, which gives vetted cybersecurity defenders Gemini 4 Argon without its cyber guardrails. Chapter 56 covers safety frameworks and Chapter 58 covers misuse.
 
 ## When feedback training goes wrong
 

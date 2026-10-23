@@ -654,7 +654,7 @@ By 2026 the big labs were releasing new models roughly every month. Rather than 
 
 | Lab | January–June 2026 | July–October 2026 |
 |---|---|---|
-| Anthropic | Claude Opus 4.6 (Feb 5), Mythos Preview (Apr 7), Opus 4.7, Opus 4.8, Fable 5 and Mythos 5 (Jun 9), Sonnet 5 | Opus 5 (Jul 24), Fable and Mythos 5.1 (early to mid-September), Opus 5.5 (Sep 22), Sonnet 5.5, Haiku 5.5 (Oct 7) |
+| Anthropic | Claude Opus 4.6 (Feb 5), Mythos Preview (Apr 7), Opus 4.7, Opus 4.8, Fable 5 and Mythos 5 (Jun 9), Sonnet 5 | Opus 5 (Jul 24), Fable and Mythos 5.1 (announced Sep 15), Opus 5.5 (Sep 22), Sonnet 5.5, Haiku 5.5 (Oct 7) |
 | OpenAI | GPT-5.3-Codex, GPT-5.4, GPT-5.5 (Apr 23), GPT-5.6 limited preview (Jun 26) | GPT-5.6 public release (Jul 9), GPT-6 Astra (Sep 3), GPT-6 Sol and Luna (Sep 22), GPT-6.1 Sol (Sep 29), GPT-6 for all ChatGPT users (Oct 7–8) |
 | Google DeepMind | Gemini 3.1 Pro preview (Feb 19), Gemma 4 open models, Gemini 3.5 family (May 19) | Gemini 3.6 to 3.8 Flash, Gemini 4 Argon (generally available in Google's API Oct 13, per Google's changelog) |
 | Open-weight leaders | DeepSeek-V4 preview (Apr 24) | Kimi K3 (Jul 16), DeepSeek-V4-Pro (August), Qwen3.8 (August) |

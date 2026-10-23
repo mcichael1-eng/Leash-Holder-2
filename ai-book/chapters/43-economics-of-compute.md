@@ -625,7 +625,7 @@ Abu Dhabi's MGX is a Stargate partner and invested in OpenAI's 2026 round; Singa
 
 > **Definition — Valuation (post-money):** The value investors assign to a whole company immediately after a funding round, based on the price they paid for a small slice. It is an agreed estimate of future value, not cash the company holds.
 
-Public markets opened too. SpaceX, which owns xAI, listed on June 12, 2026, raising $75 billion at $135 a share, or about $86 billion including extra shares the underwriters bought (per its SEC filings); OpenAI and Anthropic both reportedly filed confidentially for IPOs in June 2026. In September 2026 OpenAI's chief executive said it would not go public in 2026 (Fortune), while Anthropic was reported in October 2026 to be targeting a mid-November listing.
+Public markets opened too. SpaceX, which owns xAI, listed on June 12, 2026, raising $75 billion at $135 a share, or about $86 billion including extra shares the underwriters bought (per its SEC filings); OpenAI confirmed on June 8, 2026 that it had confidentially submitted its draft IPO filing to the SEC, and Anthropic reportedly did the same on June 1. In September 2026 OpenAI's chief executive said it would not go public in 2026 (Fortune), while Anthropic was reported in mid-October 2026 to be aiming for a November listing: marketing to investors as early as the week of November 9 and trading before the US Thanksgiving holiday (November 26), with plans described as fluid.
 
 > **Watch out:** "Up to" figures are maximums, not commitments. When a headline says a company will invest "up to $100 billion," look for the conditions, the timeline, and whether the money flows back to the investor as purchases. Several 2025 headline deals were later restructured or shelved.
 

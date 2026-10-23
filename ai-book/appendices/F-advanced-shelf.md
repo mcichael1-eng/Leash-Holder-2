@@ -244,7 +244,7 @@ Reinforcement learning (Chapter 48) usually learns one small action at a time. H
 
 Chapter 49 introduces the RRT, which grows a random tree through free space. Courses also teach several older or alternative planners. Visibility graphs connect the corners of obstacles and find the shortest route, which hugs those corners. Voronoi diagrams route a robot along the lines that stay as far as possible from the obstacles on either side, which is safer but longer. Cell decomposition chops the free space into simple cells and searches the map of which cells touch. Probabilistic roadmaps scatter random collision-free points once, connect nearby ones, and reuse that roadmap for many trips.
 
-> **Definition — Visibility graph:** A motion-planning map that links every pair of obstacle corners that can "see" each other in a straight line; the shortest path around obstacles always runs along such links.
+> **Definition — Visibility graph:** A motion-planning map that links every pair of points, among the start, the goal and the obstacle corners, that can "see" each other in a straight line; the shortest path around obstacles always runs along such links.
 
 > **Definition — Voronoi diagram:** A division of space into regions, one around each obstacle, holding the points closer to that obstacle than to any other; its boundary lines are the points equally far from the two nearest obstacles, which keeps a robot as far from obstacles as it can get and makes them safe routes.
 
@@ -386,7 +386,7 @@ Naive Bayes (Chapter 10) multiplies one probability per word. Take logarithms (C
 
 ### Normal equations and locally weighted regression
 
-Fitting a straight line by minimizing squared errors (Chapter 8) does not actually need gradient descent: a formula called the normal equations gives the best weights in one step. It works well for a few thousand features, but its cost grows roughly with the cube of the number of features, so with millions of parameters gradient descent wins. Locally weighted regression fits a fresh line for every question asked, weighting nearby training points heavily and distant ones lightly, so a house's price is predicted mainly from similar houses. Like k-nearest neighbors (Chapter 10), it keeps all the training data around.
+Fitting a straight line by minimizing squared errors (Chapter 8) does not actually need gradient descent: a formula called the normal equations gives the best weights in one step. It works well for a few thousand features, but its cost grows roughly with the cube of the number of features (10 times as many features means about 1,000 times the work), so with millions of parameters gradient descent wins. Locally weighted regression fits a fresh line for every question asked, weighting nearby training points heavily and distant ones lightly, so a house's price is predicted mainly from similar houses. Like k-nearest neighbors (Chapter 10), it keeps all the training data around.
 
 > **Definition — Normal equations:** A formula that gives the exact best-fitting weights of a linear regression in one calculation, by solving a system of linear equations, instead of approaching them step by step with gradient descent.
 
@@ -490,7 +490,7 @@ Chapter 6 defines the gradient, the list of slopes of one output with respect to
 
 ### Newton's method, BFGS and second-order optimization
 
-Gradient descent uses only the slope. Newton's method also uses the curvature, to jump to the bottom of the local bowl in one step: on a perfect parabola, a step equal to the slope divided by the curvature lands exactly at the minimum. The catch is size. The Hessian of a model with n parameters has n × n entries, so for a 70-billion-parameter model that is about `4.9 × 10^21` numbers, far beyond any computer's memory. BFGS, and its low-memory version L-BFGS, build a cheap running estimate of the curvature from recent gradients and are standard for small and medium problems. The Shampoo and SOAP optimizers of Chapter 13 are large-scale descendants of the same idea.
+Gradient descent uses only the slope. Newton's method also uses the curvature, to jump to the bottom of the local bowl in one step: on a perfect parabola, a step equal to the slope divided by the curvature lands exactly at the minimum. The catch is size. The Hessian of a model with n parameters has n × n entries, so for a 70-billion-parameter model that is 70 billion × 70 billion, about `4.9 × 10^21` numbers, far beyond any computer's memory. BFGS (named after Broyden, Fletcher, Goldfarb and Shanno, who each published it in 1970), and its low-memory version L-BFGS, build a cheap running estimate of the curvature from recent gradients and are standard for small and medium problems. The Shampoo and SOAP optimizers of Chapter 13 are large-scale descendants of the same idea.
 
 > **Definition — Newton's method (optimization):** An optimization method that uses both the slope and the curvature of the loss to jump toward the minimum, converging in very few steps but needing the expensive Hessian.
 
@@ -498,7 +498,7 @@ Gradient descent uses only the slope. Newton's method also uses the curvature, t
 
 ### Constrained optimization: Lagrange multipliers and KKT conditions
 
-Many problems come with rules: enclose the largest possible rectangle with exactly 100 meters of fence (the answer is a 25 by 25 meter square). Lagrange multipliers handle such equality rules by adding each rule to the objective with a "price"; at the best answer, the pull of the objective is exactly balanced by the pull of the rules. The KKT conditions extend this to rules of the "at most" or "at least" kind, and they are what produce the SVM dual above. Weight penalties (Chapter 9) are the same idea seen from the other side: adding an L2 penalty is equivalent to forbidding the weights from growing beyond a certain size. Under-constrained problems, with more unknowns than equations, have infinitely many exact solutions; a penalty is how you choose a sensible one.
+Many problems come with rules: enclose the largest possible rectangle with exactly 100 meters of fence (the answer is a 25 by 25 meter square, 625 square meters; a 20 by 30 rectangle uses the same fence but encloses only 600). Lagrange multipliers handle such equality rules by adding each rule to the objective with a "price"; at the best answer, the pull of the objective is exactly balanced by the pull of the rules. The KKT conditions extend this to rules of the "at most" or "at least" kind, and they are what produce the SVM dual above. Weight penalties (Chapter 9) are the same idea seen from the other side: adding an L2 penalty is equivalent to forbidding the weights from growing beyond a certain size. Under-constrained problems, with more unknowns than equations, have infinitely many exact solutions; a penalty is how you choose a sensible one.
 
 > **Definition — Constrained optimization:** Finding the best value of an objective while obeying rules on the unknowns, such as "the total must equal 100" or "no weight may exceed 1".
 
@@ -574,7 +574,7 @@ A self-organizing map, invented by Teuvo Kohonen in the early 1980s, is a grid o
 
 ### Random and unsupervised features
 
-Before end-to-end training was practical, a common shortcut was to fix a network's lower layers instead of training them, using random filters or filters learned without labels (for example by k-means clustering, Chapter 10), and to train only the final classifier on top. Studies around 2009 to 2011 found this worked surprisingly well, a hint of how much the architecture itself contributes. Today, self-supervised pretraining (Chapter 16) fills that role far better.
+Before end-to-end training (training every layer of a network together, from raw input to final answer) was practical, a common shortcut was to fix a network's lower layers instead of training them, using random filters or filters learned without labels (for example by k-means clustering, Chapter 10), and to train only the final classifier on top. Studies around 2009 to 2011 found this worked surprisingly well, a hint of how much the architecture itself contributes. Today, self-supervised pretraining (Chapter 16) fills that role far better.
 
 > **Definition — Random features:** Features computed by fixed, randomly chosen weights or filters that are never trained; only a simple model on top of them is trained.
 
@@ -635,7 +635,7 @@ flowchart TD
 
 ### The ELBO, MAP inference and wake-sleep
 
-Variational inference (Chapter 54) approximates a hard probability distribution with a simpler one. The quantity it actually optimizes is the evidence lower bound, or ELBO: a number you can compute that is always at most the log-probability of the data, so pushing it up both improves the model and tightens the approximation. Training a VAE (Chapter 16) means maximizing the ELBO. MAP inference is the shortcut of keeping only the single most probable answer instead of a whole distribution; adding a prior (Chapter 6) belief that weights should be small turns it into ordinary training with L2 regularization (Chapter 9). The wake-sleep algorithm, from 1995, trained a generator and a recognition network by alternating phases: one learned from real data ("wake"), the other from the generator's own dreams ("sleep"). Expectation-maximization (Chapter 10) is a close relative of all three.
+Variational inference (Chapter 54) approximates a hard probability distribution with a simpler one. The quantity it actually optimizes is the evidence lower bound, or ELBO: a number you can compute that is always at most the log-probability of the data, so pushing it up both improves the model and tightens the approximation. Training a VAE (Chapter 16) means maximizing the ELBO. MAP inference is the shortcut of keeping only the single most probable answer instead of a whole distribution; adding a prior (Chapter 6) belief that weights should be small turns it into ordinary training with L2 regularization (Chapter 9). The wake-sleep algorithm, from 1995, trained a generator and a recognition network (an encoder that guesses the hidden causes behind a piece of data) by alternating phases: one learned from real data ("wake"), the other from the generator's own dreams ("sleep"). Expectation-maximization (Chapter 10) is a close relative of all three.
 
 > **Definition — ELBO (evidence lower bound):** A computable quantity that is always less than or equal to the log-probability of the data under a model; maximizing it both trains the model and improves the approximation used in variational inference.
 
@@ -675,7 +675,7 @@ Before deep learning, a common route to recognizing objects was through their ou
 
 ### Fast convolution: FFT and Winograd
 
-A convolution (Chapter 14) slides a small filter across an image, multiplying and adding at every position, and those multiplications dominate a CNN's cost. Two classic tricks compute exactly the same result with fewer of them. The fast Fourier transform turns an image into its frequency components, where convolution becomes plain multiplication; this pays off for large filters. Winograd's method saves work for the small 3 × 3 filters most networks use: one common version needs 16 multiplications instead of 36 for each 2 × 2 block of outputs, a 2.25× saving. GPU libraries pick the fastest method automatically, which is why you rarely hear the names.
+A convolution (Chapter 14) slides a small filter across an image, multiplying and adding at every position, and those multiplications dominate a CNN's cost. Two classic tricks compute exactly the same result with fewer of them. The fast Fourier transform turns an image into its frequency components, where convolution becomes plain multiplication; this pays off for large filters. Winograd's method saves work for the small 3 × 3 filters most networks use: one common version needs 16 multiplications instead of 36 (4 outputs × 9 multiplications each) for each 2 × 2 block of outputs, a 2.25× saving. GPU libraries pick the fastest method automatically, which is why you rarely hear the names.
 
 > **Definition — Fast Fourier transform (FFT):** A fast algorithm for breaking a signal or image into its frequency components; in that form, convolution becomes simple element-by-element multiplication.
 
@@ -683,7 +683,7 @@ A convolution (Chapter 14) slides a small filter across an image, multiplying an
 
 ### ResNeXt, RegNet and anchor boxes
 
-ResNeXt, from 2017, splits each ResNet block (Chapter 14) into many thin parallel paths, a grouped convolution, and found that more paths beat simply making the network wider or deeper. RegNet, from 2020, stopped hand-designing networks altogether: its authors studied a whole family of designs and distilled simple rules, such as letting channel widths grow steadily with depth. Anchor boxes are a detection detail: an object detector (Chapter 45) starts from a fixed set of box shapes at every location, tall, wide and square, and predicts how to stretch and shift each one. Most detectors from about 2015 to 2020 used them; DETR (Detection Transformer, Chapter 45) showed they could be dropped.
+ResNeXt, from 2017, splits each ResNet block (Chapter 14) into many thin parallel paths, a grouped convolution, and found that more paths beat simply making the network wider or deeper. RegNet, from 2020, stopped hand-designing networks altogether: its authors studied a whole family of designs and distilled simple rules, such as letting channel widths grow steadily with depth. Anchor boxes are a detection detail: an object detector (Chapter 45) starts from a fixed set of box shapes at every location, tall, wide and square, and predicts how to stretch and shift each one. Many detectors from about 2015 to 2020 used them; anchor-free designs from about 2018 onward, and DETR (Detection Transformer, Chapter 45) in 2020, showed they could be dropped.
 
 > **Definition — ResNeXt:** A 2017 CNN design that splits each residual block into many parallel narrow paths whose outputs are added together, improving accuracy at the same cost.
 
@@ -701,7 +701,7 @@ Chapter 11 of the Goodfellow, Bengio and Courville textbook walks through one re
 
 ### Negative sampling and hierarchical softmax
 
-word2vec (Chapter 14) learns word vectors by predicting nearby words, which naively means computing a softmax (Chapter 6) over the whole vocabulary of perhaps 100,000 words for every training example. Negative sampling skips most of that: it teaches the model to tell the true neighboring word apart from a handful of randomly drawn "negative" words, often 5 to 20. Hierarchical softmax arranges the vocabulary as a binary tree, so predicting a word takes about 17 left-or-right decisions (2 doubled 17 times is about 131,000) instead of 100,000 scores. Both are training shortcuts; later models made them unnecessary with faster hardware and subword tokens (Chapter 18).
+word2vec (Chapter 14) learns word vectors by predicting nearby words, which naively means computing a softmax (Chapter 6) over the whole vocabulary of perhaps 100,000 words for every training example. Negative sampling skips most of that: it teaches the model to tell the true neighboring word apart from a handful of randomly drawn "negative" words, often 5 to 20. Hierarchical softmax arranges the vocabulary as a binary tree, so predicting a word takes about 17 left-or-right decisions (each decision halves the remaining words, and 17 halvings cover `2^17`, about 131,000 words) instead of 100,000 scores. Both are training shortcuts; later models made them unnecessary with faster hardware and subword tokens (pieces of words, Chapter 18).
 
 > **Definition — Negative sampling:** A training shortcut in which a model learns to distinguish the correct word from a few randomly drawn wrong words, instead of scoring every word in the vocabulary.
 
@@ -881,7 +881,7 @@ The fourth edition of *The Data Center as a Computer* devotes a chapter to softw
 
 ### Fleetwide profiling and the data center tax
 
-Chapter 37 shows how a profiler finds lost time in one training job. Google's 2015 study "Profiling a Warehouse-Scale Computer" profiled the whole fleet at once and found that a group of common low-level chores (copying and allocating memory, compressing data, packaging messages and making remote calls) took nearly 30% of all processor time. The authors called it the data center tax and argued for hardware that does these chores more cheaply; the DPUs of Chapter 34 are one answer.
+Chapter 37 shows how a profiler finds lost time in one training job. Google's 2015 study "Profiling a Warehouse-Scale Computer" profiled the whole fleet at once and found that a group of common low-level chores (copying and allocating memory, compressing data, packaging messages and making remote calls, that is, asking a program on another machine to do part of the work) took nearly 30% of all processor time. The authors called it the data center tax and argued for hardware that does these chores more cheaply; the DPUs of Chapter 34 are one answer.
 
 > **Definition — Fleetwide profiling:** Continuously sampling what every program is doing across all the machines of a data center, to find where the whole fleet spends its time.
 
@@ -889,7 +889,7 @@ Chapter 37 shows how a profiler finds lost time in one training job. Google's 20
 
 ### Inside a cloud VM platform
 
-Chapter 4 defines virtual machines. The fourth edition of Barroso, Hölzle and Ranganathan's book walks through how a public cloud runs them. The hypervisor slices each physical server into virtual machines. Verified boot checks every piece of software as a machine starts, back to the hardware root of trust (Chapter 38). Offloads move networking and storage work from the main processor to dedicated cards, like the DPUs of Chapter 34. Provisioning gets a fresh virtual machine running in seconds, and live migration moves a running one to another physical server with only a brief pause, so hardware can be repaired without customers noticing.
+Chapter 4 defines virtual machines (VMs). The fourth edition of Barroso, Hölzle and Ranganathan's book walks through how a public cloud runs them. The hypervisor slices each physical server into virtual machines. Verified boot checks every piece of software as a machine starts, back to the hardware root of trust (Chapter 38). Offloads move networking and storage work from the main processor to dedicated cards, like the DPUs of Chapter 34. Provisioning gets a fresh virtual machine running in seconds, and live migration moves a running one to another physical server with only a brief pause, so hardware can be repaired without customers noticing.
 
 > **Definition — Hypervisor:** The software layer that runs on a physical server and divides it into several virtual machines, keeping them isolated from one another.
 
@@ -899,7 +899,7 @@ Chapter 4 defines virtual machines. The fourth edition of Barroso, Hölzle and R
 
 ### Google's named data systems
 
-Data-center textbooks often use Google's internal systems as examples. Bigtable, described in 2006, stores enormous tables spread over thousands of machines. Spanner, described in 2012, is a database spread across the world that keeps transactions consistent everywhere, using GPS receivers and atomic clocks to bound how far apart its servers' clocks can drift. BigQuery is Google Cloud's data warehouse (Chapter 11) service for queries over huge tables, and Dataflow is its service for batch and streaming data pipelines (Chapter 11). Other clouds offer equivalents; the underlying ideas are in Chapter 34's distributed storage and MapReduce.
+Data-center textbooks often use Google's internal systems as examples. Bigtable, described in 2006, stores enormous tables spread over thousands of machines. Spanner, described in 2012, is a database spread across the world that keeps transactions (groups of changes that must all succeed or all fail together, like taking money from one account and adding it to another) consistent everywhere, using GPS receivers and atomic clocks to bound how far apart its servers' clocks can drift. BigQuery is Google Cloud's data warehouse (Chapter 11) service for queries over huge tables, and Dataflow is its service for batch and streaming data pipelines (Chapter 11). Other clouds offer equivalents; the underlying ideas are in Chapter 34's distributed storage and MapReduce.
 
 > **Definition — Bigtable:** A Google storage system, described in 2006, that holds very large tables of data spread across thousands of machines.
 
@@ -945,7 +945,7 @@ Hennessy and Patterson's sixth edition, from 2017, described Intel Crest, a trai
 
 ### TPU internals: the VPU, VMEM and HLO
 
-Chapter 32 explains the TPU's systolic matrix unit and Chapter 35 explains ML compilers. Google DeepMind's *How to Scale Your Model* names more parts. The VPU, or vector processing unit, handles element-by-element work, such as activation functions and additions, that the matrix unit cannot do. VMEM is a fast on-chip scratchpad memory that feeds the units, the TPU's counterpart to a GPU's shared memory (Chapter 33). HLO is the intermediate representation the XLA compiler translates a program into before turning it into chip instructions.
+Chapter 32 explains the TPU's systolic matrix unit and Chapter 35 explains ML compilers. Google DeepMind's *How to Scale Your Model* names more parts. The VPU, or vector processing unit, handles element-by-element work, such as activation functions and additions, that the matrix unit cannot do. VMEM is a fast on-chip scratchpad memory that feeds the units, the TPU's counterpart to a GPU's shared memory (Chapter 33). HLO (short for high level operations) is the intermediate representation the XLA compiler translates a program into before turning it into chip instructions.
 
 > **Definition — VPU (vector processing unit):** The part of a TPU core that performs element-by-element operations on arrays, such as additions and activation functions, alongside the matrix unit.
 
@@ -953,11 +953,11 @@ Chapter 32 explains the TPU's systolic matrix unit and Chapter 35 explains ML co
 
 > **Definition — Intermediate representation (IR):** A compiler's internal, simplified version of a program, between the source code a person writes and the machine instructions a chip runs, on which optimizations are performed.
 
-> **Definition — HLO:** The intermediate representation used by the XLA compiler, in which a program is a graph of array operations such as matrix multiplications and additions.
+> **Definition — HLO (high level operations):** The intermediate representation used by the XLA compiler, in which a program is a graph of array operations such as matrix multiplications and additions.
 
 ### Programming TPUs: jit, shard_map and sharding notation
 
-JAX programs (Chapter 13) are compiled with jit, which traces a Python function once and hands it to the XLA compiler (Chapter 35) so it runs as one fast program. To spread work over many chips, you arrange the chips into a named grid, the device mesh, and annotate how each array is split across it; shard_map lets you write code for one chip's piece and have it run on all of them. *How to Scale Your Model* writes these splits in a compact notation: an array labeled `A[I_X, J]` has its rows split across the mesh axis named X and its columns kept whole on every chip. This is how practitioners reason about sharding (Chapter 37), but it is code-level material.
+JAX programs (Chapter 13) are compiled with jit, which traces a Python function once (runs it on placeholder inputs to record the array operations it performs) and hands it to the XLA compiler (Chapter 35) so it runs as one fast program. To spread work over many chips, you arrange the chips into a named grid, the device mesh, and annotate how each array is split across it; shard_map lets you write code for one chip's piece and have it run on all of them. *How to Scale Your Model* writes these splits in a compact notation: an array labeled `A[I_X, J]` has its rows split across the mesh axis named X and its columns kept whole on every chip. This is how practitioners reason about sharding (Chapter 37), but it is code-level material.
 
 > **Definition — JIT compilation (just-in-time compilation):** Compiling code into fast machine instructions at the moment it is first run, rather than ahead of time; in JAX, the jit function does this for array computations.
 
@@ -979,7 +979,7 @@ Chapter 37 shows tensor parallelism for serving. At scale, specialists also spli
 
 ### In-network reduction
 
-An all-reduce (Chapter 37) adds up numbers from every chip and returns the total to all of them. Normally the chips do the arithmetic and the network switches only forward data. With in-network reduction, the switches themselves add the numbers as they pass through, so each chip sends its data once and receives the result, roughly halving the traffic. NVIDIA's version is called SHARP. *How to Scale Your Model* measures only a modest gain (about 30%) and notes that pure all-reduces are rare in language-model work.
+An all-reduce (Chapter 37) adds up numbers from every chip and returns the total to all of them. Normally the chips do the arithmetic and the network switches only forward data. With in-network reduction, the switches themselves add the numbers as they pass through, so each chip sends its data once and receives the result, roughly halving the traffic. NVIDIA's version is called SHARP (Scalable Hierarchical Aggregation and Reduction Protocol). *How to Scale Your Model* measures only a modest gain (about 30%) and notes that pure all-reduces are rare in language-model work.
 
 > **Definition — In-network reduction (SHARP):** Performing the additions of an all-reduce inside the network switches as data passes through them, instead of on the chips; NVIDIA's implementation is called SHARP.
 
@@ -1030,7 +1030,7 @@ Chapter 56 explains normal accidents and high-reliability organizations. STAMP, 
 
 ### Self-organized criticality
 
-Drop sand grain by grain onto a pile. Most grains do nothing, some cause small slides, and now and then one triggers an avalanche down the whole pile, with no change in what you are doing. Self-organized criticality, described by Per Bak, Chao Tang and Kurt Wiesenfeld in 1987, names systems that drive themselves to such a tipping state, where events of every size occur and the largest follow a long-tailed pattern, the tail risk of Chapter 56. Dan Hendrycks's AI safety textbook cites it among the lessons from complex systems (Chapter 56): small causes can have very large effects.
+Drop sand grain by grain onto a pile. Most grains do nothing, some cause small slides, and now and then one triggers an avalanche down the whole pile, with no change in what you are doing. Self-organized criticality, described by Per Bak, Chao Tang and Kurt Wiesenfeld in 1987, names systems that drive themselves to such a tipping state, where events of every size occur and their sizes follow a long-tailed pattern: huge events are rare, but far more common than a bell curve would predict, the tail risk of Chapter 56. Dan Hendrycks's AI safety textbook cites it among the lessons from complex systems (Chapter 56): small causes can have very large effects.
 
 > **Definition — Self-organized criticality:** The tendency of some systems, such as a growing sandpile, to drive themselves to a critical state in which tiny disturbances can set off events of any size, from trivial to catastrophic.
 
@@ -1080,7 +1080,7 @@ Chapter 59 gives four ways out of collective action problems. Evolutionary game 
 
 ### EU AI Act machinery: delegated acts, committees and annexes
 
-Chapter 59 explains what the EU AI Act requires. Underneath sits legal machinery. Delegated acts let the European Commission amend certain details without passing a new law, such as updating the list of high-risk uses (Annex III, Chapter 59) or the compute threshold for general-purpose models with systemic risk; the Parliament and the Council can object. Implementing acts set out how rules are applied, under the oversight of a committee of member-state representatives. The annexes hold the detail: what technical documentation must contain; the two routes for conformity assessment (Chapter 59), one a self-check and one involving an independent notified body; the information to register in the EU database; the documentation that general-purpose model providers owe to the AI Office (Chapter 59) and to the developers who build on their models; and the criteria for designating models with systemic risk. Amending acts, including the 2026 changes Chapter 59 describes, adjust these procedures too; the details matter to compliance lawyers more than to anyone following the big picture.
+Chapter 59 explains what the EU AI Act requires. Underneath sits legal machinery. Delegated acts let the European Commission amend certain details without passing a new law, such as updating the list of high-risk uses (Annex III, Chapter 59) or the compute threshold for general-purpose models with systemic risk; the European Parliament and the Council of the EU, the two bodies that pass EU laws, can object. Implementing acts set out how rules are applied, under the oversight of a committee of member-state representatives. The annexes hold the detail: what technical documentation must contain; the two routes for conformity assessment (Chapter 59), one a self-check and one involving an independent notified body; the information to register in the EU database; the documentation that general-purpose model providers owe to the AI Office (Chapter 59) and to the developers who build on their models; and the criteria for designating models with systemic risk. Amending acts, including the 2026 changes Chapter 59 describes, adjust these procedures too; the details matter to compliance lawyers more than to anyone following the big picture.
 
 > **Definition — Delegated act:** A legal act through which the European Commission, when a law empowers it, amends or supplements non-essential parts of that law, such as a list or a threshold, subject to objection by the Parliament and the Council.
 
@@ -1095,7 +1095,7 @@ Chapter 59 explains what the EU AI Act requires. Underneath sits legal machinery
 The entries above come from the standard works below, the same ones this book was audited against. Each is the natural next step for its section.
 
 - **Stuart Russell and Peter Norvig, *Artificial Intelligence: A Modern Approach* (4th edition).** The source of most entries in the search, logic, planning, multiagent, probability and robotics sections.
-- **ACM, IEEE Computer Society and AAAI, *Computer Science Curricula 2023* (CS2023), Artificial Intelligence knowledge area.** The checklist universities use to design AI courses, published jointly by the main professional societies for computing (ACM and the IEEE Computer Society) and for AI (AAAI, the Association for the Advancement of Artificial Intelligence).
+- **ACM, IEEE Computer Society and AAAI, *Computer Science Curricula 2023* (CS2023), Artificial Intelligence knowledge area.** The checklist universities use to design AI courses, published jointly by the main professional societies for computing (ACM and the IEEE Computer Society, the computing branch of the Institute of Electrical and Electronics Engineers) and for AI (AAAI, the Association for the Advancement of Artificial Intelligence).
 - **Ian Goodfellow, Yoshua Bengio and Aaron Courville, *Deep Learning*.** Free online; the home of the matrix, optimization, classic-network and generative-model mathematics entries.
 - ***Dive into Deep Learning*, by Aston Zhang, Zachary Lipton, Mu Li and Alexander Smola.** Free online, with runnable code for nearly every idea, including the recommender and library-mechanics entries.
 - **Stanford CS229 (Machine Learning), CS231n (Deep Learning for Computer Vision), CS224n (Natural Language Processing with Deep Learning) and CS336 (Language Modeling from Scratch).** Lecture notes, slides and many videos are public.

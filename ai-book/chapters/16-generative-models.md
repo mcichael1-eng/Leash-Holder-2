@@ -543,7 +543,7 @@ On each pass the model predicts every masked position at once, keeps the predict
 
 > **Definition — Masked diffusion:** The text version of diffusion, where "noise" means replacing tokens with a mask symbol. Generation repeatedly predicts the masked tokens and keeps the most confident ones.
 
-LLaDA (2025) showed a diffusion LM could compete with autoregressive models of similar size. LLaDA2.0 (December 2025) scaled the idea to a 100-billion-parameter mixture-of-experts model (Chapter 17) by converting an existing autoregressive model, with open weights. Google demonstrated an experimental Gemini Diffusion in May 2025. Inception's Mercury 2 (February 2026), billed as the first reasoning diffusion LLM, generates about 1,000 tokens per second according to the company.
+LLaDA (2025) showed a diffusion LM could compete with autoregressive models of similar size. LLaDA2.0 (December 2025) scaled the idea to a 100-billion-parameter mixture-of-experts model (Chapter 17) by converting an existing autoregressive model, with open weights. Google demonstrated an experimental Gemini Diffusion in May 2025. Inception's Mercury 2 (February 2026), billed as the first reasoning diffusion LLM, generates about 1,000 tokens per second according to the company. Its successor, Mercury 3 (October 2026), runs at 1,068 tokens per second on NVIDIA GPUs and, by Inception's own tests, matches or beats the small, fast models of OpenAI and Anthropic (Chapter 23).
 
 Diffusion LMs are fast and can revise earlier parts of an answer, which suits code edits. But most tooling, caching (the KV cache of Chapter 15 assumes left-to-right writing) and reinforcement learning for reasoning was built for autoregressive models, and whether parallel refinement can match them on long reasoning is still open as of late 2026.
 
@@ -626,7 +626,7 @@ timeline
   2023 : ControlNet : Consistency models : SDXL-Turbo
   2024 : Sora preview, spacetime patches : Stable Diffusion 3
   2025 : GPT-4o native images : Veo 3 with sound : Genie 3 : LLaDA
-  2026 : gpt-image-2 : Mercury 2 : Gemini Omni
+  2026 : gpt-image-2 : Mercury 2 and 3 : Gemini Omni
 ```
 *Figure 16.12: A timeline of the main generative-model milestones covered in this chapter.*
 

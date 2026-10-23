@@ -11,23 +11,23 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | OpenAI | San Francisco lab founded in 2015 as a nonprofit; its for-profit arm became OpenAI Group PBC, controlled by the OpenAI Foundation, in 2025. Maker of ChatGPT. | GPT-6 Astra, GPT-6 Sol and Luna, GPT-6.1 Sol; open-weight gpt-oss-120b and gpt-oss-20b; Codex coding agent | Chapter 24 |
 | Anthropic | San Francisco lab founded in 2021 by former OpenAI researchers, including Dario and Daniela Amodei; a public benefit corporation with a safety focus. | Claude Fable 5.1 and Mythos 5.1, Opus 5.5, Sonnet 5.5, Haiku 5.5; Claude Code; created the Model Context Protocol (MCP) | Chapter 24 |
 | Google DeepMind | Google's AI lab, formed in 2023 by merging DeepMind (founded in London in 2010, bought by Google in 2014) with Google Brain. | Gemini 4 Argon, Gemini 3.8 Flash; open-weight Gemma 4; Genie 3 world model; AlphaFold | Chapter 24 |
-| Meta Superintelligence Labs (MSL) | Meta's AI organization, formed in mid-2025; includes the FAIR research lab (Fundamental AI Research, Meta's long-running research group) and TBD Lab, its frontier language-model group. | Muse Wonder and Wonder Full, Muse Spark, open-weight Muse Glimmer; the earlier Llama family (last: Llama 4, 2025) | Chapter 24 |
+| Meta Superintelligence Labs (MSL) | Meta's AI organization, formed in mid-2025; includes the FAIR research lab (Fundamental AI Research, Meta's long-running research group) and TBD Lab, its frontier language-model group. | Muse Wonder and Wonder Full, Muse Spark (its weights released openly as Muse Spark Open in October 2026), open-weight Muse Glimmer; the earlier Llama family (last: Llama 4, 2025) | Chapter 24 |
 | SpaceXSI (formerly xAI) | Founded by Elon Musk in 2023; acquired by SpaceX on February 2, 2026, rebranded SpaceXAI by July 2026 (reported), and renamed SpaceX Super Intelligence (SpaceXSI) in October 2026, the name now on its website; the legal company name is still SpaceXAI. | Grok 4.7; the Colossus supercomputers in Memphis | Chapter 24 |
 | Microsoft AI | Microsoft's in-house AI group; Microsoft was OpenAI's earliest large backer and is also an Anthropic compute partner. | Copilot assistants in Windows and Office; in-house models | Chapter 61 |
 | Amazon | Builds its own Nova models and the Bedrock platform that serves many labs' models; Anthropic's main cloud and training partner. | Nova models; Bedrock; Alexa | Chapter 61 |
-| DeepSeek | Hangzhou lab founded in 2023 by Liang Wenfeng and funded by the quantitative hedge fund High-Flyer (an investment firm whose trading is driven by computer models); known for efficient open-weight models. | DeepSeek V4-Pro, V4-Flash, V4.1-Flash (MIT license); the R1 reasoning model (2025) | Chapter 24 |
+| DeepSeek | Hangzhou lab founded in 2023 by Liang Wenfeng and funded by the quantitative hedge fund High-Flyer (an investment firm whose trading is driven by computer models); known for efficient open-weight models. | DeepSeek V4-Pro, V4-Flash, V4.1-Flash (under the MIT license, a permissive license that lets anyone use, change and sell products built on them); the R1 reasoning model (2025) | Chapter 24 |
 | Alibaba Qwen | The model team of Alibaba Cloud; Qwen is one of the most widely used open-weight families. | Qwen3.8-2.4T-A95B (2.4 trillion parameters in total, 95 billion active for each token) and Qwen3.8-27B (open); Qwen3.8-Max, the hosted version of the 2.4T model | Chapter 24 |
 | Moonshot AI | Beijing startup founded in 2023 by Yang Zhilin; maker of the Kimi assistant. | Kimi K3 (open weights, 2.8 trillion parameters) | Chapter 24 |
 | Z.ai (formerly Zhipu AI) | Beijing lab that grew out of Tsinghua University research. | GLM-5.3 (open weights) | Chapter 24 |
 | MiniMax | Shanghai company making language, speech and video models. | MiniMax models; Hailuo video app | Chapter 17 |
 | Xiaomi | Chinese phone and electronics maker that also trains large models. | MiMo-V2.6-Pro, the top open-weight model on the Artificial Analysis index in October 2026 | Chapter 24 |
 | StepFun | Shanghai model startup. | Step 5 (preview, September 2026) | Chapter 24 |
-| Mistral AI | Paris lab founded in 2023 by Arthur Mensch, Guillaume Lample and Timothée Lacroix; Europe's leading model maker. | Mistral Large 4 (preview), Medium 3.5, Large 3 (Apache-2.0); Le Chat assistant | Chapter 24 |
+| Mistral AI | Paris lab founded in 2023 by Arthur Mensch, Guillaume Lample and Timothée Lacroix; Europe's leading model maker. | Mistral Large 4 (preview), Medium 3.5, Large 3 (under Apache-2.0, another permissive license); Le Chat assistant | Chapter 24 |
 | Cohere | Toronto company founded in 2019, co-founded by Transformer co-author Aidan Gomez; builds models for business use. | Command model family | Chapter 61 |
 | Thinking Machines Lab | Founded in 2025 by former OpenAI chief technology officer Mira Murati; publishes research on post-training. | Inkling model; Tinker fine-tuning service | Chapter 20 |
 | Safe Superintelligence (SSI) | Founded in 2024 by Ilya Sutskever and colleagues to build safe superintelligence before shipping products. | No public product | Chapter 60 |
-| Reflection AI | US startup founded by former Google DeepMind researchers. | Beam 1.0 | Chapter 24 |
-| Ai2 (Allen Institute for AI) | Seattle nonprofit founded by Paul Allen; releases fully open models with their data and code. | OLMo models | Chapter 30 |
+| Reflection AI | US startup founded by former Google DeepMind researchers. | Beam 1.0, an open-weight model built for coding, reasoning and agent tasks | Chapter 24 |
+| Ai2 (Allen Institute for AI) | Seattle nonprofit founded by Microsoft co-founder Paul Allen; releases fully open models with their data and code. | OLMo models | Chapter 30 |
 | Advanced Machine Intelligence Labs | Founded by Yann LeCun, who announced in November 2025 that he was leaving Meta, to pursue world models beyond LLMs. | Research stage | Chapter 47 |
 
 *Table D.1: Frontier and near-frontier model labs, as of October 2026.*
@@ -87,11 +87,11 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 |---|---|---|
 | Amazon Web Services (AWS) | The largest cloud provider; offers Bedrock, Trainium chips and NVIDIA GPUs, and built Project Rainier in Indiana for Anthropic. | Chapter 42 |
 | Microsoft Azure | Microsoft's cloud; OpenAI's long-time compute partner; builds "Fairwater" AI data centers in Wisconsin and Atlanta. | Chapter 42 |
-| Google Cloud | Google's cloud, renting TPUs and NVIDIA GPUs and serving Gemini through Vertex AI. | Chapter 42 |
+| Google Cloud | Google's cloud, renting TPUs and NVIDIA GPUs and serving Gemini through Vertex AI, its platform for building and running AI applications. | Chapter 42 |
 | Oracle Cloud Infrastructure (OCI) | Oracle's cloud; operates the Stargate campus in Abilene, Texas, for OpenAI. | Chapter 42 |
 | Alibaba Cloud | China's largest cloud provider and home of the Qwen models. | Chapter 42 |
 | CoreWeave | The largest "neocloud" (a cloud specializing in GPUs); went public in March 2025; Microsoft and Meta are major customers. | Chapter 43 |
-| Nebius | Amsterdam-based neocloud spun out of Yandex in 2024, with large Microsoft and Meta contracts. | Chapter 43 |
+| Nebius | Amsterdam-based neocloud spun out of Yandex, Russia's largest search-engine company, in 2024, with large Microsoft and Meta contracts. | Chapter 43 |
 | Lambda | GPU cloud popular with researchers and startups. | Chapter 43 |
 | Crusoe | Builds and runs AI data centers; builder of the Stargate Abilene campus. | Chapter 42 |
 | Together AI | Cloud for running and fine-tuning open-weight models. | Chapter 30 |
@@ -99,7 +99,7 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | Fluidstack | Builds and operates GPU and TPU data centers, including a large US build-out for Anthropic. | Chapter 42 |
 | IREN, Cipher Mining, TeraWulf, Core Scientific | Former bitcoin miners converting their powered sites into AI data centers. | Chapter 42 |
 | G42 | Abu Dhabi AI company and partner in Stargate UAE (United Arab Emirates). | Chapter 42 |
-| Humain | Saudi Arabia's national AI company, owned by the Public Investment Fund and founded in 2025. | Chapter 42 |
+| Humain | Saudi Arabia's national AI company, owned by the Public Investment Fund (the Saudi government's sovereign wealth fund) and founded in 2025. | Chapter 42 |
 | OpenRouter | A marketplace that lets developers call hundreds of models from many providers through one API. | Chapter 26 |
 
 *Table D.4: Cloud providers and GPU clouds.*
@@ -139,7 +139,7 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | LangChain | Open-source framework for building LLM apps; LangGraph for agents and LangSmith for tracing and evals. | Chapter 28 |
 | LlamaIndex | Framework for connecting models to your documents and data (retrieval). | Chapter 27 |
 | Pinecone, Weaviate, Qdrant, Chroma | Vector databases that store embeddings for semantic search and RAG. | Chapter 27 |
-| Databricks | Data and AI platform from the creators of Apache Spark; bought MosaicML in 2023. | Chapter 11 |
+| Databricks | Data and AI platform from the creators of Apache Spark, a widely used open-source system for processing huge datasets across many machines; bought MosaicML, a startup that helped companies train their own language models, in 2023. | Chapter 11 |
 | Snowflake | Cloud data warehouse that has added AI features. | Chapter 11 |
 | Weights & Biases | Experiment-tracking tools for model training; bought by CoreWeave in 2025. | Chapter 10 |
 | Braintrust, Arize, Langfuse | Evaluation and observability tools for monitoring LLM apps in production. | Chapter 31 |
@@ -171,7 +171,7 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | Kuaishou (Kling), ByteDance (Seedance) | Chinese tech companies with leading video-generation models. | Chapter 47 |
 | ElevenLabs | Voice synthesis, voice cloning and dubbing. | Chapter 46 |
 | Suno, Udio | AI music generators sued by major record labels in 2024; several labels settled and moved to licensing in 2025–26. | Chapter 46 |
-| Waymo | Alphabet's self-driving company, grown from Google's 2009 project; runs driverless robotaxis in several US cities. | Chapter 50 |
+| Waymo | The self-driving company of Alphabet (Google's parent company), grown from Google's 2009 project; runs driverless robotaxis in several US cities. | Chapter 50 |
 | Tesla | Electric-car maker with Full Self-Driving software, a Robotaxi service and the Optimus humanoid robot. | Chapter 50 |
 | Zoox, Baidu Apollo Go, Pony.ai, WeRide | Robotaxi developers in the US (Zoox, owned by Amazon) and China. | Chapter 50 |
 | Aurora | Self-driving trucks. | Chapter 50 |
@@ -217,7 +217,7 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | Partnership on AI | Multi-stakeholder nonprofit (2016) of companies, academics and civil society. | Chapter 59 |
 | MLCommons | Engineering consortium behind the MLPerf hardware benchmarks and the AILuminate safety benchmark. | Chapter 35 |
 | C2PA | The Coalition for Content Provenance and Authenticity, an industry group behind Content Credentials, a standard for labeling where images and videos came from. | Chapter 58 |
-| MATS, ARENA, BlueDot Impact | Training programs that bring newcomers into AI safety research. | Chapter 65 |
+| MATS, ARENA, BlueDot Impact | Training programs that bring newcomers into AI safety research; Appendix E describes each one. | Chapter 65 |
 
 *Table D.8: Safety, policy and evaluation organizations.*
 
@@ -230,7 +230,7 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | Ada Lovelace (1815–1852) | Wrote notes on Charles Babbage's Analytical Engine in 1843, including what is often called the first published computer program, and asked whether machines could create. | Chapter 7 |
 | Alan Turing (1912–1954) | Defined what computers can compute (1936) and proposed the "imitation game," now called the Turing test, in 1950. | Chapter 7 |
 | Claude Shannon | Founded information theory (1948), the math of bits; co-organized the 1956 Dartmouth workshop. | Chapter 2 |
-| John McCarthy | Coined the term "artificial intelligence" in the 1955 Dartmouth proposal and created the Lisp language. | Chapter 7 |
+| John McCarthy | Coined the term "artificial intelligence" in the 1955 Dartmouth proposal and created the Lisp programming language. | Chapter 7 |
 | Marvin Minsky | Dartmouth co-organizer and MIT AI pioneer; co-wrote *Perceptrons* (1969), which cooled interest in neural networks. | Chapter 7 |
 | Herbert Simon and Allen Newell | Built the Logic Theorist (1956), an early reasoning program, and championed symbolic AI. | Chapter 7 |
 | Frank Rosenblatt | Invented the perceptron (1958), the first learning artificial neuron. | Chapter 12 |
@@ -324,14 +324,14 @@ Roles are as of October 2026; leadership changes are frequent.
 | Margaret Mitchell | Lead author of the 2019 "Model Cards" paper; AI ethics researcher at Hugging Face. | Chapter 24 |
 | Arvind Narayanan and Sayash Kapoor | Princeton authors of *AI Snake Oil* and the essay "AI as Normal Technology." | Chapter 60 |
 | Kate Crawford | Scholar of AI's social and environmental costs; author of *Atlas of AI*. | Chapter 58 |
-| Meredith Whittaker | President of the Signal Foundation and co-founder of the AI Now Institute. | Chapter 58 |
+| Meredith Whittaker | President of the Signal Foundation (the nonprofit behind the Signal encrypted messaging app) and co-founder of the AI Now Institute. | Chapter 58 |
 | Rumman Chowdhury | Pioneer of algorithmic auditing and public red-teaming events. | Chapter 58 |
 | Alondra Nelson | Led the White House's 2022 Blueprint for an AI Bill of Rights. | Chapter 59 |
 | Marc Andreessen | Venture capitalist, co-founder of the investment firm Andreessen Horowitz (known as a16z), and prominent opponent of most AI regulation. | Chapter 59 |
 | David Sacks | White House AI and crypto adviser from January 2025; stepped down from that post in March 2026 but remains co-chair of the President's Council of Advisors on Science and Technology. | Chapter 59 |
 | Michael Kratsios | Director of the White House Office of Science and Technology Policy. | Chapter 59 |
 | Scott Wiener | California state senator behind the AI safety bills SB 1047 (vetoed in 2024) and SB 53 (signed in 2025); SB stands for Senate Bill. | Chapter 59 |
-| Alex Bores | New York assemblymember who sponsored the RAISE Act. | Chapter 59 |
+| Alex Bores | New York assemblymember who sponsored the RAISE Act, the state law requiring the largest frontier-model developers to publish safety frameworks and report serious safety incidents. | Chapter 59 |
 | Robert Long | Co-founder of Eleos AI, which studies AI welfare. | Chapter 60 |
 
 *Table D.12: Voices in safety, ethics and policy debates.*

@@ -194,7 +194,7 @@ NVIDIA also announced, in September 2025, the **Rubin CPX**, a GPU using cheaper
 
 ### Beyond the data center
 
-NVIDIA also sells smaller machines. The **DGX Spark**, a desktop computer built on a GB10 chip (a small Grace Blackwell chip that pairs Arm CPU cores with a Blackwell GPU) with 128 GB of memory shared by CPU and GPU, reportedly began shipping in October 2025. **RTX Spark** (RTX is NVIDIA's brand for its gaming and workstation graphics), a roughly 1-petaflop Windows PC chip made with Microsoft, was announced in 2026, according to NVIDIA's earnings release. In September 2025 NVIDIA invested $5 billion in Intel to co-develop x86 CPUs that connect over NVLink, along with PC chips. And in the MLPerf Training 6.0 results (2026), NVIDIA says Blackwell systems led every category.
+NVIDIA also sells smaller machines. The **DGX Spark**, a desktop computer built on a GB10 chip (a small Grace Blackwell chip that pairs Arm CPU cores with a Blackwell GPU) with 128 GB of memory shared by CPU and GPU, reportedly began shipping in October 2025; a 64 GB version, sold only through partner PC makers, followed in October 2026. **RTX Spark** (RTX is NVIDIA's brand for its gaming and workstation graphics), a roughly 1-petaflop Windows PC chip made with Microsoft, was announced in 2026, according to NVIDIA's earnings release. In September 2025 NVIDIA invested $5 billion in Intel to co-develop x86 CPUs that connect over NVLink, along with PC chips. And in the MLPerf Training 6.0 results (2026), NVIDIA says Blackwell systems led every category.
 
 > **Definition — MLPerf:** A set of standardized AI training and inference benchmarks run by the MLCommons industry group, where vendors submit results under shared rules. It is the closest thing to an independent, apples-to-apples comparison of AI hardware, though not every vendor participates.
 
@@ -520,7 +520,7 @@ Your phone and laptop also contain AI accelerators, much smaller ones.
 | Apple Neural Engine | On-device AI in iPhones, iPads and Macs | Present since the A11 chip (2017); the M5 (October 2025) also added a "Neural Accelerator" inside each GPU core |
 | Microsoft "Copilot+ PC" standard | Windows AI features run locally | Requires an NPU of 40+ TOPS (Qualcomm Snapdragon X, Intel Lunar Lake and Panther Lake, AMD Ryzen AI) |
 | Google Tensor G5 (Pixel 10, 2025) | Runs Gemini Nano on the phone | Made by TSMC |
-| NVIDIA DGX Spark | Desktop AI computer | GB10 chip with 128 GB of unified memory; reportedly shipped October 2025 |
+| NVIDIA DGX Spark | Desktop AI computer | GB10 chip with 128 GB of unified memory (64 GB in partner-built versions from October 2026); reportedly shipped October 2025 |
 | NVIDIA Jetson Thor (2025) | Computer for robots | See Chapter 49 |
 
 *Table 35.9: Edge AI chips. Specific specs for several of these devices were flagged for verification in this book's research, so only basic facts are listed.*

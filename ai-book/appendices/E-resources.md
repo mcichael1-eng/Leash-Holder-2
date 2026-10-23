@@ -30,7 +30,7 @@ These match Stage 1 of the roadmap in Chapter 65: understanding how AI works in 
 | DeepLearning.AI: "Generative AI for Everyone" (about 5 hours) | Andrew Ng's non-technical introduction | A calm, clear overview of what generative AI can and cannot do, including at work | Free to start | deeplearning.ai/courses |
 | DeepLearning.AI: "AI Prompting for Everyone" (about 7 hours) | A structured prompting course by Andrew Ng | Turns scattered prompting tips into a system | Free to start | deeplearning.ai/courses |
 | Elements of AI | An online introduction from the University of Helsinki | Vendor-neutral, no code, good on what AI is and is not | Free | elementsofai.com |
-| Google "AI Essentials" | Google's introductory course with a certificate | A recognized certificate for employers who ask for one | Paid (Coursera subscription) | grow.google |
+| Google "AI Essentials" | Google's introductory course with a certificate, taught on Coursera, a large online-course platform | A recognized certificate for employers who ask for one | Paid (Coursera subscription) | grow.google |
 | Khan Academy | Exercise-based lessons in math, probability and statistics | The gentlest way to refresh the math behind Chapters 5 and 6 | Free | khanacademy.org |
 
 ### Videos, tools and playgrounds
@@ -180,7 +180,7 @@ These match Track C in Chapter 65: math, classical machine learning, deep learni
 | fast.ai, "Practical Deep Learning for Coders", Parts 1 and 2 | Top-down deep learning courses: 9 lessons of about 90 minutes, then more than 30 hours | Gets you training real models quickly; assumes about a year of coding | Free | course.fast.ai |
 | Andrej Karpathy, "Neural Networks: Zero to Hero" | 8 lectures from a tiny autodiff engine (software that computes gradients automatically; see automatic differentiation in Chapter 12) to a GPT and its tokenizer | The best route to truly understanding how language models are trained | Free | karpathy.ai/zero-to-hero.html |
 | Karpathy's nanochat | A minimal, complete pipeline to train a small chat model | Trains a GPT-2-class model in about 2 hours on 8 H100 GPUs for about $48 | Free code; rented GPU time costs money | github.com/karpathy/nanochat |
-| Stanford CS336, "Language Modeling from Scratch" | Spring 2026 course by Tatsu Hashimoto and Percy Liang with five demanding assignments | Builds a language model end to end, including systems, scaling, data and RL | Free lectures | cs336.stanford.edu |
+| Stanford CS336, "Language Modeling from Scratch" | Spring 2026 course by Tatsunori (Tatsu) Hashimoto and Percy Liang with five demanding assignments | Builds a language model end to end, including systems, scaling, data and RL | Free lectures | cs336.stanford.edu |
 | Stanford CS224N (natural language processing) | A well-known university NLP course | Deep grounding in language models and their history | Free lectures | web.stanford.edu/class/cs224n |
 | Stanford CS231n (computer vision) | A well-known university deep learning course for vision | The classic introduction to convolutional networks and vision | Free lectures | cs231n.stanford.edu |
 | MIT 6.S191, "Introduction to Deep Learning" | MIT's short annual deep learning course | A fast, up-to-date overview with labs | Free | introtodeeplearning.com |
@@ -266,7 +266,7 @@ These match Track D in Chapter 65: GPU programming and performance engineering, 
 | International Energy Agency, "Energy and AI" (April 2025) | A global report on AI's electricity use and outlook | The reference global numbers on data-center energy demand | Free | iea.org |
 | Lawrence Berkeley National Laboratory, US data-center energy report (December 2024) | The US government-funded estimate of data-center electricity use | The reference US numbers (Chapter 41) | Free | lbl.gov |
 | EPRI, "Powering Intelligence" (May 2024) | An analysis of data-center load growth by EPRI, the Electric Power Research Institute, a research group funded by US utilities | A utility-industry view of the demand forecasts | Free | www.epri.com |
-| SEC EDGAR | The US database of company filings | Primary sources for chip, cloud and data-center company numbers | Free | sec.gov/edgar |
+| SEC EDGAR | The database of company filings run by the SEC (Securities and Exchange Commission), the US regulator of stock markets | Primary sources for chip, cloud and data-center company numbers | Free | sec.gov/edgar |
 | DatacenterDynamics | A trade news site and events for the data-center industry | Daily industry news on builds, power and cooling | Free news | datacenterdynamics.com |
 | Data Center Map | A searchable map of data centers worldwide | See where facilities are, including near you | Free basic use | datacentermap.com |
 | Hot Chips | An annual conference where chip designers present new processors | Primary-source talks on new AI chips | Some talks free | hotchips.org |
