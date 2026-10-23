@@ -76,7 +76,7 @@ The rule also leaves out attention's own arithmetic, the step in which each toke
 
 *Table 37.1: The 6ND rule applied to real and hypothetical models.*
 
-Let's do Llama 3.1 405B slowly. 6 × 405,000,000,000 × 15,600,000,000,000 = 6 × 405 × 15.6 × `10^9` × `10^12` ≈ 37,908 × `10^21` ≈ `3.8 × 10^25` FLOP. That matches Meta's own figure.
+Let's do Llama 3.1 405B slowly. 6 × 405,000,000,000 × 15,600,000,000,000 = 6 × 405 × 15.6 × `10^9` × `10^12` ≈ 37,908 × `10^21` ≈ `3.8 × 10^25` FLOP. (Multiplying powers of ten adds their exponents, so `10^9` × `10^12` = `10^21`; and 37,908 is about 3.8 × `10^4`, which moves the exponent from 21 to 25.) That matches Meta's own figure.
 
 For the largest models, labs rarely publish N and D. Epoch AI, a research group that tracks AI compute, estimates them from public clues. As of its October 2026 database, its largest estimates include:
 
@@ -107,7 +107,7 @@ U is called the MFU, and we'll dig into it later. For now, know that 35 to 50 pe
 1. Cluster speed: 16,384 × `9.89 × 10^14` × 0.40 ≈ `6.5 × 10^18` FLOP/s.
 2. Time: `3.8 × 10^25` ÷ `6.5 × 10^18` ≈ `5.9 × 10^6` seconds.
 3. Days: 5,860,000 ÷ 86,400 ≈ 68 days of pure computing.
-4. GPU-hours: 16,384 GPUs × 1,630 hours ≈ 26.7 million GPU-hours.
+4. GPU-hours: 5,860,000 seconds ÷ 3,600 seconds per hour ≈ 1,630 hours, so 16,384 GPUs × 1,630 hours ≈ 26.7 million GPU-hours.
 
 Meta's model card lists about 31 million H100 GPU-hours for the 405B model, a bit more than our ideal estimate. The gap is what restarts, slower phases and imperfect utilization cost in real life, which this chapter will explain.
 
@@ -308,7 +308,7 @@ flowchart LR
 
 *Figure 37.5: Tensor parallelism on a tiny matrix. Each GPU holds and multiplies one strip of the weight matrix.*
 
-In a real transformer, the Megatron-LM approach splits one matrix by columns and the next by rows, so each block needs only one summing step (an all-reduce) in the forward pass and one in the backward pass. But that happens in *every layer*, on large tensors, so tensor parallelism needs the fastest links available. It is usually kept inside one server or one NVLink domain, typically 8 GPUs (or up to the 72 of an NVL72 rack).
+In a real transformer, the Megatron-LM approach (named after NVIDIA's training software that introduced it) splits one matrix by columns and the next by rows, so each block needs only one summing step (an all-reduce) in the forward pass and one in the backward pass. But that happens in *every layer*, on large tensors, so tensor parallelism needs the fastest links available. It is usually kept inside one server or one NVLink domain, typically 8 GPUs (or up to the 72 of an NVL72 rack).
 
 > **Definition — Tensor parallelism (TP):** Splitting the individual weight matrices of each layer across several GPUs, so each GPU stores and multiplies only part of every matrix. It requires very fast links and is usually kept inside one NVLink domain.
 
@@ -390,7 +390,7 @@ flowchart LR
 
 ### Expert parallelism: spreading out the specialists
 
-Most frontier models in 2026 are mixture-of-experts models (Chapter 17). Each MoE layer contains many "expert" sub-networks and a small router that sends each token to a few of them. Kimi K3, for example, has 896 experts per MoE layer, with 16 active per token plus 2 shared experts. **Expert parallelism** places different experts on different GPUs.
+Most frontier models in 2026 are mixture-of-experts models (Chapter 17). Each MoE layer contains many "expert" sub-networks and a small router that sends each token to a few of them. For example, Kimi K3, from the Chinese lab Moonshot AI, has 896 experts per MoE layer, with 16 active per token plus 2 shared experts (experts that every token always uses, Chapter 17). **Expert parallelism** places different experts on different GPUs.
 
 > **Definition — Mixture of experts (MoE):** A model design in which each layer has many sub-networks ("experts") and a router sends each token to only a few, so the total parameter count can be huge while the compute per token stays modest.
 
@@ -439,7 +439,7 @@ flowchart TD
 
 *Figure 37.10: Each parallelism strategy is matched to the network tier that can carry its traffic.*
 
-Using two or three of these at once is called 3D parallelism (data, tensor, pipeline); adding context parallelism makes 4D, and adding expert parallelism makes 5D. The total number of GPUs is the product of the degrees.
+Using two or three of these at once is called 3D parallelism (data, tensor, pipeline); adding context parallelism makes 4D, and adding expert parallelism makes 5D. The total number of GPUs is the product of the degrees (a strategy's degree is how many GPUs it splits the work across).
 
 **Worked example: Llama 3.** Meta's paper describes training the 405B model on 16,384 H100s with tensor parallelism of 8 (the 8 GPUs inside one server, linked by NVLink), pipeline parallelism of 16 and data parallelism (FSDP-style) of 128: 8 × 16 × 128 = 16,384. For the long-context stage it added context parallelism of 16 and reduced data parallelism to keep the total the same. MFU ranged from 38 to 43 percent across these layouts.
 
@@ -569,7 +569,7 @@ A training step might take only a few seconds, so a 5.6-second sync would be a d
 
 - **Compute.** A GPU that handles B tokens per step does 6 × N × B FLOP. At about 400 trillion FLOP/s achieved on an H100 (roughly 40% of peak), that takes 6 × N × B ÷ (400 × `10^12`) seconds.
 - **Communication.** With BF16 gradients, the ring all-reduce sends about 2 × 2 × N = 4 × N bytes per GPU. At 50 GB/s that takes 4 × N ÷ (50 × `10^9`) seconds.
-- **The ratio.** Divide the second by the first and the model size N cancels: communication ÷ compute ≈ (4 ÷ 6) × (400 × `10^12` ÷ 50 × `10^9`) ÷ B = (2 ÷ 3) × 8,000 ÷ B ≈ 5,300 ÷ B.
+- **The ratio.** Divide the second by the first and the model size N cancels: communication ÷ compute ≈ (4 ÷ 6) × ((400 × `10^12`) ÷ (50 × `10^9`)) ÷ B = (2 ÷ 3) × 8,000 ÷ B ≈ 5,300 ÷ B. (N appears in both times, so it divides out; 400 trillion ÷ 50 billion = 8,000.)
 
 So each GPU must process at least about 5,300 tokens per step, or it spends longer talking than computing. Now check Llama 3. Its batch of about 16 million tokens spread over 16,384 GPUs is only about 1,000 tokens per GPU. With plain data parallelism over InfiniBand (even if the model fit), each GPU would spend about five times longer communicating than computing. The layout described earlier fixes this. With tensor parallelism of 8 and pipeline parallelism of 16, groups of 128 GPUs share one copy of the model, so each copy processes 16 million ÷ 128 = 125,000 tokens per step, and each GPU syncs only its 1/128 slice of the gradients. Communication drops to about 5,300 ÷ 125,000 ≈ 4% of compute time, easy to hide behind the backward pass.
 
@@ -678,7 +678,7 @@ stateDiagram-v2
 
 *Figure 37.15: The life cycle of a large training job. Failures are normal; what matters is how little work is lost and how fast the job restarts.*
 
-How often should you checkpoint? Too rarely, and each failure throws away a lot of work. Too often, and you waste time writing snapshots. Suppose a failure every 180 minutes, 10 minutes to restart, and 1 minute to write each checkpoint while training pauses:
+How often should you checkpoint? Too rarely, and each failure throws away a lot of work. Too often, and you waste time writing snapshots. Suppose a failure every 180 minutes, 10 minutes to restart, and 1 minute to write each checkpoint while training pauses. On average a failure strikes halfway between two checkpoints, so it throws away half an interval of work, plus the restart time:
 
 | Checkpoint every | Time spent saving | Work lost per failure (half an interval + restart) | Lost to failures | Goodput |
 |---|---|---|---|---|
@@ -773,7 +773,7 @@ If reading the weights is the expensive part, serve many users with each read. I
 
 > **Definition — Batching (continuous batching):** Processing many users' requests together so each read of the model's weights is shared. Continuous batching lets requests join and leave the batch at every step instead of waiting for a whole batch to finish.
 
-**Worked example: the batching table.** Same 70B FP8 model on one H200, rented at $4 per hour (H200 list prices ran about $3.59 to $5.29 per hour on one marketplace in October 2026). Each user has 2,048 tokens of context; for a Llama-3-70B-style model (80 layers, 8 key-value heads of 128 numbers each) the FP8 KV cache is 2 × 80 × 8 × 128 = 163,840 bytes per token, or about 0.34 GB per user. Each decode step takes as long as the slower of (a) reading the weights plus every user's KV cache from memory and (b) doing the math, which is the roofline idea from Chapter 33.
+**Worked example: the batching table.** Same 70B FP8 model on one H200, rented at $4 per hour (H200 list prices ran about $3.59 to $5.29 per hour on one marketplace in October 2026). Each user has 2,048 tokens of context; for a Llama-3-70B-style model (80 layers, 8 key-value heads of 128 numbers each) the FP8 KV cache is 2 × 80 × 8 × 128 = 163,840 bytes per token (the 2 is one key and one value, each number taking 1 byte in FP8), and 163,840 × 2,048 tokens ≈ 0.34 GB per user. Each decode step takes as long as the slower of (a) reading the weights plus every user's KV cache from memory and (b) doing the math, which is the roofline idea from Chapter 33. Here memory is always the slower side, so the step time is the memory read ÷ 4,800 GB/s. With one user: 70.3 GB ÷ 4,800 GB/s ≈ 0.0147 seconds (14.7 ms), so the GPU produces 1 ÷ 0.0147 ≈ 68 tokens per second; multiply by the number of users for the GPU's total. The cost column uses the cost-per-million-tokens formula given at the end of this section.
 
 | Users in batch | Memory read per step | Step time | Tokens/s per user | Tokens/s per GPU | Cost per million output tokens |
 |---|---|---|---|---|---|
@@ -825,7 +825,7 @@ That split is now shaping chip design. As of late 2026:
 | Groq 3 LPU, in NVIDIA's LPX rack | Fast decode | 256 LPUs per rack; per chip about 500 MB SRAM at about 150 TB/s and, as reported, about 1.2 PFLOPS FP8. NVIDIA claims up to 35× throughput per megawatt at high interactivity (vendor claim) |
 | Google TPU 8i | Inference | 10.1 PFLOPS FP4, 288 GB HBM at 8.6 TB/s, 384 MB on-chip SRAM; Google claims up to 80% better inference price-performance |
 | Microsoft Maia 200 | Inference for Copilot and OpenAI models | More than 10 PFLOPS FP4, 216 GB HBM3E at 7 TB/s, 272 MB SRAM (Microsoft's figures) |
-| NVIDIA Rubin CPX | Long-context prefill | GDDR7-based GPU announced in 2025; its 2026 deployment status was not confirmed |
+| NVIDIA Rubin CPX | Long-context prefill | GPU announced in 2025 that uses GDDR7, cheaper graphics memory, instead of HBM; its 2026 deployment status was not confirmed |
 | Cerebras WSE-3 | Very fast inference | Weights stream from on-chip SRAM across a whole wafer, giving thousands of tokens per second per user |
 | AWS Inferentia | Inference on AWS | Amazon's inference line alongside Trainium |
 
@@ -897,6 +897,8 @@ flowchart LR
 - The same GPU at 5,000 tokens per second: about $0.17 per million tokens.
 - Energy: suppose one GPU plus its share of the building draws 1.5 kW while producing 2,000 tokens per second. That is 1,500 joules per second ÷ 2,000 tokens = 0.75 joules per token. A 500-token answer uses about 375 joules, roughly 0.1 watt-hours, about what a 10-watt LED bulb uses in 37 seconds.
 
+> **Definition — LED (light-emitting diode):** A small semiconductor device that glows when current flows through it. An LED bulb gives as much light as an old incandescent bulb for a small fraction of the power, which makes it a handy everyday yardstick for small amounts of energy.
+
 Per-answer energy is small, but billions of answers a day add up (Part VII covers the totals). And because the costs are dominated by how many tokens each GPU-hour produces, every improvement in batching, precision, speculative decoding (Chapter 23) or chip generation flows straight into lower prices. Epoch AI found that the price of reaching a fixed capability level fell between 9 and 900 times per year depending on the benchmark: GPT-4-level performance on one knowledge test went from $37.50 per million tokens in March 2023 to $0.18 by February 2025.
 
 > **Watch out:** "Inference is cheap; training is the expensive part" is only true per query. Across billions of queries, and with reasoning models and agents producing far more tokens per task, inference has become a huge share of AI compute spending, which is why so much 2026 hardware is built just for it.
@@ -945,7 +947,7 @@ Distributed training, Accelerator, Cluster, FLOP (floating-point operation), FLO
 
 3. **[Easy] Training memory budget.** In a spreadsheet, make rows for 8B, 70B and 405B models.
    1. Compute training memory at 16 bytes per parameter (in GB: parameters × 16 ÷ 10^9).
-   2. Divide by 80 (H100) and by 288 (B300 or Rubin) to get the minimum number of GPUs just to hold the state.
+   2. Divide by 80 (H100) and by 288 (B300 or Rubin), rounding up to a whole GPU (in a spreadsheet, `=ROUNDUP(B2/80, 0)`), to get the minimum number of GPUs just to hold the state.
    3. Add columns for ZeRO-1, ZeRO-2 and ZeRO-3 on 64 GPUs using the formulas in Table 37.4 (weights 2 bytes, gradients 2 bytes, optimizer 12 bytes per parameter).
    **What you'll learn:** why memory, not just speed, forces multi-GPU training, and how sharding solves it.
 
@@ -956,26 +958,26 @@ Distributed training, Accelerator, Cluster, FLOP (floating-point operation), FLO
    4. B10 price per GPU-hour (2.50); B11 compute cost `=B9*B10`.
    5. B12 all-in kW per GPU (1.4 for H100-era servers, 1.8 for GB300 or Rubin-class racks); B13 PUE (1.2); B14 facility megawatts `=B6*B12*B13/1000`; B15 energy in MWh `=B14*B8*24`; B16 electricity price per MWh (an assumption, say 70); B17 electricity cost `=B15*B16`.
    6. Check that the Llama 3.1 405B case gives about 68 days, 26.7 million GPU-hours, about $67 million and about 28 MW.
-   7. Now model a `10^27` FLOP run (set B1 and B2 so 6 × N × D = 1e27) on 100,000 Blackwell GPUs at 2.5e15 FLOP/s (BF16) and 40 percent MFU, then switch to FP8 (5e15). How many days, MW and dollars at $5 per GPU-hour?
-   8. Finally, add B18 target days and B19 GPUs needed `=B3/(B18*86400*B4*B5)`. How many Rubin GPUs (17.5e15 FP8, 35 percent MFU) would finish `10^27` FLOP in 90 days, and how many megawatts would they need?
+   7. Now model a `10^27` FLOP run (set B1 and B2 so 6 × N × D = 1e27, or simply type 1e27 over the formula in B3) on 100,000 Blackwell GPUs at 2.5e15 FLOP/s (BF16) and 40 percent MFU, then switch to FP8 (5e15). How many days, MW and dollars at $5 per GPU-hour?
+   8. Finally, add B18 target days and B19 GPUs needed `=B3/(B18*86400*B4*B5)`. How many Rubin GPUs (17.5e15 FP8, 35 percent MFU) would finish `10^27` FLOP in 90 days, and how many megawatts would they need? (Put 17.5e15 in B4, 0.35 in B5 and 90 in B18 first; then type the GPU count from B19 into B6 and read the megawatts in B14.)
    **What you'll learn:** how parameters, data, chips, utilization, power and price combine into the cost of a frontier run, and which inputs matter most.
 
 5. **[Medium] Pipeline bubble calculator.** In a spreadsheet, put the number of stages (2, 4, 8, 16) down column A and microbatches (4, 8, 16, 32, 64, 128) across row 1.
-   1. In each cell compute `=(stages-1)/(microbatches+stages-1)` and format as a percentage.
-   2. Find the smallest number of microbatches that keeps the bubble under 10 percent for 16 stages.
+   1. With stages in A2 to A5 and microbatches in B1 to G1, type `=($A2-1)/(B$1+$A2-1)` in B2, copy it across the grid (the $ signs keep it reading the stages from column A and the microbatches from row 1), and format as percentages.
+   2. Find the smallest number of microbatches that keeps the bubble under 10 percent for 16 stages. None of the columns quite does it (128 gives about 10.5 percent), so add columns with larger values, such as 130, 135 and 140, until you find it.
    3. Draw your own version of Figure 37.7 on paper for 3 stages and 6 microbatches, and count the idle slots to check your formula.
    **What you'll learn:** why pipeline parallelism needs many microbatches and where its idle time comes from.
 
 6. **[Medium] Failures and checkpoints.** In a spreadsheet:
-   1. Compute the time between failures for clusters of 10,000, 50,000, 100,000 and 1,000,000 GPUs, assuming each GPU causes an interruption once every 50,000 hours (close to Llama 3's experience).
-   2. For a 100,000-GPU cluster, rebuild Table 37.8 with your own checkpoint time and restart time, and add a row using Young's formula for the best interval: `=SQRT(2*checkpoint_minutes*MTBF_minutes)`.
+   1. Compute the time between failures for clusters of 10,000, 50,000, 100,000 and 1,000,000 GPUs, assuming each GPU causes an interruption once every 50,000 hours (close to Llama 3's experience). Time between failures in hours = 50,000 ÷ number of GPUs; multiply by 60 for minutes.
+   2. For a 100,000-GPU cluster, rebuild Table 37.8 with your own checkpoint time and restart time. For each checkpoint interval, goodput ≈ 1 − (checkpoint time ÷ interval) − ((interval ÷ 2 + restart time) ÷ minutes between failures), with every time in minutes. Add a row using Young's formula for the best interval: `=SQRT(2*B2*B3)`, where B2 holds the checkpoint time and B3 the minutes between failures (use your own cells).
    3. Estimate goodput if restarts take 10 minutes versus 2 minutes.
    **What you'll learn:** why reliability engineering, fast checkpointing and goodput are frontier skills.
 
 7. **[Medium] Price your own tokens.** Using Table 37.9's approach:
-   1. Set up cells for model size in GB, memory bandwidth in GB/s, KV cache per user in GB, batch size, and dollars per GPU-hour.
-   2. Step time in seconds `=(model_GB + batch*kv_GB)/bandwidth_GBps`; tokens per second per GPU `=batch/step_time`; cost per million tokens `=price/(tokens_per_s*3600)*1000000`.
-   3. Recreate the H200 rows, then try a Rubin GPU (288 GB, about 19,200 GB/s) at $7 per hour. Where does the batch stop fitting in memory?
+   1. Set up cells, with labels in column A: B1 model size in GB (70), B2 memory bandwidth in GB/s (4800), B3 KV cache per user in GB (0.34), B4 batch size (1), and B5 dollars per GPU-hour (4).
+   2. Step time in seconds, in B6: `=(B1+B4*B3)/B2`; tokens per second per GPU, in B7: `=B4/B6`; cost per million tokens, in B8: `=B5/(B7*3600)*1000000`.
+   3. Recreate the H200 rows by changing B4 (1, 8, 32, 64, 128), then try a Rubin GPU (288 GB, about 19,200 GB/s) at $7 per hour. Where does the batch stop fitting in memory (when B1 + B4 × B3 exceeds the GPU's memory)?
    4. Compare your cost per million tokens with a real API price list for a model of similar size, and list three reasons the prices differ.
    **What you'll learn:** how batching, bandwidth and memory capacity set the cost of the tokens you use every day.
 
