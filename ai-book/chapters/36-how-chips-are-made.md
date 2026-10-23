@@ -800,20 +800,20 @@ Semiconductor, Integrated circuit (IC) / chip, Die, Fabless company, Foundry, ID
 3. **[Easy] The thousand-step yield calculator.** In Google Sheets or Excel:
    1. Put per-step success rates in row 1 (B1 to E1): 0.99, 0.999, 0.9999, 0.99999.
    2. Put step counts in column A (A2 to A5): 100, 300, 600, 1000.
-   3. In B2 type `=B$1^$A2` and copy it across the whole grid.
+   3. In B2 type `=B$1^$A2` and copy it across the whole grid (B2 to E5). The $ signs keep every copy pointing at row 1 for the success rate and column A for the step count.
    4. Format the grid as percentages and find the per-step success rate you need for at least 90 percent of chips to survive 1,000 steps.
    **What you'll learn:** why tiny per-step error rates compound into large losses, and why fabs obsess over every step.
 
 4. **[Easy] Lithography resolution by hand.** Use the formula resolution ≈ k1 × wavelength ÷ NA with a calculator.
    1. Compute the resolution for: dry DUV (193 nm, NA 0.93, k1 0.3), immersion DUV (193 nm, NA 1.35, k1 0.27), EUV (13.5 nm, NA 0.33, k1 0.32) and High-NA EUV (13.5 nm, NA 0.55, k1 0.33).
-   2. Rearrange the formula to find what NA you would need to print 5 nm features with 13.5 nm light at k1 = 0.3.
+   2. Rearrange the formula to find what NA you would need to print 5 nm features with 13.5 nm light at k1 = 0.3. (Swap NA and the resolution: NA ≈ k1 × wavelength ÷ resolution.)
    3. Explain in two sentences why that answer pushes the industry toward new tricks rather than just bigger mirrors.
    **What you'll learn:** how wavelength and optics set the limits of chipmaking, and why each generation of lithography is so hard.
 
 5. **[Medium] Dies per wafer and the cost of a giant chip.** Build a small spreadsheet.
-   1. In cells, enter: wafer diameter (300), die area in mm² (814), defect density per cm² (0.1), wafer price (17,000).
-   2. Dies per wafer: `=PI()*(300/2)^2/B2 - PI()*300/SQRT(2*B2)` (adjust the cell names).
-   3. Yield: `=EXP(-(B2/100)*B3)`. Good dies: dies × yield. Cost per good die: wafer price ÷ good dies.
+   1. Put labels in column A and enter: in B1 the wafer diameter (300), in B2 the die area in mm² (814), in B3 the defect density per cm² (0.1), and in B4 the wafer price (17000).
+   2. Dies per wafer, in B5: `=PI()*(300/2)^2/B2 - PI()*300/SQRT(2*B2)`.
+   3. Yield, in B6: `=EXP(-(B2/100)*B3)` (the B2/100 turns mm² into cm²). Good dies, in B7: `=B5*B6`. Cost per good die, in B8: `=B4/B7`.
    4. Repeat for 100 mm², 400 mm² and 858 mm² dies, and for defect densities of 0.05 and 0.2.
    5. Compute "good silicon per wafer" (good dies × die area) for each case and compare.
    **What you'll learn:** why big dies are expensive, why chiplets help, and that silicon is a small part of an AI accelerator's price.
@@ -825,7 +825,7 @@ Semiconductor, Integrated circuit (IC) / chip, Die, Fabless company, Foundry, ID
    **What you'll learn:** why geopolitics and export controls focus on a handful of companies such as ASML, TSMC and SK hynix.
 
 7. **[Medium] Read an export-control threshold.** Use TPP ≈ dense peak trillions of operations per second × bit length.
-   1. Compute TPP for the H100 (about 1,979 dense FP8 TFLOPS), the Vera Rubin GPU (17.5 dense FP8 PFLOPS) and the AMD MI355X (10.1 dense MXFP4 PFLOPS, at 4 bits).
+   1. Compute TPP for the H100 (about 1,979 dense FP8 TFLOPS), the Vera Rubin GPU (17.5 dense FP8 PFLOPS) and the AMD MI355X (10.1 dense MXFP4 PFLOPS, at 4 bits). TFLOPS are already trillions of operations per second; turn PFLOPS into TFLOPS by multiplying by 1,000.
    2. Compare each with the January 2026 threshold of 21,000.
    3. Suppose a chipmaker wanted a new chip just under the line at FP8. What is the maximum dense FP8 TFLOPS it could offer?
    4. Write three sentences on why a regulator might also care about memory bandwidth, not just FLOPS.
