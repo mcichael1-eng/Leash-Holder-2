@@ -151,7 +151,7 @@ Memory for weights = parameters × bytes per parameter. FP32 uses 4 bytes, BF16 
 | 405 billion | 1.6 TB | 810 GB | 405 GB | about 200 GB | Llama 3.1 405B |
 | 1 trillion | 4 TB | 2 TB | 1 TB | 500 GB | |
 | 1.6 trillion total (49 billion active) | 6.4 TB | 3.2 TB | 1.6 TB | 800 GB | DeepSeek-V4-Pro (FP4 experts, FP8 elsewhere) |
-| 2.8 trillion total (104 billion active) | 11.2 TB | 5.6 TB | 2.8 TB | 1.4 TB | Kimi K3 (MXFP4 quantization-aware training) |
+| 2.8 trillion total (104 billion active) | 11.2 TB | 5.6 TB | 2.8 TB | 1.4 TB | Kimi K3 (MXFP4 weights; quantization-aware training from the fine-tuning stage onward, not in pretraining) |
 
 *Table A.11: Weight memory by model size and precision. Compare with GPU memory: H100 80 GB, H200 141 GB, B300 288 GB, NVL72 rack about 20 TB.*
 

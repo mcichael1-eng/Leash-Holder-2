@@ -151,7 +151,9 @@ Blind search is fine for a placemat maze. It collapses on big problems because s
 
 ### A*: search with a sense of direction
 
-In 1968, researchers at the Stanford Research Institute, building a wheeled robot called Shakey, published A* ("A-star"). It is still the textbook way to find shortest paths in games, robots and maps.
+In 1968, researchers at the Stanford Research Institute (SRI), building a wheeled robot called Shakey, published A* ("A-star"). It is still the textbook way to find shortest paths in games, robots and maps.
+
+> **Definition — SRI (SRI International):** An independent non-profit research institute in Menlo Park, California, founded in 1946 as the Stanford Research Institute. Its researchers built Shakey, one of the first mobile robots, and in that project invented A* search and the STRIPS way of describing actions.
 
 > **Definition — Heuristic:** A rule of thumb that estimates how promising an option is, guiding search toward good choices without guaranteeing the best answer on its own.
 
@@ -265,15 +267,15 @@ The check used here, going through each constraint between two variables and del
 
 > **Definition — Backtracking search:** Assigning values one variable at a time, checking the constraints after each choice, and undoing the most recent choice whenever a dead end is reached.
 
-A sudoku is the same kind of problem: 81 variables, domains 1 to 9, and "no repeats in any row, column or box" as the constraints. Propagation alone solves most newspaper puzzles; hard ones need some backtracking. For very large problems, solvers also use local search: start from a complete but flawed schedule and repeatedly change whichever variable is involved in the most broken rules (the "min-conflicts" heuristic). Industrial constraint solvers schedule airline crews, sports leagues, factory lines and computing jobs in data centers, and a close relative, the SAT solver, verifies computer chips (Chapter 54).
+A sudoku is the same kind of problem: 81 variables, domains 1 to 9, and "no repeats in any row, column or box" as the constraints. Propagation alone solves most newspaper puzzles; hard ones need some backtracking. For very large problems, solvers also use local search: start from a complete but flawed schedule and repeatedly change whichever variable is involved in the most broken rules (the "min-conflicts" heuristic). Industrial constraint solvers schedule airline crews, sports leagues, factory lines and computing jobs in data centers, and a close relative, the SAT solver (short for "satisfiability": a program that finds true-or-false values for many yes-or-no variables so that a long logical formula comes out true), verifies computer chips (Chapter 54).
 
-Why do these solvers need clever tricks at all? Because no one knows a fast method that is guaranteed to solve every such problem. Stephen Cook proved in 1971 that the satisfiability problem behind SAT solvers is NP-complete, and Richard Karp's 1972 list of 21 NP-complete problems added classics such as job sequencing, packing a knapsack and finding a route that visits every point exactly once. Checking a proposed answer is quick, but every known general method needs, in its worst cases, time that grows exponentially with the size of the problem. Whether a fast method exists is the famous unsolved "P versus NP" question. Real solvers succeed because real problems are rarely worst cases: propagation, good ordering heuristics and learning from dead ends make most of them easy in practice.
+Why do these solvers need clever tricks at all? Because no one knows a fast method that is guaranteed to solve every such problem. Stephen Cook proved in 1971 that the satisfiability problem behind SAT solvers is NP-complete, and Richard Karp's 1972 list of 21 NP-complete problems added classics such as job sequencing, packing a knapsack and finding a route that visits every point exactly once. Checking a proposed answer is quick, but every known general method needs, in its worst cases, time that grows exponentially with the size of the problem. Whether a fast method exists is the famous unsolved "P versus NP" question (P is the set of problems a computer can solve quickly; NP is the set whose proposed answers it can check quickly; the question is whether the two sets are really the same). Real solvers succeed because real problems are rarely worst cases: propagation, good ordering heuristics and learning from dead ends make most of them easy in practice.
 
 > **Definition — NP-complete:** A class of problems, including SAT and many scheduling and packing puzzles, for which a proposed answer is easy to check but no known method finds answers quickly in every case; a fast method for any one of them would give fast methods for all.
 
 ### Planning with actions: from Shakey to PDDL
 
-Search needs a description of what actions do. For Shakey, the SRI robot that gave us A*, researchers invented a simple and influential way to write one, called STRIPS (1971). Each action is a recipe card listing its preconditions (what must be true before) and its effects (what becomes true or false after). A planner searches for a sequence of cards that turns the starting situation into one where the goal is true.
+Search needs a description of what actions do. For Shakey, the SRI robot that gave us A*, researchers invented a simple and influential way to write one, called STRIPS (the Stanford Research Institute Problem Solver, 1971). Each action is a recipe card listing its preconditions (what must be true before) and its effects (what becomes true or false after). A planner searches for a sequence of cards that turns the starting situation into one where the goal is true.
 
 > **Definition — Classical planning:** Finding a sequence of actions that turns a known starting situation into one that satisfies a goal, where each action is described by its preconditions and effects and the world is fully known and deterministic.
 

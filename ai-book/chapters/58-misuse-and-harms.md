@@ -96,7 +96,7 @@ Chapter 31 named the most dangerous combination.
 
 > **Definition — Data exfiltration:** Getting private data out of a system to an attacker, for example by making an AI agent include it in a link, an image address, an email or a web request.
 
-In 2025, several companies launched browser agents that can act on web pages for you, including Anthropic's Claude for Chrome research preview, OpenAI's Atlas browser and Perplexity's Comet. Each launch acknowledged that prompt injection is an unsolved problem. Anthropic reported that in its own tests, its mitigations reduced the attack success rate from about 24% to about 11%: a real improvement, and still far from zero.
+In 2025, several companies launched browser agents that can act on web pages for you, including Anthropic's Claude for Chrome research preview, OpenAI's Atlas browser and Comet, from the AI search company Perplexity. Each launch acknowledged that prompt injection is an unsolved problem. Anthropic reported that in its own tests, its mitigations reduced the attack success rate from about 24% to about 11%: a real improvement, and still far from zero.
 
 Small rates become large numbers at society's scale. Here is an illustration with invented but plausible assumptions. Suppose a browser agent reads 50 web pages a day for its user, 1 page in 1,000 contains a working injection attempt, and each attempt succeeds 11% of the time:
 
@@ -145,7 +145,11 @@ Espionage steals information. The outcome security planners fear most is differe
 
 > **Definition — Critical infrastructure:** The physical and digital systems a society depends on to function, such as electricity grids, water treatment, food supply, transport, hospitals and payment networks, whose failure would cause widespread harm.
 
-The same abilities serve defense, and in 2026 the defensive story became just as dramatic. On April 7, 2026, Anthropic announced Claude Mythos Preview together with Project Glasswing. According to Anthropic, the model found thousands of high-severity vulnerabilities across every major operating system and web browser, including a flaw in OpenBSD that had gone unnoticed for 27 years. On the CyberGym vulnerability benchmark it scored 83.1%, against 66.6% for Claude Opus 4.6. Anthropic said it did not plan to make Mythos Preview generally available. Instead it gave access to defenders: partners including AWS, Apple, Broadcom, Cisco, CrowdStrike, Google, JPMorganChase, the Linux Foundation, Microsoft, NVIDIA and Palo Alto Networks, plus more than 40 organizations that maintain critical software, so they could find and fix flaws first. An October 6, 2026 update expanded its Cyber Verification Program for vetted users into three access tiers.
+The same abilities serve defense, and in 2026 the defensive story became just as dramatic. On April 7, 2026, Anthropic announced Claude Mythos Preview together with Project Glasswing. According to Anthropic, the model found thousands of high-severity vulnerabilities across every major operating system and web browser, including a flaw in OpenBSD, a free operating system known for its focus on security, that had gone unnoticed for 27 years. On the CyberGym vulnerability benchmark it scored 83.1%, against 66.6% for Claude Opus 4.6. Anthropic said it did not plan to make Mythos Preview generally available. Instead it gave access to defenders: partners including AWS, Apple, Broadcom, Cisco, CrowdStrike, Google, JPMorganChase, the Linux Foundation, Microsoft, NVIDIA and Palo Alto Networks, plus more than 40 organizations that maintain critical software, so they could find and fix flaws first. An October 6, 2026 update expanded its Cyber Verification Program for vetted users into three access tiers.
+
+> **Definition — NVIDIA:** The American company that designs most of the GPUs (graphics processing units) used to train and run AI models, together with the software and networking equipment that connect them. Chapter 35 covers its chips and its place in the industry.
+
+> **Definition — AWS (Amazon Web Services):** Amazon's cloud-computing business, the largest company renting out computing power, storage and AI services over the internet. It also designs its own AI chips, called Trainium.
 
 > **Definition — Coordinated vulnerability disclosure:** The practice of privately telling a software maker about a vulnerability and giving it time to release a patch before the details are made public, so defenders are not caught out.
 
@@ -243,7 +247,7 @@ The most common harmful use of deepfake technology is not political. Studies of 
 
 The harm is real even when everyone knows the image is fake: humiliation, harassment, fear, damage to reputation and relationships, and lasting distress. Victims have described the experience as a form of sexual abuse, which is how a growing number of laws now treat it.
 
-**The Grok image scandal.** Between December 2025 and January 2026, users of X prompted Grok, the AI chatbot built into the platform, to alter photos of real people, including minors, into sexualized images, often in public replies under the original photos. The episode drew worldwide criticism, led to access bans and triggered investigations in multiple jurisdictions. It showed how quickly a feature shipped without strong safeguards, on a platform with hundreds of millions of users, can turn into mass abuse.
+**The Grok image scandal.** Between December 2025 and January 2026, users of X (the social network formerly called Twitter) prompted Grok, the AI chatbot built into the platform, to alter photos of real people, including minors, into sexualized images, often in public replies under the original photos. The episode drew worldwide criticism, led to access bans and triggered investigations in multiple jurisdictions. It showed how quickly a feature shipped without strong safeguards, on a platform with hundreds of millions of users, can turn into mass abuse.
 
 **AI-generated child sexual abuse material.** Material depicting the sexual abuse of children is illegal in nearly every country, and in many jurisdictions this explicitly includes AI-generated material.
 
@@ -257,7 +261,7 @@ The response combines technology, platforms and law. Responsible image generator
 
 The law, as of October 2026:
 - **United States.** The **TAKE IT DOWN Act**, signed on May 19, 2025, made it a federal crime to publish non-consensual intimate imagery, including AI deepfakes, and requires platforms to remove reported NCII within 48 hours. The Federal Trade Commission can enforce the platform duties from May 19, 2026, and the first conviction was reported in April 2026. Civil-liberties groups have warned that the 48-hour rule could encourage over-removal of lawful content and put pressure on encrypted services.
-- **European Union.** The 2026 Digital Omnibus amended the EU AI Act to prohibit AI systems that generate non-consensual intimate images of identifiable people, and AI-generated CSAM. As of October 2026 these bans are scheduled to apply from December 2, 2026.
+- **European Union.** The 2026 Digital Omnibus, a package of changes to EU digital laws, amended the EU AI Act, the European Union's main AI law (Chapter 59 covers both), to prohibit AI systems that generate non-consensual intimate images of identifiable people, and AI-generated CSAM. As of October 2026 these bans are scheduled to apply from December 2, 2026.
 - Many other countries and US states have passed their own deepfake and NCII laws; Chapter 59 covers them.
 
 ```mermaid
@@ -324,6 +328,8 @@ flowchart LR
 ```
 *Figure 58.5: How content credentials travel with a file, and where they get lost. Missing credentials mean "unknown", not "fake".*
 
+Two words in the figure need a gloss. To **sign** a file is to attach a digital seal made with a secret key that only the camera, app or company holds; anyone can check the seal, and changing even one pixel without recording the change breaks it. To **re-encode** a file is to save it again in a new format or size, which many apps and upload systems do automatically, and which usually drops the credentials along the way.
+
 > **Analogy:** Content credentials work like the chain of custody for evidence in a criminal case. Every hand the item passes through is recorded, so a court can trust it. If the chain is broken, the evidence is not proven fake, but it can no longer prove itself.
 
 Laws are starting to require labels. As of October 2026, China's rules on labeling AI-generated content, which took effect on September 1, 2025, require visible labels plus hidden metadata, according to published summaries of the rules. In the EU, the AI Act's Article 50 transparency duties, including marking AI-generated content in a machine-readable way, apply from August 2, 2026, with a grace period to December 2, 2026 for generative systems already on the market, as of October 2026.
@@ -356,7 +362,7 @@ Models learn patterns from data, and data reflects the world, including its unfa
 
 > **Definition — Proxy variable:** A piece of data that stands in for a protected characteristic even when that characteristic is removed, such as a zip code standing in for race or a women's college standing in for gender. Deleting the sensitive column does not remove bias when proxies remain.
 
-**Risk scores.** In 2016, ProPublica analyzed COMPAS, a tool used in some US courts to estimate whether a defendant would reoffend. It found that Black defendants who did not go on to reoffend were nearly twice as likely as white defendants to have been labeled higher risk. The tool's maker replied that its scores were equally accurate for both groups in a different sense: among people given the same score, the share who reoffended was similar regardless of race. Both claims were true. That puzzle led to one of the most important results in the field.
+**Risk scores.** In 2016, the US investigative newsroom ProPublica analyzed COMPAS, a tool used in some US courts to estimate whether a defendant would reoffend. It found that Black defendants who did not go on to reoffend were nearly twice as likely as white defendants to have been labeled higher risk. The tool's maker replied that its scores were equally accurate for both groups in a different sense: among people given the same score, the share who reoffended was similar regardless of race. Both claims were true. That puzzle led to one of the most important results in the field.
 
 ### Why "fair" has several meanings
 
@@ -366,7 +372,7 @@ There are several reasonable mathematical definitions of fairness. Here are thre
 
 > **Definition — Demographic parity:** A fairness definition requiring that each group is selected (approved, hired, flagged) at the same rate.
 
-> **Definition — Equal false positive rates:** A fairness definition requiring that people who do not have the predicted outcome are wrongly flagged at the same rate in every group. It is part of a stricter standard called equalized odds.
+> **Definition — Equal false positive rates:** A fairness definition requiring that people who do not have the predicted outcome are wrongly flagged at the same rate in every group. It is part of a stricter standard called equalized odds, which also requires equal false negative rates (the share of people with the outcome whom the tool misses).
 
 > **Definition — Predictive parity:** A fairness definition requiring that a positive prediction means the same thing for every group: for example, among people labeled "high risk", the same share actually reoffend.
 
@@ -397,7 +403,7 @@ Could we fix it? If we tuned the tool so both groups had a 10% false positive ra
 
 ### A prior question: can it be predicted at all?
 
-Before asking whether a prediction is fair, ask whether it works. The computer scientist Arvind Narayanan, in talks and later in the 2024 book *AI Snake Oil* written with Sayash Kapoor, separates three uses of AI that are sold under one name: perception (recognizing faces, transcribing speech), where progress has been enormous; automating judgment (flagging spam, for example), where it has been moderate; and predicting social outcomes (who will succeed in a job, which defendant will reoffend), where it has been far weaker than the marketing suggests. A study published in PNAS in 2020 put the third category to a direct test. In the Fragile Families Challenge, 160 teams received 12,942 pieces of information about each of 4,242 families, collected by social scientists from a child's birth to age 9, and tried to predict six outcomes at age 15, including the child's grade point average and whether the household had been evicted. The best entries explained only about a fifth of the variation for the two most predictable outcomes and about a twentieth for the other four, only slightly better than a simple benchmark built from four variables a domain expert picked. So when a product claims to forecast a person's future, ask to see its accuracy against such a simple baseline (Chapter 9) before worrying about anything else.
+Before asking whether a prediction is fair, ask whether it works. The computer scientist Arvind Narayanan, in talks and later in the 2024 book *AI Snake Oil* written with Sayash Kapoor, separates three uses of AI that are sold under one name: perception (recognizing faces, transcribing speech), where progress has been enormous; automating judgment (flagging spam, for example), where it has been moderate; and predicting social outcomes (who will succeed in a job, which defendant will reoffend), where it has been far weaker than the marketing suggests. A study published in 2020 in PNAS (Proceedings of the National Academy of Sciences, a leading US science journal) put the third category to a direct test. In the Fragile Families Challenge, 160 teams received 12,942 pieces of information about each of 4,242 families, collected by social scientists from a child's birth to age 9, and tried to predict six outcomes at age 15, including the child's grade point average and whether the household had been evicted. The best entries explained only about a fifth of the variation for the two most predictable outcomes (an R² of about 0.2, in the terms of Chapter 9: the predictions captured only a fifth of the differences between families) and about a twentieth for the other four, only slightly better than a simple benchmark built from four variables a domain expert picked. So when a product claims to forecast a person's future, ask to see its accuracy against such a simple baseline (Chapter 9) before worrying about anything else.
 
 > **Definition — AI snake oil:** A label, popularized by Arvind Narayanan and Sayash Kapoor, for AI products that do not and perhaps cannot work as advertised, most often tools claiming to predict individual social outcomes such as job success or future crime.
 

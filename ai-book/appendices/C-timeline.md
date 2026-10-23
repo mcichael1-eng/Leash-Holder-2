@@ -337,7 +337,7 @@ timeline
 | Mar 20, 2026 | White House framework urges federal preemption of state AI rules | Federal–state battle over AI regulation |
 | Mar 24, 2026 | OpenAI announces shutdown of the Sora app (the app closed on April 26; developer access ended on September 24) | Not every AI consumer product survives |
 | Mar 25, 2026 | ARC-AGI-3 launches; frontier AI scores 0.51% vs 100% for humans | A new test of learning in unfamiliar environments |
-| Apr 2, 2026 | Google's Gemma 4 open models | Strong small open-weight models |
+| Mar 31, 2026 | Google's Gemma 4 open models (Apache 2.0) | Strong small open-weight models |
 | Apr 6, 2026 | Anthropic–Google–Broadcom agreement for multiple gigawatts of TPUs from 2027 | Long-term compute for a frontier lab |
 | Apr 7, 2026 | Claude Mythos Preview and Project Glasswing | Restricted model finds thousands of high-severity vulnerabilities, per Anthropic |
 | Apr 16, 2026 | Claude Opus 4.7; Physical Intelligence's π0.7 | Monthly frontier releases; steerable robot models |

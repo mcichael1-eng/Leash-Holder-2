@@ -33,6 +33,8 @@ The part you see and touch is the frontend. It runs on your phone or in your bro
 
 > **Definition — Frontend:** The part of an app that runs on your device and that you see and interact with: buttons, text, layout. On the web it is usually written in HTML, CSS and JavaScript.
 
+> **Definition — HTML and CSS:** The two plain-text languages that describe a web page. HTML (HyperText Markup Language) says what is on the page, such as headings, paragraphs, buttons and images; CSS (Cascading Style Sheets) says how it looks, such as colors, fonts and layout. JavaScript (Chapter 3) is what makes the page react when you click or type.
+
 The part you never see is the backend. It runs on a server in a data center and does the work that cannot or should not happen on your device, such as checking your password or fetching forecasts from a weather service.
 
 > **Definition — Backend:** The behind-the-scenes part of an app that runs on servers, handling logic, security checks and communication with databases and other services.
@@ -288,7 +290,7 @@ Three features make modern coding agents much safer to use.
 
 And every project can carry standing instructions for agents, as Chapter 28 described.
 
-> **Definition — Instruction file (AGENTS.md or CLAUDE.md):** A plain-text file at the top of a project that coding agents read automatically before working: how to run the tests, coding conventions, what never to touch. It is a README written for agents.
+> **Definition — Instruction file (AGENTS.md or CLAUDE.md):** A plain-text file at the top of a project that coding agents read automatically before working: how to run the tests, coding conventions, what never to touch. It is like a README (the welcome-and-instructions file most projects keep for human readers), but written for agents.
 
 > **Watch out:** Unless the model runs on your own machine, everything a coding agent reads goes to the model provider: each file it opens and the output of each command it runs become part of the next request. Before pointing an agent at work code, check what your plan's data terms say about retention and training (business and API terms are usually stricter than consumer plans, Chapter 25), keep passwords and keys out of files the agent can read, and use the permission settings to block folders it has no reason to open. A local model (Chapter 30) is the option when code must never leave the building.
 
@@ -371,12 +373,12 @@ Coding agents became the fastest-moving market in AI during 2025 and 2026. Produ
 | Cursor | Anysphere | Desktop editor and CLI | Cloud agents that run in parallel for hours, Bugbot code review, its own Composer models plus models from several labs |
 | GitHub Copilot | GitHub (Microsoft) | VS Code and other editors, GitHub website, Copilot CLI | Agent mode, a cloud agent you assign issues to (Copilot, Claude or Codex), PR review; plans from Free to Enterprise |
 | Antigravity | Google | Desktop app, CLI, IDE, SDK | Manages multiple local agents, browser-in-the-loop testing, Gemini 3.8 Flash, and Gemini 4 Argon for Google AI Pro and Ultra subscribers; available at no charge to individual developers |
-| Devin and Windsurf | Cognition | Web, desktop, editor | Devin pitched as an autonomous software engineer; own SWE-series models |
+| Devin and Windsurf | Cognition | Web, desktop, editor | Devin pitched as an autonomous software engineer; own SWE-series models (SWE is short for software engineering) |
 | Open-source agents | Community | Terminal or editor | Cline, Aider and others let you plug in any model, including local ones (Chapter 30) |
 
 Other notable tools include Gemini CLI, Amp, Kiro, Zed and JetBrains Junie. Most now support the same building blocks: instruction files, MCP connections to outside tools, skills, hooks (small scripts that run automatically, for example to block dangerous commands) and sub-agents, all explained in Chapter 28.
 
-The money flowing in shows real use, although every figure here is company-reported or press-reported. Anthropic said in February 2026 that Claude Code's run-rate revenue had passed $2.5 billion, and Cognition said it crossed $1 billion in annualized run-rate revenue in September 2026. GitHub's own plans in late 2026 ran from a free tier (2,000 completions a month) through Pro at $10, Pro+ at $39 and Max at $100 per month, with Business at $19 and Enterprise at $39 per user per month.
+The money flowing in shows real use, although every figure here is company-reported or press-reported. Anthropic said in February 2026 that Claude Code's run-rate revenue (recent revenue multiplied up to a full year, such as one month's revenue × 12) had passed $2.5 billion, and Cognition said it crossed $1 billion in annualized run-rate revenue in September 2026. GitHub's own plans in late 2026 ran from a free tier (2,000 completions a month) through Pro at $10, Pro+ at $39 and Max at $100 per month, with Business at $19 and Enterprise at $39 per user per month.
 
 **How to choose.** For a beginner the differences matter less than the habits you bring. Ask:
 
@@ -391,7 +393,7 @@ The money flowing in shows real use, although every figure here is company-repor
 
 ## Vibe coding versus agentic engineering
 
-On February 2, 2025, the AI researcher Andrej Karpathy described a new way of building software that he called vibe coding: you "fully give in to the vibes, embrace exponentials, and forget that the code even exists". You describe what you want, accept whatever the AI writes without reading it, paste error messages back in when something breaks, and keep going until it seems to work. The phrase spread so fast that Collins named "vibe coding" its Word of the Year for 2025.
+On February 2, 2025, the AI researcher Andrej Karpathy described a new way of building software that he called vibe coding: you "fully give in to the vibes, embrace exponentials, and forget that the code even exists". You describe what you want, accept whatever the AI writes without reading it, paste error messages back in when something breaks, and keep going until it seems to work. The phrase spread so fast that Collins, the dictionary publisher, named "vibe coding" its Word of the Year for 2025.
 
 > **Definition — Vibe coding:** Building software by describing what you want in plain language and accepting AI-written code without really reading or understanding it, judging only whether the result seems to work. Coined by Andrej Karpathy in February 2025.
 
@@ -402,10 +404,10 @@ Vibe coding is genuinely wonderful for some things. A teacher can build a quiz g
 The trouble starts when vibe-coded software leaves the playground. The evidence collected through 2025 is consistent:
 
 - **Exposed data.** A May 2025 review of 1,645 apps built with the app builder Lovable found that 170 had a flaw exposing personal data.
-- **Security not keeping up.** Veracode reported in October 2025 that the security of AI-generated code had not improved as its functionality had.
-- **More issues per change.** One industry analysis (CodeRabbit, December 2025) found that pull requests co-written by AI had about 1.7 times more major issues and 2.74 times more security vulnerabilities than human-only ones.
+- **Security not keeping up.** Veracode, a company that tests software for security flaws, reported in October 2025 that the security of AI-generated code had not improved as its functionality had.
+- **More issues per change.** One industry analysis (by CodeRabbit, a company that sells AI code review, December 2025) found that pull requests co-written by AI had about 1.7 times more major issues and 2.74 times more security vulnerabilities than human-only ones.
 - **Destructive mistakes.** In July 2025, Replit's agent deleted a user's production database during a declared code freeze, a story that became the standard cautionary tale.
-- **Packages that do not exist.** A study for the 2025 USENIX Security Symposium had 16 code-writing models produce 576,000 code samples and found that, on average, at least 5.2% of the packages suggested by commercial models and 21.7% of those suggested by open models did not exist: 205,474 invented names in all. The authors call this a new threat to the software supply chain, because an attacker can publish malicious code under a name that models often invent. Before installing anything an AI suggests, check that the package really exists and is widely used.
+- **Packages that do not exist.** A study for the 2025 USENIX Security Symposium (a leading academic conference on computer security, run by the computing association USENIX) had 16 code-writing models produce 576,000 code samples and found that, on average, at least 5.2% of the packages suggested by commercial models and 21.7% of those suggested by open models did not exist: 205,474 invented names in all. The authors call this a new threat to the software supply chain, because an attacker can publish malicious code under a name that models often invent. Before installing anything an AI suggests, check that the package really exists and is widely used.
 
 > **Definition — Package hallucination:** When an AI coding tool recommends or imports a software package (a reusable bundle of code) that does not exist. Anyone who later publishes a package under that invented name can get their code installed by people who trust the suggestion.
 
@@ -599,7 +601,7 @@ You want every receipt email logged in a Google Sheet with vendor, date, total a
 3. **Action:** append a row to the "Expenses" sheet.
 4. **Error path:** if the AI step fails or the total is missing, send yourself a notification.
 
-What does the AI part cost? Say 100 receipts a month, each about 1,000 tokens of email in and 100 tokens of JSON out, on a small model like Claude Haiku 5.5 at $0.10 per million input tokens and $0.50 per million output tokens (late-2026 prices). Input: 100,000 tokens × $0.10 per million = $0.01. Output: 10,000 tokens × $0.50 per million = $0.005. Total: **about 1.5 cents a month.** The automation platform's subscription will cost far more than the AI; the model is almost free at this scale.
+What does the AI part cost? Say 100 receipts a month, each about 1,000 tokens of email in and 100 tokens of JSON out, on a small model like Claude Haiku 5.5 at $0.10 per million input tokens and $0.50 per million output tokens (late-2026 prices). Input: 100 × 1,000 = 100,000 tokens, which is a tenth of a million, so 100,000 tokens × $0.10 per million = $0.01. Output: 100 × 100 = 10,000 tokens × $0.50 per million = $0.005. Total: **about 1.5 cents a month.** The automation platform's subscription will cost far more than the AI; the model is almost free at this scale.
 
 ```mermaid
 flowchart LR
@@ -648,7 +650,7 @@ The builders now include security scanners and prompt you to set these rules, bu
 
 **Costs at scale.** Builders typically charge a monthly subscription plus usage credits for each AI edit, and hosting and database costs grow with users. A tool that costs a few dollars a month for you alone can cost much more for thousands of users.
 
-**The last 20%.** The first 80% of an app arrives astonishingly fast. The last 20% (edge cases, performance, unusual integrations, fixing a bug the agent keeps reintroducing) can take longer than everything else, and this is where non-programmers most often get stuck.
+**The last 20%.** The first 80% of an app arrives astonishingly fast. The last 20% (edge cases, meaning the rare and unusual situations the app must still handle; performance; unusual integrations; fixing a bug the agent keeps reintroducing) can take longer than everything else, and this is where non-programmers most often get stuck.
 
 **The hand-off.** If the app succeeds, engineers will eventually take it over. Code exported to GitHub, a written spec, and a list of known problems make that hand-off cheap. A tangle nobody understands makes it expensive, and a whole small industry of "rescue" services has grown up to harden vibe-coded apps for production.
 
@@ -694,7 +696,7 @@ If you cannot code, you can still build. Automation platforms like Zapier, Make 
 
 ## Key terms
 
-Source code, frontend, backend, database, hosting, dependency, framework, version control, Git, repository, commit, diff, branch, merge, GitHub, push and pull, pull request, code review, automated test, unit test, test suite, regression, localhost, deploy, production, CI (continuous integration), terminal, IDE, code completion, agent mode, coding agent, background agent, harness, plan mode, permission prompt, sandbox, instruction file, reward hacking, vibe coding, prototype, package hallucination, security vulnerability, technical debt, agentic engineering, spec, randomized controlled trial, personal data, authentication, authorization, no-code, automation platform, trigger, action, workflow, webhook, AI step, AI agent node, self-hosting, AI app builder, access rules, vendor lock-in.
+Source code, frontend, HTML and CSS, backend, database, hosting, dependency, framework, version control, Git, repository, commit, diff, branch, merge, GitHub, push and pull, pull request, code review, automated test, unit test, test suite, regression, localhost, deploy, production, CI (continuous integration), terminal, IDE, code completion, agent mode, coding agent, background agent, harness, plan mode, permission prompt, sandbox, instruction file, reward hacking, vibe coding, prototype, package hallucination, security vulnerability, technical debt, agentic engineering, spec, randomized controlled trial, personal data, authentication, authorization, no-code, automation platform, trigger, action, workflow, webhook, AI step, AI agent node, self-hosting, AI app builder, access rules, vendor lock-in.
 
 ## Exercises
 
@@ -726,7 +728,7 @@ Source code, frontend, backend, database, hosting, dependency, framework, versio
    5. Test with three fake inputs, including one deliberately weird one, and read the run history.
    **What you'll learn:** triggers, actions, AI steps and structured output, and that automations need error handling because they fail silently.
 
-6. **[Easy] See a webhook with your own eyes.** Open webhook.site and copy your unique URL. In a new browser tab, paste the URL followed by `?task=laundry&done=yes` and press Enter. Return to webhook.site and inspect the request: find your two values, the time, and the "method" (GET). Then, if your automation platform offers a "catch webhook" trigger, point a free online form tool at it and submit the form.
+6. **[Easy] See a webhook with your own eyes.** Open webhook.site and copy your unique URL. In a new browser tab, paste the URL followed by `?task=laundry&done=yes` and press Enter. Return to webhook.site and inspect the request: find your two values, the time, and the "method" (GET, the kind of request a browser sends when it simply asks for a page; see Chapter 26). Then, if your automation platform offers a "catch webhook" trigger, point a free online form tool at it and submit the form.
    **What you'll learn:** a webhook is simply an app sending a small message to a URL the moment something happens.
 
 7. **[Medium] Have a coding agent build a tiny web page.** Use Claude Code, Codex (including the version inside ChatGPT), Cursor or Antigravity; web-based versions need no installation.
@@ -739,11 +741,11 @@ Source code, frontend, backend, database, hosting, dependency, framework, versio
 
 8. **[Challenge] Break it, then watch the fix.** Continue from Exercise 7.
    1. Ask the agent to add a feature that splits the cost of a group book order, with tests (for example: $60 of books plus $5 shipping split 5 ways should be $13.00).
-   2. Once the tests pass, edit the code yourself (or ask the agent to) so the shipping default becomes $7. Run the tests and read the failure message.
+   2. Once the tests pass, edit the code yourself (or ask the agent to) so the shipping default becomes $7. Run the tests (or ask the agent to run them) and read the failure message.
    3. Ask the agent to fix the bug. Review its diff: did it fix the code, or did it change the test? If it changed the test, ask why, and decide who was right.
    **What you'll learn:** how tests catch regressions, how to read a failure, and how to spot reward hacking in a pull request.
 
-9. **[Challenge] Your own mini METR study.** Pick 8 small, similar tasks from your real work (writing a formula, cleaning a list, drafting a short script or document). Before starting, predict how much faster AI will make you. Flip a coin for each task to decide "AI allowed" or "no AI". Time each task with a stopwatch and rate the quality of the result from 1 to 5 the next day, without looking at which group it was in. Compare average time and quality per group with your prediction.
+9. **[Challenge] Your own mini METR study.** Pick 8 small, similar tasks from your real work (writing a formula, cleaning a list, drafting a short script or document). Before starting, predict how much faster AI will make you. Flip a coin for each task to decide "AI allowed" or "no AI". Time each task with a stopwatch and rate the quality of the result from 1 to 5 the next day, without looking at which group it was in. Compare average time and quality per group with your prediction. To turn the times into a percentage, divide the difference between the two average times by the no-AI average: for example, 20 minutes without AI and 16 minutes with AI is 4 ÷ 20 = 20% faster.
    **What you'll learn:** why randomization matters, and how your feeling of speed compares with measured speed.
 
 10. **[Medium] Traffic-light audit.** List five tools you would like to build. For each, answer the three questions from this chapter (who gets hurt, whose data, can it be undone) and assign green, yellow or red. For one yellow item, write the three checks you would ask a technical reviewer to make before launch.
@@ -791,7 +793,7 @@ Source code, frontend, backend, database, hosting, dependency, framework, versio
 - **Anthropic, "Building effective agents" (December 2024), at anthropic.com/engineering.** A clear, influential guide to agents versus workflows that underlies how coding agents are designed.
 - **Pro Git by Scott Chacon and Ben Straub (free at git-scm.com/book).** The standard, readable book on Git; the first three chapters are all a beginner needs.
 - **GitHub Skills (skills.github.com).** Free, hands-on courses that walk you through repositories, branches and pull requests inside GitHub itself.
-- **The Missing Semester of Your CS Education (MIT, missing.csail.mit.edu).** Short lectures on the terminal, Git and everyday programmer tools that nobody else teaches.
+- **The Missing Semester of Your CS Education (MIT, missing.csail.mit.edu).** CS stands for computer science. Short lectures on the terminal, Git and everyday programmer tools that nobody else teaches.
 - **Claude Code and OpenAI Codex documentation (code.claude.com/docs and developers.openai.com).** The official guides to coding agents, including instruction files, plan mode, permissions and best practices.
 - **Simon Willison's blog (simonwillison.net).** A long-running, practical and skeptical record of building with AI tools, including vibe coding and prompt-injection risks.
 - **OWASP Top 10 for LLM Applications (genai.owasp.org).** The standard list of security risks for AI-powered apps and automations; essential before anything leaves the green zone.

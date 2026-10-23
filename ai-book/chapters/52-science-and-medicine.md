@@ -98,7 +98,7 @@ Since 1994, a competition called CASP has tested prediction methods every two ye
 
 ### AlphaFold 2: how it works
 
-At CASP14 in 2020, Google DeepMind's AlphaFold 2 achieved a median score of about 92 out of 100 on the competition's main accuracy measure, roughly the level of agreement between two lab measurements of the same protein. The organizers declared the problem largely solved for single protein chains.
+At CASP14 (the competition's 14th round) in 2020, Google DeepMind's AlphaFold 2 achieved a median score of about 92 out of 100 on the competition's main accuracy measure, roughly the level of agreement between two lab measurements of the same protein. The organizers declared the problem largely solved for single protein chains.
 
 The key insight comes from evolution. Proteins that do the same job in humans, mice, fish and yeast have similar but not identical sequences. Look at many of these relatives side by side and patterns appear. If two positions in the chain always change together, they are probably touching in the folded shape.
 
@@ -114,7 +114,7 @@ The key insight comes from evolution. Proteins that do the same job in humans, m
          when 3 flips to E, 9 flips to K. They co-evolve,
          so they probably sit side by side in the 3D shape.
 ```
-*Figure 52.3: Co-evolution in a multiple sequence alignment. Positions 3 and 9 swap together across species, a clue that they touch in the folded protein. AlphaFold learns to read thousands of such clues at once.*
+*Figure 52.3: Co-evolution in a multiple sequence alignment. K and E are amino acids with opposite electric charges, which attract each other. Positions 3 and 9 swap together across species, a clue that they touch in the folded protein. AlphaFold learns to read thousands of such clues at once.*
 
 > **Definition — Multiple sequence alignment (MSA):** A table lining up the sequences of related proteins from many species, position by position, so that conserved positions and positions that change together can be spotted.
 
@@ -135,7 +135,7 @@ flowchart LR
 *Figure 52.4: The AlphaFold 2 pipeline. The core network, the Evoformer, uses attention to reason jointly about the evolutionary alignment and about which pairs of amino acids are close in space.*
 
 1. **Gather relatives.** Search large sequence databases for related proteins and line them up into a multiple sequence alignment. Also look for any similar structures already in the PDB.
-2. **Reason about pairs.** The Evoformer, a Transformer-style network (Chapter 15), repeatedly passes information between two representations: the alignment, and a "pair map" that estimates, for every pair of amino acids, how close they are and how they are oriented.
+2. **Reason about pairs.** The Evoformer, a Transformer-style network (Chapter 15), repeatedly passes information between two representations: the alignment, and a "pair map" that estimates, for every pair of amino acids, how close they are and how they are oriented. (Biologists call each amino acid in a chain a residue, the word used in Figure 52.4.)
 3. **Build the shape.** A structure module turns the pair map into 3D coordinates for every atom, treating each amino acid as a small rigid piece that it rotates and moves into place.
 4. **Recycle.** The draft structure is fed back through the network a few times, refining it.
 5. **Report confidence.** For each amino acid, AlphaFold outputs a confidence score from 0 to 100, and for each pair of regions, an estimate of how sure it is about their relative position.
@@ -150,7 +150,7 @@ flowchart LR
 
 ### The AlphaFold Database and the Nobel Prize
 
-In 2021 DeepMind and the European Bioinformatics Institute (EMBL-EBI) opened the AlphaFold Protein Structure Database, free to everyone, starting with nearly every protein in the human body. In 2022 they expanded it to over 200 million predictions, covering nearly every catalogued protein known to science. As of October 2026 the database describes over 260 million structure predictions, and that month it added AI-mined links from individual amino acids and mutations to the research papers that discuss them.
+In 2021 DeepMind and the European Bioinformatics Institute (EMBL-EBI, part of the European Molecular Biology Laboratory, an intergovernmental research organization) opened the AlphaFold Protein Structure Database, free to everyone, starting with nearly every protein in the human body. In 2022 they expanded it to over 200 million predictions, covering nearly every catalogued protein known to science. As of October 2026 the database describes over 260 million structure predictions, and that month it added AI-mined links from individual amino acids and mutations to the research papers that discuss them.
 
 The effect on everyday biology was large. A graduate student who once spent a year trying to crystallize a protein can now look up a predicted structure in seconds, then use lab time to test a specific idea about how it works. In 2024 the Nobel Prize in Chemistry went half to David Baker for computational protein design and half jointly to Demis Hassabis and John Jumper of Google DeepMind for protein structure prediction. (The same year, the Physics prize went to John Hopfield and Geoffrey Hinton for foundational work on neural networks.)
 
@@ -158,7 +158,7 @@ The effect on everyday biology was large. A graduate student who once spent a ye
 
 ### AlphaFold 3 and the limits
 
-AlphaFold 3, published in May 2024, predicts how proteins fit together with DNA, RNA, ions and small molecules such as drugs. It replaced the structure module with a diffusion model (Chapter 16) that starts from a cloud of randomly placed atoms and refines it into a structure. Researchers can use it through the free AlphaFold Server for non-commercial work, and DeepMind released the code for academic use in late 2024.
+AlphaFold 3, published in May 2024, predicts how proteins fit together with DNA, RNA (a close chemical cousin of DNA that carries working copies of genetic instructions around the cell), ions (electrically charged atoms) and small molecules such as drugs. It replaced the structure module with a diffusion model (Chapter 16) that starts from a cloud of randomly placed atoms and refines it into a structure. Researchers can use it through the free AlphaFold Server for non-commercial work, and DeepMind released the code for academic use in late 2024.
 
 > **Definition — Ligand:** A small molecule, such as a drug, hormone or metal ion, that binds to a specific site on a protein. Predicting how a candidate drug sits in its target's pocket is central to drug design.
 
@@ -213,7 +213,7 @@ Another approach treats protein sequences like text. Just as a chatbot learns gr
 
 The startup EvolutionaryScale's ESM3 model, announced in 2024, was trained on sequences, structures and functions together. Its developers used it to generate a new green fluorescent protein, which they called esmGFP, that glows in the lab yet shares only about 58 percent of its sequence with the closest known natural fluorescent protein. The company estimated the gap would have taken nature over 500 million years of evolution to cross.
 
-> **Watch out:** Tools that design helpful proteins could in principle help design harmful ones. In a 2025 *Science* paper, a Microsoft-led team reported that AI-redesigned versions of known toxins could slip past the screening software that DNA-synthesis companies use to block dangerous orders, and the team worked with those companies to patch the screens before publishing. Biosecurity screening for AI-designed sequences is an active area (Chapter 58 covers biological misuse).
+> **Watch out:** Tools that design helpful proteins could in principle help design harmful ones. In a 2025 *Science* paper, a Microsoft-led team reported that AI-redesigned versions of known toxins could slip past the screening software that DNA-synthesis companies (firms that manufacture custom DNA to order) use to block dangerous orders, and the team worked with those companies to patch the screens before publishing. Biosecurity screening for AI-designed sequences is an active area (Chapter 58 covers biological misuse).
 
 ## Genomics: reading the code of life
 
@@ -241,11 +241,13 @@ Every person carries millions of small differences from the reference genome. Mo
 
 **Variant-effect prediction: AlphaMissense (2023).** Google DeepMind adapted AlphaFold's ideas to ask whether a missense variant is likely harmful. It scored all of about 71 million possible single-amino-acid changes in human proteins and classified 89 percent of them as likely harmful or likely benign. Human experts had confirmed the effect of only about 0.1 percent of them. These are predictions to prioritize, not diagnoses: a doctor still needs other evidence.
 
-**DNA language models: Evo 2 (2025).** The Arc Institute, with NVIDIA, trained Evo 2 on DNA itself, roughly 9 trillion letters from more than 100,000 species across the tree of life, according to its developers. Like a language model reading text, it learns which DNA sequences are "grammatical" in nature, and it can read up to about a million letters at once. It can score whether a mutation looks damaging and generate new DNA sequences.
+**DNA language models: Evo 2 (2025).** The Arc Institute, a nonprofit biomedical research institute in California, with the chip company NVIDIA, trained Evo 2 on DNA itself, roughly 9 trillion letters from more than 100,000 species across the tree of life, according to its developers. Like a language model reading text, it learns which DNA sequences are "grammatical" in nature, and it can read up to about a million letters at once. It can score whether a mutation looks damaging and generate new DNA sequences.
+
+> **Definition — NVIDIA:** The American company that designs most of the chips used to train and run AI models, the graphics processing units (GPUs) introduced in Chapter 1, along with the software and networking that tie them together. Chapter 35 tells its story.
 
 > **Definition — DNA language model:** A model trained to predict DNA letters from their surroundings across many genomes, so it learns which sequences are biologically plausible and can estimate the effect of changes.
 
-**Regulatory-code models: AlphaGenome (2025).** Google DeepMind's AlphaGenome reads up to a million DNA letters and predicts thousands of molecular measurements at once, such as how strongly nearby genes are expressed in different tissues and how their messages are spliced. That lets it estimate what a variant in the non-coding "dark matter" of the genome might do, which earlier tools largely could not. In September 2026 DeepMind released AlphaGenome Atlas, precomputed predictions for about 9 billion possible single-letter DNA changes in the human genome, free for academic research and, the company stresses, not validated for clinical use.
+**Regulatory-code models: AlphaGenome (2025).** Google DeepMind's AlphaGenome reads up to a million DNA letters and predicts thousands of molecular measurements at once, such as how strongly nearby genes are expressed (switched on) in different tissues and how their messages are spliced (cut and rejoined before the cell uses them to build a protein). That lets it estimate what a variant in the non-coding "dark matter" of the genome might do, which earlier tools largely could not. In September 2026 DeepMind released AlphaGenome Atlas, precomputed predictions for about 9 billion possible single-letter DNA changes in the human genome, free for academic research and, the company stresses, not validated for clinical use.
 
 > **At the frontier (2026):** Genomics models are moving from single tasks to "virtual cell" ambitions: models that combine DNA, gene activity in single cells, protein structure and the literature to predict how a cell will respond to a drug or a genetic change. As of late 2026 these are research projects with promising benchmarks; the hard test is whether their predictions hold up in experiments they were not trained on.
 
@@ -286,7 +288,7 @@ flowchart LR
   AI -.-> B
   AI -.-> C
 ```
-*Figure 52.6: The drug development pipeline with typical durations. AI mainly speeds up the left side. The clinical phases on the right are paced by human biology, patient recruitment and the need to watch outcomes over months or years.*
+*Figure 52.6: The drug development pipeline with typical durations. Phase IV is the safety monitoring that continues after approval, once many more people take the drug. AI mainly speeds up the left side. The clinical phases on the right are paced by human biology, patient recruitment and the need to watch outcomes over months or years.*
 
 ### The attrition, worked in numbers
 
@@ -329,7 +331,7 @@ The bigger prize would be raising the success rate in Phase II and III, because 
 
 **Halicin (2020).** A team at MIT trained a neural network to predict whether molecules would kill bacteria, then screened a library of over 100 million compounds. It flagged halicin, a molecule originally studied for diabetes, which killed many drug-resistant bacteria in lab and mouse tests. It showed the power of AI screening; as of late 2026 it had not become an approved medicine.
 
-**Rentosertib (Insilico Medicine).** This is the most advanced case where AI chose both the target and the molecule. Insilico's AI identified a protein called TNIK as a target for idiopathic pulmonary fibrosis, a deadly scarring of the lungs, and its generative chemistry software designed a molecule to block it. In June 2025 the company published Phase IIa results in *Nature Medicine*: in 71 patients over 12 weeks, lung capacity rose by an average of 98.4 mL in the group taking 60 mg daily, compared with a fall of 20.3 mL on placebo. That is an encouraging signal. It was also a small, short trial, and larger, longer trials are needed before anyone can say the drug works.
+**Rentosertib (Insilico Medicine).** This is the most advanced case where AI chose both the target and the molecule. Insilico's AI identified a protein called TNIK as a target for idiopathic pulmonary fibrosis, a deadly scarring of the lungs, and its generative chemistry software designed a molecule to block it. In June 2025 the company published Phase IIa results (Phase IIa is the small, early part of Phase II that looks for a first sign the drug works) in *Nature Medicine*: in 71 patients over 12 weeks, lung capacity rose by an average of 98.4 mL in the group taking 60 mg daily, compared with a fall of 20.3 mL on placebo. That is an encouraging signal. It was also a small, short trial, and larger, longer trials are needed before anyone can say the drug works.
 
 **Isomorphic Labs.** Google DeepMind's drug-discovery spin-out, led by Demis Hassabis, builds on AlphaFold 3 and has partnerships with large drug companies including Eli Lilly and Novartis. According to secondary reporting, it had not yet dosed a human by May 2026, with first-in-human trials expected by the end of 2026 after slipping from 2025. In late September 2026 the company itself still described its work as preclinical, writing that its data were helping it "gear up for clinical developments." If accurate, that timeline is itself a lesson: even the best-funded, most capable AI drug company needs years to reach the clinic.
 
@@ -412,8 +414,8 @@ Other groups reached similar results: Huawei's Pangu-Weather and NVIDIA's FourCa
 |---|---|---|---|
 | GraphCast | Google DeepMind | 2023 | A 10-day global forecast in under a minute, beating the leading physics forecast on most measures |
 | GenCast | Google DeepMind | December 2024 | A diffusion-based ensemble for 15 days ahead, more skillful than ECMWF's physics ensemble on about 97 percent of targets tested |
-| AIFS | ECMWF | Operational February 2025 | Europe's main forecasting center running an AI model in daily operations alongside its physics model |
-| WeatherNext 2 | Google DeepMind | November 2025 | Hundreds of forecast scenarios in under a minute on one TPU, 8 times faster than its predecessor, powering Google Search, Gemini and Pixel forecasts |
+| AIFS (Artificial Intelligence Forecasting System) | ECMWF | Operational February 2025 | Europe's main forecasting center running an AI model in daily operations alongside its physics model |
+| WeatherNext 2 | Google DeepMind | November 2025 | Hundreds of forecast scenarios in under a minute on one TPU, 8 times faster than its predecessor, powering forecasts in Google Search, Gemini and Google's Pixel phones |
 | WeatherNext 3 | Google DeepMind and Google Research | September 2026 | A new forecast every hour, made directly from raw satellite observations, with temperature and moisture at 5 km detail; Google reports much better rain forecasts and uses it in Search, Gemini and Maps |
 
 GenCast matters because a single forecast is less useful than a probability. It uses diffusion (Chapter 16) to generate many plausible weather futures, an ensemble, which lets forecasters say "70 percent chance of heavy rain" or show a spread of possible hurricane tracks. In 2025 Google DeepMind said the US National Hurricane Center was evaluating its experimental tropical-cyclone model during that season. In August 2026, with a paper in *Nature*, DeepMind reported that the model's three-day forecasts of a storm's track, strength and wind field were as good as earlier models' two-day forecasts, and said it had helped the Hurricane Center anticipate the rapid strengthening of Hurricane Melissa before it struck Jamaica in 2025.
@@ -428,7 +430,7 @@ GenCast matters because a single forecast is less useful than a probability. It 
 
 > **Watch out:** "AI weather models don't need physics" is wrong. They learn from decades of physics-based reanalysis and start each forecast from observations processed by traditional data assimilation. They are a powerful shortcut through the most expensive part of the pipeline, built on top of everything meteorology already knew.
 
-> **Try it:** Open charts.ecmwf.int and search for the AIFS charts and the matching IFS (physics) charts for the same day and variable, such as mean sea-level pressure or precipitation. Compare the two forecasts for your region five days ahead. Note where they agree and where they differ, then check what actually happened five days later.
+> **Try it:** Open charts.ecmwf.int and search for the AIFS charts and the matching IFS charts (the Integrated Forecasting System, ECMWF's physics model) for the same day and variable, such as mean sea-level pressure or precipitation. Compare the two forecasts for your region five days ahead. Note where they agree and where they differ, then check what actually happened five days later.
 
 ## Mathematics: proofs a computer can check
 
@@ -442,7 +444,7 @@ Mathematics has a property almost no other field has: an answer can be checked w
 
 > **Definition — Autoformalization:** Using AI to translate ordinary mathematical writing into a formal language such as Lean, so it can be checked by a proof assistant.
 
-Lean has gone from a niche tool to a serious part of mathematics. In 2023 Terence Tao led a group that formalized the proof of a newly settled conjecture in about three weeks, and Kevin Buzzard leads a long-running project to formalize the proof of Fermat's Last Theorem.
+Lean has gone from a niche tool to a serious part of mathematics. In 2023 Terence Tao led a group that formalized the proof of a newly settled conjecture (a statement mathematicians believe is true but have not yet proved) in about three weeks, and Kevin Buzzard leads a long-running project to formalize the proof of Fermat's Last Theorem.
 
 > **Analogy:** A proof checker is a merciless spell-checker for logic. It accepts nothing that is not fully justified, which makes it annoying for humans and perfect as a referee for AI training: a model cannot bluff its way past it.
 

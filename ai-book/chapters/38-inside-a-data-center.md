@@ -39,11 +39,15 @@ How many chips is that? Start from one GPU. NVIDIA's H100 is rated at 700 watts;
 
 That simple division is why the industry talks in megawatts: the power budget sets the chip count.
 
+> **Definition — NVIDIA:** The American chip company whose GPUs, networking gear and rack designs dominate AI computing. Its data center GPU generations are named after scientists: Hopper (the H100, 2022), Blackwell (the B200 and B300, 2024–2025) and Rubin (2026).
+
 > **Key idea:** A data center is a machine for turning electricity into computation and then getting rid of the heat. Nearly every structure you will see on this tour exists either to deliver power, to remove heat, to move data, or to protect the first three.
 
 > **Analogy:** Think of a data center as a giant restaurant kitchen. The stoves are the GPUs, the only things doing the "cooking". Everything else, the gas line and electrical panel (power), the ventilation hoods and air conditioning (cooling), the delivery door (network) and the locked back entrance (security), exists so the stoves can run all day without a break.
 
 As of October 20, 2026, Epoch AI tracked 95 large AI data centers with about 14.2 GW of IT power between them (about 18.5 GW including cooling and other overhead). The property firm JLL expects total global data center capacity to roughly double from about 103 GW in 2025 to about 200 GW by 2030.
+
+> **Definition — JLL (Jones Lang LaSalle):** A large global commercial property firm. Its data center research team publishes widely quoted estimates of data center capacity, construction and costs.
 
 > **Watch out:** "Data centers are all AI now" is not true. By JLL's estimate AI was about a quarter of data center workloads in 2025; email, streaming, banking and ordinary business software fill most of the rest. What is true is that AI drives most of the *new* giant buildings, and they look different from the old ones.
 
@@ -136,7 +140,7 @@ Somewhere along the edges, usually at two or more widely separated points, fiber
 
 ### Stop 8: the admin block, network operations center and loading dock
 
-Near the entrance is the human side: offices, a security control room, the network operations center and a large loading dock. The dock matters more than you might think. A modern AI rack arrives fully built from the factory, weighs well over a tonne, and needs wide doors and strong floors all the way to its final spot. Next to the dock, staging rooms are where new racks are inspected and "burned in" (run at full load for a while to catch early failures) before they join the cluster.
+Near the entrance is the human side: offices, a security control room, the network operations center and a large loading dock. The dock matters more than you might think. A modern AI rack arrives fully built from the factory, weighs well over a tonne (1,000 kilograms), and needs wide doors and strong floors all the way to its final spot. Next to the dock, staging rooms are where new racks are inspected and "burned in" (run at full load for a while to catch early failures) before they join the cluster.
 
 > **Try it:** Open Google Maps in satellite view and search for "Mount Pleasant, Wisconsin Microsoft data center" or "Abilene Texas Stargate". Zoom in and find the substation (gravel yard with gray boxes), the generator rows, the cooling equipment and the fiber vaults if you can. Then ask your chatbot to describe what each of those things looks like from above and check its answer against what you see.
 
@@ -178,7 +182,7 @@ Two things killed the raised floor for AI halls: weight and water.
 
 `3,000 kg ÷ 0.72 m² ≈ 4,200 kg per square meter`
 
-For comparison, building codes typically design office floors for a live load of about 2.4 kN/m² (50 pounds per square foot), which is roughly 245 kg per square meter. A heavy AI rack loads its own footprint more than fifteen times harder than an office floor is designed for. Tiles on pedestals can be built that strong, but a thick concrete slab is simpler, cheaper and safer, especially when the rack has to roll in on wheels.
+For comparison, building codes typically design office floors for a live load (the people, furniture and equipment a floor carries) of about 2.4 kN/m² (kilonewtons per square meter, an engineer's unit of force; 50 pounds per square foot), which is roughly 245 kg per square meter. A heavy AI rack loads its own footprint more than fifteen times harder than an office floor is designed for. Tiles on pedestals can be built that strong, but a thick concrete slab is simpler, cheaper and safer, especially when the rack has to roll in on wheels.
 
 **Water.** Liquid-cooled racks need coolant pipes. Running water pipes under a floor full of power cables is risky and makes leaks hard to see. Overhead pipes and trenches are easier to inspect and service.
 
@@ -354,6 +358,8 @@ Here is the same comparison as numbers.
 
 *Table 38.1: Rack generations. "Homes" uses an average US home drawing about 1.2 kW averaged over a year.*
 
+> **Definition — GTC (GPU Technology Conference):** NVIDIA's main yearly conference, held each spring in San Jose, California, where the company announces new chips, racks and roadmaps.
+
 NVIDIA says the jump from its Hopper generation to Blackwell alone raised rack density about 3.4 times, "from tens of kilowatts to well over 100". It is now designing for more than 1 MW per rack, with 800-volt DC power distribution entering production alongside its next-generation Kyber racks (NVIDIA's rack design for its Rubin Ultra chips, around 600 kW each) in 2027. Chapter 39 explains why the voltage has to rise.
 
 What does such a rack produce? Microsoft says each 72-GPU rack in its Fairwater design can generate about 865,000 tokens per second: at roughly 0.75 words per token, several long novels' worth of text every second from one cabinet.
@@ -361,6 +367,10 @@ What does such a rack produce? Microsoft says each 72-GPU rack in its Fairwater 
 > **Analogy:** Fitting 130 kW into one rack is like fitting a whole suburban street's electricity into a refrigerator-sized cabinet, and then removing all of that energy again as heat through pipes the width of a garden hose.
 
 > **At the frontier (2026):** NVIDIA says Vera Rubin NVL72 racks were ramping into production in 2026, and AMD's competing Helios rack (72 MI455X GPUs in Meta's wider Open Rack Wide form factor) begins shipping in the second half of 2026. Rack designs are now negotiated between chipmakers, clouds and building designers years ahead, because a new rack can force changes to floors, pipes and power rooms.
+
+> **Definition — AMD (Advanced Micro Devices):** An American chip designer that makes CPUs and GPUs. Its Instinct GPUs, such as the MI355X and MI455X, are the main rival to NVIDIA's in AI data centers.
+
+> **Definition — MI455X:** AMD's flagship AI GPU for 2026, with 432 GB of HBM4 memory, sold in AMD's 72-GPU Helios rack as a rival to NVIDIA's Vera Rubin NVL72.
 
 ## The networks inside the building
 
@@ -447,7 +457,7 @@ flowchart LR
   GA --> ACROSS
 ```
 
-*Figure 38.8: Multi-site training. Chatty, every-layer traffic stays inside each campus; only patient, occasional synchronization crosses the long link.*
+*Figure 38.8: Multi-site training. Chatty, every-layer traffic (tensor and expert parallelism, Chapter 37) stays inside each campus; only patient, occasional synchronization crosses the long link.*
 
 > **Analogy:** Scale-up is a team in one room, scale-out is teams in one building on phone calls, and scale-across is offices in different cities on video calls. You would never ask two cities to co-write every sentence together, but they can each write chapters and compare notes once a day.
 
@@ -516,7 +526,7 @@ So training halls often use leaner designs, for example N+1 rather than 2N in pl
 
 > **Key idea:** Redundancy is a business decision, not a moral one. The right level depends on what an outage costs. A training run can restart from a checkpoint; a payment network cannot un-drop a payment.
 
-> **Try it:** Ask your chatbot: "If a 100,000-GPU training cluster loses power for 10 minutes and its last checkpoint was 20 minutes earlier, roughly how many GPU-hours of work are lost?" Check its arithmetic: 100,000 GPUs × (30 minutes ÷ 60) = 50,000 GPU-hours, plus restart time. Then ask what the same outage would cost a payment processor, and compare the reasoning.
+> **Try it:** Ask your chatbot: "If a 100,000-GPU training cluster loses power for 10 minutes and its last checkpoint was 20 minutes earlier, roughly how many GPU-hours of work are lost?" Check its arithmetic: the work lost is the 20 minutes since the checkpoint plus the 10 minutes of outage, so 100,000 GPUs × (30 minutes ÷ 60) = 50,000 GPU-hours, plus restart time. Then ask what the same outage would cost a payment processor, and compare the reasoning.
 
 ### What actually takes services down
 
@@ -524,7 +534,7 @@ Redundant power and cooling protect against the failures you can see in the buil
 
 That is why operators release changes gradually (a staged rollout, Chapter 44), watch closely and roll back fast, and why they design services to bend rather than break.
 
-Rare physical disasters still happen, and fire is the one people ask about. Data centers are full of electrical gear and large battery rooms, which is why fire suppression is part of the gray space described earlier. The best-known case came on the night of March 9, 2021, when fire destroyed OVHcloud's SBG2 building in Strasbourg, France, and damaged a neighboring building. The company told customers to activate their business recovery plans, and customers who kept their data and backups only in that building lost them (as reported). The lesson is the one in this section: the backup that saves you is the one in another building, ideally another region.
+Rare physical disasters still happen, and fire is the one people ask about. Data centers are full of electrical gear and large battery rooms, which is why fire suppression is part of the gray space described earlier. The best-known case came on the night of March 9, 2021, when fire destroyed the French cloud provider OVHcloud's SBG2 building in Strasbourg, France, and damaged a neighboring building. The company told customers to activate their business recovery plans, and customers who kept their data and backups only in that building lost them (as reported). The lesson is the one in this section: the backup that saves you is the one in another building, ideally another region.
 
 > **Definition — Graceful degradation:** Designing a service so that when parts fail or are overloaded, it keeps working with reduced quality or fewer features instead of failing completely, for example by switching to a smaller model or pausing non-essential features.
 
@@ -614,6 +624,8 @@ Not every data center is a gigawatt AI campus. Here are the main types you will 
 
 > **Definition — Hyperscaler:** A giant cloud and internet company operating data centers at massive scale: in AI, mainly Amazon (AWS), Microsoft, Google, Meta and Oracle.
 
+> **Definition — AWS (Amazon Web Services):** Amazon's cloud computing business, the largest cloud provider in the world. It rents computing, storage and AI chips, including its own Trainium chips, to other companies.
+
 > **Definition — AI training campus ("AI factory"):** A data center, often hundreds of megawatts to gigawatts in size, built mainly to train or serve AI models on tightly networked accelerators. "AI factory" is NVIDIA's marketing term, stressing that the product is tokens.
 
 > **Definition — Edge data center:** A small data center placed close to users, for example in a city or at a cell tower site, to cut delay for applications that need fast responses.
@@ -657,6 +669,8 @@ quadrantChart
 
 Converted crypto-mining sites deserve a note. Bitcoin miners such as IREN, Cipher, TeraWulf and Core Scientific had already secured power, substations and land, and several have turned parts of their sites into AI data centers. Their biggest asset is the power connection, which can take years to get from scratch.
 
+> **Definition — IREN:** A company, formerly called Iris Energy, that began as a bitcoin miner and has turned its power-connected sites into AI data centers, renting GPUs to AI companies as a neocloud.
+
 ## The players
 
 Who builds, owns and fills all these buildings? Think of it as a stack of companies.
@@ -666,6 +680,8 @@ Who builds, owns and fills all these buildings? Think of it as a stack of compan
 - **Colocation developers and landlords** (Equinix, Digital Realty, QTS, Vantage, Aligned, STACK, CyrusOne, Related Digital and others) build and lease everything from cages to campuses.
 - **Equipment makers** supply chips and networking (NVIDIA, AMD, Broadcom) and power and cooling gear (Vertiv, Schneider Electric, Eaton, ABB, Siemens, GE Vernova, Hitachi Energy).
 - **Utilities and grid operators** deliver the power (Chapter 41), and **financiers** (private equity, infrastructure funds, private credit, sovereign wealth funds) pay for much of it (Chapter 43).
+
+> **Definition — GE (General Electric):** A long-established American industrial company that split into separate companies in 2023–2024. GE Vernova makes power equipment such as gas turbines and grid gear; GE Hitachi, its nuclear partnership with Japan's Hitachi, designs the BWRX-300 small reactor.
 
 > **Definition — Neocloud:** A newer cloud company that specializes in renting AI accelerators, such as CoreWeave, Nebius, Lambda or Crusoe, as opposed to a general-purpose hyperscale cloud.
 
@@ -715,6 +731,8 @@ Put the tour together and the frontier campus of 2026 is:
 - **Built huge.** Epoch AI lists the Anthropic–Amazon site at New Carlisle, Indiana at about 1,037 MW of IT power, the largest tracked site by power as of October 2026, and xAI's Colossus 2 at about 946 MW, the largest by compute (roughly 1.1 million H100-equivalents, a unit that counts computing power in multiples of one NVIDIA H100 GPU, so a newer chip that does three times the math counts as about three).
 - **Dense and joined up.** Microsoft's Wisconsin Fairwater site holds hundreds of thousands of GB200 GPUs, cools more than 90% of its capacity with a closed liquid loop filled once, and acts as one system with its Atlanta sibling.
 
+> **Definition — GB200 and GB300:** NVIDIA superchips that each pair one Grace CPU with two Blackwell GPUs (B200 GPUs in the GB200, the upgraded B300 in the GB300). Thirty-six of them make an NVL72 rack, so news reports of "GB200 GPUs" usually mean the Blackwell GPUs inside these systems.
+
 > **Key idea:** The unit of AI infrastructure has grown from the server to the rack to the building to the campus, and now to groups of campuses joined by fiber. The physical constraints at each level (weight, heat, power, distance) shape what AI companies can build and how fast.
 
 Chapter 42 tells the full stories of these megaprojects, including what went wrong.
@@ -731,13 +749,13 @@ Data centers are joined by fiber, and light needs about 5 microseconds per kilom
 
 ## Key terms
 
-Data center, Campus, Megawatt (MW) and gigawatt (GW), Substation, Transformer, Backup generator, White space, Gray space, Data hall, Stranded capacity, Raised floor, Slab-on-grade, Rack, Rack unit (U), Row, pod and cluster (data center layout), Hot aisle and cold aisle, Containment, CDU (coolant distribution unit), Cable tray (ladder rack), Busway (busbar trunking), Structured cabling, Optical transceiver, Single-mode and multimode fiber, Meet-me room (MMR), Cross-connect, Carrier hotel, Internet exchange point (IXP), Rack density, PDU (power distribution unit), Rack power shelf, Manifold and quick disconnect, NIC (network interface card), Leaf-spine network (Clos network), Non-blocking network, Scale-up, scale-out and front-end networks, Out-of-band management network, Dark fiber, DCI (data center interconnect), Scale-across (AI WAN), Redundancy, N and N+1, 2N, Concurrently maintainable, Fault tolerant, Uptime Institute Tiers (I to IV), Availability ("the nines"), SLA (service-level agreement), BMS and DCIM, NOC and SOC, Remote hands, Rack and stack, Commissioning (Cx), Mantrap, Root of trust (silicon root of trust), Confidential computing, Enterprise data center, Colocation (colo), Hyperscaler, AI training campus ("AI factory"), Edge data center, Neocloud, Powered land and powered shell, Build-to-suit and turnkey, GPU-as-a-service, Take-or-pay contract, Graceful degradation
+Data center, Campus, Megawatt (MW) and gigawatt (GW), NVIDIA, JLL (Jones Lang LaSalle), Substation, Transformer, Backup generator, White space, Gray space, Data hall, Stranded capacity, Raised floor, Slab-on-grade, Rack, Rack unit (U), Row, pod and cluster (data center layout), Hot aisle and cold aisle, Containment, CDU (coolant distribution unit), Cable tray (ladder rack), Busway (busbar trunking), Structured cabling, Optical transceiver, Single-mode and multimode fiber, Meet-me room (MMR), Cross-connect, Carrier hotel, Internet exchange point (IXP), Rack density, PDU (power distribution unit), Rack power shelf, Manifold and quick disconnect, GTC (GPU Technology Conference), AMD (Advanced Micro Devices), MI455X, NIC (network interface card), Leaf-spine network (Clos network), Non-blocking network, Scale-up, scale-out and front-end networks, Out-of-band management network, Dark fiber, DCI (data center interconnect), Scale-across (AI WAN), Redundancy, N and N+1, 2N, Concurrently maintainable, Fault tolerant, Uptime Institute Tiers (I to IV), Availability ("the nines"), SLA (service-level agreement), BMS and DCIM, NOC and SOC, Remote hands, Rack and stack, Commissioning (Cx), Mantrap, Root of trust (silicon root of trust), Confidential computing, Enterprise data center, Colocation (colo), Hyperscaler, AWS (Amazon Web Services), AI training campus ("AI factory"), Edge data center, IREN, GE (General Electric), Neocloud, Powered land and powered shell, Build-to-suit and turnkey, GPU-as-a-service, Take-or-pay contract, GB200 and GB300, Graceful degradation
 
 ## Exercises
 
 1. **[Easy] Find a data center from space.** (1) Go to a public map such as datacentermap.com and find the data center nearest to you, or use a famous one: Microsoft in Mount Pleasant, Wisconsin, or the Stargate site in Abilene, Texas. (2) Open Google Maps in satellite view at that location. (3) Identify and sketch the substation, the generator rows, the cooling equipment, the buildings and the parking lot. (4) Estimate the building footprint with the map's measure-distance tool (right-click, "Measure distance"). **What you'll learn:** to recognize the physical anatomy of a data center from above.
 
-2. **[Easy] The nines calculator.** (1) In a spreadsheet, list availabilities 99%, 99.9%, 99.99%, 99.999% and the four Tier figures (99.671%, 99.741%, 99.982%, 99.995%). (2) In the next column compute downtime per year in hours: `=(1-A2)*8760`. (3) Add a column in minutes. (4) Mark which of these you would want for a hospital records system, a training cluster and a chatbot service, and write one sentence on why. **What you'll learn:** how small-looking percentages turn into very different amounts of downtime.
+2. **[Easy] The nines calculator.** (1) In a spreadsheet, list availabilities 99%, 99.9%, 99.99%, 99.999% and the four Tier figures (99.671%, 99.741%, 99.982%, 99.995%) in column A, starting in cell A2; type each with its % sign so the spreadsheet stores 99.9% as 0.999. (2) In B2 compute downtime per year in hours with `=(1-A2)*8760` and copy it down the column. (3) In C2 convert to minutes with `=B2*60` and copy it down. (4) Mark which of these you would want for a hospital records system, a training cluster and a chatbot service, and write one sentence on why. **What you'll learn:** how small-looking percentages turn into very different amounts of downtime.
 
 3. **[Easy] The speed-of-light budget.** (1) Using 5 microseconds per kilometer of fiber, compute the one-way delay for 2 m, 200 m, 2 km, 100 km, 1,200 km and 6,000 km. (2) Double each to get a round trip. (3) Find out roughly how far you live from the nearest big cloud region (ask a chatbot "Where are the major AWS, Azure and Google Cloud regions?") and compute your own minimum round-trip time. **What you'll learn:** why distance matters for training clusters but barely matters for your chat.
 
@@ -745,13 +763,13 @@ Data center, Campus, Megawatt (MW) and gigawatt (GW), Substation, Transformer, B
 
 5. **[Medium] The shrinking white space.** (1) For a 30 MW hall, compute the number of racks at 8 kW, 40 kW, 130 kW, 600 kW and 1,000 kW per rack. (2) Assume 3 m² per rack including aisles and compute the white space for each. (3) Plot rack density against white-space area on a chart (use log scales if your spreadsheet allows). (4) Explain in a few sentences why the gray space does not shrink in the same way. **What you'll learn:** why AI buildings are mostly electrical and mechanical rooms.
 
-6. **[Medium] Watch a megaproject grow.** (1) Install Google Earth Pro (free) on a computer, or use the free Sentinel Hub EO Browser. (2) Go to Abilene, Texas (the Stargate site) or Richland Parish, Louisiana (Meta Hyperion) and use the historical imagery slider to step from 2023 to the latest image. (3) Count buildings, cooling units and any turbines at each date. (4) Compare your count with published descriptions (Abilene was planned with eight buildings). **What you'll learn:** open-source intelligence, the method analysts such as Epoch AI use to track the AI build-out.
+6. **[Medium] Watch a megaproject grow.** (1) Install Google Earth Pro (free) on a computer, or use the free Sentinel Hub EO Browser (EO stands for Earth observation; it shows recent satellite images by date). (2) Go to Abilene, Texas (the Stargate site) or Richland Parish, Louisiana (Meta Hyperion) and step from 2023 to the latest image: in Google Earth Pro, click the clock icon (Historical Imagery) in the top toolbar and drag the slider; in EO Browser, change the date. (3) Count buildings, cooling units and any turbines at each date. (4) Compare your count with published descriptions (Abilene was planned with eight buildings). **What you'll learn:** open-source intelligence, the method analysts such as Epoch AI use to track the AI build-out.
 
 7. **[Medium] Rent a cluster on paper.** (1) Open the public pricing pages of two GPU clouds (for example lambda.ai/pricing and runpod.io/pricing). (2) Make a table of on-demand $/GPU-hour for A100, H100, H200, B200 and B300 where listed. (3) Compute the cost of 8 H100s for one week and 1,000 H100s for one month at each provider. (4) Ask a chatbot why reserved multi-year contracts are cheaper per hour and why they matter to lenders. **What you'll learn:** how GPU-as-a-service is priced and why take-or-pay contracts exist.
 
 8. **[Challenge] Design a 50 MW AI hall.** (1) Choose a rack density (for example 130 kW) and compute the number of GPU racks. (2) Sketch a floor plan like Figure 38.4: rows, hot and cold aisles, CDUs, network rows, electrical and mechanical rooms, and the route from the loading dock. (3) Choose a redundancy level for power and cooling (N+1 or 2N) and defend it in three sentences for a training customer and three for an inference customer. (4) List the four networks and where each physically runs. (5) Ask a chatbot to critique your design and note which criticisms you accept. **What you'll learn:** how every part of this chapter fits together in one design.
 
-9. **[Challenge] The redundancy debate.** (1) Write down the cost of an outage for three users: a 100,000-GPU training run (lost GPU-hours, at an assumed $2 per GPU-hour), a chatbot service with millions of users, and a payment network. (2) Ask a chatbot to argue for 2N power in a training hall, then ask it to argue against. (3) Decide which redundancy level you would pick for each of the three users, and explain what new information would change your mind. **What you'll learn:** that reliability engineering is a trade-off between the cost of equipment and the cost of failure.
+9. **[Challenge] The redundancy debate.** (1) Write down the cost of the same outage as in the Try it box (10 minutes without power, last checkpoint 20 minutes earlier) for three users: a 100,000-GPU training run (lost GPU-hours times an assumed $2 per GPU-hour), a chatbot service with millions of users, and a payment network. For the last two, a rough estimate in words is fine (who notices, what they cannot do, what it costs in refunds or trust); a chatbot can help you find figures. (2) Ask a chatbot to argue for 2N power in a training hall, then ask it to argue against. (3) Decide which redundancy level you would pick for each of the three users, and explain what new information would change your mind. **What you'll learn:** that reliability engineering is a trade-off between the cost of equipment and the cost of failure.
 
 ## Areas of opportunity
 

@@ -52,7 +52,7 @@ A model does not read words. It reads tokens.
 
 > **Definition — Tokenizer:** The component that chops text into tokens before the model sees it. Different models chop differently, so the same text can be a different number of tokens, and cost a different amount, on different models.
 
-Some real numbers help. Anthropic says the newer tokenizer used by Claude 4.7 and later models produces about 30% more tokens for the same text than its older one: one million tokens is roughly 555,000 English words on the new tokenizer, versus roughly 750,000 on the old one. So a 2,000-word essay is about 2,000 × 1.8 = 3,600 tokens on the newer Claude tokenizer, and about 2,000 × 1.33 ≈ 2,700 tokens on an older one. Languages other than English, computer code and emoji often take more tokens per word.
+Some real numbers help. Anthropic says the newer tokenizer used by Claude 4.7 and later models produces about 30% more tokens for the same text than its older one: one million tokens is roughly 555,000 English words on the new tokenizer, versus roughly 750,000 on the old one. Turned around, that is about 1,000,000 ÷ 555,000 ≈ 1.8 tokens per word on the new tokenizer and 1,000,000 ÷ 750,000 ≈ 1.33 tokens per word on the old one. So a 2,000-word essay is about 2,000 × 1.8 = 3,600 tokens on the newer Claude tokenizer, and about 2,000 × 1.33 ≈ 2,700 tokens on an older one. Languages other than English, computer code and emoji often take more tokens per word.
 
 Tokens matter to you in three everyday ways. Usage limits on chat plans are really token limits in disguise. Long pastes eat into the space the model can work with. And when you later use the API (Chapter 26), you pay per token, separately for what you send and what you get back.
 
@@ -378,7 +378,7 @@ A fast, pattern-matching answer might say 20 × $2 ÷ 3 = $13.33. A model that t
 | Comparing options with trade-offs | Casual conversation |
 | Anything with a "trap" in it | When you need speed more than depth |
 
-> **At the frontier (2026):** Thinking has become a dial rather than a separate product. Anthropic's current Claude models all use adaptive thinking steered by an effort setting, and the older manual "extended thinking" switch is deprecated or no longer accepted on its newest models; the other major apps offer similar fast-versus-thinking choices. The practical lesson is to pick the effort for the task instead of leaving one setting on for everything.
+> **At the frontier (2026):** Thinking has become a dial rather than a separate product. Anthropic's current Claude models all use adaptive thinking steered by an effort setting, and the older manual "extended thinking" switch is deprecated (officially on its way out) or no longer accepted on its newest models; the other major apps offer similar fast-versus-thinking choices. The practical lesson is to pick the effort for the task instead of leaving one setting on for everything.
 
 > **Watch out:** On modern reasoning models you rarely need to type "think step by step"; choosing a thinking mode or a higher effort does it better. And more thinking is not always better: on a simple lookup it only adds waiting time and, on paid APIs, cost.
 
@@ -454,7 +454,7 @@ Three habits make format instructions work better:
 - **Match your prompt's style to the output you want.** A prompt written in heavy bullet points tends to get bullet points back. A prompt written in plain paragraphs tends to get paragraphs.
 - **Give a target someone could measure.** "Under 150 words", "exactly 5 bullets", "reading level of a 12-year-old" are checkable. "Short" and "simple" are not.
 
-> **Definition — Prefill:** Writing the first few words of the model's answer yourself so it continues from there, an old trick for forcing a format. Anthropic no longer supports it on the final turn starting with its Claude 4.6 models, so older guides that recommend it are out of date.
+> **Definition — Prefilling the response:** Writing the first few words of the model's answer yourself so it continues from there, an old trick for forcing a format, often just called "prefill" (not to be confused with Chapter 23's prefill step, in which the model reads your prompt). Anthropic no longer supports it on the final turn starting with its Claude 4.6 models, so older guides that recommend it are out of date.
 
 When a program, not a person, needs to read the output, chat-app formatting is not enough. Chapter 26 shows "structured outputs", an API feature that guarantees the answer matches an exact data shape.
 
@@ -686,7 +686,7 @@ Because memory is just notes, it can move with you. As of late 2026, both Claude
 
 > **Analogy:** A project is a briefing binder handed to the amnesiac temp at the start of every meeting about one particular job: the instructions on the first page, the key documents behind it, and the notes from last time.
 
-Projects are ideal for anything you return to repeatedly: a course you are taking or teaching, a book or thesis, a client, a house renovation, a job search. Put the stable material (the syllabus, the style guide, the floor plans, your CV) in the project once, write project instructions that apply to every chat in it, and start a fresh chat inside the project for each new session. You get the benefit of context without the clutter of one endless conversation.
+Projects are ideal for anything you return to repeatedly: a course you are taking or teaching, a book or thesis, a client, a house renovation, a job search. Put the stable material (the syllabus, the style guide, the floor plans, your CV or résumé) in the project once, write project instructions that apply to every chat in it, and start a fresh chat inside the project for each new session. You get the benefit of context without the clutter of one endless conversation.
 
 ### Custom assistants: GPTs, Gems and friends
 
@@ -743,6 +743,8 @@ The hard engineering problem in voice is speed: a conversation feels natural onl
 > **Definition — Connector:** An add-on that lets a chat app reach another service, such as Gmail, Google Drive, Slack, a calendar or GitHub, so the model can search or act on your data there. Different apps call these connectors, apps or plugins.
 
 > **Definition — MCP (Model Context Protocol):** An open standard, introduced by Anthropic in November 2024 and now governed under the Linux Foundation, that lets AI apps connect to outside tools and data through one common "plug". Most connectors are built on it (Chapter 28).
+
+> **Definition — Linux Foundation:** A nonprofit organization that hosts and looks after hundreds of open-source projects, starting with the Linux operating system (Chapter 3), so that no single company controls them. Several open AI standards, including MCP, now live there.
 
 > **Definition — OAuth:** The standard "Sign in with..." and "Allow access" system that lets one app use your account on another service without ever seeing your password, with permissions you can later revoke.
 
@@ -913,7 +915,7 @@ For long work, the question becomes what is on the desk at each step. Long chats
 
 ## Key terms
 
-Large language model (LLM), Model, Chat app, Token, Tokenizer, Context window, KV cache, Stateless, Inference, Usage limit, Length limit, Hallucination, Knowledge cutoff, Grounding, Prompt, Prompt engineering, Zero-shot, one-shot and few-shot prompting, Delimiter, XML tags, Markdown, Prompt injection, System prompt, Role prompting, Chain-of-thought (CoT), Reasoning model, Effort, Adaptive thinking, Prompt chaining, Lost in the middle, Prefill, Meta-prompting, Automatic prompt optimization, Sycophancy, Leading question, Silent truncation, Custom instructions, Memory (in chat apps), Incognito or temporary chat, Project, Custom GPT or Gem, Agent Skill, Artifact or Canvas, Multimodal, Code execution, Citation, Deep research, Voice mode, Connector, MCP (Model Context Protocol), OAuth, Agent, Agent mode, Data retention, Training opt-out, PII (personally identifiable information), Context engineering, Context rot, Compaction, Structured note-taking, Just-in-time retrieval, Sub-agent, Progressive disclosure
+Large language model (LLM), Model, Chat app, Token, Tokenizer, Context window, KV cache, Stateless, Inference, Usage limit, Length limit, Hallucination, Knowledge cutoff, Grounding, Prompt, Prompt engineering, Zero-shot, one-shot and few-shot prompting, Delimiter, XML tags, Markdown, Prompt injection, System prompt, Role prompting, Chain-of-thought (CoT), Reasoning model, Effort, Adaptive thinking, Prompt chaining, Lost in the middle, Prefilling the response, Meta-prompting, Automatic prompt optimization, Sycophancy, Leading question, Silent truncation, Custom instructions, Memory (in chat apps), Incognito or temporary chat, Project, Custom GPT or Gem, Agent Skill, Artifact or Canvas, Multimodal, Code execution, Citation, Deep research, Voice mode, Connector, MCP (Model Context Protocol), Linux Foundation, OAuth, Agent, Agent mode, Data retention, Training opt-out, PII (personally identifiable information), Context engineering, Context rot, Compaction, Structured note-taking, Just-in-time retrieval, Sub-agent, Progressive disclosure
 
 ## Exercises
 
@@ -921,7 +923,7 @@ Large language model (LLM), Model, Chat app, Token, Tokenizer, Context window, K
 
 2. **[Easy] Explain the why.** (1) Ask for a recipe with the rule "NO bullet points." (2) In a fresh chat, ask for the same recipe, explaining "I'll have this read aloud while I cook with messy hands, so write short spoken sentences." (3) List every difference between the two answers, including ones you did not ask for. **What you'll learn:** Models generalize from reasons far better than from bare rules.
 
-3. **[Easy] Price a long chat with pencil and paper.** Assume each exchange in a chat adds 600 tokens. (1) How many tokens does the model read on turn 10? On turn 30? (2) Using the formula 600 × (1 + 2 + ... + n), and the fact that 1 + 2 + ... + n = n × (n + 1) ÷ 2, compute the total tokens processed over 30 turns. (3) Compare this with the length of the final conversation. (4) Now suppose you compact after turn 15 into a 1,000-token summary and continue for 15 more turns. Recompute the total. **What you'll learn:** Statelessness makes long chats grow expensive and slow, and compaction is a large, measurable saving.
+3. **[Easy] Price a long chat with pencil and paper.** Assume each exchange in a chat adds 600 tokens. (1) How many tokens does the model read on turn 10? On turn 30? (2) Using the formula 600 × (1 + 2 + ... + n), and the fact that 1 + 2 + ... + n = n × (n + 1) ÷ 2, compute the total tokens processed over 30 turns. (3) Compare this with the length of the final conversation. (4) Now suppose you compact after turn 15 into a 1,000-token summary and continue for 15 more turns. Recompute the total: the first 15 turns cost the same as before, and from then on each turn reads the 1,000-token summary plus 600 tokens for every exchange since the summary (1,600 on the first new turn, 2,200 on the next, and so on). Add up all 30 turns and compare with your answer to step 2. **What you'll learn:** Statelessness makes long chats grow expensive and slow, and compaction is a large, measurable saving.
 
 4. **[Medium] Build a few-shot classifier.** (1) Write four short example customer messages labeled Complaint, Question, Praise and Spam, inside `<example>` tags. (2) Write twelve new unlabeled messages, including two deliberately tricky ones (a complaint phrased as a question, praise with a request). (3) Ask for labels in a table with a one-line reason each, and check them by hand. (4) Change one of your examples to be much longer or to carry the wrong label, rerun, and note what shifts. **What you'll learn:** Examples steer behavior strongly, including in ways you did not intend.
 
@@ -931,7 +933,7 @@ Large language model (LLM), Model, Chat app, Token, Tokenizer, Context window, K
 
 7. **[Medium] A manual prompt chain.** (1) Ask for a one-page blog post on a topic you know well in a single prompt. (2) In a fresh chat, produce the same post in four turns: outline, draft, critique against a five-point checklist you write, then revise. (3) Score both versions against your checklist. **What you'll learn:** Decomposition and self-critique loops (the evaluator-optimizer pattern) produce better work than one big request.
 
-8. **[Medium] Hallucination hunt.** (1) With web search turned off, ask: "List five peer-reviewed studies on [a niche topic you know] with authors, years and DOIs." (2) Look each one up in Google Scholar (scholar.google.com). (3) Repeat with web search or deep research turned on. (4) Tally real, partly wrong and invented results for both runs. **What you'll learn:** Fluency is not truth, grounding helps a lot, and every citation needs a click.
+8. **[Medium] Hallucination hunt.** (1) With web search turned off, ask: "List five peer-reviewed studies on [a niche topic you know] with authors, years and DOIs." (A DOI, or digital object identifier, is the permanent ID code printed on most journal articles, such as 10.1000/xyz123.) (2) Look each one up in Google Scholar (scholar.google.com). (3) Repeat with web search or deep research turned on. (4) Tally real, partly wrong and invented results for both runs. **What you'll learn:** Fluency is not truth, grounding helps a lot, and every citation needs a click.
 
 9. **[Easy] Memory audit.** (1) Open your chat app's settings and find Memory or Personalization. (2) Read everything it has saved about you. (3) Edit or delete at least one item. (4) Start a temporary or incognito chat and ask "What do you know about me?", then ask the same in a normal chat. **What you'll learn:** Memory is stored text inserted into context, and you control it.
 
@@ -943,7 +945,7 @@ Large language model (LLM), Model, Chat app, Token, Tokenizer, Context window, K
 
 ## Areas of opportunity
 
-- **AI enablement lead or trainer.** Companies have bought chat tools for thousands of employees and found that most people use them like a search box. People who can run hands-on workshops on briefing, verification and context management, and measure the time saved, are in demand in HR, operations and learning-and-development teams.
+- **AI enablement lead or trainer.** Companies have bought chat tools for thousands of employees and found that most people use them like a search box. People who can run hands-on workshops on briefing, verification and context management, and measure the time saved, are in demand in HR (human resources), operations and learning-and-development teams.
 - **Custom assistant builder for small organizations.** Clinics, schools, nonprofits and small firms will pay to have someone set up well-instructed projects, GPTs or Gems loaded with their policies and templates, plus a one-page guide on safe use. This is a natural first freelance offering for a non-programmer.
 - **Prompt and template libraries for professions.** Lawyers, accountants, teachers, recruiters and real-estate agents need tested prompt templates for their recurring tasks. Packaged, tested libraries (and skills) for one profession can be sold as products or used to win consulting clients.
 - **Evaluation and quality specialist.** Every team that relies on AI output needs someone who can define "good", build small test sets and compare prompts and models. Domain experts who can write rubrics, such as a nurse grading medical-summary quality, are especially valuable to AI companies and to the businesses adopting AI.
@@ -986,4 +988,4 @@ Large language model (LLM), Model, Chat app, Token, Tokenizer, Context window, K
 - **Liu et al., "Lost in the Middle: How Language Models Use Long Contexts" (2023).** The study that measured how attention to information depends on its position in a long input.
 - **Ethan Mollick, *Co-Intelligence* (2024), and his newsletter One Useful Thing.** The most practical non-technical writing on working alongside AI, from a Wharton professor who tests tools constantly.
 - **Simon Willison's blog (simonwillison.net).** Careful, hands-on notes on new models and features, and the clearest writing anywhere on prompt injection and agent security.
-- **Prompt Engineering Guide by DAIR.AI (promptingguide.ai).** A free reference that catalogs prompting techniques with examples and links to the underlying research.
+- **Prompt Engineering Guide by DAIR.AI (promptingguide.ai).** A free reference that catalogs prompting techniques with examples and links to the underlying research. DAIR.AI is an independent group that publishes free AI-education material (not the DAIR research institute named in Chapter 63).
