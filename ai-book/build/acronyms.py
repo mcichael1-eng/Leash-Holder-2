@@ -21,6 +21,12 @@ for h in heads:
     for tok in re.findall(r"[A-Za-z0-9&\-\.]+", h):
         known.add(tok.lower().strip(".-"))
         known.add(re.sub(r"s$", "", tok.lower()))
+# glossary entries for names explained in passing
+nf = book / "names-terms.json"
+if nf.exists():
+    for t in json.loads(nf.read_text()):
+        for tok in re.findall(r"[A-Za-z0-9&\-\.]+", t["term"]):
+            known.add(tok.lower().strip(".-"))
 # also count inline definitions not in glossary yet: any "**Definition — X" in chapters
 for _, f in files:
     if f.exists():

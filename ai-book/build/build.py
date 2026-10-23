@@ -200,6 +200,22 @@ for u in units:
         label = f"Ch {u['num']}" if u["kind"] == "chapter" else f"App {u['num']}"
         if not any(r[1] == label for r in e["refs"]):
             e["refs"].append((f'{u["page"]}#{anchor}', label))
+# Names and abbreviations the chapters explain in passing (no definition callout): glossary entries
+# that link to the unit where each is first used. Format: [{"term", "definition", "first": "ch12" | "appF"}].
+names_file = BOOK / "names-terms.json"
+n_names = 0
+if names_file.exists():
+    for t in json.loads(names_file.read_text()):
+        k = gkey(t["term"])
+        if not k or k in gloss:
+            continue
+        uid = t.get("first", "")
+        refs = []
+        if uid in page_of:
+            label = f"Ch {uid[2:]}" if uid.startswith("ch") else f"App {uid[3:]}"
+            refs.append((f"{page_of[uid]}#{uid}", label))
+        gloss[k] = {"term": t["term"], "body": html.escape(t["definition"]), "refs": refs}
+        n_names += 1
 extra_file = BOOK / "extra-terms.json"
 n_extra = 0
 if extra_file.exists():
@@ -409,6 +425,7 @@ sizes["exercises.html"] = render_page("exercises.html", "Every exercise · The A
                                       exercises_main + pager(("glossary.html#glossary", "Glossary"), ("index.html", "Contents")))
 
 stats["extra_terms"] = n_extra
+stats["names_terms"] = n_names
 print(json.dumps(stats))
 print("pages:", ", ".join(f"{k}={v/1e6:.2f}MB" for k, v in sizes.items()), f"total={sum(sizes.values())/1e6:.1f}MB")
 for f in failures:
