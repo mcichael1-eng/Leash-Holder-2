@@ -161,7 +161,7 @@ How long does all this take? A leading-edge logic chip needs dozens of patterned
 
 ### Why every step must be nearly perfect
 
-A thousand steps in a row creates a brutal math problem. Suppose each step has a small chance of ruining a given chip. The chance that a chip survives every step is the per-step success rate multiplied by itself a thousand times. In the table, the ^ sign means "to the power of": 0.999^1000 is 0.999 multiplied by itself 1,000 times (type =0.999^1000 into any spreadsheet to check it).
+A thousand steps in a row creates a brutal math problem. Suppose each step has a small chance of ruining a given chip. The chance that a chip survives every step is the per-step success rate multiplied by itself a thousand times. In the table, the ^ sign means "to the power of": 0.999^1000 is 0.999 multiplied by itself 1,000 times (type `=0.999^1000` into any spreadsheet to check it).
 
 | Success rate per step | Chance a chip survives 1,000 steps |
 |---|---|
@@ -213,7 +213,7 @@ The next big change moves the power wires. In a traditional chip, the wires that
 
 > **Definition — Backside power delivery:** Building a chip's power-supply wiring on the back of the wafer, under the transistors, instead of mixing it in with the signal wiring on top. It frees space and delivers power more efficiently.
 
-Further out, research labs are stacking the two kinds of transistors that every logic gate pairs together directly on top of each other (a design called CFET, short for complementary FET). It is not yet in production.
+Further out, research labs are stacking the two kinds of transistors that every logic gate pairs together directly on top of each other (a design called CFET, for "complementary field-effect transistor"; field-effect transistor, or FET, is the technical name for the kind of transistor in every chip). It is not yet in production.
 
 ### "3 nm" is a brand, not a ruler
 
@@ -370,7 +370,7 @@ A simple, widely used model says that if defects are scattered at random:
 
 `yield ≈ e^(−die area in cm² × defect density)`
 
-Here *e* is the mathematical constant 2.718 (see Chapter 6 on exponentials). To use the formula, first turn the die area into square centimeters (1 cm² is 100 mm², so divide by 100), multiply by the defect density, and raise e to minus that number: the e^x key on a phone calculator, or =EXP(-0.814) in a spreadsheet for the H100 row below. Let's work it with a defect density of 0.1 per cm²:
+Here *e* is the mathematical constant 2.718 (see Chapter 6 on exponentials). To use the formula, first turn the die area into square centimeters (1 cm² is 100 mm², so divide by 100), multiply by the defect density, and raise e to minus that number: the e^x key on a phone calculator, or `=EXP(-0.814)` in a spreadsheet for the H100 row below. Let's work it with a defect density of 0.1 per cm²:
 
 | Die area | Area in cm² | Yield at D0 = 0.1 | Yield at D0 = 0.05 |
 |---|---|---|---|
