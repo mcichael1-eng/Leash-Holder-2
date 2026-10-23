@@ -267,7 +267,7 @@ The top layer sells expertise and time rather than software.
 
 > **Definition — Pilot (proof of concept):** A small trial that tests whether AI works for one use case before a full rollout.
 
-Services grow because buying AI is easy and getting value from it is hard. Stanford's 2026 AI Index, published by its Institute for Human-Centered AI (HAI), reported that 88% of organizations say they use AI. But the "GenAI Divide" report (July 2025) from MIT NANDA, a research project at the Massachusetts Institute of Technology, found that only about 5% of enterprise generative-AI pilots delivered rapid revenue acceleration or measurable impact on profit and loss (P&L). Media turned that into "95% of AI projects fail"; the report itself blamed brittle workflows and poor fit with daily operations, not weak models.
+Services grow because buying AI is easy and getting value from it is hard. Stanford's 2026 AI Index, published by its Institute for Human-Centered AI (HAI), reported that 88% of organizations say they use AI. But the "GenAI Divide" report (July 2025) from MIT NANDA, a research project at the Massachusetts Institute of Technology (Chapter 28), found that only about 5% of enterprise generative-AI pilots delivered rapid revenue acceleration or measurable impact on profit and loss (P&L). Media turned that into "95% of AI projects fail"; the report itself blamed brittle workflows and poor fit with daily operations, not weak models.
 
 > **Definition — HAI (Stanford Institute for Human-Centered Artificial Intelligence):** A Stanford University institute that studies AI and its effects on society. It publishes the AI Index, a widely cited annual report of data on AI research, investment, adoption and jobs.
 
@@ -296,7 +296,7 @@ Let us follow one dollar of your subscription down the chain. This is a teaching
 **Step 2: the compute provider.** To see how a provider spends its 60 cents, build the yearly cost of one AI chip in a data center:
 
 - **Hardware:** assume about $50,000 per Blackwell-class GPU, all-in with its share of server and network, depreciated over five years: **$10,000 a year**.
-- **Building and power equipment:** about $15 million per megawatt (the middle of the $11–18 million range from JLL and Cushman & Wakefield). Assuming about 450 GPUs per megawatt, each GPU's share is 15,000,000 ÷ 450 ≈ $33,300, depreciated over 20 years: **about $1,700 a year**.
+- **Building and power equipment:** about $15 million per megawatt (the middle of the $11–18 million range from JLL and Cushman & Wakefield, another large real-estate firm). Assuming about 450 GPUs per megawatt, each GPU's share is 15,000,000 ÷ 450 ≈ $33,300, depreciated over 20 years: **about $1,700 a year**.
 - **Electricity:** assume each GPU accounts for about 2.5 kilowatts including its share of servers, networking and cooling, all year: 2.5 × 8,760 hours = 21,900 kilowatt-hours. At an assumed 7 cents per kilowatt-hour: **about $1,500 a year** (an upper bound, since chips do not run flat out all the time).
 - **People, maintenance, network operations, insurance and financing:** assume **about $2,000 a year**.
 
@@ -304,7 +304,7 @@ Total: about **$15,200 a year** per GPU. Hardware is about 66%, building about 1
 
 **Step 3: the chip maker.** Most of the 33 cents was paid, years earlier, to hardware vendors, the largest being NVIDIA. At a 75% gross margin, about 25 of those cents are NVIDIA's gross profit and about 8 cover its cost of goods.
 
-**Step 4: the factory floor.** Those 8 cents are shared among TSMC (wafers and advanced packaging), the HBM makers, and the makers of substrates, boards and racks. Public filings do not break this down, so the honest answer is: **a few cents of your dollar ends up at a chip factory in Taiwan or a memory plant in South Korea.**
+**Step 4: the factory floor.** Those 8 cents are shared among TSMC (wafers and advanced packaging), the HBM makers, and the makers of substrates (the base layers that chips are mounted on), boards and racks. Public filings do not break this down, so the honest answer is: **a few cents of your dollar ends up at a chip factory in Taiwan or a memory plant in South Korea.**
 
 ```mermaid
 flowchart LR
@@ -461,7 +461,7 @@ flowchart LR
     INFRA["Infrastructure and compute<br/>clusters, reliability, data centers"] --> PRE
     INFRA --> INF
 ```
-*Figure 61.7: How a model is made and shipped, with the roles that own each handoff. What customers need loops back into the next round of post-training.*
+*Figure 61.7: How a model is made and shipped, with the roles that own each handoff (PMs are product managers). What customers need loops back into the next round of post-training.*
 
 > **At the frontier (2026):** Labs are moving down the value chain. Anthropic listed 25 open roles in "Compute" and posted data-center engineering and regional community-engagement roles; OpenAI's 106 "Scaling" roles included technicians for its Stargate sites. Companies that began as research groups now hire people who negotiate power contracts and talk to county commissioners.
 

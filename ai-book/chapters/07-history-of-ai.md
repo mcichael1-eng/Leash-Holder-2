@@ -453,6 +453,8 @@ Not everyone agrees; Pattern 3 near the end of this chapter weighs the strongest
 
 *Table 7.4: The game milestones after AlphaGo.*
 
+> **Definition — CICERO:** Meta's 2022 AI system for Diplomacy, a board game won by making and breaking alliances. It combined a language model with strategic planning so it could negotiate with human players in plain English, and it scored well above the human average in an online league.
+
 By 2022 games had stopped being the main yardstick. Language was.
 
 ### Scaling laws and GPT-3 (2020)
@@ -477,7 +479,9 @@ That is about 315 sextillion operations. We will compare it with later models in
 
 ### Proteins, pictures and code (2020–2022)
 
-In 2020 DeepMind's AlphaFold 2 predicted the 3D shapes of proteins with accuracy close to lab experiments, cracking a 50-year-old problem in biology (see Chapter 52). In 2021 OpenAI showed DALL·E, which drew images from text descriptions, GitHub Copilot began suggesting code inside programmers' editors, and former OpenAI researchers founded Anthropic. In 2022 DALL·E 2, Midjourney and Stable Diffusion (with downloadable weights) made image generation a consumer hobby, and OpenAI openly released Whisper for speech recognition.
+In 2020 DeepMind's AlphaFold 2 predicted the 3D shapes of proteins with accuracy close to lab experiments, cracking a 50-year-old problem in biology (see Chapter 52). In 2021 OpenAI showed DALL·E, which drew images from text descriptions, and CLIP, which learned to match images with their captions; GitHub Copilot began suggesting code inside programmers' editors, and former OpenAI researchers founded Anthropic. In 2022 DALL·E 2, Midjourney and Stable Diffusion (with downloadable weights) made image generation a consumer hobby, and OpenAI openly released Whisper for speech recognition.
+
+> **Definition — DALL·E:** OpenAI's family of image generators that draw pictures from text descriptions, first shown in 2021. The name blends the painter Salvador Dalí and the robot WALL-E.
 
 > **Definition — Diffusion model:** An image (or video) generator that learns to turn random noise into a picture step by step, guided by a text description (see Chapter 16).
 
@@ -525,7 +529,7 @@ timeline
 The year after ChatGPT was a scramble.
 
 - **February:** Meta released LLaMA to researchers; its weights leaked online within about a week, and a wave of downloadable "open-weight" models followed. Meta's Llama 2 (July) could be downloaded and used commercially.
-- **March 14:** OpenAI released GPT-4, and Anthropic released the first Claude, on the same day. Google opened Bard a week later.
+- **March 14:** OpenAI released GPT-4, and Anthropic released the first Claude, on the same day. Google opened Bard, its first chatbot (later renamed Gemini), a week later.
 - **November:** OpenAI's board fired CEO Sam Altman, and he was reinstated within days after most staff threatened to leave, a vivid sign of how high the stakes had become.
 - **December 6:** Google DeepMind launched Gemini 1.0.
 

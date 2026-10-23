@@ -34,6 +34,8 @@ Chip companies split the work in three different ways. Some only design chips an
 
 > **Definition — Foundry:** A company that manufactures chips designed by other companies. TSMC is by far the largest; Samsung Foundry, Intel Foundry and China's SMIC are others.
 
+> **Definition — SMIC (Semiconductor Manufacturing International Corporation):** China's largest foundry. Export controls keep the most advanced chipmaking machines (EUV, explained later in this chapter) out of its reach, so it makes its most advanced 7 nm-class chips, reportedly including Huawei's Ascend AI chips, with older equipment and extra steps.
+
 > **Definition — IDM (integrated device manufacturer):** A company that both designs and manufactures its own chips. Intel, Samsung and the memory makers SK hynix and Micron are IDMs.
 
 > **Analogy:** A fabless chip company is an author, and a foundry is a printing press. NVIDIA writes the book; TSMC prints it. ASML builds the printing presses, and only ASML can build the most advanced ones. If the press is busy, it does not matter how good your manuscript is.
@@ -78,11 +80,11 @@ The ingot is ground to an exact diameter, sliced with wire saws into thin discs,
 
 > **Definition — Wafer:** A thin, round, polished slice of single-crystal silicon on which hundreds of chips are built at once. Leading-edge factories use wafers 300 mm (about 12 inches) across.
 
-Why 300 mm? Every processing step treats the whole wafer at once, so a bigger wafer means more chips per step. A 300 mm wafer has an area of π × 150 mm × 150 mm ≈ 70,686 square millimeters, about 2.25 times the older 200 mm size. (A move to 450 mm was attempted in the 2010s and abandoned as too costly.)
+Why 300 mm? Every processing step treats the whole wafer at once, so a bigger wafer means more chips per step. A 300 mm wafer has an area of π × 150 mm × 150 mm ≈ 70,686 square millimeters (a circle's area is π times its radius times itself, and the radius is half the 300 mm width), about 2.25 times the older 200 mm size (the width is 1.5 times larger, and area grows with the square of width: 1.5 × 1.5 = 2.25). (A move to 450 mm was attempted in the 2010s and abandoned as too costly.)
 
 Wafer-making is itself a concentrated business. Japanese firms led by Shin-Etsu and SUMCO supply a large share of the world's 300 mm wafers, with GlobalWafers (Taiwan), Siltronic (Germany) and SK Siltron (South Korea) making most of the rest. This is the first, quiet choke point in the chain.
 
-> **Try it:** Ask your chatbot, "What chip is in my phone, who designed it, which company manufactured it, and at what process node?" Name your phone model. Then ask it to name the country where that chip was most likely fabricated. Notice how often the answer is "TSMC, in Taiwan," even for companies you think of as American.
+> **Try it:** Ask your chatbot, "What chip is in my phone, who designed it, which company manufactured it, and at what process node?" (A process node is a generation of manufacturing technology, explained later in this chapter.) Name your phone model. Then ask it to name the country where that chip was most likely fabricated. Notice how often the answer is "TSMC, in Taiwan," even for companies you think of as American.
 
 ## Inside the cleanroom
 
@@ -116,7 +118,7 @@ Every layer of the city is built with the same basic loop, repeated over and ove
 4. **Develop** the resist, washing away the parts that were (or were not) hit by light, so the pattern now sits on the wafer as a resist stencil.
 5. **Etch** away the film wherever the resist is gone, usually with a reactive plasma, carving the pattern into the material.
 6. **Strip** off the leftover resist.
-7. **Implant** atoms of other elements where needed to tune how the silicon conducts, then heat the wafer to settle them in.
+7. **Implant** atoms of other elements where needed to tune how the silicon conducts, then heat the wafer to settle them in (this heating step is called annealing).
 8. **Polish** the surface flat so the next layer starts level.
 9. **Inspect and measure** to catch mistakes before more money is spent on a bad wafer.
 
