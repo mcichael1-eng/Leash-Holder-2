@@ -86,7 +86,7 @@ A few terms organize this map.
 
 ### The size of the business
 
-NVIDIA began in 1993 making graphics chips for video games. In the quarter that ended on July 26, 2026 (the second quarter of its fiscal year 2027), it reported:
+NVIDIA began in 1993 making graphics chips for video games. In the quarter that ended on July 26, 2026 (the second quarter of its fiscal year 2027; NVIDIA's accounting year runs from February to January, so fiscal 2027 is mostly calendar 2026), it reported:
 
 - Total revenue of **$96.2 billion**, up 106% from a year earlier.
 - **Data center revenue of $89.0 billion**, up 117%.

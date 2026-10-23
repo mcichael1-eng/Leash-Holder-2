@@ -223,6 +223,8 @@ Notes on the standards' structure:
 
 ## Summary
 
+All OUT OF SCOPE topics are explained in plain words in Appendix F (The Advanced Shelf).
+
 | Standard | Topics | COVERED before | THIN | MISSING | OUT OF SCOPE | Covered after (in scope) |
 |---|---|---|---|---|---|---|
 | AI Engineering (2025) | 60 | 52 (87%) | 5 | 3 | 0 | 60 of 60 (100%) |

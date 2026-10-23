@@ -417,6 +417,11 @@
    "letter": "E",
    "title": "Resources: Courses, Books, Newsletters, Podcasts and Communities",
    "file": "E-resources.md"
+  },
+  {
+   "letter": "F",
+   "title": "The Advanced Shelf",
+   "file": "F-advanced-shelf.md"
   }
  ],
  "stack": [

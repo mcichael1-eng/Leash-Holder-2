@@ -109,6 +109,8 @@ Known structure (part titles approximately): rooflines; how to think about TPUs;
 
 ## Summary
 
+All OUT OF SCOPE topics are explained in plain words in Appendix F (The Advanced Shelf).
+
 | Standard | Topics | COVERED before | THIN before | MISSING before | OUT OF SCOPE | Covered after edits |
 |---|---|---|---|---|---|---|
 | Barroso, Hölzle and Ranganathan (3rd ed.) | 42 | 30 | 5 | 6 | 1 | 41 of 41 in scope (98% of all 42) |

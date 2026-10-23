@@ -347,6 +347,8 @@ each, since earlier audits checked them in detail.
 
 ## Summary
 
+All OUT OF SCOPE topics are explained in plain words in Appendix F (The Advanced Shelf).
+
 **AIMA 4th edition:** 171 topics. Before: 80 COVERED, 20 THIN, 52 MISSING, 19 OUT OF SCOPE (80 of 152 in-scope topics covered, 53%). After: 152 of 152 in-scope topics covered (100%); 152 of 171 topics overall (89%), the rest judged out of scope.
 
 **CS2023 AI knowledge area:** 110 topics. Before: 56 COVERED, 22 THIN, 24 MISSING, 8 OUT OF SCOPE (56 of 102 in-scope topics covered, 55%). After: 102 of 102 in-scope topics covered (100%); 102 of 110 topics overall (93%), the rest judged out of scope.

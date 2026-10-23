@@ -279,6 +279,8 @@ Some gaps were filled while this audit was running by parallel external audits w
 
 ## Summary
 
+All OUT OF SCOPE topics are explained in plain words in Appendix F (The Advanced Shelf).
+
 | Standard | Topics | Before: COVERED / THIN / MISSING / OUT OF SCOPE | After: COVERED / OUT OF SCOPE | Share of in-scope topics covered after |
 |---|---|---|---|---|
 | Goodfellow et al. | 72 | 44 / 9 / 7 / 12 | 60 / 12 | 100% (60 of 60) |

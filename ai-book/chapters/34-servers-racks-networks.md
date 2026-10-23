@@ -124,7 +124,7 @@ So the industry split chips into pieces.
 
 > **Definition — Chiplet:** A smaller die designed to be combined with other dies inside one package, instead of building one huge die. Chiplets raise yield and let companies mix different manufacturing processes.
 
-NVIDIA's Blackwell GPU is two reticle-sized dies, joined by an extremely fast die-to-die link, that present themselves to software as one GPU with 208 billion transistors. Vera Rubin, shipping in 2026, has 336 billion transistors on TSMC's N3 process, again with two GPU dies per package. That is why NVIDIA once planned to call its Rubin rack "NVL144" (counting dies) before branding it "NVL72" (counting packages). In these rack names, NVL stands for NVLink, NVIDIA's chip-to-chip connection (explained below), and the number counts the GPUs it joins. AMD went further, earlier: the MI300X (2023) is built from many chiplets stacked and tiled together, 153 billion transistors in all, and the 2026 MI455X uses chiplets made on TSMC's 2 nm and 3 nm processes.
+NVIDIA's Blackwell GPU is two reticle-sized dies, joined by an extremely fast die-to-die link, that present themselves to software as one GPU with 208 billion transistors. Vera Rubin, shipping in 2026, has 336 billion transistors on TSMC's N3 process, again with two GPU dies per package. That is why NVIDIA once planned to call its Rubin rack "NVL144" (counting dies) before branding it "NVL72" (counting packages). In these rack names, NVL stands for NVLink, NVIDIA's chip-to-chip connection (explained below), and the number counts the GPUs (or, in the NVL144 name, GPU dies) it joins. AMD went further, earlier: the MI300X (2023) is built from many chiplets stacked and tiled together, 153 billion transistors in all, and the 2026 MI455X uses chiplets made on TSMC's 2 nm and 3 nm processes.
 
 > **Definition — AMD (Advanced Micro Devices):** An American chip designer that makes CPUs for PCs and servers and is NVIDIA's main rival in AI GPUs. Like NVIDIA, it has its chips manufactured by TSMC.
 
@@ -616,7 +616,7 @@ As lane speeds climb to 200 Gb/s and beyond, an electrical signal in copper fade
 - Switch count, using 128-port switches: about 100,000 ÷ 64 ≈ 1,560 leaf switches, about 1,560 middle-layer switches and about 780 top-layer switches (top switches need no links further up, so all 128 of their ports face down and half as many are enough), roughly 3,900 switches.
 - Add the front-end and storage networks and the largest sites use millions of optical modules.
 
-How much power is that? Huawei, the Chinese telecom-equipment and chip giant, claims its "Hi-ONE" optical design for the Atlas 960E SuperPoD (4,096 chips) replaces about 48,000 800G modules with about 5,500 units and saves over 550 kW. That company claim implies roughly 550,000 W ÷ 48,000 ≈ 11–12 W per module. At that rate, 600,000 transceivers would draw about 7 MW, a small power plant's worth, just to turn electricity into light and back. And every one contains a laser that can fail; at hundreds of thousands of modules, failures are a daily maintenance task.
+How much power is that? Huawei, the Chinese telecom-equipment and chip giant, claims its "Hi-ONE" optical design for the Atlas 960E SuperPoD (4,096 chips) replaces about 48,000 800G modules with about 5,500 units and saves over 550 kW. That company claim implies at least 550,000 W ÷ 48,000 ≈ 11–12 W per module (more if the 5,500 replacement units draw power too, since the 550 kW is a net saving). At that rate, 600,000 transceivers would draw about 7 MW, a small power plant's worth, just to turn electricity into light and back. And every one contains a laser that can fail; at hundreds of thousands of modules, failures are a daily maintenance task.
 
 ### Co-packaged optics and optical circuit switches
 
@@ -713,7 +713,7 @@ Real campuses line up with that order of magnitude. Epoch AI lists xAI's Colossu
 
 Even a gigawatt campus is limited by how much power one place can get. So in 2025–26 the frontier labs started joining sites.
 
-> **Definition — Scale-across (multi-site training):** Linking several data center campuses, often hundreds of kilometers apart, with high-capacity fiber so they can work on one training job. Microsoft calls its version an "AI WAN."
+> **Definition — Scale-across (multi-site training):** Linking several data center campuses, often hundreds of kilometers apart, with high-capacity fiber so they can work on one training job. Microsoft calls its version an "AI WAN" (wide-area network, a network that joins distant sites).
 
 Microsoft's second Fairwater site, in Atlanta, has run since October 2025 linked to the first, in Wisconsin, so the two act as one system. The obstacle is the speed of light. Light in glass fiber travels about 1 km every 5 microseconds. The two Fairwater sites are about 700 miles apart; a fiber route of roughly 1,200 km means:
 

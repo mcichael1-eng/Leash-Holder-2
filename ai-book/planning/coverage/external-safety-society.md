@@ -130,6 +130,8 @@ Status key: COVERED (explained at beginner level), THIN (mentioned but not expla
 
 ## Summary
 
+All OUT OF SCOPE topics are explained in plain words in Appendix F (The Advanced Shelf).
+
 [First-pass counts. Updated counts, including the 47 rows added after verification, are in "Verified online (October 21, 2026)" below.]
 
 | Standard | Topics | Before: covered / thin / missing / out of scope | After: covered / out of scope | Share covered before → after |
