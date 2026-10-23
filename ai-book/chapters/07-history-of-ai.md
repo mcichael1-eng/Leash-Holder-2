@@ -610,7 +610,7 @@ On January 21, 2025 OpenAI and partners announced Stargate, a plan for up to $50
 
 - **January 23:** OpenAI's Operator, an agent that browses the web for you.
 - **February 2:** OpenAI's Deep Research; the same day Andrej Karpathy coined "vibe coding", later named Collins Dictionary's 2025 Word of the Year.
-- **February 24:** Claude 3.7 Sonnet, the first "hybrid" model you could ask to think or not, and Claude Code, a coding agent that works in a terminal.
+- **February 24:** Claude 3.7 Sonnet, the first "hybrid" model you could ask to think or not, and Claude Code, a coding agent that works in a terminal (the text window where programmers type commands).
 - **May 22:** Claude Opus 4 and Sonnet 4; Opus 4 was the first model Anthropic deployed under its stricter ASL-3 safety protections (AI Safety Level 3, a tier of Anthropic's safety policy with tighter security and extra safeguards against misuse).
 - **July:** ChatGPT agent, which works on its own virtual computer. **October:** OpenAI's ChatGPT Atlas, a web browser with an agent built in.
 
@@ -624,11 +624,11 @@ On May 14, 2025 Google DeepMind's AlphaEvolve found a way to multiply 4 × 4 com
 
 ### GPT-5 and the end-of-year flagships
 
-On August 7, 2025 OpenAI launched GPT-5, a system with a fast model, a reasoning model and a router that decides which one answers you. The end of the year brought a new flagship from each big lab within weeks: GPT-5.1 (November), Gemini 3 Pro (November 18), Claude Opus 4.5 (November 24) and GPT-5.2 (December). METR's time horizons kept climbing: about 2 hours for o3, 3.4 hours for GPT-5, 4.9 hours for Opus 4.5 and 5.9 hours for GPT-5.2.
+On August 7, 2025 OpenAI launched GPT-5, a system with a fast model, a reasoning model and a router that decides which one answers you. The end of the year brought a new flagship from each big lab within weeks: GPT-5.1 (November), Gemini 3 Pro (November 18), Claude Opus 4.5 (November 24) and GPT-5.2 (December). METR's time horizons (the length of task, measured in skilled-human working time, that an AI agent can complete half the time; defined properly in Era 10) kept climbing: about 2 hours for o3, 3.4 hours for GPT-5, 4.9 hours for Opus 4.5 and 5.9 hours for GPT-5.2.
 
 ### Reality checks and rules
 
-Not everything went up. In April 2025 OpenAI rolled back a GPT-4o update that had become excessively flattering. In July a METR study found experienced open-source developers were 19% slower on their own projects with early-2025 AI tools, even though they believed they were faster. Policy swung too. The 2023 US executive order was revoked on January 20, 2025, and a July 2025 "AI Action Plan" focused on speed and infrastructure. The EU's first AI Act bans applied from February 2, 2025 and its rules for general-purpose models from August 2. California's SB 53, signed September 29, 2025, became the first US law addressing catastrophic risk from frontier AI. A December 2025 executive order set up a Justice Department task force to challenge state AI laws in court.
+Not everything went up. In April 2025 OpenAI rolled back a GPT-4o update that had become excessively flattering. In July a METR study found experienced open-source developers were 19% slower on their own projects with early-2025 AI tools, even though they believed they were faster. Policy swung too. The 2023 US executive order was revoked on January 20, 2025, and a July 2025 "AI Action Plan" focused on speed and infrastructure. The EU's first AI Act bans applied from February 2, 2025 and its rules for general-purpose models from August 2. California's SB 53 (Senate Bill 53; "SB" numbers are how California and other US states label bills), signed September 29, 2025, became the first US law addressing catastrophic risk from frontier AI. A December 2025 executive order set up a Justice Department task force to challenge state AI laws in court.
 
 ```mermaid
 timeline
@@ -665,7 +665,7 @@ By 2026 the big labs were releasing new models roughly every month. Rather than 
 
 On April 7, 2026 Anthropic announced Claude Mythos Preview and Project Glasswing. Anthropic said the unreleased model, given only to defenders such as AWS, Apple, Google, Microsoft, NVIDIA and the Linux Foundation, had found thousands of high-severity security flaws across every major operating system and web browser, including a 27-year-old bug in OpenBSD. In June Anthropic released Fable 5 and Mythos 5, the same underlying model with different safeguards: Fable for the public, with classifiers that redirect risky requests, and Mythos for vetted partners.
 
-On September 3, 2026 OpenAI unveiled GPT-6 Astra. OpenAI described it as its largest training run by far and its first pretraining run on more than 100,000 GPUs, at the Stargate site in Abilene. Epoch AI estimates about 9.4 × 10^26 FLOP. It rolled out first to vetted organizations in OpenAI's trusted-access program, because of its cyber capabilities, and a day later to paid ChatGPT and API customers in a version that refuses some cybersecurity requests. OpenAI's safety card for Astra calls it "our first model to reach the Critical level of cybersecurity capability under our Preparedness Framework," the company's internal risk scale. Some commentary called it AGI; treat that as marketing or speculation, not a finding.
+On September 3, 2026 OpenAI unveiled GPT-6 Astra. OpenAI described it as its largest training run by far and its first pretraining run on more than 100,000 GPUs, at the Stargate site in Abilene. Epoch AI estimates about 9.4 × 10^26 FLOP. It rolled out first to vetted organizations in OpenAI's trusted-access program, because of its cyber capabilities, and a day later to paid ChatGPT and API customers in a version that refuses some cybersecurity requests. OpenAI's safety card for Astra calls it "our first model to reach the Critical level of cybersecurity capability under our Preparedness Framework," the company's internal risk scale. Some commentary called it AGI (artificial general intelligence, defined near the end of this chapter); treat that as marketing or speculation, not a finding.
 
 > **Definition — Restricted (trusted-access) model:** A model released only to vetted organizations, or in a safer public version with extra safeguards, because its full capabilities in areas like cyberattacks are judged too risky for open release.
 

@@ -552,7 +552,7 @@ Designers also license proven building blocks, which the industry calls IP (shor
 
 > **Definition — Tape-out:** The moment a chip design is finalized and sent to the foundry to make photomasks and start manufacturing. The name comes from the days when designs were shipped on magnetic tape.
 
-The foundry (overwhelmingly TSMC for AI accelerators) runs the fab with tools from ASML, Applied Materials, Lam Research, Tokyo Electron and KLA, and materials such as wafers, photoresists and specialty gases, many from Japan. HBM arrives from SK hynix, Samsung or Micron, and TSMC (or an OSAT) assembles and tests the package. Finished accelerators then go to contract manufacturers who build boards, servers and entire racks.
+The foundry (overwhelmingly TSMC for AI accelerators) runs the fab with tools from ASML, Applied Materials, Lam Research, Tokyo Electron (TEL) and KLA, and materials such as wafers, photoresists and specialty gases, many from Japan (photoresists come largely from Japanese firms such as JSR and TOK). HBM arrives from SK hynix, Samsung or Micron, and TSMC (or an OSAT) assembles and tests the package. Finished accelerators then go to contract manufacturers who build boards, servers and entire racks.
 
 > **Definition — ODM (original design manufacturer):** A company that designs and builds servers and racks for others to sell or use. Foxconn, Quanta, Wistron and Wiwynn (all Taiwanese) build most AI servers, alongside brands like Supermicro and Dell.
 
@@ -643,7 +643,7 @@ Chips are among the most capital-hungry products in the world. Here are the orde
 | One 2 nm-class wafer | reportedly about $30,000 | reported, not public |
 | One H100 GPU | reportedly $25,000 to $40,000 | reported street prices |
 | One GB200/GB300 NVL72 rack | reportedly $3 to $4 million | reported |
-| One gigawatt AI campus | about $38 billion up-front capex per GW of IT power | Epoch AI estimate |
+| One gigawatt AI campus | about $38 billion up-front capex (capital spending on buildings and equipment) per GW of IT power | Epoch AI estimate |
 
 *Table 36.6: The costs of the AI chip pipeline, as of late 2026.*
 
@@ -686,7 +686,7 @@ A few details show how policy is written in hardware terms:
 - **October 7, 2022.** The first rules blocked the most advanced AI chips and restricted equipment for Chinese fabs making logic at 16/14 nm or below, DRAM at 18 nm or below, or NAND flash with 128 or more layers.
 - **October 2023.** The rules were rewritten around TPP and "performance density" (TPP divided by die area), closing the loophole NVIDIA had used with its China-specific A800 and H800; NVIDIA answered with the cut-down H20.
 - **2025.** The "AI Diffusion" rule would have sorted the world into three tiers of access but was rescinded before taking effect. H20 sales were halted, then allowed again for a 15 percent revenue share. In September, Chinese regulators discouraged purchases of NVIDIA's China-specific chips, and China's market regulator reportedly found NVIDIA had violated anti-monopoly law.
-- **January 13–15, 2026.** A BIS rule moved the H200, AMD's MI325X and equivalent chips (defined by a TPP below 21,000 and memory bandwidth below 6,500 GB/s; published summaries differ on whether a chip must meet one limit or both) from "presumed denial" to case-by-case review for China. The conditions: exports of each model capped at 50 percent of its US sales; certification that US supply is unaffected; know-your-customer checks, physical security and no remote access for restricted parties; and a 25 percent charge collected through mandatory US lab testing plus a Section 232 tariff. Blackwell and newer chips were not covered.
+- **January 13–15, 2026.** A BIS rule moved the H200, AMD's MI325X and equivalent chips (defined by a TPP below 21,000 and memory bandwidth below 6,500 GB/s; published summaries differ on whether a chip must meet one limit or both) from "presumed denial" to case-by-case review for China. The conditions: exports of each model capped at 50 percent of its US sales; certification that US supply is unaffected; know-your-customer checks, physical security and no remote access for restricted parties; and a 25 percent charge collected through mandatory US lab testing plus a Section 232 tariff (an import tax on national-security grounds, defined later in this chapter). Blackwell and newer chips were not covered.
 - **The 2026 outcome.** According to NVIDIA's filings, the US began granting licenses in February 2026 for small amounts of H200s to specific Chinese customers, but the Chinese government restricted those sales. In NVIDIA's quarter ending July 2026, H200 sales to China were under 1 percent of data-center revenue, and its guidance assumes zero data-center compute revenue from China. A draft *global* licensing framework for AI chips was reported in March 2026; as of mid-October 2026, no replacement rule had been announced. Controls loosened for close partners instead: on July 10, 2026, BIS moved the United Arab Emirates into a more trusted country group and allowed its government and certain approved companies to receive advanced computing items, including chips and servers, without a license. On October 16, 2026, China reportedly proposed export controls of its own on 40 technologies, including AI.
 
 ### Worked example: reading a TPP threshold
@@ -733,6 +733,8 @@ Huawei's roadmap, as it presented it at Huawei Connect 2025 and 2026:
 | Ascend 970 / 980 | 2028 / 2029 | |
 
 *Table 36.7: Huawei's Ascend roadmap, as announced by Huawei. SuperClusters are planned to reach up to 512,000 NPUs, or about 1 million with multiple network rails.*
+
+Huawei calls its Ascend chips NPUs (neural processing units). Unlike the small NPUs inside phones and laptops in Chapter 35, these are full-size data-center accelerators, comparable in role to NVIDIA's GPUs.
 
 ### Worked example: many weaker chips
 
