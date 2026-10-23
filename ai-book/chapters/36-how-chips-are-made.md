@@ -814,7 +814,7 @@ Semiconductor, Integrated circuit (IC) / chip, Die, Fabless company, Foundry, ID
    1. Put labels in column A and enter: in B1 the wafer diameter (300), in B2 the die area in mm² (814), in B3 the defect density per cm² (0.1), and in B4 the wafer price (17000).
    2. Dies per wafer, in B5: `=PI()*(300/2)^2/B2 - PI()*300/SQRT(2*B2)`.
    3. Yield, in B6: `=EXP(-(B2/100)*B3)` (the B2/100 turns mm² into cm²). Good dies, in B7: `=B5*B6`. Cost per good die, in B8: `=B4/B7`.
-   4. Repeat for 100 mm², 400 mm² and 858 mm² dies, and for defect densities of 0.05 and 0.2.
+   4. Repeat for 100 mm², 400 mm² and 858 mm² dies, and for defect densities of 0.05 and 0.2, by changing B2 and B3 and noting the results.
    5. Compute "good silicon per wafer" (good dies × die area) for each case and compare.
    **What you'll learn:** why big dies are expensive, why chiplets help, and that silicon is a small part of an AI accelerator's price.
 
@@ -845,7 +845,7 @@ Semiconductor, Integrated circuit (IC) / chip, Die, Fabless company, Foundry, ID
    **What you'll learn:** to think in supply-chain terms about concentration risk, the core worry behind the CHIPS Act and reshoring.
 
 10. **[Challenge] Many weak chips versus few strong ones.** Compare Huawei's and NVIDIA's approaches with numbers.
-    1. Using Huawei's Atlas 960E figures (4,096 NPUs, 8 exaFLOPS FP8) and the Vera Rubin NVL72 (72 GPUs, 1,260 PFLOPS FP8), compute FP8 PFLOPS per chip for each and how many chips each needs for 100 exaFLOPS.
+    1. Using Huawei's Atlas 960E figures (4,096 NPUs, 8 exaFLOPS FP8) and the Vera Rubin NVL72 (72 GPUs, 1,260 PFLOPS FP8), compute FP8 PFLOPS per chip for each and how many chips each needs for 100 exaFLOPS (1 exaFLOPS = 1,000 PFLOPS, so 100 exaFLOPS is 100,000 PFLOPS).
     2. Put the power per chip in a cell as an assumption you can change (for example 1 kW, 1.5 kW, 2 kW) and estimate the total power of each 100-exaFLOPS system.
     3. List three costs of using more chips besides power (networking, failures, floor space) and one advantage.
     **What you'll learn:** why export controls shape system design, and how "many weaker chips" trades efficiency for availability.
@@ -878,7 +878,7 @@ Semiconductor, Integrated circuit (IC) / chip, Die, Fabless company, Foundry, ID
 1. Features on a modern chip are only nanometers across, so a single dust particle can bridge two wires and ruin a die. Fabs filter air continuously, keep positive pressure, and control temperature and humidity, but mainly they keep wafers sealed in FOUPs moved by ceiling robots, so the air right around a wafer is far cleaner than the room people stand in.
 2. Survival chance is the per-step success rate multiplied across all steps: 0.999^1000 ≈ 37 percent, so nearly two of every three chips would be lost. You need about 99.99 percent per step to keep around 90 percent.
 3. Node names stopped matching any physical dimension decades ago; they are generation labels, and real gate spacing is still tens of nanometers. Transistor density (transistors per mm²), along with power and performance, is a better comparison.
-4. A generator fires about 50,000 tin droplets per second; a pre-pulse flattens each one and a powerful CO2 laser turns it into plasma that glows at 13.5 nm. A collector mirror gathers the light, illuminator mirrors shape it, a reflective mask adds the pattern, and projection mirrors shrink it four times onto the moving wafer. EUV light is absorbed by glass and air, so the path must be in vacuum and use multilayer mirrors, each reflecting only about 70 percent.
+4. A generator fires about 50,000 tin droplets per second; a pre-pulse flattens each one and a powerful CO2 (carbon-dioxide) laser turns it into plasma that glows at 13.5 nm. A collector mirror gathers the light, illuminator mirrors shape it, a reflective mask adds the pattern, and projection mirrors shrink it four times onto the moving wafer. EUV light is absorbed by glass and air, so the path must be in vacuum and use multilayer mirrors, each reflecting only about 70 percent.
 5. Yield ≈ e^(−area × defect density). At 0.1 defects per cm², a 1 cm² chiplet yields about 90 percent, but an 8.14 cm² die yields about 44 percent, because a bigger die is more likely to catch a defect. Splitting a design into chiplets gives more good silicon per wafer, but the chiplets must be rejoined with dense connections, which is what advanced packaging provides.
 6. AI accelerators need GPU dies and several HBM stacks joined on a large interposer. The packages are huge, need perfect parts from several suppliers at once, compound yield losses, and depend on specialized lines that take years to build. Demand for AI chips outran that capacity from 2023 onward.
 7. TPP is roughly dense peak trillions of operations per second times bits per operation. The H100/H200 is about 1,979 × 8 ≈ 15,800, below the 21,000 threshold. Rubin is about 17,500 × 8 = 140,000, roughly seven times over, so it is not eligible.

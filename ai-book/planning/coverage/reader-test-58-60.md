@@ -75,11 +75,11 @@ After editing, `validate.py` passes on all three files (7/7, 12/12 and 9/9 diagr
 | 60 | Exercise 8 | "CAIS" unexplained | Spelled out |
 | 60 | Exercise 10 | The scoring rule did not say to write probabilities as decimals or what ^2 means | Added both, two worked scores and the always-50% baseline of 0.25 |
 
-Fixes per chapter (66 in total):
+Fixes per chapter (66 table rows in total):
 
-- **Chapter 58 (25 rows, 29 individual fixes):** 24 undefined terms (2 new definition callouts: NVIDIA and AWS), 3 beginner jumps and 2 exercises.
-- **Chapter 59 (25 fixes):** 21 undefined terms (6 new definition callouts: SB and AB, IBM, SMIC, IAPP and CSET, plus the EO sentence added to an existing definition), 3 beginner jumps and 1 exercise.
-- **Chapter 60 (20 fixes):** 14 undefined terms (1 new definition callout: AMD), 3 beginner jumps and 3 exercises.
+- **Chapter 58 (25 fixes):** 20 undefined terms (2 new definition callouts: NVIDIA and AWS), 3 beginner jumps and 2 exercises.
+- **Chapter 59 (23 fixes):** 19 undefined terms (5 new definition callouts: SB and AB, IBM, SMIC, IAPP and CSET, plus the EO sentence added to an existing definition), 3 beginner jumps and 1 exercise.
+- **Chapter 60 (18 fixes):** 12 undefined terms (1 new definition callout: AMD), 3 beginner jumps and 3 exercises.
 
 Every new definition was added to its chapter's Key terms list.
 

@@ -166,7 +166,7 @@ The open problems hide in the caveats. The 50% horizon flatters reliability: in 
 **Worked example: when would a one-month horizon arrive if the trend held?** A working month is about 167 hours (2,000 working hours a year divided by 12). Starting from 17.4 hours in April 2026:
 
 1. Factor needed: 167 ÷ 17.4 ≈ 9.6.
-2. Doublings needed: 2^3 = 8 and 2^3.26 ≈ 9.6, so about 3.26 doublings.
+2. Doublings needed: 2^3 = 8 is a little short and 2^4 = 16 is too many, so the answer lies between 3 and 4. The spreadsheet formula `=LOG(9.6,2)` gives 3.26 (that is, 2^3.26 ≈ 9.6), so about 3.26 doublings.
 3. At a 4.2-month doubling: 3.26 × 4.2 ≈ 13.7 months, around mid-2027.
 4. At a 7-month doubling: 3.26 × 7 ≈ 22.8 months, around early 2028.
 5. The starting point could be anywhere from about 8.5 to 55 hours, which shifts the answer by more than one doubling either way.
@@ -231,7 +231,7 @@ Moravec's paradox (Chapter 49) still sums up robotics: what is easy for a toddle
 
 > **Definition — VLA (vision-language-action model):** A robot foundation model that takes in camera images and a written instruction and outputs motor actions, built by extending a vision-language model so it can control a body.
 
-Robot foundation models (Physical Intelligence's π0 family, Google DeepMind's Gemini Robotics 2, NVIDIA's GR00T) can follow instructions and transfer skills between robot bodies, and Omdia estimated 13,318 humanoids shipped worldwide in 2025, most from Chinese makers. But the hard parts are the ones that matter for paid work: reliability over a long shift, soft and deformable objects, safety around people, and cost per hour compared with human labor. There is no internet-sized dataset of robot actions, so companies collect it by teleoperation.
+Robot foundation models (Physical Intelligence's π0 family, Google DeepMind's Gemini Robotics 2, NVIDIA's GR00T) can follow instructions and transfer skills between robot bodies, and the market-research firm Omdia estimated 13,318 humanoids shipped worldwide in 2025, most from Chinese makers. But the hard parts are the ones that matter for paid work: reliability over a long shift, soft and deformable objects, safety around people, and cost per hour compared with human labor. There is no internet-sized dataset of robot actions, so companies collect it by teleoperation.
 
 > **Definition — Teleoperation:** A human controlling a robot remotely, either to do a task the robot cannot yet do alone or to record demonstrations the robot can later learn from.
 
@@ -314,7 +314,7 @@ The technical problems decide what AI can do. The infrastructure problems decide
 
 > **Definition — Gigawatt (GW):** A billion watts, a unit of power (a rate of energy use). One gigawatt running for a year delivers 8.76 terawatt-hours of energy, about the yearly electricity of 800,000 average US homes.
 
-The open problems are about speed and fairness more than raw supply. JLL reports average waits of more than four years for a grid connection in major markets, which pushes builders toward gas turbines on site. Gas fills most of the near-term gap, nuclear restarts help this decade, and new small modular reactors mostly arrive in the 2030s: the first US construction permit for a BWRX-300, a leading small-reactor design, was approved only in late September 2026 (the Nuclear Regulatory Commission announced it on September 29). Meanwhile prices in the eastern US capacity market jumped many times over, sparking fights about whether households subsidize data centers (Chapter 41).
+The open problems are about speed and fairness more than raw supply. The real-estate firm JLL (Chapter 38) reports average waits of more than four years for a grid connection in major markets, which pushes builders toward gas turbines on site. Gas fills most of the near-term gap, nuclear restarts help this decade, and new small modular reactors mostly arrive in the 2030s: the first US construction permit for a BWRX-300, a leading small-reactor design, was approved only in late September 2026 (the Nuclear Regulatory Commission, or NRC, announced it on September 29). Meanwhile prices in the eastern US capacity market jumped many times over, sparking fights about whether households subsidize data centers (Chapter 41).
 
 > **Definition — Interconnection queue:** The waiting line of projects asking to connect to the electricity grid. Each needs engineering studies and often new equipment, and waits are now measured in years.
 
@@ -324,7 +324,7 @@ Two research questions could change the picture. Can training jobs throttle down
 
 ### Chips, memory and the supply chain
 
-Chapters 32 to 36 showed that AI runs on one of the most concentrated supply chains on Earth, and its open problems are physical. GPU memory bandwidth has grown only about 28% a year since 2008 by Epoch's count, much slower than compute, and the stacked HBM memory that feeds AI chips comes from just three companies. TSMC's CoWoS packaging has gated accelerator supply since 2023, and nearly every leading AI chip is made in Taiwan, which puts geopolitics inside every AI forecast. GPU energy efficiency improves about 1.34× a year (Epoch): fast, but slower than demand, which is the Jevons paradox again.
+Chapters 32 to 36 showed that AI runs on one of the most concentrated supply chains on Earth, and its open problems are physical. GPU memory bandwidth has grown only about 28% a year since 2008 by Epoch's count, much slower than compute, and the stacked HBM memory that feeds AI chips comes from just three companies. The CoWoS packaging lines of TSMC, the Taiwanese contract chipmaker (Chapter 36), have gated accelerator supply since 2023, and nearly every leading AI chip is made in Taiwan, which puts geopolitics inside every AI forecast. GPU energy efficiency improves about 1.34× a year (Epoch): fast, but slower than demand, which is the Jevons paradox again.
 
 > **Definition — Memory wall:** The long-running gap between how fast processors can calculate and how fast memory can feed them numbers, which leaves AI chips increasingly waiting on data.
 
