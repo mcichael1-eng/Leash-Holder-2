@@ -63,7 +63,7 @@ Offline search plans the whole route on a map before taking a step. Online searc
 
 ### Structure in constraint problems
 
-Some constraint satisfaction problems (Chapter 48) fall apart into easier pieces once you look at which variables constrain which. If the constraints form a tree, with no loops, the problem can be solved in time that grows only in proportion to the number of variables: pick a root, fix values from the root outward, and you never need to backtrack. If there are only a few loops, you can try each value of the handful of variables that cause them and solve the loop-free problem that remains, or group variables into clusters that connect like a tree. Scheduling three departments that share no constraints is three small problems, not one big one, and solvers that notice this are dramatically faster.
+Some constraint satisfaction problems (Chapter 48) fall apart into easier pieces once you look at which variables constrain which. If the constraints form a tree, with no loops, the problem can be solved in time that grows only in proportion to the number of variables: pick a root, make one pass from the leaves up to the root that crosses out every value with no compatible value left in the branch below it, then fix values from the root outward, and you never need to backtrack. If there are only a few loops, you can try each value of the handful of variables that cause them and solve the loop-free problem that remains, or group variables into clusters that connect like a tree. Scheduling three departments that share no constraints is three small problems, not one big one, and solvers that notice this are dramatically faster.
 
 > **Definition — Tree-structured CSP:** A constraint problem whose diagram of constraints has no loops. Such problems can be solved quickly, in time proportional to the number of variables, without any backtracking.
 
@@ -242,11 +242,11 @@ Reinforcement learning (Chapter 48) usually learns one small action at a time. H
 
 ### Other motion planners
 
-Chapter 49 introduces the RRT, which grows a random tree through free space. Courses also teach several older or alternative planners. Visibility graphs connect the corners of obstacles and find the shortest route, which hugs those corners. Voronoi diagrams route a robot along the lines that stay as far as possible from every obstacle, which is safer but longer. Cell decomposition chops the free space into simple cells and searches the map of which cells touch. Probabilistic roadmaps scatter random collision-free points once, connect nearby ones, and reuse that roadmap for many trips.
+Chapter 49 introduces the RRT, which grows a random tree through free space. Courses also teach several older or alternative planners. Visibility graphs connect the corners of obstacles and find the shortest route, which hugs those corners. Voronoi diagrams route a robot along the lines that stay as far as possible from the obstacles on either side, which is safer but longer. Cell decomposition chops the free space into simple cells and searches the map of which cells touch. Probabilistic roadmaps scatter random collision-free points once, connect nearby ones, and reuse that roadmap for many trips.
 
 > **Definition — Visibility graph:** A motion-planning map that links every pair of obstacle corners that can "see" each other in a straight line; the shortest path around obstacles always runs along such links.
 
-> **Definition — Voronoi diagram:** A division of space into regions closest to each obstacle; its boundary lines are the points farthest from all obstacles, which makes them safe routes for a robot.
+> **Definition — Voronoi diagram:** A division of space into regions, one around each obstacle, holding the points closer to that obstacle than to any other; its boundary lines are the points equally far from the two nearest obstacles, which keeps a robot as far from obstacles as it can get and makes them safe routes.
 
 > **Definition — Cell decomposition:** Motion planning by dividing the free space into simple cells, such as rectangles, and searching for a sequence of neighboring cells from start to goal.
 
@@ -260,7 +260,7 @@ Real robots slip and their sensors are noisy, so a path planned to pass 2 centim
 
 ### Optimal control: LQR, DDP and LQG
 
-Chapter 49 covers PID controllers and model predictive control. The textbook optimal controller is LQR, the linear-quadratic regulator: if a system responds in proportion to the pushes it gets, and you penalize errors and effort by their squares, the best feedback rule can be computed exactly. Balancing a pole on a moving cart is the classic demonstration. DDP extends the idea to systems that do not respond proportionally, by repeatedly approximating them as proportional around the current trajectory. LQG adds a Kalman filter (Chapter 54) to cope with noisy sensors. Stanford's CS229 teaches these as the bridge between reinforcement learning and control engineering.
+Chapter 49 covers PID controllers and model predictive control. The textbook optimal controller is LQR, the linear-quadratic regulator: if a system responds in proportion to the pushes it gets, and you penalize errors and effort by their squares, the best feedback rule can be computed exactly. Balancing a pole on a moving cart is the classic demonstration. DDP extends the idea to systems that do not respond proportionally, by repeatedly approximating them as proportional around the current trajectory. LQG adds a Kalman filter (Chapter 54) to cope with noisy sensors. Stanford's machine-learning course, CS229, teaches these as the bridge between reinforcement learning and control engineering.
 
 > **Definition — LQR (linear-quadratic regulator):** The optimal feedback controller for a system whose response is proportional to its inputs, when errors and control effort are penalized by their squares. It can be computed exactly and runs as a simple formula.
 
@@ -406,13 +406,13 @@ Gaussian discriminant analysis is a generative classifier (Chapter 16). It model
 
 > **Definition — Gaussian discriminant analysis (GDA):** A classifier that models the data of each class as a multivariate normal distribution and assigns a new point to the class most likely to have produced it.
 
-> **Definition — Multivariate normal distribution:** The bell curve extended to several numbers at once: a cloud of points densest at a center, whose spread and tilt in each direction are set by a covariance matrix.
+> **Definition — Multivariate normal distribution:** The bell curve extended to several numbers at once: a cloud of points densest at a center, whose spread and tilt in each direction are set by a covariance matrix (defined in the next section).
 
 > **Definition — Linear discriminant analysis (LDA):** The special case of Gaussian discriminant analysis in which all classes share the same spread and tilt, so the boundaries between classes are straight lines or flat planes.
 
 ### SVM duality, SMO and the hinge loss
 
-Support vector machines (Chapter 10) are trained by solving an optimization problem that can be rewritten in an equivalent "dual" form in which the data appear only through similarity scores between pairs of examples. That rewriting is what makes the kernel trick (Chapter 10) possible. SMO, John Platt's method from 1998, solves the dual by repeatedly adjusting just two weights at a time, each step simple enough to do by hand, which made SVM training practical. The SVM's loss function is the hinge loss: zero for points classified correctly with room to spare, then rising in a straight line as a point creeps toward or across the boundary. Stanford's CS231n compares it with the cross-entropy loss (Chapter 6).
+Support vector machines (Chapter 10) are trained by solving an optimization problem that can be rewritten in an equivalent "dual" form in which the data appear only through similarity scores between pairs of examples. That rewriting is what makes the kernel trick (Chapter 10) possible. SMO, John Platt's method from 1998, solves the dual by repeatedly adjusting just two weights at a time, each step simple enough to do by hand, which made SVM training practical. The SVM's loss function is the hinge loss: zero for points classified correctly with room to spare, then rising in a straight line as a point creeps toward or across the boundary. Stanford's computer-vision course, CS231n, compares it with the cross-entropy loss (Chapter 6).
 
 > **Definition — Duality (optimization):** The fact that many optimization problems have an equivalent "dual" version, with a different set of unknowns, whose solution gives the same answer and is sometimes much easier to compute.
 
@@ -580,7 +580,7 @@ Before end-to-end training was practical, a common shortcut was to fix a network
 
 ### Boltzmann variants, sigmoid belief networks and NADE
 
-Chapter 16 introduces Boltzmann machines, restricted Boltzmann machines and deep belief networks. A deep Boltzmann machine, from 2009, stacks several RBM-like layers with two-way connections between all neighboring layers. A sigmoid belief network, from 1992, is the directed, one-way version, in which each unit switches on with a probability given by a sigmoid (Chapter 8) of its parents. NADE, from 2011, generates data one piece at a time, predicting each pixel or value from the ones before it with a shared neural network: the same autoregressive idea (Chapter 15) that drives next-token prediction in today's language models. All three are historical names today.
+Chapter 16 introduces Boltzmann machines, restricted Boltzmann machines (RBMs) and deep belief networks. A deep Boltzmann machine, from 2009, stacks several RBM-like layers with two-way connections between all neighboring layers. A sigmoid belief network, from 1992, is the directed, one-way version, in which each unit switches on with a probability given by a sigmoid (Chapter 8) of its parents. NADE, from 2011, generates data one piece at a time, predicting each pixel or value from the ones before it with a shared neural network: the same autoregressive idea (Chapter 15) that drives next-token prediction in today's language models. All three are historical names today.
 
 > **Definition — Deep Boltzmann machine (DBM):** A generative model made of several layers of hidden units with two-way (undirected) connections between neighboring layers, a deeper relative of the restricted Boltzmann machine.
 
@@ -665,7 +665,7 @@ Texture is a repeated local pattern such as brick, grass, fabric or wood grain. 
 
 ### Shapes, contours and modular recognition
 
-Before deep learning, a common route to recognizing objects was through their outlines: detect edges, link them into contours, then compare each contour with stored shapes using a shape descriptor, such as the 2002 "shape context", which records for each point on an outline where the rest of the outline lies. The CS2023 curriculum also lists "modularity in recognition", the old design of recognition as a pipeline of separate hand-built stages (find edges, group them, match them). End-to-end CNNs (Chapter 14) and the detectors of Chapter 45 replaced these pipelines for most tasks.
+Before deep learning, a common route to recognizing objects was through their outlines: detect edges, link them into contours, then compare each contour with stored shapes using a shape descriptor, such as the 2002 "shape context", which records for each point on an outline where the rest of the outline lies. The CS2023 curriculum (the 2023 guidelines computing societies publish for university computer-science degrees; see "Where to go next") also lists "modularity in recognition", the old design of recognition as a pipeline of separate hand-built stages (find edges, group them, match them). End-to-end CNNs (Chapter 14) and the detectors of Chapter 45 replaced these pipelines for most tasks.
 
 > **Definition — Edge detection:** Finding the places in an image where brightness changes sharply, which usually mark the boundaries of objects.
 
@@ -683,7 +683,7 @@ A convolution (Chapter 14) slides a small filter across an image, multiplying an
 
 ### ResNeXt, RegNet and anchor boxes
 
-ResNeXt, from 2017, splits each ResNet block (Chapter 14) into many thin parallel paths, a grouped convolution, and found that more paths beat simply making the network wider or deeper. RegNet, from 2020, stopped hand-designing networks altogether: its authors studied a whole family of designs and distilled simple rules, such as letting channel widths grow steadily with depth. Anchor boxes are a detection detail: an object detector (Chapter 45) starts from a fixed set of box shapes at every location, tall, wide and square, and predicts how to stretch and shift each one. Most detectors from about 2015 to 2020 used them; DETR (Chapter 45) showed they could be dropped.
+ResNeXt, from 2017, splits each ResNet block (Chapter 14) into many thin parallel paths, a grouped convolution, and found that more paths beat simply making the network wider or deeper. RegNet, from 2020, stopped hand-designing networks altogether: its authors studied a whole family of designs and distilled simple rules, such as letting channel widths grow steadily with depth. Anchor boxes are a detection detail: an object detector (Chapter 45) starts from a fixed set of box shapes at every location, tall, wide and square, and predicts how to stretch and shift each one. Most detectors from about 2015 to 2020 used them; DETR (Detection Transformer, Chapter 45) showed they could be dropped.
 
 > **Definition — ResNeXt:** A 2017 CNN design that splits each residual block into many parallel narrow paths whose outputs are added together, improving accuracy at the same cost.
 
@@ -763,7 +763,7 @@ These entries are the plumbing and tooling that Chapters 9, 10, 11 and 26 to 31 
 
 ### Reservoir sampling and weighted sampling
 
-Sampling (Chapter 11) means picking some examples out of many. Weighted sampling picks each item with probability proportional to a weight, for example drawing recent examples three times as often as old ones. Reservoir sampling solves a puzzle: how to keep a fair random sample of, say, 100 items from a stream whose total length you do not know in advance, in a single pass. Keep the first 100; then keep the 1,000th item with probability 100 ÷ 1,000 (10%), replacing a randomly chosen kept item, and treat every later item the same way with its own number. At every moment, every item seen so far has had the same chance of being in the sample. Importance sampling, the third member of this family, is in the probability section.
+Sampling (Chapter 11) means picking some examples out of many. Weighted sampling picks each item with probability proportional to a weight, for example drawing recent examples three times as often as old ones. Reservoir sampling solves a puzzle: how to keep a fair random sample of, say, 100 items from a stream whose total length you do not know in advance, in a single pass. Keep the first 100. After that, keep each new item with probability 100 divided by its position in the stream, replacing a randomly chosen kept item: the 200th item has a 50% chance, the 1,000th a 10% chance. At every moment, every item seen so far has had the same chance of being in the sample. Importance sampling, the third member of this family, is in the probability section.
 
 > **Definition — Weighted sampling:** Drawing items at random with each item's chance of being picked proportional to a weight assigned to it.
 
@@ -779,7 +779,7 @@ A dataset of a few terabytes does not fit in a computer's memory (Chapter 2). Me
 
 ### Message brokers such as Kafka
 
-Chapter 11 contrasts batch and streaming processing. In streaming systems, events such as clicks or payments travel through a message broker: producers write events to it, consumers read them at their own pace, and the broker stores them safely in between so nothing is lost if a consumer falls behind. Apache Kafka, created at LinkedIn and open-sourced in 2011, is the best-known example, and it often feeds real-time signals to recommendation and fraud models (Chapter 51).
+Chapter 11 contrasts batch and streaming processing. In streaming systems, events such as clicks or payments travel through a message broker: producers write events to it, consumers read them at their own pace, and the broker stores them safely in between so nothing is lost if a consumer falls behind. Apache Kafka, created at LinkedIn and open-sourced in 2011, is the best-known example, and it often feeds real-time signals to recommendation models (Chapter 51) and fraud-detection models (Chapter 53).
 
 > **Definition — Message broker:** Software that receives messages or events from programs that produce them, stores them, and delivers them to programs that consume them, so the two sides do not need to run in lockstep.
 
@@ -985,13 +985,13 @@ An all-reduce (Chapter 37) adds up numbers from every chip and returns the total
 
 ### Architecture fallacies and pitfalls
 
-Each chapter of Hennessy and Patterson's *Computer Architecture* ends with "fallacies and pitfalls", common wrong beliefs and mistakes. Several from its AI and data-center chapters are dated or too specialized for this book. "Performance counters added as an afterthought": a chip needs built-in counters for measuring what it is doing from day one, or nobody can tune software for it; Chapter 37's profiling depends on them. "Architects are tackling the right DNN tasks": in 2016 Google's data-center inference was mostly fully connected networks and LSTMs, with CNNs only about 5%, even though research papers focused on CNNs. "Being ignorant of architecture history when designing a DSA": many "new" accelerator ideas, like the systolic array (Chapter 32, from 1978), are decades old. "Cloud computing providers are losing money": a 2017 claim the authors rejected, since the large clouds were profitable (Chapter 43 covers cloud economics).
+Each chapter of Hennessy and Patterson's *Computer Architecture* ends with "fallacies and pitfalls", common wrong beliefs and mistakes. Several from its AI and data-center chapters are dated or too specialized for this book. "Performance counters added as an afterthought": a chip needs built-in counters for measuring what it is doing from day one, or nobody can tune software for it; Chapter 37's profiling depends on them. "Architects are tackling the right DNN (deep neural network) tasks": in 2016 Google's data-center inference was mostly fully connected networks and LSTMs, with CNNs only about 5%, even though research papers focused on CNNs. "Being ignorant of architecture history when designing a DSA" (a domain-specific architecture, Chapter 32): many "new" accelerator ideas, like the systolic array (Chapter 32, from 1978), are decades old. "Cloud computing providers are losing money": a common belief that the 2017 edition rejected, since the large clouds were profitable (Chapter 43 covers cloud economics).
 
 > **Definition — Performance counter:** A hardware register built into a processor that counts events such as instructions completed, cache misses or stalls, so software can measure where time goes.
 
 ### The history of warehouse-scale computing
 
-The fourth edition of *The Data Center as a Computer* closes with "A Twenty Five Year WSC Journey", Google's own history from racks of cheap commodity PCs around 1999 to custom chips, networks and buildings, followed by a list of 25 top papers from those years. The lessons that matter (build for scale, specialize hardware, design hardware and software together) are in Chapters 32, 34 and 35, which define the warehouse-scale computer. The paper list is a reading list; see "Where to go next".
+The fourth edition of *The Data Center as a Computer* closes with "A Twenty Five Year WSC Journey", Google's own history from racks of cheap commodity PCs around 1999 to custom chips, networks and buildings, followed by a list of 25 top papers from those years. The lessons that matter (build for scale, specialize hardware, design hardware and software together) are in Chapters 32, 34 and 35; Chapter 34 defines the warehouse-scale computer. The paper list is a reading list; see "Where to go next".
 
 ## Safety, policy and governance details
 
@@ -1030,7 +1030,7 @@ Chapter 56 explains normal accidents and high-reliability organizations. STAMP, 
 
 ### Self-organized criticality
 
-Drop sand grain by grain onto a pile. Most grains do nothing, some cause small slides, and now and then one triggers an avalanche down the whole pile, with no change in what you are doing. Self-organized criticality, described by Per Bak, Chao Tang and Kurt Wiesenfeld in 1987, names systems that drive themselves to such a tipping state, where events of every size occur and the largest follow a long-tailed pattern, the tail risk of Chapter 56. Hendrycks cites it among the lessons from complex systems (Chapter 56): small causes can have very large effects.
+Drop sand grain by grain onto a pile. Most grains do nothing, some cause small slides, and now and then one triggers an avalanche down the whole pile, with no change in what you are doing. Self-organized criticality, described by Per Bak, Chao Tang and Kurt Wiesenfeld in 1987, names systems that drive themselves to such a tipping state, where events of every size occur and the largest follow a long-tailed pattern, the tail risk of Chapter 56. Dan Hendrycks's AI safety textbook cites it among the lessons from complex systems (Chapter 56): small causes can have very large effects.
 
 > **Definition — Self-organized criticality:** The tendency of some systems, such as a growing sandpile, to drive themselves to a critical state in which tiny disturbances can set off events of any size, from trivial to catastrophic.
 
@@ -1095,7 +1095,7 @@ Chapter 59 explains what the EU AI Act requires. Underneath sits legal machinery
 The entries above come from the standard works below, the same ones this book was audited against. Each is the natural next step for its section.
 
 - **Stuart Russell and Peter Norvig, *Artificial Intelligence: A Modern Approach* (4th edition).** The source of most entries in the search, logic, planning, multiagent, probability and robotics sections.
-- **ACM, IEEE Computer Society and AAAI, *Computer Science Curricula 2023* (CS2023), Artificial Intelligence knowledge area.** The checklist universities use to design AI courses.
+- **ACM, IEEE Computer Society and AAAI, *Computer Science Curricula 2023* (CS2023), Artificial Intelligence knowledge area.** The checklist universities use to design AI courses, published jointly by the main professional societies for computing (ACM and the IEEE Computer Society) and for AI (AAAI, the Association for the Advancement of Artificial Intelligence).
 - **Ian Goodfellow, Yoshua Bengio and Aaron Courville, *Deep Learning*.** Free online; the home of the matrix, optimization, classic-network and generative-model mathematics entries.
 - ***Dive into Deep Learning*, by Aston Zhang, Zachary Lipton, Mu Li and Alexander Smola.** Free online, with runnable code for nearly every idea, including the recommender and library-mechanics entries.
 - **Stanford CS229 (Machine Learning), CS231n (Deep Learning for Computer Vision), CS224n (Natural Language Processing with Deep Learning) and CS336 (Language Modeling from Scratch).** Lecture notes, slides and many videos are public.

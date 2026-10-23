@@ -87,7 +87,7 @@ These match Track A in Chapter 65: automations, AI app builders, connectors, reu
 | Anthropic Academy: "Introduction to Model Context Protocol", "Introduction to agent skills", "Introduction to Claude Cowork", "AI Fluency for Small Businesses" | Short courses on connecting AI to tools, building skills and delegating to agents | Moves you from chatting to systems that do work | Free | anthropic.skilljar.com |
 | OpenAI Academy: "Lead AI Adoption" | A track on rolling out AI in an organization | Useful for anyone becoming their team's AI lead | Free | academy.openai.com |
 | DeepLearning.AI: "Build with Andrew" (about 1 hour) | Build a working app by describing it, with no coding | The quickest first taste of AI app building | Free to start | deeplearning.ai/courses |
-| Prompt Engineering Guide (DAIR.AI) | A reference of prompting techniques with examples and links to research | One place to look up any technique you hear about | Free | promptingguide.ai |
+| Prompt Engineering Guide (DAIR.AI) | A reference of prompting techniques with examples and links to research, from DAIR.AI, an independent group that publishes free AI-education material (not the DAIR research institute in Appendix D) | One place to look up any technique you hear about | Free | promptingguide.ai |
 | Anthropic documentation, including the prompting best-practices guide | Official guides for Claude, from prompting to agents | Kept current as models change; the source other guides copy | Free | platform.claude.com/docs |
 | OpenAI documentation and prompting guides | Official guides for OpenAI models and tools | Each lab's own advice for its models | Free | developers.openai.com |
 | Google People + AI Guidebook | Google's guide to designing AI products people trust | Patterns for showing sources, uncertainty and handing control back to users | Free | pair.withgoogle.com/guidebook |
@@ -116,7 +116,7 @@ These match Track A in Chapter 65: automations, AI app builders, connectors, reu
 
 ## Engineer: building AI applications
 
-These match Track B in Chapter 65: Python, Git, SQL, model APIs, retrieval, agents, evaluation and security.
+These match Track B in Chapter 65: Python, Git, SQL, model APIs, retrieval, agents, evaluation and security. Codes such as CS50P, CS224N and CS336 in the course names below are university course codes; CS stands for computer science.
 
 ### Courses
 
@@ -126,13 +126,13 @@ These match Track B in Chapter 65: Python, Git, SQL, model APIs, retrieval, agen
 | Harvard CS50P: "Introduction to Programming with Python" | Harvard's well-known Python course with problem sets | Rigorous, well-taught, and builds real independence | Free (optional paid certificate) | cs50.harvard.edu/python |
 | MIT: "The Missing Semester of Your CS Education" | Lectures on the command line, Git, editors and tools | The practical skills most courses assume you already have | Free | missing.csail.mit.edu |
 | GitHub Skills | Interactive courses on Git and GitHub, run inside GitHub | Learn version control by doing it | Free | skills.github.com |
-| SQLBolt | Interactive SQL lessons in the browser | The fastest way to learn the four everyday SQL moves | Free | sqlbolt.com |
+| SQLBolt | Interactive SQL lessons in the browser | The fastest way to learn the four everyday SQL moves (Chapter 11) | Free | sqlbolt.com |
 | Kaggle Learn: Python, Pandas, SQL, Data Visualization | Short, hands-on micro-courses | Bite-sized practice with real datasets | Free | kaggle.com/learn |
 | Anthropic Academy: "Claude Platform 101", "Building with the Claude API", "Claude Code 101", "MCP Advanced Topics" | Courses on building with Claude's API and tools | Direct from the API's maker, current with new features | Free | anthropic.skilljar.com |
 | OpenAI Academy: "Build with AI" | Courses on building with OpenAI's API and coding tools | The OpenAI side of the same skills | Free | academy.openai.com |
 | Hugging Face LLM Course, Agents Course and Context Course | Hands-on courses on language models, agents and context engineering | Open-source, practical and regularly updated | Free | huggingface.co/learn |
 | DeepLearning.AI: "Agentic AI" (about 10 hours) and "Evaluating AI Agents" | Andrew Ng's agent course and a course on testing agents | Structured coverage of agent design patterns and their evaluation | Free to start | deeplearning.ai/courses |
-| "AI Evals for Engineers and PMs" (Hamel Husain and Shreya Shankar) | A cohort course on evaluating AI products | Deep, practical training in the skill that separates demos from products | Paid | maven.com |
+| "AI Evals for Engineers and PMs" (Hamel Husain and Shreya Shankar) | A cohort course (taken live with a group on a fixed schedule) on evaluating AI products, for engineers and product managers (PMs) | Deep, practical training in the skill that separates demos from products | Paid | maven.com |
 
 ### Documentation and references
 
@@ -142,7 +142,7 @@ These match Track B in Chapter 65: Python, Git, SQL, model APIs, retrieval, agen
 | OpenAI Cookbook | Example code for common tasks with OpenAI models | Working starting points for retrieval, tools and evaluation | Free | github.com/openai/openai-cookbook |
 | Gemini API documentation | Google's developer documentation for Gemini | The third major provider's way of doing things | Free | ai.google.dev |
 | Hugging Face Open-Source AI Cookbook | Notebooks showing retrieval, agents and fine-tuning with open models | Practical recipes you can run in Colab | Free | huggingface.co/learn |
-| OWASP Top 10 for LLM Applications | A security community's list of the top risks in AI applications | The standard checklist for AI security reviews | Free | owasp.org |
+| OWASP Top 10 for LLM Applications | A list of the ten most critical security risks in AI applications, from OWASP, a nonprofit open security community (Chapter 31) | The standard checklist for AI security reviews | Free | owasp.org |
 
 ### Books
 
@@ -178,7 +178,7 @@ These match Track C in Chapter 65: math, classical machine learning, deep learni
 | Andrew Ng's Machine Learning Specialization (about 95 hours) | The standard first course in classical machine learning | Famous for clarity; builds the foundation for everything else | Free to start | deeplearning.ai/courses |
 | Deep Learning Specialization (about 127 hours) | Andrew Ng's longer course on neural networks | A thorough, bottom-up treatment | Free to start | deeplearning.ai/courses |
 | fast.ai, "Practical Deep Learning for Coders", Parts 1 and 2 | Top-down deep learning courses: 9 lessons of about 90 minutes, then more than 30 hours | Gets you training real models quickly; assumes about a year of coding | Free | course.fast.ai |
-| Andrej Karpathy, "Neural Networks: Zero to Hero" | 8 lectures from a tiny autodiff engine to a GPT and its tokenizer | The best route to truly understanding how language models are trained | Free | karpathy.ai/zero-to-hero.html |
+| Andrej Karpathy, "Neural Networks: Zero to Hero" | 8 lectures from a tiny autodiff engine (software that computes gradients automatically; see automatic differentiation in Chapter 12) to a GPT and its tokenizer | The best route to truly understanding how language models are trained | Free | karpathy.ai/zero-to-hero.html |
 | Karpathy's nanochat | A minimal, complete pipeline to train a small chat model | Trains a GPT-2-class model in about 2 hours on 8 H100 GPUs for about $48 | Free code; rented GPU time costs money | github.com/karpathy/nanochat |
 | Stanford CS336, "Language Modeling from Scratch" | Spring 2026 course by Tatsu Hashimoto and Percy Liang with five demanding assignments | Builds a language model end to end, including systems, scaling, data and RL | Free lectures | cs336.stanford.edu |
 | Stanford CS224N (natural language processing) | A well-known university NLP course | Deep grounding in language models and their history | Free lectures | web.stanford.edu/class/cs224n |
@@ -196,7 +196,7 @@ These match Track C in Chapter 65: math, classical machine learning, deep learni
 | Ian Goodfellow, Yoshua Bengio and Aaron Courville, *Deep Learning* (2016) | The classic graduate textbook | Rigorous foundations that have aged well | Free online; print edition paid | www.deeplearningbook.org |
 | Marc Peter Deisenroth, A. Aldo Faisal and Cheng Soon Ong, *Mathematics for Machine Learning* (2020) | The math behind machine learning, from linear algebra to probability | Exactly the math you need, in one place | Free PDF; print edition paid | mml-book.github.io |
 | Kevin Murphy, *Probabilistic Machine Learning* (two volumes) | A comprehensive reference on machine learning through probability | The encyclopedia to consult when you need depth | Free drafts online; print editions paid | probml.github.io/pml-book |
-| Richard Sutton and Andrew Barto, *Reinforcement Learning: An Introduction* (2nd edition, 2018) | The standard reinforcement learning textbook | The foundation beneath RLHF and reasoning models (Chapters 21 and 48) | Free PDF; print edition paid | incompleteideas.net/book/the-book-2nd.html |
+| Richard Sutton and Andrew Barto, *Reinforcement Learning: An Introduction* (2nd edition, 2018) | The standard reinforcement learning textbook | The foundation beneath RLHF and reasoning models (Chapters 20, 21 and 48) | Free PDF; print edition paid | incompleteideas.net/book/the-book-2nd.html |
 | Aurélien Géron, *Hands-On Machine Learning* | A practical book with runnable code for classical and deep learning | The most popular practical machine learning book | Paid | — |
 | Sebastian Raschka, *Build a Large Language Model (From Scratch)* (2024) | Builds a GPT-style model step by step | Pairs well with Karpathy's lectures | Paid (code free on GitHub) | — |
 | Nathan Lambert, the RLHF book | A book on reinforcement learning from human feedback and post-training | The most complete open text on how assistants are post-trained | Free online | rlhfbook.com |
@@ -221,7 +221,7 @@ These match Track C in Chapter 65: math, classical machine learning, deep learni
 | Dwarkesh Podcast | Long interviews with lab leaders and researchers | Unusually deep, well-prepared conversations | Free | dwarkesh.com |
 | Machine Learning Street Talk | A podcast of technical and philosophical conversations with researchers | Hears out many schools of thought | Free | — |
 | Kaggle | Datasets, competitions and public notebooks | Honest, ranked practice against thousands of others | Free | kaggle.com |
-| EleutherAI | An open-source AI research community with a public Discord | Collaborative research open to newcomers | Free | eleuther.ai |
+| EleutherAI | An open-source AI research community with a public Discord (a free group-chat app) server | Collaborative research open to newcomers | Free | eleuther.ai |
 | fast.ai forums | Forums for fast.ai learners | Help and study groups for the fast.ai courses | Free | forums.fast.ai |
 | r/MachineLearning | A large Reddit community for machine learning research | Discussion of new papers and research careers | Free | reddit.com/r/MachineLearning |
 
@@ -244,8 +244,8 @@ These match Track D in Chapter 65: GPU programming and performance engineering, 
 
 | Name | What it is | Why it is worth it | Cost | Link |
 |---|---|---|---|---|
-| Electrical Training Alliance | The joint IBEW and NECA training organization behind many US electrical apprenticeships | The main union route to becoming a licensed electrician | Pays you (apprentices earn while training) | electricaltrainingalliance.org |
-| Apprenticeship.gov | The US Department of Labor's directory of registered apprenticeships | Find apprenticeships in electrical, HVAC and other trades near you | Free | apprenticeship.gov |
+| Electrical Training Alliance | The joint training organization of the electricians' union, IBEW (International Brotherhood of Electrical Workers), and the contractors' association, NECA (National Electrical Contractors Association), behind many US electrical apprenticeships | The main union route to becoming a licensed electrician | Pays you (apprentices earn while training) | electricaltrainingalliance.org |
+| Apprenticeship.gov | The US Department of Labor's directory of registered apprenticeships | Find apprenticeships in electrical, HVAC (heating, ventilation and air conditioning) and other trades near you | Free | apprenticeship.gov |
 | Community-college HVAC and building-controls programs | Local certificate and degree programs | A direct route into data-center mechanical and controls work | Paid (often low cost) | — |
 | Uptime Institute | The data-center industry's reliability standards and research body | The source of the Tier ratings; training and credentials for facility staff | Some free research; training paid | uptimeinstitute.com |
 
@@ -265,7 +265,7 @@ These match Track D in Chapter 65: GPU programming and performance engineering, 
 | Epoch AI | Research and data on training compute, costs, hardware and data centers | Carefully sourced numbers with clear methods; check figures here before repeating them | Free | epoch.ai |
 | International Energy Agency, "Energy and AI" (April 2025) | A global report on AI's electricity use and outlook | The reference global numbers on data-center energy demand | Free | iea.org |
 | Lawrence Berkeley National Laboratory, US data-center energy report (December 2024) | The US government-funded estimate of data-center electricity use | The reference US numbers (Chapter 41) | Free | lbl.gov |
-| EPRI, "Powering Intelligence" (May 2024) | An electric-power research institute's analysis of data-center load growth | A utility-industry view of the demand forecasts | Free | www.epri.com |
+| EPRI, "Powering Intelligence" (May 2024) | An analysis of data-center load growth by EPRI, the Electric Power Research Institute, a research group funded by US utilities | A utility-industry view of the demand forecasts | Free | www.epri.com |
 | SEC EDGAR | The US database of company filings | Primary sources for chip, cloud and data-center company numbers | Free | sec.gov/edgar |
 | DatacenterDynamics | A trade news site and events for the data-center industry | Daily industry news on builds, power and cooling | Free news | datacenterdynamics.com |
 | Data Center Map | A searchable map of data centers worldwide | See where facilities are, including near you | Free basic use | datacentermap.com |
@@ -292,7 +292,7 @@ These match Track E in Chapter 65: governance and compliance, policy, and techni
 | MATS | A 12-week research program pairing scholars with safety mentors | A proven path into alignment work; 631 alumni since 2021, 75% now in alignment, transparency or security (as of October 2026) | Pays you ($1,250 a week plus compute) | matsprogram.org |
 | Anthropic Fellows Program | A four-month funded research program at Anthropic | Research experience with mentorship and substantial compute | Pays you ($3,850 a week) | anthropic.com/careers |
 | 80,000 Hours | Career guides, including an AI safety career review, and a podcast | Among the most detailed public guidance for safety and policy careers | Free | 80000hours.org |
-| IAPP AIGP | The AI Governance Professional certification | A recognized credential for governance, privacy and compliance roles | Paid | iapp.org |
+| IAPP AIGP | The AI Governance Professional (AIGP) certification from the IAPP (International Association of Privacy Professionals) | A recognized credential for governance, privacy and compliance roles | Paid | iapp.org |
 | Neel Nanda's guides | Getting-started guides to mechanistic interpretability | A clear entry point into interpretability research | Free | neelnanda.io |
 
 ### Frameworks and primary documents
@@ -300,8 +300,8 @@ These match Track E in Chapter 65: governance and compliance, policy, and techni
 | Name | What it is | Why it is worth it | Cost | Link |
 |---|---|---|---|---|
 | NIST AI Risk Management Framework | The US standards body's voluntary framework for managing AI risk | A widely used backbone for corporate AI governance | Free | nist.gov |
-| EU AI Act explorer | A site presenting the EU AI Act's text with summaries | Easier navigation of the law than the official journal; check the latest amendments | Free | artificialintelligenceact.eu |
-| OECD.AI Policy Observatory | A database of AI policies and data from many countries | Compare how governments approach AI | Free | oecd.ai |
+| EU AI Act explorer | A site presenting the EU AI Act's text with summaries | Easier navigation of the law than the Official Journal, where the EU formally publishes its laws; check the latest amendments | Free | artificialintelligenceact.eu |
+| OECD.AI Policy Observatory | A database of AI policies and data from many countries, run by the OECD (Organisation for Economic Co-operation and Development, a policy forum of mostly wealthy democracies) | Compare how governments approach AI | Free | oecd.ai |
 | International AI Safety Report | A large international scientific review of AI risks, chaired by Yoshua Bengio | The most authoritative consensus-style summary of the evidence | Free | internationalaisafetyreport.org |
 | Lab safety frameworks: Anthropic's Responsible Scaling Policy, OpenAI's Preparedness Framework, Google DeepMind's Frontier Safety Framework | How each lab says it will test for and respond to dangerous capabilities | Primary sources for how frontier risk is managed (Chapter 56) | Free | anthropic.com, openai.com, deepmind.google |
 | Model specs and constitutions | Documents describing how a lab wants its models to behave | Shows the values and rules labs train into their models | Free | model-spec.openai.com, anthropic.com/constitution |
@@ -375,7 +375,7 @@ For understanding the AI industry's money, building or running an AI business, a
 
 | Name | What it is | Why it is worth it | Cost | Link |
 |---|---|---|---|---|
-| SEC EDGAR | Company filings: quarterly and annual reports, IPO prospectuses | The primary source for revenue, margins and customer concentration (see also Compute and data centers) | Free | sec.gov/edgar |
+| SEC EDGAR | Company filings: quarterly and annual reports, and IPO prospectuses (the detailed documents a company publishes before it first sells shares to the public) | The primary source for revenue, margins and customer concentration (see also Compute and data centers) | Free | sec.gov/edgar |
 | Anthropic Economic Index | Anthropic's research on how people use Claude across occupations and tasks | Usage-based evidence on how AI is changing work | Free | anthropic.com/research/the-anthropic-economic-index |
 | Artificial Analysis | Independent comparisons of model price, speed and quality | The inputs for AI unit-economics calculations | Free | artificialanalysis.ai |
 | Menlo Ventures, "The State of Generative AI in the Enterprise" | An annual survey of enterprise AI spending | Useful market sizing, from a venture firm with portfolio interests: read it with that in mind | Free | menlovc.com |

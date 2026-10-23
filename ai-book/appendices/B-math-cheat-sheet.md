@@ -59,7 +59,7 @@ How to read it. Multiplication is written ×, division ÷, and "x squared" as `x
 | Exponent | Multiply a number by itself n times | `a^n` | `2^5` = 2 × 2 × 2 × 2 × 2 = 32 |
 | Compound growth | Multiply by the growth factor once per period | `final = start × factor^periods` | 5 times per year for 3 years: `5^3` = 125 times |
 | Growth from a percentage | The factor is 1 plus the rate as a decimal | `final = start × (1 + r)^t` | +49% per year for 2 years: `1.49^2` ≈ 2.22 times |
-| Doubling time to yearly factor | Count the doublings in a year, then raise 2 to that | `yearly factor = 2^(12 ÷ doubling months)` | doubling every 5.2 months: `2^2.3` ≈ 4.9 per year |
+| Doubling time to yearly factor | Count the doublings in a year, then raise 2 to that | `yearly factor = 2^(12 ÷ doubling months)` | doubling every 5.2 months: 12 ÷ 5.2 ≈ 2.3 doublings, and `2^2.3` ≈ 4.9 per year |
 | Rule of 70 | Doubling time is about 70 divided by the percent growth per period | `doubling time ≈ 70 ÷ r%` | 7% per year doubles in about 10 years |
 | Exponential decay | Multiply by a number below 1 each period | `final = start × f^t`, with f below 1 | halving 3 times: `0.5^3` = 0.125 |
 | Euler's number | The natural growth constant | `e ≈ 2.718`, `exp(x) = e^x` | `e^2` ≈ 7.389, `e^0` = 1 |
@@ -136,7 +136,7 @@ How to read it. Multiplication is written ×, division ÷, and "x squared" as `x
 
 | Rule | In plain words | In symbols | Tiny example |
 |---|---|---|---|
-| Mean | Add everything, divide by the count | `mean = sum ÷ count` | 40, 45, 50, 50, 55, 60, 65, 70, 80: 515 ÷ 9 ≈ 57.2 |
+| Mean | Add everything, divide by the count | `mean = sum ÷ count` | nine salaries in thousands (Chapter 6's example): 40, 45, 50, 50, 55, 60, 65, 70, 80: 515 ÷ 9 ≈ 57.2 |
 | Median | The middle value once sorted (average the two middle ones if the count is even) | middle of the sorted list | same list: 55 |
 | Mode | The most common value | most frequent value | same list: 50 |
 | Range | Largest minus smallest | `max − min` | 80 − 40 = 40 |
@@ -146,7 +146,7 @@ How to read it. Multiplication is written ×, division ÷, and "x squared" as `x
 | 68–95–99.7 rule | Shares of a normal distribution within 1, 2 and 3 sd of the mean | `mean ± 1 sd`, `± 2 sd`, `± 3 sd` | mean 170, sd 7: about 68% between 163 and 177 cm |
 | Percentile | The value that a given percentage of the data falls below | p50 = median; p99 = where the slowest 1% begins | p99 latency 30 s: 99% of requests finish faster |
 | Correlation | How strongly two things move together in a straight line, from −1 to 1 | `r = sum((x − mean x)(y − mean y)) ÷ sqrt(sum((x − mean x)^2) × sum((y − mean y)^2))` | quiz data: 10.5 ÷ sqrt(5 × 22.75) ≈ 0.98 |
-| Error bar on an accuracy score | One standard deviation of a pass rate p measured on n questions | `sd ≈ sqrt(p × (1 − p) ÷ n)` | 80% on 400 questions: sqrt(0.16 ÷ 400) = 0.02, so about ±4 points at 95% confidence |
+| Error bar on an accuracy score | One standard deviation of a pass rate p measured on n questions | `sd ≈ sqrt(p × (1 − p) ÷ n)` | 80% on 400 questions: sqrt(0.16 ÷ 400) = 0.02, so about ±4 points at 95% confidence (two standard deviations, by the 68–95–99.7 rule) |
 
 ## From scores to tokens: softmax, sampling and loss
 
@@ -168,7 +168,7 @@ How to read it. Multiplication is written ×, division ÷, and "x squared" as `x
 | Rule | In plain words | In symbols | Tiny example |
 |---|---|---|---|
 | Slope by nudging | Change in output divided by a tiny change in input | `(f(x + h) − f(x)) ÷ h`, with h tiny | `x^2` at x = 3, h = 0.001: 0.006001 ÷ 0.001 = 6.001 |
-| Partial derivative | Nudge one knob while holding the others still | slope for w with b fixed | loss `(w × 2 + b − 5)^2` at w = b = 1: about −8 |
+| Partial derivative | Nudge one knob while holding the others still | slope for w with b fixed | loss `(w × 2 + b − 5)^2` at w = b = 1 is 4; nudging w to 1.001 gives about 3.992, so the slope is about −0.008 ÷ 0.001 = −8 |
 | Gradient | The list of every knob's slope; it points uphill | `[slope for w, slope for b, ...]` | [−8, −4] |
 | Chain rule | Multiply the slopes along a chain of steps | `slope of y for x = (slope of y for u) × (slope of u for x)` | u = 3 × x, y = `u^2`, at x = 1: 6 × 3 = 18 |
 | Squared-error slope | The slope of an error squared is twice the error | slope of `error^2` = 2 × error | error −2: slope −4 |
@@ -198,8 +198,8 @@ How to read it. Multiplication is written ×, division ÷, and "x squared" as `x
 | Cost of an answer | Per-token cost times tokens generated | `≈ 2 × N × tokens` | 70B model, 500 tokens: 7 × 10^13 FLOPs |
 | Training compute | Forward plus backward pass for every training token | `C ≈ 6 × N × D` | GPT-3: 6 × 1.75 × 10^11 × 3 × 10^11 ≈ 3.15 × 10^23 |
 | Chinchilla ratio | Compute-optimal training uses about 20 tokens per parameter | `D ≈ 20 × N` | 70 billion parameters: about 1.4 trillion tokens |
-| Compute-optimal size | Combine the two rules: C = 120 × N^2 | `N = sqrt(C ÷ 120)`, `D = 20 × N` | C = `10^25`: N ≈ 2.9 × 10^11, D ≈ 5.8 × 10^12 |
-| Cluster speed | Chips times peak speed times utilization | `GPUs × peak FLOP/s × MFU` | 16,384 × 989 × 10^12 × 0.4 ≈ 6.5 × 10^18 FLOP/s |
+| Compute-optimal size | Combine the two rules: C = 6 × N × (20 × N) = 120 × N^2 | `N = sqrt(C ÷ 120)`, `D = 20 × N` | C = `10^25`: N ≈ 2.9 × 10^11, D ≈ 5.8 × 10^12 |
+| Cluster speed | Chips times peak speed times utilization (MFU, model FLOPs utilization: the share of peak speed actually achieved, Chapter 19) | `GPUs × peak FLOP/s × MFU` | 16,384 × 989 × 10^12 × 0.4 ≈ 6.5 × 10^18 FLOP/s |
 | Training time | Total FLOPs divided by cluster speed | `time = C ÷ cluster speed` | 3.8 × 10^25 ÷ 6.5 × 10^18 ≈ 5.9 million s ≈ 68 days |
 | GPU-hours | Number of chips times hours | `GPU-hours = GPUs × hours` | 16,384 × 1,632 h ≈ 26.7 million |
 | Rental cost of a run | GPU-hours times the hourly price | `cost = GPU-hours × $ per GPU-hour` | 26.7 million × $2.50 ≈ $67 million (illustrative rate) |
@@ -207,7 +207,7 @@ How to read it. Multiplication is written ×, division ÷, and "x squared" as `x
 | API bill | Tokens in millions times the price per million, for input and output separately | `cost = tokens ÷ 1,000,000 × price per million` | 20,000 input tokens at $3 per million = $0.06 (illustrative price) |
 | Cost per million tokens from GPU rent | Hourly price divided by tokens produced per hour | `$ per million = $ per GPU-hour ÷ (tokens per s × 3,600) × 1,000,000` | $3 per hour at 1,000 tokens per s: $0.83 |
 | Energy per token | Power divided by tokens per second; 3,600 joules = 1 watt-hour | `J per token = watts ÷ tokens per s` | 1,500 W ÷ 2,000 tokens per s = 0.75 J; 500 tokens ≈ 375 J ≈ 0.1 Wh (assumed figures) |
-| Arithmetic intensity | Math done per byte moved from memory | `FLOPs ÷ bytes moved` | decode for one user at 16 bits: 2 FLOPs ÷ 2 bytes = 1 FLOP per byte |
+| Arithmetic intensity | Math done per byte moved from memory | `FLOPs ÷ bytes moved` | decode for one user at 16 bits: each 2-byte weight is read once and used in one multiply-add (2 FLOPs), so 2 FLOPs ÷ 2 bytes = 1 FLOP per byte |
 | Ridge point | Where a chip stops waiting on memory | `peak FLOP/s ÷ bandwidth` | H100: 989 × 10^12 ÷ 3.35 × 10^12 ≈ 295 FLOP per byte |
 
 ## Memory math
@@ -232,7 +232,7 @@ How to read it. Multiplication is written ×, division ÷, and "x squared" as `x
 
 ## Spreadsheet formulas
 
-These work in both Google Sheets and Microsoft Excel. Type large numbers in scientific notation with E, so 175 billion is `175E9`.
+These work in both Google Sheets and Microsoft Excel. Type large numbers in scientific notation with E, so 175 billion is `175E9`. Each example assumes you first type its numbers into the cells the formula names: for the dot product, 2, 1, 3 in A1 to C1 and 1.5, 4, 0.5 in A2 to C2; for the line of best fit and correlation, the quiz data's x values (1 to 4) in A2 to A5 and its y values (3, 5, 8, 9) in B2 to B5; for matrix multiplication, the left matrix in A1:B2 and the right one in D1:E2, with the answer filling a 2 × 2 block.
 
 | Task | Formula | Example result |
 |---|---|---|

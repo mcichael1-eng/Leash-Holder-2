@@ -11,12 +11,12 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | OpenAI | San Francisco lab founded in 2015 as a nonprofit; its for-profit arm became OpenAI Group PBC, controlled by the OpenAI Foundation, in 2025. Maker of ChatGPT. | GPT-6 Astra, GPT-6 Sol and Luna, GPT-6.1 Sol; open-weight gpt-oss-120b and gpt-oss-20b; Codex coding agent | Chapter 24 |
 | Anthropic | San Francisco lab founded in 2021 by former OpenAI researchers, including Dario and Daniela Amodei; a public benefit corporation with a safety focus. | Claude Fable 5.1 and Mythos 5.1, Opus 5.5, Sonnet 5.5, Haiku 5.5; Claude Code; created the Model Context Protocol (MCP) | Chapter 24 |
 | Google DeepMind | Google's AI lab, formed in 2023 by merging DeepMind (founded in London in 2010, bought by Google in 2014) with Google Brain. | Gemini 4 Argon, Gemini 3.8 Flash; open-weight Gemma 4; Genie 3 world model; AlphaFold | Chapter 24 |
-| Meta Superintelligence Labs (MSL) | Meta's AI organization, formed in mid-2025; includes the FAIR research lab and TBD Lab. | Muse Wonder and Wonder Full, Muse Spark, open-weight Muse Glimmer; the earlier Llama family (last: Llama 4, 2025) | Chapter 24 |
+| Meta Superintelligence Labs (MSL) | Meta's AI organization, formed in mid-2025; includes the FAIR research lab (Fundamental AI Research, Meta's long-running research group) and TBD Lab, its frontier language-model group. | Muse Wonder and Wonder Full, Muse Spark, open-weight Muse Glimmer; the earlier Llama family (last: Llama 4, 2025) | Chapter 24 |
 | SpaceXSI (formerly xAI) | Founded by Elon Musk in 2023; acquired by SpaceX on February 2, 2026, rebranded SpaceXAI by July 2026 (reported), and renamed SpaceX Super Intelligence (SpaceXSI) in October 2026, the name now on its website; the legal company name is still SpaceXAI. | Grok 4.7; the Colossus supercomputers in Memphis | Chapter 24 |
 | Microsoft AI | Microsoft's in-house AI group; Microsoft was OpenAI's earliest large backer and is also an Anthropic compute partner. | Copilot assistants in Windows and Office; in-house models | Chapter 61 |
 | Amazon | Builds its own Nova models and the Bedrock platform that serves many labs' models; Anthropic's main cloud and training partner. | Nova models; Bedrock; Alexa | Chapter 61 |
-| DeepSeek | Hangzhou lab founded in 2023 by Liang Wenfeng and funded by the quantitative hedge fund High-Flyer; known for efficient open-weight models. | DeepSeek V4-Pro, V4-Flash, V4.1-Flash (MIT license); the R1 reasoning model (2025) | Chapter 24 |
-| Alibaba Qwen | The model team of Alibaba Cloud; Qwen is one of the most widely used open-weight families. | Qwen3.8-2.4T-A95B and Qwen3.8-27B (open); Qwen3.8-Max, the hosted version of the 2.4T model | Chapter 24 |
+| DeepSeek | Hangzhou lab founded in 2023 by Liang Wenfeng and funded by the quantitative hedge fund High-Flyer (an investment firm whose trading is driven by computer models); known for efficient open-weight models. | DeepSeek V4-Pro, V4-Flash, V4.1-Flash (MIT license); the R1 reasoning model (2025) | Chapter 24 |
+| Alibaba Qwen | The model team of Alibaba Cloud; Qwen is one of the most widely used open-weight families. | Qwen3.8-2.4T-A95B (2.4 trillion parameters in total, 95 billion active for each token) and Qwen3.8-27B (open); Qwen3.8-Max, the hosted version of the 2.4T model | Chapter 24 |
 | Moonshot AI | Beijing startup founded in 2023 by Yang Zhilin; maker of the Kimi assistant. | Kimi K3 (open weights, 2.8 trillion parameters) | Chapter 24 |
 | Z.ai (formerly Zhipu AI) | Beijing lab that grew out of Tsinghua University research. | GLM-5.3 (open weights) | Chapter 24 |
 | MiniMax | Shanghai company making language, speech and video models. | MiniMax models; Hailuo video app | Chapter 17 |
@@ -28,7 +28,7 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | Safe Superintelligence (SSI) | Founded in 2024 by Ilya Sutskever and colleagues to build safe superintelligence before shipping products. | No public product | Chapter 60 |
 | Reflection AI | US startup founded by former Google DeepMind researchers. | Beam 1.0 | Chapter 24 |
 | Ai2 (Allen Institute for AI) | Seattle nonprofit founded by Paul Allen; releases fully open models with their data and code. | OLMo models | Chapter 30 |
-| Advanced Machine Intelligence Labs | Founded by Yann LeCun after he left Meta in November 2025, to pursue world models beyond LLMs. | Research stage | Chapter 47 |
+| Advanced Machine Intelligence Labs | Founded by Yann LeCun, who announced in November 2025 that he was leaving Meta, to pursue world models beyond LLMs. | Research stage | Chapter 47 |
 
 *Table D.1: Frontier and near-frontier model labs, as of October 2026.*
 
@@ -41,11 +41,11 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | Google (TPU) | Has designed its own Tensor Processing Units since 2015; Ironwood (TPU v7) and the 2026 TPU 8t (training) and TPU 8i (inference). Anthropic is a major TPU customer. | Chapter 35 |
 | Amazon Web Services (Annapurna Labs) | Amazon's chip unit, bought in 2015; designs Trainium (training) and Inferentia (inference) chips. Trainium3 (2025) is AWS's first 3-nanometer AI chip. | Chapter 35 |
 | Microsoft (Maia) | Designs Maia accelerators for its own data centers; Maia 200 launched in January 2026. | Chapter 35 |
-| Meta (MTIA) | Designs MTIA inference chips for its recommendation and AI systems; bought the RISC-V chip startup Rivos in 2025. | Chapter 35 |
+| Meta (MTIA) | Designs MTIA inference chips for its recommendation and AI systems; agreed in 2025 to buy Rivos, a startup designing chips on RISC-V, the free, open instruction set (Chapter 32). | Chapter 35 |
 | Broadcom | Co-designs custom AI chips for Google (TPUs), Meta and OpenAI, and makes Ethernet switch chips such as Tomahawk. | Chapter 35 |
 | Marvell | Custom chip and networking partner for cloud companies, including AWS and Microsoft. | Chapter 35 |
 | Intel | The classic PC and server CPU maker; Gaudi AI accelerators, the 18A process and Intel Foundry. The US government took a 9.9% stake in 2025, and NVIDIA invested $5 billion. | Chapter 36 |
-| Arm | British company, majority-owned by SoftBank, whose CPU designs are licensed by others; NVIDIA's Grace and Vera, Google's Axion and Apple's chips use Arm designs. | Chapter 32 |
+| Arm | British company, majority-owned by SoftBank, that licenses its instruction set and CPU core designs to other chipmakers; NVIDIA's Grace and Vera, Google's Axion and Apple's chips are all Arm-based. | Chapter 32 |
 | Qualcomm | Snapdragon chips with neural processing units for phones and Copilot+ PCs; also entering data-center inference. | Chapter 53 |
 | Apple | Designs its own phone and Mac chips with a Neural Engine (since the A11 in 2017) for on-device AI. | Chapter 53 |
 | Cerebras | Builds a single chip the size of a whole silicon wafer (WSE-3: 4 trillion transistors, 900,000 cores), strong at very fast inference. | Chapter 35 |
@@ -59,7 +59,7 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | SK hynix | South Korean memory maker; the leading supplier of high-bandwidth memory (HBM) and NVIDIA's primary HBM source. | Chapter 33 |
 | Samsung Electronics | Korean giant making DRAM, HBM and flash memory, and contract chips through Samsung Foundry. | Chapter 33 |
 | Micron | US memory maker; the third major HBM supplier. | Chapter 33 |
-| Lightmatter, Ayar Labs, Celestial AI | Startups using light (photonics) to move data between chips faster and with less energy. | Chapter 35 |
+| Lightmatter, Ayar Labs, Celestial AI | Companies using light (photonics) to move data between chips faster and with less energy. Lightmatter and Ayar Labs are startups; Celestial AI was bought by the chip company Marvell in February 2026. | Chapter 35 |
 
 *Table D.2: Chip and memory companies.*
 
@@ -69,15 +69,15 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 |---|---|---|
 | TSMC | Taiwan Semiconductor Manufacturing Company, founded in 1987 by Morris Chang. Manufactures nearly every leading AI accelerator and packages them with its CoWoS technology; also building fabs in Arizona. | Chapter 36 |
 | Samsung Foundry | Samsung's contract chipmaking arm; first to ship gate-all-around transistors, at 3 nanometers in 2022. | Chapter 36 |
-| Intel Foundry | Intel's manufacturing business, offering the 18A process (new transistors plus backside power) and EMIB and Foveros packaging. | Chapter 36 |
+| Intel Foundry | Intel's manufacturing business, offering the 18A process (new transistors plus backside power) and two advanced packaging methods: EMIB (small silicon bridges that link chips sitting side by side) and Foveros (stacking chips on top of each other). | Chapter 36 |
 | SMIC | China's largest chip foundry; makes 7-nanometer-class chips without EUV machines. | Chapter 36 |
 | ASML | Dutch company that is the only supplier of extreme-ultraviolet (EUV) lithography machines, which cost around $180 million each. | Chapter 36 |
 | Carl Zeiss SMT | German optics maker that builds the ultra-precise mirrors inside ASML's EUV machines. | Chapter 36 |
 | Applied Materials, Lam Research, Tokyo Electron, KLA | The big makers of machines that deposit, etch, clean and inspect the layers on a chip. | Chapter 36 |
 | Synopsys, Cadence | Makers of electronic design automation (EDA) software that engineers use to design chips. | Chapter 36 |
-| ASE, Amkor | The largest outsourced chip packaging and testing companies. | Chapter 36 |
+| ASE, Amkor | The largest outsourced chip packaging and testing companies: Taiwan's ASE (Advanced Semiconductor Engineering) and the US-based Amkor. | Chapter 36 |
 | Foxconn, Quanta, Wistron | Taiwanese manufacturers that assemble AI servers and full racks for NVIDIA and cloud companies. | Chapter 34 |
-| Dell, Supermicro, HPE | Server makers that sell GPU systems to companies, clouds and governments. | Chapter 34 |
+| Dell, Supermicro, HPE | Server makers (HPE is Hewlett Packard Enterprise) that sell GPU systems to companies, clouds and governments. | Chapter 34 |
 
 *Table D.3: Foundries, equipment makers and server builders.*
 
@@ -98,7 +98,7 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | Nscale | UK neocloud and partner in Stargate Norway. | Chapter 42 |
 | Fluidstack | Builds and operates GPU and TPU data centers, including a large US build-out for Anthropic. | Chapter 42 |
 | IREN, Cipher Mining, TeraWulf, Core Scientific | Former bitcoin miners converting their powered sites into AI data centers. | Chapter 42 |
-| G42 | Abu Dhabi AI company and partner in Stargate UAE. | Chapter 42 |
+| G42 | Abu Dhabi AI company and partner in Stargate UAE (United Arab Emirates). | Chapter 42 |
 | Humain | Saudi Arabia's national AI company, owned by the Public Investment Fund and founded in 2025. | Chapter 42 |
 | OpenRouter | A marketplace that lets developers call hundreds of models from many providers through one API. | Chapter 26 |
 
@@ -108,7 +108,7 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 
 | Organization | Who they are and why they matter | More in |
 |---|---|---|
-| Stargate LLC | OpenAI's data-center venture with SoftBank, Oracle and MGX, announced in January 2025 with a target of "up to $500 billion and 10 gigawatts." | Chapter 42 |
+| Stargate LLC | OpenAI's data-center venture, set up as a separate company (an LLC, or limited liability company), with SoftBank, Oracle and MGX, announced in January 2025 with a target of "up to $500 billion and 10 gigawatts." | Chapter 42 |
 | SoftBank | Japanese investment group led by Masayoshi Son; Stargate partner, major OpenAI investor and majority owner of Arm. | Chapter 43 |
 | MGX | Abu Dhabi technology investment fund and Stargate partner. | Chapter 43 |
 | Vantage Data Centers, STACK Infrastructure, Related Digital | Developers building several Stargate campuses in Texas, Wisconsin, New Mexico and Michigan. | Chapter 42 |
@@ -123,7 +123,7 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | Bloom Energy | Maker of fuel cells used for fast on-site power at data centers. | Chapter 41 |
 | Entergy | Louisiana utility building gas power plants for Meta's Hyperion campus. | Chapter 41 |
 | PJM Interconnection | The largest US grid operator (13 states plus Washington, D.C.), where data-center demand drove record capacity prices. | Chapter 41 |
-| ERCOT | The operator of most of Texas's power grid, now handling large data-center connection requests under new state rules. | Chapter 41 |
+| ERCOT | The Electric Reliability Council of Texas, operator of most of Texas's power grid, now handling large data-center connection requests under new state rules. | Chapter 41 |
 | Blue Owl | Investment firm that financed Meta's Hyperion campus through a joint venture, an example of off-balance-sheet data-center financing. | Chapter 43 |
 
 *Table D.5: Builders, equipment makers, energy companies and grid operators.*
@@ -175,7 +175,7 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | Tesla | Electric-car maker with Full Self-Driving software, a Robotaxi service and the Optimus humanoid robot. | Chapter 50 |
 | Zoox, Baidu Apollo Go, Pony.ai, WeRide | Robotaxi developers in the US (Zoox, owned by Amazon) and China. | Chapter 50 |
 | Aurora | Self-driving trucks. | Chapter 50 |
-| Figure AI | Humanoid robot maker; its robots work on parts handling at BMW using its Helix model. | Chapter 49 |
+| Figure AI | Humanoid robot maker; its robots work on parts handling at the carmaker BMW using its Helix model. | Chapter 49 |
 | Physical Intelligence | Builds general "robot brain" models, the π0 family. | Chapter 49 |
 | Unitree, AgiBot | Chinese robot makers that led humanoid shipments in 2025. | Chapter 49 |
 | Boston Dynamics, Agility Robotics, Apptronik, 1X | Makers of the Atlas, Digit, Apollo and NEO robots. | Chapter 49 |
@@ -192,7 +192,7 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | Apollo Research | London organization testing models for deception and "scheming." | Chapter 57 |
 | Redwood Research | Nonprofit that pioneered "AI control": safety measures that work even if a model is misaligned. | Chapter 56 |
 | Alignment Research Center (ARC) | Theory-focused alignment nonprofit founded by Paul Christiano in 2021. | Chapter 56 |
-| ARC Prize Foundation | Runs the ARC-AGI benchmarks and prizes, co-founded by François Chollet and Mike Knoop. | Chapter 24 |
+| ARC Prize Foundation | Runs the ARC-AGI puzzle benchmarks and prizes, co-founded by François Chollet and Mike Knoop. Here ARC stands for Abstraction and Reasoning Corpus; it is unrelated to the Alignment Research Center above. | Chapter 24 |
 | Epoch AI | Research group tracking AI compute, costs, data centers and capabilities; runs FrontierMath and the Epoch Capabilities Index. | Chapter 24 |
 | Artificial Analysis | Independent company benchmarking models on intelligence, price and speed. | Chapter 24 |
 | Arena (formerly LMArena) | Crowdsourced blind comparisons of chatbots; began as Chatbot Arena at UC Berkeley, became LMArena and was renamed Arena (arena.ai) in January 2026. | Chapter 24 |
@@ -207,16 +207,16 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | EU AI Office | European Commission office enforcing the EU AI Act's rules for general-purpose AI models. | Chapter 59 |
 | Cyberspace Administration of China (CAC) | China's internet regulator, which runs the registry for algorithms and generative AI services. | Chapter 59 |
 | International AI Safety Report | Global scientific review of AI risks, chaired by Yoshua Bengio, with reports from 2025. | Chapter 59 |
-| GovAI, CSET, RAND, IAPS | Policy research institutes; RAND defined the SL1–SL5 security levels for protecting model weights. | Chapter 56 |
+| GovAI, CSET, RAND, IAPS | Policy research institutes: GovAI (Centre for the Governance of AI), CSET (Georgetown's Center for Security and Emerging Technology), RAND and IAPS (Institute for AI Policy and Strategy). RAND defined the SL1–SL5 security levels, a five-step scale of how well a lab can protect its model weights, from amateur hackers up to the strongest nation-state attackers. | Chapter 56 |
 | Ada Lovelace Institute, AI Now Institute, Center for Democracy and Technology | Research and advocacy groups focused on AI's effects on people and rights. | Chapter 58 |
-| DAIR, Algorithmic Justice League | Organizations founded by Timnit Gebru and Joy Buolamwini studying bias and harms. | Chapter 58 |
+| DAIR, Algorithmic Justice League | Organizations studying bias and harms: DAIR (the Distributed AI Research Institute), founded by Timnit Gebru, and the Algorithmic Justice League, founded by Joy Buolamwini. DAIR is unrelated to DAIR.AI, which publishes the Prompt Engineering Guide (Appendix E). | Chapter 58 |
 | Future of Life Institute | Nonprofit led by Max Tegmark; organized the 2023 open letter calling for a pause on giant AI experiments. | Chapter 60 |
 | AI Futures Project | Group led by Daniel Kokotajlo that published the "AI 2027" scenario. | Chapter 60 |
 | LawZero | Nonprofit founded by Yoshua Bengio in 2025 to build "safe-by-design" AI. | Chapter 60 |
 | Frontier Model Forum | Industry body founded in 2023 by Anthropic, Google, Microsoft and OpenAI to share safety practices. | Chapter 56 |
 | Partnership on AI | Multi-stakeholder nonprofit (2016) of companies, academics and civil society. | Chapter 59 |
 | MLCommons | Engineering consortium behind the MLPerf hardware benchmarks and the AILuminate safety benchmark. | Chapter 35 |
-| C2PA | Industry coalition behind Content Credentials, a standard for labeling where images and videos came from. | Chapter 58 |
+| C2PA | The Coalition for Content Provenance and Authenticity, an industry group behind Content Credentials, a standard for labeling where images and videos came from. | Chapter 58 |
 | MATS, ARENA, BlueDot Impact | Training programs that bring newcomers into AI safety research. | Chapter 65 |
 
 *Table D.8: Safety, policy and evaluation organizations.*
@@ -293,7 +293,7 @@ Roles are as of October 2026; leadership changes are frequent.
 | Noam Shazeer | Transformer co-author and mixture-of-experts pioneer; co-founded Character.AI and returned to Google in 2024. | Chapter 17 |
 | Jason Wei | First author of the 2022 chain-of-thought prompting paper. | Chapter 21 |
 | Chris Olah | Interpretability pioneer and Anthropic co-founder. | Chapter 57 |
-| Jan Leike | Alignment researcher who co-led OpenAI's superalignment team before joining Anthropic. | Chapter 56 |
+| Jan Leike | Alignment researcher who co-led OpenAI's superalignment team (its effort to learn how to align AI smarter than humans) before joining Anthropic. | Chapter 56 |
 | Paul Christiano | Co-author of foundational RLHF research (2017); founded the Alignment Research Center and later led safety at the US AI Safety Institute. | Chapter 20 |
 | Neel Nanda | Leads mechanistic interpretability work at Google DeepMind. | Chapter 57 |
 | Evan Hubinger | Anthropic researcher who led the "sleeper agents" study and co-authored the alignment-faking study. | Chapter 55 |
@@ -303,7 +303,7 @@ Roles are as of October 2026; leadership changes are frequent.
 | Dan Hendrycks | Director of CAIS; created MMLU and co-created Humanity's Last Exam. | Chapter 24 |
 | François Chollet | Creator of the Keras library and the ARC benchmark; co-founder of ARC Prize. | Chapter 24 |
 | Amanda Askell | Anthropic researcher who shapes Claude's character and constitution. | Chapter 56 |
-| Percy Liang and Tatsunori Hashimoto | Stanford researchers who teach CS336, "Language Modeling from Scratch"; Liang led the HELM evaluation project. | Chapter 65 |
+| Percy Liang and Tatsunori Hashimoto | Stanford researchers who teach CS336, "Language Modeling from Scratch"; Liang led HELM (Holistic Evaluation of Language Models), a project that tests models on many tasks and measures at once. | Chapter 65 |
 | Anca Dragan and Rohin Shah | Lead safety and alignment research at Google DeepMind. | Chapter 56 |
 | Kyle Fish | Anthropic's model-welfare researcher. | Chapter 60 |
 
@@ -327,10 +327,10 @@ Roles are as of October 2026; leadership changes are frequent.
 | Meredith Whittaker | President of the Signal Foundation and co-founder of the AI Now Institute. | Chapter 58 |
 | Rumman Chowdhury | Pioneer of algorithmic auditing and public red-teaming events. | Chapter 58 |
 | Alondra Nelson | Led the White House's 2022 Blueprint for an AI Bill of Rights. | Chapter 59 |
-| Marc Andreessen | Venture capitalist (a16z) and prominent opponent of most AI regulation. | Chapter 59 |
+| Marc Andreessen | Venture capitalist, co-founder of the investment firm Andreessen Horowitz (known as a16z), and prominent opponent of most AI regulation. | Chapter 59 |
 | David Sacks | White House AI and crypto adviser from January 2025; stepped down from that post in March 2026 but remains co-chair of the President's Council of Advisors on Science and Technology. | Chapter 59 |
 | Michael Kratsios | Director of the White House Office of Science and Technology Policy. | Chapter 59 |
-| Scott Wiener | California state senator behind SB 1047 (vetoed in 2024) and SB 53 (signed in 2025). | Chapter 59 |
+| Scott Wiener | California state senator behind the AI safety bills SB 1047 (vetoed in 2024) and SB 53 (signed in 2025); SB stands for Senate Bill. | Chapter 59 |
 | Alex Bores | New York assemblymember who sponsored the RAISE Act. | Chapter 59 |
 | Robert Long | Co-founder of Eleos AI, which studies AI welfare. | Chapter 60 |
 

@@ -79,8 +79,8 @@ A FLOP is one floating-point operation (one multiply or one add): a count of wor
 |---|---|---|
 | Inference cost per token | about 2 × N FLOP (N = active parameters) | 50 billion active: `10^11` FLOP per token |
 | Training cost | about 6 × N × D FLOP (D = training tokens) | Llama 3.1 405B: 6 × 405 × `10^9` × 15.6 × `10^12` ≈ `3.8 × 10^25` |
-| Training time | FLOP ÷ (GPUs × peak FLOPS × utilization) | `10^27` FLOP on 100,000 GPUs at `1.2 × 10^15` effective each ≈ 97 days |
-| Single-user decode speed limit | memory bandwidth ÷ bytes read per token | 70 GB of 8-bit weights on an H200 (4.8 TB/s): about 69 tokens per second |
+| Training time | FLOP ÷ (GPUs × peak FLOPS × utilization) | `10^27` FLOP on 100,000 GPUs at `1.2 × 10^15` effective each: `10^27` ÷ `1.2 × 10^20` ≈ 8.3 million seconds ≈ 97 days |
+| Single-user decode speed limit | memory bandwidth ÷ bytes read per token | 70 GB of 8-bit weights on an H200 (4.8 TB/s): 4,800 GB/s ÷ 70 GB ≈ 69 tokens per second |
 | Roofline ridge point | peak FLOPS ÷ memory bandwidth | H100: 989 × `10^12` ÷ 3.35 × `10^12` ≈ 295 FLOP per byte |
 
 *Table A.6: The compute formulas used throughout the book.*
@@ -94,7 +94,7 @@ A FLOP is one floating-point operation (one multiply or one add): a count of wor
 | Google Ironwood TPU | 4,614 TFLOPS FP8 | |
 | GB300 NVL72 rack | 1,080 PFLOPS dense FP4 | 72 GPUs |
 | Ironwood pod (9,216 chips) | 42.5 EFLOPS FP8 | |
-| Fastest supercomputers, June 2026 | LineShine 2.198 EFLOPS; El Capitan 1.809 EFLOPS | 64-bit scientific benchmark, a different precision from AI figures |
+| Fastest supercomputers, June 2026 | LineShine (China) 2.198 EFLOPS; El Capitan (a US national-laboratory machine) 1.809 EFLOPS | 64-bit scientific benchmark, a different precision from AI figures |
 
 *Table A.7: Computing speeds. Always ask which precision, dense or sparse, and per chip or per rack.*
 
@@ -135,7 +135,7 @@ A token is a chunk of text, often a word or part of a word (Chapter 18). Ratios 
 | DeepSeek-V4-Pro's training data | about 25 trillion | about 33 trillion |
 | Epoch AI's estimate of all high-quality public human text (2024) | about 225 trillion | about 300 trillion (range 100–1,000 trillion) |
 
-*Table A.10: How much text is how many tokens. Reading 15 trillion tokens at 250 words a minute, 8 hours a day, would take a person about 257,000 years.*
+*Table A.10: How much text is how many tokens. Reading 15 trillion tokens (about 11.25 trillion words) at 250 words a minute, 8 hours a day (120,000 words a day), would take a person about 257,000 years.*
 
 ## Model sizes and memory at each precision
 
@@ -158,7 +158,7 @@ Memory for weights = parameters × bytes per parameter. FP32 uses 4 bytes, BF16 
 | Other memory rules of thumb | Value | Example |
 |---|---|---|
 | Training state with Adam in mixed precision | about 16 bytes per parameter | 70 billion parameters: about 1.12 TB before activations |
-| KV cache per token | 2 × layers × KV heads × head size × bytes | Llama 3 70B (80, 8, 128, 2 bytes): about 0.33 MB per token |
+| KV cache per token | 2 × layers × KV heads × head size × bytes | Llama 3 70B (80 layers, 8 KV heads, head size 128, 2 bytes): 2 × 80 × 8 × 128 × 2 = 327,680 bytes, about 0.33 MB per token |
 | KV cache for a long conversation | tokens × bytes per token | 100,000 tokens × 0.33 MB ≈ 33 GB |
 | Compact attention (MLA, DeepSeek-V3 style) | about 0.07 MB per token | 15,400 tokens ≈ 1.1 GB |
 
@@ -345,7 +345,7 @@ All prices in US dollars, dated and approximate. List prices are what anyone can
 | Average power from annual energy | watts = watt-hours per year ÷ 8,760 |
 | 1 MW running for a year | 8,760 MWh = 8.76 GWh |
 | 1 GW running for a year | 8.76 TWh |
-| Capacity price | $ per MW-day × 365 ÷ 1,000 = $ per kW-year |
+| Capacity price (a capacity market's payment for keeping power available, Chapter 41) | $ per MW-day × 365 ÷ 1,000 = $ per kW-year |
 | Bits to bytes | divide by 8 (800 Gb/s = 100 GB/s) |
 | Seconds in a day / 90 days / a year | 86,400 / about 7.8 million / about 31.5 million |
 | Light in fiber | about 200,000 km per second: about 5 µs per km, 5 ms per 1,000 km |
@@ -356,7 +356,7 @@ All prices in US dollars, dated and approximate. List prices are what anyone can
 | Training compute | FLOP ≈ 6 × active parameters × training tokens |
 | Energy per token | joules = power in watts ÷ tokens per second |
 | Rack unit | 1U = 1.75 inches = 4.445 cm |
-| Rack width | 19 inches inside |
+| Rack width | 19 inches: the width of each piece of equipment's front panel, mounting ears included (the gap between the rails is about 17.75 inches) |
 | Volume | 1 US gallon = 3.785 liters; an Olympic pool holds about 2.5 million liters |
 | Distance | 1 mile = 1.609 km |
 | Temperature | °F = °C × 9 ÷ 5 + 32 (30 °C = 86 °F; 80 °C = 176 °F) |

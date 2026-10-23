@@ -1,0 +1,85 @@
+# Reader test: Appendices A, B, C and F
+
+Tested by reading Appendix A (Numbers and Units), Appendix B (Math Cheat Sheet) and Appendix C (Timeline) in full as the intended reader: no computer-science background, a daily chatbot user, who has read the 66 chapters (so a term defined in any chapter counts as defined, as long as it is recognizable or pointed to). Every number in A and B was recomputed by hand. Appendix F (The Advanced Shelf) was also read in full and checked entry by entry for correctness: all 110 entries and 265 definition callouts against standard textbook knowledge, and its 245 "Chapter N" references (about 150 distinct idea-to-chapter links) against the chapters, by grepping each target chapter for the connected idea and for its definition callout.
+
+Edits are small and surgical (Edit tool, exact-string replacements, each passage re-read just before editing; Appendices A and C were being edited by another agent at the same time and both sets of changes are intact). No headings, formats, figure or table numbers were changed. After editing, `validate.py` passes on all four files (C: 1/1 diagrams valid; F: 3/3; A and B have no diagrams), and a scripted check found no malformed definition lines, no emoji and no table rows with the wrong number of columns. `check.py` does not apply to appendices; no chapter was edited.
+
+## Findings and fixes
+
+| Appendix | Where | Problem a beginner would hit | Fix applied |
+|---|---|---|---|
+| A | Table A.6, training time | "≈ 97 days" with no intermediate step; the reader cannot see how 10^27 ÷ (100,000 × 1.2 × 10^15) becomes days | Added `10^27 ÷ 1.2 × 10^20 ≈ 8.3 million seconds ≈ 97 days` |
+| A | Table A.6, decode speed limit | "About 69 tokens per second" without the division | Added "4,800 GB/s ÷ 70 GB" |
+| A | Table A.7, fastest supercomputers | "El Capitan" appears nowhere in the book; "LineShine" only once (Chapter 2) | Glossed both: LineShine (China), El Capitan (a US national-laboratory machine). Checked against the June 2026 TOP500 list |
+| A | Table A.10 caption | "257,000 years" skipped two steps (tokens to words, words per day) | Added "about 11.25 trillion words" and "120,000 words a day" (checked: 11.25 × 10^12 ÷ 120,000 ÷ 365 ≈ 256,800) |
+| A | Table A.12, KV cache row | "(80, 8, 128, 2 bytes)" did not say which number is which, and the product was not shown | Labeled the four numbers and showed 2 × 80 × 8 × 128 × 2 = 327,680 bytes |
+| A | Table A.24, capacity price | "$ per MW-day" and "capacity price" unexplained in the appendix | Glossed as a capacity market's payment for keeping power available, with a pointer to Chapter 41 (which works the same conversion) |
+| A | Table A.24, rack width | Plainly wrong: "19 inches inside". The 19 inches is the equipment front-panel width including mounting ears; the opening between the rails is 17.75 inches | Corrected the row (source below). Chapters 34 and 38 have the same error in their Rack definitions: flagged, not edited |
+| B | Growth table, doubling time | `2^2.3` appears from nowhere; the 2.3 is 12 ÷ 5.2 | Added "12 ÷ 5.2 ≈ 2.3 doublings" |
+| B | Statistics table, error bar | "±4 points at 95% confidence" from an sd of 0.02: the doubling and the 95% are unexplained | Added "(two standard deviations, by the 68–95–99.7 rule)", which is two rows above |
+| B | Calculus table, partial derivative | "About −8" with no way to check it | Added the nudge: loss 4 at w = b = 1, about 3.992 at w = 1.001, so −0.008 ÷ 0.001 = −8 |
+| B | Compute rules, compute-optimal size | "C = 120 × N^2" stated without the substitution | Added C = 6 × N × (20 × N) = 120 × N^2 |
+| B | Compute rules, cluster speed | MFU used in the formula and never expanded in the appendix | Glossed MFU (model FLOPs utilization, share of peak achieved) with a pointer to Chapter 19, which defines it |
+| B | Compute rules, arithmetic intensity | "2 FLOPs ÷ 2 bytes" without saying where 2 and 2 come from | Added "each 2-byte weight is read once and used in one multiply-add (2 FLOPs)" |
+| B | Statistics table, mean; spreadsheet table "for the salary list" | The spreadsheet row refers to "the salary list", but the appendix never says the numbers are salaries | Mean row now says "nine salaries in thousands (Chapter 6's example)" |
+| B | Spreadsheet formulas intro | The formulas name cells (A1:C1, A2:A5, D1:E2) but nothing says which numbers go in which cells, so a beginner gets errors or wrong answers (SLOPE takes y first) | Added one sentence giving the cell layout for the dot product, line of best fit, correlation and MMULT examples |
+| C | 1951 row | SNARC not expanded | Expanded: Stochastic Neural Analog Reinforcement Calculator |
+| C | 1969 row | ARPANET unexplained | "a computer network funded by the US Defense Department" |
+| C | 2007 row | Plainly wrong: checkers called the "first major game solved completely". Connect Four was solved in 1988, and checkers was weakly solved (perfect play from the start), not solved for every position | Now "the most complex popular game solved up to then", the paper's own claim (source below) |
+| C | Apr 2019 row | "OG" reads as an abbreviation | "OG, the reigning Dota 2 world-champion team" (OG won The International 2018) |
+| C | 2020 row | DDPM unexpanded | "the DDPM paper: denoising diffusion probabilistic models" |
+| C | Nov 2020 row | CASP14 unexplained | "the 14th round of a blind protein-structure prediction contest" |
+| C | 2023 row | CoreWeave has no definition callout anywhere | "a GPU cloud company" |
+| C | Feb 2024 row | FCC unexpanded | "The US Federal Communications Commission (FCC)" |
+| C | Nov 2024 row | SQLite unexplained | "a widely used database program" |
+| C | Dec 2024 row | GM unexpanded | "General Motors (GM) ends its Cruise robotaxi program" |
+| C | Feb 2025 row | ECMWF and AIFS unexplained | "AIFS, the AI forecasting system of the European weather centre ECMWF" |
+| C | May 2025 row | UAE unexpanded; Humain unexplained | "Stargate UAE (United Arab Emirates)"; "Saudi Arabia's AI company Humain" |
+| C | Nov 2025 row | "Fluidstack data center plan": whose plan, and what is Fluidstack? | "Anthropic's data center plan with the cloud company Fluidstack" |
+| C | Jul 9, 2026 row | "BBB-" and S&P unexplained | "S&P, a credit-rating agency, cuts Oracle to BBB-, its lowest investment-grade rating" |
+| C | Jul 16, 2026 row | Moonshot unexplained | "Chinese lab Moonshot AI's Kimi K3" |
+| C | Jul 23, 2026 row | FactSet unexplained | "FactSet, a financial-data company" |
+| C | Jul 30, 2026 row | Zoox unexplained at first use | "Zoox, Amazon's robotaxi company" |
+| C | Aug 2026 row | "Stanford 'Canaries' update" is cryptic | "Update to Stanford's 'Canaries in the Coal Mine' study of payroll data" (the title Chapter 66 uses) |
+| C | Sep 29, 2026 row | BWRX-300 unexplained in the appendix | "a 300-megawatt GE Vernova Hitachi design", matching Chapter 41's definition |
+| F | Structure in constraint problems | Incorrect algorithm: "pick a root, fix values from the root outward, and you never need to backtrack" omits the leaves-to-root pruning pass, without which assigning from the root can still dead-end | Added the pass: from the leaves up to the root, cross out every value with no compatible value left in the branch below, then assign from the root outward |
+| F | Other motion planners, Voronoi | Imprecise definition: boundary lines are "the points farthest from all obstacles". They are the points equally far from the two nearest obstacles | Corrected the definition callout and the matching sentence in the text |
+| F | Reservoir sampling | The recipe jumped from "keep the first 100" to "the 1,000th item", skipping items 101 to 999; a beginner could not run it | Now: keep each new item with probability 100 ÷ its position (the 200th: 50%; the 1,000th: 10%) |
+| F | Architecture fallacies | "Cloud computing providers are losing money: a 2017 claim the authors rejected" misstates it; it is a fallacy the 2017 edition lists and rebuts | "a common belief that the 2017 edition rejected" |
+| F | Architecture fallacies | DSA and DNN unexpanded | Glossed both; DSA points to Chapter 32, which defines it |
+| F | History of warehouse-scale computing | Wrong pointer: "Chapters 32, 34 and 35, which define the warehouse-scale computer". Only Chapter 34 defines it (32 and 35 never use the term) | "...are in Chapters 32, 34 and 35; Chapter 34 defines the warehouse-scale computer" |
+| F | Message brokers such as Kafka | Wrong pointer: "fraud models (Chapter 51)". Chapter 51 never mentions fraud; Chapter 53 covers fraud detection | "recommendation models (Chapter 51) and fraud-detection models (Chapter 53)" |
+| F | Optimal control; SVM duality | CS229 and CS231n are bare course codes | "Stanford's machine-learning course, CS229"; "Stanford's computer-vision course, CS231n" |
+| F | Shapes and contours | CS2023 used with no explanation until the reading list at the end | Glossed at first use, with a pointer to "Where to go next" |
+| F | ResNeXt, RegNet and anchor boxes | DETR not expanded (no definition anywhere in the book) | "DETR (Detection Transformer, Chapter 45)" |
+| F | Boltzmann variants | "RBM-like layers" uses an abbreviation never introduced | Added "(RBMs)" after "restricted Boltzmann machines" in the previous sentence |
+| F | Gaussian discriminant analysis | Multivariate normal definition relies on "covariance matrix", defined about 70 lines later | Added "(defined in the next section)" |
+| F | Self-organized criticality | "Hendrycks cites it": first mention of Hendrycks in the appendix, with no first name or work | "Dan Hendrycks's AI safety textbook cites it" |
+| F | Where to go next, CS2023 | ACM, IEEE and AAAI unexplained (IEEE and AAAI have no definition anywhere) | Added that they are the main professional societies for computing and for AI, with AAAI expanded |
+
+Counts: Appendix A, 7 fixes (4 skipped steps, 2 undefined names or units, 1 factual error). Appendix B, 8 fixes (5 skipped steps, 1 undefined abbreviation, 2 instructions a beginner could not follow). Appendix C, 18 fixes (17 undefined abbreviations or names, 1 factual error). Appendix F, 17 edits (4 accuracy corrections, 2 wrong chapter pointers, 11 undefined abbreviations, names or forward references).
+
+## Verdicts
+
+**Appendix A (Numbers and Units).** The ramp works: powers of ten, then bytes, FLOPs, tokens, memory, chips, energy, data-center scale and cost, each table pointing to its chapter. I recomputed every derived number (prefix anchors, scientific-notation readings, GiB, KV cache, 6ND for Llama 3.1 405B, GPT-3 and DeepSeek-V4-Pro, training time, decode limit, ridge point, the weight-memory table, rack and pod totals, energy conversions, cost formulas, nines, growth rates). All were right to the stated rounding, except one factual error (the 19-inch rack width). The only soft spot is "about 217 MW" for 180 MW × 1.2, which comes from Chapter 34's unrounded 180.6 MW; I left it. Every unit and abbreviation used is defined in a chapter, the main pointers are present, and the two supercomputer names are now glossed.
+
+**Appendix B (Math Cheat Sheet).** Strong: every formula appears in words, symbols and a worked example, and all examples recompute correctly (softmax at three temperatures, top-p, cross-entropy, perplexity, the regression slope 10.5 ÷ 5 = 2.1 and correlation 0.98, Bayes 0.0981 and 0.092, the MSE slopes −36.5 and −12.5, 6 × 175E9 × 300E9, the 68-day run, and the rest). The gaps were places where a step was assumed, plus spreadsheet formulas whose cell layout was never stated. Both are fixed. Every term (MFU now included) is defined in Chapters 5, 6, 12, 13, 19, 23 or 33.
+
+**Appendix C (Timeline).** The eras diagram and era tables give a clear ramp from 1843 to October 2026, and the "Why it matters" column does most of the explaining. The beginner problem was abbreviations and company names, especially in the later rows, that appear with no gloss and, in several cases, no definition anywhere in the book. All entries in acronyms-by-chapter.json for Appendix C are now glossed at first use. The rows I checked against my own knowledge, 1843 to late 2025, are correct apart from the checkers claim. I did not re-verify 2026 rows; they come from the freshness audits.
+
+**Appendix F (The Advanced Shelf).** Accurate overall. I checked each entry's explanation and definitions against standard sources: AIMA for search, logic, planning, multiagent and decision theory; Goodfellow et al. for the matrix, optimization and classic generative-model entries; CS229 and D2L for the statistics and recommender entries; Barroso et al. and Hennessy and Patterson for the systems entries; Hendrycks for the safety entries; the AI Act text for the legal machinery. Dates and attributions are right (DPLL 1962, the 4.26 SAT threshold, Allen's 13 relations, Dung 1995, Arrow 1951, Allais 1953, prospect theory 1979, the NTK in 2018, SMO in 1998, AdaDelta in 2012, the echo state network in 2001, contrastive divergence in 2002, wake-sleep in 1995, the 16-versus-36 Winograd count, the 164 HumanEval problems, RETRO's 25× claim, focal loss arithmetic, the data-center tax of nearly 30%, Spectre and Meltdown, the Ethereum merge, Intel Crest, FTA at Bell Labs, SOC in 1987, Fearon 1995, Bostrom 2006). One claim from *How to Scale Your Model* was checked on the web: SHARP gives about 30% in practice and pure all-reduces are rare in LLMs. The worked numbers also check: 2^20 rows, the noisy-OR 0.88, the 25 × 25 fence, 4.9 × 10^21 Hessian entries, 2^17 ≈ 131,000, 0.8 bits per byte = one tenth, 0.1 squared = 0.01. The four accuracy problems and the two wrong pointers listed above are fixed. The 245 chapter references reduce to about 150 distinct idea-to-chapter links. I grepped each one in its target chapter, and every one besides those two leads to a chapter that really discusses the idea, nearly always with a definition callout. Examples: the contingent plan, belief state, hierarchical planning, mechanism design, bandits and repeated games in Chapter 48; the frame problem, default reasoning, MRFs, probabilistic programming, Kalman and particle filters and statistical parsing in Chapter 54; the partition function, energy-based, score-based and flow models in Chapter 16; PAC, VC, data augmentation, class weights and successive halving in Chapter 9; KTO and model soups in Chapter 20; DPUs and the WSC in Chapter 34; root of trust in Chapter 38; tail risk, HROs, normal accidents, complex systems and agent foundations in Chapter 56; Annex III, conformity assessment, the AI Office, evolutionary pressure and the four ways out of collective-action problems in Chapter 59. Plain English is good throughout, and every new term carries a definition callout in the STYLE.md format.
+
+## Flagged, not edited (outside the appendices)
+
+- Chapters 34 (line ~284) and 38 (line ~214), Rack definition: "19 inches wide inside (its mounting rails)" is wrong in the same way Appendix A was. The 19 inches is the front-panel width including mounting ears; the opening between the rails is about 17.75 inches (450 mm).
+- Earliest-chapter definitions still missing (FINAL-FIXES queue): ARPANET (first used in Chapter 4, 3 chapters), UAE (Chapter 42, 3 chapters), CoreWeave (10 chapters, and named only as an example inside Chapter 4's Neocloud definition), and BWRX-300 (first used in Chapter 38 but defined only in Chapter 41). Chapter 43's Credit rating definition covers BBB in its text, but the acronym tool still lists it. DETR (Chapter 45), IEEE (Chapter 51), ECMWF and AIFS (Chapter 52) and CASP14 (Chapter 52) have no definition in their chapters either. The appendices now gloss all of them.
+- `acronyms.py` will keep listing the Appendix C and F entries above because it counts only definition callouts and glossary headings, not inline glosses. All of them are now glossed at first use.
+
+## Sources consulted
+
+- TOP500, June 2026 list (LineShine 2,198.40 PFlop/s; El Capitan 1,809.00 PFlop/s at LLNL): https://top500.org/lists/top500/2026/06/
+- 19-inch rack dimensions (19 in panel width including ears; 17.75 in between rails): https://en.wikipedia.org/wiki/19-inch_rack
+- Schaeffer et al., "Checkers Is Solved", *Science* 2007, abstract via Crossref ("the most challenging popular game to be solved to date, roughly one million times as complex as Connect Four"): https://api.crossref.org/works/10.1126/science.1144079
+- Solved games (Connect Four solved October 1988; checkers weakly solved 2007): https://en.wikipedia.org/wiki/Solved_game
+- *How to Scale Your Model*, GPU chapter (SHARP: about 30% measured; pure AllReduces rare in LLMs): https://jax-ml.github.io/scaling-book/gpus/
+- Book-internal checks: planning/coverage/external-compute-datacenters.md (structure of *The Data Center as a Computer*, 4th ed., including Chapter 11 "A Twenty Five Year WSC Journey" and Chapter 12's 25 top papers; Hennessy and Patterson's fallacy list), planning/coverage/external-classical-ai.md (AIMA "Knowledge in Learning" chapter).

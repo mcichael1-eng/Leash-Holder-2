@@ -38,7 +38,7 @@ timeline
 |---|---|---|
 | 1950 | Turing's "Computing Machinery and Intelligence" proposes the imitation game | The Turing test; the first serious case that machines might think |
 | 1950 | Claude Shannon publishes a paper on programming a computer to play chess | Founds game-playing AI and the idea of searching ahead |
-| 1951 | Marvin Minsky and Dean Edmonds build SNARC, a learning machine of about 40 artificial neurons | One of the first neural-network machines |
+| 1951 | Marvin Minsky and Dean Edmonds build SNARC (Stochastic Neural Analog Reinforcement Calculator), a learning machine of about 40 artificial neurons | One of the first neural-network machines |
 | 1955 | McCarthy, Minsky, Rochester and Shannon write the Dartmouth proposal | Coins the term "artificial intelligence" |
 | 1956 | Dartmouth summer workshop | The founding event of AI as a field |
 | 1956 | Newell, Shaw and Simon demonstrate the Logic Theorist | Proves logic theorems by heuristic search; template for symbolic AI |
@@ -54,7 +54,7 @@ timeline
 | 1966–72 | Shakey the robot at SRI | First mobile robot to reason about its own actions |
 | 1968 | A* search algorithm published by the Shakey team | Efficient route planning, ancestor of map-app routing |
 | 1969 | Minsky and Papert publish *Perceptrons* | Shows single-layer networks cannot learn XOR; neural-network funding fades |
-| 1969 | First ARPANET link | Ancestor of the internet that later supplies AI's training data |
+| 1969 | First link of ARPANET, a computer network funded by the US Defense Department | Ancestor of the internet that later supplies AI's training data |
 | 1970 | Seppo Linnainmaa describes reverse-mode automatic differentiation | The mathematical core of backpropagation |
 | 1972 | Prolog logic-programming language created | Basis of later logic-based AI, including Japan's Fifth Generation project |
 | 1973 | Lighthill report for the UK government | Criticizes AI's results; UK funding cut; start of the first winter |
@@ -100,7 +100,7 @@ timeline
 | 2006 | Amazon Web Services begins renting computing | Cloud computing makes large compute rentable |
 | 2006–09 | Netflix Prize ($1 million) | Popularizes recommender systems; also shows "anonymous" data can be re-identified |
 | 2007 | NVIDIA releases CUDA | GPUs become programmable for general math |
-| 2007 | Checkers solved by a University of Alberta team | Perfect play is a draw; first major game solved completely |
+| 2007 | Checkers solved by a University of Alberta team | Perfect play is a draw; the most complex popular game solved up to then |
 | 2009 | ImageNet dataset released (Fei-Fei Li and colleagues) | Millions of labeled images; the data leg of the deep learning boom |
 | 2009 | Google begins its self-driving car project | Ancestor of Waymo |
 | 2010 | DeepMind founded in London | Later produces DQN, AlphaGo and AlphaFold |
@@ -153,15 +153,15 @@ timeline
 | Feb 2019 | GPT-2 (1.5 billion parameters), released in stages | Fluent text generation; starts the open-release debate |
 | Mar 2019 | Bengio, Hinton and LeCun receive the 2018 Turing Award | Deep learning's pioneers honored |
 | Mar 2019 | Rich Sutton's essay "The Bitter Lesson" | Argues that methods that scale with compute win in the long run |
-| Apr 2019 | OpenAI Five beats Dota 2 world champions OG | AI wins a fast, complex team video game |
+| Apr 2019 | OpenAI Five beats OG, the reigning Dota 2 world-champion team | AI wins a fast, complex team video game |
 | 2019 | Pluribus beats professionals at six-player poker | Multi-player hidden-information play |
 | Oct 2019 | AlphaStar reaches Grandmaster in StarCraft II | Real-time strategy at top human level |
 | Jan 2020 | Kaplan and colleagues' "Scaling Laws for Neural Language Models" | Bigger models improve predictably; justifies huge investments |
 | May 2020 | GPT-3 (175 billion parameters) | In-context learning; about 3 × 10^23 FLOP of training |
 | 2020 | NVIDIA A100 | The workhorse GPU of the early LLM era |
-| 2020 | Vision Transformer, diffusion models (DDPM) and NeRF | Transformers for images; the start of modern image generation and 3D capture |
+| 2020 | Vision Transformer, diffusion models (the DDPM paper: denoising diffusion probabilistic models) and NeRF | Transformers for images; the start of modern image generation and 3D capture |
 | 2020 | Waymo opens fully driverless public rides in Phoenix | Robotaxis with no safety driver |
-| Nov 2020 | AlphaFold 2 at CASP14 | Protein structure prediction near lab accuracy |
+| Nov 2020 | AlphaFold 2 at CASP14, the 14th round of a blind protein-structure prediction contest | Protein structure prediction near lab accuracy |
 | Dec 2020 | MuZero published in *Nature*; The Pile dataset released | Learning without being told the rules; an open 825 GiB text dataset |
 | Jan 2021 | DALL·E and CLIP | Text-to-image generation and image-text understanding |
 | 2021 | Anthropic founded | Later builds Claude |
@@ -206,11 +206,11 @@ timeline
 | Dec 2023 | EU reaches political deal on the AI Act | World's first comprehensive AI law takes shape |
 | Dec 2023 | AMD MI300X; Mamba state-space model | A serious NVIDIA challenger; an alternative to attention |
 | 2023 | Google TPU v5e/v5p; ISO/IEC 42001 AI management standard | More custom silicon; certifiable AI governance |
-| 2023 | CoreWeave raises a loan backed by H100 GPUs, reportedly the first of its kind | GPUs become collateral; new AI financing |
+| 2023 | CoreWeave, a GPU cloud company, raises a loan backed by H100 GPUs, reportedly the first of its kind | GPUs become collateral; new AI financing |
 | Jan 2024 | Neuralink's first human implant | Brain-computer interfaces enter human trials |
 | Feb 2024 | Google's Gemini 1.5 Pro offers up to 1 million tokens of context | Long context: whole books in one prompt |
 | Feb 2024 | OpenAI previews Sora video generation | Realistic generated video |
-| Feb 2024 | US FCC rules AI-generated voices in robocalls fall under robocall law | Response to a fake-Biden robocall |
+| Feb 2024 | The US Federal Communications Commission (FCC) rules AI-generated voices in robocalls fall under robocall law | Response to a fake-Biden robocall |
 | Mar 2024 | Anthropic's Claude 3 | A frontier model family in three tiers |
 | Mar 18, 2024 | NVIDIA announces Blackwell (208 billion transistors, two dies) | Next-generation AI chip and the NVL72 rack |
 | May 2024 | OpenAI's GPT-4o | One model for text, images and real-time voice |
@@ -236,18 +236,18 @@ timeline
 | Oct 22, 2024 | Claude computer use (public beta) | Models operate computers by clicking and typing |
 | Oct 2024 | Open Source AI Definition 1.0 (Open Source Initiative) | Defines what "open source" means for AI |
 | Oct 2024 | Physical Intelligence's π0 robot foundation model | General-purpose robot control models |
-| Nov 2024 | Google's Big Sleep agent finds an exploitable SQLite bug | AI starts finding real security flaws |
+| Nov 2024 | Google's Big Sleep agent finds an exploitable bug in SQLite, a widely used database program | AI starts finding real security flaws |
 | Nov 25, 2024 | Anthropic introduces the Model Context Protocol (MCP) | Standard plug between AI apps and tools |
 | Dec 2024 | DeepSeek-V3 (final run about 2.79 million H800 GPU-hours, about $5.6 million at $2 per GPU-hour; excludes research and earlier runs) | Efficient open-weight frontier-class model; FP8 training at scale |
 | Dec 2024 | OpenAI announces o3; GenCast weather model; alignment-faking paper | Reasoning scales; AI ensembles for weather; models gaming their training in tests |
-| Dec 2024 | US restricts HBM exports to China; GM ends Cruise robotaxis | Memory joins chip controls; a robotaxi exit |
+| Dec 2024 | US restricts HBM exports to China; General Motors (GM) ends its Cruise robotaxi program | Memory joins chip controls; a robotaxi exit |
 | Dec 2024 | LBNL report: US data centers used about 4.4% of US electricity in 2023 | Benchmark for AI's power demand |
 | Jan 20, 2025 | DeepSeek-R1 open-weight reasoning model; US revokes the 2023 AI executive order | Cheap open reasoning; US policy turns to deregulation |
 | Jan 21, 2025 | Stargate announced: up to $500 billion and 10 GW by 2029 | The gigawatt era of AI infrastructure begins |
 | Jan 23, 2025 | OpenAI Operator; US Executive Order 14179 | Web-browsing agents; "removing barriers" policy |
 | Jan 27, 2025 | NVIDIA stock falls about 17% in a day | Markets react to DeepSeek's efficiency |
 | Feb 2, 2025 | EU AI Act bans apply; OpenAI Deep Research; Karpathy coins "vibe coding" | First EU prohibitions; research agents; a new way to build software |
-| Feb 2025 | Paris AI Action Summit; Google's AI co-scientist; ECMWF's AIFS goes operational | Summit shifts to opportunity; AI agents for science; AI weather forecasts in operation |
+| Feb 2025 | Paris AI Action Summit; Google's AI co-scientist; AIFS, the AI forecasting system of the European weather centre ECMWF, goes operational | Summit shifts to opportunity; AI agents for science; AI weather forecasts in operation |
 | Feb 24, 2025 | Claude 3.7 Sonnet and Claude Code | First hybrid reasoning model; terminal coding agent |
 | Feb 27, 2025 | OpenAI GPT-4.5 (about 3.8 × 10^26 FLOP, per Epoch) | Among the largest known training runs of 2025 |
 | Mar 5, 2025 | Turing Award to Andrew Barto and Richard Sutton | Reinforcement learning honored |
@@ -261,7 +261,7 @@ timeline
 | Apr 16, 2025 | OpenAI o3 released | Reasoning model with a METR time horizon of about 2 hours |
 | Apr 2025 | OpenAI rolls back an overly flattering GPT-4o update | Sycophancy becomes a recognized failure mode |
 | May 2025 | US rescinds the "AI Diffusion" export rule before it takes effect | Chip-export policy reset |
-| May 2025 | Stargate UAE announced; Saudi Arabia's Humain founded | Gulf states enter the sovereign-AI race |
+| May 2025 | Stargate UAE (United Arab Emirates) announced; Saudi Arabia's AI company Humain founded | Gulf states enter the sovereign-AI race |
 | May 14, 2025 | DeepMind's AlphaEvolve finds a 48-multiplication method for 4 × 4 complex matrices | First improvement on Strassen's 1969 approach in that setting |
 | May 19, 2025 | US TAKE IT DOWN Act signed | Criminalizes publishing non-consensual intimate deepfakes |
 | May 2025 | Google's Veo 3 | Video generation with synchronized sound and dialogue |
@@ -295,7 +295,7 @@ timeline
 | Oct 29, 2025 | NVIDIA reaches $5 trillion | Scale of the AI investment boom |
 | Nov 2025 | Google announces Ironwood TPU general availability; Google's Project Suncatcher study of solar-powered TPU satellites | Google's seventh-generation TPU; orbital data centers studied |
 | Nov 2025 | Anthropic reports disrupting a largely AI-orchestrated cyber-espionage campaign | First reported case of AI doing most of a real cyberattack |
-| Nov 2025 | Anthropic–Microsoft–NVIDIA compute deal; Fluidstack data center plan | More multi-gigawatt commitments |
+| Nov 2025 | Anthropic–Microsoft–NVIDIA compute deal; Anthropic's data center plan with the cloud company Fluidstack | More multi-gigawatt commitments |
 | Nov 2025 | Yann LeCun leaves Meta to found a world-model company | A leading researcher bets beyond LLMs |
 | Nov 2025 | "Vibe coding" named Collins Word of the Year; WeatherNext 2 | AI coding enters everyday language; faster AI weather forecasts |
 | Nov 2025 | GPT-5.1; Gemini 3 Pro (Nov 18); Claude Opus 4.5 (Nov 24) | Three new flagships within weeks |
@@ -363,25 +363,25 @@ timeline
 |---|---|---|
 | Jul 2026 | ChatGPT Work launches and ChatGPT's "apps" are renamed "plugins"; xAI is rebranded SpaceXAI (reported); Microsoft says (July 29) it added another gigawatt of capacity in one quarter | Agents for office work; corporate reshuffles; capacity races on |
 | Jul 8, 2026 | Waymo says it will soon go fully driverless in Las Vegas, Denver, San Diego and Tampa, starting with Las Vegas (reported) and with employees riding first; by October Waymo lists 15 US metros open to the public | Robotaxis spread to more US cities |
-| Jul 9, 2026 | S&P cuts Oracle to BBB- | Financial strain of the AI build-out shows |
+| Jul 9, 2026 | S&P, a credit-rating agency, cuts Oracle to BBB-, its lowest investment-grade rating | Financial strain of the AI build-out shows |
 | Jul 9, 2026 | GPT-5.6 released in Luna, Terra and Sol tiers | Tiered model families |
 | Jul 13, 2026 | Meta says its Hyperion campus in Louisiana will scale to 5 GW | Single campuses reach multiple gigawatts |
-| Jul 16, 2026 | Moonshot's Kimi K3 (2.8T parameters, open weights) | Open-weight models at multi-trillion scale |
+| Jul 16, 2026 | Chinese lab Moonshot AI's Kimi K3 (2.8T parameters, open weights) | Open-weight models at multi-trillion scale |
 | Jul 20, 2026 | Final court approval of the $1.5 billion Bartz v. Anthropic settlement | Sets a price on training with pirated books |
 | Jul 21, 2026 | Gemini 3.6 Flash; Gemini 3.5 Pro reported delayed, and still not generally released by October | Not every planned model ships on time |
-| Jul 23, 2026 | FactSet: five big US tech companies on track for close to $800 billion of 2026 capital spending | Scale of the build-out |
+| Jul 23, 2026 | FactSet, a financial-data company: five big US tech companies on track for close to $800 billion of 2026 capital spending | Scale of the build-out |
 | Jul 24, 2026 | Claude Opus 5 | Anthropic's fifth-generation flagship |
 | Jul 27, 2026 | EU Digital Omnibus on AI in force | Delays high-risk rules to December 2027 for uses such as hiring and credit (Annex III) and to August 2028 for AI inside regulated products such as medical devices (Annex I); adds bans on intimate deepfakes and AI-generated child sexual abuse material (CSAM) from December 2, 2026 |
 | Jul 2026 | IMO 2026: several perfect-score claims by AI models, none officially certified as of October | A lesson in verifying dramatic claims |
 | Jul 28, 2026 | New Model Context Protocol specification (version 2026-07-28), with a twelve-month minimum deprecation window (a feature marked for retirement keeps working for at least a year) | Agent standards mature |
-| Jul 30, 2026 | Gemini Robotics 2; Zoox reportedly receives the first US commercial exemption for a purpose-built robotaxi | Whole-body humanoid control; cars without steering wheels |
+| Jul 30, 2026 | Gemini Robotics 2; Zoox, Amazon's robotaxi company, reportedly receives the first US commercial exemption for a purpose-built robotaxi | Whole-body humanoid control; cars without steering wheels |
 | Late Jul 2026 | Bipartisan FRONTIER Act introduced in the US House | Federal preemption debate continues |
 | Aug 2, 2026 | EU enforcement powers over general-purpose AI and transparency duties begin | EU AI Act gains teeth |
 | Aug 7, 2026 | OpenAI shares early cyber test results for its unreleased Astra model and reportedly says it cannot rule out Critical cyber capability, the top level of its internal risk scale (its later system card says Astra "might reach the Critical level of cyber capability") | Cyber capability becomes the leading safety concern |
 | Aug 10, 2026 | Zoox begins paid robotaxi rides in Las Vegas (reported); Meta's Muse Glimmer, a 30-billion-parameter open-weight model | Purpose-built robotaxis enter commercial service; Meta still releases some open-weight models |
 | Aug 13, 2026 | DeepSeek-V4-Pro generally available; Gemini 3.7 Flash | Open-weight frontier model released; rapid Flash updates |
 | Jul–Aug 2026 | Qwen3.8 family: the open Qwen3.8-2.4T-A95B, its hosted version Qwen3.8-Max, and the small open Qwen3.8-27B (Max previewed on July 19 and offered in Alibaba's cloud from August 3, as reported; sources give August 8 or August 12 for the 2.4T weights and August 14 for the 27B) | Chinese open-weight scale-up |
-| Aug 2026 | Stanford "Canaries" update: young workers in AI-exposed jobs about 19% below trend | Early labor-market signal, described as not causal |
+| Aug 2026 | Update to Stanford's "Canaries in the Coal Mine" study of payroll data: young workers in AI-exposed jobs about 19% below trend | Early labor-market signal, described as not causal |
 | Aug 26, 2026 | NVIDIA reports quarterly revenue of $96.2 billion and says Vera Rubin is "ramping into full production," with racks running at several clouds | AI hardware demand still doubling year over year |
 | Sep 1–2, 2026 | US Justice Department files a statement of interest arguing that copying works to train AI can be fair use, in the OpenAI copyright cases (sources differ on the day) | Government weighs in on AI copyright |
 | Sep 2, 2026 | Gemini 3.8 Flash | Google's fast-model line keeps updating |
@@ -393,7 +393,7 @@ timeline
 | Sep 22, 2026 | Claude Opus 5.5 | Tops several capability indices as of October 2026 |
 | Sep 22, 2026 | GPT-6 Sol and GPT-6 Luna | Cheaper GPT-6 tiers built on Astra's advances |
 | Sep 28, 2026 | Claude Sonnet 5.5 | Mid-tier update |
-| Sep 29, 2026 | GPT-6.1 Sol; appeals court rules in Thomson Reuters v. Ross that copying for a competing legal-search AI was not fair use; the Nuclear Regulatory Commission (NRC) announces the first US construction permit for a BWRX-300 small modular reactor (the Tennessee Valley Authority's Clinch River site) | Price drops for near-frontier models; a copyright loss for AI training; new nuclear for the grid |
+| Sep 29, 2026 | GPT-6.1 Sol; appeals court rules in Thomson Reuters v. Ross that copying for a competing legal-search AI was not fair use; the Nuclear Regulatory Commission (NRC) announces the first US construction permit for a BWRX-300 small modular reactor, a 300-megawatt GE Vernova Hitachi design (the Tennessee Valley Authority's Clinch River site) | Price drops for near-frontier models; a copyright loss for AI training; new nuclear for the grid |
 | Around Sep 30, 2026 | Gemini 4 Argon announced (per Epoch) | Google's fourth-generation flagship |
 | Oct 2, 2026 | Anthropic's Claude Frontier Academy: $100 million to train 10,000 deployment engineers | Demand for people who put AI to work |
 | Oct 5, 2026 | US Defense Department says it has stopped using Anthropic products (reported) | A lab's limits on military use of its models collide with a government customer |
