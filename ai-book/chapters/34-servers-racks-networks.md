@@ -281,7 +281,7 @@ Power arrives at the rack as alternating current (AC, electricity that reverses 
 
 ### What a rack is
 
-> **Definition — Rack:** A standardized metal cabinet, 19 inches wide inside and about 2 meters tall, that holds servers, switches, power equipment and cooling hardware. Its height is measured in rack units (U), each 1.75 inches; most racks are 42–52U.
+> **Definition — Rack:** A standardized metal cabinet, about 2 meters tall, that holds servers, switches, power equipment and cooling hardware. It is built for equipment 19 inches wide, measured across each unit's front panel and mounting ears (the gap between the rails is about 17.75 inches), and its height is measured in rack units (U), each 1.75 inches; most racks are 42–52U.
 
 For decades a rack was just furniture: a shelf for independent servers that happened to sit next to each other. A 2015 enterprise rack drew about 5–10 kW, roughly what four to eight homes use on average. An NVIDIA GB200 or GB300 NVL72 rack draws about 120–140 kW, roughly the average draw of 100 homes, and weighs around 1.5 tonnes or more, which is why new AI halls put racks on concrete slabs instead of raised floors (Chapter 38). More important than its weight, the NVL72 is not furniture holding separate computers. It is one computer that happens to be the size of a refrigerator.
 

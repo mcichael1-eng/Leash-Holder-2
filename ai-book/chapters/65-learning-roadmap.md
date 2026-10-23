@@ -1188,4 +1188,4 @@ Learning roadmap, track, milestone, top-down learning, retrieval practice (activ
 - **Epoch AI (epoch.ai).** Free, carefully sourced data on compute, training costs, hardware and data centers; the place to check a number before you repeat it.
 - **80,000 Hours, AI safety career review and podcast (80000hours.org).** One of the most detailed public guides to careers in AI safety and policy, with honest discussion of fit and trade-offs.
 - **S. Keshav, "How to Read a Paper" (2007).** A two-page note describing the three-pass method; it will save you hundreds of hours over a career of reading research.
-- **Appendix E of this book.** The full list of courses, books, newsletters, podcasts and communities, grouped by level and type, with costs and links.
+- **Appendix E and Appendix F of this book.** Appendix E is the full list of courses, books, newsletters, podcasts and communities, grouped by level and type, with costs and links; Appendix F, the Advanced Shelf, explains in plain words the specialist and graduate-level topics those courses teach that this book names but does not cover.

@@ -315,6 +315,10 @@ Clouds sell at three levels. You can rent bare machines (often virtual machines,
 
 *Figure 4.9: The three levels of cloud service. A chatbot subscription is software as a service.*
 
+> **Definition — IaaS (infrastructure as a service):** Renting raw cloud machines, GPUs and storage, usually by the hour, and installing and running everything on them yourself. Renting eight GPUs for a day to fine-tune a model is IaaS.
+
+> **Definition — PaaS (platform as a service):** A ready-made cloud platform that runs your code or models for you while the provider manages the machines underneath. You hand over the program; the provider keeps the servers running and adds more when traffic grows.
+
 > **Definition — SaaS (software as a service):** A finished application that you rent, usually by monthly or yearly subscription, and use over the internet through a browser or app, while the provider runs the servers and installs the updates. Your ChatGPT, Claude or Gemini subscription is SaaS, and so are most business tools sold per user per month.
 
 Worked example: renting GPUs. In October 2026, Lambda listed on-demand H100 GPUs at about $3.99 to $4.29 per GPU-hour (one GPU rented for one hour), and RunPod, another GPU rental company, listed them from about $2.69 to $3.99 (in 2025 they were widely available for $2 to $3). At $4 per hour:
@@ -572,7 +576,7 @@ Latency is how long the trip takes; bandwidth is how much fits through the pipe.
 
 ## Key terms
 
-Network, Router, ISP (Internet service provider), Internet, Internet exchange point (IXP), Backbone, Protocol, Packet, TCP (Transmission Control Protocol), Fiber-optic cable, Undersea (subsea) cable, IP address, Domain name, DNS (Domain Name System), HTTP (Hypertext Transfer Protocol), URL (Uniform Resource Locator), Request and response, Status code, Encryption, HTTPS, Public-key cryptography, TLS (Transport Layer Security), Certificate (digital), End-to-end encryption, Client, Server, Data center, Rack, Cloud computing, Hyperscaler, Neocloud, Region (cloud), Availability zone, Virtual machine, SaaS (software as a service), CDN (content delivery network) and edge, API (Application Programming Interface), Endpoint, API key, Rate limit, Latency, Bandwidth, Round-trip time (RTT), Time to first token (TTFT), Tokens per second, Streaming, Server-sent events (SSE), Load balancer, API gateway, Inference, Batching, Prefill, KV cache, Decode
+Network, Router, ISP (Internet service provider), Internet, Internet exchange point (IXP), Backbone, Protocol, Packet, TCP (Transmission Control Protocol), Fiber-optic cable, Undersea (subsea) cable, IP address, Domain name, DNS (Domain Name System), HTTP (Hypertext Transfer Protocol), URL (Uniform Resource Locator), Request and response, Status code, Encryption, HTTPS, Public-key cryptography, TLS (Transport Layer Security), Certificate (digital), End-to-end encryption, Client, Server, Data center, Rack, Cloud computing, Hyperscaler, Neocloud, Region (cloud), Availability zone, Virtual machine, IaaS (infrastructure as a service), PaaS (platform as a service), SaaS (software as a service), CDN (content delivery network) and edge, API (Application Programming Interface), Endpoint, API key, Rate limit, Latency, Bandwidth, Round-trip time (RTT), Time to first token (TTFT), Tokens per second, Streaming, Server-sent events (SSE), Load balancer, API gateway, Inference, Batching, Prefill, KV cache, Decode
 
 ## Exercises
 

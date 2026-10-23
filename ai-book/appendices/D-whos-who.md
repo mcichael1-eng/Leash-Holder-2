@@ -108,7 +108,7 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 
 | Organization | Who they are and why they matter | More in |
 |---|---|---|
-| Stargate LLC | OpenAI's data-center venture, set up as a separate company (an LLC, or limited liability company), with SoftBank, Oracle and MGX, announced in January 2025 with a target of "up to $500 billion and 10 gigawatts." | Chapter 42 |
+| Stargate LLC | OpenAI's data-center venture, set up as a separate company (an LLC, or limited liability company), with SoftBank, Oracle and MGX, announced in January 2025 with a target of up to $500 billion and 10 gigawatts by 2029. | Chapter 42 |
 | SoftBank | Japanese investment group led by Masayoshi Son; Stargate partner, major OpenAI investor and majority owner of Arm. | Chapter 43 |
 | MGX | Abu Dhabi technology investment fund and Stargate partner. | Chapter 43 |
 | Vantage Data Centers, STACK Infrastructure, Related Digital | Developers building several Stargate campuses in Texas, Wisconsin, New Mexico and Michigan. | Chapter 42 |
@@ -202,7 +202,7 @@ How to use this appendix: each row gives one or two plain-English lines and the 
 | Transluce, Goodfire | Interpretability organizations (a nonprofit lab and a startup) building tools to look inside models. | Chapter 57 |
 | Eleos AI | Research nonprofit studying whether AI systems could have morally relevant welfare. | Chapter 60 |
 | UK AI Security Institute (AISI) | UK government body that tests frontier models; renamed from the AI Safety Institute in 2025. | Chapter 59 |
-| US Center for AI Standards and Innovation (CAISI) | US government body at NIST that evaluates frontier models; replaced the US AI Safety Institute in 2025. | Chapter 59 |
+| US Center for AI Standards and Innovation (CAISI) | US government body at NIST that evaluates frontier models; replaced the US AI Safety Institute in 2025. By October 2026 its NIST page was calling it the Center for Advancing Innovation and Standards for Super Intelligence (CAISSI). | Chapter 59 |
 | NIST | US standards agency; publishes the AI Risk Management Framework. | Chapter 59 |
 | EU AI Office | European Commission office enforcing the EU AI Act's rules for general-purpose AI models. | Chapter 59 |
 | Cyberspace Administration of China (CAC) | China's internet regulator, which runs the registry for algorithms and generative AI services. | Chapter 59 |

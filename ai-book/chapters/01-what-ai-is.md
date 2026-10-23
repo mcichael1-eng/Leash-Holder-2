@@ -521,7 +521,7 @@ As a daily chatbot user for more than a year, you are already ahead of most peop
 
 ## A guided tour of this book
 
-This book has 66 chapters in ten Parts, plus five appendices. It is built as a spine: each Part rests on the ones before it, and the running example throughout is your own chatbot and what happens when you press Enter.
+This book has 66 chapters in ten Parts, plus six appendices. It is built as a spine: each Part rests on the ones before it, and the running example throughout is your own chatbot and what happens when you press Enter.
 
 | Part | Title | Chapters | The question it answers |
 |---|---|---|---|
@@ -536,7 +536,7 @@ This book has 66 chapters in ten Parts, plus five appendices. It is built as a s
 | IX | Safety, Ethics, Law and Society | 55–60 | What can go wrong, how do labs make AI safer, how do we look inside and test models, what are the harms, what are the laws, and what are the big debates about work and the future? |
 | X | Your Path: Skills, Careers and Opportunity | 61–66 | Who makes money in AI, what skills matter, what jobs exist, where are the opportunities, how do you keep learning, and what are the open problems ahead? |
 
-The five appendices are reference tools: A is a numbers-and-units cheat sheet, B a math cheat sheet, C a timeline from 1843 to 2026, D a who's who of companies, labs and people, and E a list of courses, books, newsletters and communities. A glossary of every defined term and an index of all exercises are generated from the chapters.
+The six appendices are reference tools: A is a numbers-and-units cheat sheet, B a math cheat sheet, C a timeline from 1843 to 2026, D a who's who of companies, labs and people, E a list of courses, books, newsletters and communities, and F, the Advanced Shelf, a set of short plain-language entries on the specialist and graduate-level topics that the chapters name but do not teach. A glossary of every defined term and an index of all exercises are generated from the chapters.
 
 ### Three reading paths
 

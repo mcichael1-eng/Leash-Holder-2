@@ -863,9 +863,9 @@ These entries go beneath Chapters 32 to 44: the software layers of large data ce
 
 ### The killer microseconds
 
-Computers are good at hiding very short delays (nanoseconds, covered by hardware tricks such as caches, Chapter 33) and very long ones (milliseconds, covered by the operating system switching to other work). A 2017 article by Google engineers, "Attack of the Killer Microseconds", pointed out that data centers are now full of delays in between: a fast network round trip or a flash-storage read takes a few microseconds, too long for hardware to hide and too short for operating-system switching to pay off. Shaving this overhead is systems-software research, and it matters more as networks and storage keep getting faster.
+Computers are good at hiding very short delays (nanoseconds, covered by hardware tricks such as caches, Chapter 33) and very long ones (milliseconds, covered by the operating system switching to other work). A 2017 article by Google engineers, "Attack of the Killer Microseconds", pointed out that data centers are now full of delays in between: a fast network round trip takes a few microseconds and a read from fast flash storage around ten to a few tens, too long for hardware to hide and too short for operating-system switching to pay off. Shaving this overhead is systems-software research, and it matters more as networks and storage keep getting faster.
 
-> **Definition — Killer microseconds:** Delays of a few microseconds, such as fast network or flash-storage accesses, that are too long for processor hardware to hide and too short for the operating system's usual waiting tricks, so they waste a growing share of data-center time.
+> **Definition — Killer microseconds:** Delays of a few to a few tens of microseconds, such as fast network round trips or reads from fast flash storage, that are too long for processor hardware to hide and too short for the operating system's usual waiting tricks, so they waste a growing share of data-center time.
 
 ### Software-defined servers, far memory and storage tiering
 

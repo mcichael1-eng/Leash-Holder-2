@@ -574,9 +574,9 @@ With Congress unable to pass a preemption law, the administration turned to exec
 - Asked the FCC and FTC to consider actions that could cut against state rules.
 - Carved out state laws on child safety, on compute and data-center infrastructure, and on the state's own purchasing of AI.
 
-Crucially, the order itself does not preempt any state law. Only Congress can do that by statute, or a court can strike a state law down. The order is a plan to apply pressure through lawsuits and funding.
+Crucially, the order itself does not preempt any state law. Only federal law can do that: a statute from Congress, or a regulation an agency issues under power Congress gave it. Separately, a court can strike a state law down. The order is a plan to apply pressure through lawsuits and funding.
 
-> **Watch out:** Some headlines in December 2025 suggested the order "overrides" state AI laws. It did not and could not. An executive order directs the federal government's own agencies. Displacing state law takes a statute from Congress or a court ruling that a state law is invalid, for example because it conflicts with federal law or the Constitution.
+> **Watch out:** Some headlines in December 2025 suggested the order "overrides" state AI laws. It did not and could not. An executive order directs the federal government's own agencies. Displacing state law takes a statute from Congress (or an agency regulation issued under power Congress gave), or a court ruling that a state law is invalid, for example because it conflicts with federal law or the Constitution.
 
 On March 20, 2026, the White House released a four-page legislative framework asking Congress for a national standard. It urged broad preemption of state rules on AI development, no new federal AI regulator, regulatory sandboxes, child protection through "commercially reasonable" age assurance with parental attestation, protections against deepfakes, and protection of household electricity customers from data-center-driven price increases. On copyright it left fair use to the courts and suggested Congress could consider collective licensing.
 
@@ -863,7 +863,7 @@ The policy has swung several times:
 - **January 2025:** the outgoing administration's "AI Diffusion" rule sorted countries worldwide into tiers with different access to advanced chips. It was **rescinded in May 2025**.
 - **April 2025:** sales of NVIDIA's H20, a chip designed to fit earlier rules for China, were halted. In **August 2025** they were licensed in exchange for 15% of the revenue going to the US government.
 - **September 2025:** Chinese regulators told Chinese firms not to buy some NVIDIA chips made for the Chinese market.
-- **December 2025:** the administration announced sales of the more powerful H200 to approved Chinese customers, with 25% going to the US government. How this was implemented in 2026, and how China responded, could not be confirmed for this chapter.
+- **December 2025:** the administration announced sales of the more powerful H200 to approved Chinese customers, with 25% going to the US government. A January 2026 rule moved H200-class chips to case-by-case licensing with a 25% charge; according to NVIDIA's filings, licenses for small amounts began in February 2026, but the Chinese government restricted the purchases (Chapter 36 has the details).
 
 By August 2026, NVIDIA's own quarterly outlook assumed no data-center compute revenue from China, a sign of how unsettled that market had become.
 
@@ -981,7 +981,7 @@ Nobody passed "the AI law." AI is governed by a mix of tools. Legislatures pass 
 
 The European Union went furthest with its AI Act. It bans a few uses outright (social scoring, emotion recognition in schools and workplaces), puts heavy duties on high-stakes uses like hiring and credit (now delayed to December 2027), requires chatbots to say they are AI and AI images to be marked (from August 2026), and gives the makers of general-purpose models like ChatGPT, Claude and Gemini documentation, copyright and safety duties. The biggest models, those trained with more than 10^25 FLOPs, owe the most.
 
-The United States has no comprehensive federal AI law. The federal government promotes AI and, since December 2025, has been pressuring states to drop their own rules, but an executive order cannot cancel a state law; only Congress or a court can. Meanwhile California and New York require the biggest labs to publish safety frameworks and report serious incidents, California regulates companion chatbots, and Colorado swapped its broad anti-discrimination law for a narrower notice-and-explanation law.
+The United States has no comprehensive federal AI law. The federal government promotes AI and, since December 2025, has been pressuring states to drop their own rules, but an executive order cannot cancel a state law; only Congress (directly, or through an agency it has given that power) or a court can. Meanwhile California and New York require the biggest labs to publish safety frameworks and report serious incidents, California regulates companion chatbots, and Colorado swapped its broad anti-discrimination law for a narrower notice-and-explanation law.
 
 The UK relies on existing regulators and a strong testing institute. China issues fast, targeted rules with registration and mandatory labels. Internationally, there are summits and scientific reports but almost nothing binding. Export controls on chips and voluntary standards such as the NIST framework and ISO 42001 do a lot of quiet work.
 

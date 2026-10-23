@@ -377,7 +377,7 @@ timeline
 | Jul 30, 2026 | Gemini Robotics 2; Zoox, Amazon's robotaxi company, reportedly receives the first US commercial exemption for a purpose-built robotaxi | Whole-body humanoid control; cars without steering wheels |
 | Late Jul 2026 | Bipartisan FRONTIER Act introduced in the US House | Federal preemption debate continues |
 | Aug 2, 2026 | EU enforcement powers over general-purpose AI and transparency duties begin | EU AI Act gains teeth |
-| Aug 7, 2026 | OpenAI shares early cyber test results for its unreleased Astra model and reportedly says it cannot rule out Critical cyber capability, the top level of its internal risk scale (its later system card says Astra "might reach the Critical level of cyber capability") | Cyber capability becomes the leading safety concern |
+| Aug 7, 2026 | OpenAI shares preliminary cyber test results and new safeguards for its unreleased Astra model; press reports say it cannot rule out Critical cyber capability, the top level of its internal risk scale (its later system card says Astra "might reach the Critical level of cyber capability") | Cyber capability becomes the leading safety concern |
 | Aug 10, 2026 | Zoox begins paid robotaxi rides in Las Vegas (reported); Meta's Muse Glimmer, a 30-billion-parameter open-weight model | Purpose-built robotaxis enter commercial service; Meta still releases some open-weight models |
 | Aug 13, 2026 | DeepSeek-V4-Pro generally available; Gemini 3.7 Flash | Open-weight frontier model released; rapid Flash updates |
 | Jul–Aug 2026 | Qwen3.8 family: the open Qwen3.8-2.4T-A95B, its hosted version Qwen3.8-Max, and the small open Qwen3.8-27B (Max previewed on July 19 and offered in Alibaba's cloud from August 3, as reported; sources give August 8 or August 12 for the 2.4T weights and August 14 for the 27B) | Chinese open-weight scale-up |
@@ -401,7 +401,8 @@ timeline
 | Oct 6, 2026 | Anthropic expands its Cyber Verification Program into three access tiers and folds Project Glasswing into it | Structured access for cyber-capable models |
 | Oct 7, 2026 | Claude Haiku 5.5 | Small, cheap model in the 5.5 family |
 | Oct 7–8, 2026 | GPT-6 reaches all ChatGPT users, including free | Frontier model for hundreds of millions |
-| Oct 13, 2026 | Gemini 4 Argon generally available in Google's API; Meta's Muse Wonder (per press reports); Physical Intelligence's Pi API beta | New flagships from Google and Meta; robot models via API |
+| Oct 12, 2026 | Meta's Muse Wonder and Muse Wonder Full | Meta's first push into the frontier with its new Muse family |
+| Oct 13, 2026 | Gemini 4 Argon generally available in Google's API; Physical Intelligence's Pi API beta | A new flagship from Google; robot models via API |
 | Oct 15, 2026 | Meta's Muse Spark Open: open weights for an 816-billion-parameter Muse Spark model (42 billion active), under Meta's own license with limited commercial terms | Meta releases a large open-weight model again, on custom terms |
 | Oct 16, 2026 | China reportedly proposes export controls on 40 technologies, including AI | Tech controls become two-way |
 | Oct 17, 2026 | DeepSeek V4.1 Flash update | Open-weight models update monthly too |

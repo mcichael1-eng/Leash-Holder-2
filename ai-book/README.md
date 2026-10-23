@@ -4,11 +4,11 @@
 
 A complete book for someone with almost no computer-science background who uses AI chatbots every day and wants to understand all of it: how computers work, the math, how machines learn, neural networks and Transformers, how frontier labs build large language models, how to build with AI, chips and compute, data centers and energy, every major branch of AI, safety, law and society, and the skills, careers and opportunities that come with it.
 
-- **10 parts, 66 chapters, 5 appendices**
-- **3,216 terms** in a searchable glossary (every term is defined where it first appears)
-- **530 diagrams**, plus tables and hand-worked numeric examples
+- **10 parts, 66 chapters, 6 appendices**
+- **3,693 terms** in a searchable glossary (every term is defined where it first appears)
+- **533 diagrams**, plus tables and hand-worked numeric examples
 - **659 exercises** from Easy to Challenge, none of which require prior coding experience
-- About **960,000 words**
+- About **1,040,000 words**
 
 ## How to read it
 
@@ -143,6 +143,7 @@ A complete book for someone with almost no computer-science background who uses 
 - Appendix C: [AI Timeline, 1843–2026](appendices/C-timeline.md)
 - Appendix D: [Who's Who: Companies, Labs, Products and People](appendices/D-whos-who.md)
 - Appendix E: [Resources: Courses, Books, Newsletters, Podcasts and Communities](appendices/E-resources.md)
+- Appendix F: [The Advanced Shelf](appendices/F-advanced-shelf.md)
 - [Glossary](GLOSSARY.md) (generated)
 
 ## How it was made
@@ -153,9 +154,14 @@ A complete book for someone with almost no computer-science background who uses 
 4. **Editing.** One editor per Part re-checked worked calculations, facts, cross-references and consistency across chapters, and hedged anything the research could not confirm.
 5. **Coverage audit.** Every one of the 832 topics in the research topic maps (including every skill and every role) was traced to the chapter that teaches it. 819 were already fully taught, 13 were thin and none were missing; the 13 were filled. The per-topic tables are in `planning/coverage/`.
 6. **Beginner read-through.** A reader-test pass through ten chapters across the difficulty range, from the point of view of someone with no computer-science background, fixed 65 places where that reader would get lost (`planning/coverage/reader-test.md`).
-7. **External-standard audit.** The book was then checked against 15 outside references: Russell & Norvig's *Artificial Intelligence: A Modern Approach*, the ACM/IEEE CS2023 AI curriculum, Goodfellow et al.'s *Deep Learning*, *Dive into Deep Learning*, Stanford CS229, CS231n, CS224n and CS336, Chip Huyen's *AI Engineering* and *Designing Machine Learning Systems*, the Hugging Face LLM and Agents courses, Full Stack Deep Learning, *The Datacenter as a Computer*, Hennessy & Patterson on domain-specific architectures, *How to Scale Your Model*, Hendrycks' *AI Safety, Ethics, and Society*, BlueDot's alignment course and the EU AI Act. Of 878 topics, 819 are in scope for this reader (the rest are graduate-level mathematics, named where the reader will meet them). The book taught 541 of the 819 before the audit and teaches all 819 after it. Per-standard tables are in `planning/coverage/external-*.md`; the tables of contents were reconstructed from the auditors' knowledge because web access was unavailable.
+7. **External-standard audit.** The book was then checked against 15 outside references: Russell & Norvig's *Artificial Intelligence: A Modern Approach*, the ACM/IEEE CS2023 AI curriculum, Goodfellow et al.'s *Deep Learning*, *Dive into Deep Learning*, Stanford CS229, CS231n, CS224n and CS336, Chip Huyen's *AI Engineering* and *Designing Machine Learning Systems*, the Hugging Face LLM and Agents courses, Full Stack Deep Learning, *The Datacenter as a Computer*, Hennessy & Patterson on domain-specific architectures, *How to Scale Your Model*, Hendrycks' *AI Safety, Ethics, and Society*, BlueDot's alignment course and the EU AI Act. Of 878 topics, 819 are in scope for this reader (the rest are graduate-level mathematics, named where the reader will meet them). The book taught 541 of the 819 before the audit and teaches all 819 after it. Per-standard tables are in `planning/coverage/external-*.md`.
+8. **Verified online.** With web access, every one of those tables of contents was checked against the real published contents and syllabi (including newer editions such as the free 4th edition of *The Data Center as a Computer* and the 2026 Stanford course pages). Topics the first audit had missed were added and taught; the book now covers every in-scope topic of every standard, and every topic judged out of scope is explained in plain words in Appendix F, The Advanced Shelf.
+9. **Fact-check against current sources.** Ten fact-checkers, one per Part plus the appendices, checked about 1,200 time-sensitive claims (models, prices, chips, data-center projects, laws, people) against primary sources as of October 2026: about 115 were corrected, about 50 recent developments were added, and claims that only the press supports are marked "reported". Every web link was checked (`planning/coverage/freshness-*.md`). A consistency sweep then made every corrected fact read the same in every chapter (`planning/coverage/consistency-sweep.md`).
+10. **Real readers' questions.** 528 questions that people actually ask online (help centers, forums, Hacker News, Stack Exchange, Quora) were checked against the book. It fully answered 421 before and 506 after; the rest are partly answered or depend on facts no primary source settles (`planning/coverage/questions-*.md`).
+11. **Every chapter read as a beginner.** Every chapter and appendix was read start to finish from the reader's point of view, fixing about 1,000 places where that reader would get lost, including defining every abbreviation and company name at first use, and testing the exercises (`planning/coverage/reader-test-*.md`, `earliest-use.md`, `code-tests.md`). Every term defined in more than one chapter was checked so the glossary never merges two different meanings (`definitions-*.md`).
+12. **Adversarial review.** Everything added in steps 8 to 11 was reviewed twice more, once for facts and arithmetic and once for clarity and integrity, by reviewers told to assume each passage was wrong until checked: about 3,000 passages, about 260 problems fixed (`planning/coverage/adversarial-review.md`). A final completeness critic re-read every report and closed what was still open.
 
-Facts about fast-moving areas (models, chips, data centers, prices, law) reflect sources available in October 2026 and will date. Figures from secondary sources are marked as reported; check the Going deeper lists for primary sources.
+Facts about fast-moving areas (models, chips, data centers, prices, law) reflect sources available on October 23, 2026 and will date. Figures from secondary sources are marked as reported; check the Going deeper lists for primary sources.
 
 ## Rebuilding the web version
 

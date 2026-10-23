@@ -211,7 +211,7 @@ So the modern AI hall looks like this in cross-section:
 
 Now look at the racks themselves, and how they are arranged.
 
-> **Definition — Rack:** A standard metal cabinet, 19 inches (about 48 cm) wide inside its mounting rails and about 2 meters tall, that holds servers, switches, power equipment and cooling hardware. Most racks offer 42 to 52 rack units of mounting space.
+> **Definition — Rack:** A standard metal cabinet, about 2 meters tall, that holds servers, switches, power equipment and cooling hardware. It is built for equipment 19 inches (about 48 cm) wide, measured across each unit's front panel and mounting ears, and most racks offer 42 to 52 rack units of mounting space.
 
 > **Definition — Rack unit (U):** The standard unit of height inside a rack: 1.75 inches (4.445 cm). A "1U server" is one unit tall, like a thick pizza box; a 42U rack has 73.5 inches of mounting space.
 

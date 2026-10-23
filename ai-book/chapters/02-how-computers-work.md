@@ -825,8 +825,8 @@ Exponent (power), Scientific notation, Order of magnitude, Metric prefix, Fermi 
    import numpy as np, time, torch            # numpy: math on the CPU; time: a stopwatch; torch: math on the GPU
    n = 4000                                     # we will multiply two 4000-by-4000 grids of numbers
    ops = 2 * n**3                               # each of n*n*n steps is one multiply and one add
-   A = np.random.rand(n, n)                     # a grid of random numbers, stored for the CPU
-   B = np.random.rand(n, n)
+   A = np.random.rand(n, n).astype(np.float32)  # a grid of random numbers, stored for the CPU
+   B = np.random.rand(n, n).astype(np.float32)  # float32: 32-bit numbers, like torch.rand's, so the race is fair
    t = time.time(); C = A @ B; cpu = time.time() - t           # time the CPU doing the multiplication
    print(f"CPU: {cpu:.2f} s, {ops/cpu/1e9:.0f} billion operations per second")
    Ag = torch.rand(n, n, device="cuda")         # the same size of grids, created on the GPU

@@ -535,7 +535,7 @@ Google runs two lines on separate schedules. The Flash line shipped five release
 
 ### Meta
 
-Meta reorganized its AI work into Meta Superintelligence Labs (MSL) in mid-2025. It has released no new Llama model since Llama 4 (April 2025); its new models form the **Muse** family: Muse Spark (April 8, 2026), the open 30B Muse Glimmer (August 10), and Muse Wonder and Wonder Full (October 13), its first push into the frontier. On October 15 Meta also released Muse Spark Open, open weights for an 816-billion-parameter Muse Spark model (42 billion active) under a license with limited commercial terms. One report puts Wonder's price at $4/$20 through a Meta Model API; that figure comes from a single source.
+Meta reorganized its AI work into Meta Superintelligence Labs (MSL) in mid-2025. It has released no new Llama model since Llama 4 (April 2025); its new models form the **Muse** family: Muse Spark (April 8, 2026), the open 30B Muse Glimmer (August 10), and Muse Wonder and Wonder Full (October 12, per Meta's newsroom), its first push into the frontier. On October 15 Meta also released Muse Spark Open, open weights for an 816-billion-parameter Muse Spark model (42 billion active) under a license with limited commercial terms. One report puts Wonder's price at $4/$20 through a Meta Model API; that figure comes from a single source.
 
 ### SpaceXSI (formerly xAI)
 

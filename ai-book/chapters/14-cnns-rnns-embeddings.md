@@ -291,7 +291,7 @@ Labeling every pixel ("these pixels are the cat, those are the sofa") is a diffe
 
 U-Net has a down path that shrinks the image while learning what is there, and an up path that expands it back to full size to say where everything is, with skip connections linking matching levels so fine detail survives. Drawn on paper, it looks like the letter U.
 
-> **Definition — U-Net:** An encoder-decoder CNN from 2015 with skip connections between matching resolutions. Designed for medical image segmentation, it later became the classic denoising network inside image generators such as early Stable Diffusion (Chapter 16).
+> **Definition — U-Net:** A CNN from 2015 that first shrinks an image step by step to capture what is in it, then expands it back to full size to say where everything is, with skip connections between matching sizes so fine detail survives. Designed for medical image segmentation, it later became the classic denoising network inside image generators such as early Stable Diffusion (Chapter 16).
 
 | Network | Year | Layers | Parameters (approx.) | ImageNet top-5 error |
 |---|---|---|---|---|

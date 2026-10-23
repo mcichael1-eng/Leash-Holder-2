@@ -1,6 +1,6 @@
 # Glossary
 
-*Every term in the book (3691 terms), generated from the chapters.*
+*Every term in the book (3693 terms), generated from the chapters.*
 
 
 ## #
@@ -127,7 +127,7 @@
 - **AI Safety Level (ASL)** — Anthropic's tiers of required safeguards (ASL-2, ASL-3, ASL-4 and higher), modeled loosely on biosafety levels; more capable models require stricter deployment and security protections. *(Chapter 56)*
 - **AI Security Institute (UK AISI)** — The UK government's AI testing and research body, renamed from the AI Safety Institute in February 2025. It evaluates frontier models before and after release, with a focus on national-security risks. *(Chapter 59)*
 - **AISI (AI Security Institute)** — The UK government's AI testing and research body. It runs pre-deployment tests of frontier models in partnership with labs and was renamed from the AI Safety Institute in February 2025 to emphasize national-security risks. *(Chapter 57)*
-- **AISI and CAISI** — Government AI-safety bodies: the UK AI Security Institute and the US Center for AI Standards and Innovation. They test frontier models and employ both technical and policy staff (Chapter 59). *(Chapter 63)*
+- **AISI and CAISI** — Government AI-safety bodies: the UK AI Security Institute and the US Center for AI Standards and Innovation (by October 2026 its NIST page was calling it CAISSI). They test frontier models and employ both technical and policy staff (Chapter 59). *(Chapter 63)*
 - **AISI / CAISI** — Government AI-safety bodies: the UK AI Security Institute and the US Center for AI Standards and Innovation. They test frontier models and employ technical and policy staff.
 - **AI snake oil** — A label, popularized by Arvind Narayanan and Sayash Kapoor, for AI products that do not and perhaps cannot work as advertised, most often tools claiming to predict individual social outcomes such as job success or future crime. *(Chapter 58)*
 - **AI step** — A step inside an automation that sends data to a language model with an instruction ("extract vendor, date and total as JSON") and passes the model's answer to the next step. *(Chapter 29)*
@@ -1564,7 +1564,7 @@
 - **Hinge loss** — A loss function that is zero when an example is classified correctly by a comfortable margin and grows linearly as the example gets closer to, or crosses to the wrong side of, the decision boundary. *(Appendix F)*
 - **HIP** — AMD's programming interface, which closely mirrors CUDA so that CUDA code can be translated to run on AMD GPUs with relatively few changes. *(Chapter 35)*
 - **Historical bias** — When data accurately records a past that was unfair, so a model trained on it learns to repeat the unfairness. *(Chapter 11)*
-- **HLO** — The intermediate representation used by the XLA compiler, in which a program is a graph of array operations such as matrix multiplications and additions. *(Appendix F)*
+- **HLO (high level operations)** — The intermediate representation used by the XLA compiler, in which a program is a graph of array operations such as matrix multiplications and additions. *(Appendix F)*
 - **HNSW (Hierarchical Navigable Small World)** — An approximate nearest-neighbor index that links each vector to a few of its close neighbors, organized in layers from sparse to dense. A search starts in the sparse top layer, hops greedily toward the query, then drops to denser layers to refine. It is the most common index inside vector databases. *(Chapter 27)*
 - **Holdout** — Any data deliberately kept out of training for evaluation.
 - **Hook** — A user-defined script that runs automatically at certain points in an agent's work (e.g., format code after every edit, block dangerous commands).
@@ -1616,6 +1616,7 @@
 
 ## I
 
+- **IaaS (infrastructure as a service)** — Renting raw cloud machines, GPUs and storage, usually by the hour, and installing and running everything on them yourself. Renting eight GPUs for a day to fine-tune a model is IaaS. *(Chapter 4)*
 - **IAPP (International Association of Privacy Professionals)** — The largest professional association for people who work in privacy and, increasingly, AI governance. It publishes news and legislation trackers and runs certifications such as the AI Governance Professional (AIGP). *(Chapter 59, Chapter 62)*
 - **IAPS (Institute for AI Policy and Strategy)** — A nonprofit think tank that researches AI policy, with a focus on compute governance (how chips and computing power can be tracked and controlled), national security and international competition. *(Chapter 63)*
 - **IBEW (International Brotherhood of Electrical Workers)** — The main electricians' union in the United States and Canada. With NECA it runs paid, multi-year electrical apprenticeships. *(Chapter 62)*
@@ -1802,7 +1803,7 @@
 - **Keyword search** — Search that finds and ranks documents by the words they share with the query. It matches spelling, not meaning, so "car" does not match "automobile" unless someone adds a synonym list. *(Chapter 27)*
 - **Keyword search / BM25** — Classic search that scores documents by matching words, with BM25 the standard formula. It is great for names, codes and rare terms.
 - **Kill chain** — A step-by-step breakdown of what an attacker must accomplish to reach a harmful goal. Because every step has to succeed, defenders can stop the attack by breaking any single link. *(Chapter 56)*
-- **Killer microseconds** — Delays of a few microseconds, such as fast network or flash-storage accesses, that are too long for processor hardware to hide and too short for the operating system's usual waiting tricks, so they waste a growing share of data-center time. *(Appendix F)*
+- **Killer microseconds** — Delays of a few to a few tens of microseconds, such as fast network round trips or reads from fast flash storage, that are too long for processor hardware to hide and too short for the operating system's usual waiting tricks, so they waste a growing share of data-center time. *(Appendix F)*
 - **Kilobyte, megabyte, gigabyte, terabyte (KB, MB, GB, TB)** — About a thousand, a million, a billion and a trillion bytes. A page of text is a few KB, a phone photo a few MB, a phone's storage hundreds of GB, and a large hard drive several TB. *(Chapter 2)*
 - **Kilowatt-hour (kWh)** — A unit of energy: the energy used by drawing one kilowatt for one hour. Electricity bills are measured in kWh; one kWh is 3.6 million joules. *(Chapter 2, Chapter 39)*
 - **Kilowatt (kW)** — 1,000 watts. A microwave oven uses about 1 kW while running; an average US home draws about 1.2 kW averaged over a year. *(Chapter 39)*
@@ -2041,7 +2042,7 @@
 - **Matrix multiplication (matmul)** — Combining two matrices into a new one where each entry is the dot product of a row of the first with a column of the second. It is the single most common operation in AI and is often shortened to "matmul". *(Chapter 5, Chapter 12, Chapter 32)*
 - **Matrix-vector multiplication** — Turning a vector into a new vector by taking the dot product of each row of a matrix with the vector. A matrix with 3 rows and 2 columns turns a 2-number vector into a 3-number vector. *(Chapter 5)*
 - **MATS (originally ML Alignment & Theory Scholars)** — A research fellowship that pairs newcomers with experienced AI safety researchers as mentors for paid research projects of about 12 weeks. It is one of the main routes into alignment work. *(Chapter 55, Chapter 62)*
-- **Maximal update parametrization (μP)** — A 2022 recipe for scaling each layer's initial weights and learning rate with the model's width, so that the best hyperparameters found on a small model also work on a large one. *(Chapter 19)*
+- **Maximal update parametrization (μP)** — A recipe (2020, shown to transfer hyperparameters in 2022) for scaling each layer's initial weights and learning rate with the model's width, so that the best hyperparameters found on a small model also work on a large one. *(Chapter 19)*
 - **Maximum expected utility principle** — The rule that a rational agent should choose the action whose possible outcomes, weighted by their probabilities, have the highest average utility. *(Chapter 48)*
 - **Maximum likelihood estimation (MLE)** — Choosing a model's parameters to make the observed data as probable as possible under the model. For a language model it is exactly the same as minimizing the average cross-entropy loss. *(Chapter 6)*
 - **Maximum mean discrepancy (MMD)** — A measure of how different two sets of samples are, comparing a rich collection of their summary statistics at once; it is zero when the two distributions are the same. *(Appendix F)*
@@ -2456,6 +2457,7 @@
 
 ## P
 
+- **PaaS (platform as a service)** — A ready-made cloud platform that runs your code or models for you while the provider manages the machines underneath. You hand over the program; the provider keeps the servers running and adds more when traffic grows. *(Chapter 4)*
 - **Pacing problem** — The gap that opens when a technology changes faster than laws and regulators can adapt to it. *(Chapter 59)*
 - **Package** — The finished assembly of one or more dies, any memory stacks, the interposer and substrate, sealed together as one component that mounts on a board. When people say "a GPU" they usually mean one package. *(Chapter 34)*
 - **Package hallucination (slopsquatting)** — When an AI coding tool recommends or imports a software package (a reusable bundle of code) that does not exist. Anyone who later publishes a package under that invented name can get their code installed by people who trust the suggestion. *(Chapter 29, Chapter 31)*
@@ -3475,7 +3477,7 @@
 - **Total parameters** — Every learned number stored in a model, including all experts. It decides how much memory the model needs. *(Chapter 17, Chapter 18)*
 - **Total vs. active parameters** — All parameters stored vs. those actually used for one token (e.g., 1.6T total, 49B active).
 - **TPM (technical program manager)** — A manager who coordinates complex technical projects across many teams, such as a model launch or a data-center buildout, tracking dependencies, risks and schedules. *(Chapter 63)*
-- **TPP (Total Processing Performance)** — The US export-control measure of a chip's computing power, roughly its peak operations per second (in trillions) multiplied by the number of bits per operation. The January 2026 H200 policy covers chips with a TPP below 21,000. *(Chapter 36)*
+- **TPP (Total Processing Performance)** — The US export-control measure of a chip's computing power, roughly its peak operations per second (in trillions) multiplied by the number of bits per operation. The January 2026 H200 policy covers chips with a TPP below 21,000 and a memory bandwidth below 6,500 GB/s. *(Chapter 36)*
 - **TPU (Tensor Processing Unit)** — Google's family of chips designed specifically for neural-network math, first deployed in Google's data centers in 2015 and also rented to outside customers through Google Cloud. *(Chapter 2, Chapter 32, Chapter 35)*
 - **Trace and span** — A span is one recorded step in handling a request (one model call, one tool call, one guardrail check) with its timing, tokens and cost. A trace is the complete tree of spans for a single request. *(Chapter 31)*
 - **Trace of a matrix** — The sum of the numbers on a square matrix's main diagonal, from top left to bottom right. *(Appendix F)*
@@ -3563,7 +3565,7 @@
 - **Underreporting** — When many events, such as minor crashes, never make it into official records, so rates calculated from those records are too low. *(Chapter 50)*
 - **Undersea (subsea) cable** — A fiber-optic cable laid on the ocean floor between continents. Such cables carry nearly all intercontinental internet traffic. *(Chapter 4)*
 - **Unembedding** — The final matrix that turns a token's vector into one score for every token in the vocabulary. Many models reuse the embedding matrix for this, a trick called weight tying. *(Chapter 15, Chapter 18)*
-- **U-Net** — An encoder-decoder CNN from 2015 with skip connections between matching resolutions. Designed for medical image segmentation, it later became the classic denoising network inside image generators such as early Stable Diffusion (Chapter 16). *(Chapter 14, Chapter 16)*
+- **U-Net** — A CNN from 2015 that first shrinks an image step by step to capture what is in it, then expands it back to full size to say where everything is, with skip connections between matching sizes so fine detail survives. Designed for medical image segmentation, it later became the classic denoising network inside image generators such as early Stable Diffusion (Chapter 16). *(Chapter 14, Chapter 16)*
 - **Unicode** — The worldwide standard that assigns a unique number to every character in every writing system, including emoji. It is why a message in Hindi, Arabic or Chinese displays correctly on any modern device. *(Chapter 3)*
 - **Unicode / UTF-8** — the modern worldwide encoding that gives a number to every character in every writing system, including emoji. UTF-8 is the most common way to store those numbers as bytes.
 - **Unification** — Finding values for variables that make two logical expressions identical, for example matching "Mortal(x)" with "Mortal(Socrates)" by setting x to Socrates. It is the core step of reasoning in first-order logic. *(Appendix F)*
@@ -3650,7 +3652,7 @@
 - **Virtual machine** — A software imitation of a whole computer, running alongside others on one physical server. Clouds rent them so many customers can share a machine safely. *(Chapter 4)*
 - **Virtual PPA** — A financial contract for the price difference, paired with renewable energy certificates, without physical delivery of power.
 - **Virtue ethics** — The family of moral theories that focuses on character, asking what an honest, kind and wise person would do, rather than on rules or outcomes alone. *(Chapter 56)*
-- **Visibility graph** — A motion-planning map that links every pair of obstacle corners that can "see" each other in a straight line; the shortest path around obstacles always runs along such links. *(Appendix F)*
+- **Visibility graph** — A motion-planning map that links every pair of points, among the start, the goal and the obstacle corners, that can "see" each other in a straight line; the shortest path around obstacles always runs along such links. *(Appendix F)*
 - **Vision encoder** — The part of a multimodal system that turns an image into a sequence of meaningful vectors (one per patch or group of patches) that a language model can use. It is usually a Vision Transformer pretrained on huge numbers of images. *(Chapter 22)*
 - **Vision foundation model** — A large vision model pretrained on hundreds of millions to billions of images, often without human labels, whose features work well for many downstream tasks with little or no extra training. *(Chapter 45)*
 - **Vision-language-action model (VLA)** — A model that takes camera images and a spoken or written instruction ("fold the towel") and outputs robot actions directly, built on top of a pretrained vision-language model so it inherits knowledge from the web. *(Chapter 22, Chapter 49)*

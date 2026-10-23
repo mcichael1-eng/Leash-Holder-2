@@ -987,7 +987,7 @@ Exponent, Exponential growth, Doubling time, Compound interest, Exponential deca
 ## Exercises
 
 1. **[Easy] Linear versus exponential, and the log-scale trick.** See why AI charts use log axes.
-   1. In a spreadsheet, put the years 0 to 10 in A2:A12.
+   1. In a spreadsheet, put the years 1 to 11 in A2:A12. (Start at 1, not 0: the linear column would then start at 0, and a log axis cannot show zero.)
    2. In B2 type `=5*A2` (add 5 per year) and in C2 type `=5^A2` (multiply by 5 per year). Fill both down to row 12.
    3. Select columns A to C and insert a line chart. The linear line looks flat next to the exponential one.
    4. Open the chart editor, find the vertical axis settings, and turn on "log scale". The exponential curve becomes a straight line.

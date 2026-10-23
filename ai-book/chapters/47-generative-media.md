@@ -218,6 +218,12 @@ Two things fixed most of it. Bigger, better text encoders kept more of the spell
 
 > **Watch out:** "The model can spell, so the text in the image is correct." Proofread generated text as carefully as you would a printed menu. A single wrong letter in a product name or a phone number is the kind of error that gets through because everything else looks perfect.
 
+### Hands and fingers
+
+Hands were the other famous giveaway: six fingers, fused fingers, a thumb on the wrong side. The reasons echo the text problem. In most training photos hands take up only a small part of the frame, so the model sees little detail of them. They bend into a huge range of poses and are often partly hidden behind a cup, a pocket or another hand, so clear, complete examples are rare. And fingers look alike: a model that learns what each patch of an image usually looks like next to its neighbors can draw a convincing row of fingers without ever keeping count, just as it once drew letter-like squiggles without spelling. Larger, newer models get hands right far more often, but they still slip, and the slips tend to show up in crowded scenes, unusual poses and hands gripping objects.
+
+> **Watch out:** "Hands are a solved problem now." They are much better, not perfect. Count the fingers on every visible hand, and look closely wherever a hand touches an object, before you publish an image.
+
 ### A professional workflow
 
 Put the pieces together and a typical professional image workflow looks like this.
@@ -291,7 +297,7 @@ timeline
 
 Google released Veo 3 with a filmmaking tool called Flow, aimed at stringing clips into scenes, and in October 2025 shipped Veo 3.1, which DeepMind still listed as its leading video model in 2026.
 
-**September 2025 to March 2026: Sora 2 and the app that closed.** On September 30, 2025, OpenAI launched Sora 2 together with a social app, a feed of generated videos where users could put themselves and consenting friends into scenes. It was an instant hit, and an instant source of controversy, with deepfake and copyright concerns raised almost from the first day. Usage then declined. In March 2026, OpenAI announced that it would shut down the Sora app, amid falling usage and a shift of its computing resources toward coding and business products. Reports say the app closed on April 26, 2026 and that access for developers through OpenAI's paid interface ended on September 24, 2026; Sora research was reported to continue as a world-model effort.
+**September 2025 to September 2026: Sora 2 and the app that closed.** On September 30, 2025, OpenAI launched Sora 2 together with a social app, a feed of generated videos where users could put themselves and consenting friends into scenes. It was an instant hit, and an instant source of controversy, with deepfake and copyright concerns raised almost from the first day. Usage then declined. In March 2026, OpenAI announced that it would shut down the Sora app, amid falling usage and a shift of its computing resources toward coding and business products. Reports say the app closed on April 26, 2026 and that access for developers through OpenAI's paid interface ended on September 24, 2026; Sora research was reported to continue as a world-model effort.
 
 > **Watch out:** "The best-known product is the safe bet." Sora was the most famous video model in the world in 2024, and its consumer app lasted about seven months in its Sora 2 form. Anyone building a business or a workflow on generative video should expect tools to change, merge or disappear, and should keep their source files and prompts so they can move.
 

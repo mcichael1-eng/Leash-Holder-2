@@ -393,7 +393,7 @@ Every powerful technology needs people who decide the rules, enforce them and ch
 
 > **Definition — Trust and safety (safeguards):** The teams and systems that detect and prevent misuse of a product, such as fraud, cyberattacks, child-safety violations or weapons-related requests. At AI labs the team is often called Safeguards.
 
-> **Definition — AISI and CAISI:** Government AI-safety bodies: the UK AI Security Institute and the US Center for AI Standards and Innovation. They test frontier models and employ both technical and policy staff (Chapter 59).
+> **Definition — AISI and CAISI:** Government AI-safety bodies: the UK AI Security Institute and the US Center for AI Standards and Innovation (by October 2026 its NIST page was calling it CAISSI). They test frontier models and employ both technical and policy staff (Chapter 59).
 
 > **Definition — AIGP (Artificial Intelligence Governance Professional):** A certification from the IAPP, the main professional body for privacy specialists, covering AI law, risk and governance. It is one of the few certifications that carries weight in AI hiring.
 
