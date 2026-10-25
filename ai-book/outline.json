@@ -422,6 +422,11 @@
    "letter": "F",
    "title": "The Advanced Shelf",
    "file": "F-advanced-shelf.md"
+  },
+  {
+   "letter": "G",
+   "title": "The Equations of AI",
+   "file": "G-equations-of-ai.md"
   }
  ],
  "stack": [
