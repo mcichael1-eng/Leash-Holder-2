@@ -1,0 +1,961 @@
+[
+ {
+  "id": "cml-linreg-model",
+  "name": "Linear regression model",
+  "status": "SHOWN",
+  "where": "Ch 8 (What a model really is: score = w × hours + b; Worked example: fitting a line in a spreadsheet > More than one feature: price = w1 × square feet + w2 × bedrooms + w3 × distance + b); Ch 10 (Linear and logistic regression, revisited); App B (Weighted sum)",
+  "owning_chapter": 8
+ },
+ {
+  "id": "cml-least-squares",
+  "name": "Least-squares objective (mean squared error loss) and its gradient",
+  "status": "SHOWN",
+  "where": "Ch 8 (Measuring wrongness: the loss function; Worked example: fitting a line in a spreadsheet, MSE of four guesses; Exercise 6 gives both gradient formulas as spreadsheet SUMPRODUCTs); App B (Mean squared error; MSE slopes for a line)",
+  "owning_chapter": 8
+ },
+ {
+  "id": "cml-normal-equations",
+  "name": "Normal equations (closed-form least squares)",
+  "status": "WORDS",
+  "where": "App F (Normal equations and locally weighted regression: described in words, cubic cost); Ch 8 (Doing it in a spreadsheet: least squares as a direct formula, Legendre and Gauss, in words). Only the one-feature special case is SHOWN, in App B (Line of best fit, slope and intercept); the matrix form (X^T X)^(-1) X^T y appears nowhere",
+  "owning_chapter": 8
+ },
+ {
+  "id": "cml-basis-expansion",
+  "name": "Polynomial and basis-function regression",
+  "status": "SHOWN",
+  "where": "Ch 8 (Worked example: fitting a line > More than one feature: prediction = w1 × x + w2 × x² + b fits (1,1),(2,4),(3,9); Feature expansion definition); Ch 9 (Overfitting and underfitting > A worked example: iced drinks and temperature, polynomial a + b × x + c × x², degrees 0 to 7)",
+  "owning_chapter": 8
+ },
+ {
+  "id": "cml-ridge",
+  "name": "Ridge regression (L2 regularization)",
+  "status": "SHOWN",
+  "where": "Ch 9 (Regularization: keeping models simple on purpose: L2 penalty worked, 0.1 × (2² + (−1)²) = 0.5 added to MSE 4.0, versus 304.4 for weights 40 and −38). Closed form (X^T X + λI)^(-1) X^T y not shown",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-lasso",
+  "name": "Lasso (L1 regularization) and soft thresholding",
+  "status": "WORDS",
+  "where": "Ch 9 (Regularization: definition of L1 and L2 regularization, L1 = sum of absolute weights that pushes unhelpful weights to exactly zero). No formula and no soft-thresholding update",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-elastic-net",
+  "name": "Elastic net penalty",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 9 covers L1 and L2 separately; their combination is never named)",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-bayes-linreg",
+  "name": "Bayesian linear regression posterior",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 10 Gaussian processes give error bars in words, but Bayesian linear regression and its posterior are not covered)",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-logreg-model",
+  "name": "Logistic regression model (with log-odds and odds ratio)",
+  "status": "SHOWN",
+  "where": "Ch 8 (Predicting categories: logistic regression: sigmoid 1 ÷ (1 + e^(−z)) with z = −4 + 1 × hours, Table 8.9; Decision boundaries: z = 0 line); Ch 10 (Linear and logistic regression, revisited: score = 4.5 − 0.6 × hours − 0.5 × months; odds ratio shown as e^(−0.6) ≈ 0.55 per extra hour); App B (Sigmoid). The log-odds form ln(p ÷ (1 − p)) is not written out",
+  "owning_chapter": 8
+ },
+ {
+  "id": "cml-log-loss",
+  "name": "Binary log loss (binary cross-entropy), its gradient, and normalized entropy",
+  "status": "SHOWN",
+  "where": "Ch 8 (Cross-entropy: the loss for categories: −ln(probability of correct answer), Table 8.10); Ch 6 (Cross-entropy); App B (Cross-entropy, one token). The two-term binary form with y and (1 − y), its gradient (p − y) × x and normalized entropy are not shown",
+  "owning_chapter": 8
+ },
+ {
+  "id": "cml-softmax-regression",
+  "name": "Multinomial logistic (softmax) regression",
+  "status": "WORDS",
+  "where": "Ch 10 (Linear and logistic regression, revisited: Definition — Softmax regression, one weighted sum per class turned into probabilities with softmax, in words). The softmax formula itself is SHOWN in Ch 6 and App B (Softmax), but never written with per-class weighted sums",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-perceptron",
+  "name": "Perceptron learning rule",
+  "status": "SHOWN",
+  "where": "Ch 7 (Era 2 > The perceptron: a machine that learns (1957–1958): weighted sum vs threshold 1.5 and the learning rule worked by hand, adding 0.5 to the weights of active inputs after a mistake to learn AND); Ch 10 (The perceptron: the bridge to neural networks: weighted sum −1.1, \"above zero?\"); Ch 12 (A little history: from logic units to the perceptron, rule in words). No general symbolic update w = w + η × y × x",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-lda",
+  "name": "Fisher's linear discriminant (LDA)",
+  "status": "WORDS",
+  "where": "App F (Learning theory and statistics > Gaussian discriminant analysis: LDA defined as GDA with shared covariance, straight-line boundaries). Fisher's criterion and S_W^(-1)(m_1 − m_0) not shown",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-svm-margin",
+  "name": "Maximum-margin hyperplane (hard-margin SVM)",
+  "status": "WORDS",
+  "where": "Ch 10 (Support vector machines: the widest street: margin and support vectors defined, widest empty street). Margin = 2 ÷ length(w) and the constrained minimization not shown",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-svm-hinge",
+  "name": "Soft-margin SVM, hinge loss and epsilon-insensitive loss",
+  "status": "WORDS",
+  "where": "Ch 10 (Support vector machines: hyperparameter C trades mistakes inside the street for width, in words); App F (SVM duality, SMO and the hinge loss: hinge loss defined in words, zero with room to spare then rising linearly). No formula; SVR epsilon-insensitive loss absent",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-svm-dual-kernel",
+  "name": "SVM dual problem and the kernel trick",
+  "status": "WORDS",
+  "where": "Ch 10 (Support vector machines: kernel trick defined; Figure 10.6 lifts points with an x-squared feature so one cut at 2.5 separates them); App F (SVM duality, SMO and the hinge loss: dual uses only pairwise similarity scores, in words). Dual objective and f(x) = sum α_i y_i K(x_i, x) not shown",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-kernels",
+  "name": "Common kernels (RBF, polynomial, linear)",
+  "status": "WORDS",
+  "where": "Ch 10 (Support vector machines: kernel trick; Gaussian process paragraph: \"the kernel decides how similar two inputs are\"; the x-squared lift is a worked feature map). RBF, polynomial and linear kernel formulas not shown",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-gp-regression",
+  "name": "Gaussian process regression posterior",
+  "status": "WORDS",
+  "where": "Ch 10 (Support vector machines: Gaussian process paragraph and definition: prediction with an uncertainty band that widens away from data, cubic cost worked as 2 × 2 × 2 = 8). Posterior mean and variance formulas not shown",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-bayesopt-ei",
+  "name": "Expected improvement (Bayesian optimization acquisition)",
+  "status": "WORDS",
+  "where": "Ch 9 (Tuning hyperparameters without cheating: Bayesian optimization defined as using results so far to guess which untried settings are most promising); Ch 10 (Gaussian processes as its engine). Only the general acquisition idea; expected improvement is never named and its formula is absent",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-gini",
+  "name": "Gini impurity",
+  "status": "SHOWN",
+  "where": "Ch 10 (Decision trees: Twenty Questions learned from data: Gini = 1 − (0.5² + 0.5²) = 0.5, split scores 0.32 vs 0.4 × 0 + 0.6 × 0.28 = 0.17; Exercise 3)",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-info-gain",
+  "name": "Entropy and information gain (tree splitting)",
+  "status": "WORDS",
+  "where": "Ch 10 (Decision trees: splits chosen to make the purest groups, worked with Gini only); entropy itself is defined and worked in Ch 6 (Loss functions > Maximum likelihood, entropy and KL divergence). Entropy-based information gain for tree splits is not shown",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-regression-tree",
+  "name": "Regression tree split (variance reduction)",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 10 boosting fits \"a small tree\" to residuals, but the squared-error split rule and mean-of-leaf prediction are never explained)",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-cost-complexity",
+  "name": "Cost-complexity pruning",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 10 Decision trees mentions only maximum depth and minimum examples per leaf as limits; pruning by a size penalty is absent)",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-bagging",
+  "name": "Bagging (bootstrap aggregating) and the variance of an average",
+  "status": "WORDS",
+  "where": "Ch 10 (Random forests: a crowd of trees: bootstrap samples and Definition — Bagging, reduces variance; majority vote of five independent 70% trees worked as 0.309 + 0.360 + 0.168 ≈ 0.84). Variance-of-average formula and the (1 − 1 ÷ n)^n ≈ 0.368 left-out share not shown",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-random-forest",
+  "name": "Random forest prediction (vote or average)",
+  "status": "WORDS",
+  "where": "Ch 10 (Random forests: a crowd of trees: vote or average, random feature subset per split, in words; Exercise 6 runs RandomForestClassifier). No prediction formula and no sqrt(d) features-per-split rule",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-gradient-boosting",
+  "name": "Gradient boosting update",
+  "status": "SHOWN",
+  "where": "Ch 10 (Gradient boosting: a relay of tutors: start at the mean, fit residuals, add half (learning rate) each round, $250,000 / $300,000 / $350,000 then error × 0.5^10; Definition — Gradient boosting: tree fitted to the gradient of the loss)",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-xgboost-gain",
+  "name": "Second-order boosting: optimal leaf weight and split gain (XGBoost)",
+  "status": "MISSING",
+  "where": "Not in the book (XGBoost, LightGBM and CatBoost are only named in Ch 10 Gradient boosting; second-order leaf weights and split gain are absent)",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-adaboost",
+  "name": "AdaBoost weights",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 10 explains boosting generically via residual fitting; AdaBoost, example reweighting and model weights are not covered)",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-feature-importance",
+  "name": "Permutation feature importance (and mean decrease in impurity)",
+  "status": "WORDS",
+  "where": "Ch 10 (Random forests: Definition — Feature importance, how much impurity dropped thanks to splits on a feature; Exercise 6 prints feature_importances_). Permutation importance not covered; no formula",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-shap",
+  "name": "Shapley values for feature attribution (SHAP)",
+  "status": "SHOWN",
+  "where": "Ch 48 (A short course in game theory: Shapley value worked by averaging added contributions over join orders, Alice (60 + 80) ÷ 2 = 70, Bob 30); Ch 10 (Random forests: SHAP and LIME defined in words). The subset-weighted factorial formula is not written out",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-knn",
+  "name": "k-nearest neighbors prediction",
+  "status": "SHOWN",
+  "where": "Ch 10 (k-nearest neighbors: you are like your neighbors: Euclidean distances to Q tabulated, k = 3 vote gives stays, k = 5 gives cancels; regression version as averaging comps in words; Exercise 1). Distance-weighted variant not shown",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-minkowski",
+  "name": "Distance metrics (Minkowski family, Manhattan, Euclidean, Chebyshev, Hamming)",
+  "status": "SHOWN",
+  "where": "Euclidean distance worked in Ch 10 (k-nearest neighbors) and App B (Distance); Manhattan distance defined and worked in Ch 48 (Search > A*: search with a sense of direction). The general Minkowski p-norm, Chebyshev and Hamming distances are not shown",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-mahalanobis",
+  "name": "Mahalanobis distance",
+  "status": "MISSING",
+  "where": "Not in the book (the one-feature z-score is in Ch 10 Anomaly detection and App B; the covariance-scaled distance is absent)",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-jaccard",
+  "name": "Jaccard similarity (and intersection over union)",
+  "status": "SHOWN",
+  "where": "Ch 19 (Cleaning the firehose: the curation pipeline > Most of the web is not worth reading: shingles, Jaccard 4 ÷ 6 = 0.67); Ch 45 (Object detection > Scoring a detector, with a pencil: IoU = 900 ÷ 2,300 = 0.39)",
+  "owning_chapter": 19
+ },
+ {
+  "id": "cml-minhash-lsh",
+  "name": "MinHash and locality-sensitive hashing",
+  "status": "WORDS",
+  "where": "Ch 19 (Most of the web is not worth reading: MinHash compresses shingles into a fingerprint so similar documents are found quickly; Definition — Near-duplicate detection (MinHash)). P(minhash equal) = J, LSH banding and SimHash not shown",
+  "owning_chapter": 19
+ },
+ {
+  "id": "cml-feature-scaling",
+  "name": "Feature scaling (standardization and min-max)",
+  "status": "SHOWN",
+  "where": "Ch 11 (Feature engineering: Definition — Standardization, subtract the average and divide by the standard deviation); Ch 10 (k-nearest neighbors: Feature scaling definition; Anomaly detection: z = (85 − 40) ÷ 15 = 3); App B (z-score). Min-max scaling not shown",
+  "owning_chapter": 11
+ },
+ {
+  "id": "cml-kmeans-objective",
+  "name": "k-means objective and Lloyd's update steps",
+  "status": "SHOWN",
+  "where": "Ch 10 (Clustering: finding groups without answers: assign and move steps worked on 1, 2, 3, 10, 11, 12 hours, center 36 ÷ 4 = 9, then 2 and 11; Figure 10.7; elbow trick). The objective J (sum of squared distances) is described only as how tight the clusters are",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-kmeanspp",
+  "name": "k-means++ seeding",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 10 Clustering says only that software runs k-means several times and keeps the best)",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-silhouette",
+  "name": "Silhouette score",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 10 uses only the elbow trick to choose k)",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-linkage",
+  "name": "Hierarchical clustering linkage (single, complete, average, Ward)",
+  "status": "WORDS",
+  "where": "Ch 10 (Clustering: Definition — Hierarchical clustering, repeatedly merging the closest pair of groups). Single, complete, average and Ward linkage not defined",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-gmm",
+  "name": "Gaussian mixture model",
+  "status": "WORDS",
+  "where": "Ch 10 (Clustering: Gaussian mixture model paragraph and definition: each cluster a bell curve with center, spread and share; bell height e^(−distance² ÷ (2 × spread²)) and a 67% / 33% membership worked). The mixture density sum π_k × N(x) and its log-likelihood are not written",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-em",
+  "name": "Expectation-maximization (EM) for Gaussian mixtures",
+  "status": "WORDS",
+  "where": "Ch 10 (Clustering: Definition — Expectation-maximization; the E step is worked numerically as 0.278 ÷ (0.278 + 0.135) ≈ 67%, the M step only in words). M-step update formulas not shown",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-kde",
+  "name": "Kernel density estimation",
+  "status": "WORDS",
+  "where": "App F (Learning theory and statistics > Learning a network's structure; density estimation: Definition — Kernel density estimation, a small bump on every point added up). No formula",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-pca",
+  "name": "Principal component analysis (projection and explained variance)",
+  "status": "WORDS",
+  "where": "Ch 10 (Shrinking many columns into a few: PCA, t-SNE and UMAP: directions of most spread, eigenvectors of the covariance table, SVD, 2 components keep 28.5% of variation; Exercise 8 prints explained_variance_ratio_); App F (Covariance and the covariance matrix; Factor analysis and probabilistic PCA). Covariance, eigen-equation, projection and explained-variance ratio formulas not shown",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-tsne",
+  "name": "t-SNE (t-distributed stochastic neighbor embedding)",
+  "status": "WORDS",
+  "where": "Ch 10 (Shrinking many columns into a few: Definition — t-SNE and UMAP, keep close neighbors close in a 2-D map; Watch out on island sizes). No formulas",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-umap",
+  "name": "UMAP (uniform manifold approximation and projection)",
+  "status": "WORDS",
+  "where": "Ch 10 (Shrinking many columns into a few: Definition — t-SNE and UMAP). No formulas",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-naive-bayes",
+  "name": "Naive Bayes classifier",
+  "status": "SHOWN",
+  "where": "Ch 10 (Naive Bayes: adding up the clues: prior times likelihoods, spam 0.30 × 0.50 = 0.15 vs 0.07, normalized to 0.68; two-word case 0.42; Exercise 4); App F (Naive Bayes is secretly a linear model: the log-sum form in words)",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-laplace-smoothing",
+  "name": "Laplace (additive) smoothing",
+  "status": "SHOWN",
+  "where": "Ch 10 (Naive Bayes: small pretend count, in words; Exercise 4 step 3 gives the rule: add 1 to each count and 2 to each total). General (count + α) ÷ (total + α × V) not written symbolically",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-isolation-forest",
+  "name": "Isolation forest anomaly score",
+  "status": "WORDS",
+  "where": "Ch 10 (Anomaly detection: spotting the odd one out: random cuts isolate outliers fast, about 10 cuts for 1,000 points (2^10 = 1,024) versus 2 or 3 for an outlier). The anomaly score 2^(−E[h(x)] ÷ c(n)) is not shown",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-drift",
+  "name": "Drift statistics: population stability index and Kolmogorov-Smirnov",
+  "status": "SHOWN",
+  "where": "Ch 10 (MLOps > Monitoring: what to watch and how to spot drift: PSI = sum of (this week − training share) × ln(this week ÷ training) worked to about 0.10, with 0.1 / 0.25 thresholds). The Kolmogorov-Smirnov statistic is only named",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-class-imbalance",
+  "name": "Class weights and SMOTE for imbalanced data",
+  "status": "SHOWN",
+  "where": "Ch 9 (The confusion matrix: class weights worked as 9,800 ÷ 200 = 49 times per spam mistake; oversampling and undersampling defined); App F (Focal loss). The balanced-weight normalization n ÷ (K × n_c) and SMOTE interpolation are not shown",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-bias-variance",
+  "name": "Bias-variance decomposition",
+  "status": "WORDS",
+  "where": "Ch 9 (Bias and variance: the dartboard: bias, variance, noise and the tradeoff in words with Figure 9.5). The decomposition formula is not shown",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-cross-validation",
+  "name": "k-fold cross-validation estimate",
+  "status": "SHOWN",
+  "where": "Ch 9 (Cross-validation: don't trust one lucky split: five fold accuracies averaged to 98.1%, Table 9.5; Time series: never train on the future)",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-aic-bic",
+  "name": "Akaike and Bayesian information criteria (AIC, BIC)",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-generalization-bound",
+  "name": "Hoeffding test-set bound and uniform convergence (finite class, VC dimension)",
+  "status": "WORDS",
+  "where": "Ch 9 (Bias and variance: statistical learning theory, VC dimension and PAC learning defined); App F (Generalization bounds: training error plus a gap that shrinks with data). Hoeffding and VC bound formulas not shown",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-conformal",
+  "name": "Split conformal prediction",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-active-learning",
+  "name": "Uncertainty sampling for active learning",
+  "status": "WORDS",
+  "where": "Ch 8 (The kinds of machine learning > Other ways to learn: Definition — Active learning, label the examples the model is least sure about); Ch 10 (Retraining: add the cases where the model was least confident). Least-confident, margin and entropy criteria not written",
+  "owning_chapter": 8
+ },
+ {
+  "id": "cml-tabpfn",
+  "name": "Prior-data fitted network objective (tabular foundation models)",
+  "status": "WORDS",
+  "where": "Ch 10 (Gradient boosting > The 2025–26 twist: foundation models for spreadsheets: TabPFN pretrained on synthetic tables, predicts by in-context learning). The prior-fitted training objective is not shown",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-accuracy",
+  "name": "Accuracy (and balanced, top-k and chance-normalized accuracy)",
+  "status": "SHOWN",
+  "where": "Ch 9 (The confusion matrix: Definition — Accuracy (TP + TN) ÷ total, worked 949 ÷ 1,000; three-class 52 ÷ 60; Table 9.6); top-5 error described in words in Ch 9 (Benchmarks and Goodhart's law). Balanced and chance-normalized accuracy not shown",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-precision",
+  "name": "Precision (positive predictive value)",
+  "status": "SHOWN",
+  "where": "Ch 9 (The confusion matrix > A worked medical test: TP ÷ (TP + FP) = 9 ÷ 59 = 15.3%; Table 9.6; Exercise 3); Ch 45 (Scoring a detector, with a pencil: 81 ÷ 90)",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-recall",
+  "name": "Recall (sensitivity, true positive rate)",
+  "status": "SHOWN",
+  "where": "Ch 9 (A worked medical test: TP ÷ (TP + FN) = 9 ÷ 10 = 90%; Table 9.6); Ch 45 (Scoring a detector: 81 ÷ 100)",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-specificity",
+  "name": "Specificity (true negative rate) and false positive rate",
+  "status": "SHOWN",
+  "where": "Ch 9 (A worked medical test: specificity TN ÷ (TN + FP) = 940 ÷ 990 = 94.9%; false positive rate FP ÷ (FP + TN) = 5.1%, equal to 1 minus specificity; Table 9.6)",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-f1",
+  "name": "F1 score and F-beta",
+  "status": "SHOWN",
+  "where": "Ch 9 (A worked medical test: Definition — F1 score, 2 × precision × recall ÷ (precision + recall) = 0.26; Table 9.6). F-beta not shown",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-confusion-rates",
+  "name": "Other confusion-matrix rates and positive predictive value from prevalence",
+  "status": "SHOWN",
+  "where": "PPV from prevalence is SHOWN as Bayes' rule with sensitivity 0.9, false-positive rate 0.09 and prevalence 0.01 in App B (Total probability; Bayes' rule; Bayes with natural frequencies 9 ÷ (9 + 89)) and Ch 6; Ch 9 (A worked medical test) explains the base-rate effect. NPV, FNR, FDR and prevalence are not shown",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-macro-micro",
+  "name": "Macro, micro and weighted averaging for multi-class metrics",
+  "status": "WORDS",
+  "where": "Ch 9 (The confusion matrix > More than two classes: per-class precision and recall averaged, called macro-averaging, in words). Micro and weighted averaging not covered",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-mcc",
+  "name": "Matthews correlation coefficient",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-kappa",
+  "name": "Cohen's kappa (agreement beyond chance)",
+  "status": "SHOWN",
+  "where": "Ch 11 (The labeling industry: Cohen's kappa worked, (0.85 − 0.50) ÷ (1 − 0.50) = 0.70; inter-annotator agreement). The p_e sum over categories is described only as chance agreement",
+  "owning_chapter": 11
+ },
+ {
+  "id": "cml-roc-auc",
+  "name": "ROC curve and area under it (AUC)",
+  "status": "SHOWN",
+  "where": "Ch 9 (Thresholds, ROC curves and AUC: Table 9.10 TPR and FPR per threshold, Figure 9.11 ROC curve; AUC as P(random positive outscores random negative) worked as 85 wins of 8 × 12 = 96 pairs = 0.885; Exercise 3)",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-average-precision",
+  "name": "Precision-recall curve, average precision and mean average precision",
+  "status": "WORDS",
+  "where": "Ch 9 (Thresholds, ROC curves and AUC > When positives are rare: precision-recall curves); Ch 45 (Scoring a detector, with a pencil: Definition — mAP, precision averaged over recall levels then over classes). AP and mAP formulas not shown",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-brier",
+  "name": "Brier score",
+  "status": "SHOWN",
+  "where": "Ch 66 (Thinking for yourself > Put a number on it: calibration and keeping score: Brier worked (0.01 + 0.49 + 0.04) ÷ 3 = 0.18, 0.25 for always 50%); Ch 65 (Exercises: Brier score in a spreadsheet). Multi-class form not shown",
+  "owning_chapter": 66
+ },
+ {
+  "id": "cml-ece",
+  "name": "Expected calibration error (ECE)",
+  "status": "WORDS",
+  "where": "Ch 8 (Calibration: what \"80% sure\" should mean: predictions grouped by stated confidence, Table 8.11 compares stated and real accuracy per bin, reliability diagram). The weighted-average ECE formula and MCE are not shown",
+  "owning_chapter": 8
+ },
+ {
+  "id": "cml-recalibration",
+  "name": "Platt scaling and temperature scaling (recalibration)",
+  "status": "WORDS",
+  "where": "Ch 8 (Calibration; Check your understanding answer 7: treat the stated 90% as 60% until recalibrated). The temperature formula is SHOWN in Ch 6 and App B (Temperature) but only for sampling; Platt scaling and temperature scaling for calibration are not covered",
+  "owning_chapter": 8
+ },
+ {
+  "id": "cml-mae",
+  "name": "Mean absolute error (MAE)",
+  "status": "SHOWN",
+  "where": "Ch 9 (Measuring models that predict numbers: MAE = (20 + 20 + 20 + 60 + 10) ÷ 5 = 26; Exercise 5 =SUMPRODUCT(ABS(...))/5); Ch 8 (Measuring wrongness: MAE definition)",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-rmse",
+  "name": "Root mean squared error (RMSE)",
+  "status": "SHOWN",
+  "where": "Ch 9 (Measuring models that predict numbers: RMSE = square root of 980 = 31.3; Exercise 5); Ch 51 (Matrix factorization: Netflix Prize RMSE about 0.2 stars)",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-r2",
+  "name": "Coefficient of determination (R squared) and adjusted R squared",
+  "status": "SHOWN",
+  "where": "Ch 9 (Measuring models that predict numbers: R² = 1 − 4,900 ÷ 75,000 = 0.935; Watch out on spreadsheet RSQ; Exercise 5 =1-SUMXMY2/DEVSQ). Adjusted R² not shown",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-mape",
+  "name": "Mean absolute percentage error (MAPE) and symmetric MAPE",
+  "status": "SHOWN",
+  "where": "Ch 9 (Measuring models that predict numbers: MAPE = (6.7 + 4.4 + 8.0 + 10.0 + 2.5) ÷ 5 = 6.3%; Exercise 5 spreadsheet formula). sMAPE not shown",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-mase",
+  "name": "Mean absolute scaled error (MASE)",
+  "status": "WORDS",
+  "where": "Ch 9 (Measuring models that predict numbers: model MAE 26 versus baseline MAE 100, \"about four times better\"); Ch 10 (Forecasting time series: errors compared against naive and seasonal naive forecasts). Scaling the error by the in-sample naive error (MASE) is never named or written",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-pinball",
+  "name": "Quantile (pinball) loss and weighted quantile loss",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 10 Forecasting mentions forecasts \"with a range for noise\" but no quantile forecasts or quantile loss)",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-bleu",
+  "name": "BLEU score (machine translation)",
+  "status": "SHOWN",
+  "where": "Ch 54 (Language before LLMs > Measuring translation: BLEU: unigram precision 5 ÷ 6, bigram 3 ÷ 5, geometric mean sqrt(0.83 × 0.60) ≈ 0.71; brevity penalty and 4-gram use in words); Ch 31 (Step 3: Choose graders) names it",
+  "owning_chapter": 54
+ },
+ {
+  "id": "cml-rouge",
+  "name": "ROUGE scores (summarization)",
+  "status": "WORDS",
+  "where": "Ch 31 (Evals: how you know it works > Step 3: Choose graders: Definition — ROUGE, overlap of reference words and word sequences, with a worked example of where it fails). ROUGE-N and ROUGE-L formulas not shown",
+  "owning_chapter": 31
+ },
+ {
+  "id": "cml-chrf",
+  "name": "chrF and chrF++ (character n-gram F-score)",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 54
+ },
+ {
+  "id": "cml-wer",
+  "name": "Word error rate (WER) and character error rate",
+  "status": "SHOWN",
+  "where": "Ch 46 (Speech recognition > Measuring speech recognition: word error rate: WER = (S + D + I) ÷ N, Table 46.1 aligned transcript; Exercise 2). Character error rate named in key terms only",
+  "owning_chapter": 46
+ },
+ {
+  "id": "cml-em-f1-qa",
+  "name": "Exact match and token-level F1 for question answering",
+  "status": "WORDS",
+  "where": "Ch 19 (Emergent abilities > The case against: the metric makes the cliff: Definition — Exact match, p^10 for a 10-token answer); Ch 31 (Step 3: Choose graders: exact match as a code grader). Token-level F1 for QA not shown",
+  "owning_chapter": 31
+ },
+ {
+  "id": "cml-bertscore",
+  "name": "BERTScore (embedding-matching text similarity)",
+  "status": "WORDS",
+  "where": "Ch 31 (Step 3: Choose graders: Definition — Semantic similarity score, cosine of whole-text embeddings, the sentence-level cousin). BERTScore and its token-by-token max-matching formula are not covered",
+  "owning_chapter": 31
+ },
+ {
+  "id": "cml-pass-at-k",
+  "name": "pass@k unbiased estimator",
+  "status": "SHOWN",
+  "where": "Ch 21 (The DeepSeek-R1 story > R1-Zero: Definition — Pass@k; Thinking wider > Best-of-N: pass@N = 1 − 0.7^N worked to 76%, 94%, 99.7%); Ch 57 (Why evaluations keep getting harder: pass@k = 1 − (1 − p)^k); Ch 31 (Evaluating agents). The unbiased estimator 1 − C(n − c, k) ÷ C(n, k) is not shown",
+  "owning_chapter": 21
+ },
+ {
+  "id": "cml-pass-hat-k",
+  "name": "pass^k (reliability over k trials)",
+  "status": "SHOWN",
+  "where": "Ch 31 (Evals: how you know it works > Evaluating agents: pass^k, 0.8 × 0.8 × 0.8 = 0.512; per-step compounding 0.99^50 ≈ 61%). The combinatorial estimator C(c, k) ÷ C(n, k) is not shown",
+  "owning_chapter": 31
+ },
+ {
+  "id": "cml-elo",
+  "name": "Elo rating (expected score and update)",
+  "status": "SHOWN",
+  "where": "Ch 48 (Why games matter, and the power of self-play: expected score = 1 ÷ (1 + 10^(−difference ÷ 400)), 0.91 for 400 points, 0.76 for 200); Ch 24 (The benchmark zoo > Work that pays: GDPval: Elo rating definition). The update rule R + K × (S − E) is not shown",
+  "owning_chapter": 24
+ },
+ {
+  "id": "cml-bradley-terry-leaderboard",
+  "name": "Bradley-Terry ratings for pairwise leaderboards (with style control)",
+  "status": "SHOWN",
+  "where": "Ch 20 (Reward models > From comparisons to a single number: P(B preferred over A) = sigmoid(score_B − score_A) worked to 0.82); Ch 48 (Elo expected score, the same model on the 400-point scale); Ch 24 (The crowd: Arena: votes turned into Elo-style ratings; voters reward style) in words. Fitting ratings by logistic regression over all votes, the R = 400 × ξ + 1000 scaling and style control are not shown",
+  "owning_chapter": 24
+ },
+ {
+  "id": "cml-lc-win-rate",
+  "name": "Pairwise win rate and length-controlled win rate",
+  "status": "WORDS",
+  "where": "Ch 24 (The crowd: Arena: longer, well-formatted answers tend to win); Ch 20 (When feedback training goes wrong > Verbosity and style bias); Ch 31 (The biases of AI judges: verbosity bias). Win-rate and length-controlled win-rate formulas not shown",
+  "owning_chapter": 24
+ },
+ {
+  "id": "cml-benchmark-se",
+  "name": "Standard error and confidence interval of a benchmark score (Wald and Wilson)",
+  "status": "SHOWN",
+  "where": "Ch 24 (The problem: you cannot open the box > How precise is a score? Error bars by hand: SE = sqrt(p × (1 − p) ÷ n), 95% CI = ±1.96 SE, worked 80% of 500 = ±3.5 points); Ch 9 (How sure is the score?); Ch 31 (How many test cases is enough?, Table 31.2); App B (Error bar on an accuracy score). Wilson interval and the general-score variance form not shown",
+  "owning_chapter": 24
+ },
+ {
+  "id": "cml-clustered-se",
+  "name": "Clustered standard error for evals with grouped questions",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 24
+ },
+ {
+  "id": "cml-paired-se",
+  "name": "Paired-difference standard error for comparing two models",
+  "status": "WORDS",
+  "where": "Ch 9 (How sure is the score?: two independent margins combine to about 1.4 = sqrt(2) times one margin; a paired comparison on the same emails detects smaller gaps); Ch 31 (How many test cases is enough?: comparing on the same items cancels item difficulty). The correlation term and the SE of the difference formula not shown",
+  "owning_chapter": 31
+ },
+ {
+  "id": "cml-bootstrap-ci",
+  "name": "Bootstrap confidence interval",
+  "status": "MISSING",
+  "where": "Not in the book as a method (bootstrap resampling appears only for building random forests in Ch 10; confidence intervals in Ch 24 use the normal formula)",
+  "owning_chapter": 24
+ },
+ {
+  "id": "cml-mcnemar",
+  "name": "McNemar's test for two classifiers on the same test set",
+  "status": "SHOWN",
+  "where": "Ch 31 (Evals: how you know it works > Worked example: grading two prompts: only the 7 disagreements are used, 6 to 1 split, exact p = (7 + 1) ÷ 128 ≈ 6%, which is the exact (binomial) form of McNemar's test); Ch 9 (How sure is the score?: paired comparison on disagreements, in words). The chi-square form (b − c)² ÷ (b + c) is not shown",
+  "owning_chapter": 31
+ },
+ {
+  "id": "cml-paired-t",
+  "name": "Paired t-test (and its corrected version for cross-validation)",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 31
+ },
+ {
+  "id": "cml-permutation-test",
+  "name": "Permutation (randomization) test",
+  "status": "WORDS",
+  "where": "Ch 9 (How sure is the score?: Definition — p-value, how often chance alone would produce a gap this large); Ch 31 (Worked example: grading two prompts enumerates all 128 equally likely sign patterns, an exact randomization test for one case). The general resampling procedure and p-value formula are not given",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-multiple-comparisons",
+  "name": "Multiple-comparison corrections (Bonferroni, Holm, Benjamini-Hochberg)",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 9 Splitting the data explains that picking the best of 50 models on one set inflates its score, but no Bonferroni, Holm or Benjamini-Hochberg correction)",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-rank-correlation",
+  "name": "Rank correlation (Spearman's ρ and Kendall's τ)",
+  "status": "MISSING",
+  "where": "Not in the book (Pearson correlation is in App B; Spearman and Kendall are absent)",
+  "owning_chapter": 24
+ },
+ {
+  "id": "cml-irt",
+  "name": "Item response theory and benchmark-stitching models",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 24 Indices: Artificial Analysis and Epoch says only that the Epoch Capabilities Index stitches many benchmarks onto one scale; item response theory is not explained)",
+  "owning_chapter": 24
+ },
+ {
+  "id": "cml-time-horizon",
+  "name": "METR task-completion time horizon",
+  "status": "WORDS",
+  "where": "Ch 24 (The benchmark zoo > Agent stamina: the METR time horizon: definition, Table 24.4, doubling-time worked); Ch 28 (How long can an agent work on its own? > METR's time horizon); Ch 7 (Era 10). The logistic fit of success against log task length is not shown",
+  "owning_chapter": 24
+ },
+ {
+  "id": "cml-contamination",
+  "name": "N-gram overlap contamination score",
+  "status": "WORDS",
+  "where": "Ch 19 (Most of the web is not worth reading: step 8 Decontamination); Ch 24 (How benchmarks die > Death by contamination); Ch 9 (Data leakage: benchmark contamination). The n-gram overlap score is not shown",
+  "owning_chapter": 19
+ },
+ {
+  "id": "cml-cf-neighborhood",
+  "name": "Neighborhood collaborative filtering (user-based and item-based)",
+  "status": "WORDS",
+  "where": "Ch 51 (How a recommender learns your taste > Collaborative filtering: people like you: user-based vs item-based; item-item cosine similarity worked, tent and sleeping bag 3 ÷ (1.73 × 2) ≈ 0.87); Ch 10 (Recommenders and the Netflix Prize). The mean-centered weighted-neighbor prediction and Pearson similarity are not shown",
+  "owning_chapter": 51
+ },
+ {
+  "id": "cml-matrix-factorization",
+  "name": "Matrix factorization for recommendations (with biases)",
+  "status": "SHOWN",
+  "where": "Ch 51 (Matrix factorization: discovering hidden tastes: rating = dot product of taste and trait vectors, Ana and Titanic 5.0 × 0.1 + 1.0 × 1.0 = 1.5; How the factors are learned: one SGD step worked, 0.1 × 4.31 × (0.9, 0.3); bias terms and regularization in words); Ch 10 (Recommenders and the Netflix Prize: 4 × 1.0 + 1 × 0.1 = 4.1). The full biased objective with λ is not written",
+  "owning_chapter": 51
+ },
+ {
+  "id": "cml-als",
+  "name": "Alternating least squares (explicit and implicit feedback)",
+  "status": "WORDS",
+  "where": "Ch 51 (Matrix factorization > Why factorization scales: the 2008 implicit-feedback variant that weights each interaction by a confidence and learns from empty cells, in words). Alternating least squares itself is not named; no formulas",
+  "owning_chapter": 51
+ },
+ {
+  "id": "cml-dot-product-scoring",
+  "name": "Dot-product scoring and the two-tower model",
+  "status": "SHOWN",
+  "where": "Ch 51 (Embeddings and the two-tower model > The two-tower model: score = dot product of user and item embeddings, worked 0.82, 0.145, 0.88; Figure 51.6). The softmax over items P(i given u) is not shown",
+  "owning_chapter": 51
+ },
+ {
+  "id": "cml-logq-correction",
+  "name": "Sampled softmax with logQ correction",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 51 describes two-tower training only in words; sampled softmax and logQ correction are absent)",
+  "owning_chapter": 51
+ },
+ {
+  "id": "cml-factorization-machine",
+  "name": "Factorization machine",
+  "status": "WORDS",
+  "where": "App F (Data and ML engineering details > Recommender model names: AutoRec, NeuMF, factorization machines and DeepFM: every pair of features interacts through the dot product of learned vectors). No formula",
+  "owning_chapter": 51
+ },
+ {
+  "id": "cml-bpr",
+  "name": "Bayesian personalized ranking (BPR) loss",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 51
+ },
+ {
+  "id": "cml-dcg-ndcg",
+  "name": "Discounted cumulative gain (DCG) and normalized DCG",
+  "status": "SHOWN",
+  "where": "Ch 51 (Measuring a recommender > Offline metrics: relevance ÷ log2(position + 1), DCG 3.149, ideal 4.762, NDCG ≈ 0.66). The (2^rel − 1) gain variant is not shown",
+  "owning_chapter": 51
+ },
+ {
+  "id": "cml-mrr",
+  "name": "Mean reciprocal rank (MRR)",
+  "status": "MISSING",
+  "where": "Not in the book (reciprocal ranks appear only inside reciprocal rank fusion, Ch 27)",
+  "owning_chapter": 27
+ },
+ {
+  "id": "cml-recall-at-k",
+  "name": "Recall@k, precision@k and hit rate@k",
+  "status": "SHOWN",
+  "where": "Ch 27 (Evaluating a RAG system > Did we find the right passages?: Recall@k defined and worked, 16 of 20 questions = 80% (the hit-rate form); Precision@k, 2 of 5 = 40%); Ch 51 (Offline metrics: precision at k and recall at k in words)",
+  "owning_chapter": 27
+ },
+ {
+  "id": "cml-learning-to-rank",
+  "name": "Pairwise learning to rank (RankNet and LambdaRank)",
+  "status": "WORDS",
+  "where": "Ch 51 (Search > Learning to rank and the age of hundreds of signals: Definition — Learning to rank, trained from judged or clicked query-result pairs). RankNet and LambdaRank formulas not shown",
+  "owning_chapter": 51
+ },
+ {
+  "id": "cml-position-bias",
+  "name": "Position-based click model and inverse propensity weighting for ranking",
+  "status": "WORDS",
+  "where": "Ch 51 (The funnel > Stage 3: re-ranking: Definition — Position bias in rankings; Learning to rank: clicks used with corrections for position bias). The click model and inverse-propensity weight 1 ÷ θ_k are not shown",
+  "owning_chapter": 51
+ },
+ {
+  "id": "cml-multitask-ranking-score",
+  "name": "Multi-objective ranking score",
+  "status": "SHOWN",
+  "where": "Ch 51 (The funnel > Stage 2: ranking, a model that predicts many things at once: 10 × P(like) + 20 × P(share) + 0.1 × watch seconds − 40 × P(not interested), worked 4.0 / 2.2 / 4.2, then reweighted)",
+  "owning_chapter": 51
+ },
+ {
+  "id": "cml-ad-auction",
+  "name": "Ad ranking by expected value and generalized second-price pricing",
+  "status": "SHOWN",
+  "where": "Ch 51 (Advertising > The auction, worked by hand: rank by bid × predicted CTR, $0.030 beats $0.020; second-price payment = runner-up score ÷ own CTR = $0.020 ÷ 0.03 ≈ $0.67; CPM defined). eCPM = 1,000 × bid × pCTR is implied, not written",
+  "owning_chapter": 51
+ },
+ {
+  "id": "cml-mmr",
+  "name": "Maximal marginal relevance (diversity re-ranking)",
+  "status": "WORDS",
+  "where": "Ch 51 (The funnel > Stage 3: re-ranking: the list is adjusted as a whole to enforce variety, in words). Maximal marginal relevance is not named and its relevance-minus-redundancy formula is absent",
+  "owning_chapter": 51
+ },
+ {
+  "id": "cml-tfidf",
+  "name": "TF-IDF weighting",
+  "status": "SHOWN",
+  "where": "Ch 11 (Feature engineering: TF-IDF worked, log10(1,000 ÷ 10) = 2 and 3 × 2 = 6; Definition — TF-IDF); Ch 27 (Keyword search and BM25: IDF = log(1,000 ÷ 50) = 1.3). The scikit-learn smoothed IDF is not shown",
+  "owning_chapter": 11
+ },
+ {
+  "id": "cml-bm25",
+  "name": "BM25 ranking function",
+  "status": "WORDS",
+  "where": "Ch 27 (Three ways to search > Keyword search and BM25: IDF formula worked; Definition — BM25, rare-word weight, diminishing credit for repeats and document-length adjustment, in words). The BM25 formula with k1 and b is not shown",
+  "owning_chapter": 27
+ },
+ {
+  "id": "cml-cosine",
+  "name": "Cosine similarity (and its link to dot product and Euclidean distance)",
+  "status": "SHOWN",
+  "where": "Ch 27 (Measuring closeness: cosine similarity by hand: 0.73 ÷ (0.812 × 0.906) = 0.992; for length-1 vectors cosine equals the dot product); Ch 5 (dot product and cosine similarity); Ch 51 (Collaborative filtering); App B (Cosine similarity). The identity length(a − b)² = 2 − 2 × cos is not shown",
+  "owning_chapter": 5
+ },
+ {
+  "id": "cml-rrf",
+  "name": "Reciprocal rank fusion (RRF)",
+  "status": "SHOWN",
+  "where": "Ch 27 (Three ways to search > Hybrid search and reciprocal rank fusion: 1 ÷ (k + rank) with k = 60, worked table, D1 = 1/62 + 1/61 = 0.03252)",
+  "owning_chapter": 27
+ },
+ {
+  "id": "cml-ann-recall",
+  "name": "Approximate nearest neighbor recall@k",
+  "status": "WORDS",
+  "where": "Ch 27 (Vector databases > Approximate nearest neighbor search and HNSW: ANN occasionally misses a true best match; HNSW dials trade the chance of finding it for memory and time). The ANN recall@k ratio is not written",
+  "owning_chapter": 27
+ },
+ {
+  "id": "cml-product-quantization",
+  "name": "Product quantization and IVF-PQ distance",
+  "status": "WORDS",
+  "where": "Ch 27 (Approximate nearest neighbor search and HNSW: \"other ANN families group vectors into clusters and search only the nearest clusters, or compress each vector into a few bytes\"). Product quantization and IVF are not named; no formulas",
+  "owning_chapter": 27
+ },
+ {
+  "id": "cml-hnsw",
+  "name": "HNSW (hierarchical navigable small world) level assignment",
+  "status": "WORDS",
+  "where": "Ch 27 (Approximate nearest neighbor search and HNSW: Definition — HNSW, layers from sparse to dense, greedy hops; Figure 27.4). The random level-assignment formula is not shown",
+  "owning_chapter": 27
+ },
+ {
+  "id": "cml-colbert",
+  "name": "Late interaction (ColBERT MaxSim) scoring",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 27 covers bi-encoders and cross-encoders only)",
+  "owning_chapter": 27
+ },
+ {
+  "id": "cml-splade",
+  "name": "Learned sparse retrieval term weights (SPLADE)",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 27
+ },
+ {
+  "id": "cml-moving-average",
+  "name": "Simple moving average",
+  "status": "SHOWN",
+  "where": "Ch 10 (Forecasting time series: 7-day moving average 1,070 ÷ 7 ≈ 153; Exercise 5 4-period moving average)",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-exponential-smoothing",
+  "name": "Exponential smoothing (exponential moving average)",
+  "status": "SHOWN",
+  "where": "Ch 10 (Forecasting time series: 0.3 × 120 + 0.7 × 100 = 106, then 101.2; Definition — Exponential smoothing; Exercise 5)",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-holt-winters",
+  "name": "Holt-Winters (trend and seasonal exponential smoothing)",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 10 Forecasting time series has exponential smoothing and the trend-plus-season decomposition of Figure 10.9 separately; their combination, Holt-Winters, is absent)",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-arima",
+  "name": "Autoregressive and ARIMA models",
+  "status": "WORDS",
+  "where": "Ch 10 (Forecasting time series: Definition — ARIMA, predicts from recent past values and past forecast errors after removing trend; Definition — Lag feature). No equation",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-acf",
+  "name": "Autocorrelation function",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 10 defines lag features but not autocorrelation)",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-prophet",
+  "name": "Prophet additive forecasting model",
+  "status": "WORDS",
+  "where": "Ch 10 (Forecasting time series: Prophet named; Figure 10.9 decomposes a series into trend + seasonality + noise, \"Forecast = trend + season\"). The Fourier seasonal term is not shown",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-ab-ztest",
+  "name": "A/B test: lift and two-proportion z-test",
+  "status": "WORDS",
+  "where": "Ch 54 (Causality > The gold standard: randomize: A/B test definition; with 250 per group noise alone moves the difference by about 3 to 4 points); Ch 51 (Measuring a recommender > Online experiments); Ch 9 (p-value and statistical significance). Lift and the two-proportion z statistic are not shown",
+  "owning_chapter": 54
+ },
+ {
+  "id": "cml-sample-size",
+  "name": "Sample size and minimum detectable effect (A/B tests and evals)",
+  "status": "WORDS",
+  "where": "Ch 54 (The gold standard: randomize: roughly 6,500 customers per group to detect a 2-point effect, result stated without the formula); Ch 31 (How many test cases is enough?: margin shrinks with sqrt(n), Table 31.2). The sample-size formula is not shown",
+  "owning_chapter": 54
+ },
+ {
+  "id": "cml-cuped",
+  "name": "CUPED variance reduction",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 54
+ },
+ {
+  "id": "cml-ate",
+  "name": "Average treatment effect (potential outcomes)",
+  "status": "SHOWN",
+  "where": "Ch 54 (Causality > A worked confounder: the AI feature that boosted sales: naive 24% vs 14%, adjusted 0.5 × 28% + 0.5 × 8% = 18% vs 20%; The gold standard: randomize: difference between randomized groups measures the causal effect; counterfactuals defined in Pearl's ladder). The potential-outcomes notation E[Y(1) − Y(0)] is not written",
+  "owning_chapter": 54
+ },
+ {
+  "id": "cml-ipw",
+  "name": "Inverse propensity weighting (causal effects and off-policy evaluation)",
+  "status": "MISSING",
+  "where": "Not in the book (the \"propensity\" in Ch 57 is a different idea; off-policy evaluation by importance weighting is absent)",
+  "owning_chapter": 54
+ },
+ {
+  "id": "cml-did",
+  "name": "Difference-in-differences",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 54
+ }
+]

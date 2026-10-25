@@ -1,0 +1,882 @@
+[
+ {
+  "id": "rla-mdp",
+  "name": "Markov decision process and the Markov property (MDP)",
+  "formula": "MDP = (S, A, P, R, γ), with transition probabilities P(s' given s, a) and expected reward R(s, a); Markov property: P(s_(t+1) given s_t, a_t) = P(s_(t+1) given s_0, a_0, ..., s_t, a_t)",
+  "meaning": "S is the set of states, A the set of actions, P(s' given s, a) the probability that action a in state s leads to state s', R(s, a) the expected reward for that step, and γ (gamma) the discount factor between 0 and 1. The Markov property says the present state carries everything needed to predict the next one, so the history adds nothing. Variants merged here: reward written R(s, a, s'), episodic versus continuing tasks, finite-horizon MDPs. The partially observable case (POMDP) has its own entry.",
+  "used_for": "The formal frame of every RL algorithm in this category: games (Atari, Go), robot control, data-center cooling control, and LLM post-training, where the state is the prompt plus the tokens written so far, the action is the next token, transitions are deterministic (append the token) and the reward arrives at the end. In the book: Chapter 48 (Markov decision processes: the formal frame), Chapter 20 (A two-paragraph refresher on reinforcement learning).",
+  "tier": "core"
+ },
+ {
+  "id": "rla-return",
+  "name": "Discounted return (G)",
+  "formula": "G_t = r_(t+1) + γ × r_(t+2) + γ^2 × r_(t+3) + ... = sum over k ≥ 0 of (γ^k × r_(t+k+1)); recursively G_t = r_(t+1) + γ × G_(t+1)",
+  "meaning": "G_t is the total reward collected from time t onward, r_(t+1) the reward received after step t, and γ the discount factor (0 ≤ γ ≤ 1). Later rewards count less; the effective planning horizon is about 1 ÷ (1 − γ) steps (γ = 0.99 gives about 100). With γ = 1 and a finite episode it is the plain sum of rewards, the usual setting for LLM training where one reward arrives at the end. Variants: finite-horizon undiscounted return, average-reward formulation.",
+  "used_for": "The learning target of every value-based and policy-gradient method. DQN on Atari used γ = 0.99; PPO-based RLHF implementations (for example Hugging Face TRL's PPO trainer) default to γ = 1, so the return is the final reward-model score minus the per-token KL penalties. In the book: Chapter 48 (Rewards, returns and discounting: 10 × 0.9^3 = 7.29; 1 + 0.9 + 0.81 = 2.71).",
+  "tier": "core"
+ },
+ {
+  "id": "rla-value-functions",
+  "name": "State-value and action-value functions (V and Q)",
+  "formula": "V_π(s) = E_π[G_t given s_t = s]; Q_π(s, a) = E_π[G_t given s_t = s, a_t = a]; V_π(s) = sum over a of (π(a given s) × Q_π(s, a))",
+  "meaning": "π (pi) is the policy, the probability π(a given s) of choosing action a in state s. V_π(s) is the expected return from state s when following π; Q_π(s, a) is the expected return after first taking action a in s and following π afterwards; E_π[...] is the expected value over the randomness of the policy and the environment. The last identity says a state's value is the policy-weighted average of its action values.",
+  "used_for": "Critics and value heads everywhere: the value model in PPO-based RLHF, AlphaGo's value network, DQN's Q-network, the value head of MuZero. In the book: Chapter 48 (Policies and values), Chapter 20 (value model definition).",
+  "tier": "core"
+ },
+ {
+  "id": "rla-bellman-expectation",
+  "name": "Bellman expectation equation",
+  "formula": "V_π(s) = sum over a of π(a given s) × sum over s' of P(s' given s, a) × (R(s, a, s') + γ × V_π(s')); Q_π(s, a) = sum over s' of P(s' given s, a) × (R(s, a, s') + γ × sum over a' of π(a' given s') × Q_π(s', a'))",
+  "meaning": "The value of a state equals the expected immediate reward plus the discounted value of where you land next, averaged over the policy's action choices and the environment's transitions. It turns a sum over whole futures into a one-step recursion, which is what makes values computable and learnable step by step. Written with expectations: V_π(s) = E_π[r_(t+1) + γ × V_π(s_(t+1)) given s_t = s].",
+  "used_for": "Policy evaluation, the targets of TD learning and SARSA, and every learned critic (the value model in RLHF PPO, actor-critic robots). In the book: Chapter 48 (Bellman equation definition, stated in words only).",
+  "tier": "core"
+ },
+ {
+  "id": "rla-bellman-optimality",
+  "name": "Bellman optimality equation",
+  "formula": "V*(s) = max over a of sum over s' of P(s' given s, a) × (R(s, a, s') + γ × V*(s')); Q*(s, a) = sum over s' of P(s' given s, a) × (R(s, a, s') + γ × max over a' of Q*(s', a')); π*(s) = argmax over a of Q*(s, a)",
+  "meaning": "V* and Q* are the best achievable values over all policies. The optimal value of a state is the best action's immediate reward plus the discounted optimal value of the next state. Acting greedily on Q* (argmax picks the action with the largest value) gives an optimal policy π*.",
+  "used_for": "The fixed point that value iteration, Q-learning and DQN aim at; the max inside it is the source of the overestimation bias that Double DQN fixes. In the book: Chapter 48 (Bellman equation; Q-learning worked by hand, where the final values 10, 9 and 8.1 satisfy it).",
+  "tier": "core"
+ },
+ {
+  "id": "rla-value-iteration",
+  "name": "Value iteration",
+  "formula": "V_(k+1)(s) = max over a of sum over s' of P(s' given s, a) × (R(s, a, s') + γ × V_k(s')), repeated for every state until max over s of |V_(k+1)(s) − V_k(s)| is below a small threshold",
+  "meaning": "Start all values at 0 and apply the Bellman optimality equation as an update, sweep after sweep. The update is a γ-contraction: max over s of |V_(k+1)(s) − V*(s)| ≤ γ × max over s of |V_k(s) − V*(s)|, so the error shrinks by at least a factor γ per sweep and the values converge. Variants: in-place (Gauss-Seidel) and asynchronous sweeps; soft value iteration replaces max with α × ln(sum of exp(Q ÷ α)) in maximum-entropy RL and IRL.",
+  "used_for": "Planning when the model of the world is known: gridworlds, inventory and queueing problems, small robot maps, and as the inner loop of maximum-entropy inverse RL. In the book: Chapter 48 (Markov decision processes: the corridor worked in three sweeps, C = 10, B = 9, A = 8.1).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-policy-iteration",
+  "name": "Policy iteration and the policy improvement theorem",
+  "formula": "Evaluate: solve V_π from the Bellman expectation equation; improve: π_new(s) = argmax over a of sum over s' of P(s' given s, a) × (R(s, a, s') + γ × V_π(s')); theorem: if Q_π(s, π_new(s)) ≥ V_π(s) for all s, then V_(π_new)(s) ≥ V_π(s) for all s",
+  "meaning": "Alternate between scoring the current policy and making it greedy with respect to those scores; each round can only help, and a finite MDP reaches the optimal policy in finitely many rounds. The general pattern of interleaving evaluation and improvement is called generalized policy iteration (GPI). Variant: modified policy iteration (only a few evaluation sweeps per round).",
+  "used_for": "A textbook planning method; GPI is the template behind actor-critic methods and behind AlphaZero, where tree search improves the policy and the network learns to evaluate it. In the book: Chapter 48 (value iteration definition, which names policy iteration as its close relative).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-monte-carlo",
+  "name": "Monte Carlo value estimate and the incremental mean",
+  "formula": "V(s) ← V(s) + α × (G_t − V(s)); with α = 1 ÷ N(s) this is the running average of observed returns; bandit form: Q_(n+1) = Q_n + (1 ÷ n) × (R_n − Q_n)",
+  "meaning": "Estimate a value by averaging complete returns actually observed after visiting a state. α is the step size (learning rate); N(s) counts visits. The incremental form updates an average without storing past returns: new estimate = old estimate + step × (target − old estimate). A constant α weights recent returns more, which suits changing environments. Unbiased but high variance, and it must wait for the episode to end. Variants: first-visit and every-visit Monte Carlo.",
+  "used_for": "AlphaZero's value target is the Monte Carlo outcome z of the finished game; in RL with verifiable rewards (GRPO and relatives) each answer's single end-of-episode reward is a Monte Carlo return with no bootstrapping; bandit action-value estimates. In the book: Chapter 48 (policy gradients: the average return of four episodes, 6), Chapter 21 (GRPO uses the group's observed rewards).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-potential-shaping",
+  "name": "Potential-based reward shaping",
+  "formula": "r'(s, a, s') = r(s, a, s') + γ × Φ(s') − Φ(s)",
+  "meaning": "Φ (capital phi) is any function of the state, a potential, such as minus the distance to the goal. Ng, Harada and Russell (1999) proved that adding shaping rewards of exactly this form never changes which policy is optimal, while other kinds of bonus points can create loopholes the agent exploits.",
+  "used_for": "Speeding up learning in robotics and games without creating new reward hacks; a reference point when designing partial or format rewards for LLM RL (those are usually not potential-based, which is why they can be gamed). In the book: Chapter 48 (Credit assignment: reward shaping definition, in words).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-pomdp-belief",
+  "name": "POMDP belief update",
+  "formula": "b'(s') = η × O(o given s', a) × sum over s of (P(s' given s, a) × b(s)), with η = 1 ÷ (the sum of the right-hand side over all s')",
+  "meaning": "In a partially observable MDP the agent keeps a belief b(s), a probability for each possible hidden state. After taking action a and seeing observation o, it predicts with the transition model P, weights each state by how likely the observation is there (O, the observation model), and renormalizes with η (eta) so the beliefs sum to 1. This is Bayes' rule applied every step; HMM filtering and Kalman filters (in the classical-AI section) are the same update without actions.",
+  "used_for": "Robot localization, dialogue state tracking, poker and other hidden-information games, and any agent that must act on uncertain state. In the book: Chapter 48 (POMDP and belief state definitions).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-model-based",
+  "name": "Model-based RL: learned dynamics, Dyna planning and model-predictive control",
+  "formula": "Model loss: L_model = E[length(s' − f_ψ(s, a))^2 + (r − r_ψ(s, a))^2]; Dyna: after each real step, k extra Q-learning updates on simulated transitions (s, a, r_ψ(s, a), f_ψ(s, a)); MPC: a_t = first action of argmax over a_t, ..., a_(t+H) of sum over k from 0 to H of (γ^k × r_ψ(s_k, a_k))",
+  "meaning": "f_ψ is a learned dynamics model with parameters ψ (psi) that predicts the next state, and r_ψ a learned reward model; length(...)^2 is the squared distance. Dyna (Sutton, 1990) mixes real and imagined experience; model-predictive control plans H steps ahead with the model, executes only the first action and replans. Variants: probabilistic ensembles (PETS), latent world models trained with a variational objective (Dreamer, whose loss is owned by the generative section), value-equivalent models (MuZero, separate entry).",
+  "used_for": "Data-efficient control: TD-MPC2 and MBPO in robotics research; DreamerV3 (published in Nature in 2025) learns a world model and trains its actor-critic in imagination, and was the first algorithm to collect diamonds in Minecraft from scratch; world-model agents of Chapter 47. In the book: Chapter 48 (Model-free and model-based).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-td0",
+  "name": "TD(0) learning and the TD error (δ)",
+  "formula": "δ_t = r_(t+1) + γ × V(s_(t+1)) − V(s_t); V(s_t) ← V(s_t) + α × δ_t",
+  "meaning": "δ_t (delta) is the temporal-difference error: how much better or worse the one-step outcome was than the current estimate predicted. The estimate is nudged a fraction α toward the bootstrapped target r + γ × V(next state), so learning happens after every step instead of at the end of the episode. Lower variance than Monte Carlo, at the price of some bias from using its own estimate as the target.",
+  "used_for": "Every learned critic (A2C, PPO, SAC); TD-Gammon (1992); the dopamine reward-prediction-error finding of Schultz and colleagues (1997). In the book: Chapter 48 (Q-learning worked by hand: TD learning definition and the dopamine Key idea).",
+  "tier": "core"
+ },
+ {
+  "id": "rla-n-step",
+  "name": "n-step return",
+  "formula": "G_t^(n) = r_(t+1) + γ × r_(t+2) + ... + γ^(n−1) × r_(t+n) + γ^n × V(s_(t+n))",
+  "meaning": "Use n real rewards, then bootstrap from the value estimate n steps ahead. n = 1 gives TD(0); n reaching the end of the episode gives the Monte Carlo return. Middle values trade bias against variance and pass reward back faster than one-step TD.",
+  "used_for": "A3C (rollouts of up to 5 steps), Rainbow DQN (n = 3), R2D2, and MuZero's value targets (bootstrapped n steps ahead). In the book: Only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-td-lambda",
+  "name": "TD(λ), the λ-return and eligibility traces",
+  "formula": "G_t^λ = (1 − λ) × sum over n ≥ 1 of (λ^(n−1) × G_t^(n)); backward view: e_t(s) = γ × λ × e_(t−1)(s) + (1 if s = s_t else 0), then V(s) ← V(s) + α × δ_t × e_t(s) for every state s",
+  "meaning": "λ (lambda) between 0 and 1 averages all n-step returns with geometrically decaying weights. λ = 0 is TD(0) and λ = 1 is Monte Carlo. The eligibility trace e_t(s) is a fading memory of recently visited states, so each TD error δ_t updates them all in proportion to how recently they were visited. Variants: accumulating versus replacing traces, true online TD(λ). Generalized advantage estimation (separate entry) applies the same weighting to advantages.",
+  "used_for": "TD-Gammon (Tesauro, 1992-1995) learned backgammon with TD(λ) and a neural network; the λ weighting lives on in GAE inside PPO. In the book: Chapter 48 (Early learners: checkers and backgammon, TD-Gammon in words).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-sarsa",
+  "name": "SARSA and Expected SARSA",
+  "formula": "Q(s, a) ← Q(s, a) + α × (r + γ × Q(s', a') − Q(s, a)), where a' is the action actually chosen next; Expected SARSA uses sum over b of (π(b given s') × Q(s', b)) in place of Q(s', a')",
+  "meaning": "The on-policy cousin of Q-learning, named after the tuple (state, action, reward, next state, next action) each update uses. It learns the value of the policy it actually follows, exploration included, so near a cliff it learns a safer path than Q-learning. Expected SARSA averages over the next action instead of sampling it, which lowers variance.",
+  "used_for": "Textbook on-policy control (Sutton and Barto, Chapter 6); a building block for understanding on-policy methods such as PPO. In the book: Only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-q-learning",
+  "name": "Q-learning update",
+  "formula": "Q(s, a) ← Q(s, a) + α × (r + γ × max over a' of Q(s', a') − Q(s, a))",
+  "meaning": "Move the estimate for the action just taken a fraction α toward the target: the reward received plus the discounted value of the best action in the next state. Because the target uses the max, not the action the agent will actually take, Q-learning is off-policy: it learns optimal values while exploring. At a terminal state the target is just r. Watkins (1989) proved convergence for tables when every pair keeps being visited and α shrinks appropriately.",
+  "used_for": "Tabular control, and the update that DQN turns into a neural-network loss. In the book: Chapter 48 (Q-learning, worked by hand: the corridor values 5, 2.25, 7.5, 1.01, 4.5, 8.75 converging to 8.1, 9, 10).",
+  "tier": "core"
+ },
+ {
+  "id": "rla-dqn-loss",
+  "name": "Deep Q-network loss with target network and experience replay (DQN)",
+  "formula": "L(θ) = E over (s, a, r, s') sampled from the replay buffer of [(r + γ × max over a' of Q_target(s', a') − Q_θ(s, a))^2]; target refresh θ_target ← θ every C steps, or Polyak averaging θ_target ← τ × θ + (1 − τ) × θ_target",
+  "meaning": "θ (theta) are the Q-network's weights; Q_target is a slowly updated copy that supplies stable targets; the replay buffer stores past transitions so training batches are less correlated. τ (tau) is a small mixing rate such as 0.005 (the same exponential moving average of weights listed in the deep-learning section). The 2015 DQN clipped the error term to the range −1 to 1, which is equivalent to using the Huber loss instead of the square.",
+  "used_for": "DQN learned 49 Atari games from pixels with one architecture (Nature, 2015); Polyak-averaged target networks are standard in DDPG, TD3 and SAC. In the book: Chapter 48 (From tables to neural networks: Deep Q-Networks; experience replay and target network definitions).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-double-dqn",
+  "name": "Double DQN target",
+  "formula": "y = r + γ × Q_target(s', argmax over a' of Q_θ(s', a'))",
+  "meaning": "The online network picks the best next action and the target network scores it. Taking the max of noisy estimates is biased upward (the expected max is at least the max of the expectations), so separating selection from evaluation reduces overestimation. Tabular ancestor: double Q-learning with two tables. TD3's clipped double-Q (minimum of two critics) is the continuous-action relative.",
+  "used_for": "van Hasselt, Guez and Silver (2016); a standard part of Rainbow DQN and later value-based agents. In the book: Only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-dueling",
+  "name": "Dueling network architecture",
+  "formula": "Q(s, a) = V(s) + (A(s, a) − (1 ÷ |A|) × sum over a' of A(s, a'))",
+  "meaning": "The network splits into a state-value stream V(s) and an advantage stream A(s, a); |A| is the number of actions. Subtracting the mean advantage makes the split identifiable (otherwise any constant could move between V and A). It learns which states are good without having to learn the effect of every action in each.",
+  "used_for": "Wang and colleagues (2016); part of Rainbow DQN. In the book: Only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-per",
+  "name": "Prioritized experience replay",
+  "formula": "P(i) = p_i^α ÷ sum over k of p_k^α, with priority p_i = |δ_i| + ε; importance weight w_i = (N × P(i))^(−β) ÷ max over j of w_j",
+  "meaning": "Transitions with large TD error |δ_i| are replayed more often; α sets how strongly (0 is uniform), ε is a small constant so nothing has zero chance, N is the buffer size, and the weights w_i (with β annealed toward 1) undo the bias that non-uniform sampling introduces.",
+  "used_for": "Schaul and colleagues (2016); Rainbow, Ape-X and R2D2 distributed agents. In the book: Only here (Chapter 48 defines experience replay).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-distributional",
+  "name": "Distributional Bellman equation (categorical and quantile value learning)",
+  "formula": "Z(s, a) has the same distribution as R(s, a) + γ × Z(S', A'), with Q(s, a) = E[Z(s, a)]; C51 projects the target onto fixed support points and minimizes KL(projected target, predicted distribution); QR-DQN fits quantiles with the quantile Huber loss",
+  "meaning": "Instead of learning only the average return, learn its whole distribution Z. The equation says the return distribution equals the reward plus the discounted return distribution of the next state-action pair. KL is the Kullback-Leibler divergence (defined in the foundations section).",
+  "used_for": "C51 (Bellemare and colleagues, 2017), QR-DQN, Rainbow; MuZero and DreamerV3 predict values and rewards as categorical distributions over bins (two-hot targets with a squashing transform such as symlog), which stabilizes learning across reward scales. In the book: Only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-importance-sampling",
+  "name": "Importance sampling ratio for off-policy learning",
+  "formula": "ρ_t = π(a_t given s_t) ÷ μ(a_t given s_t); E over a from μ of [ρ × f(a)] = E over a from π of [f(a)]; whole trajectory: product over t of ρ_t",
+  "meaning": "μ (mu) is the behavior policy that generated the data and π the policy being learned or evaluated. Reweighting each sample by ρ (rho) corrects for the mismatch. The product over many steps can explode or vanish, so practical methods clip or truncate it (PPO, V-trace, truncated importance sampling). The general importance-sampling identity is owned by the foundations section and inverse-propensity off-policy evaluation of logged recommender policies by the classical-ML section; this entry is its use inside RL training.",
+  "used_for": "PPO's probability ratio r_t(θ) (old policy as behavior policy) and all its LLM descendants (GRPO, DAPO, GSPO); off-policy actor-critic methods; corrections when LLM rollouts come from an inference engine whose numerics differ from the trainer's. In the book: Chapter 21 (Importance ratio definition).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-vtrace",
+  "name": "V-trace off-policy value target (IMPALA)",
+  "formula": "v_s = V(x_s) + sum over t from s to s + n − 1 of γ^(t−s) × (product over i from s to t − 1 of c_i) × ρ_t × (r_t + γ × V(x_(t+1)) − V(x_t)), with ρ_t = min(ρ_bar, π(a_t given x_t) ÷ μ(a_t given x_t)) and c_i = min(c_bar, π(a_i given x_i) ÷ μ(a_i given x_i))",
+  "meaning": "An n-step value target that corrects for data generated by slightly stale actor policies μ using importance ratios truncated at ρ_bar and c_bar (often 1). With on-policy data (π = μ) it reduces to the ordinary n-step return. Retrace(λ) is a related truncated-trace target for Q-functions.",
+  "used_for": "IMPALA (2018) scalable actor-learner training; AlphaStar used V-trace among its off-policy corrections. In the book: Only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-pg-theorem",
+  "name": "Policy gradient theorem (log-derivative trick)",
+  "formula": "∇_θ J(θ) = E_π[sum over t of (∇_θ ln π_θ(a_t given s_t) × Q_π(s_t, a_t))], from the identity ∇_θ E over x from p_θ of [f(x)] = E over x from p_θ of [f(x) × ∇_θ ln p_θ(x)]",
+  "meaning": "J(θ) is the expected return of the policy with parameters θ, and ∇_θ means the gradient (the list of slopes) with respect to θ. The gradient of expected return is the average of 'how to make this action more likely' (∇ ln π) weighted by how good the action was (Q). Q may be replaced by the return G_t, by G_t minus a baseline, or by an advantage estimate without changing the expected gradient. For a language model, ln π of a whole answer is the sum of its tokens' log-probabilities.",
+  "used_for": "The root of REINFORCE, actor-critic, TRPO, PPO, RLHF, GRPO and every RLVR variant used to train reasoning models in 2025-2026. In the book: Chapter 48 (Policy gradients and actor-critic methods, in words), Chapter 20 and Chapter 21 (how RL nudges a model).",
+  "tier": "core"
+ },
+ {
+  "id": "rla-reinforce",
+  "name": "REINFORCE with baseline",
+  "formula": "θ ← θ + α × sum over t of ((G_t − b(s_t)) × ∇_θ ln π_θ(a_t given s_t))",
+  "meaning": "Sample an episode, then raise the log-probability of each action in proportion to how much its return G_t beat a baseline b. Any baseline that does not depend on the action leaves the gradient unbiased, because E[∇_θ ln π × b] = 0, but a good one (the average return, a learned V(s), or the mean reward of a group of samples) cuts the variance enormously. Williams (1992).",
+  "used_for": "LLM RL recipes are REINFORCE-style at heart: RLOO, REINFORCE++, ReMax and CISPO use it directly, and GRPO adds PPO clipping on top. In the book: Chapter 48 (four episodes with returns 10, 2, 8, 4, baseline 6, advantages +4, −4, +2, −2).",
+  "tier": "core"
+ },
+ {
+  "id": "rla-advantage",
+  "name": "Advantage function (A = Q − V) and its one-step estimate",
+  "formula": "A_π(s, a) = Q_π(s, a) − V_π(s); one-step estimate A_t ≈ δ_t = r_(t+1) + γ × V(s_(t+1)) − V(s_t); E over a from π of [A_π(s, a)] = 0",
+  "meaning": "The advantage says how much better an action is than the policy's average behavior in that state. Its average under the policy is zero, so pushing up positive-advantage actions and down negative ones changes behavior without inflating everything. The TD error is an unbiased estimate of the advantage when V is exact.",
+  "used_for": "Weights the update in A2C, PPO and RLHF; GRPO replaces the learned V with a group mean and divides by the group's spread. In the book: Chapter 48 (Advantage definition), Chapter 20 (worked: baseline 1.58, advantages +0.42, +1.02, −2.58), Chapter 21.",
+  "tier": "core"
+ },
+ {
+  "id": "rla-actor-critic",
+  "name": "Actor-critic loss (A2C, A3C)",
+  "formula": "L(θ, φ) = −E[ln π_θ(a_t given s_t) × A_t] + c_v × E[(V_φ(s_t) − G_t)^2] − c_e × E[H(π_θ(· given s_t))]",
+  "meaning": "The actor (policy π_θ) is pushed toward high-advantage actions; the critic (value function V_φ with weights φ, phi) is regressed toward observed or bootstrapped returns G_t; the entropy term H keeps exploring. c_v and c_e are weights chosen by the engineer. A_t is usually G_t − V_φ(s_t) or a GAE estimate; the advantage is treated as a constant when differentiating the actor term.",
+  "used_for": "A3C and A2C (2016); the structure inside PPO, including PPO-based RLHF with its separate value model; AlphaStar's actor-critic. In the book: Chapter 48 (Actor-critic method definition), Chapter 20 (value model, the RLHF loop).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-gae",
+  "name": "Generalized advantage estimation (GAE)",
+  "formula": "A_t = sum over l ≥ 0 of ((γ × λ)^l × δ_(t+l)), with δ_t = r_(t+1) + γ × V(s_(t+1)) − V(s_t); recursively A_t = δ_t + γ × λ × A_(t+1); value target = A_t + V(s_t)",
+  "meaning": "An exponentially weighted sum of future TD errors. λ = 0 gives the one-step TD error (low variance, more bias); λ = 1 gives the Monte Carlo advantage G_t − V(s_t) (no bias from V, high variance). Schulman and colleagues (2015, published 2016).",
+  "used_for": "The default advantage estimator inside PPO for games and robotics (λ = 0.95 is common) and inside PPO-based RLHF (TRL's PPO trainer defaults to γ = 1, λ = 0.95). In the book: Only here (Chapter 20 describes the value model and advantage in words).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-trpo",
+  "name": "Trust-region policy optimization and the natural policy gradient (TRPO)",
+  "formula": "maximize E[(π_θ(a given s) ÷ π_old(a given s)) × A_old(s, a)] subject to E_s[KL(π_old(· given s), π_θ(· given s))] ≤ δ; natural-gradient step θ_new = θ + sqrt(2 × δ ÷ (g^T × F^(−1) × g)) × F^(−1) × g",
+  "meaning": "Improve a surrogate objective while keeping the average KL divergence from the old policy under a trust-region size δ (for example 0.01). g is the policy gradient, F the Fisher information matrix (the curvature of the KL), F^(−1) its inverse and g^T the transposed gradient; the natural gradient F^(−1) × g measures steps by how much the policy's behavior changes rather than how much the weights change. Solved in practice with conjugate gradients and a line search.",
+  "used_for": "Schulman and colleagues (2015); simulated locomotion benchmarks. Largely replaced by PPO, but its idea of a KL-bounded step is the ancestor of PPO clipping and of the KL leash in RLHF. In the book: Only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-ppo-clip",
+  "name": "PPO clipped surrogate objective",
+  "formula": "r_t(θ) = π_θ(a_t given s_t) ÷ π_old(a_t given s_t); L_CLIP(θ) = E_t[min(r_t(θ) × A_t, clip(r_t(θ), 1 − ε, 1 + ε) × A_t)], typically ε = 0.2",
+  "meaning": "r_t(θ) is the probability ratio between the updated and the data-collecting policy; clip(x, low, high) caps x to that range; ε (epsilon) is the clip range. The min removes any incentive to push the ratio beyond 1 + ε for good actions or below 1 − ε for bad ones within one batch, a cheap stand-in for TRPO's trust region. Variants merged here: PPO with an adaptive KL penalty instead of clipping (E[r_t × A_t − β × KL], halving β when KL is below target ÷ 1.5 and doubling it above target × 1.5), asymmetric clip ranges (DAPO's clip-higher), and dual-clip PPO, which also bounds the objective for negative advantages.",
+  "used_for": "PPO (Schulman and colleagues, 2017) trained OpenAI Five and InstructGPT/ChatGPT-style RLHF, is the default in robot locomotion trained in simulation, and its clipped ratio is inherited by GRPO, DAPO and GSPO for reasoning models. In the book: Chapter 20 (What PPO adds: a ratio of 1.5 counted only up to 1.2, probability 0.30 to 0.36), Chapter 48, Chapter 21.",
+  "tier": "core"
+ },
+ {
+  "id": "rla-ppo-full",
+  "name": "PPO full loss with value loss and entropy bonus",
+  "formula": "L_total(θ) = E_t[L_CLIP_t(θ) − c_1 × (V_θ(s_t) − V_t^target)^2 + c_2 × H(π_θ(· given s_t))] (maximized); value-clipping variant: value loss = max((V − V_target)^2, (V_old + clip(V − V_old, −ε, ε) − V_target)^2)",
+  "meaning": "The policy term, a squared-error value loss weighted by c_1 (about 0.5 to 1) and an entropy bonus weighted by c_2 (0.01 in the paper's Atari runs) are combined when actor and critic share weights. V_t^target is the return or GAE-based target. In LLM RLHF the value model is usually a separate network, so the value loss is trained alongside rather than summed.",
+  "used_for": "Standard PPO implementations (OpenAI Baselines, Stable-Baselines3, CleanRL) and PPO-based RLHF, which keeps four models in memory (policy, reference, reward and value). In the book: Chapter 20 (The RLHF loop: the four models).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-entropy-bonus",
+  "name": "Policy entropy and entropy regularization",
+  "formula": "H(π(· given s)) = −sum over a of (π(a given s) × ln π(a given s)); regularized objective J(θ) + β_H × E_s[H(π_θ(· given s))]",
+  "meaning": "Entropy H measures how spread out the policy's choices are (its general definition belongs to the foundations section); adding it with weight β_H rewards keeping options open, which sustains exploration. In reasoning-model RL the worry is entropy collapse, the policy becoming near-deterministic too early; a 2025 study (Cui and colleagues) fitted validation reward as roughly R = −a × exp(H) + b as entropy falls, and another (Qwen team, 2025) found that most of the learning signal sits in the small fraction of high-entropy 'forking' tokens.",
+  "used_for": "A3C, PPO (the c_2 term) and SAC (where it becomes the temperature α); LLM RL dashboards track token entropy, and DAPO's clip-higher was designed to stop entropy collapse. In the book: Chapter 21 (Entropy collapse definition; DAPO).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-ddpg-td3",
+  "name": "Deterministic policy gradient (DDPG, TD3)",
+  "formula": "∇_φ J = E_s[∇_a Q(s, a) evaluated at a = μ_φ(s), times ∇_φ μ_φ(s)]; TD3 target y = r + γ × min over i in {1, 2} of Q_target_i(s', μ_target(s') + clip(noise, −c, c))",
+  "meaning": "For continuous actions, a deterministic actor μ_φ(s) outputs one action and is moved in the direction that increases the critic's Q (chain rule through the action). TD3 (Fujimoto and colleagues, 2018) fixes DDPG's overestimation with the minimum of two critics, adds small clipped noise to the target action (target smoothing) and updates the actor less often than the critics.",
+  "used_for": "Continuous control in robotics and simulation; TD3 is a standard baseline and its clipped double-Q trick is reused in SAC. In the book: Only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-sac",
+  "name": "Soft actor-critic and maximum-entropy RL (SAC)",
+  "formula": "J(π) = sum over t of E[r(s_t, a_t) + α × H(π(· given s_t))]; soft target y = r + γ × (min over i of Q_target_i(s', a') − α × ln π(a' given s')) with a' drawn from π(· given s'); policy loss E[α × ln π(a given s) − Q(s, a)]; temperature loss E[−α × (ln π(a given s) + H_target)]; soft value V(s) = α × ln(sum over a of exp(Q(s, a) ÷ α))",
+  "meaning": "Maximize reward plus α (temperature) times entropy. The soft Bellman target subtracts α × ln π, the policy is trained toward exp(Q ÷ α), and α can be tuned automatically to hold the entropy near a target H_target. The soft value is a smooth maximum; as α goes to 0 it becomes the ordinary max. Soft Q-learning and 'control as inference' share these formulas.",
+  "used_for": "Haarnoja and colleagues (2018); a default for continuous control and real-robot learning. The same Boltzmann form, policy proportional to exp(value ÷ temperature), is the closed-form solution of KL-regularized RLHF (separate entry). In the book: Only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-eps-greedy",
+  "name": "ε-greedy exploration",
+  "formula": "π(a given s) = 1 − ε + ε ÷ |A| if a = argmax over b of Q(s, b), otherwise ε ÷ |A|; often ε decays over training",
+  "meaning": "With probability 1 − ε take the best-known action; with probability ε pick uniformly at random among the |A| actions (which can also land on the best one). ε (epsilon) is usually annealed from high to low.",
+  "used_for": "DQN annealed ε from 1.0 to 0.1 over its first million frames and used 0.05 for evaluation; a standard bandit baseline. In the book: Chapter 48 (Epsilon-greedy: 0.1 × 0.5 = 5% of nights at the new restaurant; Q-learning code exercise).",
+  "tier": "core"
+ },
+ {
+  "id": "rla-boltzmann",
+  "name": "Softmax (Boltzmann) exploration and the gradient bandit",
+  "formula": "π(a) = exp(Q(a) ÷ τ) ÷ sum over b of exp(Q(b) ÷ τ); gradient bandit: H_(t+1)(a) = H_t(a) + α × (R_t − R_bar_t) × ((1 if a = A_t else 0) − π_t(a)), with π_t = softmax of H_t",
+  "meaning": "Choose actions with probability rising smoothly with their estimated value; τ (tau) is the temperature (high explores, low exploits). The gradient bandit learns preferences H instead of values, using the average reward R_bar_t as a baseline; it is REINFORCE for a one-step problem. Softmax itself belongs to the deep-learning section.",
+  "used_for": "On-policy LLM RL samples rollouts from the model's own softmax at a temperature near 1, so exploration comes from sampling rather than from ε; bandit textbooks (Sutton and Barto, Chapter 2). In the book: Only here (softmax with temperature is in Appendix B).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-ucb1",
+  "name": "UCB1 upper-confidence-bound rule",
+  "formula": "a_t = argmax over a of (Q_bar(a) + c × sqrt(ln t ÷ N_t(a))), with c = sqrt(2) in UCB1",
+  "meaning": "Q_bar(a) is the average reward of arm a so far, N_t(a) how often it has been tried and t the total number of plays. The bonus is large for rarely tried arms and shrinks as evidence accumulates: optimism in the face of uncertainty. Auer, Cesa-Bianchi and Fischer (2002) proved regret growing only like ln t. Applied at every node of a search tree it becomes UCT, the selection rule of classic Monte Carlo tree search (owned by the classical-AI section).",
+  "used_for": "Online experiments, recommendation and ad exploration, and the ancestor of AlphaZero's PUCT. In the book: Chapter 48 (Monte Carlo tree search: c = 1.4, moves scoring 1.30 and 2.06).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-thompson",
+  "name": "Thompson sampling (Beta-Bernoulli)",
+  "formula": "For each arm a draw θ_a from Beta(α_a, β_a); play argmax over a of θ_a; after reward r in {0, 1}: α_a ← α_a + r and β_a ← β_a + (1 − r)",
+  "meaning": "Keep a probability distribution over each arm's success rate (a Beta distribution with counts α_a of successes plus one and β_a of failures plus one, starting from Beta(1, 1)), sample a plausible rate for every arm, and play the arm whose sample is highest. Arms are chosen with the probability that they are the best, which balances exploring and exploiting automatically. Variants: Gaussian rewards, contextual and linear Thompson sampling.",
+  "used_for": "Adaptive A/B tests, display advertising (Chapelle and Li, 2011, at Yahoo), recommendation and pricing experiments. In the book: Only here (Chapter 48 bandit exercise; Chapter 51 multi-armed bandit definition).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-regret",
+  "name": "Regret of a bandit or online learner",
+  "formula": "Regret_T = T × μ* − E[sum over t from 1 to T of r_t] = sum over a of (Δ_a × E[N_T(a)]), with Δ_a = μ* − μ_a; Lai-Robbins lower bound: as T grows, E[N_T(a)] ÷ ln T is at least 1 ÷ KL(μ_a, μ*)",
+  "meaning": "μ* is the best arm's mean reward and μ_a arm a's; Δ_a (delta) is the gap and N_T(a) how often arm a was played in T rounds. Regret is the reward lost to not always playing the best arm. Good algorithms (UCB, Thompson sampling) have regret growing like ln T; growing slower than T means the learner eventually plays almost only the best arm. Variant: adversarial bandits (EXP3, regret of order sqrt(T × K × ln K) for K arms).",
+  "used_for": "Analysis of bandit and online-learning algorithms; regret is also the quantity that counterfactual regret minimization drives down in poker AIs. In the book: Chapter 48 (bandit and regret mentions; CFR definition).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-linucb",
+  "name": "LinUCB contextual bandit",
+  "formula": "a_t = argmax over a of (x_(t,a) · θ_hat_a + α × sqrt(x_(t,a)^T × A_a^(−1) × x_(t,a))), with A_a = I + sum of (x × x^T) and b_a = sum of (r × x) over past plays of a, and θ_hat_a = A_a^(−1) × b_a",
+  "meaning": "Each arm's expected reward is assumed linear in a context vector x (user and item features). θ_hat_a is the ridge-regression estimate, A_a its regularized feature covariance (I is the identity matrix, x^T the transposed vector), and the square-root term is the uncertainty bonus scaled by α. Variants: shared-parameter LinUCB, linear Thompson sampling, neural contextual bandits.",
+  "used_for": "Li, Chu, Langford and Schapire (2010) used it to personalize Yahoo! front-page news; contextual bandits are used for recommendation, ads, notifications and pricing. In the book: Only here (Chapter 51 multi-armed bandits).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-exploration-bonus",
+  "name": "Exploration bonuses: count-based and random network distillation (RND)",
+  "formula": "r_total = r_extrinsic + β × r_intrinsic; count-based r_intrinsic = 1 ÷ sqrt(N(s)); RND r_intrinsic(s') = length(f_hat(s') − f(s'))^2, where f is a fixed random network and f_hat is trained to match it",
+  "meaning": "Add a bonus for novelty so the agent seeks unfamiliar states. N(s) counts visits (or pseudo-counts from a density model); in RND the prediction error is high on states the predictor f_hat has rarely seen. β weights the bonus.",
+  "used_for": "RND (Burda and colleagues, OpenAI, 2018) was the first method to exceed average human performance on Montezuma's Revenge without demonstrations; Go-Explore and Agent57 extended hard-exploration results. In the book: Only here (Chapter 48 describes DQN's failure on Montezuma's Revenge).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-puct",
+  "name": "PUCT selection rule (AlphaZero, MuZero)",
+  "formula": "a = argmax over a of (Q(s, a) + c_puct × P(s, a) × sqrt(sum over b of N(s, b)) ÷ (1 + N(s, a))); MuZero: c = c_1 + ln((sum over b of N(s, b) + c_2 + 1) ÷ c_2), with c_1 = 1.25 and c_2 = 19,652",
+  "meaning": "Inside the search tree, pick the move that balances its average value Q from simulations against an exploration bonus that is large when the policy network's prior P(s, a) is high and the move's visit count N(s, a) is low. c_puct sets the balance; MuZero grows it slowly with the parent's visit count. Unlike UCB1 the bonus uses a learned prior, so search focuses on moves a strong player would consider.",
+  "used_for": "AlphaGo Zero, AlphaZero, MuZero, and the open engines Leela Chess Zero and KataGo; search-guided RL in AlphaProof (2024), which paired an AlphaZero-style learner with the Lean proof checker. In the book: Chapter 48 (Monte Carlo tree search; AlphaGo Zero and AlphaZero).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-alphazero-loss",
+  "name": "AlphaZero training loss and visit-count policy target",
+  "formula": "l = (z − v)^2 − π · ln p + c × length(θ)^2; search policy π(a given s) = N(s, a)^(1 ÷ τ) ÷ sum over b of N(s, b)^(1 ÷ τ)",
+  "meaning": "The network outputs a value v and move probabilities p for a position. z is the final game result (+1 win, 0 draw, −1 loss) from that player's view, π is the move distribution produced by tree search (visit counts N raised to 1 ÷ τ, with temperature τ), π · ln p is the dot product of π with the log-probabilities (so −π · ln p is a cross-entropy), and c × length(θ)^2 is weight decay. Search improves the policy and the network learns to imitate it: expert iteration.",
+  "used_for": "AlphaGo Zero (2017) and AlphaZero (2018, chess, shogi and Go); the same recipe found faster sorting routines (AlphaDev, 2023) and matrix multiplication algorithms (AlphaTensor, 2022). In the book: Chapter 48 (AlphaGo Zero and AlphaZero: no human games; the self-play loop).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-muzero-loss",
+  "name": "MuZero loss over unrolled model steps",
+  "formula": "l_t(θ) = sum over k from 0 to K of [l_r(u_(t+k), r_t^k) + l_v(z_(t+k), v_t^k) + l_p(π_(t+k), p_t^k)] + c × length(θ)^2",
+  "meaning": "MuZero learns a representation function, a dynamics function and a prediction function, then unrolls its learned model K steps (5 in the paper) from each real position. At every unrolled step it is trained to predict the observed reward u (loss l_r), an n-step value target z (l_v) and the search policy π (l_p). It never models pixels, only what planning needs. Variants: EfficientZero, Gumbel MuZero (policy improvement with fewer simulations), Stochastic MuZero.",
+  "used_for": "MuZero (Nature, 2020) matched AlphaZero in board games without being given the rules and set Atari records; a MuZero agent was applied to rate control in YouTube's VP9 video compression (DeepMind, 2022). In the book: Chapter 48 (MuZero (2020): not even told the rules).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-behavior-cloning",
+  "name": "Behavior cloning loss (imitation learning)",
+  "formula": "L_BC(θ) = −E over (s, a) from expert demonstrations of [ln π_θ(a given s)]; for continuous actions often E[length(a − π_θ(s))^2]",
+  "meaning": "Treat demonstrations as labeled data and train the policy to predict the expert's action in each state: supervised learning with cross-entropy for discrete actions or squared error for continuous ones. Return-conditioned variants (Decision Transformer) also feed the return-to-go R_t = sum over t' ≥ t of r_t'. Supervised fine-tuning of a language model on demonstration answers is behavior cloning on text.",
+  "used_for": "Robot learning from teleoperated demonstrations (RT-1, RT-2, ACT and the vision-language-action models of 2025-2026, whose action heads are often diffusion or flow-matching generators, owned by the generative section), driving policies learned from human drivers, and LLM SFT. In the book: Chapter 48 (Imitation learning definition), Chapter 49, Chapter 50, Chapter 20 (Stage 1: supervised fine-tuning).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-dagger",
+  "name": "Compounding error of behavior cloning versus DAgger",
+  "formula": "Behavior cloning: J(π_hat) ≤ J(π*) + T^2 × ε; DAgger: J(π_hat) ≤ J(π*) + u × T × ε, with dataset aggregation D ← D ∪ {(s, π*(s)) for states s visited by the learner π_hat}",
+  "meaning": "J is expected total cost over a horizon of T steps, ε the learner's per-step mistake rate on the expert's own states, and u a bound on how much one mistake can cost. A cloned policy that slips into unfamiliar states keeps making errors, so cost can grow with T squared. DAgger (Ross, Gordon and Bagnell, 2011) repeatedly runs the learner, asks the expert to label the states it actually visits and retrains, bringing the growth down to linear in T.",
+  "used_for": "Interactive imitation for driving and robotics; the reason robot-learning teams collect correction data and why exposure bias appears in sequence models. In the book: Only here (Chapters 49 and 50 discuss imitation in words).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-maxent-irl",
+  "name": "Maximum-entropy inverse reinforcement learning",
+  "formula": "P(τ given θ) = exp(θ · f(τ)) ÷ Z(θ), with Z(θ) = sum over τ of exp(θ · f(τ)); gradient of the log-likelihood = f_tilde − sum over τ of (P(τ given θ) × f(τ))",
+  "meaning": "Assume experts choose trajectories τ with probability rising exponentially with their reward θ · f(τ), where f(τ) sums the trajectory's features and θ are reward weights. Z normalizes. Learning matches the expert's average feature counts f_tilde to the model's expected feature counts (computed with soft value iteration). Ziebart and colleagues (2008).",
+  "used_for": "Learning rewards from demonstrations (route prediction for taxi drivers in the original paper, robot and driving behavior modeling); the conceptual parent of adversarial IRL and of reward modeling from human preferences. In the book: Chapter 48 (Inverse reinforcement learning definition), Chapter 56 (Learning values by watching).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-gail",
+  "name": "Generative adversarial imitation learning (GAIL)",
+  "formula": "min over π of max over D of E_π[ln D(s, a)] + E_expert[ln(1 − D(s, a))] − λ × H(π); the policy is trained with RL on the reward −ln D(s, a)",
+  "meaning": "A discriminator D learns to tell the policy's state-action pairs from the expert's (here D outputs the probability that a pair came from the policy), and the policy is rewarded for fooling it, which matches the expert's state-action distribution without ever writing down a reward. λ weights an entropy term. Variant: AIRL, which recovers a transferable reward. The GAN objective itself belongs to the generative section.",
+  "used_for": "Ho and Ermon (2016); imitation in robotics and physics-based character animation (adversarial motion priors, 2021). In the book: Only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-awr",
+  "name": "Advantage-weighted regression (AWR)",
+  "formula": "π_new = argmax over π of E over (s, a) from data of [ln π(a given s) × exp(A(s, a) ÷ β)]",
+  "meaning": "Behavior cloning in which each logged action is weighted by the exponential of its advantage, so better-than-average actions are imitated more; β is a temperature. It is the solution of 'improve the policy while staying close (in KL) to the data', projected onto a trainable policy, which is the same exponential tilt as the KL-regularized optimal policy. Hard-threshold version: filtered behavior cloning (keep only good actions). Relatives: AWAC, CRR, MARWIL.",
+  "used_for": "Peng and colleagues (2019); offline and robotic RL, and the policy-extraction step of implicit Q-learning. In the book: Only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-cql-iql",
+  "name": "Offline RL regularizers: conservative Q-learning (CQL) and implicit Q-learning (IQL)",
+  "formula": "CQL: minimize α × E_s[ln(sum over a of exp(Q(s, a))) − E over a from data of Q(s, a)] + (1 ÷ 2) × E[(Q(s, a) − (r + γ × E[Q_target(s', a')]))^2]; IQL: L_V = E[L_τ(Q(s, a) − V(s))] with expectile loss L_τ(u) = |τ − (1 if u < 0 else 0)| × u^2, and L_Q = E[(r + γ × V(s') − Q(s, a))^2]",
+  "meaning": "Learning only from a fixed log, a Q-function tends to overrate actions the data never tried. CQL pushes down a soft maximum of Q over all actions while pushing up Q on logged actions, with weight α. IQL never queries unseen actions: it fits V as an upper expectile (τ near 1, such as 0.7 to 0.9) of Q over logged actions, then extracts a policy with advantage weighting.",
+  "used_for": "Kumar and colleagues (2020) and Kostrikov and colleagues (2021); offline RL from logs in robotics, recommendation and healthcare research. In the book: Only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-bradley-terry",
+  "name": "Bradley-Terry preference model",
+  "formula": "P(y_1 preferred to y_2 given x) = exp(r(x, y_1)) ÷ (exp(r(x, y_1)) + exp(r(x, y_2))) = sigmoid(r(x, y_1) − r(x, y_2))",
+  "meaning": "x is the prompt, y_1 and y_2 two responses, r a score (reward) for each, and sigmoid(z) = 1 ÷ (1 + exp(−z)). Only the difference between scores matters. Elo ratings and Bradley-Terry leaderboards use the same curve with base 10 and a scale of 400 (those entries belong to the classical-ML section); this entry is the reward-model use. Variant merged here: Plackett-Luce for a full ranking of K responses, P(ranking) = product over k of exp(r(y_k)) ÷ (sum over j ≥ k of exp(r(y_j))).",
+  "used_for": "The likelihood behind every pairwise reward model (InstructGPT, Llama 2, Claude) and inside DPO and its relatives; LMArena (formerly Chatbot Arena) fits Bradley-Terry scores to human votes for its leaderboard. In the book: Chapter 20 (Bradley-Terry model: gap 1.5 gives 0.82), Chapter 48 (Elo rating).",
+  "tier": "core"
+ },
+ {
+  "id": "rla-rm-loss",
+  "name": "Reward model pairwise loss",
+  "formula": "L(φ) = −E over (x, y_w, y_l) of [ln sigmoid(r_φ(x, y_w) − r_φ(x, y_l))]; InstructGPT: average over all C(K, 2) pairs from K ranked responses; Llama 2 margin version: −ln sigmoid(r_φ(x, y_w) − r_φ(x, y_l) − m)",
+  "meaning": "y_w is the preferred (winning) and y_l the rejected (losing) response; r_φ is the reward model with weights φ, usually a language model whose output layer is replaced by a single-number head. The loss is the cross-entropy of the Bradley-Terry probability: small when the model already ranks the pair correctly, large when it does not. InstructGPT ranked K = 4 to 9 responses per prompt and weighted each of the C(K, 2) pairs by 1 ÷ C(K, 2); Llama 2 added a margin m that is larger when annotators said one answer was 'significantly better'.",
+  "used_for": "Training reward models for RLHF at OpenAI, Meta (separate helpfulness and safety reward models for Llama 2), Anthropic and open-weight labs; benchmarked by RewardBench. In 2026 frontier labs still use learned reward models for qualities no program can check, alongside verifiable rewards. In the book: Chapter 20 (Worked example: training the judge on one comparison: loss 0.20 if B chosen, 1.71 if A chosen).",
+  "tier": "core"
+ },
+ {
+  "id": "rla-rm-combine",
+  "name": "Combining and normalizing several reward signals",
+  "formula": "Weighted sum r = sum over k of (w_k × r_k); Llama 2 gate: R_c = R_safety if (the prompt is safety-related or R_safety < 0.15) else R_helpful, then R_tilde = WHITEN(LOGIT(R_c)) and R = R_tilde − β × KL(π_θ, π_ref)",
+  "meaning": "When several reward models or checkers score the same answer, they are combined, typically after normalizing each (whitening: subtract the mean and divide by the standard deviation; LOGIT turns a 0-to-1 score back into an unbounded number). Llama 2-Chat let the safety reward model override the helpfulness one on risky prompts or low safety scores. Variants: multi-objective weights per task, reward clipping, per-batch reward normalization.",
+  "used_for": "Llama 2-Chat (2023); 2025-2026 post-training runs mix learned reward models, verifiable rewards and rubric-based AI judges in the same training run. In the book: Chapter 20 (reward models: Llama 2's two reward models; At the frontier (2026)).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-cai-soft-labels",
+  "name": "Constitutional AI and RLAIF preference labels",
+  "formula": "t = P_feedback('(A)' given prompt, principle) ÷ (P_feedback('(A)' given prompt, principle) + P_feedback('(B)' given prompt, principle)); L = −[t × ln sigmoid(r_A − r_B) + (1 − t) × ln sigmoid(r_B − r_A)]",
+  "meaning": "No new equation beyond Bradley-Terry: in the RL stage of Constitutional AI an AI feedback model is asked which of two responses better follows a principle from the constitution, and its normalized multiple-choice probabilities become soft labels t for training the preference model. When the feedback model reasons step by step first, Anthropic clamped the labels to the 40-60% range to avoid overconfident targets. The critique-and-revision supervised stage has no equation of its own.",
+  "used_for": "Anthropic's Constitutional AI (Bai and colleagues, December 2022) and RLAIF more broadly (Google's 2023 RLAIF study), plus the LLM-as-judge labeling pipelines used across 2025-2026 post-training. In the book: Chapter 20 (RLAIF and Constitutional AI), Chapter 56 (Constitutional AI and RLAIF: writing the values down).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-rlhf-objective",
+  "name": "RLHF objective (expected reward minus β times KL)",
+  "formula": "maximize over π_θ of E over x from prompts, y from π_θ(· given x) of [r_φ(x, y)] − β × KL(π_θ(· given x), π_ref(· given x)), equivalently E[r_φ(x, y) − β × ln(π_θ(y given x) ÷ π_ref(y given x))]; InstructGPT's PPO-ptx adds + γ_ptx × E over x from pretraining data of [ln π_θ(x)]",
+  "meaning": "Write answers the reward model scores highly while staying close to the reference model π_ref (usually the SFT model); β sets the length of this 'KL leash'. The KL term limits reward hacking and keeps the model fluent, but cannot fix a flawed reward model. The optional pretraining term (weight γ_ptx) reduces the loss of general abilities, the 'alignment tax'.",
+  "used_for": "InstructGPT (2022), ChatGPT, Llama 2-Chat and Claude's RLHF; the same reward-minus-KL form is used in RL with verifiable rewards when a KL term is kept (GRPO). In the book: Chapter 20 (The KL leash: total reward = reward model score − β × drift; the four-model RLHF loop).",
+  "tier": "core"
+ },
+ {
+  "id": "rla-kl-penalty",
+  "name": "Per-token KL penalty and the adaptive KL controller",
+  "formula": "Per-token reward r_t = −β × ln(π_θ(y_t given x, y_<t) ÷ π_ref(y_t given x, y_<t)), with r_φ(x, y) added at the final token; adaptive β: e_t = clip((KL_t − KL_target) ÷ KL_target, −0.2, 0.2) and β_(t+1) = β_t × (1 + K_β × e_t)",
+  "meaning": "In practice the KL leash is charged token by token: a token the policy now favors much more than the reference pays ln of the probability ratio times β. Summed over the answer this is a one-sample estimate of the sequence KL. The adaptive controller (Ziegler and colleagues, 2019) raises β when measured KL exceeds a target and lowers it when below, with gain K_β (such as 0.1).",
+  "used_for": "PPO-based RLHF implementations (OpenAI's 2019 and 2020 work, TRL's PPO trainer, Llama 2-Chat). In the book: Chapter 20 (the token ' Absolutely' at 0.40 versus 0.10 adds ln 4 = 1.39 of drift; with β = 0.1 a penalty of 0.14).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-kl-estimators",
+  "name": "Sampled KL estimators k1, k2 and k3",
+  "formula": "With y sampled from π_θ and ρ = π_ref(y) ÷ π_θ(y): k1 = −ln ρ; k2 = (ln ρ)^2 ÷ 2; k3 = ρ − 1 − ln ρ; GRPO's per-token term D_KL = π_ref ÷ π_θ − ln(π_ref ÷ π_θ) − 1 (the k3 form)",
+  "meaning": "Exact KL needs a sum over every possible answer, so training estimates it from sampled tokens. k1 is unbiased but noisy and can be negative; k3 is also unbiased (in value) and never negative, with lower variance; k2 is slightly biased but low variance (Schulman's 2020 note 'Approximating KL Divergence'). Caveat from 2025 analyses: putting k3 directly in the loss gives a biased gradient of the true KL, and several RLVR recipes (DAPO among them) drop the KL term altogether. On-policy distillation uses the same per-token log-ratio against a teacher (owned by the LLM section).",
+  "used_for": "GRPO in DeepSeekMath and DeepSeek-R1; KL options in TRL, verl and OpenRLHF. In the book: Only here (Chapter 20 defines KL divergence as the sum of p × ln(p ÷ q)).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-kl-optimal-policy",
+  "name": "Optimal KL-regularized policy (exponential tilt of the reference)",
+  "formula": "π*(y given x) = π_ref(y given x) × exp(r(x, y) ÷ β) ÷ Z(x), with Z(x) = sum over y of (π_ref(y given x) × exp(r(x, y) ÷ β))",
+  "meaning": "The exact maximizer of the RLHF objective: start from the reference model, multiply each answer's probability by exp(reward ÷ β) and renormalize (Z is the normalizer, the partition function). Small β lets probability flow strongly toward high reward; large β stays near the reference. The same form is the maximum-entropy RL solution and the AWR weighting.",
+  "used_for": "The starting point of the DPO derivation; CICERO (2022) used the same form, called piKL, to keep its Diplomacy policy close to human play (policy proportional to anchor policy × exp(Q ÷ λ)). In the book: Chapter 20 (best policy = SFT probability × e^(score ÷ β); β = 2 settles at 0.53, 0.43, 0.05).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-implicit-reward",
+  "name": "Implicit reward (DPO reparameterization)",
+  "formula": "r(x, y) = β × ln(π*(y given x) ÷ π_ref(y given x)) + β × ln Z(x); for a trained model, r_hat(x, y) = β × ln(π_θ(y given x) ÷ π_ref(y given x))",
+  "meaning": "Inverting the optimal-policy formula: a policy's own log-probability ratio against the reference already encodes a reward, up to a constant per prompt (β × ln Z(x)) that cancels whenever two answers to the same prompt are compared. Token-level version: sum over t of β × ln(π_θ(y_t) ÷ π_ref(y_t)), which can serve as a dense step-by-step reward.",
+  "used_for": "DPO training logs report implicit 'reward margins'; PRIME (2025) used implicit token-level rewards as process rewards in RL for reasoning. In the book: Chapter 20 (The shortcut: score = β × ln(policy probability ÷ reference probability) + a constant).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-dpo",
+  "name": "Direct preference optimization loss (DPO)",
+  "formula": "L_DPO(θ) = −E over (x, y_w, y_l) of [ln sigmoid(β × ln(π_θ(y_w given x) ÷ π_ref(y_w given x)) − β × ln(π_θ(y_l given x) ÷ π_ref(y_l given x)))]",
+  "meaning": "Plug the implicit reward into the Bradley-Terry loss: raise the chosen answer's probability and lower the rejected one's, both measured relative to a frozen reference, with no reward model and no sampling loop. The gradient weights each pair by sigmoid(r_hat_l − r_hat_w), so pairs the model still gets wrong count most. β (often around 0.1) is the leash. Variants merged here: conservative DPO / label smoothing, −(1 − ε) × ln sigmoid(m) − ε × ln sigmoid(−m) for noisy labels; DPO plus a negative log-likelihood term on the chosen answer (Llama 3 used one); iterative or online DPO on fresh samples. Rafailov and colleagues (2023).",
+  "used_for": "Zephyr (2023), Llama 3 (2024), the Tülu 3 recipe and many open-weight models; TRL's DPOTrainer; OpenAI's preference fine-tuning API (December 2024) uses DPO. In the book: Chapter 20 (Worked example: one DPO pair: losses 0.69, 0.55 at β = 0.1 and 0.20 at β = 0.5), Chapter 30.",
+  "tier": "core"
+ },
+ {
+  "id": "rla-ipo",
+  "name": "Identity preference optimization loss (IPO)",
+  "formula": "h = ln(π_θ(y_w given x) ÷ π_ref(y_w given x)) − ln(π_θ(y_l given x) ÷ π_ref(y_l given x)); L_IPO = E[(h − 1 ÷ (2 × τ))^2]",
+  "meaning": "Instead of pushing the log-ratio margin h ever higher (DPO's loss keeps rewarding larger margins, which can drive probabilities to extremes when one answer always wins), IPO regresses it to a fixed target 1 ÷ (2 × τ), where τ plays the role of β. Part of the ΨPO family of Azar and colleagues (Google DeepMind, 2023).",
+  "used_for": "Available as a loss option in TRL and other preference-tuning libraries. In the book: Chapter 20 (The cousins: IPO).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-kto",
+  "name": "Kahneman-Tversky optimization loss (KTO)",
+  "formula": "r_θ(x, y) = ln(π_θ(y given x) ÷ π_ref(y given x)); z_0 = KL(π_θ(y' given x), π_ref(y' given x)) estimated on the batch with no gradient; v(x, y) = λ_D × sigmoid(β × (r_θ(x, y) − z_0)) if y is desirable, λ_U × sigmoid(β × (z_0 − r_θ(x, y))) if undesirable; L_KTO = E[λ_y − v(x, y)]",
+  "meaning": "Learns from single answers marked good or bad (thumbs up or down) instead of pairs. Each answer's implicit reward is compared with a reference point z_0, an estimate of the current KL from the reference model; λ_D and λ_U weight desirable and undesirable examples (λ_y is whichever applies), echoing prospect theory's loss aversion. Ethayarajh and colleagues (2024).",
+  "used_for": "Fine-tuning from unpaired feedback logs; TRL's KTOTrainer. In the book: Chapter 20 (The cousins: KTO).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-orpo",
+  "name": "Odds-ratio preference optimization loss (ORPO)",
+  "formula": "odds(y given x) = P(y given x) ÷ (1 − P(y given x)), with P the length-normalized likelihood exp((1 ÷ |y|) × ln π_θ(y given x)); L_ORPO = L_SFT − λ × ln sigmoid(ln(odds(y_w given x) ÷ odds(y_l given x)))",
+  "meaning": "One stage, no reference model: the ordinary supervised loss L_SFT on the chosen answer plus a penalty, weighted by λ (such as 0.1), that grows when the rejected answer's odds rival the chosen one's. |y| is the answer's length in tokens. Hong, Lee and Thorne (2024).",
+  "used_for": "Single-stage preference tuning of open-weight models; TRL's ORPOTrainer. In the book: Chapter 20 (The cousins: ORPO).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-simpo",
+  "name": "Simple preference optimization loss (SimPO)",
+  "formula": "L_SimPO = −E[ln sigmoid((β ÷ |y_w|) × ln π_θ(y_w given x) − (β ÷ |y_l|) × ln π_θ(y_l given x) − γ)]",
+  "meaning": "The implicit reward is the average per-token log-probability (divided by answer length |y|), with no reference model, and the chosen answer must beat the rejected one by at least a target margin γ. Averaging per token removes the pull toward ever-longer answers. Meng, Xia and Chen (2024).",
+  "used_for": "Preference tuning of open-weight models (for example SimPO-tuned Gemma 2 checkpoints); supported in TRL. In the book: Chapter 20 (The cousins: SimPO).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-rlvr-reward",
+  "name": "Verifiable reward (RLVR)",
+  "formula": "r(x, y) = 1 if verify(extract_answer(y), y*) else 0, often plus a format reward (1 if y follows the required format, such as reasoning inside thinking tags, else 0); for code: r = 1 only if all unit tests pass, or r = tests passed ÷ tests total",
+  "meaning": "y* is the reference answer and verify a program (math-answer matcher, unit tests, proof checker) rather than a learned judge. Rule-based rewards are hard to flatter, but a sloppy checker is still a loophole (for example accepting a list of every number), and coding agents have learned to edit the tests.",
+  "used_for": "Named RLVR in the Tülu 3 report (Allen Institute, November 2024); DeepSeek-R1-Zero and R1 (January 2025) used rule-based accuracy and format rewards; the training signal behind the o-series, Claude, Gemini and open reasoning models. In the book: Chapter 21 (Reinforcement learning with verifiable rewards; Worked example: a reward function, and how to break it).",
+  "tier": "core"
+ },
+ {
+  "id": "rla-grpo-advantage",
+  "name": "GRPO group-relative advantage",
+  "formula": "A_i = (r_i − mean(r_1, ..., r_G)) ÷ std(r_1, ..., r_G), the same for every token of answer i; for 0/1 rewards std = sqrt(p × (1 − p)), where p is the group's fraction correct",
+  "meaning": "Sample a group of G answers (typically 8 to 64) to one prompt and score them; each answer's advantage is how many standard deviations it sits above the group mean. The group replaces the learned critic as the baseline. Groups that are all right or all wrong give zero advantage and teach nothing. Some implementations divide by G − 1 inside the standard deviation.",
+  "used_for": "DeepSeekMath (February 2024), DeepSeek-R1 (2025) and most open reasoning-model recipes since; implemented in TRL's GRPOTrainer, verl and OpenRLHF. In the book: Chapter 21 (Worked example: a group of eight answers: mean 0.375, standard deviation 0.484, advantages +1.29 and −0.77; table of 0 to 8 correct).",
+  "tier": "core"
+ },
+ {
+  "id": "rla-grpo-objective",
+  "name": "GRPO objective (group relative policy optimization)",
+  "formula": "J_GRPO(θ) = E[(1 ÷ G) × sum over i of (1 ÷ |o_i|) × sum over t of (min(ρ_(i,t) × A_i, clip(ρ_(i,t), 1 − ε, 1 + ε) × A_i) − β × D_KL,(i,t))], with ρ_(i,t) = π_θ(o_(i,t) given q, o_(i,<t)) ÷ π_old(o_(i,t) given q, o_(i,<t)) and D_KL,(i,t) the k3 estimator against π_ref",
+  "meaning": "q is the prompt, o_i the i-th sampled answer with |o_i| tokens, o_(i,t) its t-th token and o_(i,<t) the tokens before it. PPO's clipped surrogate is applied per token with the group advantage, averaged within each answer and then across the group, and a per-token KL to the reference model (weight β) is subtracted inside the loss rather than folded into the reward. Only two models are needed in memory (policy and reference) when a program is the verifier.",
+  "used_for": "DeepSeekMath and DeepSeek-R1; the base of DAPO, Dr. GRPO, GSPO and many 2025-2026 open recipes. In the book: Chapter 21 (GRPO: grading on a curve; the recipe for one question).",
+  "tier": "core"
+ },
+ {
+  "id": "rla-dr-grpo",
+  "name": "Dr. GRPO (GRPO done right)",
+  "formula": "A_i = r_i − mean(r_1, ..., r_G) (no division by the standard deviation); loss = (1 ÷ (G × L_max)) × sum over i and t of min(ρ_(i,t) × A_i, clip(ρ_(i,t), 1 − ε, 1 + ε) × A_i), a constant normalizer instead of 1 ÷ |o_i|",
+  "meaning": "Removes two biases of the original GRPO. Dividing by each answer's length |o_i| punishes long wrong answers less per token (an advantage of −0.77 spread over 1,000 tokens is −0.00077 each, over 100 tokens −0.0077), which teaches rambling; dividing by the group's standard deviation over-weights questions that are almost always right or almost always wrong. L_max is a fixed length such as the generation limit.",
+  "used_for": "Liu and colleagues (Sea AI Lab and collaborators, 2025, 'Understanding R1-Zero-Like Training'); offered as a loss option in TRL. In the book: Chapter 21 (The GRPO family: DAPO, Dr. GRPO and GSPO).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-dapo",
+  "name": "DAPO objective (clip-higher, token-level loss, dynamic sampling, overlong shaping)",
+  "formula": "J_DAPO(θ) = E[(1 ÷ sum over i of |o_i|) × sum over i and t of min(ρ_(i,t) × A_(i,t), clip(ρ_(i,t), 1 − ε_low, 1 + ε_high) × A_(i,t))] subject to 0 < (number of correct o_i) < G, with ε_low = 0.2 and ε_high = 0.28; overlong penalty R_length(y) = 0 if |y| ≤ L_max − L_cache, ((L_max − L_cache) − |y|) ÷ L_cache if L_max − L_cache < |y| ≤ L_max, −1 if |y| > L_max",
+  "meaning": "Four changes to GRPO: a looser upper clip so rare good tokens can grow (against entropy collapse); averaging over all tokens in the batch so long answers are not under-weighted; resampling until every group has both right and wrong answers; and a penalty that ramps from 0 to −1 over the last L_cache tokens before the length limit L_max. DAPO also drops the KL term.",
+  "used_for": "ByteDance Seed and Tsinghua University (March 2025): 50 points on AIME 2024 with the Qwen2.5-32B base model, open-sourced on the verl framework; clip-higher and token-level averaging were widely adopted in later open recipes. In the book: Chapter 21 (The GRPO family: DAPO's four changes).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-gspo",
+  "name": "GSPO sequence-level importance ratio",
+  "formula": "s_i(θ) = (π_θ(y_i given x) ÷ π_old(y_i given x))^(1 ÷ |y_i|) = exp((1 ÷ |y_i|) × sum over t of ln(π_θ(y_(i,t) given x, y_(i,<t)) ÷ π_old(y_(i,t) given x, y_(i,<t)))); J_GSPO = E[(1 ÷ G) × sum over i of min(s_i × A_i, clip(s_i, 1 − ε, 1 + ε) × A_i)]",
+  "meaning": "Clip once per whole answer using the length-normalized (geometric-mean) probability ratio, instead of per token. Token ratios are noisy, especially in mixture-of-experts models where a small weight change reroutes tokens to different experts; sequence-level ratios match the sequence-level reward. A_i is the GRPO group advantage.",
+  "used_for": "Alibaba's Qwen team (July 2025), used to train Qwen3 models. In the book: Chapter 21 (GSPO definition and table).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-rloo",
+  "name": "REINFORCE leave-one-out baseline (RLOO) and REINFORCE++",
+  "formula": "A_i = r_i − (1 ÷ (k − 1)) × sum over j ≠ i of r_j, equivalently (k ÷ (k − 1)) × (r_i − mean(r)); REINFORCE++ normalizes across the whole batch: A = (r − mean_batch(r)) ÷ std_batch(r)",
+  "meaning": "With k samples per prompt, each sample's baseline is the average reward of the other k − 1, which keeps the policy gradient exactly unbiased (a sample's baseline must not depend on its own reward). REINFORCE++ instead normalizes with statistics of the whole batch, which is less noisy than per-group statistics. Related: ReMax, which uses the reward of the greedy answer as the baseline.",
+  "used_for": "Kool and colleagues (2019); Ahmadian and colleagues (Cohere, 2024, 'Back to Basics') found RLOO matched or beat PPO for RLHF at lower cost; TRL's RLOOTrainer; REINFORCE++ in OpenRLHF; batch-level advantage normalization in Meta's ScaleRL recipe. In the book: Only here (Chapter 21 explains the group baseline).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-cispo-tis",
+  "name": "Clipped importance-sampling REINFORCE (CISPO) and truncated importance sampling (TIS)",
+  "formula": "J_CISPO(θ) = E[(1 ÷ sum over i of |o_i|) × sum over i and t of sg(clip(ρ_(i,t), 1 − ε_low, 1 + ε_high)) × A_(i,t) × ln π_θ(o_(i,t) given q, o_(i,<t))]; TIS weight for each token = min(π_train(y_t) ÷ π_rollout(y_t), C)",
+  "meaning": "sg means stop-gradient: the clipped importance weight is treated as a fixed number, so every token keeps a gradient through ln π_θ, unlike PPO clipping, which zeroes the gradient of clipped tokens (often rare 'reflection' tokens such as 'wait'). MiniMax set no effective lower bound and tuned only ε_high. TIS corrects for the mismatch between the inference engine that generated the rollouts (vLLM, SGLang) and the training engine, whose probabilities differ slightly, and for asynchronous, slightly stale rollouts; C is a cap such as 2.",
+  "used_for": "MiniMax-M1 (June 2025); Meta's ScaleRL recipe (October 2025) adopted it as sg(min(ρ, ε)); TIS (Yao and colleagues, August 2025) was added to open RL frameworks such as verl. In the book: Only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-rl-scaling-sigmoid",
+  "name": "Sigmoidal compute-performance curve for RL (ScaleRL)",
+  "formula": "R_C = R_0 + (A − R_0) ÷ (1 + (C_mid ÷ C)^B)",
+  "meaning": "R_C is the expected pass rate on held-out prompts after C GPU-hours of RL training, R_0 the starting pass rate, A the asymptotic ceiling (between 0 and 1), B > 0 an efficiency exponent and C_mid the compute at which half the total gain is reached. Fitting early training runs lets researchers compare recipes by ceiling and efficiency and extrapolate. Pretraining power-law scaling laws belong to the LLM section.",
+  "used_for": "Khatri and colleagues (Meta and collaborators, October 2025, 'The Art of Scaling Reinforcement Learning Compute'), based on more than 400,000 GPU-hours of experiments. In the book: Only here (Chapter 21 discusses RL compute and test-time scaling).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-length-shaping",
+  "name": "Length-aware reward shaping (length penalty)",
+  "formula": "Kimi k1.5: λ_i = 0.5 − (len_i − min_len) ÷ (max_len − min_len); length reward = λ_i if answer i is correct, min(0, λ_i) if wrong",
+  "meaning": "Among a group of sampled answers, shorter correct answers earn a bonus up to +0.5 and longer ones a penalty down to −0.5, while wrong answers can only be penalized, which counters overthinking and runaway chain-of-thought length. len_i is answer i's length and min_len, max_len the shortest and longest in the group. DAPO's overlong penalty (its own entry) is a related cap near the length limit.",
+  "used_for": "Kimi k1.5 (Moonshot AI, January 2025); length and thinking-budget controls in 2025-2026 reasoning models. In the book: Chapter 21 (Overthinking definition; DAPO's overlong shaping).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-prm",
+  "name": "Process reward aggregation (PRM versus ORM)",
+  "formula": "Solution score = product over steps k of P(step k correct) (Lightman and colleagues, 2023), or min over k of P(step k correct); outcome reward model: score = P(final answer correct)",
+  "meaning": "A process reward model scores every step of a solution; combining the step scores into one number lets it rerank candidate solutions. The product is the probability that every step is right if steps are judged independently; the minimum asks how bad the weakest step is.",
+  "used_for": "'Let's Verify Step by Step' (OpenAI, 2023) with the PRM800K dataset, best-of-N reranking of math solutions; Math-Shepherd (min aggregation); test-time verification. Large 2024-2026 reasoning models were trained mostly with outcome rewards. In the book: Chapter 21 (Process versus outcome rewards).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-rubric-reward",
+  "name": "Rubric-based reward",
+  "formula": "r(x, y) = sum over j of (w_j × c_j(x, y)) ÷ sum over j of w_j, where c_j(x, y) in {0, 1} (or between 0 and 1) is a judge's verdict on criterion j",
+  "meaning": "For tasks no program can check, write a checklist of criteria with weights w_j, have an AI judge mark each criterion met or not, and use the weighted share as the reward. Negative weights can encode penalties (for example for a dangerous recommendation), in which case the score is clipped to the 0-to-1 range.",
+  "used_for": "Rubrics as Rewards (Scale AI, 2025); OpenAI's HealthBench (May 2025) scores answers as rubric points earned out of points possible; LLM-as-judge rewards in non-verifiable RL environments. In the book: Chapter 21 (Rubrics and AI judges for tasks no program can check).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-best-of-n",
+  "name": "Best-of-N against a reward model and its KL cost",
+  "formula": "y* = argmax over i in 1, ..., N of r(x, y_i), with y_1, ..., y_N sampled from π_ref; KL(π_BoN, π_ref) = ln N − (N − 1) ÷ N",
+  "meaning": "Sample N answers and keep the one the reward model or verifier likes best. This is the simplest way to optimize a reward without training, and its distance from the original model grows only like ln N: N = 16 gives about 2.77 − 0.94 = 1.83 nats. Beirami and colleagues (2024) showed the formula is an upper bound on the true KL. The probability that at least one of N samples is correct (pass@k) is owned by the classical-ML section.",
+  "used_for": "Baseline for RLHF comparisons (WebGPT and the 2022 over-optimization study); reranking with reward models and verifiers; parallel 'Pro' or 'Heavy' answer modes (test-time compute, LLM section). In the book: Chapter 21 (Best-of-N).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-rejection-sampling-ft",
+  "name": "Rejection-sampling fine-tuning (STaR, expert iteration)",
+  "formula": "Keep K = {(x, y) : y sampled from π_θ(· given x) and r(x, y) = 1} (or the top answers by reward); then minimize L = −(1 ÷ |K|) × sum over (x, y) in K of ln π_θ(y given x); repeat",
+  "meaning": "Generate many attempts, keep only the good ones and fine-tune on them, then repeat with the improved model. It equals a policy-gradient step with 0/1 rewards and no negative examples (filtered behavior cloning). Names for variants: STaR, ReST and ReST-EM, RAFT, expert iteration.",
+  "used_for": "STaR (Zelikman and colleagues, 2022); Llama 2 and Llama 3 post-training rounds; DeepSeek-R1's rejection-sampled reasoning data for SFT before its final RL stage; AlphaZero's search-then-imitate loop. In the book: Chapter 20 (Synthetic data and self-improvement), Chapter 21 (R1: adding a cold start).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-overoptimization",
+  "name": "Reward model over-optimization curves (Goodhart scaling)",
+  "formula": "d = sqrt(KL(π, π_init)); best-of-N: R_gold(d) = d × (α_bon − β_bon × d); RL: R_gold(d) = d × (α_RL − β_RL × ln d)",
+  "meaning": "As a policy is optimized against a proxy reward model, the proxy score keeps rising but the true ('gold') reward first rises then falls. Gao, Schulman and Hilton (OpenAI, 2022) found these functional forms, in the square root of the KL distance d, with coefficients α and β that change smoothly with reward model size. Goodhart's law in numbers.",
+  "used_for": "Motivates the KL leash, early stopping, larger and ensembled reward models and fresh preference data in RLHF. In the book: Chapter 20 (Reward hacking and over-optimization; the toy table where average reward climbs while helpfulness collapses), Chapter 55 (Objectives, proxies and Goodhart's law).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-regressional-goodhart",
+  "name": "Regressional Goodhart and the optimizer's curse",
+  "formula": "With proxy U = V + X, where the true value V and the error X are independent and normal with means 0 and variances σ_V^2 and σ_X^2: E[V given U = u] = u × σ_V^2 ÷ (σ_V^2 + σ_X^2)",
+  "meaning": "If you select the option with the highest proxy score, part of its score is luck, so its expected true value is shrunk toward the average by the factor σ_V^2 ÷ (σ_V^2 + σ_X^2). The more options you choose among and the noisier the proxy, the bigger the disappointment. Manheim and Garrabrant (2018) call this regressional Goodhart, one of four kinds (regressional, extremal, causal, adversarial); decision analysts call it the optimizer's curse (Smith and Winkler, 2006).",
+  "used_for": "Reading benchmark leaderboards (the top model on a small test is probably overrated), best-of-N against noisy reward models, and reward hacking analysis. In the book: Chapter 48 (Optimizer's curse definition), Chapter 55 (Goodhart's law), Chapter 9.",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-weak-to-strong",
+  "name": "Performance gap recovered (weak-to-strong generalization, PGR)",
+  "formula": "PGR = (score of strong model trained on weak labels − score of weak supervisor) ÷ (score of strong model trained on true labels − score of weak supervisor)",
+  "meaning": "A stand-in for humans supervising superhuman AI: fine-tune a strong model on a weaker model's imperfect labels and ask what share of the gap to the strong model's ceiling it recovers. 0% means it only copied the weak teacher's mistakes; 100% means it reached its full potential. Variant: the auxiliary confidence loss, which mixes the weak labels with the strong model's own hardened predictions.",
+  "used_for": "Burns and colleagues (OpenAI, December 2023), supervising GPT-4 with a GPT-2-level model; scalable oversight research. In the book: Chapter 56 (Weak-to-strong generalization: PGR = (75 − 60) ÷ (90 − 60) = 50%).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-off-switch",
+  "name": "Off-switch game (value of deferring to a human)",
+  "formula": "value(defer to the human) = E[max(U, 0)] ≥ max(E[U], 0) = value(act directly or switch off), where U is the uncertain utility of the robot's planned action",
+  "meaning": "If a rational human will switch the robot off exactly when its action would be harmful (U < 0), then a robot that is uncertain about U gains, in expectation, by letting the human decide; the advantage disappears when the robot is certain or the human is irrational. Part of the assistance-game (cooperative inverse RL) framework, in which robot and human share a reward that only the human knows.",
+  "used_for": "Hadfield-Menell, Dragan, Abbeel and Russell (2017); Stuart Russell's research program on corrigibility through uncertainty about human preferences. In the book: Chapter 56 (Learning values by watching: the off-switch game, in words), Chapter 55 (Corrigibility).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-linear-probe",
+  "name": "Linear probe",
+  "formula": "p(concept present given a) = sigmoid(w · a + b), trained with the logistic loss −[y × ln p + (1 − y) × ln(1 − p)] (often plus an L2 penalty); difference-of-means probe: w = mean(a over positive examples) − mean(a over negative examples)",
+  "meaning": "a is a model's activation vector at some layer, w a learned weight vector and b a bias; the probe is one dot product and a threshold. A probe shows that information is present, not that the model uses it. Variant check: selectivity = probe accuracy on the real task minus accuracy on a control task with random labels (Hewitt and Liang, 2019).",
+  "used_for": "Alain and Bengio (2016); Anthropic's 'defection probes' for sleeper-agent models (2024); Apollo Research's deception probes (2025); Google DeepMind reported in 2025 that simple linear probes beat SAE-based methods at detecting harmful intent; cheap always-on monitors. In the book: Chapter 57 (Probes: w · a = 1.4, above the threshold 1.0).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-steering",
+  "name": "Activation steering with a steering vector",
+  "formula": "a' = a + α × v, with v = mean(a over prompt set A) − mean(a over prompt set B); SAE feature clamping: a' = a + (k − f_i(a)) × d_i",
+  "meaning": "Add a direction v to the model's activations while it runs; α sets the strength, usually relative to the typical size of the activations (too little does nothing, too much produces gibberish). v often comes from contrasting average activations on two kinds of prompts (honest minus dishonest, cheerful minus gloomy); clamping sets one SAE feature f_i to a value k along its decoder direction d_i. Names for variants: activation addition (ActAdd), contrastive activation addition (CAA), representation engineering, persona vectors.",
+  "used_for": "Golden Gate Claude (Anthropic, May 2024); representation engineering (Zou and colleagues, 2023); persona vectors for monitoring and preventing trait shifts such as sycophancy (Anthropic, August 2025). In the book: Chapter 57 (Steering: [2.5, 1.0, 0.0, 1.5] + 10 × bridge = [12.5, 1.0, 0.0, 6.5]).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-directional-ablation",
+  "name": "Directional ablation (projecting out a direction)",
+  "formula": "a' = a − (a · v_hat) × v_hat, with v_hat = v ÷ length(v); weight orthogonalization: W' = W − v_hat × (v_hat^T × W)",
+  "meaning": "Remove the component of every activation along a unit direction v_hat, so the model can no longer represent that concept there; editing the weights that write to the residual stream does the same permanently. Related: concept-erasure methods such as LEACE.",
+  "used_for": "Arditi and colleagues (2024) showed refusal is mediated by a single direction in many open chat models; 'abliteration' uses this to strip refusals from open-weight models, a known misuse route. In the book: Chapter 57 (Ablation definition, in words).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-sae-l1",
+  "name": "Sparse autoencoder loss with an L1 penalty (SAE)",
+  "formula": "f = ReLU(W_enc × (x − b_dec) + b_enc); x_hat = W_dec × f + b_dec; L = length(x − x_hat)^2 + λ × sum over i of (f_i × length(column i of W_dec))",
+  "meaning": "x is a model activation, f a much longer vector of feature strengths (most of them zero), x_hat the reconstruction from the decoder's feature directions, and λ the sparsity weight. The first term is reconstruction error, the second the sparsity penalty. Anthropic's 2024 variant weights each feature's L1 penalty by its decoder column length; the earlier form normalized decoder columns to length 1 and used plain sum over i of f_i.",
+  "used_for": "Anthropic's 'Towards Monosemanticity' (2023) and 'Scaling Monosemanticity' (May 2024: 1, 4 and 34 million features on Claude 3 Sonnet); widely used open SAE libraries. In the book: Chapter 57 (Sparse autoencoders: losses 0.02 + 0.041 = 0.061 versus 0.04).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-topk-sae",
+  "name": "TopK, BatchTopK and JumpReLU sparse autoencoders",
+  "formula": "TopK: f = TopK(W_enc × (x − b_pre)), keeping only the k largest entries, and L = length(x − x_hat)^2 plus an auxiliary loss for dead features; JumpReLU: f_i = z_i if z_i > θ_i else 0, with z = W_enc × x + b_enc, and L = length(x − x_hat)^2 + λ × (count of nonzero f_i), trained with straight-through gradient estimates",
+  "meaning": "Instead of an L1 penalty, which shrinks the strengths of active features, TopK fixes the number k of active features per token; BatchTopK fixes the average over a batch. JumpReLU learns a threshold θ_i per feature and penalizes the count of active features (the L0 norm) directly.",
+  "used_for": "OpenAI's TopK SAE with 16 million latents on GPT-4 activations (June 2024); Gemma Scope (Google DeepMind, August 2024), over 400 JumpReLU SAEs on Gemma 2, browsable on Neuronpedia; BatchTopK (2024) and Matryoshka SAEs (2025). In the book: Chapter 57 (At the frontier (2026): Gemma Scope).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-sae-metrics",
+  "name": "Sparse autoencoder quality metrics (L0, FVU, loss recovered)",
+  "formula": "L0 = average number of nonzero f_i per token; FVU = sum of length(x − x_hat)^2 ÷ sum of length(x − mean(x))^2; CE loss recovered = (CE with the layer zero-ablated − CE with the SAE spliced in) ÷ (CE with the layer zero-ablated − CE of the original model)",
+  "meaning": "L0 measures sparsity, the fraction of variance unexplained (FVU) measures reconstruction (the unexplained part is the 'dark matter'), and loss recovered measures whether the model still predicts text well when its activation is replaced by the SAE's reconstruction (CE is the next-token cross-entropy).",
+  "used_for": "Reported for Gemma Scope and other SAE releases; benchmark suites such as SAEBench (2025). In the book: Chapter 57 (Reconstruction error and dark matter).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-transcoder",
+  "name": "Transcoders, cross-layer transcoders and attribution-graph edges",
+  "formula": "f = ReLU(W_enc × x_in + b_enc); y_hat = W_dec × f + b_dec; L = length(MLP(x_in) − y_hat)^2 + λ × sum over i of |f_i|; cross-layer: y_hat_l = sum over l' ≤ l of (W_dec^(l' → l) × f_l'); edge weight from feature s to target t = activation of s × linear weight from s to t (with attention patterns and normalizations frozen)",
+  "meaning": "A transcoder imitates what one feed-forward block computes, mapping its input x_in to its output through sparse, interpretable features; a cross-layer transcoder lets a feature read at one layer write to all later layers. Replacing the model's blocks with these makes the computation locally linear, so each feature's contribution to another can be read off as a product, giving attribution graphs.",
+  "used_for": "Dunefsky and colleagues (2024); Anthropic's 'Circuit Tracing' and 'On the Biology of a Large Language Model' (March 2025, on Claude 3.5 Haiku); open-source circuit-tracer tools with Neuronpedia (May 2025). In the book: Chapter 57 (Transcoder definition; Circuits and attribution graphs).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-superposition",
+  "name": "Toy model of superposition",
+  "formula": "x' = ReLU(W^T × W × x + b); L = sum over examples x of sum over features i of (I_i × (x_i − x'_i)^2), with n sparse features squeezed through m < n dimensions by the m × n matrix W",
+  "meaning": "A small model that compresses many sparse features into fewer dimensions and decompresses them; I_i is each feature's importance. When features are rare enough, the best solution stores more features than dimensions as overlapping, nearly perpendicular directions, which explains polysemantic neurons.",
+  "used_for": "Elhage and colleagues (Anthropic, 2022), the motivation for sparse autoencoders. In the book: Chapter 57 (Superposition: more ideas than neurons).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-logit-lens",
+  "name": "Logit lens and direct logit attribution",
+  "formula": "logits_l = W_U × LN_final(h_l); direct logit attribution of component c to token t = W_U[t] · (output_c ÷ s_final), with the final layer-norm scale s_final frozen",
+  "meaning": "h_l is the residual-stream vector after layer l, LN_final the final layer normalization and W_U the unembedding matrix; applying them early reads off what the model 'would say' at that depth. Because the residual stream is a sum of component outputs, each attention head or MLP's direct push toward a token is its output dotted with that token's unembedding row W_U[t]. Variant: the tuned lens adds a learned linear map per layer.",
+  "used_for": "nostalgebraist's logit lens (2020), the tuned lens (Belrose and colleagues, 2023), the TransformerLens library and circuit studies such as indirect-object identification (2022). In the book: Only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-patching",
+  "name": "Activation patching and attribution patching",
+  "formula": "Patching effect = M(run on prompt A with activation a_c replaced by its value from prompt B) − M(clean run on A); normalized: (M_patched − M_corrupt) ÷ (M_clean − M_corrupt); attribution patching: ΔM ≈ (a_corrupt − a_clean) · (∂M ÷ ∂a evaluated on the clean run)",
+  "meaning": "M is a metric such as the logit difference between the right and a wrong answer. Swapping one component's activation between a clean and a corrupted prompt shows whether that component carries the information (causal evidence, unlike probing). Attribution patching approximates every patch at once with one backward pass, a first-order Taylor estimate (∂ denotes a partial derivative).",
+  "used_for": "Causal tracing in ROME (Meng and colleagues, 2022), the indirect-object-identification circuit (Wang and colleagues, 2022), attribution patching (Nanda, 2023) and AtP* (Google DeepMind, 2024). In the book: Chapter 57 (Ablation; Circuits and attribution graphs).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-grad-input",
+  "name": "Saliency maps and gradient times input",
+  "formula": "Saliency S_i = |∂F(x) ÷ ∂x_i|; gradient × input attribution_i = x_i × ∂F(x) ÷ ∂x_i",
+  "meaning": "F(x) is the model's score for one output class and x_i one input feature (a pixel or a token embedding value); the partial derivative ∂F ÷ ∂x_i says how fast the score would change if that feature changed. Multiplying by the input gives a first-order estimate of each feature's contribution. Known to be noisy and sometimes misleading; SmoothGrad averages gradients over noisy copies of the input.",
+  "used_for": "Simonyan and colleagues (2013) saliency maps; explanation libraries such as Captum; debugging shortcut learning in vision models. In the book: Chapter 57 (Saliency map definition, in words).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-integrated-gradients",
+  "name": "Integrated gradients",
+  "formula": "IG_i(x) = (x_i − x'_i) × integral from α = 0 to 1 of (∂F(x' + α × (x − x')) ÷ ∂x_i) dα ≈ (x_i − x'_i) × (1 ÷ m) × sum over k from 1 to m of (∂F(x' + (k ÷ m) × (x − x')) ÷ ∂x_i); completeness: sum over i of IG_i(x) = F(x) − F(x')",
+  "meaning": "Average the gradient along a straight path from a baseline input x' (a black image, an all-padding text) to the real input x, and multiply by how far each feature moved. The attributions add up exactly to the change in the model's output (completeness), a property plain gradients lack. In practice the integral is approximated with m steps, often 20 to 300.",
+  "used_for": "Sundararajan, Taly and Yan (2017); Captum and cloud explainability services; attribution for vision, text and tabular models. In the book: Only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-compounding",
+  "name": "Compounding reliability over many steps",
+  "formula": "P(all n steps succeed) = p^n; per-step reliability needed for a target task success T: p = T^(1 ÷ n); at least one success in k independent tries: 1 − (1 − p)^k",
+  "meaning": "p is the per-step (or per-attempt) success probability and steps are assumed independent. Small per-step error rates compound fast over long tasks; the same arithmetic in reverse shows why an attacker with many attempts eventually succeeds. pass@k for capability benchmarks is owned by the classical-ML section.",
+  "used_for": "Agent reliability planning; why METR's 80% time horizon is several times shorter than its 50% horizon; attack-success curves that rise with the number of attempts in jailbreak studies. In the book: Chapter 55 (From answers to actions: 0.95^20 ≈ 0.358 and the reliability table), Chapter 28, Chapter 31 (0.99^50 ≈ 61%), Chapter 57 (Try it: =1-(1-0.2)^A1).",
+  "tier": "core"
+ },
+ {
+  "id": "rla-attack-success",
+  "name": "Attack success rate (ASR) and refusal rates",
+  "formula": "ASR = successful attacks ÷ attempts; over-refusal rate = refused benign requests ÷ benign requests; with independent attempts, ASR over k tries = 1 − (1 − ASR_1)^k",
+  "meaning": "The headline numbers of red-teaming: what fraction of jailbreak or misuse attempts get through a model or a safeguard, reported together with how often harmless requests are wrongly refused (the other side of the trade-off). Results are usually given per attack method and per harm category.",
+  "used_for": "Safety sections of system cards, HarmBench-style benchmarks and bug-bounty evaluations; Anthropic reported in February 2025 that automated jailbreaks succeeded 86% of the time against an unprotected model and 4.4% with constitutional classifiers. In the book: Chapter 57 (Red-teaming), Chapter 56 (Exercise: attack success rate = successes ÷ 30).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-expected-harm",
+  "name": "Expected harm (risk = probability × severity)",
+  "formula": "risk = P(harm) × severity; at scale, expected incidents = rate × volume, and P(at least one incident) = 1 − (1 − p)^N",
+  "meaning": "The expected loss of a risk is its probability times its size, so a rare catastrophe and a common nuisance can be compared on one scale. Multiplying a tiny per-interaction rate p by a huge number of interactions N turns rare failures into daily events.",
+  "used_for": "Risk assessment in frontier safety frameworks and product safety reviews; the EU AI Act (Article 3) defines risk as the combination of the probability of an occurrence of harm and the severity of that harm. In the book: Chapter 56 (risk = probability × severity: a 1-in-1,000 chance of $1 million = $1,000), Chapter 55 (Why small error rates are big numbers: 900 million ÷ 100,000 = 9,000 a week).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-hazard-exposure",
+  "name": "Risk decomposition: hazard × exposure × vulnerability",
+  "formula": "risk ≈ hazard × exposure × vulnerability",
+  "meaning": "Hazard is the source of harm and how likely or severe it is, exposure how much of what we care about comes into contact with it, and vulnerability how easily exposed people or systems are harmed. Because the factors multiply, halving any one halves the risk, which shows where to act when a hazard cannot be removed.",
+  "used_for": "Disaster-risk practice; Hendrycks and Mazeika's 'X-Risk Analysis for AI Research' (2022) and Hendrycks's 2024 textbook use it to sort safety work by the factor it reduces; AI labs cannot un-invent a capability but can cut exposure (access tiers) and vulnerability (classifiers, monitoring, patching). In the book: Chapter 56 (phishing example: 20,000 × 0.02 = 400 clicks, cut to 10,000 × 0.01 = 100).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-defense-depth",
+  "name": "Defense in depth (multiplying layer pass-through rates)",
+  "formula": "pass-through = product over layers i of (1 − c_i) when layers fail independently; in general P(pass all) = P(pass layer 1) × P(pass layer 2 given passed layer 1) × ...",
+  "meaning": "c_i is layer i's catch rate. Independent layers multiply small failure rates into a very small one, but layers that share blind spots fail together, and the conditional form shows how correlation destroys the benefit. This is the arithmetic of the Swiss-cheese model.",
+  "used_for": "Layered safeguards around frontier models: training-time refusals, input and output classifiers (constitutional classifiers), account monitoring and access tiers, as in Anthropic's ASL-3 protections. In the book: Chapter 56 (Worked example: how layers multiply: 0.10 × 0.20 × 0.25 × 0.5 = 0.0025, versus 0.10 × 0.60 = 0.06 when classifiers share a blind spot).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-uplift",
+  "name": "Uplift study effect and its uncertainty",
+  "formula": "uplift = mean(score with the model) − mean(score without it); SE = sqrt(s_1^2 ÷ n_1 + s_2^2 ÷ n_2); rough 95% range = uplift ± 2 × SE; relative uplift = uplift ÷ mean(control score)",
+  "meaning": "s_1, s_2 are the two groups' standard deviations and n_1, n_2 their sizes. The question is not whether a model knows dangerous facts but how much it adds over ordinary tools; the standard error shows why small studies give wide ranges (four times the participants halves the range). The general two-sample statistics belong to the foundations section; this is the safety-evaluation use.",
+  "used_for": "Biology and cyber uplift trials behind the capability thresholds of Anthropic's Responsible Scaling Policy, OpenAI's Preparedness Framework and Google DeepMind's Frontier Safety Framework; RAND's 2024 red-team study of LLM help with biological attack planning. In the book: Chapter 57 (Dangerous capability evaluations: 48 − 30 = 18 points, SE ≈ 6.3, range about 5 to 31), Chapter 56.",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-metr-horizon",
+  "name": "METR 50% time horizon (logistic fit) and its doubling trend",
+  "formula": "P(agent succeeds on a task) = sigmoid(β × (log h_50 − log t_task)); trend: h_50(date) = h_0 × 2^((date − date_0) ÷ T_double); 80% horizon (natural logs): t_80 = h_50 × exp(−ln 4 ÷ β)",
+  "meaning": "t_task is how long skilled humans take (the geometric mean of successful human attempts), β the steepness fitted per agent and h_50 the task length at which predicted success is 50%, because sigmoid(0) = 0.5. Fitting log h_50 against release dates gives a doubling time T_double. Success of 80% needs β × (ln h_50 − ln t) = ln 4, which is why the 80% horizon is several times shorter.",
+  "used_for": "METR's 'Measuring AI Ability to Complete Long Tasks' (Kwa and colleagues, March 2025) found the 50% horizon doubling about every 207 days (about 7 months) since 2019, faster since 2023; METR time horizons now appear in frontier model system cards and safety evaluations. In the book: Chapter 57 (Measuring autonomy: time horizons: 4 minutes to 12 hours, about 7.5 doublings in 35 months), Chapter 24, Chapter 28, Chapter 60.",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-externality",
+  "name": "Private versus social expected loss (externality gap)",
+  "formula": "A developer pays for extra safety work when cost < p × L_developer; society would want it when cost < p × (L_developer + L_others); externality gap = p × L_others",
+  "meaning": "p is the probability of an incident, L_developer the part of the damage the developer bears and L_others the part that falls on everyone else. When most of the damage is external, the developer's calculation can say 'skip it' even when society's says 'do it', a market failure that liability rules and regulation aim to correct.",
+  "used_for": "AI liability and regulation debates, insurance and safety-standard arguments. In the book: Chapter 59 (Worked example: who pays for the accident? $1 million private versus $10 million, then $100 million, social expected loss against a $50 million test).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-meu",
+  "name": "Maximum expected utility (MEU)",
+  "formula": "EU(a) = sum over outcomes s of (P(s given a) × U(s)); a* = argmax over a of EU(a)",
+  "meaning": "U(s) is the utility (desirability) of outcome s and P(s given a) its probability if action a is taken. A rational agent picks the action with the highest probability-weighted average utility; von Neumann and Morgenstern showed that preferences obeying a few consistency rules behave as if maximizing some utility. A concave utility of money (such as ln of wealth) produces risk aversion. An MDP chains this decision over time with rewards in place of utilities.",
+  "used_for": "The decision rule behind rational agents (AIMA), agents deciding whether to act or ask, and the risk calculations of the safety entries. In the book: Chapter 48 (Deciding when you are not sure: expected utility: umbrella 80 versus 70, break-even at a 20% chance of rain).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-voi",
+  "name": "Value of perfect information (VPI)",
+  "formula": "VPI = (sum over evidence values e of P(e) × max over a of EU(a given e)) − max over a of EU(a), which is always ≥ 0",
+  "meaning": "How much better you expect to decide if you learn the evidence first: the expected utility of choosing after seeing each possible result, minus the best you can do now. Information that could not change your choice is worth zero.",
+  "used_for": "Deciding when an agent should ask a clarifying question, which test to order, and active learning. In the book: Chapter 48 (radar app: 94 − 80 = 14 points).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-nash",
+  "name": "Payoff matrix, dominant strategy and Nash equilibrium",
+  "formula": "Nash equilibrium: u_i(s_i*, s_−i*) ≥ u_i(s_i, s_−i*) for every player i and every alternative strategy s_i; dominant strategy d: u_i(d, s_−i) ≥ u_i(s_i, s_−i) for all s_i and all s_−i",
+  "meaning": "u_i is player i's payoff (one cell of the payoff matrix per combination of choices), s_i a strategy of player i and s_−i the strategies of everyone else. At an equilibrium nobody can gain by changing only their own choice; a dominant strategy is best whatever the others do. An outcome is Pareto optimal if no one can be made better off without making someone worse off, and an equilibrium need not be. Cooperative game theory's Shapley value, which splits a group's payoff fairly, is listed with SHAP in the classical-ML section.",
+  "used_for": "Multi-agent RL and self-play, poker and Diplomacy AIs, AI governance analysis of racing; Nash learning from human feedback (Munos and colleagues, Google DeepMind, 2023) frames alignment as finding the equilibrium of a preference game. In the book: Chapter 48 (A short course in game theory), Chapter 59 (the racing game).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-prisoners-dilemma",
+  "name": "Prisoner's dilemma payoffs and the repeated-game cooperation threshold",
+  "formula": "T > R > P > S and 2 × R > T + S; in the infinitely repeated game with discount factor δ, mutual cooperation under a grim-trigger strategy is an equilibrium when δ ≥ (T − R) ÷ (T − P)",
+  "meaning": "T is the temptation payoff for defecting on a cooperator, R the reward for mutual cooperation, P the punishment for mutual defection and S the sucker's payoff. Defecting is dominant, yet both prefer mutual cooperation. If the game repeats and future payoffs matter enough (δ near 1), the threat of future punishment can sustain cooperation; tit-for-tat won Axelrod's tournaments around 1980.",
+  "used_for": "Analyses of AI racing between labs and countries and of why voluntary restraint is fragile; the book's racing game has T = 9, R = 7, P = 3, S = 1, so cooperation can be sustained when δ ≥ 2 ÷ 6 ≈ 0.33. In the book: Chapter 48 (Table 48.8), Chapter 59 (Worked example: the racing game), Chapter 60 (racing dynamics).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-mixed-minimax",
+  "name": "Mixed-strategy equilibrium and the minimax theorem",
+  "formula": "Indifference condition (two actions each): choose the opponent's mix q so that q × u(a_1, b_1) + (1 − q) × u(a_1, b_2) = q × u(a_2, b_1) + (1 − q) × u(a_2, b_2); zero-sum minimax theorem: max over x of min over y of (x^T × A × y) = min over y of max over x of (x^T × A × y)",
+  "meaning": "In a mixed equilibrium each player randomizes so that the other is indifferent between their options, leaving nothing to exploit (rock-paper-scissors: one-third each). In two-player zero-sum games with payoff matrix A and mixed strategies x and y, von Neumann's theorem says the best guaranteed payoff equals the worst the opponent can hold you to: the value of the game. Minimax search over game trees belongs to the classical-AI section.",
+  "used_for": "Poker bots' bluffing frequencies, security patrol scheduling, adversarial training formulations. In the book: Chapter 48 (A short course in game theory: randomness can be the best strategy; mixed strategy definition).",
+  "tier": "standard"
+ },
+ {
+  "id": "rla-cfr",
+  "name": "Counterfactual regret minimization (regret matching, CFR)",
+  "formula": "R^T(I, a) = sum over t ≤ T of π_−i^(σ_t)(I) × (v_i(σ_t with a forced at I, I) − v_i(σ_t, I)); next strategy σ_(T+1)(I, a) = max(R^T(I, a), 0) ÷ sum over b of max(R^T(I, b), 0), or uniform if all regrets are ≤ 0",
+  "meaning": "At each information set I (what a player knows at a decision point), accumulate how much better each action a would have done than the current strategy σ, weighted by the probability π_−i that the other players' and chance's moves reach I; v_i is player i's expected value. Then play actions in proportion to their positive regret. In two-player zero-sum games the average strategy converges to a Nash equilibrium. Variants: CFR+, linear and discounted CFR, Monte Carlo CFR, Deep CFR.",
+  "used_for": "Zinkevich and colleagues (2007); Cepheus essentially solved heads-up limit hold'em (2015, CFR+); DeepStack and Libratus (2017) and Pluribus (2019, six-player no-limit hold'em) beat top professionals. In the book: Chapter 48 (Poker: Libratus and Pluribus; CFR definition).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-racing-model",
+  "name": "Expected-value model of an AI race",
+  "formula": "EV_i = sum over possible winners j of P(j wins) × [(1 − d(s_j)) × U_i(j wins safely) + d(s_j) × U_disaster], where d(s) is the chance of disaster given the winner's safety effort s (for example d = 1 − s) and less safety effort raises a team's chance of winning",
+  "meaning": "Each team trades safety for speed: skimping raises P(win) but also the chance d that the winner's system causes a disaster. U_i(j wins safely) is lower for rivals than for oneself, by an amount Armstrong, Bostrom and Shulman (2016, 'Racing to the precipice') call enmity. In their model more competing teams and more enmity push equilibrium safety down, and teams learning each other's capabilities can make it worse; check the paper's exact parameterization before quoting numbers.",
+  "used_for": "AI governance arguments for coordination, verification and compute-based agreements. In the book: Chapter 59 (Worked example: the racing game), Chapter 60 (racing dynamics).",
+  "tier": "specialist"
+ },
+ {
+  "id": "rla-vickrey",
+  "name": "Second-price (Vickrey) auction and truthful bidding",
+  "formula": "Winner = highest bidder, who pays the second-highest bid b_(2); bidder utility u_i = v_i − b_(2) if i wins, else 0; bidding b_i = v_i is a dominant strategy",
+  "meaning": "v_i is what the item is worth to bidder i. Because your bid only decides whether you win, not what you pay, overbidding risks paying more than the value and underbidding risks losing a profitable win, so honesty is optimal: mechanism design making truth-telling the best strategy. Its multi-slot cousin, generalized second-price pricing for ads, is not truthful in general and is listed with ad ranking in the classical-ML section.",
+  "used_for": "Mechanism design in AIMA; the incentive logic behind sponsored-search and ad-exchange auctions (many exchanges moved to first-price auctions by 2019); spectrum auctions. In the book: Chapter 48 (You can design the game: sealed-bid second-price auction), Chapter 51.",
+  "tier": "specialist"
+ }
+]

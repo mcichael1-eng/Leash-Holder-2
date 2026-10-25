@@ -1,0 +1,1098 @@
+[
+ {
+  "id": "cml-linreg-model",
+  "name": "Linear regression model",
+  "formula": "y_hat = w_1 × x_1 + w_2 × x_2 + ... + w_d × x_d + b = w · x + b",
+  "meaning": "y_hat is the prediction; x = [x_1, ..., x_d] are the d input features; w = [w_1, ..., w_d] are the learned weights; b is the bias (intercept). The decision of a linear classifier, w · x + b = 0, is the same expression. One-feature case y_hat = w × x + b is in Appendix B.",
+  "used_for": "Baseline for every numeric prediction task (prices, demand, risk scores); the output layer of most neural networks, including an LLM's final unembedding, is this same weighted sum. Book: Chapter 8 (worked example: fitting a line in a spreadsheet), Chapter 10 (linear and logistic regression, revisited).",
+  "tier": "core"
+ },
+ {
+  "id": "cml-least-squares",
+  "name": "Least-squares objective (mean squared error loss) and its gradient",
+  "formula": "L(w, b) = (1 ÷ n) × sum over i of (y_i − (w · x_i + b))^2 ; gradient for w = (2 ÷ n) × sum over i of (w · x_i + b − y_i) × x_i",
+  "meaning": "n is the number of training examples; x_i and y_i are example i's features and true value; w · x_i + b is the prediction; the gradient is the list of slopes of L for each weight (the bias slope is the same without the × x_i). Variants: sum of squared errors (no 1 ÷ n), the 1 ÷ 2 convention that cancels the 2, weighted least squares (each squared error multiplied by a weight). MSE as an evaluation metric is the same formula on test data.",
+  "used_for": "Training objective for linear regression and for any network predicting real numbers (value heads, regression heads, the MSE loss of diffusion noise prediction). Book: Chapter 8 (measuring wrongness: the loss function), Appendix B (mean squared error, MSE slopes for a line).",
+  "tier": "core"
+ },
+ {
+  "id": "cml-normal-equations",
+  "name": "Normal equations (closed-form least squares)",
+  "formula": "w = (X^T × X)^(−1) × X^T × y",
+  "meaning": "X is the n × d data matrix (one row per example, a column of 1s added for the bias); y is the length-n vector of targets; X^T is the transpose (rows and columns swapped); (...)^(−1) is the matrix inverse. Setting the least-squares gradient to zero gives X^T × X × w = X^T × y. One-feature special case: w = sum((x − mean x) × (y − mean y)) ÷ sum((x − mean x)^2), b = mean y − w × mean x. In practice solved with QR or SVD (the pseudo-inverse) rather than an explicit inverse.",
+  "used_for": "scikit-learn LinearRegression, statistics packages and spreadsheet trendlines solve this directly; linear probes on frozen network activations are often fit in closed form. Book: Appendix B (line of best fit, slope and intercept); the matrix form appears only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-basis-expansion",
+  "name": "Polynomial and basis-function regression",
+  "formula": "y_hat = w_0 + w_1 × φ_1(x) + w_2 × φ_2(x) + ... + w_p × φ_p(x) ; polynomial case φ_j(x) = x^j",
+  "meaning": "φ_j(x) (phi) are fixed basis functions applied to the input (powers of x, splines, radial bumps, Fourier terms); w_j are weights fit by least squares exactly as in linear regression, because the model is still linear in w. p is the number of basis functions (the polynomial degree in the polynomial case). Raising p trades underfitting for overfitting.",
+  "used_for": "Classic illustration of overfitting (Bishop's polynomial curve fit); spline and Fourier features in forecasting (Prophet's seasonality) and in generalized additive models. Book: Chapter 9 (worked example: iced drinks and temperature, fitting curves of increasing degree).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-ridge",
+  "name": "Ridge regression (L2 regularization)",
+  "formula": "L(w) = sum over i of (y_i − w · x_i)^2 + λ × sum over j of w_j^2 ; closed form w = (X^T × X + λ × I)^(−1) × X^T × y",
+  "meaning": "λ (lambda) ≥ 0 sets the penalty strength; w_j are the weights (the bias is usually not penalized); I is the identity matrix (1s on the diagonal, 0s elsewhere). Larger λ shrinks weights toward zero. Equivalent to a maximum a posteriori estimate with a Gaussian prior on w. Called weight decay when applied in gradient descent (covered with optimizers in the deep-learning section).",
+  "used_for": "Default regularizer for linear and logistic models (scikit-learn Ridge, LogisticRegression's default penalty='l2'); the λ term in XGBoost leaf weights; L2 penalties in matrix factorization. Book: Chapter 9 (regularization: keeping models simple on purpose).",
+  "tier": "core"
+ },
+ {
+  "id": "cml-lasso",
+  "name": "Lasso (L1 regularization) and soft thresholding",
+  "formula": "L(w) = (1 ÷ (2n)) × sum over i of (y_i − w · x_i)^2 + λ × sum over j of |w_j| ; coordinate update w_j = sign(z_j) × max(|z_j| − λ, 0)",
+  "meaning": "|w_j| is the absolute value of weight j; λ sets the penalty strength; n is the number of examples; in the coordinate-descent update z_j is the least-squares solution for w_j with the other weights held fixed (for standardized features) and sign(z) is +1 or −1. The max(..., 0) step sets small weights exactly to zero, so the lasso selects features. Equivalent to a Laplace prior on w.",
+  "used_for": "Sparse feature selection in tabular models, genomics and finance (scikit-learn Lasso, glmnet); L1 penalties on sparse-autoencoder activations in interpretability research use the same term. Book: Chapter 9 (regularization; the lasso is named there).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-elastic-net",
+  "name": "Elastic net penalty",
+  "formula": "penalty = λ × (α × sum over j of |w_j| + ((1 − α) ÷ 2) × sum over j of w_j^2)",
+  "meaning": "λ sets overall strength; α (alpha) between 0 and 1 mixes the two penalties: α = 1 is the lasso, α = 0 is ridge. The penalty is added to the least-squares or log-loss objective. scikit-learn calls the mixing weight l1_ratio and the strength alpha.",
+  "used_for": "Feature selection when features are correlated (the lasso alone picks one of a correlated group arbitrarily); glmnet, scikit-learn ElasticNet and LogisticRegression(penalty='elasticnet'). Book: only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-bayes-linreg",
+  "name": "Bayesian linear regression posterior",
+  "formula": "S_N = (α × I + β × X^T × X)^(−1) ; m_N = β × S_N × X^T × y ; predictive variance σ_N^2(x) = 1 ÷ β + x^T × S_N × x",
+  "meaning": "With a Gaussian prior w ~ N(0, (1 ÷ α) × I) and Gaussian noise of precision β (1 ÷ noise variance), the posterior over weights is Gaussian with mean m_N and covariance S_N. X is the n × d data matrix, y the targets, I the identity matrix, x a new input. m_N equals the ridge solution with λ = α ÷ β. The predictive variance adds noise (1 ÷ β) to weight uncertainty, which grows away from the data. General prior: S_N^(−1) = S_0^(−1) + β × X^T × X, m_N = S_N × (S_0^(−1) × m_0 + β × X^T × y).",
+  "used_for": "Uncertainty-aware regression, Bayesian optimization surrogates and Thompson-sampling bandits with linear models; the conceptual bridge from ridge to Gaussian processes. Book: only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-logreg-model",
+  "name": "Logistic regression model (with log-odds and odds ratio)",
+  "formula": "P(y = 1 given x) = sigmoid(w · x + b) = 1 ÷ (1 + exp(−(w · x + b))) ; equivalently ln(p ÷ (1 − p)) = w · x + b ; odds ratio for feature j = exp(w_j)",
+  "meaning": "x is the feature vector; w the weights; b the bias; sigmoid squeezes any number into 0 to 1 (Appendix B). The decision boundary is where w · x + b = 0 (probability 0.5); predict class 1 when the probability exceeds a chosen threshold. Log-odds form: p is the predicted probability of class 1; p ÷ (1 − p) is the odds; ln is the natural log, so the logit is linear in the features. exp(w_j) is how many times the odds multiply when feature j rises by one unit with the others fixed. The logit is the inverse of the sigmoid.",
+  "used_for": "Credit scoring, medical risk, click-through prediction, spam filters; linear probes on LLM activations; the Bradley-Terry and reward-model formulas are logistic regressions on score differences. Also: Reading logistic-regression coefficients in medicine, economics and credit models; 'logits' in neural networks are the pre-sigmoid or pre-softmax scores named after this function. Book: Chapter 8 (predicting categories: logistic regression; decision boundaries), Chapter 10.",
+  "tier": "core"
+ },
+ {
+  "id": "cml-log-loss",
+  "name": "Binary log loss (binary cross-entropy), its gradient, and normalized entropy",
+  "formula": "L = −(1 ÷ n) × sum over i of [y_i × ln(p_i) + (1 − y_i) × ln(1 − p_i)] ; gradient for w = (1 ÷ n) × sum over i of (p_i − y_i) × x_i ; normalized entropy NE = L ÷ [−(p_bar × ln(p_bar) + (1 − p_bar) × ln(1 − p_bar))]",
+  "meaning": "y_i is the true label (0 or 1); p_i is the predicted probability of class 1 for example i; n is the number of examples; x_i the features. Wrong confident predictions cost a lot (ln of a small number is very negative). With p_i = sigmoid(w · x_i + b) the gradient takes the simple form shown. Used both as the training loss and as an evaluation metric ('log loss', scikit-learn log_loss); the multi-class version is categorical cross-entropy. Normalized entropy variant: The numerator is the model's average log loss on impressions (y_i = 1 for a click, p_i the predicted click probability); the denominator is the log loss of always predicting the average click-through rate p_bar. NE below 1 means the model beats the base rate; lower is better, and it is comparable across datasets with different base rates. Usually reported with calibration = sum of predicted clicks ÷ sum of observed clicks.",
+  "used_for": "Training loss for logistic regression, gradient boosting classifiers (XGBoost binary:logistic), click-through models, binary classifiers and safety classifiers; Kaggle and ads teams report it as a metric. Also: Ads and feed click-prediction models at Meta (He et al., 'Practical Lessons from Predicting Clicks on Ads at Facebook', 2014) and in later industrial CTR papers. Book: Chapter 8 (cross-entropy: the loss for categories), Appendix B (cross-entropy, one token).",
+  "tier": "core"
+ },
+ {
+  "id": "cml-softmax-regression",
+  "name": "Multinomial logistic (softmax) regression",
+  "formula": "P(y = k given x) = exp(w_k · x + b_k) ÷ sum over j = 1..K of exp(w_j · x + b_j) ; loss = −ln P(y = true class given x)",
+  "meaning": "K is the number of classes; w_k and b_k are the weights and bias for class k; the denominator makes the K probabilities sum to 1 (the softmax of Appendix B). The loss is the categorical cross-entropy. With K = 2 it reduces to ordinary logistic regression.",
+  "used_for": "Multi-class text and image classifiers, intent classifiers, the final layer of every classification network and of an LLM's next-token prediction. Book: Chapter 8 mentions multi-class prediction; the softmax itself is in Appendix B.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-perceptron",
+  "name": "Perceptron learning rule",
+  "formula": "y_hat = sign(w · x + b) ; if y_i × (w · x_i + b) ≤ 0 then w = w + η × y_i × x_i and b = b + η × y_i",
+  "meaning": "Labels y_i are +1 or −1; sign(z) gives +1 for positive z and −1 otherwise; η (eta) is the learning rate (often 1). The weights change only on mistakes. Novikoff's theorem: on data separable with margin γ inside a ball of radius R, the number of mistakes is at most (R ÷ γ)^2. Averaged and voted perceptrons are variants.",
+  "used_for": "Historical root of neural networks (Rosenblatt, 1958); still taught as the first learning algorithm; structured perceptrons were used for tagging and parsing before deep learning. Book: Chapter 10 (the perceptron: the bridge to neural networks).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-lda",
+  "name": "Fisher's linear discriminant (LDA)",
+  "formula": "w is proportional to S_W^(−1) × (m_1 − m_0) ; J(w) = (w · (m_1 − m_0))^2 ÷ (w^T × S_W × w)",
+  "meaning": "m_0 and m_1 are the mean feature vectors of the two classes; S_W is the within-class scatter matrix (sum over each class of (x − m_c) × (x − m_c)^T); J(w) is the ratio of between-class separation to within-class spread that w maximizes. Gaussian LDA as a classifier assumes each class is a Gaussian with a shared covariance, giving a linear boundary; QDA allows separate covariances (quadratic boundary).",
+  "used_for": "Dimensionality reduction for classification, speaker verification back-ends (PLDA), face recognition (Fisherfaces), simple biomedical classifiers; scikit-learn LinearDiscriminantAnalysis. Book: only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-svm-margin",
+  "name": "Maximum-margin hyperplane (hard-margin SVM)",
+  "formula": "minimize (1 ÷ 2) × length(w)^2 subject to y_i × (w · x_i + b) ≥ 1 for every i ; margin width = 2 ÷ length(w)",
+  "meaning": "w and b define the separating hyperplane w · x + b = 0; labels y_i are +1 or −1; length(w) is the vector length (Euclidean norm). The distance from a point x to the hyperplane is |w · x + b| ÷ length(w). The points that touch the margin are the support vectors; minimizing length(w) maximizes the street between the classes.",
+  "used_for": "Support vector machines (scikit-learn SVC, LIBSVM, LIBLINEAR) for small and medium tabular, text and bioinformatics problems; margin ideas reappear in metric learning and margin-based losses. Book: Chapter 10 (support vector machines: the widest street).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-svm-hinge",
+  "name": "Soft-margin SVM, hinge loss and epsilon-insensitive loss",
+  "formula": "minimize (1 ÷ 2) × length(w)^2 + C × sum over i of max(0, 1 − y_i × (w · x_i + b)) ; hinge(y, f) = max(0, 1 − y × f) ; regression (SVR): loss(y, f) = max(0, |y − f| − ε)",
+  "meaning": "C > 0 trades margin width against training mistakes (large C means fewer violations, narrower margin); y_i is +1 or −1; f = w · x + b is the raw score. The hinge loss is zero for points beyond the margin and grows linearly inside it. Squared hinge and the multi-class Crammer-Singer hinge are variants. Support vector regression variant: y is the true value; f the prediction; ε (epsilon) is a tolerance tube: errors smaller than ε cost nothing, larger ones cost linearly. Combined with (1 ÷ 2) × length(w)^2 and a constant C as in the soft-margin SVM.",
+  "used_for": "Linear SVMs for text classification (LIBLINEAR, scikit-learn LinearSVC, SGDClassifier(loss='hinge')); hinge losses in GAN discriminators and margin ranking losses. Also: Support vector regression (scikit-learn SVR, LIBSVM) for small regression problems in engineering and chemistry. Book: Chapter 10 (support vector machines).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-svm-dual-kernel",
+  "name": "SVM dual problem and the kernel trick",
+  "formula": "maximize sum over i of α_i − (1 ÷ 2) × sum over i of sum over j of α_i × α_j × y_i × y_j × K(x_i, x_j), subject to 0 ≤ α_i ≤ C and sum over i of α_i × y_i = 0 ; f(x) = sum over i of α_i × y_i × K(x_i, x) + b",
+  "meaning": "α_i (alpha) are one dual weight per training point (nonzero only for support vectors); C is the soft-margin constant; y_i are ±1 labels; K(x, z) is a kernel, a similarity that equals a dot product φ(x) · φ(z) in some feature space. The kernel trick: because the data appear only inside dot products, replacing x · z with K(x, z) fits a linear model in a huge or infinite feature space without ever computing φ.",
+  "used_for": "Kernel SVMs (LIBSVM, scikit-learn SVC), kernel ridge regression, kernel PCA, Gaussian processes; the attention score in Transformers has been analyzed as a kernel. Book: Chapter 10 (support vector machines; kernel trick).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-kernels",
+  "name": "Common kernels (RBF, polynomial, linear)",
+  "formula": "RBF: K(x, z) = exp(−γ × length(x − z)^2), with γ = 1 ÷ (2 × σ^2) ; polynomial: K(x, z) = (x · z + c)^d ; linear: K(x, z) = x · z",
+  "meaning": "γ (gamma) or σ (sigma, the length scale) sets how quickly similarity falls with distance; c ≥ 0 and the degree d set the polynomial kernel; length(x − z) is Euclidean distance. The RBF (Gaussian, squared-exponential) kernel equals 1 for identical points and decays toward 0. Variants: Laplacian exp(−γ × |x − z|_1), Matérn and periodic kernels in Gaussian processes, sigmoid kernel.",
+  "used_for": "Default kernel for SVMs (scikit-learn SVC uses RBF), Gaussian-process surrogates in Bayesian hyperparameter optimization, kernel two-sample tests (MMD, also used to evaluate generative models), random Fourier features. Book: only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-gp-regression",
+  "name": "Gaussian process regression posterior",
+  "formula": "mean(x_*) = k_*^T × (K + σ_n^2 × I)^(−1) × y ; variance(x_*) = k(x_*, x_*) − k_*^T × (K + σ_n^2 × I)^(−1) × k_*",
+  "meaning": "A Gaussian process puts a prior over functions defined by a kernel k. K is the n × n matrix of kernel values between training inputs; k_* is the vector of kernel values between the new input x_* and each training input; y is the vector of training targets; σ_n^2 is the observation-noise variance; I the identity matrix; T is transpose. The mean is the prediction and the variance its uncertainty, which grows away from the data. Kernel hyperparameters are fit by maximizing the marginal likelihood.",
+  "used_for": "Small-data regression with uncertainty (geostatistics 'kriging', calibration of physical models), the surrogate model inside Bayesian optimization of hyperparameters (Google Vizier, BoTorch, scikit-optimize). Book: Chapter 10 (Gaussian processes, named in the SVM section).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-bayesopt-ei",
+  "name": "Expected improvement (Bayesian optimization acquisition)",
+  "formula": "EI(x) = (μ(x) − f_best − ξ) × Φ(Z) + σ(x) × φ(Z), with Z = (μ(x) − f_best − ξ) ÷ σ(x) (EI = 0 when σ(x) = 0)",
+  "meaning": "μ(x) and σ(x) are the surrogate model's predicted mean and standard deviation at candidate setting x (from a Gaussian process); f_best is the best score found so far; ξ (xi) ≥ 0 is a small exploration bonus; Φ is the standard normal cumulative distribution and φ its density. The next trial is the x that maximizes EI. Variants: probability of improvement, upper confidence bound μ + κ × σ, and the tree-structured Parzen estimator (TPE), which picks x maximizing l(x) ÷ g(x), the density of good trials over the density of bad ones.",
+  "used_for": "Hyperparameter tuning services and libraries (Google Vizier, BoTorch/Ax, Optuna's default TPE sampler, scikit-optimize), materials and drug-discovery experiment design. Book: only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-gini",
+  "name": "Gini impurity",
+  "formula": "G = 1 − sum over classes k of p_k^2 ; split score = (n_L ÷ n) × G_L + (n_R ÷ n) × G_R",
+  "meaning": "p_k is the fraction of examples in a node that belong to class k; G is 0 for a pure node and largest when classes are evenly mixed (0.5 for two classes). n_L and n_R are the example counts in the left and right child, n their total; G_L and G_R the children's impurities. The tree picks the split with the lowest weighted child impurity (largest Gini decrease). Not to be confused with the Gini coefficient of inequality or 2 × AUC − 1.",
+  "used_for": "Default split criterion in CART and scikit-learn DecisionTreeClassifier and RandomForestClassifier; 'mean decrease in impurity' feature importance sums these decreases. Book: Chapter 10 (decision trees: Twenty Questions learned from data).",
+  "tier": "core"
+ },
+ {
+  "id": "cml-info-gain",
+  "name": "Entropy and information gain (tree splitting)",
+  "formula": "H(node) = −sum over classes k of p_k × log2(p_k) ; IG = H(parent) − sum over children c of (n_c ÷ n) × H(c)",
+  "meaning": "p_k is the class-k fraction in the node (terms with p_k = 0 count as 0); H is measured in bits; n_c is the number of examples sent to child c and n the parent's count. The split with the largest information gain is chosen. Variant: C4.5's gain ratio = IG ÷ SplitInfo, with SplitInfo = −sum over c of (n_c ÷ n) × log2(n_c ÷ n), which penalizes splits into many small children. Entropy itself is the information-theory quantity of the foundations section.",
+  "used_for": "ID3 and C4.5 trees, scikit-learn criterion='entropy', LightGBM and XGBoost when trained with log loss (where the gain is computed from gradients instead). Book: Chapter 10 (decision trees).",
+  "tier": "core"
+ },
+ {
+  "id": "cml-regression-tree",
+  "name": "Regression tree split (variance reduction)",
+  "formula": "choose the split minimizing sum over i in L of (y_i − mean_L)^2 + sum over i in R of (y_i − mean_R)^2 ; leaf prediction = mean of the y_i in the leaf",
+  "meaning": "L and R are the sets of examples sent to the left and right child by a candidate split (feature and threshold); mean_L and mean_R are the average targets in each. Equivalent to maximizing the reduction in variance. Variant: absolute-error trees use medians; Poisson and other deviances for counts.",
+  "used_for": "CART regression trees, random-forest regressors, and the base learners of gradient boosting (which fit trees to residuals). Book: Chapter 10 (decision trees; gradient boosting).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-cost-complexity",
+  "name": "Cost-complexity pruning",
+  "formula": "R_α(T) = R(T) + α × |leaves(T)|",
+  "meaning": "T is a tree; R(T) is its training error (misclassification rate or squared error summed over leaves); |leaves(T)| is its number of leaves; α (alpha) ≥ 0 is the price per leaf. Growing a large tree and then choosing the subtree that minimizes R_α, with α picked by cross-validation, is weakest-link pruning.",
+  "used_for": "CART pruning (Breiman et al., 1984), scikit-learn's ccp_alpha; gradient-boosting libraries use the similar per-leaf penalty γ in their split gain. Book: only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-bagging",
+  "name": "Bagging (bootstrap aggregating) and the variance of an average",
+  "formula": "f_bag(x) = (1 ÷ B) × sum over b = 1..B of f_b(x) ; Var(average) = ρ × σ^2 + ((1 − ρ) ÷ B) × σ^2 ; P(a row is left out of a bootstrap sample) = (1 − 1 ÷ n)^n ≈ exp(−1) ≈ 0.368",
+  "meaning": "f_b is a model trained on bootstrap sample b (n rows drawn with replacement from the n training rows); B is the number of models; σ^2 is each model's variance and ρ (rho) the correlation between models. Averaging cuts variance most when models are decorrelated. About 63.2% of distinct rows appear in each bootstrap sample; the left-out 36.8% give the out-of-bag error estimate.",
+  "used_for": "Random forests, bagged trees, bootstrap ensembles for uncertainty; the same averaging logic underlies model soups, checkpoint averaging and ensembling of LLM judges. Book: Chapter 10 (random forests: a crowd of trees; bootstrap samples).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-random-forest",
+  "name": "Random forest prediction (vote or average)",
+  "formula": "classification: y_hat = most common class among f_1(x), ..., f_B(x) (soft vote: average the trees' class probabilities) ; regression: y_hat = (1 ÷ B) × sum over b of f_b(x) ; features tried per split m ≈ sqrt(p)",
+  "meaning": "f_b(x) is tree b's prediction; B is the number of trees; p is the number of features and m the random subset considered at each split (sqrt(p) is the usual default for classification, p ÷ 3 classically for regression; scikit-learn's regressor now defaults to all features). Bootstrap rows plus random feature subsets decorrelate the trees.",
+  "used_for": "Robust default for tabular data (scikit-learn RandomForestClassifier, ranger, Spark MLlib), feature-importance analysis, fraud and remote-sensing models. Book: Chapter 10 (random forests).",
+  "tier": "core"
+ },
+ {
+  "id": "cml-gradient-boosting",
+  "name": "Gradient boosting update",
+  "formula": "F_m(x) = F_(m−1)(x) + η × h_m(x), where h_m is fit to the pseudo-residuals r_i = −(slope of L(y_i, F) for F, at F = F_(m−1)(x_i))",
+  "meaning": "F_m is the ensemble after m rounds; F_0 is a constant (such as the mean target, or the log-odds of the base rate); h_m is a small tree fit to the r_i; η (eta) between 0 and 1 is the learning rate (shrinkage); L is the loss. For squared error r_i = y_i − F_(m−1)(x_i), the ordinary residual; for log loss r_i = y_i − p_i. Often each leaf value is then re-optimized for the loss (Friedman's line search). Stochastic gradient boosting fits each tree on a random subsample of rows.",
+  "used_for": "Dominant method for tabular data in industry and Kaggle: XGBoost, LightGBM, CatBoost, scikit-learn HistGradientBoosting; ranking (LambdaMART), fraud, credit, ads. Book: Chapter 10 (gradient boosting: a relay of tutors).",
+  "tier": "core"
+ },
+ {
+  "id": "cml-xgboost-gain",
+  "name": "Second-order boosting: optimal leaf weight and split gain (XGBoost)",
+  "formula": "w_j = −G_j ÷ (H_j + λ) ; Gain = (1 ÷ 2) × [G_L^2 ÷ (H_L + λ) + G_R^2 ÷ (H_R + λ) − (G_L + G_R)^2 ÷ (H_L + H_R + λ)] − γ",
+  "meaning": "For each example, g_i is the first derivative (slope) and h_i the second derivative (curvature) of the loss at the current prediction; G_j and H_j are the sums of g_i and h_i over the examples in leaf j (G_L, H_L and G_R, H_R for a candidate split's left and right children); λ (lambda) is an L2 penalty on leaf weights and γ (gamma) a cost per added leaf. The regularized objective per tree is sum over leaves of [G_j × w_j + (1 ÷ 2) × (H_j + λ) × w_j^2] + γ × number of leaves; plugging in the optimal w_j gives the gain. A split is kept only if Gain > 0.",
+  "used_for": "XGBoost (Chen and Guestrin, 2016), and the same second-order formulas in LightGBM and CatBoost, the libraries behind most production tabular models. Book: Chapter 10 (XGBoost named in gradient boosting).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-adaboost",
+  "name": "AdaBoost weights",
+  "formula": "ε_m = sum over i of w_i × 1[h_m(x_i) ≠ y_i] ÷ sum over i of w_i ; α_m = (1 ÷ 2) × ln((1 − ε_m) ÷ ε_m) ; w_i = w_i × exp(−α_m × y_i × h_m(x_i)), then renormalize ; H(x) = sign(sum over m of α_m × h_m(x))",
+  "meaning": "Labels y_i and weak-learner outputs h_m(x_i) are ±1; w_i is example i's weight (start at 1 ÷ n); 1[...] is 1 when the condition holds and 0 otherwise; ε_m is learner m's weighted error; α_m is its vote (larger for more accurate learners); misclassified examples gain weight for the next round. Equivalent to stage-wise fitting of the exponential loss exp(−y × F(x)). SAMME extends it to many classes.",
+  "used_for": "Viola-Jones face detection (2001) and classic boosting; now mostly a teaching example and a scikit-learn option (AdaBoostClassifier). Book: only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-feature-importance",
+  "name": "Permutation feature importance (and mean decrease in impurity)",
+  "formula": "I_j = s − (1 ÷ K) × sum over k = 1..K of s_(k, j)",
+  "meaning": "s is the model's score (accuracy, R squared, AUC) on held-out data; s_(k, j) is the score after randomly shuffling feature j's column, repeat k of K; I_j is the drop, so features the model relies on show big drops. Variant: mean decrease in impurity (MDI) for trees sums the Gini or variance decreases of every split on feature j, weighted by the fraction of samples reaching it (fast but biased toward many-valued features).",
+  "used_for": "Model debugging and explanation for tabular models (scikit-learn permutation_importance, random-forest feature_importances_), checks for leakage. Book: Chapter 10 (feature importance, named in random forests).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-shap",
+  "name": "Shapley values for feature attribution (SHAP)",
+  "formula": "φ_j = sum over subsets S of features not containing j of [|S|! × (p − |S| − 1)! ÷ p!] × [v(S with j) − v(S)] ; f(x) = φ_0 + sum over j of φ_j",
+  "meaning": "p is the number of features; S is a subset of the other features and |S| its size; ! is the factorial; v(S) is the model's expected output when only the features in S are known (others averaged out); φ_j (phi) is feature j's fair share of the prediction; φ_0 is the average prediction. The weights average j's marginal contribution over every order in which features could be added. KernelSHAP approximates it by sampling; TreeSHAP computes it exactly for tree ensembles in polynomial time.",
+  "used_for": "The standard explanation tool for gradient-boosted and other tabular models (the shap library, XGBoost and LightGBM pred_contribs), regulated credit and insurance decisions; Shapley-style attributions are also used for data valuation (Data Shapley). Interpretability methods for neural networks are covered in the alignment section. Book: Chapter 10 (SHAP, in random forests), Chapter 48 (Shapley values from game theory).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-knn",
+  "name": "k-nearest neighbors prediction",
+  "formula": "classification: y_hat = most common label among the k training points closest to x ; regression: y_hat = (1 ÷ k) × sum over i in N_k(x) of y_i ; distance-weighted: y_hat = sum of (y_i ÷ d_i) ÷ sum of (1 ÷ d_i)",
+  "meaning": "N_k(x) is the set of the k nearest training points under a distance d (usually Euclidean); d_i is the distance to neighbor i; k is a hyperparameter chosen by cross-validation. Curse of dimensionality: to capture a fraction r of uniformly spread data in d dimensions a cube needs edge length r^(1 ÷ d) (for r = 0.01 and d = 10, about 0.63 of the full range), so 'nearest' neighbors stop being near.",
+  "used_for": "Recommendation by similar users or items, anomaly scores, few-shot classification on embeddings, kNN-LM and retrieval-based models (vector search is approximate kNN). Book: Chapter 10 (k-nearest neighbors: you are like your neighbors).",
+  "tier": "core"
+ },
+ {
+  "id": "cml-minkowski",
+  "name": "Distance metrics (Minkowski family, Manhattan, Euclidean, Chebyshev, Hamming)",
+  "formula": "d_p(x, z) = (sum over j of |x_j − z_j|^p)^(1 ÷ p) ; p = 1 Manhattan, p = 2 Euclidean, p → infinity Chebyshev max over j of |x_j − z_j| ; Hamming = number of positions j where x_j ≠ z_j",
+  "meaning": "x and z are two vectors with components x_j and z_j; p ≥ 1 picks the member of the family; |...| is absolute value. Euclidean distance is Appendix B's length of the difference. Hamming distance applies to binary codes and strings of equal length. Squared Euclidean (no square root) is what k-means minimizes.",
+  "used_for": "k-NN, clustering, vector databases (L2 and inner-product indexes in FAISS, pgvector), binary-quantized embedding search (Hamming), error-correcting codes. Book: Appendix B (distance); Chapter 10 (k-nearest neighbors).",
+  "tier": "core"
+ },
+ {
+  "id": "cml-mahalanobis",
+  "name": "Mahalanobis distance",
+  "formula": "d_M(x) = sqrt((x − μ)^T × Σ^(−1) × (x − μ))",
+  "meaning": "μ (mu) is the mean vector of a distribution; Σ (Sigma) its covariance matrix and Σ^(−1) the inverse; T is transpose. It measures distance in units of standard deviation along each correlated direction; with Σ = identity it is Euclidean distance; in one dimension it is the absolute z-score.",
+  "used_for": "Multivariate anomaly detection, out-of-distribution detection on network features (the Mahalanobis OOD detector), Gaussian classifiers, chemometrics. Book: only here (the z-score is in Appendix B and Chapter 10's anomaly detection).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-jaccard",
+  "name": "Jaccard similarity (and intersection over union)",
+  "formula": "J(A, B) = |A ∩ B| ÷ |A ∪ B|",
+  "meaning": "A and B are sets (of shingles, words, items or pixels); |A ∩ B| counts elements in both; |A ∪ B| counts elements in either. J is 1 for identical sets and 0 for disjoint ones; Jaccard distance = 1 − J. Intersection over union (IoU) is the same formula applied to the areas of two boxes or masks.",
+  "used_for": "Near-duplicate detection in pretraining data pipelines (pairs above a threshold such as 0.8 are treated as duplicates), set-based recommendation similarity, and IoU in object detection and segmentation. Book: Chapter 19 (deduplication, Jaccard similarity worked out: 4 ÷ 6 = 0.67), Chapter 45 (IoU).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-minhash-lsh",
+  "name": "MinHash and locality-sensitive hashing",
+  "formula": "P(minhash(A) = minhash(B)) = J(A, B) ; with b bands of r hashes each, P(pair becomes a candidate) = 1 − (1 − J^r)^b ; random-hyperplane (SimHash) LSH: P(sign(v · x) = sign(v · y)) = 1 − θ ÷ π",
+  "meaning": "minhash(A) is the smallest hash value over the elements of set A under one random hash function, so two sets share it with probability equal to their Jaccard similarity J; signatures use many such hashes. Banding groups the signature into b bands of r rows; pairs that agree on any whole band become candidates, giving an S-shaped curve with threshold near (1 ÷ b)^(1 ÷ r). For SimHash, v is a random vector and θ (theta) is the angle between vectors x and y, so the bit agreement estimates cosine similarity.",
+  "used_for": "Fuzzy deduplication of web-scale pretraining corpora (MinHash LSH in pipelines such as Hugging Face's FineWeb and NVIDIA NeMo Curator), plagiarism and near-duplicate search; SimHash for web-page dedup and early approximate vector search. Book: Chapter 19 (near-duplicate detection, MinHash).",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-feature-scaling",
+  "name": "Feature scaling (standardization and min-max)",
+  "formula": "standardized x' = (x − μ) ÷ σ ; min-max x' = (x − min) ÷ (max − min)",
+  "meaning": "μ and σ are the feature's mean and standard deviation on the training set; min and max are its smallest and largest training values. Standardization gives mean 0 and standard deviation 1 (the z-score of Appendix B); min-max maps the training range to 0 to 1. Statistics must come from training data only, or test information leaks in. Variant: robust scaling with median and interquartile range.",
+  "used_for": "Required before k-NN, SVMs, PCA, k-means and regularized linear models (scikit-learn StandardScaler, MinMaxScaler); input normalization for neural networks; trees do not need it. Book: Chapter 11 (standardization), Chapter 10.",
+  "tier": "core"
+ },
+ {
+  "id": "cml-kmeans-objective",
+  "name": "k-means objective and Lloyd's update steps",
+  "formula": "J = sum over i of length(x_i − μ_(c_i))^2 ; assign: c_i = argmin over k of length(x_i − μ_k)^2 ; update: μ_k = (1 ÷ n_k) × sum over points i with c_i = k of x_i",
+  "meaning": "x_i is data point i; c_i is the cluster it is assigned to; μ_k (mu) is the center (centroid) of cluster k; length(...)^2 is squared Euclidean distance. Lower J means tighter clusters. Plotting J against k and looking for the bend is the elbow method for choosing k. Lloyd's algorithm: Each point goes to its nearest center (argmin picks the k giving the smallest distance), then each center moves to the mean of its n_k assigned points; repeat until assignments stop changing. Each step can only lower the objective J, so the algorithm converges, but to a local minimum that depends on the start. Mini-batch k-means updates centers from small random batches.",
+  "used_for": "Customer segmentation, color quantization, building the coarse lists of IVF vector indexes and the codebooks of product quantization, clustering embeddings to balance or deduplicate training data. Also: scikit-learn KMeans and MiniBatchKMeans, FAISS k-means for training vector-index codebooks, vector quantization (the codebook update in VQ-VAE tokenizers is an online version). Book: Chapter 10 (clustering: finding groups without answers; the elbow trick), Chapter 8.",
+  "tier": "core"
+ },
+ {
+  "id": "cml-kmeanspp",
+  "name": "k-means++ seeding",
+  "formula": "P(choose x as the next center) = D(x)^2 ÷ sum over all points x' of D(x')^2",
+  "meaning": "D(x) is the distance from point x to the nearest center already chosen; the first center is picked uniformly at random. Far-away points are likely to become centers, which spreads the seeds out and gives an expected objective within a factor of O(log k) of the optimum.",
+  "used_for": "Default initialization in scikit-learn KMeans and most k-means implementations. Book: only here (Chapter 10 says k-means is run several times and the best run kept).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-silhouette",
+  "name": "Silhouette score",
+  "formula": "s(i) = (b(i) − a(i)) ÷ max(a(i), b(i))",
+  "meaning": "a(i) is the average distance from point i to the other points in its own cluster; b(i) is the average distance from i to the points of the nearest other cluster. s(i) runs from −1 (probably in the wrong cluster) through 0 (on a border) to 1 (well clustered); the mean over all points scores a clustering and helps choose k. Related internal indexes: Davies-Bouldin, Calinski-Harabasz.",
+  "used_for": "Choosing the number of clusters and comparing clusterings (scikit-learn silhouette_score), for example when clustering embeddings or users. Book: only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-linkage",
+  "name": "Hierarchical clustering linkage (single, complete, average, Ward)",
+  "formula": "single: d(A, B) = min over a in A, b in B of d(a, b) ; complete: max over a, b of d(a, b) ; average: mean over all pairs of d(a, b) ; Ward: increase in squared error = (n_A × n_B ÷ (n_A + n_B)) × length(μ_A − μ_B)^2",
+  "meaning": "A and B are two clusters with n_A and n_B points and centroids μ_A and μ_B; d(a, b) is the distance between two points. Agglomerative clustering starts with every point alone and repeatedly merges the pair of clusters with the smallest linkage, producing a tree (dendrogram). Single linkage chains, complete linkage makes compact clusters, Ward merges the pair that least increases total within-cluster squared error.",
+  "used_for": "Taxonomies of documents, genes and products; scikit-learn AgglomerativeClustering and SciPy linkage; hierarchical clustering of embeddings for topic discovery and data curation. Book: Chapter 10 (hierarchical clustering).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-gmm",
+  "name": "Gaussian mixture model",
+  "formula": "p(x) = sum over k = 1..K of π_k × N(x given μ_k, Σ_k), with π_k ≥ 0 and sum over k of π_k = 1 ; log-likelihood = sum over i of ln(sum over k of π_k × N(x_i given μ_k, Σ_k))",
+  "meaning": "K is the number of components; π_k (pi) is component k's mixing weight; N(x given μ_k, Σ_k) is the multivariate normal density with mean μ_k and covariance Σ_k; x_i are the data points. Each cluster is a bell curve, and points get soft (probabilistic) memberships. Variants restrict Σ_k to diagonal, spherical or shared forms.",
+  "used_for": "Soft clustering, density estimation and anomaly scores; classic speaker recognition (GMM-UBM) and the acoustic models of pre-neural speech recognizers (GMM-HMM); background subtraction in video. Book: Chapter 10 (Gaussian mixture model).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-em",
+  "name": "Expectation-maximization (EM) for Gaussian mixtures",
+  "formula": "E-step: r_ik = π_k × N(x_i given μ_k, Σ_k) ÷ sum over j of π_j × N(x_i given μ_j, Σ_j) ; M-step: N_k = sum over i of r_ik, μ_k = (1 ÷ N_k) × sum over i of r_ik × x_i, Σ_k = (1 ÷ N_k) × sum over i of r_ik × (x_i − μ_k) × (x_i − μ_k)^T, π_k = N_k ÷ n",
+  "meaning": "r_ik is the responsibility, the probability that component k generated point i; N_k is the effective number of points in component k; n is the number of points; T is transpose. General EM: E-step computes Q(θ given θ_old) = E over z ~ P(z given x, θ_old) of [ln P(x, z given θ)] for hidden variables z, M-step sets θ to the argmax of Q; the data log-likelihood never decreases. k-means is the limit of EM with hard assignments and equal spherical covariances.",
+  "used_for": "Fitting mixtures (scikit-learn GaussianMixture), missing-data problems, the Baum-Welch algorithm for HMMs, the Dawid-Skene model for aggregating noisy crowd labels; the variational lower bound used by VAEs generalizes the same bound. Book: only here (Chapter 10 describes soft assignments in words).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-kde",
+  "name": "Kernel density estimation",
+  "formula": "p_hat(x) = (1 ÷ (n × h)) × sum over i = 1..n of K((x − x_i) ÷ h)",
+  "meaning": "x_i are the n data points; h > 0 is the bandwidth (smoothing width); K is a kernel that integrates to 1, usually the standard normal density. Each point contributes a small bump and the bumps are summed. Silverman's rule of thumb for one dimension: h ≈ 1.06 × σ × n^(−1 ÷ 5), with σ the sample standard deviation. In d dimensions divide by h^d.",
+  "used_for": "Smoothed histograms in data analysis (seaborn kdeplot), density-based anomaly detection, the l(x) and g(x) densities inside the TPE hyperparameter optimizer. Book: only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-pca",
+  "name": "Principal component analysis (projection and explained variance)",
+  "formula": "Σ = (1 ÷ n) × X_c^T × X_c ; Σ × v_j = λ_j × v_j ; z = V_k^T × (x − μ) ; explained variance ratio of component j = λ_j ÷ sum over all l of λ_l",
+  "meaning": "X_c is the n × d data matrix with each column's mean μ subtracted; Σ is the covariance matrix; v_j are its eigenvectors (the principal directions) and λ_j (lambda) their eigenvalues (the variance along each), sorted largest first; V_k is the d × k matrix of the top k eigenvectors; z is the k-number summary of point x, and x is reconstructed approximately as μ + V_k × z. Computed in practice from the SVD X_c = U × S × V^T, with λ_j = s_j^2 ÷ n (or ÷ (n − 1)). Keep enough components to explain, say, 95% of variance.",
+  "used_for": "Compressing features, visualizing embeddings and activations, whitening, noise reduction; PCA of LLM activations and of weight updates in interpretability and fine-tuning analysis. Book: Chapter 10 (shrinking many columns into a few: PCA, t-SNE and UMAP), Chapter 14.",
+  "tier": "core"
+ },
+ {
+  "id": "cml-tsne",
+  "name": "t-SNE (t-distributed stochastic neighbor embedding)",
+  "formula": "p_(j given i) = exp(−length(x_i − x_j)^2 ÷ (2 × σ_i^2)) ÷ sum over k ≠ i of exp(−length(x_i − x_k)^2 ÷ (2 × σ_i^2)) ; p_ij = (p_(j given i) + p_(i given j)) ÷ (2n) ; q_ij = (1 + length(y_i − y_j)^2)^(−1) ÷ sum over k ≠ l of (1 + length(y_k − y_l)^2)^(−1) ; cost = KL(P || Q) = sum over i ≠ j of p_ij × ln(p_ij ÷ q_ij)",
+  "meaning": "x_i are the high-dimensional points and y_i their 2-D or 3-D map positions; σ_i is chosen per point so the perplexity 2^(entropy of P_i) matches a user setting (typically 5 to 50); the heavy-tailed Student-t similarity q_ij in the map lets clusters spread apart. The positions y are moved by gradient descent to minimize the KL divergence between the two neighbor distributions.",
+  "used_for": "Visualizing embeddings, word vectors, single-cell gene-expression data and network activations (scikit-learn TSNE, openTSNE). Distances between far-apart clusters in the picture are not meaningful. Book: Chapter 10 (t-SNE), Chapter 14.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-umap",
+  "name": "UMAP (uniform manifold approximation and projection)",
+  "formula": "v_(j given i) = exp(−(d(x_i, x_j) − ρ_i) ÷ σ_i) ; v_ij = v_(j given i) + v_(i given j) − v_(j given i) × v_(i given j) ; w_ij = (1 + a × length(y_i − y_j)^(2b))^(−1) ; loss = sum over i, j of [v_ij × ln(v_ij ÷ w_ij) + (1 − v_ij) × ln((1 − v_ij) ÷ (1 − w_ij))]",
+  "meaning": "d is the input distance; ρ_i (rho) is the distance from x_i to its nearest neighbor; σ_i is set so each point's similarities sum to log2 of the neighbor count; v_ij are high-dimensional edge weights over a k-nearest-neighbor graph; y_i are low-dimensional positions; a and b are constants fitted from the min_dist setting; the loss is a fuzzy-set cross-entropy optimized by stochastic gradient descent with negative sampling.",
+  "used_for": "Faster, more global-structure-preserving alternative to t-SNE for visualizing embeddings and single-cell data (umap-learn, RAPIDS cuML); also used as a reduction step before clustering embeddings (BERTopic). Book: Chapter 10 (UMAP), Chapter 14.",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-naive-bayes",
+  "name": "Naive Bayes classifier",
+  "formula": "y_hat = argmax over classes c of [ln P(c) + sum over j of ln P(x_j given c)]",
+  "meaning": "P(c) is the prior (share of class c in training data); P(x_j given c) is the probability of feature j's value within class c; the 'naive' assumption is that features are independent given the class, so the likelihood is a product, written as a sum of logs to avoid underflow. Variants: multinomial (word counts), Bernoulli (word present or absent), Gaussian (P(x_j given c) is a normal density with the class's mean and variance for that feature).",
+  "used_for": "Spam filtering, quick text-classification baselines, language identification, simple medical diagnosis models (scikit-learn MultinomialNB, GaussianNB). Book: Chapter 10 (naive Bayes: adding up the clues); Bayes' rule is in Appendix B.",
+  "tier": "core"
+ },
+ {
+  "id": "cml-laplace-smoothing",
+  "name": "Laplace (additive) smoothing",
+  "formula": "P(w given c) = (count(w, c) + α) ÷ (sum over words w' of count(w', c) + α × V)",
+  "meaning": "count(w, c) is how often word or feature value w appears in class c; V is the vocabulary size (number of possible values); α (alpha) > 0 is a pseudo-count: α = 1 is Laplace or add-one smoothing, 0 < α < 1 is Lidstone smoothing. It prevents a never-seen word from forcing a probability of zero. The same idea with a Dirichlet prior appears in n-gram language models.",
+  "used_for": "Naive Bayes text classifiers (scikit-learn alpha parameter), n-gram language models, smoothing click-through estimates for items with few impressions. Book: Chapter 10 (Laplace smoothing in naive Bayes).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-isolation-forest",
+  "name": "Isolation forest anomaly score",
+  "formula": "s(x, n) = 2^(−E[h(x)] ÷ c(n)), with c(n) = 2 × H(n − 1) − 2 × (n − 1) ÷ n and H(i) ≈ ln(i) + 0.5772",
+  "meaning": "h(x) is the number of random splits needed to isolate point x in a random tree, and E[h(x)] its average over the forest; n is the subsample size used per tree; c(n) is the average path length of an unsuccessful search in a binary search tree, used to normalize; H(i) is the harmonic number and 0.5772 is the Euler-Mascheroni constant. Anomalies are isolated quickly, so s close to 1 means anomalous and s well below 0.5 means normal.",
+  "used_for": "Fraud, intrusion and sensor-fault detection; screening logs and metrics; scikit-learn IsolationForest. Book: Chapter 10 (anomaly detection: spotting the odd one out).",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-drift",
+  "name": "Drift statistics: population stability index and Kolmogorov-Smirnov",
+  "formula": "PSI = sum over bins b of (a_b − e_b) × ln(a_b ÷ e_b) ; KS statistic D = max over x of |F_1(x) − F_2(x)|",
+  "meaning": "e_b is the share of the reference (training-time) data falling in bin b and a_b the share of current production data in the same bin; common rule of thumb: PSI below 0.1 is stable, 0.1 to 0.25 a moderate shift, above 0.25 a major shift. F_1 and F_2 are the two samples' cumulative distribution functions; D is their largest vertical gap, compared with a critical value that shrinks with sample size. Related: Jensen-Shannon divergence and Wasserstein distance between feature distributions.",
+  "used_for": "Production model monitoring for data drift (credit-risk model validation, Evidently, cloud monitoring services); the KS statistic is also a standard separation metric for credit scorecards. Book: Chapter 10 (monitoring: what to watch and how to spot drift; population stability index, Kolmogorov-Smirnov).",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-class-imbalance",
+  "name": "Class weights and SMOTE for imbalanced data",
+  "formula": "balanced weight w_c = n ÷ (K × n_c) ; weighted loss = sum over i of w_(y_i) × loss_i ; SMOTE synthetic point x_new = x_i + u × (x_nn − x_i), u uniform between 0 and 1",
+  "meaning": "n is the number of training examples, K the number of classes and n_c the count of class c, so rare classes get larger weights; w_(y_i) is the weight of example i's class. SMOTE (synthetic minority over-sampling) creates a new minority example on the line between a minority point x_i and one of its k nearest minority neighbors x_nn. Alternatives: undersampling the majority class, focal loss, adjusting the decision threshold.",
+  "used_for": "Fraud, disease and defect detection where positives are rare (scikit-learn class_weight='balanced', imbalanced-learn SMOTE, XGBoost scale_pos_weight). Book: Chapter 9 (class weights, in precision or recall: which matters more).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-bias-variance",
+  "name": "Bias-variance decomposition",
+  "formula": "E[(y − f_hat(x))^2] = (E[f_hat(x)] − f(x))^2 + E[(f_hat(x) − E[f_hat(x)])^2] + σ^2",
+  "meaning": "f(x) is the true function and y = f(x) + noise; f_hat is the model learned from a random training set; E[...] averages over training sets (and noise); the first term is squared bias (systematic error), the second is variance (sensitivity to the particular training set), σ^2 is irreducible noise. Simple models have high bias, flexible ones high variance. Deep networks can show double descent, where test error falls again past the interpolation point.",
+  "used_for": "The central explanation of underfitting versus overfitting, regularization and ensembling. Book: Chapter 9 (bias and variance: the dartboard; a twist: double descent).",
+  "tier": "core"
+ },
+ {
+  "id": "cml-cross-validation",
+  "name": "k-fold cross-validation estimate",
+  "formula": "CV_K = (1 ÷ K) × sum over k = 1..K of error_k",
+  "meaning": "The data are split into K folds; error_k is the error of a model trained on the other K − 1 folds and tested on fold k. K = 5 or 10 is typical; K = n is leave-one-out. Stratified folds keep class shares equal; grouped folds keep related rows together; time series use forward-chaining (walk-forward) splits. Nested cross-validation tunes hyperparameters inside each outer fold. For linear smoothers leave-one-out has a shortcut: (1 ÷ n) × sum of ((y_i − y_hat_i) ÷ (1 − h_ii))^2, with h_ii the leverage.",
+  "used_for": "Model and hyperparameter selection on small and medium datasets (scikit-learn cross_val_score, GridSearchCV). Book: Chapter 9 (cross-validation: don't trust one lucky split; time series: never train on the future).",
+  "tier": "core"
+ },
+ {
+  "id": "cml-aic-bic",
+  "name": "Akaike and Bayesian information criteria (AIC, BIC)",
+  "formula": "AIC = 2 × k − 2 × ln(L_hat) ; BIC = k × ln(n) − 2 × ln(L_hat)",
+  "meaning": "k is the number of fitted parameters; L_hat is the maximized likelihood of the model on the data; n is the number of data points. Lower is better; both reward fit and penalize complexity, BIC more strongly for large n. AICc adds a small-sample correction 2k(k + 1) ÷ (n − k − 1).",
+  "used_for": "Choosing the number of mixture components, ARIMA orders (auto.arima, statsmodels) and regression variables without a held-out set. Book: only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-generalization-bound",
+  "name": "Hoeffding test-set bound and uniform convergence (finite class, VC dimension)",
+  "formula": "single model on n test examples: P(|error_test − error_true| > ε) ≤ 2 × exp(−2 × n × ε^2) ; finite class H with m training examples, with probability at least 1 − δ for every h in H: |error_true(h) − error_train(h)| ≤ sqrt((1 ÷ (2m)) × ln(2 × |H| ÷ δ))",
+  "meaning": "H is the set of models (hypotheses) being chosen from and |H| its size; m is the number of training examples; δ is the failure probability; error_train is training error and error_true the true error. It follows from Hoeffding's inequality plus the union bound. For infinite classes |H| is replaced via the VC dimension d: the gap is of order sqrt((d ÷ m) × ln(m ÷ d) + (1 ÷ m) × ln(1 ÷ δ)). Implication: sample complexity grows with ln|H| or with d. Test-set case: error_test is the error rate measured on n independent test examples; error_true is the model's true error rate on the whole distribution; ε (epsilon) is the allowed gap; δ (delta) is the allowed failure probability. Holds for any distribution of 0/1 outcomes; tighter, distribution-aware intervals use the normal approximation (standard error) or Wilson interval.",
+  "used_for": "Learning-theory foundation for why more data and simpler model classes generalize (CS229 learning theory); modern deep networks violate its worst-case predictions, which motivated PAC-Bayes and double-descent research. Also: Sizing held-out test sets and evaluation suites; the starting point of PAC learning theory (CS229). Book: only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-conformal",
+  "name": "Split conformal prediction",
+  "formula": "q_hat = the ceil((n + 1) × (1 − α)) ÷ n empirical quantile of the calibration scores s_1, ..., s_n ; prediction set C(x) = all labels y with s(x, y) ≤ q_hat ; guarantee P(y_true in C(x)) ≥ 1 − α",
+  "meaning": "s(x, y) is a nonconformity score, for example 1 − p_hat(y given x) for a classifier or |y − y_hat(x)| for a regressor (which gives the interval y_hat ± q_hat); s_i are scores on n held-out calibration examples; α (alpha) is the allowed miss rate; ceil rounds up. The coverage guarantee needs only that calibration and test data are exchangeable, not that the model is correct.",
+  "used_for": "Distribution-free uncertainty for classifiers and regressors (MAPIE, crepes), medical and industrial prediction sets; research on conformal factuality and abstention for LLM outputs. Book: only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-active-learning",
+  "name": "Uncertainty sampling for active learning",
+  "formula": "least confident: x* = argmax over unlabeled x of (1 − max over y of P(y given x)) ; margin: x* = argmin over x of (P(y_1 given x) − P(y_2 given x)) ; entropy: x* = argmax over x of −sum over y of P(y given x) × ln P(y given x)",
+  "meaning": "P(y given x) is the current model's predicted probability; y_1 and y_2 are the two most probable labels; x* is the next example sent to a human labeler. All three pick the examples the model is least sure about. Variants: query-by-committee (disagreement between models), expected model change, diversity-based batch selection.",
+  "used_for": "Cutting labeling cost in data-labeling pipelines (Label Studio, Prodigy, Snorkel workflows) and selecting which model outputs to send for human review. Book: only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-tabpfn",
+  "name": "Prior-data fitted network objective (tabular foundation models)",
+  "formula": "minimize over θ: E over synthetic datasets D drawn from a prior of [−ln q_θ(y_test given x_test, D_train)]",
+  "meaning": "A Transformer q_θ with parameters θ reads a whole small training set D_train (rows with labels) plus a test row x_test in one forward pass and outputs a predicted distribution over y_test; it is pretrained on millions of synthetic datasets sampled from a prior over data-generating processes (for example random causal graphs). Minimizing this loss makes q_θ approximate the Bayesian posterior predictive P(y_test given x_test, D_train), so prediction on a new table needs no gradient training.",
+  "used_for": "TabPFN (Hollmann et al.; v2 published in Nature in January 2025) and similar tabular foundation models that compete with tuned gradient boosting on small and medium tables. Book: Chapter 10 (the 2025-26 twist: foundation models for spreadsheets).",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-accuracy",
+  "name": "Accuracy (and balanced, top-k and chance-normalized accuracy)",
+  "formula": "accuracy = (TP + TN) ÷ (TP + TN + FP + FN) ; balanced accuracy = (TPR + TNR) ÷ 2 ; chance-normalized = (accuracy − chance) ÷ (1 − chance)",
+  "meaning": "TP true positives, TN true negatives, FP false positives, FN false negatives (the four confusion-matrix cells); TPR is recall and TNR specificity. Error rate = 1 − accuracy. Balanced accuracy averages per-class recall (for K classes, the mean of the K recalls) so a majority-class guesser scores 1 ÷ K. Top-k accuracy counts a hit if the true class is among the k highest-scored. chance is the score of random guessing (0.25 on four-option multiple choice).",
+  "used_for": "The headline score of most benchmarks (MMLU-style multiple choice, GPQA, ImageNet top-1 and top-5); misleading on imbalanced data. Some leaderboards normalize multiple-choice scores so random guessing maps to 0 (the Hugging Face Open LLM Leaderboard v2 did this). Book: Chapter 9 (the confusion matrix: counting every kind of mistake).",
+  "tier": "core"
+ },
+ {
+  "id": "cml-precision",
+  "name": "Precision (positive predictive value)",
+  "formula": "precision = TP ÷ (TP + FP)",
+  "meaning": "TP is the number of true positives and FP the number of false positives: of everything the model flagged as positive, the share that really was. Undefined when nothing is flagged (libraries return 0 or warn). False discovery rate = 1 − precision.",
+  "used_for": "Spam and fraud alerts, search results, safety classifiers (how many blocked prompts were truly harmful), retrieval precision@k. Book: Chapter 9 (a worked medical test; precision or recall: which matters more?).",
+  "tier": "core"
+ },
+ {
+  "id": "cml-recall",
+  "name": "Recall (sensitivity, true positive rate)",
+  "formula": "recall = TPR = TP ÷ (TP + FN)",
+  "meaning": "TP is true positives and FN false negatives: of all real positives, the share the model caught. Miss rate (false negative rate) = 1 − recall. Recall is the y-axis of the ROC curve.",
+  "used_for": "Disease screening, fraud and safety detection where misses are costly; retrieval recall@k in RAG. Book: Chapter 9 (the confusion matrix; a worked medical test).",
+  "tier": "core"
+ },
+ {
+  "id": "cml-specificity",
+  "name": "Specificity (true negative rate) and false positive rate",
+  "formula": "specificity = TNR = TN ÷ (TN + FP) ; FPR = FP ÷ (FP + TN) = 1 − specificity",
+  "meaning": "TN is true negatives and FP false positives: specificity is the share of real negatives correctly cleared; the false positive rate is the share of negatives wrongly flagged and is the x-axis of the ROC curve.",
+  "used_for": "Medical test reporting (sensitivity and specificity pairs), over-refusal rates of safety filters (benign prompts wrongly blocked), alert fatigue in security monitoring. Book: Chapter 9 (a worked medical test).",
+  "tier": "core"
+ },
+ {
+  "id": "cml-f1",
+  "name": "F1 score and F-beta",
+  "formula": "F1 = 2 × precision × recall ÷ (precision + recall) = 2 × TP ÷ (2 × TP + FP + FN) ; F_β = (1 + β^2) × precision × recall ÷ (β^2 × precision + recall)",
+  "meaning": "F1 is the harmonic mean of precision and recall, so it is high only when both are; β (beta) > 1 weights recall more (F2), β < 1 weights precision more (F0.5). TP, FP, FN are confusion-matrix counts.",
+  "used_for": "Information extraction, named-entity recognition, imbalanced classification, QA token F1 (SQuAD, DROP), many shared tasks. Book: Chapter 9 (precision or recall; F1 named there).",
+  "tier": "core"
+ },
+ {
+  "id": "cml-confusion-rates",
+  "name": "Other confusion-matrix rates and positive predictive value from prevalence",
+  "formula": "NPV = TN ÷ (TN + FN) ; FNR = FN ÷ (FN + TP) ; FDR = FP ÷ (FP + TP) ; prevalence = (TP + FN) ÷ total ; PPV = (sensitivity × prevalence) ÷ (sensitivity × prevalence + (1 − specificity) × (1 − prevalence))",
+  "meaning": "NPV (negative predictive value) is the share of predicted negatives that really are negative; FNR (false negative rate, miss rate); FDR (false discovery rate); prevalence is the base rate of positives. The PPV formula is Bayes' rule: the same test has much lower precision when positives are rare. Likelihood ratios LR+ = sensitivity ÷ (1 − specificity) and LR− = (1 − sensitivity) ÷ specificity are related clinical summaries.",
+  "used_for": "Medical AI and screening tools (why a 99%-specific test still gives mostly false alarms on a rare disease), fraud and content-moderation planning, fairness audits comparing error rates across groups (equalized odds compares TPR and FPR). Book: Chapter 9 (a worked medical test), Appendix B (Bayes with natural frequencies).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-macro-micro",
+  "name": "Macro, micro and weighted averaging for multi-class metrics",
+  "formula": "macro-F1 = (1 ÷ K) × sum over classes k of F1_k ; micro-F1 = F1 computed from TP, FP, FN summed over all classes ; weighted-F1 = sum over k of (n_k ÷ n) × F1_k",
+  "meaning": "K is the number of classes; F1_k is class k's F1 treating it as positive and the rest as negative (one-vs-rest); n_k is the number of true examples of class k (its support). Macro treats every class equally (rare classes count as much as common ones); micro treats every example equally and, for single-label problems, equals accuracy. The same averaging applies to precision, recall and AUC.",
+  "used_for": "Multi-class and multi-label classification reports (scikit-learn classification_report, average='macro'), NER and intent-detection benchmarks. Book: Chapter 9 (more than two classes).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-mcc",
+  "name": "Matthews correlation coefficient",
+  "formula": "MCC = (TP × TN − FP × FN) ÷ sqrt((TP + FP) × (TP + FN) × (TN + FP) × (TN + FN))",
+  "meaning": "TP, TN, FP, FN are confusion-matrix counts. MCC is the correlation between predicted and true binary labels: 1 perfect, 0 no better than chance, −1 total disagreement. It uses all four cells, so it stays informative on imbalanced data where accuracy and F1 can mislead.",
+  "used_for": "Imbalanced binary classification in bioinformatics and defect prediction; reported for the CoLA task in the GLUE benchmark. Book: only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-kappa",
+  "name": "Cohen's kappa (agreement beyond chance)",
+  "formula": "κ = (p_o − p_e) ÷ (1 − p_e) ; p_e = sum over categories k of (share of rater 1 choosing k) × (share of rater 2 choosing k)",
+  "meaning": "p_o is the observed fraction of items on which two raters (or a model and a human) agree; p_e is the agreement expected by chance from each rater's label frequencies; κ (kappa) is 1 for perfect agreement and 0 for chance-level. Variants: weighted kappa for ordered labels, Fleiss' kappa and Krippendorff's alpha for more than two raters.",
+  "used_for": "Measuring inter-annotator agreement in data labeling and preference collection, and agreement between LLM judges and human raters. Book: Chapter 11 (Cohen's kappa worked: (0.85 − 0.50) ÷ (1 − 0.50) = 0.70).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-roc-auc",
+  "name": "ROC curve and area under it (AUC)",
+  "formula": "ROC = the points (FPR(t), TPR(t)) as the threshold t sweeps ; AUC = P(score of a random positive > score of a random negative) (ties count 1 ÷ 2) = U ÷ (n_pos × n_neg)",
+  "meaning": "TPR(t) and FPR(t) are the true and false positive rates when everything scoring above threshold t is called positive; n_pos and n_neg are the numbers of positives and negatives; U is the Mann-Whitney U statistic (the count of correctly ordered positive-negative pairs). AUC is 1 for perfect ranking, 0.5 for random. Computed in practice with the trapezoid rule over the curve. Credit scoring's Gini coefficient = 2 × AUC − 1.",
+  "used_for": "Threshold-free comparison of classifiers and detectors: medical diagnostics, fraud, ads click models, safety classifiers, linear probes and deception or jailbreak detectors in interpretability research, membership-inference attacks. Book: Chapter 9 (thresholds, ROC curves and AUC).",
+  "tier": "core"
+ },
+ {
+  "id": "cml-average-precision",
+  "name": "Precision-recall curve, average precision and mean average precision",
+  "formula": "AP = sum over n of (R_n − R_(n−1)) × P_n ; for a ranked list: AP = (1 ÷ number of relevant items) × sum over ranks k of precision@k × rel(k) ; mAP = mean of AP over queries or classes",
+  "meaning": "P_n and R_n are precision and recall at the n-th threshold (or rank cut-off); rel(k) is 1 if the item at rank k is relevant and 0 otherwise. AP summarizes the precision-recall curve; it is more informative than ROC AUC when positives are rare. Object detection's mAP additionally requires a predicted box to overlap a true box with IoU above a threshold (COCO averages over IoU 0.5 to 0.95).",
+  "used_for": "Rare-event classification, information retrieval evaluation (TREC), object detection leaderboards (COCO mAP); scikit-learn average_precision_score. Book: Chapter 9 (when positives are rare: precision-recall curves).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-brier",
+  "name": "Brier score",
+  "formula": "BS = (1 ÷ n) × sum over i of (p_i − y_i)^2 ; multi-class: (1 ÷ n) × sum over i of sum over classes k of (p_ik − y_ik)^2",
+  "meaning": "p_i is the forecast probability of the event for case i; y_i is 1 if it happened and 0 if not; y_ik is 1 only for the true class. Lower is better; always guessing 0.5 scores 0.25. Murphy's decomposition: BS = reliability − resolution + uncertainty, separating calibration from discrimination.",
+  "used_for": "Weather and geopolitical forecasting, forecasting tournaments and AI forecasting benchmarks such as ForecastBench, calibration checks of risk models. Book: Chapters 65 and 66 (Brier score in forecasting).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-ece",
+  "name": "Expected calibration error (ECE)",
+  "formula": "ECE = sum over bins b = 1..B of (n_b ÷ n) × |accuracy(b) − confidence(b)| ; maximum calibration error MCE = max over b of |accuracy(b) − confidence(b)|",
+  "meaning": "Predictions are grouped into B bins by stated confidence (often 10 or 15 equal-width bins); n_b is the number in bin b and n the total; accuracy(b) is the fraction correct in the bin and confidence(b) the average stated confidence. A perfectly calibrated model has ECE 0 (its reliability diagram lies on the diagonal). Variants: adaptive (equal-mass) bins, classwise ECE.",
+  "used_for": "Calibration studies of neural networks (Guo et al., 2017) and of LLMs, including the GPT-4 technical report's comparison of calibration before and after post-training and Anthropic's 2022 'Language Models (Mostly) Know What They Know'. Book: Chapter 8 (calibration: what '80% sure' should mean).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-recalibration",
+  "name": "Platt scaling and temperature scaling (recalibration)",
+  "formula": "Platt: P(y = 1 given s) = sigmoid(a × s + b) ; temperature scaling: p = softmax(z ÷ T)",
+  "meaning": "s is a model's raw score; a and b are fit by minimizing log loss on a held-out calibration set; z is the vector of logits of a multi-class model; T > 0 is a single temperature fit the same way (T > 1 softens overconfident predictions; the predicted class never changes). Isotonic regression fits a non-decreasing step function instead, more flexible but needing more data.",
+  "used_for": "Calibrating SVMs and boosted trees (scikit-learn CalibratedClassifierCV), deep classifiers (Guo et al., 2017), and the confidence scores of LLM-based classifiers and judges. Book: Chapter 8 (calibration; recalibration mentioned), Chapter 9.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-mae",
+  "name": "Mean absolute error (MAE)",
+  "formula": "MAE = (1 ÷ n) × sum over i of |y_i − y_hat_i|",
+  "meaning": "y_i is the true value and y_hat_i the prediction for case i; |...| is absolute value; n is the number of cases. MAE is in the original units and less sensitive to outliers than squared error; the median minimizes it. The Huber loss blends the two: (1 ÷ 2) × e^2 when |e| ≤ δ, else δ × (|e| − δ ÷ 2), for error e and threshold δ.",
+  "used_for": "Forecasting, demand and price prediction, robust regression; the MAE (L1) loss trains some regression heads. Book: Chapter 9 (measuring models that predict numbers), Chapter 8.",
+  "tier": "core"
+ },
+ {
+  "id": "cml-rmse",
+  "name": "Root mean squared error (RMSE)",
+  "formula": "RMSE = sqrt((1 ÷ n) × sum over i of (y_i − y_hat_i)^2)",
+  "meaning": "y_i true values, y_hat_i predictions, n the number of cases. RMSE is the square root of MSE, so it is back in the original units; it punishes large errors more than MAE and is always at least as large as MAE.",
+  "used_for": "Regression benchmarks, rating prediction in recommenders (the Netflix Prize was scored on RMSE), weather and energy forecasting. Book: Chapter 9 (measuring models that predict numbers), Chapter 51.",
+  "tier": "core"
+ },
+ {
+  "id": "cml-r2",
+  "name": "Coefficient of determination (R squared) and adjusted R squared",
+  "formula": "R^2 = 1 − SS_res ÷ SS_tot, with SS_res = sum over i of (y_i − y_hat_i)^2 and SS_tot = sum over i of (y_i − mean y)^2 ; adjusted R^2 = 1 − (1 − R^2) × (n − 1) ÷ (n − p − 1)",
+  "meaning": "SS_res is the model's sum of squared errors; SS_tot is the error of always predicting the mean; R^2 is the share of variance explained (1 perfect, 0 no better than the mean, negative is worse than the mean on test data). n is the number of cases and p the number of predictors; adjusted R^2 penalizes adding predictors. For a straight-line fit on training data R^2 equals the squared correlation, but not in general.",
+  "used_for": "Reporting regression fit in science and business; 'explained variance' of probes, scaling-law fits and reward models. Book: Chapter 9 (R² worked: 1 − 4,900 ÷ 75,000 = 0.935; the RSQ spreadsheet pitfall).",
+  "tier": "core"
+ },
+ {
+  "id": "cml-mape",
+  "name": "Mean absolute percentage error (MAPE) and symmetric MAPE",
+  "formula": "MAPE = (100% ÷ n) × sum over i of |(y_i − y_hat_i) ÷ y_i| ; sMAPE = (100% ÷ n) × sum over i of 2 × |y_i − y_hat_i| ÷ (|y_i| + |y_hat_i|)",
+  "meaning": "y_i true values, y_hat_i forecasts, n cases. MAPE reports error as a percentage of the true value, which business users find intuitive; it explodes when y_i is near zero and penalizes over-forecasts more than under-forecasts. sMAPE (one of several definitions in use) bounds the error.",
+  "used_for": "Demand and sales forecasting reports, energy load forecasting, the M-competitions (M4 used sMAPE). Book: Chapter 9 (MAPE named and given as a spreadsheet formula).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-mase",
+  "name": "Mean absolute scaled error (MASE)",
+  "formula": "MASE = MAE of the forecast ÷ [(1 ÷ (T − m)) × sum over t = m+1..T of |y_t − y_(t−m)|]",
+  "meaning": "The denominator is the in-sample MAE of the seasonal naive forecast (predict the value one season ago), computed on the training series y_1..y_T with season length m (m = 1 for the plain naive forecast). MASE below 1 beats the naive baseline. Scale-free, so it can be averaged across series of different sizes, and defined even when values are zero.",
+  "used_for": "Benchmarks for forecasting models and time-series foundation models (the M4 competition, Chronos Benchmark II, GIFT-Eval report MASE). Book: only here (Chapter 10 shows the seasonal naive baseline).",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-pinball",
+  "name": "Quantile (pinball) loss and weighted quantile loss",
+  "formula": "L_q(y, y_hat_q) = q × max(y − y_hat_q, 0) + (1 − q) × max(y_hat_q − y, 0) ; WQL = (1 ÷ |Q|) × sum over q in Q of [2 × sum over t of L_q(y_t, y_hat_(q,t)) ÷ sum over t of |y_t|]",
+  "meaning": "q between 0 and 1 is the quantile level (0.5 is the median, where the loss is half the absolute error); y_hat_q is the predicted q-quantile; under-prediction costs q per unit and over-prediction (1 − q). Q is the set of quantile levels evaluated. WQL normalizes by the total absolute value of the series and approximates the continuous ranked probability score (CRPS).",
+  "used_for": "Training and evaluating probabilistic forecasters: quantile regression (LightGBM objective='quantile'), Amazon's Chronos-2 (October 2025) is trained with this loss over 21 quantile levels from 0.01 to 0.99, and forecasting benchmarks report WQL or CRPS. Book: only here (Chapter 10 covers time-series foundation models).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-bleu",
+  "name": "BLEU score (machine translation)",
+  "formula": "BLEU = BP × exp(sum over n = 1..4 of (1 ÷ 4) × ln(p_n)) ; BP = 1 if c > r, else exp(1 − r ÷ c) ; p_n = sum of clipped n-gram matches ÷ sum of candidate n-grams",
+  "meaning": "p_n is the modified n-gram precision: each candidate n-gram (run of n words) counts as matched at most as many times as it appears in a reference (clipping); c is the candidate corpus length and r the reference length; BP is the brevity penalty for too-short output. Usually reported times 100 at corpus level with sacreBLEU's standard tokenization.",
+  "used_for": "Machine-translation evaluation since 2002 (WMT shared tasks, model reports); weak at judging meaning, so supplemented by chrF, COMET and human or LLM judgments. Book: Chapter 31 (overlap scores: BLEU for translation), Chapter 54.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-rouge",
+  "name": "ROUGE scores (summarization)",
+  "formula": "ROUGE-N recall = sum of matched n-grams ÷ sum of n-grams in the reference ; ROUGE-L: R_lcs = LCS ÷ m, P_lcs = LCS ÷ k, F_lcs = (1 + β^2) × R_lcs × P_lcs ÷ (R_lcs + β^2 × P_lcs)",
+  "meaning": "Matched n-grams are those shared by candidate and reference summaries; LCS is the length of the longest common subsequence of words; m is the reference length and k the candidate length; β weights recall against precision (often reported as plain F1). ROUGE-1 and ROUGE-2 use unigrams and bigrams; ROUGE-Lsum applies LCS per sentence.",
+  "used_for": "Summarization benchmarks (CNN/DailyMail, XSum) and as a cheap regression check in LLM eval suites; increasingly replaced by LLM-as-judge and embedding similarity. Book: Chapter 31 (ROUGE as BLEU's counterpart for summaries), Chapter 14.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-chrf",
+  "name": "chrF and chrF++ (character n-gram F-score)",
+  "formula": "chrF_β = (1 + β^2) × chrP × chrR ÷ (β^2 × chrP + chrR), with β = 2",
+  "meaning": "chrP and chrR are character n-gram precision and recall (n = 1 to 6, averaged) between a candidate and a reference translation; β = 2 weights recall twice as much as precision. chrF++ also adds word unigrams and bigrams. Works better than BLEU for morphologically rich languages and needs no tokenizer.",
+  "used_for": "Machine-translation evaluation in WMT and in multilingual work such as Meta's NLLB on FLORES-200 (reported with chrF++), alongside learned metrics like COMET. Book: only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-wer",
+  "name": "Word error rate (WER) and character error rate",
+  "formula": "WER = (S + D + I) ÷ N",
+  "meaning": "S, D and I are the numbers of word substitutions, deletions and insertions in the minimum edit (Levenshtein) alignment between the system transcript and the reference; N is the number of words in the reference. It can exceed 100% with many insertions. Character error rate (CER) is the same on characters, used for languages without spaces and for OCR. Text is usually normalized (case, punctuation) first.",
+  "used_for": "Speech recognition benchmarks and products (Whisper, cloud speech APIs, LibriSpeech and Open ASR leaderboards), OCR and handwriting recognition. Book: Chapter 46 (word error rate).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-em-f1-qa",
+  "name": "Exact match and token-level F1 for question answering",
+  "formula": "EM = 1[normalize(prediction) = normalize(gold)] ; token F1 = 2 × P × R ÷ (P + R), with P = shared tokens ÷ prediction tokens and R = shared tokens ÷ gold tokens",
+  "meaning": "normalize lowercases and strips punctuation, articles and extra spaces; 1[...] is 1 when the strings match exactly; shared tokens is the size of the multiset overlap of words. With several acceptable gold answers, take the maximum over them; average over questions.",
+  "used_for": "Reading-comprehension and QA benchmarks (SQuAD, DROP, TriviaQA, Natural Questions) and many LLM eval harnesses; exact match is also how math benchmarks score a final answer. Book: Chapter 19 and Chapter 24 (exact match), Chapter 31.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-bertscore",
+  "name": "BERTScore (embedding-matching text similarity)",
+  "formula": "R = (1 ÷ |x|) × sum over reference tokens x_i of max over candidate tokens y_j of (x_i · y_j) ; P = (1 ÷ |y|) × sum over y_j of max over x_i of (x_i · y_j) ; F = 2 × P × R ÷ (P + R)",
+  "meaning": "x_i and y_j are contextual embeddings (from a pretrained Transformer, normalized to length 1, so the dot product is cosine similarity) of the reference and candidate tokens; |x| and |y| are token counts. Each token is greedily matched to its most similar counterpart. Optional idf weighting and baseline rescaling.",
+  "used_for": "Semantic similarity scoring for generation tasks where wording varies (summarization, captioning, paraphrase), and in RAG answer-quality checks. Book: only here (Chapter 31 describes embedding-similarity scoring in words).",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-pass-at-k",
+  "name": "pass@k unbiased estimator",
+  "formula": "pass@k = mean over problems of [1 − C(n − c, k) ÷ C(n, k)]",
+  "meaning": "For each problem the model generates n ≥ k samples, of which c pass the tests; C(a, b) is the binomial coefficient ('a choose b', the number of ways to pick b items from a); C(n − c, k) ÷ C(n, k) is the chance that a random set of k samples contains no correct one. With k = 1 it reduces to c ÷ n, the average success rate (often called avg@n). Estimating with n > k samples and this formula is much less noisy than literally drawing k samples once.",
+  "used_for": "Code-generation benchmarks since OpenAI's Codex paper (Chen et al., 2021): HumanEval, MBPP, LiveCodeBench; reasoning-model reports (DeepSeek-R1, 2025) give pass@1 averaged over several samples per question; pass@k at large k is used to argue whether RL training adds new abilities or only sharpens existing ones. Book: Chapter 21, Chapter 31 and Chapter 57 (pass@k).",
+  "tier": "core"
+ },
+ {
+  "id": "cml-pass-hat-k",
+  "name": "pass^k (reliability over k trials)",
+  "formula": "pass^k = mean over tasks of [C(c, k) ÷ C(n, k)]",
+  "meaning": "Each task is attempted n times with c successes; C(c, k) ÷ C(n, k) is the unbiased estimate of the chance that k independent attempts all succeed. pass^1 equals the average success rate; unlike pass@k, pass^k falls as k grows, measuring consistency rather than discovery.",
+  "used_for": "Agent benchmarks that care about dependable behavior: τ-bench (Sierra, 2024) and τ²-bench, customer-service and tool-use evaluations in 2025-26 model reports. Book: Chapter 31 (pass^k).",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-elo",
+  "name": "Elo rating (expected score and update)",
+  "formula": "E_A = 1 ÷ (1 + 10^((R_B − R_A) ÷ 400)) ; R_A_new = R_A + K × (S_A − E_A)",
+  "meaning": "R_A and R_B are the current ratings of players (or models) A and B; E_A is A's expected score against B; S_A is the actual result (1 win, 0.5 tie, 0 loss); K is the step size (the K-factor). A 400-point gap means 10-to-1 odds. The update is order-dependent, which is why leaderboards moved to fitting all games at once (Bradley-Terry).",
+  "used_for": "Chess and game ratings, early Chatbot Arena (online Elo with K = 4), Elo-style scores on GDPval-AA and other head-to-head AI leaderboards, self-play training curricula. Book: Chapter 24 (Elo rating definition; a GDPval-AA Elo of 1846 means something only next to other ratings), Chapter 48.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-bradley-terry-leaderboard",
+  "name": "Bradley-Terry ratings for pairwise leaderboards (with style control)",
+  "formula": "P(model i beats model j) = 1 ÷ (1 + 10^((R_j − R_i) ÷ 400)) ; R_i = 400 × ξ_i + 1000, where ξ is fit by logistic regression on all votes ; style control: P = sigmoid(X^T × β + Z^T × γ)",
+  "meaning": "ξ_i (xi) is model i's strength fit by maximum likelihood over every recorded battle at once (logistic regression whose features are +1 for one model and −1 for the other, using base-10 odds); R_i is the strength on the familiar Elo-like scale (Arena's code then shifts all ratings so a reference model sits at a fixed value). In natural-log form P = exp(β_i) ÷ (exp(β_i) + exp(β_j)). Style control adds features Z (normalized differences (f_A − f_B) ÷ (f_A + f_B) in answer length and counts of markdown headers, bold text and lists) with coefficients γ, so ratings reflect substance more than formatting. Confidence intervals come from bootstrapping the battles or from robust sandwich standard errors. The same model trained on human preference pairs is the reward-model loss covered in the alignment section.",
+  "used_for": "LMArena (renamed Arena in January 2026) text, vision and coding leaderboards (Chiang et al., 2024), other crowd and LLM-judged pairwise leaderboards; style-controlled ratings since August 2024. Book: Chapter 24 (LMArena), Chapter 20 (the Bradley-Terry model for reward models).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-lc-win-rate",
+  "name": "Pairwise win rate and length-controlled win rate",
+  "formula": "win rate = 100 × (wins + 0.5 × ties) ÷ comparisons ; LC fit: P(m beats b on x) = sigmoid(θ_m − θ_b + φ_(m,b) × tanh((len_m − len_b) ÷ std(len_m − len_b)) + (ψ_m − ψ_b) × γ_x) ; LC win rate = 100 × mean over prompts x of sigmoid(θ_m − θ_b + (ψ_m − ψ_b) × γ_x)",
+  "meaning": "m is the model being judged and b the baseline model; θ (theta) terms capture model quality; φ (phi) multiplies the squashed, normalized difference in response length; ψ (psi) and γ_x capture how each model fares on harder or easier instructions x; tanh squashes values into −1 to 1. Fitting the regression and then dropping the length term answers 'how often would m win if both answers were the same length?', removing the judge's bias toward longer answers.",
+  "used_for": "AlpacaEval 2.0's length-controlled leaderboard (Dubois et al., 2024), Arena-Hard-style automatic benchmarks with LLM judges, internal model-versus-baseline comparisons. Book: only here (Chapter 20 discusses verbosity bias).",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-benchmark-se",
+  "name": "Standard error and confidence interval of a benchmark score (Wald and Wilson)",
+  "formula": "SE = sqrt(Var(s) ÷ n), with Var(s) = (1 ÷ (n − 1)) × sum over i of (s_i − mean s)^2 ; for right/wrong scores SE = sqrt(p × (1 − p) ÷ n) ; 95% CI = mean ± 1.96 × SE ; Wilson: (p + z^2 ÷ (2n) ± z × sqrt(p × (1 − p) ÷ n + z^2 ÷ (4 × n^2))) ÷ (1 + z^2 ÷ n)",
+  "meaning": "s_i is the score on question i (0 or 1, or partial credit); n is the number of questions; p is the accuracy. This is the Central Limit Theorem (Wald) interval, treating the questions as a sample from a larger population of possible questions. Example: 80% on 400 questions gives SE = 0.02, so about ±4 points. Wilson score interval: p is the observed success rate on n trials; z is the normal critical value (1.96 for 95%). Unlike the plain p ± z × SE interval, it never goes below 0 or above 1 and stays reliable for small n or p near 0 or 1. Alternatives: Clopper-Pearson exact interval, Agresti-Coull.",
+  "used_for": "Error bars on eval results, recommended for language-model evals by Anthropic's 'Adding Error Bars to Evals' (Miller, 2024); deciding whether a reported leaderboard gap is real. Also: Confidence intervals for pass rates on small or saturated evals (attack success rates, dangerous-capability evals with few tasks), A/B conversion rates, ranking items by lower confidence bound of their rating. Book: Chapter 9 (how sure is the score?), Appendix B (error bar on an accuracy score).",
+  "tier": "core"
+ },
+ {
+  "id": "cml-clustered-se",
+  "name": "Clustered standard error for evals with grouped questions",
+  "formula": "SE_clustered = sqrt(SE_CLT^2 + (1 ÷ n^2) × sum over clusters c of sum over i in c of sum over j in c, j ≠ i of (s_(i,c) − mean s) × (s_(j,c) − mean s))",
+  "meaning": "SE_CLT is the ordinary standard error; questions are grouped into clusters c (for example several questions about one passage, or one task family); s_(i,c) is the score of question i in cluster c; n is the total number of questions. The added cross-terms account for correlated questions, which make the effective sample smaller; ignoring them can understate the error bar several-fold.",
+  "used_for": "Evals built from shared passages or task families (reading comprehension, DROP, multi-question coding tasks), recommended by Anthropic's 'Adding Error Bars to Evals' (Miller, 2024). Book: only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-paired-se",
+  "name": "Paired-difference standard error for comparing two models",
+  "formula": "SE_(A−B) = sqrt(Var(s_A − s_B) ÷ n) = sqrt(SE_A^2 + SE_B^2 − 2 × SE_A × SE_B × Corr(s_A, s_B))",
+  "meaning": "s_A and s_B are the two models' per-question scores on the same n questions; Var(s_A − s_B) is the sample variance of the per-question differences; SE_A and SE_B are each model's standard error; Corr is the correlation of their scores across questions. Because the same questions are hard for both models, the correlation is usually positive and the paired error bar is much smaller than treating the two scores as independent.",
+  "used_for": "Head-to-head model comparisons on the same benchmark (is a 2-point gain real?), ablations in training runs; recommended by Miller (2024). Book: only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-bootstrap-ci",
+  "name": "Bootstrap confidence interval",
+  "formula": "for b = 1..B: resample n items with replacement and compute the metric θ_b ; percentile 95% CI = [2.5th percentile, 97.5th percentile] of θ_1, ..., θ_B",
+  "meaning": "n is the number of evaluation items (questions, battles, users); B is the number of resamples (often 1,000 to 10,000); θ (theta) is any metric, including ones without a simple formula (F1, AUC, BLEU, a Bradley-Terry ranking). Variants: basic (pivot) interval 2 × θ_hat − percentile, BCa, cluster bootstrap (resample whole clusters), paired bootstrap (resample items and recompute the difference between two systems).",
+  "used_for": "Error bars for leaderboards (Arena rating intervals), corpus-level metrics such as BLEU (Koehn's paired bootstrap, 2004), METR's time-horizon trend (bootstrapped interval for the doubling time). Book: Chapter 10 (bootstrap samples in random forests); confidence intervals are discussed in Chapter 24.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-mcnemar",
+  "name": "McNemar's test for two classifiers on the same test set",
+  "formula": "χ^2 = (b − c)^2 ÷ (b + c) ; with continuity correction χ^2 = (|b − c| − 1)^2 ÷ (b + c)",
+  "meaning": "b is the number of test items model A gets right and model B gets wrong; c is the reverse; items both get right or both get wrong are ignored. Under the hypothesis of equal accuracy, χ^2 (chi-squared) follows a chi-squared distribution with 1 degree of freedom, so χ^2 > 3.84 means p < 0.05. For small b + c use the exact binomial test on b out of b + c.",
+  "used_for": "Testing whether one classifier or LLM is significantly more accurate than another on the same benchmark (recommended by Dietterich, 1998); statsmodels mcnemar. Book: only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-paired-t",
+  "name": "Paired t-test (and its corrected version for cross-validation)",
+  "formula": "t = mean(d) ÷ (sd(d) ÷ sqrt(n)) ; corrected resampled t = mean(d) ÷ sqrt((1 ÷ k + n_test ÷ n_train) × sd(d)^2)",
+  "meaning": "d_i is the difference in score between two models on item (or fold, or seed) i; mean(d) and sd(d) are the mean and sample standard deviation of the differences; n is the number of pairs; t is compared with a t distribution with n − 1 degrees of freedom. When the pairs come from k overlapping cross-validation runs, the Nadeau-Bengio correction inflates the variance using the test and training set sizes n_test and n_train.",
+  "used_for": "Comparing models across random seeds, folds or datasets; reporting significance of ablation gains in papers (scipy.stats.ttest_rel). Book: only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-permutation-test",
+  "name": "Permutation (randomization) test",
+  "formula": "p-value = (1 + number of permutations with statistic ≥ observed) ÷ (1 + B)",
+  "meaning": "The observed statistic is, for example, the difference in mean score between two models. Under the null hypothesis that the models are interchangeable, each item's pair of outputs can be swapped at random (paired approximate randomization) or group labels shuffled; B random permutations build the null distribution. Makes no normality assumption and works for any metric.",
+  "used_for": "Significance testing for NLP system comparisons (approximate randomization for BLEU, F1 and accuracy), A/B tests with unusual metrics, neuroscience-style analyses of model activations. Book: only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-multiple-comparisons",
+  "name": "Multiple-comparison corrections (Bonferroni, Holm, Benjamini-Hochberg)",
+  "formula": "Bonferroni: reject if p_i ≤ α ÷ m ; Benjamini-Hochberg: sort p-values p_(1) ≤ ... ≤ p_(m), find the largest k with p_(k) ≤ (k ÷ m) × α, reject hypotheses 1..k",
+  "meaning": "m is the number of hypotheses tested (model pairs, benchmarks, metrics, A/B variants); α (alpha) is the target error rate; p_i are p-values. Bonferroni controls the chance of any false positive (family-wise error), and Holm is a uniformly more powerful step-down version; Benjamini-Hochberg controls the expected share of false discoveries (false discovery rate) and is less conservative.",
+  "used_for": "Leaderboards comparing many models at once, A/B platforms testing many metrics, eval suites with dozens of benchmarks, genomics. Book: only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-rank-correlation",
+  "name": "Rank correlation (Spearman's ρ and Kendall's τ)",
+  "formula": "Spearman ρ = 1 − 6 × sum over i of d_i^2 ÷ (n × (n^2 − 1)) ; Kendall τ = (C − D) ÷ (n × (n − 1) ÷ 2)",
+  "meaning": "n is the number of items ranked (for example models); d_i is the difference between item i's two ranks (formula for no ties; otherwise compute Pearson correlation on the ranks); C and D are the numbers of concordant and discordant pairs (pairs ordered the same or opposite way by the two rankings). Both range from −1 to 1.",
+  "used_for": "Checking whether a cheap benchmark or LLM judge ranks models the same way as human preference (Arena-Hard and MT-Bench validation against Chatbot Arena), agreement between metric and human judgments in MT and summarization, recommender ranking agreement. Book: only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-irt",
+  "name": "Item response theory and benchmark-stitching models",
+  "formula": "P(model i correct on item j) = sigmoid(a_j × (θ_i − b_j)) ; Epoch AI: score(m, b) = sigmoid(α_b × (C_m − D_b))",
+  "meaning": "θ_i (theta) is model i's ability; b_j is item j's difficulty; a_j its discrimination (slope); sigmoid is the logistic function. The one-parameter (Rasch) model fixes a_j = 1; the three-parameter model adds a guessing floor c_j + (1 − c_j) × sigmoid(...). Epoch AI's aggregate-level version uses each model's capability C_m and each benchmark's difficulty D_b and slope α_b, fit jointly across all models and benchmarks.",
+  "used_for": "Estimating full-benchmark scores from a small subset of items (tinyBenchmarks, Polo et al., 2024), building aggregate capability indexes: the Epoch Capabilities Index (ECI) puts models on one scale (rescaled so Claude 3.5 Sonnet = 130 and GPT-5 = 150), from 'A Rosetta Stone for AI Benchmarks' (arXiv 2512.00193). Book: Chapter 24 (Epoch Capabilities Index, aggregate indexes).",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-time-horizon",
+  "name": "METR task-completion time horizon",
+  "formula": "P(agent succeeds on task) = sigmoid(β × (ln(h) − ln(t_task))) ; the 50% time horizon is h",
+  "meaning": "t_task is how long skilled humans take on the task (geometric mean of human baseline times); h and β (beta) are fitted for each AI agent by logistic regression over many tasks; at t_task = h the success chance is 0.5. The 80% horizon is read off the same curve where it reaches 0.8. Trend: regressing ln(h) on model release date gave a doubling time of about 7 months (207 days, bootstrap 95% interval 166 to 240 days) in METR's March 2025 paper.",
+  "used_for": "METR's time-horizon measurements of frontier models (Kwa et al., 2025), cited in frontier model and system cards and in forecasts of AI R&D automation. Book: Chapter 24 (METR time horizon), Chapter 21, Chapter 57.",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-contamination",
+  "name": "N-gram overlap contamination score",
+  "formula": "contamination(x) = (number of tokens of x that lie inside some n-gram also found in the training corpus) ÷ (number of tokens of x) ; flag x as contaminated if this exceeds a threshold",
+  "meaning": "x is one benchmark example; an n-gram is a run of n consecutive tokens or words; the training corpus is searched (usually with a suffix array or Bloom filter) for each n-gram of x. Choices of n and threshold vary: GPT-3 used 13-gram overlap; Llama 3 (2024) used 8-gram overlap with a per-benchmark threshold. Scores on clean and contaminated subsets are then compared.",
+  "used_for": "Decontaminating pretraining data and auditing benchmark results in frontier model reports (GPT-3, Llama 3, and similar analyses in later reports). Book: Chapter 9 (data leakage), Chapter 19 (decontamination), Chapter 24 (benchmark contamination).",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-cf-neighborhood",
+  "name": "Neighborhood collaborative filtering (user-based and item-based)",
+  "formula": "r_hat_ui = mean_u + sum over v in N(u) of sim(u, v) × (r_vi − mean_v) ÷ sum over v in N(u) of |sim(u, v)| ; Pearson sim(u, v) = sum over co-rated items i of (r_ui − mean_u) × (r_vi − mean_v) ÷ sqrt(sum (r_ui − mean_u)^2 × sum (r_vi − mean_v)^2)",
+  "meaning": "r_ui is user u's rating of item i and r_hat_ui the prediction; mean_u is u's average rating; N(u) are the most similar users who rated i; sim is a similarity (Pearson correlation as shown, or cosine). Item-based collaborative filtering swaps the roles: predict from the user's ratings of items most similar to i, with item-item similarities precomputed.",
+  "used_for": "Amazon's item-to-item recommendations (Linden et al., 2003), 'people who bought this also bought', baselines in recommender research and small catalogs. Book: Chapter 51 (collaborative filtering: people like you), Chapter 10.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-matrix-factorization",
+  "name": "Matrix factorization for recommendations (with biases)",
+  "formula": "r_hat_ui = μ + b_u + b_i + p_u · q_i ; minimize sum over observed (u, i) of (r_ui − r_hat_ui)^2 + λ × (length(p_u)^2 + length(q_i)^2 + b_u^2 + b_i^2) ; SGD step: e = r_ui − r_hat_ui, p_u = p_u + η × (e × q_i − λ × p_u), q_i = q_i + η × (e × p_u − λ × q_i)",
+  "meaning": "μ (mu) is the global average rating; b_u and b_i are user and item biases (a generous user, a popular item); p_u and q_i are learned k-dimensional factor vectors for user u and item i, whose dot product captures taste match; λ is the L2 penalty; η the learning rate; only observed ratings enter the sum. Truncated SVD of a fully observed matrix (and latent semantic analysis of term-document matrices) is the unregularized relative.",
+  "used_for": "The Netflix Prize-winning family of models (Koren, Bell and Volinsky, 2009); embedding tables in modern recommenders descend from it. Book: Chapter 51 (matrix factorization: discovering hidden tastes; how the factors are learned), Chapter 10 (recommenders and the Netflix Prize).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-als",
+  "name": "Alternating least squares (explicit and implicit feedback)",
+  "formula": "p_u = (Q_u^T × Q_u + λ × I)^(−1) × Q_u^T × r_u ; implicit: minimize sum over all (u, i) of c_ui × (y_ui − p_u · q_i)^2 + λ × (...), with c_ui = 1 + α × r_ui and y_ui = 1 if r_ui > 0 else 0",
+  "meaning": "Holding item factors fixed, each user's factor vector p_u is a ridge-regression solution: Q_u stacks the factor vectors of items u rated, r_u is u's ratings, λ the penalty, I the identity; then items are solved with users fixed, and the two alternate. For implicit feedback (clicks, plays) r_ui counts interactions, y_ui is the binary preference and c_ui (with scale α) is the confidence; every user-item pair enters the loss, made tractable by an algebraic shortcut.",
+  "used_for": "Spark MLlib ALS, the implicit library, large-scale industrial recommenders on click and play logs (Hu, Koren and Volinsky, 2008). Book: Chapter 51 (how the factors are learned).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-dot-product-scoring",
+  "name": "Dot-product scoring and the two-tower model",
+  "formula": "score(u, i) = f(u) · g(i) ; P(i given u) = exp(score(u, i)) ÷ sum over items j of exp(score(u, j))",
+  "meaning": "f(u) is the user (or query) tower, a network that turns user features and history into a vector; g(i) is the item (or document) tower; the dot product is their match score (cosine if both are normalized). Because item vectors can be computed in advance, the top items for a user are found with maximum-inner-product or nearest-neighbor search. Training typically uses a softmax over items, approximated with in-batch or sampled negatives.",
+  "used_for": "Candidate generation in YouTube, Google Play, TikTok, Pinterest and other feeds; dense retrieval for search and RAG (bi-encoder embedding models score query · passage); ad retrieval. Book: Chapter 51 (embeddings and the two-tower model; stage 1: candidate generation), Chapter 27.",
+  "tier": "core"
+ },
+ {
+  "id": "cml-logq-correction",
+  "name": "Sampled softmax with logQ correction",
+  "formula": "s_c(u, i) = s(u, i) − ln(Q(i)) ; loss = −ln(exp(s_c(u, i+)) ÷ sum over j in the batch of exp(s_c(u, j)))",
+  "meaning": "s(u, i) is the two-tower dot-product score; Q(i) is the probability that item i appears as a sampled negative (with in-batch negatives, roughly its popularity, often estimated by streaming frequency counts); i+ is the item the user actually engaged with; subtracting ln Q(i) removes the bias that popular items are over-sampled as negatives and would otherwise be unfairly penalized.",
+  "used_for": "Training two-tower retrieval models at YouTube (Yi et al., RecSys 2019) and many industrial recommenders; the same correction appears in sampled-softmax language-model training. Book: only here (Chapter 51 describes two-tower training in words).",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-factorization-machine",
+  "name": "Factorization machine",
+  "formula": "y_hat(x) = w_0 + sum over i of w_i × x_i + sum over pairs i < j of (v_i · v_j) × x_i × x_j ; pair term = (1 ÷ 2) × sum over f of [(sum over i of v_(i,f) × x_i)^2 − sum over i of v_(i,f)^2 × x_i^2]",
+  "meaning": "x is a sparse feature vector (one-hot user, item, context fields); w_0 and w_i are a global bias and per-feature weights; each feature i has a k-dimensional factor vector v_i, and the dot product v_i · v_j models the interaction of features i and j even when that pair was never seen together. The rewritten pair term computes all interactions in time proportional to k × (number of nonzero features).",
+  "used_for": "Click-through-rate prediction in ads and recommendations (libFM, field-aware FMs in ad competitions), and the FM component of DeepFM-style deep CTR models. Book: only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-bpr",
+  "name": "Bayesian personalized ranking (BPR) loss",
+  "formula": "loss = −sum over triples (u, i, j) of ln(sigmoid(x_hat_ui − x_hat_uj)) + λ × length(θ)^2",
+  "meaning": "Each triple pairs a user u with an item i they interacted with and an item j they did not (sampled); x_hat_ui is the model's score (for example p_u · q_i); θ are all model parameters and λ the L2 penalty. The loss pushes observed items above unobserved ones, optimizing ranking (it is a smooth surrogate for AUC) rather than predicting ratings.",
+  "used_for": "Implicit-feedback recommenders (Rendle et al., 2009), baselines in recommendation research, pairwise training of retrieval models. Book: only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-dcg-ndcg",
+  "name": "Discounted cumulative gain (DCG) and normalized DCG",
+  "formula": "DCG@k = sum over positions i = 1..k of rel_i ÷ log2(i + 1) (alternative gain: (2^rel_i − 1) ÷ log2(i + 1)) ; NDCG@k = DCG@k ÷ IDCG@k",
+  "meaning": "rel_i is the graded relevance of the result at position i (for example 0 to 3); log2(i + 1) is the position discount (1 at the top, growing slowly); IDCG@k is the DCG of the ideal ordering (results sorted by relevance), so NDCG runs from 0 to 1. The exponential gain variant emphasizes highly relevant results; libraries and papers differ on which they use.",
+  "used_for": "Search and recommender evaluation and learning-to-rank objectives; NDCG@10 is the headline retrieval metric of the BEIR and MTEB embedding benchmarks used to compare embedding models for RAG. Book: Chapter 51 (offline metrics; NDCG worked: 3.149 ÷ 4.762 ≈ 0.66).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-mrr",
+  "name": "Mean reciprocal rank (MRR)",
+  "formula": "MRR = (1 ÷ |Q|) × sum over queries q of 1 ÷ rank_q",
+  "meaning": "Q is the set of queries and |Q| their number; rank_q is the position of the first relevant result for query q (1 ÷ rank_q is taken as 0 if none is retrieved, or if none appears in the top k for MRR@k). Rewards getting one right answer near the top.",
+  "used_for": "Question answering and passage retrieval (MS MARCO's official metric is MRR@10), conversational search, entity linking, code search. Book: only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-recall-at-k",
+  "name": "Recall@k, precision@k and hit rate@k",
+  "formula": "Recall@k = |relevant ∩ top k| ÷ |relevant| ; Precision@k = |relevant ∩ top k| ÷ k ; HitRate@k = (1 ÷ |U|) × sum over users u of 1[at least one relevant item in u's top k]",
+  "meaning": "relevant is the set of items (or passages) that are actually relevant for a user or query; top k is the system's first k results; ∩ means 'in both sets' and |...| counts elements; U is the set of users or queries; 1[...] is 1 if the condition holds. Recall@k asks how much of what matters was retrieved; precision@k how much of what was shown matters; hit rate asks whether anything relevant was shown (with exactly one held-out item it equals Recall@k).",
+  "used_for": "Evaluating RAG retrievers (is the needed passage in the top 5 or 20 chunks handed to the LLM?), candidate generation in recommenders, leave-one-out recommendation benchmarks. Book: Chapter 51 (precision at k and recall at k), Chapter 27.",
+  "tier": "core"
+ },
+ {
+  "id": "cml-learning-to-rank",
+  "name": "Pairwise learning to rank (RankNet and LambdaRank)",
+  "formula": "P_ij = sigmoid(σ × (s_i − s_j)) ; RankNet loss = −P_bar_ij × ln(P_ij) − (1 − P_bar_ij) × ln(1 − P_ij) ; LambdaRank gradient λ_ij = −σ ÷ (1 + exp(σ × (s_i − s_j))) × |ΔNDCG_ij|",
+  "meaning": "s_i and s_j are model scores for documents i and j on the same query; σ (sigma) sets the sigmoid's steepness; P_bar_ij is the target (1 if i is more relevant than j, 0 if less, 0.5 if tied); |ΔNDCG_ij| is how much NDCG would change if i and j swapped places, so pairs near the top of the list get larger gradients. LambdaMART trains gradient-boosted trees with these λ gradients.",
+  "used_for": "Web-search ranking (LambdaMART, from Burges and colleagues at Microsoft Research, won the 2010 Yahoo! Learning to Rank Challenge), e-commerce search, LightGBM objective='lambdarank' and XGBoost rank:ndcg; pairwise ranking losses also train rerankers. Book: only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-position-bias",
+  "name": "Position-based click model and inverse propensity weighting for ranking",
+  "formula": "P(click on item d shown at position k) = θ_k × γ_d ; unbiased learning-to-rank weight for a click at position k = 1 ÷ θ_k",
+  "meaning": "θ_k (theta) is the probability that a user examines position k (falls off down the page); γ_d (gamma) is the probability the user clicks item d once examined (its attractiveness or relevance). Clicks on low positions are rarer partly because they are seen less, so weighting each click by 1 ÷ θ_k corrects the logged data before training. θ_k is estimated with randomized swaps or EM. Cascade and dynamic Bayesian network click models are richer variants.",
+  "used_for": "Training search and feed rankers from click logs without position bias, evaluating ads and recommendations offline. Book: Chapter 51 (position bias), Chapter 31.",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-multitask-ranking-score",
+  "name": "Multi-objective ranking score",
+  "formula": "score(u, i) = sum over actions a of w_a × P_hat(a given u, i)",
+  "meaning": "P_hat(a given u, i) is the ranking model's predicted probability (or expected amount) that user u takes action a on item i, such as click, like, share, reply, long watch, or 'not interested'; w_a are business-chosen weights (negative for negative feedback). The final feed is sorted by this weighted sum, then re-ranked for diversity and policy rules.",
+  "used_for": "Feed ranking at large platforms: X open-sourced a ranker in 2023 that combines predicted engagement probabilities with fixed weights; YouTube's multi-task ranking (Zhao et al., 2019) combines several predicted objectives the same way. Book: Chapter 51 (stage 2: ranking, a model that predicts many things at once; what feeds optimize).",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-ad-auction",
+  "name": "Ad ranking by expected value and generalized second-price pricing",
+  "formula": "ad rank = bid × pCTR (× quality factors) ; eCPM = 1,000 × bid × pCTR ; GSP price per click for slot 1 = bid_2 × pCTR_2 ÷ pCTR_1 (plus a minimum increment)",
+  "meaning": "bid is what the advertiser offers per click; pCTR is the predicted click-through probability from the click model; eCPM is expected revenue per thousand impressions; in the generalized second-price auction each winner pays just enough to keep its position, the next advertiser's ad rank divided by its own pCTR. Auction theory itself (Vickrey, incentive compatibility) is covered with game theory.",
+  "used_for": "Search and display advertising at Google, Meta, Amazon and others; real-time bidding exchanges; why click prediction must be well calibrated. Book: Chapter 51 (the auction, worked by hand; predicting the click), Chapter 48 (second-price auctions).",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-mmr",
+  "name": "Maximal marginal relevance (diversity re-ranking)",
+  "formula": "next item = argmax over candidates d not yet selected of [λ × sim(d, q) − (1 − λ) × max over selected d' of sim(d, d')]",
+  "meaning": "q is the query (or user); sim is a similarity such as cosine of embeddings; the selected set starts empty and grows one item at a time; λ (lambda) between 0 and 1 trades relevance (λ = 1) against novelty relative to what is already chosen. A related diversity metric is intra-list diversity, the average of (1 − sim) over all pairs in a list.",
+  "used_for": "Diversifying search results and feeds (re-ranking stage), choosing non-redundant chunks for RAG (the MMR retriever option in LangChain and vector databases), extractive summarization. Book: only here (Chapter 51 describes re-ranking for diversity in words).",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-tfidf",
+  "name": "TF-IDF weighting",
+  "formula": "tfidf(t, d) = tf(t, d) × idf(t), with idf(t) = ln(N ÷ df(t)) ; scikit-learn smoothed idf(t) = ln((1 + N) ÷ (1 + df(t))) + 1",
+  "meaning": "tf(t, d) is how often term t occurs in document d (sometimes 1 + ln(tf) to damp repeats); N is the number of documents; df(t) is how many documents contain t, so rare terms get high idf. Documents and queries become tf-idf vectors, usually normalized to length 1 and compared by cosine similarity.",
+  "used_for": "Classic keyword search and text classification features, keyword extraction, a cheap baseline for retrieval and deduplication; the ancestor of BM25. Book: Chapter 11 (TF-IDF), Chapter 27.",
+  "tier": "core"
+ },
+ {
+  "id": "cml-bm25",
+  "name": "BM25 ranking function",
+  "formula": "score(D, Q) = sum over query terms q of IDF(q) × f(q, D) × (k1 + 1) ÷ (f(q, D) + k1 × (1 − b + b × |D| ÷ avgdl)) ; IDF(q) = ln(1 + (N − n(q) + 0.5) ÷ (n(q) + 0.5))",
+  "meaning": "f(q, D) is how often term q occurs in document D; |D| is the document's length in words and avgdl the average length in the collection; N is the number of documents and n(q) the number containing q; k1 (typically 1.2 to 2.0) controls how fast repeated terms saturate; b (typically 0.75) controls length normalization. The IDF shown is Lucene's non-negative form; Lucene and Elasticsearch also drop the constant (k1 + 1) factor, which does not change rankings. BM25F extends it to weighted fields.",
+  "used_for": "Default ranking in Lucene, Elasticsearch, OpenSearch and Solr; the sparse half of hybrid search in RAG (for example Anthropic's 2024 Contextual Retrieval combined contextual BM25 with embeddings); the standard baseline in the BEIR benchmark. Book: Chapter 27 (BM25, hybrid search), Chapter 51.",
+  "tier": "core"
+ },
+ {
+  "id": "cml-cosine",
+  "name": "Cosine similarity (and its link to dot product and Euclidean distance)",
+  "formula": "cos(a, b) = (a · b) ÷ (length(a) × length(b)) ; for unit-length vectors: length(a − b)^2 = 2 − 2 × cos(a, b)",
+  "meaning": "a and b are vectors (embeddings, tf-idf vectors); a · b is the dot product; length is the Euclidean norm. Cosine is 1 for the same direction, 0 for unrelated (perpendicular), −1 for opposite; cosine distance = 1 − cos. When embeddings are normalized to length 1, ranking by dot product, cosine or Euclidean distance gives the same order, which is why vector databases offer all three.",
+  "used_for": "Semantic search and RAG retrieval with embedding models, deduplication by embedding similarity, recommendation similarity, evaluation by embedding similarity. Book: Appendix B (cosine similarity), Chapter 27 (cosine similarity in the RAG loop), Chapter 5.",
+  "tier": "core"
+ },
+ {
+  "id": "cml-rrf",
+  "name": "Reciprocal rank fusion (RRF)",
+  "formula": "RRF(d) = sum over rankers r of 1 ÷ (k + rank_r(d)), with k = 60",
+  "meaning": "rank_r(d) is document d's position in ranker r's list (1 for the top; documents missing from a list contribute nothing); k is a smoothing constant (60 in the original paper by Cormack, Clarke and Büttcher, 2009) that limits the dominance of top ranks. Results are sorted by the fused score. It needs no score calibration between rankers. Alternative: a convex combination α × normalized dense score + (1 − α) × normalized sparse score.",
+  "used_for": "Hybrid search that merges keyword (BM25) and vector results in Elasticsearch, OpenSearch, Azure AI Search, Weaviate, Qdrant and many RAG pipelines; merging results from several query rewrites. Book: Chapter 27 (reciprocal rank fusion).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-ann-recall",
+  "name": "Approximate nearest neighbor recall@k",
+  "formula": "recall@k = |ANN top k ∩ exact top k| ÷ k",
+  "meaning": "ANN top k is the set of k neighbors returned by an approximate index (HNSW, IVF, product quantization); exact top k is the true k nearest neighbors found by brute-force search; |...| counts the overlap. Index settings (efSearch, nprobe) trade this recall against queries per second and memory; results are plotted as recall-versus-throughput curves.",
+  "used_for": "Tuning and benchmarking vector databases and libraries (FAISS, ScaNN, HNSWlib, ann-benchmarks, big-ann-benchmarks); RAG systems typically target recall around 0.9 to 0.99. Book: Chapter 27 (ANN search; HNSW), Chapter 51.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-product-quantization",
+  "name": "Product quantization and IVF-PQ distance",
+  "formula": "code size = M × log2(K) bits per vector ; distance(q, x)^2 ≈ sum over m = 1..M of length(q_m − c_m(x))^2 ; IVF search cost ≈ (nprobe ÷ nlist) × N distance computations",
+  "meaning": "Each vector x is split into M sub-vectors; sub-vector m is replaced by the nearest of K centroids learned by k-means (c_m(x)), so x is stored as M small codes. A query q is compared asymmetrically: its exact sub-vectors q_m against the stored centroids, using M precomputed lookup tables. An inverted-file (IVF) index first clusters the N vectors into nlist lists and scans only the nprobe nearest lists. Variants: optimized PQ (rotation first), ScaNN's anisotropic quantization, scalar and binary quantization (Hamming distance).",
+  "used_for": "Billion-scale vector search in FAISS (IVF-PQ), Google ScaNN and Vertex AI Vector Search, Milvus and other vector databases; compressing embedding stores for RAG. Book: only here (Chapter 27 covers approximate search in words).",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-hnsw",
+  "name": "HNSW (hierarchical navigable small world) level assignment",
+  "formula": "level = floor(−ln(u) × m_L), with u uniform between 0 and 1 and m_L = 1 ÷ ln(M)",
+  "meaning": "Each new vector gets a random top level from this exponentially decaying distribution, so higher layers hold exponentially fewer nodes; M is the number of neighbor links per node; floor rounds down. A search starts at the sparse top layer, walks greedily toward the query, and descends layer by layer, keeping a candidate list of size efSearch at the bottom; search cost grows roughly with the logarithm of the collection size.",
+  "used_for": "The most widely deployed vector-index algorithm (Malkov and Yashunin, 2016/2018): HNSWlib, FAISS, pgvector, Elasticsearch, OpenSearch, Qdrant, Weaviate, Milvus, Redis. Book: Chapter 27 (HNSW), Chapter 51.",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-colbert",
+  "name": "Late interaction (ColBERT MaxSim) scoring",
+  "formula": "score(q, d) = sum over query tokens i of max over document tokens j of (E_q,i · E_d,j)",
+  "meaning": "E_q,i is the embedding of query token i and E_d,j of document token j (both normalized), produced by a Transformer encoder; each query token finds its best-matching document token, and the matches are summed. Finer-grained than one vector per document, cheaper than a full cross-encoder because document token embeddings are precomputed.",
+  "used_for": "ColBERT and ColBERTv2/PLAID retrievers (Khattab and Zaharia, 2020), ColPali-style retrieval over page images of PDFs, rerankers in RAG pipelines (RAGatouille, Vespa, Qdrant multivector support). Book: only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-splade",
+  "name": "Learned sparse retrieval term weights (SPLADE)",
+  "formula": "w_j = max over input tokens i of ln(1 + ReLU(w_ij)) ; score(q, d) = sum over vocabulary terms j of w_j(q) × w_j(d)",
+  "meaning": "w_ij is the masked-language-model logit for vocabulary term j at input position i; ReLU zeros negatives and ln(1 + ...) damps large values; the result is a sparse vector over the vocabulary (including expansion terms not in the text), stored in an ordinary inverted index. The original SPLADE summed over positions, SPLADE v2 and later use the max; training adds a FLOPS regularizer, sum over j of (average over the batch of w_j)^2, to keep vectors sparse.",
+  "used_for": "Learned sparse retrieval in production search engines (Elastic's ELSER, OpenSearch neural sparse search) and as the sparse leg of hybrid RAG. Book: only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-moving-average",
+  "name": "Simple moving average",
+  "formula": "SMA_t = (1 ÷ k) × sum over i = 0..k−1 of y_(t−i)",
+  "meaning": "y_t is the series value at time t; k is the window length; the forecast for the next step is the average of the last k values. Larger k smooths more but reacts more slowly; a centered moving average estimates the trend for seasonal decomposition.",
+  "used_for": "Smoothing noisy metrics and loss curves, simple demand forecasts, trend extraction in classical decomposition. Book: Chapter 10 (forecasting time series: 7-day moving average worked as 1,070 ÷ 7 ≈ 153).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-exponential-smoothing",
+  "name": "Exponential smoothing (exponential moving average)",
+  "formula": "s_t = α × y_t + (1 − α) × s_(t−1) ; forecast y_hat_(t+1) = s_t",
+  "meaning": "y_t is the new observation; s_t the smoothed level; α (alpha) between 0 and 1 is the smoothing weight (higher reacts faster). Unrolled, the weight on an observation i steps back is α × (1 − α)^i, decaying exponentially. When s_0 = 0, dividing by (1 − (1 − α)^t) removes the startup bias. The same update is used as an exponential moving average of training losses and, with other names, of gradients (Adam's moments) and of model weights, which are covered in the deep-learning section.",
+  "used_for": "Simple exponential smoothing forecasts (statsmodels, R forecast), smoothed loss curves in training dashboards, monitoring baselines. Book: Chapter 10 (exponential smoothing worked: 0.3 × 120 + 0.7 × 100 = 106).",
+  "tier": "core"
+ },
+ {
+  "id": "cml-holt-winters",
+  "name": "Holt-Winters (trend and seasonal exponential smoothing)",
+  "formula": "level l_t = α × (y_t − s_(t−m)) + (1 − α) × (l_(t−1) + b_(t−1)) ; trend b_t = β × (l_t − l_(t−1)) + (1 − β) × b_(t−1) ; season s_t = γ × (y_t − l_t) + (1 − γ) × s_(t−m) ; forecast y_hat_(t+h) = l_t + h × b_t + s_(t+h−m×(floor((h−1) ÷ m)+1))",
+  "meaning": "y_t is the observation; l_t the level, b_t the trend (slope per step) and s_t the seasonal effect; m is the season length (7 for daily data with a weekly cycle, 12 for monthly data); α, β and γ between 0 and 1 are smoothing weights; h is the forecast horizon, and the seasonal index uses the last observed season. This is the additive form; the multiplicative form divides by the season instead of subtracting. Holt's linear method drops the seasonal term; damped trend multiplies the trend by φ^h. Some texts (Hyndman's Forecasting: Principles and Practice) write the seasonal update with y_t − l_(t−1) − b_(t−1) in place of y_t − l_t.",
+  "used_for": "Classic business and operations forecasting (statsmodels ExponentialSmoothing, R's ets), a strong baseline in forecasting competitions and for time-series foundation models. Book: only here (Chapter 10 decomposes series into trend and seasonality).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-arima",
+  "name": "Autoregressive and ARIMA models",
+  "formula": "y'_t = c + φ_1 × y'_(t−1) + ... + φ_p × y'_(t−p) + ε_t + θ_1 × ε_(t−1) + ... + θ_q × ε_(t−q), with y'_t = y_t − y_(t−1) applied d times",
+  "meaning": "y'_t is the series after d rounds of differencing (removing trend); φ_1..φ_p (phi) are the autoregressive weights on past values; θ_1..θ_q (theta) are the moving-average weights on past forecast errors ε (white noise); c is a constant. ARIMA(p, d, q) names the three orders; seasonal ARIMA adds the same terms at lag m; ARIMAX adds outside regressors. AR(1) with |φ_1| < 1 is the simplest stationary case.",
+  "used_for": "Statistical forecasting in economics, energy and operations (statsmodels, R forecast's auto.arima, pmdarima), baselines for time-series foundation models. Book: Chapter 10 (ARIMA definition).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-acf",
+  "name": "Autocorrelation function",
+  "formula": "ρ_k = sum over t = k+1..T of (y_t − mean y) × (y_(t−k) − mean y) ÷ sum over t = 1..T of (y_t − mean y)^2",
+  "meaning": "y_t is the series of length T; k is the lag; ρ_k (rho) is the correlation of the series with itself shifted by k steps, from −1 to 1. Peaks at lag m reveal seasonality; a slow decay suggests a trend (difference first). Values outside about ±1.96 ÷ sqrt(T) are significant for white noise. The partial autocorrelation removes the effect of shorter lags and suggests the AR order p; the Ljung-Box test checks residuals.",
+  "used_for": "Choosing ARIMA orders, detecting seasonality, checking that forecast residuals are random. Book: only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-prophet",
+  "name": "Prophet additive forecasting model",
+  "formula": "y(t) = g(t) + s(t) + h(t) + ε_t ; s(t) = sum over n = 1..N of (a_n × cos(2π × n × t ÷ P) + b_n × sin(2π × n × t ÷ P))",
+  "meaning": "g(t) is a piecewise-linear (or logistic) trend with automatically placed changepoints; s(t) is seasonality written as a Fourier series with period P (365.25 for yearly, 7 for weekly) and N harmonic pairs with coefficients a_n and b_n; h(t) adds holiday effects; ε_t is noise. Fit as a regularized regression (Bayesian, with Stan).",
+  "used_for": "Business forecasting with strong calendar effects (Prophet from Meta, 2017; NeuralProphet), dashboards and capacity planning. Book: Chapter 10 (Prophet named in forecasting).",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-ab-ztest",
+  "name": "A/B test: lift and two-proportion z-test",
+  "formula": "lift = (p_B − p_A) ÷ p_A ; z = (p_B − p_A) ÷ sqrt(p_pool × (1 − p_pool) × (1 ÷ n_A + 1 ÷ n_B)), with p_pool = (x_A + x_B) ÷ (n_A + n_B)",
+  "meaning": "p_A and p_B are the conversion rates (successes x ÷ users n) in control A and treatment B; p_pool is the combined rate; |z| > 1.96 means p < 0.05 (two-sided). For continuous metrics (revenue, watch time) Welch's t-test uses (mean_B − mean_A) ÷ sqrt(s_A^2 ÷ n_A + s_B^2 ÷ n_B). Checking results repeatedly before the planned end inflates false positives; sequential tests correct for that.",
+  "used_for": "Online experiments for ranking models, product features and prompts at every large platform (Microsoft ExP, Netflix, Meta, Booking); shipping decisions for new recommender or LLM versions, with guardrail metrics. Book: Chapter 51 (online experiments; A/B test), Chapter 10 (rolling out a new model safely).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-sample-size",
+  "name": "Sample size and minimum detectable effect (A/B tests and evals)",
+  "formula": "n per group = (z_(1−α/2) + z_(1−β))^2 × (σ_A^2 + σ_B^2) ÷ δ^2 ; rule of thumb n ≈ 16 × σ^2 ÷ δ^2 per group (α = 0.05, 80% power) ; paired eval version: n = (z_(α/2) + z_β)^2 × (ω^2 + σ_A^2 ÷ K_A + σ_B^2 ÷ K_B) ÷ δ^2",
+  "meaning": "δ (delta) is the smallest difference worth detecting (minimum detectable effect); σ^2 is the metric's variance per unit (p × (1 − p) for a conversion rate); α is the false-positive rate and 1 − β the power; z values are standard normal quantiles (1.96 and 0.84). In the eval version from Miller (2024), n is the number of questions, ω^2 = Var(x_A) + Var(x_B) − 2 × Cov(x_A, x_B) is the variance of the paired difference in per-question expected scores, σ_A^2 and σ_B^2 are average within-question sampling variances and K_A, K_B the number of answers sampled per question (more samples per question shrink only that part of the noise); in that paper's notation z_p is the (1 − p) percentile of the standard normal, so z_(α/2) = 1.96 for α = 0.05.",
+  "used_for": "Planning experiment duration and traffic on A/B platforms; sizing evaluation sets and samples-per-question for model comparisons. Book: only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-cuped",
+  "name": "CUPED variance reduction",
+  "formula": "Y_cv = Y − θ × (X − mean X), with θ = Cov(X, Y) ÷ Var(X) ; Var(Y_cv) = Var(Y) × (1 − ρ^2)",
+  "meaning": "Y is the experiment metric per user; X is a covariate measured before the experiment started (often the same metric in the pre-period), unaffected by treatment; θ (theta) is the regression slope of Y on X; ρ (rho) is the correlation between X and Y. Subtracting the predictable part leaves the treatment effect unbiased but shrinks variance, so experiments need fewer users. It is regression adjustment (ANCOVA) in experiment form.",
+  "used_for": "Standard in large experimentation platforms (introduced at Microsoft by Deng et al., 2013; used at Netflix, Booking, Meta and in commercial tools such as Statsig and Eppo). Book: only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-ate",
+  "name": "Average treatment effect (potential outcomes)",
+  "formula": "ATE = E[Y(1) − Y(0)] ; under randomization ATE_hat = mean of Y over treated − mean of Y over control",
+  "meaning": "Y(1) and Y(0) are each unit's potential outcomes with and without the treatment (only one is ever observed); E[...] averages over the population. Randomization makes treated and control groups comparable, so the difference in means is unbiased. Related: the average treatment effect on the treated (ATT) and conditional effects CATE(x) = E[Y(1) − Y(0) given x], estimated by uplift models and meta-learners.",
+  "used_for": "The quantity every A/B test estimates; causal analysis of product changes, marketing uplift modeling, policy evaluation. Book: Chapter 51 and Chapter 54 (randomization as the gold standard for cause and effect).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-ipw",
+  "name": "Inverse propensity weighting (causal effects and off-policy evaluation)",
+  "formula": "ATE_hat = (1 ÷ n) × sum over i of [T_i × Y_i ÷ e(x_i) − (1 − T_i) × Y_i ÷ (1 − e(x_i))], with e(x) = P(T = 1 given x) ; IPS value of a new policy V_hat(π) = (1 ÷ n) × sum over i of r_i × π(a_i given x_i) ÷ μ(a_i given x_i)",
+  "meaning": "T_i is 1 if unit i was treated and 0 if not; Y_i its outcome; e(x) is the propensity score, the probability of treatment given features x (estimated, for example, by logistic regression). In the logged-bandit version, μ is the old policy that chose action a_i (such as which item to show) in context x_i and earned reward r_i; π is the new policy being evaluated. Weighting by inverse probabilities makes the observed sample look like a randomized one. Doubly robust estimators add an outcome model to reduce variance; clipping large weights trades bias for variance.",
+  "used_for": "Causal analysis of observational data, offline evaluation of new recommender and ad policies from logged data before an A/B test, unbiased learning to rank. Book: only here (Chapter 57 mentions propensities).",
+  "tier": "specialist"
+ },
+ {
+  "id": "cml-did",
+  "name": "Difference-in-differences",
+  "formula": "DiD = (mean Y_treated,after − mean Y_treated,before) − (mean Y_control,after − mean Y_control,before)",
+  "meaning": "Y is the outcome; the treated group receives a change (a new model in one market, a policy in one region) and the control group does not; subtracting the control group's change removes trends common to both, under the parallel-trends assumption. Usually estimated as a regression with group, period and interaction terms; synthetic control builds a weighted control group instead.",
+  "used_for": "Measuring the impact of launches that cannot be randomized per user (market-level rollouts, pricing changes), economics studies of AI adoption effects on employment and productivity. Book: only here.",
+  "tier": "specialist"
+ }
+]

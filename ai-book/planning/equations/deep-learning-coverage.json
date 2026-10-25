@@ -1,0 +1,688 @@
+[
+ {
+  "id": "dl-neuron",
+  "name": "Artificial neuron (weighted sum plus bias, then an activation)",
+  "status": "SHOWN",
+  "where": "Chapter 12 (The artificial neuron; Should I go to the beach?): z = w1 × x1 + w2 × x2 + w3 × x3 + b then sigmoid, worked; Appendix B (Weighted sum)",
+  "owning_chapter": 12
+ },
+ {
+  "id": "dl-dense-layer",
+  "name": "Dense (fully connected) layer, MLP composition and parameter count",
+  "status": "SHOWN",
+  "where": "Chapter 12 (Counting parameters: inputs × neurons + neurons; The forward pass: a layer is one matrix multiplication, worked 2 → 2 → 1); Appendix B (One layer: activation(W × x + b); Parameters in a dense layer: m × n + m)",
+  "owning_chapter": 12
+ },
+ {
+  "id": "dl-step-perceptron",
+  "name": "Step activation and the perceptron learning rule",
+  "status": "SHOWN",
+  "where": "Chapter 7 (perceptron worked by hand, Table 7.2 and Rosenblatt's learning rule with steps of 0.5; Exercise 3 adds the subtract case); Chapter 12 (A little history: from logic units to the perceptron; step function definition; Exercise 1: 1 if the sum is above 0, else 0); Chapter 10 (The perceptron: the bridge to neural networks)",
+  "owning_chapter": 12
+ },
+ {
+  "id": "dl-sigmoid",
+  "name": "Sigmoid (logistic) activation and its slope",
+  "status": "SHOWN",
+  "where": "Chapter 12 (Should I go to the beach?: sigmoid(z) = 1 ÷ (1 + e^(−z)); activation gallery table; Exercise 6 slope s × (1 − s)); Chapter 13 (Vanishing and exploding gradients: slope at most 0.25); Appendix B (Sigmoid; derivative table)",
+  "owning_chapter": 12
+ },
+ {
+  "id": "dl-tanh",
+  "name": "Tanh activation",
+  "status": "WORDS",
+  "where": "Chapter 12 (The activation function gallery: definition and values at −2, 0, 2; Exercise 10 code comment gives the slope 1 − h^2); Chapter 14 (Recurrent neural networks: tanh definition). The exp formula and 2 × sigmoid(2z) − 1 are not shown",
+  "owning_chapter": 12
+ },
+ {
+  "id": "dl-relu",
+  "name": "ReLU and its variants (leaky ReLU, PReLU, ELU, squared ReLU)",
+  "status": "SHOWN",
+  "where": "Chapter 12 (Solving XOR with two bent neurons; activation gallery with Leaky ReLU 0.01 × input; backprop through ReLU gates); Chapter 14 (Channels in, channels out: definition); Appendix B (ReLU; derivative table). ELU, PReLU and squared ReLU are not covered",
+  "owning_chapter": 12
+ },
+ {
+  "id": "dl-gelu",
+  "name": "GELU (Gaussian error linear unit)",
+  "status": "WORDS",
+  "where": "Chapter 12 (The activation function gallery: definition and values −0.046 and 1.954 only). z × Φ(z), the erf form and the tanh approximation are not shown",
+  "owning_chapter": 12
+ },
+ {
+  "id": "dl-silu",
+  "name": "SiLU / Swish activation (with hard-swish and Mish variants)",
+  "status": "SHOWN",
+  "where": "Chapter 12 (activation gallery: SiLU = input times sigmoid of input, values −0.238 and 1.762); Chapter 15 (Step 6: Swish(a) = a × sigmoid(a), Swish(2) = 1.762 worked). Swish-beta, hard-swish and Mish are not covered",
+  "owning_chapter": 12
+ },
+ {
+  "id": "dl-softplus",
+  "name": "Softplus (smooth ReLU that stays positive)",
+  "status": "MISSING",
+  "where": "Not in the book (not even as the softplus inside Mamba's step size)",
+  "owning_chapter": 12
+ },
+ {
+  "id": "dl-glu",
+  "name": "Gated linear units (GLU, ReGLU, GEGLU, SwiGLU)",
+  "status": "SHOWN",
+  "where": "Chapter 15 (Step 6: The feed-forward block: SwiGLU definition, gate branch Swish times other branch worked, hidden size 8/3 of d_model); Chapter 12 (SiLU definition mentions SwiGLU). GLU, ReGLU and GEGLU by name are not covered",
+  "owning_chapter": 15
+ },
+ {
+  "id": "dl-softmax",
+  "name": "Softmax layer (stable form, log-softmax and Jacobian)",
+  "status": "SHOWN",
+  "where": "Chapter 12 (Softmax: turning scores into probabilities, worked); Chapter 15 (Step D: softmax with subtract-the-largest; Step 9: From vectors back to words); Chapter 6; Appendix B (Softmax; Shift makes no difference). Log-softmax and the softmax Jacobian are not shown",
+  "owning_chapter": 12
+ },
+ {
+  "id": "dl-mse",
+  "name": "Mean squared error loss",
+  "status": "SHOWN",
+  "where": "Chapter 12 (Squared error, for predicting numbers: L = ½ × (ŷ − y)², MSE defined); Chapter 8 and Chapter 9 (MSE worked); Appendix B (Mean squared error; Squared-error slope)",
+  "owning_chapter": 12
+ },
+ {
+  "id": "dl-mae-huber",
+  "name": "Mean absolute error and Huber (smooth L1) loss",
+  "status": "SHOWN",
+  "where": "Chapter 8 (Measuring wrongness: the loss function, MAE definition) and Chapter 9 (Measuring models that predict numbers: MAE = (20 + 20 + 20 + 60 + 10) ÷ 5 = 26 worked; spreadsheet formula). Huber (smooth L1) loss is not in the book",
+  "owning_chapter": 12
+ },
+ {
+  "id": "dl-cross-entropy",
+  "name": "Cross-entropy loss for classification (negative log-likelihood)",
+  "status": "SHOWN",
+  "where": "Chapter 12 (Cross-entropy, for choosing between options: −ln(probability of the right answer), table); Chapter 15 (Step 10: How a Transformer learns); Chapter 19 (Measuring surprise: the loss); Chapter 8; Appendix B (Cross-entropy, one token and whole text). The logsumexp form is not shown",
+  "owning_chapter": 12
+ },
+ {
+  "id": "dl-bce",
+  "name": "Binary cross-entropy (log loss) with logits",
+  "status": "SHOWN",
+  "where": "Chapter 8 (Cross-entropy: the loss for categories, binary spam case as −ln of the probability of the correct answer); Chapter 12 (Exercise 10 code: loss = −mean(y × log(p) + (1 − y) × log(1 − p)), labeled cross-entropy). The stable from-the-logit form is not shown",
+  "owning_chapter": 12
+ },
+ {
+  "id": "dl-label-smoothing",
+  "name": "Label smoothing",
+  "status": "WORDS",
+  "where": "Chapter 13 (The regularization toolkit: 10 classes, smoothing 0.1 gives 91% and 1% each, worked numerically; definition). The general (1 − ε) × y + ε ÷ K formula is not written",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-focal",
+  "name": "Focal loss",
+  "status": "SHOWN",
+  "where": "Appendix F (Focal loss: cross-entropy multiplied by (1 − p) raised to a power, power 2 worked: 0.1^2 = 0.01). The α_t weight is not shown; no chapter covers it",
+  "owning_chapter": 45
+ },
+ {
+  "id": "dl-contrastive-triplet",
+  "name": "Margin-based metric-learning losses (contrastive pair loss and triplet loss)",
+  "status": "WORDS",
+  "where": "Chapter 45 (face embedding definition: same person close, different people far, FaceNet); Chapter 16 (Contrastive learning and CLIP: pull matches together, push mismatches apart); Chapter 27 (contrastive learning definition). The margin-based pair loss and triplet loss formulas are not shown",
+  "owning_chapter": 45
+ },
+ {
+  "id": "dl-backprop",
+  "name": "Backpropagation (the chain rule through layers)",
+  "status": "SHOWN",
+  "where": "Chapter 12 (Backpropagation: passing the blame backward; The chain rule as gears; The worked example: one complete forward and backward pass; Checking backpropagation by nudging; Exercises 6, 7, 10); Appendix B (Chain rule; Cost of a training step)",
+  "owning_chapter": 12
+ },
+ {
+  "id": "dl-linear-grad",
+  "name": "Gradients of a linear layer (matrix form)",
+  "status": "SHOWN",
+  "where": "Chapter 12 (worked example Steps 3 to 6: slope for a weight = blame at the sum × its input, bias gets the blame; Exercise 10 code: dW2 = h.T @ dz2, dW1 = X.T @ dz1, db = dz.sum)",
+  "owning_chapter": 12
+ },
+ {
+  "id": "dl-softmax-ce-grad",
+  "name": "Gradient of softmax plus cross-entropy (p − y)",
+  "status": "SHOWN",
+  "where": "Chapter 12 (Exercise 10 code: dz2 = (p − y) ÷ len(X), commented as the slope of the loss with respect to the output sum, for sigmoid plus binary cross-entropy). Only the binary form, only in code; the softmax version p_k − y_k is not shown or derived",
+  "owning_chapter": 12
+ },
+ {
+  "id": "dl-vanishing-bptt",
+  "name": "Vanishing and exploding gradients, and backpropagation through time",
+  "status": "SHOWN",
+  "where": "Chapter 13 (Vanishing and exploding gradients: 0.25^10 ≈ 0.00000095 through 10 sigmoid layers; Check your understanding 6); Chapter 14 (Backpropagation through time, and why gradients vanish: 0.8^20 = 0.0115, 1.2^50 ≈ 9,100). Shown as scalar products of slopes; the Jacobian-product form is not written",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-xavier",
+  "name": "Xavier (Glorot) and LeCun initialization",
+  "status": "SHOWN",
+  "where": "Chapter 13 (Why the size of the random numbers matters: sqrt(2 ÷ (inputs + outputs)), 512 and 512 gives 0.044; definition). The uniform version and LeCun initialization are not shown",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-he",
+  "name": "He (Kaiming) initialization",
+  "status": "SHOWN",
+  "where": "Chapter 13 (Why the size of the random numbers matters: sqrt(2 ÷ number of inputs), 512 inputs gives 0.0625; definition)",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-residual-init",
+  "name": "Small initialization for residual branches (scaled init, zero init, LayerScale)",
+  "status": "WORDS",
+  "where": "Chapter 13 (Why the size of the random numbers matters: GPT-2 scaled residual layers down by the number of layers; The 2026 recipe table: residual branches scaled down). The 1 ÷ sqrt(N) factor, zero init and LayerScale are not shown",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-mup",
+  "name": "Maximal update parametrization (μP) width-scaling rules",
+  "status": "WORDS",
+  "where": "Chapter 19 (The pretraining run: The settings: μP rescales each layer's starting weights and learning rate by width; definitions of μP and hyperparameter transfer). The width-scaling rules are not shown",
+  "owning_chapter": 19
+ },
+ {
+  "id": "dl-sgd",
+  "name": "Mini-batch stochastic gradient descent (SGD)",
+  "status": "SHOWN",
+  "where": "Chapter 12 (Gradient descent: walking downhill in fog: new w = old w − learning rate × slope; The training loop: Why batches? average the batch's gradients); Chapter 13 (The trouble with plain SGD); Appendix B (Gradient descent step)",
+  "owning_chapter": 12
+ },
+ {
+  "id": "dl-momentum",
+  "name": "Momentum (heavy ball) and Nesterov momentum",
+  "status": "SHOWN",
+  "where": "Chapter 13 (Momentum: a rolling ball: velocity = 0.9 × velocity + gradient, new w = old w − learning rate × velocity, worked table; Exercise 5 spreadsheet; Check your understanding 2, limit 1 ÷ (1 − 0.9) = 10). Nesterov momentum is only in words (Appendix F, Optimizer variants)",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-adagrad",
+  "name": "AdaGrad",
+  "status": "WORDS",
+  "where": "Chapter 13 (Adam: a separate stride for every knob, last paragraph: AdaGrad divided by the running total of every past squared gradient, so its steps only shrank)",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-rmsprop",
+  "name": "RMSProp",
+  "status": "WORDS",
+  "where": "Chapter 13 (Adam section: RMSProp introduced dividing by the average size; Figure 13.2 family tree). The RMSProp update itself is not written (Adam's v line is the same average)",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-adam",
+  "name": "Adam (with bias correction)",
+  "status": "SHOWN",
+  "where": "Chapter 13 (Adam: a separate stride for every knob: m = 0.9 × m + 0.1 × gradient, v = 0.999 × v + 0.001 × gradient², step = learning rate × m ÷ (√v + a tiny number), worked table). Bias correction is mentioned only in words; Appendix B (Training memory) counts its two averages",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-adamw",
+  "name": "AdamW (Adam with decoupled weight decay)",
+  "status": "SHOWN",
+  "where": "Chapter 13 (AdamW: weight decay done right: decoupled decay multiplies each weight by 1 − 0.001 × 0.1 = 0.9999 per step, 0.9999^10,000 ≈ 0.37, decoupling explained; training scripts use torch.optim.AdamW). Shown as the Adam step plus the decay factor, not as one combined update line",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-lion",
+  "name": "Lion (evolved sign momentum)",
+  "status": "WORDS",
+  "where": "Chapter 13 (Beyond Adam: Lion, Shampoo and SOAP: steps use only the sign of a momentum-like quantity; definition; optimizer table)",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-muon",
+  "name": "Muon (momentum orthogonalized by Newton-Schulz)",
+  "status": "WORDS",
+  "where": "Chapter 13 (Muon: balance the whole matrix: orthogonalized momentum update, toy 2 × 2 example [3, 0; 0, 0.1] becomes the identity, AdamW for non-matrix parameters; Exercise 8 code). The update rule and scale factor are not written",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-newton-schulz",
+  "name": "Newton-Schulz orthogonalization iteration",
+  "status": "WORDS",
+  "where": "Chapter 13 (Muon: about five rounds of matrix multiplications that push all strengths towards 1; Newton–Schulz iteration definition). The iteration and its coefficients are not shown",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-adafactor",
+  "name": "Adafactor (factored second moments)",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-shampoo-soap",
+  "name": "Shampoo and SOAP (Kronecker-factored preconditioning)",
+  "status": "WORDS",
+  "where": "Chapter 13 (Beyond Adam: Lion, Shampoo and SOAP: per-layer curvature information; definition; optimizer table)",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-ema-weights",
+  "name": "Exponential moving average of weights (Polyak averaging, checkpoint averaging)",
+  "status": "WORDS",
+  "where": "Appendix F (Optimizer variants: Polyak averaging, the average of the weights over many recent steps); Chapter 20 shows model-soup averaging of separate fine-tuned models, not of checkpoints. The EMA update is not shown",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-warmup",
+  "name": "Linear learning-rate warmup",
+  "status": "SHOWN",
+  "where": "Chapter 13 (Schedules: worked table, 0.0005 halfway through 1,000 warmup steps; A complete training script for Google Colab: lr_factor returns (step + 1) ÷ warmup); Chapter 19 (The settings, in words)",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-cosine",
+  "name": "Cosine learning-rate decay (cosine annealing)",
+  "status": "SHOWN",
+  "where": "Chapter 13 (Schedules: worked table and Figure 13.3; A complete training script for Google Colab: 0.5 × (1 + cos(π × progress)) with progress = (step − warmup) ÷ (total − warmup)). The formula appears in code, not in prose; η_min is not included",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-linear-step-decay",
+  "name": "Linear, step and exponential learning-rate decay",
+  "status": "WORDS",
+  "where": "Chapter 13 (The 2026 recipe at a glance: 2015 schedule 'divide by 10 a few times when progress stalls'). Linear and exponential decay are not mentioned; no formula",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-wsd",
+  "name": "Warmup-stable-decay (WSD, trapezoidal) schedule",
+  "status": "WORDS",
+  "where": "Chapter 13 (Schedules: WSD described and worked as a table, 0.001 held then 0.0005 at step 9,500 and 0 at the end; definition; Figure 13.3); Chapter 19 (The settings; Mid-training and annealing). No formula",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-inverse-sqrt",
+  "name": "Inverse square-root ('Noam') schedule",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-batch-lr-scaling",
+  "name": "Learning-rate scaling with batch size (linear and square-root rules)",
+  "status": "WORDS",
+  "where": "Chapter 13 (Batch size and the learning rate: bigger batches allow bigger steps; Llama 3 batch doubling); Chapter 19 (The settings: hyperparameter scaling laws mentioned). The linear and square-root rules are not shown",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-grad-clip",
+  "name": "Gradient clipping by global norm",
+  "status": "SHOWN",
+  "where": "Chapter 13 (Vanishing and exploding gradients: norm = square root of the sum of squared slopes, [30, 40] has norm 50, clip to 1 gives [0.6, 0.8]; gradient norm definition; training script clip_grad_norm_; Exercise 6). Clipping by value is not covered",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-loss-scaling",
+  "name": "Loss scaling for 16-bit mixed-precision training",
+  "status": "WORDS",
+  "where": "Chapter 32 (FP16 definition: training with it needs loss scaling to stop small numbers from vanishing); Chapter 13 (Numbers on hardware: precision in brief, mixed precision and vanishing small updates). The scale-and-unscale rule and dynamic scaling are not shown",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-batchnorm",
+  "name": "Batch normalization",
+  "status": "WORDS",
+  "where": "Chapter 13 (The family of normalizations: averages each feature across the batch; definition; table). The formula and running averages are not shown",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-layernorm",
+  "name": "Layer normalization (and group and instance normalization)",
+  "status": "SHOWN",
+  "where": "Chapter 13 (Layer normalization, worked by hand: mean 5, spread sqrt(5), [2, 4, 6, 8] becomes [−1.342, −0.447, 0.447, 1.342], then learned gain and shift; Exercise 6). Given as steps, not as a symbolic formula; ε is not mentioned. Group and instance normalization are not covered",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-rmsnorm",
+  "name": "RMSNorm",
+  "status": "SHOWN",
+  "where": "Chapter 13 (Layer normalization, worked by hand: RMSNorm divides by sqrt(30) ≈ 5.477 giving [0.365, 0.730, 1.095, 1.461]; Exercise 6); Chapter 15 (Step 7: RMSNorm definition, multiplies by learned scales)",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-qknorm",
+  "name": "QK-norm (normalized queries and keys)",
+  "status": "SHOWN",
+  "where": "Chapter 17 (Keeping giants stable: queries and keys rescaled to length 1, with scale 10 the scores become 10 and about 7.1, a 95% / 5% split; definition); Chapter 13 (Loss spikes, in words)",
+  "owning_chapter": 17
+ },
+ {
+  "id": "dl-dyt",
+  "name": "Dynamic Tanh (DyT), a normalization-free replacement",
+  "status": "SHOWN",
+  "where": "Chapter 13 (The family of normalizations: tanh(α × x) with a learned α; definition); Chapter 17 (Keeping giants stable: α = 0.5 worked, 0.2 → 0.10, 4 → 0.96, −10 → −1.00; learned scale afterwards mentioned)",
+  "owning_chapter": 17
+ },
+ {
+  "id": "dl-dropout",
+  "name": "Dropout with inverted scaling (and stochastic depth)",
+  "status": "SHOWN",
+  "where": "Chapter 13 (The regularization toolkit: zero each output with probability 50%, survivors scaled up to keep the average, [4, 2, 6, 8] becomes [8, 0, 12, 0]; Exercise 6). Given as a rule and worked example; 1 ÷ (1 − p) is not written as a symbol, and stochastic depth is not covered",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-weight-decay",
+  "name": "Weight decay and L2 (and L1) regularization",
+  "status": "SHOWN",
+  "where": "Chapter 9 (Regularization: keeping models simple on purpose: L2 penalty 0.1 × (2² + (−1)²) = 0.5 added to the loss, worked; L1 and L2 definition); Chapter 13 (AdamW: each step multiplies a weight by 1 − learning rate × decay, 0.9999^10,000 ≈ 0.37)",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-early-stopping",
+  "name": "Early stopping",
+  "status": "WORDS",
+  "where": "Chapter 13 (The regularization toolkit: stop when validation loss stops improving; Figure 13.5; definition); Chapter 12 (Keeping score honestly)",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-mixup",
+  "name": "Mixup and CutMix augmentation",
+  "status": "MISSING",
+  "where": "Not in the book (Chapter 13 covers data augmentation only as flips, crops, recoloring and paraphrasing)",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-residual",
+  "name": "Residual (skip) connection",
+  "status": "SHOWN",
+  "where": "Chapter 13 (Residual connections: the express elevator: output = input + f(input), gradient slope of exactly 1 along the shortcut; Exercise 9 code); Chapter 14 (ResNet, 2015: output = input + block(input)); Chapter 15 (Step 7); Chapter 17 (Keeping giants stable)",
+  "owning_chapter": 13
+ },
+ {
+  "id": "dl-mhc",
+  "name": "Hyper-connections and manifold-constrained hyper-connections (mHC)",
+  "status": "WORDS",
+  "where": "Chapter 13 (The residual stream in your chatbot: hyper-connections and mHC definition); Chapter 17 (Keeping giants stable: several parallel streams, 1.1^60 ≈ 304 compounding, mixing restricted to blending). The H_res, H_pre, H_post equations and the Sinkhorn constraint are not shown",
+  "owning_chapter": 17
+ },
+ {
+  "id": "dl-conv",
+  "name": "Convolution layer (cross-correlation of an input with learned filters)",
+  "status": "SHOWN",
+  "where": "Chapter 14 (Convolution: a small flashlight; Working one convolution by hand: 9 × 1 + 9 × 0 + 0 × (−1) per row, 27, 4 × 4 feature map; Channels in, channels out; Beyond flat pictures: 1-D and 3-D). Given as a worked procedure; the indexed sum is not written",
+  "owning_chapter": 14
+ },
+ {
+  "id": "dl-conv-output-size",
+  "name": "Convolution and pooling output size (padding, stride, dilation, transposed convolution)",
+  "status": "SHOWN",
+  "where": "Chapter 14 (Stride and padding: output size = (input size − filter size + 2 × padding) ÷ stride + 1, rounded down; worked for 6 and 224). Dilation and transposed convolution are not covered",
+  "owning_chapter": 14
+ },
+ {
+  "id": "dl-conv-params",
+  "name": "Convolution parameter count and cost (including depthwise separable)",
+  "status": "SHOWN",
+  "where": "Chapter 14 (The big trick: the same filter everywhere: 3 × 3 × 3 + 1 = 28, 64 filters = 1,792 parameters; VGG: two 3 × 3 layers 18 versus 25 weights; After ResNet: depthwise separable 3 × 3 × 256 + 256 × 256 = 67,840 versus 589,824). Multiply-add cost is not computed",
+  "owning_chapter": 14
+ },
+ {
+  "id": "dl-receptive-field",
+  "name": "Receptive field of stacked convolutions",
+  "status": "WORDS",
+  "where": "Chapter 14 (Receptive fields and the feature hierarchy: 3 × 3, then 5 × 5, then 7 × 7, pooling roughly doubles; VGG, GoogLeNet: two 3 × 3 layers see 5 × 5). The recurrence with strides is not shown",
+  "owning_chapter": 14
+ },
+ {
+  "id": "dl-pooling",
+  "name": "Max, average and global average pooling",
+  "status": "SHOWN",
+  "where": "Chapter 14 (Pooling: making a thumbnail: 2 × 2 max pooling and average pooling worked, (1 + 3 + 4 + 6) ÷ 4 = 3.5). Global average pooling is not covered",
+  "owning_chapter": 14
+ },
+ {
+  "id": "dl-rnn",
+  "name": "Recurrent neural network update (Elman RNN)",
+  "status": "SHOWN",
+  "where": "Chapter 14 (Recurrent neural networks: new hidden state = tanh(W_input × current input + W_memory × old hidden state + bias); A worked example: watching memory fade). The output line y_t = W_hy × h_t + b_y is not written",
+  "owning_chapter": 14
+ },
+ {
+  "id": "dl-lstm",
+  "name": "LSTM gates and cell update",
+  "status": "SHOWN",
+  "where": "Chapter 14 (LSTM and GRU: memory with valves; A worked example with the gates: new cell state = forget × old cell state + input × candidate = 0.97). The three gate equations and h_t = o_t ⊙ tanh(c_t) are described only in words",
+  "owning_chapter": 14
+ },
+ {
+  "id": "dl-gru",
+  "name": "GRU (gated recurrent unit)",
+  "status": "WORDS",
+  "where": "Chapter 14 (LSTM and GRU: GRU definition, two gates, update and reset, no cell state). The equations are not shown",
+  "owning_chapter": 14
+ },
+ {
+  "id": "dl-additive-attention",
+  "name": "Additive (Bahdanau) and multiplicative (Luong) attention",
+  "status": "WORDS",
+  "where": "Chapter 14 (The birth of attention: scores turned into weights by softmax and blended into a context vector, worked in Table 14.2; 'Bahdanau used a small learned network for this; later versions used a simple dot product'). The additive score v_a · tanh(W_a × s + U_a × h) and Luong's bilinear score are not shown",
+  "owning_chapter": 14
+ },
+ {
+  "id": "dl-sdpa",
+  "name": "Scaled dot-product attention",
+  "status": "SHOWN",
+  "where": "Chapter 15 (Step 4: Self-attention, worked by hand, Steps A to E; scaled dot-product attention definition: softmax(Q × K-transposed ÷ √d) × V; why scale); Chapter 17 (Two bills every Transformer pays)",
+  "owning_chapter": 15
+ },
+ {
+  "id": "dl-attention-masks",
+  "name": "Attention masks (causal, padding, sliding-window, document and prefix)",
+  "status": "SHOWN",
+  "where": "Chapter 15 (The whole attention matrix, with the mask, Figure 15.5; Step 8: causal mask definition, future scores set to minus infinity before softmax); sliding-window mask only as a definition (Chapter 15, Making attention cheaper) and padding mask only in words (Appendix F, Batching text). Document and prefix masks are not covered",
+  "owning_chapter": 15
+ },
+ {
+  "id": "dl-mha",
+  "name": "Multi-head attention with output projection",
+  "status": "SHOWN",
+  "where": "Chapter 15 (Step 5: Many heads: GPT-2 small 768 split into 12 heads of 64, outputs joined and multiplied by an output matrix, 4 × 768 × 768 ≈ 2.36 million parameters; multi-head attention definition)",
+  "owning_chapter": 15
+ },
+ {
+  "id": "dl-gqa",
+  "name": "Multi-query and grouped-query attention (MQA, GQA)",
+  "status": "SHOWN",
+  "where": "Chapter 15 (Step 5: The KV cache and its memory bill: 64 query heads sharing 8 key-value heads cuts the cache 8-fold, Table 15.4, Figure 15.6); Chapter 23 (KV cache worked, GQA and MQA definitions, Table 23.1); Appendix B (KV cache per token). The head-to-group mapping is given only in words and a diagram",
+  "owning_chapter": 15
+ },
+ {
+  "id": "dl-mla",
+  "name": "Multi-head latent attention (MLA)",
+  "status": "WORDS",
+  "where": "Chapter 15 (Step 5: MLA definition, compress keys and values into one small latent vector); Chapter 23 (MLA definition; Table 23.1: 61 layers × 576 numbers × 2 bytes ≈ 70 KB per token). The down- and up-projection equations and decoupled RoPE are not shown",
+  "owning_chapter": 15
+ },
+ {
+  "id": "dl-attention-sink",
+  "name": "Attention with a learned sink logit (off-by-one softmax)",
+  "status": "WORDS",
+  "where": "Chapter 15 (Making attention cheaper: attention sink definition); Chapter 17 (Keeping giants stable: Gated attention and attention sinks, softmax weights must add to 1). The learned sink logit in the softmax denominator is not shown",
+  "owning_chapter": 17
+ },
+ {
+  "id": "dl-gated-attention",
+  "name": "Gated attention (per-head sigmoid output gate)",
+  "status": "WORDS",
+  "where": "Chapter 15 (Making attention cheaper: learned sigmoid gate on each head's output; Table 15.6); Chapter 17 (Hybrid architectures definition; Keeping giants stable). The Y ⊙ sigmoid(X × W) formula is not written",
+  "owning_chapter": 17
+ },
+ {
+  "id": "dl-sparse-attention",
+  "name": "Top-k sparse attention with a lightning indexer (DeepSeek Sparse Attention)",
+  "status": "WORDS",
+  "where": "Chapter 15 (Making attention cheaper: sparse attention definition, top-k most relevant earlier tokens, DeepSeek Sparse Attention); Chapter 17 (The memory problem: sparse and compressed attention). The lightning-indexer score and top-k selection formula are not shown",
+  "owning_chapter": 15
+ },
+ {
+  "id": "dl-prenorm-block",
+  "name": "Pre-norm Transformer block (with post-norm, sandwich and parallel variants)",
+  "status": "SHOWN",
+  "where": "Chapter 15 (Step 7: x = x + Attention(RMSNorm(x)); x = x + FeedForward(RMSNorm(x)); Figure 15.7); Chapter 13 (Pre-norm and post-norm definition; Figure 13.8). Post-norm is only described in words; sandwich and parallel blocks are not covered",
+  "owning_chapter": 15
+ },
+ {
+  "id": "dl-ffn",
+  "name": "Transformer feed-forward block and its width (classic and SwiGLU)",
+  "status": "SHOWN",
+  "where": "Chapter 15 (Step 6: expand 4 times and back, 768 → 3,072 → 768, 2 × 768 × 3,072 ≈ 4.7 million weights, SwiGLU hidden size 8/3; Step 7: about 8 × d² for the FFN and 12 × d² per block, GPT-3 check 175 billion); Chapter 17 (feed-forward block definition)",
+  "owning_chapter": 15
+ },
+ {
+  "id": "dl-sinusoidal",
+  "name": "Absolute position encodings (sinusoidal and learned)",
+  "status": "WORDS",
+  "where": "Chapter 15 (Step 3: Telling the model about word order: fixed sine and cosine waves of different speeds added to each embedding; learned positions up to 1,024 or 512; Table 15.2). The sin and cos formula is not shown",
+  "owning_chapter": 15
+ },
+ {
+  "id": "dl-rope",
+  "name": "Rotary position embedding (RoPE)",
+  "status": "SHOWN",
+  "where": "Chapter 15 (RoPE: rotating the arrows: rotation [cos, sin] at 10 degrees per position, dot product 0.940 = cos 20 degrees independent of absolute position, worked; pairs spinning at different speeds; Stretching the context window, YaRN in words). The frequency schedule base^(−2i ÷ d) is given only in words",
+  "owning_chapter": 15
+ },
+ {
+  "id": "dl-alibi",
+  "name": "ALiBi and relative position biases",
+  "status": "WORDS",
+  "where": "Chapter 15 (Step 3: ALiBi lowers the attention score in proportion to distance; definition; Table 15.2). The head slopes m_h and the formula are not shown",
+  "owning_chapter": 15
+ },
+ {
+  "id": "dl-embedding-lookup",
+  "name": "Embedding lookup (one-hot times a table)",
+  "status": "SHOWN",
+  "where": "Chapter 14 (One-hot vectors; Dense embeddings: looking up a row equals multiplying a one-hot vector by the table, 50,000 × 300 = 15 million numbers); Chapter 15 (Step 2: Token embeddings, vocabulary × model dimension, 50,257 × 768 ≈ 38.6 million); Appendix B (Embedding table size)",
+  "owning_chapter": 14
+ },
+ {
+  "id": "dl-tied-embeddings",
+  "name": "Tied input and output embeddings (weight tying)",
+  "status": "WORDS",
+  "where": "Chapter 15 (Step 9: From vectors back to words: the final matrix has one column per vocabulary token; unembedding definition mentions weight tying). logits = h × Eᵀ is not written",
+  "owning_chapter": 15
+ },
+ {
+  "id": "dl-word2vec",
+  "name": "word2vec skip-gram (softmax and negative sampling)",
+  "status": "WORDS",
+  "where": "Chapter 14 (word2vec: learning meaning from neighbors: predict the words within two places; definition; king − man + woman worked); Appendix F (Negative sampling and hierarchical softmax, in words). The skip-gram softmax and negative-sampling loss are not shown",
+  "owning_chapter": 14
+ },
+ {
+  "id": "dl-glove",
+  "name": "GloVe objective",
+  "status": "WORDS",
+  "where": "Chapter 14 (word2vec section: one sentence, GloVe produced similar vectors from word co-occurrence counts; Exercise 8 loads GloVe vectors). The weighted least-squares objective is not shown",
+  "owning_chapter": 14
+ },
+ {
+  "id": "dl-moe-router",
+  "name": "Mixture-of-experts router, top-k gating and layer output (with shared experts)",
+  "status": "SHOWN",
+  "where": "Chapter 17 (Worked example: routing one token: dot-product router scores, softmax, top-2 renormalized to 0.67 and 0.33, weighted blend, shared expert, residual add; Shared experts and fine-grained experts; top-k routing and gating weight definitions); Chapter 15 (Step 6, MoE definition); Appendix B (Mixture of experts). DeepSeek-V3's sigmoid scores are not shown",
+  "owning_chapter": 17
+ },
+ {
+  "id": "dl-moe-aux-loss",
+  "name": "MoE load-balancing auxiliary loss",
+  "status": "WORDS",
+  "where": "Chapter 17 (Load balancing: auxiliary loss, a penalty that grows when some experts receive a bigger share of tokens and router probability; definition). The α × N × sum of f_i × P_i formula is not shown",
+  "owning_chapter": 17
+ },
+ {
+  "id": "dl-router-zloss",
+  "name": "Router z-loss",
+  "status": "MISSING",
+  "where": "Not in the book (Appendix F's z-loss entry covers the output softmax, not the router)",
+  "owning_chapter": 17
+ },
+ {
+  "id": "dl-aux-free-balancing",
+  "name": "Auxiliary-loss-free bias balancing",
+  "status": "SHOWN",
+  "where": "Chapter 17 (Load balancing: auxiliary-loss-free balancing worked: biases −0.5 and +0.5 change the selection to E8 and E3, mixing still uses the original scores, softmax over 2.0 and 1.1 gives 0.71 and 0.29; definition). The bias update step size is described only in words",
+  "owning_chapter": 17
+ },
+ {
+  "id": "dl-expert-capacity",
+  "name": "Expert capacity (capacity factor)",
+  "status": "SHOWN",
+  "where": "Chapter 17 (Load balancing: capacity = fair share × capacity factor 1.25; 16 tokens × top-2 ÷ 8 experts = 4, capacity 5; Figure 17.4; token dropping definition)",
+  "owning_chapter": 17
+ },
+ {
+  "id": "dl-ssm",
+  "name": "Linear state-space model layer (continuous, discrete and convolution forms)",
+  "status": "WORDS",
+  "where": "Chapter 17 (Back to recurrence, done right: toy recurrence state = 0.9 × state + input, 5.0, 4.5, 4.05, 3.65; From S4 to Mamba-3: state-space model definition). The A, B, C, D equations and the convolution form are not shown",
+  "owning_chapter": 17
+ },
+ {
+  "id": "dl-ssm-discretization",
+  "name": "SSM discretization (zero-order hold, Euler, exponential-trapezoidal)",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 17
+ },
+ {
+  "id": "dl-mamba",
+  "name": "Mamba selective scan",
+  "status": "WORDS",
+  "where": "Chapter 17 (Back to recurrence: selectivity, the token decides its keep-rate and how much to write; From S4 to Mamba-3; Mamba definition). The selective-scan equations are not shown",
+  "owning_chapter": 17
+ },
+ {
+  "id": "dl-mamba2-ssd",
+  "name": "Mamba-2 state-space duality (scalar-decay SSM as masked attention)",
+  "status": "WORDS",
+  "where": "Chapter 17 (From S4 to Mamba-3: Mamba-2 showed SSMs and attention are mathematically close relatives; Hybrid architectures table). The scalar-decay recurrence and masked-attention form are not shown",
+  "owning_chapter": 17
+ },
+ {
+  "id": "dl-linear-attention",
+  "name": "Linear attention and its recurrent form (with decay gates)",
+  "status": "SHOWN",
+  "where": "Chapter 17 (Linear attention and the delta rule: writing adds value × keyᵀ to the memory S, reading with a query gives S × q; constant memory per token); Chapter 15 (Making attention cheaper, Table 15.6). The normalizer, feature map φ and decay gates are only in words",
+  "owning_chapter": 17
+ },
+ {
+  "id": "dl-delta-rule",
+  "name": "Delta rule, Gated DeltaNet and Kimi Delta Attention",
+  "status": "SHOWN",
+  "where": "Chapter 17 (Linear attention and the delta rule: write only the error, value minus S × k, worked with [3, 1] then [2, 2] versus the additive blur [5, 3]; delta rule, Gated DeltaNet and Kimi Delta Attention definitions). The β write strength and the gate factors are only in words",
+  "owning_chapter": 17
+ },
+ {
+  "id": "dl-zloss",
+  "name": "Output z-loss",
+  "status": "WORDS",
+  "where": "Appendix F (Stability tricks: z-loss and logit soft-capping: a tiny penalty keeping the softmax's normalizing total close to 1, PaLM 2022; definition). The c × (ln Z)^2 formula is not shown",
+  "owning_chapter": 17
+ },
+ {
+  "id": "dl-softcap",
+  "name": "Logit soft-capping",
+  "status": "SHOWN",
+  "where": "Appendix F (Stability tricks: z-loss and logit soft-capping: cap × tanh(logit ÷ cap), cap such as 30, Gemma 2; definition). No chapter shows it",
+  "owning_chapter": 17
+ },
+ {
+  "id": "dl-qkclip",
+  "name": "QK-Clip (the 'clip' in MuonClip)",
+  "status": "WORDS",
+  "where": "Chapter 17 (Keeping giants stable: QK-clip shrinks the query and key weights whenever the largest score passes a threshold; QK-clip (MuonClip) definition); Chapter 13 (Muon: MuonClip; Loss spikes). The γ = min(1, τ ÷ S_max) rescaling is not shown",
+  "owning_chapter": 17
+ },
+ {
+  "id": "dl-gnn",
+  "name": "Graph neural network message passing (GCN and GAT)",
+  "status": "SHOWN",
+  "where": "Chapter 17 (Graph neural networks: message passing worked as each node's new score = average of its own and its neighbors' scores, two rounds; GCN definition, learned weighted average of neighbors; self-attention as message passing). The learned GCN formula with weights and normalized adjacency, and GAT, are not shown",
+  "owning_chapter": 17
+ }
+]

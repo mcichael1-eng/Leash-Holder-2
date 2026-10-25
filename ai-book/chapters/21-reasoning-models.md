@@ -244,6 +244,8 @@ The model writes eight attempts. Here are their final lines and the verifier's v
 
 (Some implementations divide by G − 1 instead of G when computing the spread, giving +1.21 and −0.72 here. The logic is identical.)
 
+For readers who want the formula, step 5 of the recipe is the GRPO objective, which training pushes up: `J_GRPO = E[(1 ÷ G) × sum over i of (1 ÷ |o_i|) × sum over t of (min(ρ_(i,t) × A_i, clip(ρ_(i,t), 1 − ε, 1 + ε) × A_i) − β × D_KL,(i,t))]`. G is the group size (8 here). o_i is the i-th answer and |o_i| its length in tokens, so the inner sum over t visits every token of that answer and 1 ÷ |o_i| averages them. ρ_(i,t) (the Greek letter rho) is token t's probability under the updated model divided by its probability under the model that wrote the answer. A_i is the answer's advantage from Step 3. min and clip are PPO's clipping from Chapter 20, with ε usually 0.2. D_KL,(i,t) is an estimate of how far that token has drifted from the frozen reference model (the KL leash) and β is its weight. E[...] averages over many questions. Tiny example: a token of a correct attempt (A = +1.29) whose ratio has already reached 1.3 counts only as 1.2 × 1.29 ≈ 1.55, not 1.3 × 1.29 ≈ 1.68.
+
 > **Analogy:** GRPO is grading on a curve within a study group. Nobody tells the group the "expected" mark in advance. Each student's work is compared with how the group did on that same question, and only being better than your peers earns credit.
 
 ### What the curve teaches

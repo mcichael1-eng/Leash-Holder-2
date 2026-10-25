@@ -1,0 +1,754 @@
+[
+ {
+  "id": "llm-bpe-merge",
+  "name": "Byte-pair encoding merge rule (BPE)",
+  "formula": "(a, b)* = argmax over adjacent pairs (a, b) of count(a, b); add the new token ab; replace every adjacent a, b with ab; repeat until the vocabulary has V tokens",
+  "meaning": "Training a BPE tokenizer: start from 256 byte symbols (byte-level BPE) or characters, count every adjacent pair in the corpus, merge the most frequent pair into one new token, record the merge, repeat. Encoding new text applies the learned merges in the order they were learned (merge rank). Variants: byte-level BPE (GPT-2 onward; 256 base bytes so no unknown tokens), SentencePiece BPE (treats the space as a symbol), BPE-dropout (skip each merge with probability p during training for robustness). Typical vocabularies: about 50,000 (GPT-2), about 100,000 (cl100k), about 200,000 (o200k), 128,256 (Llama 3), about 262,000 (Gemma 3).",
+  "used_for": "Tokenizers of GPT models (tiktoken), Llama 3, DeepSeek, Qwen and most open models. Book: Chapter 18 (Tokens: the pieces a model reads), Chapter 15 (Step 1: Turning text into tokens); Chapter 18 works a BPE merge example by hand.",
+  "tier": "core"
+ },
+ {
+  "id": "llm-wordpiece-score",
+  "name": "WordPiece merge score",
+  "formula": "score(a, b) = count(ab) ÷ (count(a) × count(b))",
+  "meaning": "WordPiece merges the pair whose joint count is largest relative to the counts of its parts (the merge that most raises training-data likelihood), not simply the most frequent pair as in BPE. Encoding is greedy longest-match-first, with a '##' prefix marking word-internal pieces.",
+  "used_for": "BERT, DistilBERT and many BERT-family encoders still used as embedding models and rerankers in retrieval systems. Book: Chapter 18 names WordPiece.",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-unigram-tokenizer",
+  "name": "Unigram language-model tokenizer likelihood",
+  "formula": "P(x) = product over i of p(x_i); best segmentation x* = argmax over segmentations x of the text of P(x); training maximizes L = sum over sentences s of ln( sum over segmentations x of s of P(x) )",
+  "meaning": "Each token has a probability p; a segmentation's probability is the product of its tokens' probabilities, and the Viterbi algorithm finds the most likely one. Training (Kudo 2018) starts from a large seed vocabulary, fits p by expectation-maximization, then repeatedly drops the tokens whose removal lowers L least (keeping about 80% each round) until the target size. Variant: subword regularization samples segmentations in proportion to P(x)^α during training.",
+  "used_for": "SentencePiece unigram mode, used by T5, mT5, ALBERT and XLNet. Book: Chapter 18 (Tokens) mentions unigram and SentencePiece.",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-bytes-per-token",
+  "name": "Bytes per token, fertility and tokenizer compression ratio",
+  "formula": "bytes per token = UTF-8 bytes of a text ÷ tokens; fertility = tokens ÷ words; relative compression of tokenizer A versus B = tokens_B ÷ tokens_A on the same text",
+  "meaning": "How many raw bytes (or words) one token covers. English is about 4 characters per token for 100,000-plus vocabularies (about 0.75 words per token, Appendix B); many non-Latin scripts need 2 to 4 times more tokens for the same meaning (the 'token tax'), which raises cost and shrinks the effective context window. Needed to convert per-token loss into bits per byte and to compare prices across providers whose tokenizers differ.",
+  "used_for": "Tokenizer design for multilingual models; comparing API prices and context limits across tokenizers. Book: Chapter 18 (Tokens), Chapter 26 (Tokens, money and speed), Appendix B (tokens and words).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-chain-rule",
+  "name": "Autoregressive factorization (chain rule over tokens)",
+  "formula": "P(x_1, ..., x_T) = product over t = 1..T of P(x_t given x_1, ..., x_(t−1)); in logs: ln P(x) = sum over t of ln P(x_t given x_<t)",
+  "meaning": "Any sequence's probability is the product of each token's probability given all earlier tokens (x_<t). This is exact (the chain rule of probability), so a model that predicts the next token well defines a full probability distribution over text, and generation is just sampling one token at a time.",
+  "used_for": "Every decoder-only language model (GPT, Claude, Gemini, Llama, DeepSeek, Qwen). Book: Chapter 18 (The one trick: predicting the next token), Appendix B (sentence probability, log-probability).",
+  "tier": "core"
+ },
+ {
+  "id": "llm-lm-head",
+  "name": "Next-token distribution from the final hidden state (LM head)",
+  "formula": "z = W_U × h_t (+ b); P(x_(t+1) = j given x_≤t) = exp(z_j) ÷ sum over k = 1..V of exp(z_k); with weight tying W_U = W_E^T",
+  "meaning": "The last hidden vector h_t (length d_model) is multiplied by the unembedding matrix W_U (V × d_model) to give one logit z_j per vocabulary token, and softmax turns logits into probabilities. Weight tying reuses the input embedding matrix W_E as the output matrix, saving V × d_model parameters (common in small models such as GPT-2 and Gemma); large models usually keep them separate. The returned 'logprobs' of an API are ln of these probabilities.",
+  "used_for": "The final layer of every LLM; API logprobs; all sampling rules operate on z. Book: Chapter 15 (Step 9: From vectors back to words), Chapter 18 (From scores to words).",
+  "tier": "core"
+ },
+ {
+  "id": "llm-next-token-nll",
+  "name": "Next-token cross-entropy loss (language-model negative log-likelihood)",
+  "formula": "L(θ) = −(1 ÷ T) × sum over t = 1..T of ln P_θ(x_t given x_<t)",
+  "meaning": "The pretraining loss: average over every token in the batch of minus the natural log of the probability the model gave the true next token, computed in parallel for all positions with the causal mask (teacher forcing). It equals the cross-entropy between the data and the model and is minimized by gradient descent. Variants: averaging per token versus per sequence; loss weights per data source; label smoothing is rarely used for LLM pretraining.",
+  "used_for": "Pretraining of every GPT-style model; also the validation metric tracked in loss curves. Book: Chapter 19 (How pretraining teaches: one step of learning), Appendix B (cross-entropy).",
+  "tier": "core"
+ },
+ {
+  "id": "llm-perplexity",
+  "name": "Perplexity",
+  "formula": "PPL = exp(L) = exp( −(1 ÷ T) × sum over t of ln P(x_t given x_<t) ); equivalently PPL = 2^(bits per token)",
+  "meaning": "Perplexity is e raised to the average per-token loss: the number of equally likely choices the model is effectively hesitating between at each step (PPL 1 means certain, PPL 10 means as unsure as a fair 10-way pick). Because it is per token, it depends on the tokenizer and cannot be compared across models with different vocabularies; use bits per byte for that.",
+  "used_for": "Language-model evaluation, data filtering with a reference model (CCNet), quick regression checks after quantization. Book: Chapter 6, Chapter 19, Appendix B (perplexity).",
+  "tier": "core"
+ },
+ {
+  "id": "llm-bits-per-byte",
+  "name": "Bits per byte (and bits per character)",
+  "formula": "BPB = (L_token × number of tokens) ÷ (ln(2) × number of UTF-8 bytes) = L_token ÷ (ln(2) × bytes per token)",
+  "meaning": "Converts the per-token loss in nats into bits and spreads it over the bytes of raw text, which makes models with different tokenizers comparable. It is also the code length per byte an arithmetic coder driven by the model would achieve, the link between language modeling and compression. Bits per character is the same with characters in place of bytes.",
+  "used_for": "Tokenizer-independent evaluation (The Pile, Gopher and Chinchilla reports); DeepSeek LLM fitted its scaling laws on validation bits per byte. Book: Only here (the book uses 'bits of surprise' per token in Appendix B).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-masked-lm",
+  "name": "Masked-language-model, span-corruption and fill-in-the-middle objectives",
+  "formula": "L_MLM = −(1 ÷ |M|) × sum over i in M of ln P_θ(x_i given the text with the positions in M hidden); M is about 15% of positions",
+  "meaning": "BERT hides about 15% of tokens (80% replaced by [MASK], 10% by a random token, 10% left unchanged) and is scored only on those positions, using context from both sides. Variants: T5 span corruption (drop spans averaging 3 tokens and predict them after sentinel tokens), prefix LM, UL2 mixtures. Fill-in-the-middle (FIM) keeps the ordinary next-token loss but moves a random middle span to the end (prefix, suffix, middle) for a share of documents, so a decoder learns to infill code.",
+  "used_for": "BERT-style encoders behind many embedding models and rerankers; FIM in code models (StarCoder, DeepSeek-Coder, Qwen2.5-Coder) for editor autocomplete. Book: Chapter 15 (Step 8: Encoders, decoders and the causal mask).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-sft-loss",
+  "name": "Supervised fine-tuning loss with prompt masking",
+  "formula": "L_SFT = −(1 ÷ sum over t of m_t) × sum over t of m_t × ln P_θ(x_t given x_<t), with m_t = 1 on assistant-response tokens and 0 on system, user and tool tokens",
+  "meaning": "The same next-token loss as pretraining, but only the tokens the model should learn to write count; the prompt is context, not a target. Variants: normalizing per token versus per example (changes how much long answers weigh), masking every assistant turn in multi-turn chats, packing several examples per sequence with attention masks.",
+  "used_for": "Instruction tuning in every post-training pipeline; Hugging Face TRL (assistant-only or completion-only loss), Axolotl, Unsloth. Book: Chapter 20 (Stage 1: Supervised fine-tuning), Chapter 30 (The fine-tuning menu).",
+  "tier": "core"
+ },
+ {
+  "id": "llm-mc-loglik",
+  "name": "Multiple-choice scoring by log-likelihood",
+  "formula": "choice* = argmax over choices c of sum over the tokens of c of ln P(token given question and earlier tokens of c); normalized variant divides each sum by the byte (or character) length of c",
+  "meaning": "How base models are evaluated without generating: the answer option the model finds most probable wins. Length normalization (acc_norm in EleutherAI's lm-evaluation-harness) stops short options from winning just because they have fewer tokens. The per-token-normalized negative log-likelihood of the correct answer is also the input to downstream scaling forecasts.",
+  "used_for": "Base-model benchmarks (HellaSwag, ARC, MMLU in cloze form) in lm-evaluation-harness; Llama 3's downstream prediction used normalized NLL of the correct answer. Book: Only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-z-loss",
+  "name": "Softmax normalizer penalty (z-loss)",
+  "formula": "L_total = L + λ_z × (ln Z)^2, with Z = sum over j of exp(z_j) and λ_z = 10^−4",
+  "meaning": "Adds a small penalty on the squared log of the softmax denominator Z, pulling it toward 1 (ln Z toward 0) so output logits cannot drift to huge values that break bfloat16 arithmetic and cause loss spikes. The same idea applied to router logits is the router z-loss of mixture-of-experts models.",
+  "used_for": "PaLM (λ_z = 10^−4), OLMo 2 and other open training recipes for stability. Book: Only here (Chapter 19 discusses loss spikes in words).",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-logit-softcap",
+  "name": "Logit soft-capping",
+  "formula": "z' = c × tanh(z ÷ c); Gemma 2 used c = 30 for final logits and c = 50 for attention logits",
+  "meaning": "Smoothly squashes any logit into the range −c to c while leaving small logits almost unchanged (tanh is nearly linear near 0), preventing runaway logits during training.",
+  "used_for": "Gemma 2; Gemma 3 replaced attention soft-capping with QK-norm. Book: Only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-mtp-loss",
+  "name": "Multi-token prediction loss",
+  "formula": "Gloeckle et al. 2024: L_n = −sum over t of sum over i = 1..n of ln P_θ(x_(t+i) given x_≤t); DeepSeek-V3: L_MTP^k = −(1 ÷ T) × sum over i of ln P_i^k[t_i], L_MTP = (λ ÷ D) × sum over k = 1..D of L_MTP^k, total loss L_main + L_MTP",
+  "meaning": "Extra heads (or small sequential modules) predict tokens 2, 3, ... steps ahead from each position, adding a weighted extra cross-entropy loss that densifies the training signal. DeepSeek-V3 used depth D = 1 and weight λ = 0.3 for the first 10 trillion tokens, then 0.1. At inference the extra head can serve as a built-in draft for speculative decoding: DeepSeek-V3 reports 85-90% acceptance of the second token and about 1.8 times the tokens per second.",
+  "used_for": "DeepSeek-V3 and R1, GLM-4.5 and other 2025-2026 open models; draft heads for speculative decoding. Book: Chapter 13, Chapter 15, Chapter 17, Chapter 23 mention multi-token prediction.",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-param-count",
+  "name": "Transformer parameter count",
+  "formula": "N ≈ 12 × n_layer × d_model^2 (non-embedding, d_ff = 4 × d_model) + V × d_model (embedding) [+ V × d_model again if the output matrix is not tied]",
+  "meaning": "Per layer, attention has 4 × d_model^2 weights (query, key, value, output) and the MLP 2 × d_model × d_ff = 8 × d_model^2, giving 12 × d_model^2. Variants: SwiGLU MLPs use 3 × d_model × d_ff (with d_ff ≈ (8 ÷ 3) × d_model the total stays near 8 × d_model^2); grouped-query attention has 2 × d_model^2 + 2 × d_model × n_kv × d_head; norms and biases are negligible. Kaplan's N counts non-embedding parameters only; Chinchilla's counts all. Example: 32 layers, d_model 4,096, V 32,000: 12 × 32 × 4,096^2 ≈ 6.44 billion + 2 × 32,000 × 4,096 ≈ 0.26 billion ≈ 6.7 billion (Llama 2 7B).",
+  "used_for": "Sizing models, memory planning (parameters × bytes), the N in scaling laws. Book: Chapter 18 (Parameters: what 'a 70B model' means), Appendix B (parameters in a dense layer, embedding table size).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-moe-params",
+  "name": "Mixture-of-experts total versus active parameters",
+  "formula": "N_total = N_shared + L_moe × E × N_expert; N_active = N_shared + L_moe × (k + s) × N_expert; with SwiGLU experts N_expert = 3 × d_model × d_expert",
+  "meaning": "E routed experts per MoE layer, k of them chosen per token, s always-on shared experts, L_moe MoE layers, N_shared all other weights (attention, dense layers, embeddings). Memory must hold N_total, while compute per token follows N_active (2 × N_active FLOPs per token, 6 × N_active × D for training). Routing and load-balancing equations belong to the deep-learning section. Examples: DeepSeek-V3 671B total, 37B active (256 routed + 1 shared expert, 8 routed active, d_expert 2,048, first 3 layers dense); Kimi K2 about 1 trillion total, 32B active; gpt-oss-120b about 117B total, 5.1B active; Qwen3-235B-A22B.",
+  "used_for": "Every 2025-2026 frontier open-weight MoE; serving capacity planning. Book: Chapter 17 (Mixture of experts), Chapter 18 (Parameters), Appendix B (mixture of experts).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-train-flops-6nd",
+  "name": "Training compute C ≈ 6ND",
+  "formula": "C ≈ 6 × N × D (forward 2 × N + backward 4 × N FLOPs per token); for MoE use N_active; with full activation recomputation the hardware does about 8 × N × D",
+  "meaning": "Each parameter does one multiply-add (2 FLOPs) per token in the forward pass and about twice that in the backward pass. Ignores the attention term (see the attention FLOPs entry). Example: Llama 3 405B on 15.6 trillion tokens: 6 × 4.05 × 10^11 × 1.56 × 10^13 ≈ 3.8 × 10^25 FLOPs, matching Meta's reported figure.",
+  "used_for": "Budgeting every pretraining run; regulatory compute thresholds such as the EU AI Act's 10^25 FLOP presumption of systemic risk. Book: Chapter 19 (The 6ND rule and what a training run costs), Appendix B (training compute).",
+  "tier": "core"
+ },
+ {
+  "id": "llm-inference-2n",
+  "name": "Inference compute ≈ 2N FLOPs per token",
+  "formula": "FLOPs per token ≈ 2 × N (+ 2 × n_layer × n_ctx × d_attn for attention); prefill of P prompt tokens ≈ 2 × N × P; one request ≈ 2 × N × (P + G) for G generated tokens; N samples multiply it by N",
+  "meaning": "Each weight is used once per token as a multiply-add. Prefill processes the whole prompt in parallel (compute-bound); decode produces one token at a time (memory-bound, which is a hardware matter covered in the compute section). For MoE use N_active.",
+  "used_for": "Pricing and capacity estimates; counting test-time compute for reasoning models and best-of-N. Book: Chapter 23 (Two different jobs: prefill and decode), Appendix B (inference cost per token, cost of an answer).",
+  "tier": "core"
+ },
+ {
+  "id": "llm-attention-flops",
+  "name": "Attention FLOPs term (context-length cost)",
+  "formula": "Kaplan: C_forward ≈ 2 × N + 2 × n_layer × n_ctx × d_attn per token; PaLM (training, for MFU): 6 × N + 12 × n_layer × n_heads × d_head × T per token; DeepSeek LLM: M = 72 × n_layer × d_model^2 + 12 × n_layer × d_model × l_seq FLOPs per token, C = M × D",
+  "meaning": "Scoring each query against every earlier key and mixing values adds work proportional to context length per token, so total attention work grows with the square of sequence length. The term is small when d_model > n_ctx ÷ 12 (Kaplan) but dominates at long context, which motivates sparse, linear and latent attention. Causal masking halves the real work, a factor most MFU formulas ignore.",
+  "used_for": "Model FLOPs utilization accounting (PaLM), DeepSeek's scaling-law fits (they replaced 6N by M for accuracy at small scale), long-context cost estimates. Book: Chapter 17 (Two bills every Transformer pays), Chapter 15 (Making attention cheaper).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-mup",
+  "name": "Maximal update parametrization (μP) width scaling",
+  "formula": "With Adam: hidden (matrix-like) weights: init variance ∝ 1 ÷ fan_in and learning rate ∝ 1 ÷ fan_in (η_hidden = η_base × base_width ÷ width); output (unembedding) weights: init variance ∝ 1 ÷ fan_in^2, or equivalently a 1 ÷ fan_in output multiplier; input embeddings and biases: init variance ∝ 1 ÷ fan_in, learning rate constant; attention logits use q · k ÷ d_head instead of q · k ÷ sqrt(d_head)",
+  "meaning": "Rules for how initialization, per-layer learning rates and multipliers must change as a model gets wider so that every layer keeps learning features at the same rate. Their payoff, 'μTransfer', is that the best learning rate and initialization found on a small proxy model stay best on the full-size model. Variants: depth-μP and CompleteP (2025) also scale residual branches with depth so hyperparameters transfer across depth.",
+  "used_for": "Hyperparameter transfer at labs and in open recipes (Cerebras-GPT, MiniCPM). Book: Chapter 19 (The pretraining run, definition of μP), Chapter 13 (The learning rate).",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-hparam-scaling",
+  "name": "Compute-based learning-rate and batch-size scaling laws",
+  "formula": "DeepSeek LLM: η_opt = 0.3118 × C^(−0.1250), B_opt = 0.2920 × C^(0.3271) (C in FLOPs, B in tokens); and with C = M × D: M_opt = 0.1715 × C^0.5243, D_opt = 5.8316 × C^0.4757",
+  "meaning": "Fits from small runs that predict the near-optimal peak learning rate (which falls slowly as compute grows) and batch size (which grows) for a given compute budget, and the compute-optimal split between model scale M (non-embedding FLOPs per token) and data D.",
+  "used_for": "DeepSeek LLM and successors; the general practice of fitting hyperparameter laws on proxies before a frontier run. Book: Only here (Chapter 19 describes proxy-model tuning in words).",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-critical-batch",
+  "name": "Critical batch size",
+  "formula": "B_crit(L) = B_* ÷ L^(1 ÷ α_B), B_* ≈ 2 × 10^8 tokens, α_B ≈ 0.21; S_min = S ÷ (1 + B_crit ÷ B); C_min = C ÷ (1 + B ÷ B_crit); gradient noise scale B_noise = tr(Σ) ÷ |G|^2",
+  "meaning": "Below the critical batch size, doubling the batch nearly halves the number of steps at no extra compute; above it, extra batch mostly wastes compute. It grows as the loss L falls, which is why runs ramp the batch up and why frontier runs use batches of millions of tokens. B_noise (McCandlish et al. 2018) estimates it from the gradient covariance Σ and mean gradient G.",
+  "used_for": "Choosing global batch sizes and batch ramps for large runs. Book: Only here (Chapter 19 mentions batch size).",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-kaplan-laws",
+  "name": "Kaplan power laws for language-model loss",
+  "formula": "L(N) = (N_c ÷ N)^α_N, α_N ≈ 0.076, N_c ≈ 8.8 × 10^13; L(D) = (D_c ÷ D)^α_D, α_D ≈ 0.095, D_c ≈ 5.4 × 10^13 tokens; L(C_min) = (C_c ÷ C_min)^α_C, α_C ≈ 0.050, C_c ≈ 3.1 × 10^8 PF-days; combined L(N, D) = ((N_c ÷ N)^(α_N ÷ α_D) + D_c ÷ D)^α_D",
+  "meaning": "Test loss falls as a power law in non-embedding parameters N, dataset tokens D and compute, each a straight line on a log-log plot (doubling N multiplies loss by 2^−0.076 ≈ 0.95). Kaplan et al. (2020) concluded compute should go mostly to model size (N ∝ C^0.73), which Chinchilla later corrected. Variants: learning-curve law L(N, S) with training steps; the GPT-4 report's L(C) = a × C^b + c with an irreducible term c, used to predict the final loss from runs with up to 10,000 times less compute.",
+  "used_for": "GPT-3 era sizing; loss forecasting before frontier runs. Book: Chapter 19 (Scaling laws: the recipe for a bigger loaf), Appendix B (power law).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-chinchilla-loss",
+  "name": "Chinchilla parametric loss",
+  "formula": "L(N, D) = E + A ÷ N^α + B ÷ D^β; Hoffmann et al. 2022: E = 1.69, A = 406.4, B = 410.7, α = 0.34, β = 0.28; Epoch AI replication (Besiroglu et al. 2024): E = 1.82, A = 482.01, B = 2,085.43, α = 0.3478, β = 0.3658",
+  "meaning": "Loss splits into an irreducible part E (the entropy of text), a penalty for a finite model (shrinking with parameters N) and a penalty for finite data (shrinking with tokens D). Fitted by minimizing a Huber loss (δ = 10^−3) between predicted and observed log loss with L-BFGS. The Epoch refit corrects a fitting error and implies about 25.6 tokens per parameter.",
+  "used_for": "The standard functional form for planning model size and data at every lab and in later variants (data-constrained, precision-aware). Book: Chapter 19 (Scaling laws).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-compute-optimal",
+  "name": "Compute-optimal allocation of model size and data",
+  "formula": "Minimize L(N, D) subject to 6 × N × D = C: N_opt(C) = G × (C ÷ 6)^a, D_opt(C) = (1 ÷ G) × (C ÷ 6)^b, G = (α × A ÷ (β × B))^(1 ÷ (α + β)), a = β ÷ (α + β), b = α ÷ (α + β)",
+  "meaning": "For a fixed compute budget there is one best model size; Chinchilla found a ≈ b ≈ 0.5 (0.50 and 0.50 from training curves, 0.49 and 0.51 from IsoFLOP parabolas, 0.46 and 0.54 from the parametric fit), so parameters and tokens should grow equally. IsoFLOP method: train several sizes at each budget, fit a parabola to loss versus log size, take the minimum. Llama 3 fit D*(C) = A × C^α with (α, A) = (0.53, 0.29), predicting 402B parameters on 16.55 trillion tokens at 3.8 × 10^25 FLOPs (they trained 405B).",
+  "used_for": "Sizing pretraining runs (Chinchilla, Llama 3, DeepSeek). Book: Chapter 19 (Scaling laws), Appendix B (compute-optimal size).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-20-tokens",
+  "name": "Twenty tokens per parameter rule",
+  "formula": "D_opt ≈ 20 × N_opt; with C = 6 × N × D: N_opt ≈ sqrt(C ÷ 120), D_opt ≈ 20 × sqrt(C ÷ 120)",
+  "meaning": "The rounded Chinchilla result: compute-optimal training uses about 20 training tokens per parameter (Chinchilla: 70 billion parameters on 1.4 trillion tokens). Modern models deliberately train far past it (Llama 3 8B saw about 15 trillion tokens, about 1,875 per parameter) because a smaller, longer-trained model is cheaper to serve; see inference-aware scaling.",
+  "used_for": "Back-of-envelope run planning everywhere. Book: Chapter 19, Appendix B (Chinchilla ratio, compute-optimal size).",
+  "tier": "core"
+ },
+ {
+  "id": "llm-data-constrained",
+  "name": "Data-constrained scaling (repeated epochs)",
+  "formula": "D' = U_D + U_D × R*_D × (1 − exp(−R_D ÷ R*_D)); N' = U_N + U_N × R*_N × (1 − exp(−R_N ÷ R*_N)); L = E + A ÷ N'^α + B ÷ D'^β; R*_D ≈ 15.4, R*_N ≈ 5.3",
+  "meaning": "When unique data U_D runs out and is repeated R_D extra times (epochs − 1), repeated tokens are worth less than fresh ones; D' is the effective number of fresh tokens. Up to about 4 epochs costs almost nothing; at R_D = R*_D repeated tokens are worth 1 − 1 ÷ e ≈ 63% of fresh ones, and beyond that extra epochs add little (Muennighoff et al. 2023). The same decay applies to excess parameters (N').",
+  "used_for": "Planning around the 'data wall': multi-epoch training on scarce high-quality, code and non-English data. Book: Chapter 19 (The data wall and how labs climb it).",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-inference-aware",
+  "name": "Inference-aware (beyond-Chinchilla) scaling",
+  "formula": "N*, D_tr* = argmin over N, D_tr of (6 × N × D_tr + 2 × N × D_inf) subject to L(N, D_tr) = ℓ",
+  "meaning": "Choose the model size N and training tokens D_tr that reach a target loss ℓ with the least total compute over the model's life, where D_inf is the number of tokens it will serve. Large expected demand pushes the optimum to smaller models trained on many more tokens than 20 per parameter (Sardana et al. 2024); a cost version replaces FLOPs with dollars.",
+  "used_for": "Why Llama 3, Gemma, Qwen and other widely served models are heavily over-trained. Book: Chapter 19 (Scaling laws, over-training and inference-aware scaling).",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-precision-scaling",
+  "name": "Precision-aware scaling law",
+  "formula": "L(N, D, P_w, P_a, P_kv) = A × N_eff^(−α) + B × D^(−β) + E, N_eff = N × (1 − exp(−P_w ÷ γ_w)) × (1 − exp(−P_a ÷ γ_a)) × (1 − exp(−P_kv ÷ γ_kv)); post-training quantization penalty δ_PTQ = C_T × (D^γ_D ÷ N^γ_N) × exp(−P_post ÷ γ_post)",
+  "meaning": "Training in fewer bits (P_w for weights, P_a activations, P_kv attention cache) acts like having fewer effective parameters N_eff. Quantizing after training costs more the more data a model saw, so heavily over-trained models quantize worse. The fits put the compute-optimal training precision around 7 to 8 bits (Kumar et al. 2024).",
+  "used_for": "Choosing FP8 versus lower-precision training and deciding how far to quantize over-trained models. Book: Only here (Chapter 19 and Chapter 23 discuss low precision in words).",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-downstream-scaling",
+  "name": "Two-step downstream performance forecast",
+  "formula": "Step 1: NLL_task(C) ≈ a + b × log(C), the normalized negative log-likelihood of the correct answer versus training FLOPs; step 2: accuracy = c_0 + (1 − c_0) ÷ (1 + exp(k × (NLL_task − n_0))), a sigmoid fitted across models",
+  "meaning": "Benchmark accuracy jumps abruptly with scale, but the log-likelihood of the right answer improves smoothly, so labs forecast it first and then map it to accuracy with an S-shaped fit (constants c_0 for chance level, k and n_0 fitted). Meta used this two-step method to predict the 405B model's ARC-Challenge score across four orders of magnitude of compute.",
+  "used_for": "Llama 3 (Meta, 2024); capability forecasting before committing to a frontier run. Book: Chapter 19 (Emergent abilities: sudden leaps or smooth progress?).",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-test-time-scaling",
+  "name": "Test-time compute scaling (log-linear)",
+  "formula": "accuracy ≈ a + b × log(test-time compute) over the measured range",
+  "meaning": "Reasoning models get steadily better as they spend more tokens thinking (longer chains) or sampling (more parallel attempts), roughly linearly in the logarithm of compute, so each doubling buys a similar gain until it saturates (OpenAI o1 report, 2024). Snell et al. (2024) showed allocating test-time compute per question difficulty is more than 4 times as efficient as plain best-of-N and can beat a model 14 times larger on suitable problems.",
+  "used_for": "Effort and thinking-budget settings (Claude adaptive thinking and effort, Gemini thinking budgets, OpenAI reasoning effort). Book: Chapter 21 (Test-time compute: a second scaling law).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-coverage-law",
+  "name": "Repeated-sampling coverage law",
+  "formula": "coverage(k) ≈ exp(a × k^b), i.e. ln(coverage) ≈ a × k^b with fitted a, b; idealized independent attempts: coverage = 1 − (1 − p)^k",
+  "meaning": "Coverage is the share of problems solved by at least one of k samples. Brown et al. (2024) found it follows an exponentiated power law across tasks: with DeepSeek-Coder-V2-Instruct, SWE-bench Lite rose from 15.9% with one sample to 56% with 250. Turning coverage into accuracy needs a verifier or vote. The unbiased pass@k estimator belongs to the evaluation-metrics section.",
+  "used_for": "Repeated sampling with unit tests or proof checkers; budgeting parallel agents. Book: Chapter 21 (Thinking wider: best-of-N, parallel thinking and agent swarms).",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-minhash-dedup",
+  "name": "MinHash near-duplicate detection with LSH banding",
+  "formula": "J(A, B) = |A ∩ B| ÷ |A ∪ B| over n-gram shingles; P(minhash(A) = minhash(B)) = J(A, B); with b bands of r hashes, P(flagged as duplicates) = 1 − (1 − J^r)^b",
+  "meaning": "Jaccard similarity J compares two documents' sets of word n-grams. One MinHash (the smallest hash over a document's shingles) matches between two documents with probability exactly J, so a signature of many hashes estimates J cheaply; locality-sensitive hashing groups hashes into bands and flags pairs that agree on a whole band, an S-shaped filter around a target similarity. FineWeb used 5-grams and 112 hashes in 14 bands of 8 (targets about 75% similarity). Related: exact n-gram overlap decontamination flags benchmark items sharing a long n-gram (13-grams in GPT-3) with training data.",
+  "used_for": "Deduplication in FineWeb, RefinedWeb, Dolma and NeMo Curator pipelines. Book: Chapter 19 (Cleaning the firehose: the curation pipeline; Jaccard worked example and MinHash definition).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-quality-filter",
+  "name": "Perplexity and classifier quality filtering",
+  "formula": "PPL_ref(doc) = exp( −(1 ÷ T) × sum over t of ln P_ref(x_t given context) ), keep documents below a percentile threshold; classifier filter: keep doc if P_clf(high quality given doc) ≥ τ (or score ≥ threshold)",
+  "meaning": "A small reference model (CCNet used a KenLM 5-gram model trained on Wikipedia) scores each web page; very high perplexity flags junk, and pages are bucketed by perplexity tertiles. Model-based filters train a classifier (often fastText) on examples labeled by a strong LLM and keep the top-scoring share. FineWeb-Edu kept pages with an educational score of at least 3 on a 0 to 5 scale annotated by Llama 3 70B.",
+  "used_for": "CCNet, DCLM, FineWeb-Edu, Nemotron-CC and lab pretraining pipelines. Book: Chapter 19 (Cleaning the firehose: heuristic and model-based quality filters).",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-mixture-sampling",
+  "name": "Temperature-scaled data-mixture sampling",
+  "formula": "p_i = n_i^α ÷ sum over j of n_j^α (equivalently α = 1 ÷ T); tokens from source i = p_i × D; epochs of source i = p_i × D ÷ n_i",
+  "meaning": "Decides how often each data source (language, domain) is sampled when sources differ hugely in size n_i. α = 1 samples in proportion to size; α < 1 upsamples small sources (α = 0.3 in mT5 and XLM-R). Variants: UniMax caps epochs per source; DoReMi learns weights with a small proxy model; data-mixing laws fit loss as a function of mixture weights.",
+  "used_for": "Multilingual and multi-domain pretraining mixtures. Book: Chapter 19 (Choosing the recipe: data mixtures).",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-kv-cache",
+  "name": "KV cache size",
+  "formula": "bytes = 2 × n_layer × n_kv_heads × d_head × T × b × batch (2 = keys and values, b = bytes per number); multi-head latent attention: bytes = n_layer × (d_c + d_R) × T × b × batch",
+  "meaning": "Memory to keep the keys and values of every past token so each new token is not recomputed. Standard multi-head attention has n_kv_heads = n_heads, grouped-query attention fewer, multi-query attention 1. DeepSeek's MLA caches a compressed latent of d_c = 512 plus a d_R = 64 rotary key per layer. Sliding-window layers cap T at the window size; StreamingLLM keeps a few 'attention sink' tokens plus a window; FP8 or 4-bit KV caches shrink b. Examples: a 70B model with 80 layers, 8 KV heads of size 128 at 2 bytes: 327,680 bytes per token; DeepSeek-V3 (61 layers, 576 numbers, 2 bytes): 70,272 bytes per token.",
+  "used_for": "Serving capacity, context-length pricing, design of GQA, MLA and hybrid models. Book: Chapter 23 (The KV cache: the model's sticky notes), Chapter 33, Appendix B (KV cache per token, KV cache total).",
+  "tier": "core"
+ },
+ {
+  "id": "llm-kv-budget",
+  "name": "Concurrency limit from KV memory (and paged blocks)",
+  "formula": "max concurrent sequences ≈ (accelerator memory − weight bytes − activation reserve) ÷ (KV bytes per token × context length); with PagedAttention: blocks per sequence = ceil(T ÷ B_block), wasted slots per sequence < B_block",
+  "meaning": "After the weights are loaded, the leftover memory divided by each conversation's cache size bounds how many conversations a server can batch, which in turn bounds throughput. PagedAttention (vLLM) stores the cache in fixed blocks (16 tokens by default) allocated on demand, so only the last block of each sequence is partly empty; earlier systems used only 20.4-38.2% of KV memory for actual token states. Hardware bandwidth ceilings belong to the compute section.",
+  "used_for": "vLLM, SGLang, TensorRT-LLM schedulers; capacity planning for long-context products. Book: Chapter 23 (Serving many people at once: batching), Chapter 33.",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-online-softmax",
+  "name": "Online softmax (FlashAttention running max and running sum)",
+  "formula": "For each new block of scores s_j: m_new = max(m_old, max(s_j)); l_new = exp(m_old − m_new) × l_old + sum(exp(s_j − m_new)); O_new = exp(m_old − m_new) × O_old + exp(s_j − m_new) × V_j; at the end O = O_new ÷ l_new; keep logsumexp = m + ln(l) for the backward pass",
+  "meaning": "Computes exact softmax attention one block of keys at a time inside fast on-chip memory, never writing the full T × T score matrix. Whenever a larger maximum m appears, the running sum l and the partial output O are rescaled by exp(m_old − m_new) so all terms share the same reference point (Milakov and Gimelshein 2018; Dao et al. 2022). Flash-decoding splits a long cache across processors and merges partial results with the same rescaling.",
+  "used_for": "FlashAttention 1-3, FlashInfer, cuDNN attention and every modern serving engine. Book: Chapter 15 (Making attention cheaper), Chapter 23, Chapter 33.",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-temperature",
+  "name": "Temperature-scaled softmax sampling",
+  "formula": "p_i = exp(z_i ÷ T) ÷ sum over j of exp(z_j ÷ T)",
+  "meaning": "Dividing every logit by a temperature T before softmax sharpens (T < 1) or flattens (T > 1) the distribution; T = 1 is the model's own distribution and T → 0 approaches greedy decoding. Applied before truncation rules (top-k, top-p, min-p) in most engines.",
+  "used_for": "The temperature parameter of every LLM API and local runner. Book: Chapter 18 (From scores to words), Chapter 26 (Sampling settings), Appendix B (temperature).",
+  "tier": "core"
+ },
+ {
+  "id": "llm-greedy",
+  "name": "Greedy decoding",
+  "formula": "x_t = argmax over j of P(j given x_<t)",
+  "meaning": "Always emit the single most probable token. Deterministic in principle, though batched floating-point arithmetic can still change results between runs (why temperature 0 is not perfectly repeatable).",
+  "used_for": "Temperature-0 API calls, evaluations needing reproducibility, the verification rule of greedy speculative decoding. Book: Chapter 18, Appendix B (greedy decoding).",
+  "tier": "core"
+ },
+ {
+  "id": "llm-top-k",
+  "name": "Top-k sampling",
+  "formula": "V_k = the k tokens with the largest p_i; p'_i = p_i ÷ sum over j in V_k of p_j for i in V_k, and 0 otherwise",
+  "meaning": "Keep only the k most likely tokens, renormalize their probabilities to sum to 1, and sample. A fixed k is too loose when the model is confident and too tight when many continuations are fine, which motivated top-p and min-p.",
+  "used_for": "top_k in Anthropic, Gemini and Hugging Face APIs, vLLM, llama.cpp. Book: Chapter 18, Chapter 26.",
+  "tier": "core"
+ },
+ {
+  "id": "llm-top-p",
+  "name": "Top-p (nucleus) sampling",
+  "formula": "V_p = the smallest set of most-likely tokens with sum of p_i ≥ p; p'_i = p_i ÷ sum over j in V_p of p_j for i in V_p, and 0 otherwise",
+  "meaning": "Keep the most likely tokens until their probabilities add up to at least p (for example 0.9), renormalize and sample, so the candidate set grows when the model is unsure and shrinks when it is confident (Holtzman et al. 2020).",
+  "used_for": "top_p in almost every API and engine. Book: Chapter 18, Chapter 26, Appendix B (top-p).",
+  "tier": "core"
+ },
+ {
+  "id": "llm-min-p",
+  "name": "Min-p sampling",
+  "formula": "threshold = p_base × p_max; V_min = {tokens i with p_i ≥ p_base × p_max}; renormalize within V_min",
+  "meaning": "Keeps every token at least a fraction p_base (typically 0.05 to 0.1) as likely as the top token p_max, so the cut-off scales with the model's confidence and higher temperatures stay coherent (Nguyen et al. 2024).",
+  "used_for": "Hugging Face transformers, vLLM, llama.cpp and other local runners. Book: Chapter 18 (logits, softmax and sampling).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-other-truncation",
+  "name": "Epsilon, eta and locally typical sampling",
+  "formula": "epsilon: keep tokens with p_i ≥ ε; eta: keep p_i ≥ η with η = min(ε, sqrt(ε × exp(−H(p)))); typical: sort tokens by |−ln p_i − H(p)| ascending and keep the smallest set whose mass reaches τ; H(p) = −sum over j of p_j × ln p_j",
+  "meaning": "Other truncation rules. Epsilon sampling drops tokens below a fixed probability (3 × 10^−4 to 9 × 10^−4 recommended); eta sampling lowers that cut-off when the distribution's entropy H is high; locally typical sampling keeps tokens whose surprise is close to the expected surprise H rather than simply the most likely ones (Meister et al. 2023).",
+  "used_for": "Hugging Face transformers generation options (epsilon_cutoff, eta_cutoff, typical_p) and some local runners. Book: Only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-repetition-penalty",
+  "name": "Repetition penalty (CTRL-style)",
+  "formula": "For each token i already in the context: z'_i = z_i ÷ θ if z_i > 0, and z'_i = z_i × θ if z_i ≤ 0 (θ > 1 penalizes; about 1.2 suggested)",
+  "meaning": "Makes tokens that already appeared less likely by shrinking positive logits and pushing negative ones further down, applied at most once per token regardless of how often it appeared (Keskar et al. 2019). Variants: no-repeat n-gram blocking (set z = −infinity for any token that would repeat an n-gram), DRY penalties in local runners.",
+  "used_for": "repetition_penalty in Hugging Face transformers, vLLM and llama.cpp. Book: Only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-freq-presence",
+  "name": "Frequency and presence penalties",
+  "formula": "z'_j = z_j − α_freq × c_j − α_pres × 1[c_j > 0], where c_j = number of times token j has been generated so far",
+  "meaning": "Subtracts a penalty that grows with each repeat (frequency) plus a one-time penalty for having appeared at all (presence); negative values encourage repetition. OpenAI-style APIs accept values from −2 to 2. 1[...] is 1 when the condition holds, else 0.",
+  "used_for": "OpenAI-compatible APIs; vLLM implements exactly logits −= frequency_penalty × counts and −= presence_penalty × mask. Book: Only here (Chapter 26 covers sampling settings in words).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-logit-bias",
+  "name": "Logit bias",
+  "formula": "z'_j = z_j + b_j, with b_j from −100 (effectively bans token j) to +100 (effectively forces it)",
+  "meaning": "Adds a fixed number to chosen tokens' logits before softmax to raise or ban specific tokens, for example forcing a 'yes'/'no' label or banning a word.",
+  "used_for": "logit_bias in the OpenAI API and compatible servers; classification by constrained labels. Book: Only here.",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-constrained-decoding",
+  "name": "Grammar-constrained (structured-output) decoding mask",
+  "formula": "z'_j = z_j if token j is allowed in automaton state s_t, otherwise −infinity; s_(t+1) = δ(s_t, x_t)",
+  "meaning": "A finite-state machine or pushdown automaton compiled from a JSON Schema, regular expression or grammar tracks where the output is (state s_t, transition δ) and masks every token that would break the format, guaranteeing parseable output without changing the relative odds among valid tokens.",
+  "used_for": "Structured outputs in the OpenAI, Anthropic and Gemini APIs; XGrammar, llguidance and Outlines inside vLLM and SGLang. Book: Chapter 26 (Structured outputs: getting forms, not prose).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-beam-search",
+  "name": "Beam search with length normalization",
+  "formula": "score(y) = sum over t of ln P(y_t given y_<t, x); keep the B best partial hypotheses each step; length-normalized: score(y) ÷ |y|^α (Hugging Face length_penalty α); GNMT: score(y) ÷ lp(y), lp(y) = (5 + |y|)^α ÷ (5 + 1)^α, α ≈ 0.6-0.7",
+  "meaning": "Searches for a high-probability whole sequence by keeping the B (beam width) best prefixes instead of one. Raw log-probability sums favor short outputs, so scores are divided by a length term. GNMT also added a coverage penalty for translation.",
+  "used_for": "Machine translation and speech recognition (Whisper decodes with beam size 5), constrained generation; rarely used for chat. Book: Chapter 18 (Beam search: looking a few steps ahead, worked example without length normalization).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-contrastive-decoding",
+  "name": "Contrastive decoding",
+  "formula": "score(x_i) = ln P_expert(x_i given x_<i) − ln P_amateur(x_i given x_<i), restricted to V_head = {x_i : P_expert(x_i given x_<i) ≥ α × max over w of P_expert(w given x_<i)}, α = 0.1",
+  "meaning": "Prefers tokens the large expert model likes much more than a small amateur model does, removing generic, repetitive continuations both models share; the plausibility set V_head stops implausible tokens from winning just because the amateur dislikes them (Li et al. 2023). Variants: DoLa contrasts the final layer with an early layer; classifier-free guidance for LMs uses z = z_uncond + γ × (z_cond − z_uncond).",
+  "used_for": "Research and some open-source decoding toolkits. Book: Only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-gumbel-sampling",
+  "name": "Gumbel-max and exponential-race sampling",
+  "formula": "x = argmax over i of (z_i ÷ T + g_i), g_i = −ln(−ln(u_i)), u_i uniform on (0, 1); equivalently x = argmax over i of p_i ÷ q_i with q_i drawn from Exponential(1)",
+  "meaning": "Adding independent Gumbel noise to the logits and taking the maximum draws a token with exactly softmax probability, using one parallel pass instead of a cumulative sum; dividing probabilities by exponential noise is the same trick. Seeding the noise makes sampling reproducible.",
+  "used_for": "vLLM's sampler (avoids a GPU-CPU synchronization of multinomial sampling); seeded sampling; Gumbel-based text watermarks. Book: Only here (Appendix B shows sampling by laying probabilities end to end).",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-watermark",
+  "name": "Green-list text watermark and its z-test",
+  "formula": "Generation: z'_j = z_j + δ for tokens j in a pseudo-random green list G covering a fraction γ of the vocabulary (seeded by the previous token); detection: z = (|s|_G − γ × T) ÷ sqrt(T × γ × (1 − γ)), flag if z > 4",
+  "meaning": "Nudging green-listed tokens up by δ leaves text readable but makes green tokens over-represented; a detector who knows the seeding counts green tokens |s|_G among T tokens and computes how many standard deviations that is above chance (Kirchenbauer et al. 2023). Google's SynthID-Text uses a different scheme (tournament sampling).",
+  "used_for": "Research watermarks and provenance tools; SynthID-Text in Gemini uses a related idea. Book: Chapters 46, 47 and 58 discuss watermarking and SynthID in words.",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-semantic-entropy",
+  "name": "Semantic entropy (uncertainty for hallucination detection)",
+  "formula": "SE(x) = −sum over meaning clusters C of P(C given x) × ln P(C given x), with P(C given x) = sum over sampled answers s in C of P(s given x) (or the share of samples in C)",
+  "meaning": "Sample several answers, group those that mean the same thing (two-way entailment), and compute entropy over meanings rather than wordings; high semantic entropy flags likely confabulation (Farquhar et al., Nature 2024).",
+  "used_for": "Hallucination detection research and some production guardrails. Book: Only here (Chapter 18 discusses hallucination in words).",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-spec-verify",
+  "name": "Speculative sampling acceptance rule and residual distribution",
+  "formula": "Accept draft token x with probability min(1, p(x) ÷ q(x)); if rejected, sample from p'(x) = max(0, p(x) − q(x)) ÷ sum over x' of max(0, p(x') − q(x')); if all γ drafts are accepted, sample one bonus token from p",
+  "meaning": "A cheap draft model q proposes γ tokens; the target model p scores them all in one pass. Accepting with probability min(1, p ÷ q) and resampling rejections from the normalized leftover p − q makes the output distribution exactly the target's, so it is lossless (Leviathan et al. 2023; Chen et al. 2023). Variants: greedy verification (accept if the draft equals the target's argmax), tree drafts (Medusa, EAGLE-3), typical acceptance (Medusa, slightly lossy).",
+  "used_for": "vLLM, SGLang, TensorRT-LLM; EAGLE-style and MTP drafts in DeepSeek, Qwen and other deployments. Book: Chapter 23 (Speculative decoding: guess ahead, check in one pass).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-spec-expected",
+  "name": "Acceptance rate and expected tokens per verification step",
+  "formula": "β = sum over x of min(p(x), q(x)) = 1 − TV(p, q); α = E[β]; E[tokens per step] = (1 − α^(γ+1)) ÷ (1 − α)",
+  "meaning": "The chance a draft token survives is the overlap of the two distributions (one minus their total-variation distance TV). With acceptance rate α and γ drafted tokens, the number of tokens produced per expensive target pass follows a capped geometric distribution. Example: α = 0.8, γ = 4 gives (1 − 0.8^5) ÷ 0.2 ≈ 3.36 tokens per pass.",
+  "used_for": "Choosing draft length γ and judging drafts. Book: Chapter 23 (worked example with 0.8 and 4 drafts).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-spec-speedup",
+  "name": "Speculative decoding walltime speedup",
+  "formula": "speedup = (1 − α^(γ+1)) ÷ ((1 − α) × (γ × c + 1)); total arithmetic grows by (1 − α) × (γ × ĉ + γ + 1) ÷ (1 − α^(γ+1))",
+  "meaning": "c is the draft's cost per token relative to the target (time), ĉ the same ratio in arithmetic operations. Speedup rises with acceptance α and falls with draft cost; the optimal γ balances them. It trades extra total arithmetic for lower latency, which pays off because decoding is memory-bound.",
+  "used_for": "Picking a draft model and γ in serving systems. Book: Chapter 23 (Speculative decoding).",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-absmax-quant",
+  "name": "Absmax (symmetric) quantization and dequantization",
+  "formula": "s = max|x| ÷ (2^(b−1) − 1); q = clamp(round(x ÷ s), −(2^(b−1) − 1), 2^(b−1) − 1); x̂ = s × q; rounding error |x − x̂| ≤ s ÷ 2, mean squared error ≈ s^2 ÷ 12",
+  "meaning": "Maps real numbers onto b-bit integers by one scale s chosen so the largest magnitude lands on the largest integer (127 for INT8), then rounds; dequantization multiplies back. Outliers inflate s and waste resolution, which motivates per-group scales, smoothing and rotations.",
+  "used_for": "INT8 and INT4 weight and activation quantization in llama.cpp, bitsandbytes (LLM.int8), TensorRT-LLM, vLLM. Book: Chapter 23 (Quantization: fewer bits per number), Chapter 30 (Quantization and GGUF), Appendix B (memory math).",
+  "tier": "core"
+ },
+ {
+  "id": "llm-affine-quant",
+  "name": "Affine (zero-point) quantization",
+  "formula": "s = (x_max − x_min) ÷ (2^b − 1); z = round(−x_min ÷ s); q = clamp(round(x ÷ s) + z, 0, 2^b − 1); x̂ = s × (q − z)",
+  "meaning": "Uses an unsigned range plus an integer zero-point z so that asymmetric data (for example all-positive activations) uses every level; the real value 0 maps exactly to the integer z.",
+  "used_for": "Asymmetric INT4 and INT8 schemes (GPTQ and AWQ checkpoints with zero-points, PyTorch quantization, ONNX Runtime). Book: Chapter 23, Chapter 30.",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-group-bits",
+  "name": "Scale granularity and effective bits per weight",
+  "formula": "bits per weight = b + (scale bits + zero-point bits) ÷ g; model file size ≈ N × bits per weight ÷ 8 bytes",
+  "meaning": "One scale can cover a whole tensor, one output channel, a group of g weights (32 to 128 typical) or a 2-D block; smaller groups track local ranges better but add overhead. Examples: INT4 with one 16-bit scale per 128 weights: 4 + 16 ÷ 128 = 4.125 bits; GGUF Q4_K_M averages about 4.8 bits per weight.",
+  "used_for": "Every weight-only quantization format (GPTQ, AWQ, GGUF k-quants, MLX). Book: Chapter 30 (Quantization and GGUF, the Q4_K_M table), Appendix B (memory math).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-mx-block",
+  "name": "Microscaling (MX) block formats",
+  "formula": "Each block of k = 32 values shares a power-of-two scale X = 2^(floor(log2(max|V_i|)) − e_max), stored as E8M0; P_i = quantize(V_i ÷ X) to the element type (clamped); value v_i = X × P_i; bits per element = d + 8 ÷ 32",
+  "meaning": "Open Compute Project standard (2023). e_max is the exponent of the largest power of two the element type can represent (2 for FP4 E2M1, whose largest value is 6). Formats: MXFP8, MXFP6, MXFP4 (4.25 bits per element), MXINT8.",
+  "used_for": "gpt-oss weights ship in MXFP4; native MX support in NVIDIA Blackwell and AMD MI350-series accelerators. Book: Chapter 23, Chapter 32, Chapter 33, Appendix B (MXFP4 about 4.25 bits).",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-nvfp4",
+  "name": "NVFP4 two-level block scaling",
+  "formula": "x ≈ s_tensor × s_block × q, q in {0, ±0.5, ±1, ±1.5, ±2, ±3, ±4, ±6} (E2M1); one FP8 E4M3 scale s_block per 16 values; one FP32 s_tensor per tensor; storage ≈ 4 + 8 ÷ 16 = 4.5 bits per value",
+  "meaning": "NVIDIA's 4-bit format: smaller blocks than MXFP4 (16 versus 32) and fractional FP8 block scales instead of powers of two fit the data more tightly; the per-tensor FP32 scale keeps the block scales inside E4M3's range (maximum 448). Each block scale is chosen so the block's largest magnitude maps near 6.",
+  "used_for": "Blackwell-generation inference and NVIDIA's 2025 recipe for pretraining in NVFP4. Book: Chapter 5, Chapter 13, Chapter 23, Chapter 32, Chapter 33 mention NVFP4.",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-fp8-scaling",
+  "name": "FP8 scaling factors (per-tensor, delayed and fine-grained)",
+  "formula": "scale = FP8_max ÷ amax; x_fp8 = cast_to_fp8(x × scale); x ≈ x_fp8 ÷ scale; FP8_max = 448 (E4M3) or 57,344 (E5M2)",
+  "meaning": "Before casting to 8-bit floating point, values are multiplied so the largest magnitude amax lands near the format's maximum, avoiding overflow and using its full range. Delayed scaling takes amax from a history of recent steps; DeepSeek-V3 computed amax online per 1 × 128 activation tile and per 128 × 128 weight block and used E4M3 everywhere. (Bit layouts of FP8 are in the foundations section.)",
+  "used_for": "FP8 training (DeepSeek-V3, NVIDIA Transformer Engine) and FP8 inference on Hopper and Blackwell. Book: Chapter 13 (Numbers on hardware), Chapter 19, Chapter 23.",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-gptq",
+  "name": "GPTQ / Optimal Brain Quantization objective and update",
+  "formula": "argmin over Ŵ of ||W × X − Ŵ × X||_2^2; H = 2 × X × X^T (+ λ × I); after quantizing weight w_q: δ_F = −((w_q − quant(w_q)) ÷ [H_F^−1]_qq) × (H_F^−1)_(:, q)",
+  "meaning": "Quantize a layer so its outputs on calibration inputs X change as little as possible. Each time one weight is rounded, the remaining unquantized weights F are adjusted by δ_F to compensate, using the inverse Hessian H^−1 of the layer's squared error. GPTQ processes columns in a fixed order in blocks of 128 with a Cholesky factorization so 175-billion-parameter models quantize in hours (Frantar et al. 2023).",
+  "used_for": "GPTQ 3- and 4-bit checkpoints on Hugging Face; ExLlama, Marlin and vLLM kernels; llm-compressor. Book: Chapter 30 (Quantization and GGUF) names GPTQ.",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-awq",
+  "name": "Activation-aware weight quantization (AWQ)",
+  "formula": "L(s) = ||Q(W × diag(s)) × (diag(s)^−1 × X) − W × X||; s = s_X^α; α* = argmin over α in [0, 1] of L(s_X^α)",
+  "meaning": "A few weight channels matter far more because their input activations are large. AWQ scales those channels up by s before quantizing (and the activations down by the same s, which leaves the math unchanged), protecting them from rounding error; s_X is the average activation magnitude per channel and α is found by grid search (Lin et al. 2024).",
+  "used_for": "AWQ 4-bit checkpoints served by vLLM, TensorRT-LLM and Text Generation Inference. Book: Chapter 30 names AWQ.",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-smoothquant",
+  "name": "SmoothQuant (migrating outliers from activations to weights)",
+  "formula": "Y = (X × diag(s)^−1) × (diag(s) × W); s_j = max(|X_j|)^α ÷ max(|W_j|)^(1−α), α ≈ 0.5",
+  "meaning": "Activation outliers make INT8 activations hard to quantize while weights are easy. Dividing each input channel j of X by s_j and multiplying the matching row of W by s_j leaves the product unchanged but moves difficulty from activations to weights; α (migration strength) sets the split (Xiao et al. 2023).",
+  "used_for": "W8A8 INT8 inference in TensorRT-LLM, llm-compressor and other toolkits. Book: Only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-rotation-quant",
+  "name": "Hadamard rotation for outlier removal",
+  "formula": "W × x = (W × Q) × (Q^T × x), with Q orthogonal (Q × Q^T = I), typically a randomized Hadamard matrix whose entries are ±1 ÷ sqrt(n)",
+  "meaning": "Multiplying by an orthogonal matrix spreads a few large outlier values evenly across all channels without changing the layer's output, so both the rotated weights and the rotated activations quantize with much smaller error. QuaRot uses fixed random Hadamard rotations; SpinQuant learns them.",
+  "used_for": "Meta's quantized Llama 3.2 1B and 3B used SpinQuant; random Hadamard transforms appear in 4-bit (NVFP4) training recipes. Book: Only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-ste",
+  "name": "Quantization-aware training with the straight-through estimator",
+  "formula": "Forward: w_q = s × clamp(round(w ÷ s), q_min, q_max); backward: ∂L ÷ ∂w ≈ (∂L ÷ ∂w_q) × 1[q_min ≤ w ÷ s ≤ q_max]",
+  "meaning": "Rounding has zero gradient almost everywhere, so QAT pretends it is the identity in the backward pass (straight-through), passing gradients to the full-precision shadow weights except where values were clipped. The model learns weights that survive quantization. Variant: LSQ also learns the step size s.",
+  "used_for": "Gemma 3 QAT checkpoints (int4), Kimi K2 Thinking's native INT4 via QAT, BitNet training. Book: Chapter 23 and Chapter 30 explain PTQ versus QAT in words.",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-nf4",
+  "name": "NormalFloat-4 (NF4) levels and double quantization",
+  "formula": "q_i = (1 ÷ 2) × (Q_N(i ÷ (2^k + 1)) + Q_N((i + 1) ÷ (2^k + 1))), normalized to [−1, 1], k = 4; per-block absmax scale per 64 weights; double quantization cuts scale overhead from 32 ÷ 64 = 0.5 to 8 ÷ 64 + 32 ÷ (64 × 256) ≈ 0.127 bits per parameter",
+  "meaning": "Neural-network weights are roughly normally distributed, so NF4 places its 16 levels at quantiles of the standard normal distribution (Q_N is its quantile function) so each level is used about equally often. Double quantization quantizes the per-block scales themselves to 8 bits with a second-level scale per 256 blocks (Dettmers et al. 2023).",
+  "used_for": "QLoRA fine-tuning and bitsandbytes 4-bit loading in Hugging Face. Book: Chapter 30 (QLoRA: fine-tuning on one GPU).",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-ternary",
+  "name": "Ternary (1.58-bit) absmean quantization",
+  "formula": "γ = (1 ÷ (n × m)) × sum over i, j of |W_ij|; W̃ = RoundClip(W ÷ (γ + ε), −1, 1); RoundClip(x, a, b) = max(a, min(b, round(x))); log2(3) ≈ 1.58 bits per weight",
+  "meaning": "Scales a weight matrix by its mean absolute value γ and rounds every weight to −1, 0 or +1, so matrix multiplication becomes additions and subtractions. Must be used during training (with the straight-through estimator), not applied afterwards (Ma et al. 2024).",
+  "used_for": "Microsoft BitNet b1.58 models (2B4T, 2025) and the bitnet.cpp runtime. Book: Chapter 32 describes BitNet b1.58 in words.",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-lora",
+  "name": "Low-rank adaptation (LoRA)",
+  "formula": "h = W_0 × x + (α ÷ r) × B × A × x; B is d_out × r (initialized to 0), A is r × d_in (random); trainable parameters per adapted matrix = r × (d_in + d_out); merged weight W = W_0 + (α ÷ r) × B × A",
+  "meaning": "Freezes the pretrained weight W_0 and learns a low-rank update B × A of rank r (typically 8 to 64), scaled by α ÷ r; starting B at zero means training begins exactly at the base model. After training the update can be merged so inference costs nothing extra. Example: a 4,096 × 4,096 matrix with r = 16 trains 16 × 8,192 = 131,072 numbers instead of 16,777,216 (about 0.8%). Variant: rsLoRA scales by α ÷ sqrt(r) so higher ranks keep learning.",
+  "used_for": "Hugging Face PEFT, Unsloth, Axolotl; hosted fine-tuning services; adapters for diffusion models too. Book: Chapter 30 (LoRA: the clip-on lens), Chapter 20.",
+  "tier": "core"
+ },
+ {
+  "id": "llm-qlora",
+  "name": "QLoRA forward pass",
+  "formula": "Y_BF16 = X_BF16 × doubleDequant(c_1, c_2, W_NF4) + s × X_BF16 × L_1 × L_2",
+  "meaning": "The frozen base weights are stored in 4-bit NF4 with double-quantized scales c_1, c_2 and dequantized on the fly to bfloat16 for each matrix multiply; only the LoRA matrices L_1 (d × r) and L_2 (r × d), scaled by s = α ÷ r, are trained in 16-bit. Paged optimizers avoid memory spikes. It let a 65-billion-parameter model be fine-tuned on one 48 GB GPU (Dettmers et al. 2023).",
+  "used_for": "bitsandbytes plus PEFT, Unsloth, consumer-GPU fine-tuning. Book: Chapter 30 (QLoRA: fine-tuning on one GPU).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-dora",
+  "name": "Weight-decomposed low-rank adaptation (DoRA)",
+  "formula": "W' = m × (W_0 + B × A) ÷ ||W_0 + B × A||_c, with m initialized to ||W_0||_c",
+  "meaning": "Splits each weight column into a magnitude m (trained directly, one number per column) and a direction (updated through LoRA and renormalized with the column-wise norm ||·||_c), which tracks full fine-tuning more closely than LoRA at the same rank (Liu et al. 2024).",
+  "used_for": "use_dora option in Hugging Face PEFT. Book: Only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-adapters",
+  "name": "Bottleneck adapters and (IA)^3 scaling vectors",
+  "formula": "Adapter: h ← h + W_up × f(W_down × h), W_down is r × d, W_up is d × r; (IA)^3: k' = l_k ⊙ k, v' = l_v ⊙ v, ffn' = l_ff ⊙ ffn",
+  "meaning": "Adapters insert a small down-project, nonlinearity f, up-project block with a residual connection inside each layer and train only it (Houlsby et al. 2019). (IA)^3 trains only three vectors per layer that rescale keys, values and feed-forward activations element by element (⊙ is element-wise multiplication).",
+  "used_for": "Hugging Face PEFT; the parameter-efficient methods taught alongside LoRA in CS224n. Book: Chapter 30 (LoRA section names the wider PEFT family).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-prompt-tuning",
+  "name": "Prompt tuning and prefix tuning (soft prompts)",
+  "formula": "Prompt tuning: input = [P_1, ..., P_m, e(x_1), ..., e(x_T)] with only P (m × d_model) trained; prefix tuning: at every layer K ← [P_K; K], V ← [P_V; V]",
+  "meaning": "Freezes the whole model and learns m 'virtual token' vectors placed before the real token embeddings e(x); prefix tuning instead prepends learned key and value vectors in every attention layer.",
+  "used_for": "Hugging Face PEFT; lightweight task adaptation. Book: Chapter 30 (definition of prompt tuning).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-model-merging",
+  "name": "Model merging (weight averaging and task arithmetic)",
+  "formula": "Uniform soup: θ = (1 ÷ n) × sum over i of θ_i; task vector τ_i = θ_i − θ_base; θ_merged = θ_base + λ × sum over i of τ_i; DARE rescales kept deltas by 1 ÷ (1 − p) after dropping each with probability p",
+  "meaning": "Combines fine-tuned models that share a base by averaging their weights or adding their task vectors scaled by λ. TIES trims small deltas, elects a sign per parameter and averages only agreeing deltas; SLERP interpolates two models along a sphere.",
+  "used_for": "mergekit and open-model leaderboards; Meta averaged checkpoints from different data or hyperparameter runs at each Llama 3 post-training stage. Book: Chapter 20 (Model merging).",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-kd-soft-targets",
+  "name": "Knowledge distillation with soft targets",
+  "formula": "p_i^T = exp(z_i ÷ T) ÷ sum over j of exp(z_j ÷ T); L = (1 − λ) × CE(y, p_student) + λ × T^2 × KL(p_teacher^T || p_student^T); KL(p || q) = sum over i of p_i × ln(p_i ÷ q_i)",
+  "meaning": "The student matches the teacher's whole softened probability distribution over tokens (temperature T > 1 reveals which wrong answers the teacher finds plausible), mixed with the ordinary loss on true labels; the T^2 factor keeps gradient sizes comparable (Hinton et al. 2015).",
+  "used_for": "Gemma 2 and 3 small models (Gemma 3 distilled on 256 sampled teacher logits per token), Llama 3.2 1B and 3B (logits from Llama 3.1 8B and 70B), DistilBERT. Book: Chapter 20 (Distillation: big teachers, small students), Chapter 30.",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-seq-kd",
+  "name": "Sequence-level distillation (training on teacher outputs)",
+  "formula": "L = −sum over t of ln q_student(ŷ_t given ŷ_<t, x), with ŷ generated by the teacher (sampled or beam/greedy)",
+  "meaning": "The teacher writes complete answers and the student is fine-tuned on them with the ordinary SFT loss; it needs only the teacher's text, not its logits (Kim and Rush 2016).",
+  "used_for": "DeepSeek-R1's distilled Qwen and Llama models (about 800,000 R1-generated samples), synthetic-data SFT everywhere, and illicit API distillation. Book: Chapter 20 (Distillation; Synthetic data), Chapter 21 (The DeepSeek-R1 story).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-onpolicy-kd",
+  "name": "On-policy (reverse-KL) distillation",
+  "formula": "L = E over y ~ q_student(· given x) of [ sum over t of KL(q_student(· given y_<t, x) || p_teacher(· given y_<t, x)) ]; GKD generalizes the divergence to JSD(β) and mixes in fixed data with fraction λ",
+  "meaning": "The student generates its own answers and the teacher scores every token of them; minimizing reverse KL (student first) is mode-seeking and fixes the train-test mismatch of learning only from teacher-written text (Agarwal et al. 2024 GKD; Gu et al. 2024 MiniLLM).",
+  "used_for": "Qwen3's strong-to-weak distillation (off-policy then on-policy), Thinking Machines Lab's on-policy distillation (2025). Book: Chapter 20 (Distillation; definition of on-policy distillation).",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-rope-base",
+  "name": "RoPE frequencies, wavelengths and base",
+  "formula": "θ_i = base^(−2i ÷ d) for i = 0, ..., d ÷ 2 − 1; rotation angle at position m: m × θ_i; wavelength λ_i = 2π ÷ θ_i = 2π × base^(2i ÷ d)",
+  "meaning": "Rotary position embedding rotates each pair of query and key dimensions by an angle proportional to position, with pair i turning at frequency θ_i (the rotation itself is in the deep-learning section). Low-index pairs spin fast and encode nearby order; high-index pairs spin slowly and can encode long distances only if their wavelength exceeds the context. Adjusted base frequency (ABF) raises the base for long context: 10,000 originally, 500,000 in Llama 3, 1,000,000 in Code Llama and Qwen2.",
+  "used_for": "Every RoPE model (Llama, Qwen, DeepSeek, Mistral, Gemma); the starting point of all context-extension methods. Book: Chapter 15 (Step 3: Telling the model about word order), Chapter 23 (Long context).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-position-interpolation",
+  "name": "Position interpolation (PI)",
+  "formula": "f'(x, m) = f(x, m × L ÷ L'), i.e. angle m × (L ÷ L') × θ_i, with scale s = L' ÷ L",
+  "meaning": "To run a model trained on context L at a longer context L', squeeze positions back into the trained range instead of extrapolating to unseen angles, then fine-tune briefly (Chen et al. 2023). It blurs nearby positions when s is large, which NTK-aware scaling and YaRN fix.",
+  "used_for": "Early long-context extensions (LLaMA to 32K); the linear rope_scaling option in Hugging Face. Book: Only here (Chapter 23 describes RoPE scaling in words).",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-ntk-aware",
+  "name": "NTK-aware RoPE scaling",
+  "formula": "base' = base × s^(d ÷ (d − 2))",
+  "meaning": "Instead of squeezing all frequencies equally, raise the RoPE base so high-frequency pairs (local order) barely change while low-frequency pairs are stretched by about s. Example: base 10,000, s = 4, d = 128 gives about 40,900.",
+  "used_for": "Dynamic NTK scaling in open-source runners; Code Llama's base change is the same idea. Book: Only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-yarn",
+  "name": "YaRN context extension (NTK-by-parts plus attention temperature)",
+  "formula": "r_i = L ÷ λ_i; γ(r) = 0 if r < α, 1 if r > β, (r − α) ÷ (β − α) otherwise; θ'_i = (1 − γ(r_i)) × θ_i ÷ s + γ(r_i) × θ_i; attention softmax(q · k ÷ (t × sqrt(d))) with sqrt(1 ÷ t) = 0.1 × ln(s) + 1; α = 1, β = 32 for Llama-family models",
+  "meaning": "Dimensions that complete many rotations within the original context (r > β) are left alone, those completing less than about one (r < α) are fully interpolated by s, and a linear ramp blends those in between; a temperature t slightly sharpens attention to offset the longer context (Peng et al. 2024). Variants: Llama 3.1's frequency-dependent rope scaling (factor 8, low_freq_factor 1, high_freq_factor 4, original 8,192); LongRoPE (searched per-dimension factors); log-length attention scaling.",
+  "used_for": "DeepSeek-V3 (s = 40, α = 1, β = 32, 4K to 32K to 128K), Qwen2.5 and Qwen3 (factor 4 to 131,072 tokens). Book: Chapter 15 and Chapter 23 name YaRN.",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-dense-retrieval",
+  "name": "Embedding-similarity top-k retrieval (and hybrid score)",
+  "formula": "score(q, d) = cos(e_q, e_d) = (e_q · e_d) ÷ (||e_q|| × ||e_d||), equal to e_q · e_d for unit-length embeddings; retrieved = top-k documents by score; hybrid: s = α × s_dense + (1 − α) × s_sparse after normalizing both",
+  "meaning": "Embed the query and every chunk with the same embedding model and return the k chunks whose vectors point most nearly the same way (cosine similarity). Hybrid search blends the dense score with a keyword score such as BM25 using a weight α; reciprocal rank fusion and BM25 belong to the classical-ML retrieval section.",
+  "used_for": "Every RAG system and vector database (pgvector, Pinecone, Weaviate's alpha parameter, Vespa). Book: Chapter 27 (Embeddings; Measuring closeness: cosine similarity by hand; Three ways to search), Appendix B (cosine similarity).",
+  "tier": "core"
+ },
+ {
+  "id": "llm-rag-marginal",
+  "name": "RAG marginal likelihood (RAG-Sequence and RAG-Token)",
+  "formula": "p_η(z given x) ∝ exp(d(z) · q(x)); RAG-Sequence: p(y given x) ≈ sum over z in top-k of p_η(z given x) × product over t of p_θ(y_t given x, z, y_<t); RAG-Token: p(y given x) ≈ product over t of sum over z in top-k of p_η(z given x) × p_θ(y_t given x, z, y_<t)",
+  "meaning": "Treats the retrieved passage z as a hidden variable: the answer's probability averages the generator's probability given each retrieved passage, weighted by the retriever's softmax score over passages, so retriever and generator can be trained end to end (Lewis et al. 2020). RAG-Sequence uses one passage for the whole answer; RAG-Token can switch passages per token.",
+  "used_for": "Trainable retrieval-augmented models (RAG, REALM, Atlas); taught in CS224n. Book: Only here (Chapter 27 describes RAG end to end in words).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-cross-encoder",
+  "name": "Cross-encoder reranker score",
+  "formula": "s(q, d) = w · h_[CLS](q ⊕ d) + b (often passed through a sigmoid); rerank the top-N first-stage results by s",
+  "meaning": "A reranker reads the query and a candidate passage together (⊕ means concatenated into one input) so attention can compare them word by word, then outputs a relevance score from the [CLS] vector; much more accurate than comparing two separate embeddings but too slow to run on the whole collection, so it only reorders the top 50 to 200 candidates. Trained with binary cross-entropy or a listwise softmax loss.",
+  "used_for": "Cohere Rerank, bge-reranker, Voyage and Jina rerankers; Anthropic reported contextual retrieval plus reranking cut failed retrievals by 67%. Book: Chapter 27 (Reranking: a second, pickier judge).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-colbert",
+  "name": "Late interaction (ColBERT MaxSim)",
+  "formula": "s(q, d) = sum over query tokens i of max over document tokens j of (E_q_i · E_d_j)",
+  "meaning": "Keeps one embedding per token instead of one per passage; each query token finds its best-matching document token and the scores are summed, giving near-reranker quality with precomputed document vectors.",
+  "used_for": "ColBERTv2 and PLAID indexes, Jina-ColBERT, ColPali for page images, Vespa. Book: Only here.",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-matryoshka",
+  "name": "Matryoshka embeddings (truncatable dimensions)",
+  "formula": "Training: minimize sum over m in M of c_m × L(W^(m) × z_(1:m); y), M = {8, 16, ..., d}; use: e' = e_(1:m) ÷ ||e_(1:m)||",
+  "meaning": "Trains an embedding so that its first m numbers are already a good embedding for many sizes m at once (c_m weights each size); at query time you can keep only the first m dimensions and renormalize to cut storage and search cost (Kusupati et al. 2022).",
+  "used_for": "The dimensions parameter of OpenAI text-embedding-3 models, selectable output sizes of Gemini embeddings, Nomic Embed. Book: Only here (Chapter 27 covers embedding cost).",
+  "tier": "specialist"
+ },
+ {
+  "id": "llm-chunking",
+  "name": "Chunk count with overlap",
+  "formula": "chunks = ceil((L − o) ÷ (c − o)) for a document of L tokens (L > c), chunk size c, overlap o; index storage ≈ chunks × d × bytes per number",
+  "meaning": "Each new chunk advances by c − o tokens, so overlap raises the number of chunks (and embedding and storage cost) in exchange for not cutting ideas at boundaries. Example: L = 10,000, c = 512, o = 64: ceil(9,936 ÷ 448) = 23 chunks.",
+  "used_for": "RAG indexing pipelines (LangChain and LlamaIndex text splitters, managed RAG services). Book: Chapter 27 (Chunking: cutting the book into index cards).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-best-of-n",
+  "name": "Best-of-N selection with a reward model or verifier",
+  "formula": "ŷ = argmax over i = 1..N of r(x, y_i), with y_i drawn from the model π(· given x); process reward aggregation r(y) = min over steps of r_step (or product, or last step); KL from the base policy ≈ ln(N) − (N − 1) ÷ N",
+  "meaning": "Sample N candidate answers and keep the one a scorer likes best: a learned reward model, a process reward model scoring each step, or an exact verifier such as unit tests. Cost grows linearly in N. The KL expression measures how far best-of-N moves the output distribution (relevant to the alignment section). OpenAI reported o1 at 74% on AIME 2024 with one sample, 83% with consensus of 64 and 93% when re-ranking 1,000 samples with a learned scorer.",
+  "used_for": "Reasoning products' parallel sampling, coding agents with test-based selection, rejection sampling to build post-training data (Llama 3). Book: Chapter 21 (Thinking wider: best-of-N, parallel thinking and agent swarms).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-self-consistency",
+  "name": "Self-consistency (majority vote over sampled answers)",
+  "formula": "â = argmax over a of sum over i = 1..N of 1[a_i = a]; weighted: â = argmax over a of sum over i of w_i × 1[a_i = a], with w_i a probability or reward score",
+  "meaning": "Sample several reasoning chains, extract each final answer a_i and return the most common one (Wang et al. 2023); weighting by model confidence or a reward model is a common variant. Reported in model cards as maj@k or cons@64.",
+  "used_for": "Math and science benchmarks reporting (o1's cons@64), Gemini and DeepSeek evaluation; production ensembles. Book: Chapter 21 (Self-consistency: ask several times, take a vote), Chapter 6.",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-request-cost",
+  "name": "Request cost with prompt caching, batch discounts and reasoning tokens",
+  "formula": "cost = (p_in × (n_uncached + w × n_cache_write + r × n_cache_read) + p_out × (n_output + n_reasoning)) ÷ 10^6; Anthropic: w = 1.25 (5-minute cache) or 2 (1-hour cache), r = 0.1 for most models; batch APIs ≈ 0.5 × cost",
+  "meaning": "Prices are per million tokens, separately for input (p_in) and output (p_out). Cached prefix tokens are written once at a premium and then read at a deep discount, so a 5-minute cache pays for itself after a single reuse (1.25 + 0.1 × k < 1 + k for k ≥ 1). Hidden thinking tokens are billed as output. Batch processing typically halves the price in exchange for delayed results.",
+  "used_for": "Budgeting agent loops and chat products; Anthropic, OpenAI and Google pricing pages. Book: Chapter 23 (How it all shows up in your bill), Chapter 26 (Tokens, money and speed), Appendix B (API bill).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-serving-latency",
+  "name": "Latency decomposition: time to first token and time per output token",
+  "formula": "latency ≈ TTFT + TPOT × (n_output − 1); per-user speed = 1 ÷ TPOT tokens per second; system throughput ≈ concurrent sequences × per-user speed",
+  "meaning": "Time to first token (TTFT) is dominated by queueing plus prefill of the prompt; time per output token (TPOT, also inter-token latency) by decode. Larger batches raise total throughput but slow each user, the central serving trade-off; 'goodput' counts only requests meeting latency targets. Hardware ceilings on decode speed are in the compute section.",
+  "used_for": "Service-level objectives in vLLM, SGLang, TensorRT-LLM and NVIDIA Dynamo; benchmarks such as Artificial Analysis. Book: Chapter 23 (Measuring speed: latency, throughput and cost), Chapter 26 (streaming and TTFT).",
+  "tier": "standard"
+ },
+ {
+  "id": "llm-image-tokens",
+  "name": "Visual token count for vision-language model inputs",
+  "formula": "tokens = ceil(W ÷ p) × ceil(H ÷ p) for patch size p; Anthropic API (2026): p = 28 pixels, so ceil(width ÷ 28) × ceil(height ÷ 28), after downscaling to the model's cap (1,568 tokens standard tier, 4,784 high-resolution tier)",
+  "meaning": "Images are cut into square patches and each patch (or each merged group of patches) becomes one token; Qwen2-VL merges 2 × 2 patches of 14 pixels so each token also covers 28 × 28 pixels. Older Anthropic guidance used tokens ≈ width × height ÷ 750. Example: 1,000 × 1,000 pixels gives 36 × 36 = 1,296 tokens. Video is priced per sampled frame (Gemini documented about 258 tokens per frame at 1 frame per second in 2025).",
+  "used_for": "Estimating cost and context use of screenshots, documents and computer-use agents. Book: Chapter 22 (Worked example: what does one photo cost?).",
+  "tier": "standard"
+ }
+]

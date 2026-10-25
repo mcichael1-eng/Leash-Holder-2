@@ -348,6 +348,8 @@ The key trick is clipping. For each token, PPO compares the new probability with
 
 > **Definition — Clipping (in PPO):** Capping how much a single training update can change the probability of any action, usually to within about 20% of its old value, so that training stays stable.
 
+Written out, PPO's clipped objective, which training pushes up, is `L_CLIP = E[min(r × A, clip(r, 1 − ε, 1 + ε) × A)]`. Here r is the ratio of a token's new probability to its old one (0.45 ÷ 0.30 = 1.5 in the example). A is that token's advantage, how much better than expected its reply turned out. ε (the Greek letter epsilon) is the clip range, usually 0.2, which makes the window 0.8 to 1.2. clip(r, 1 − ε, 1 + ε) means r capped to that window. min takes the smaller of the two numbers, so the model never earns extra credit for moving outside the window but still feels the full penalty when a change makes things worse. E[...] averages over all the tokens in the batch. Tiny example: with r = 1.5, A = 2 and ε = 0.2, min(1.5 × 2, 1.2 × 2) = min(3.0, 2.4) = 2.4.
+
 ### Why RLHF worked, and why people looked for something simpler
 
 RLHF was the breakthrough that made chatbots feel like assistants. In the InstructGPT paper (2022), labelers preferred the answers of a 1.3-billion-parameter model trained with SFT and RLHF over those of the 175-billion-parameter GPT-3 base model, despite it being more than 100 times smaller. ChatGPT, launched on November 30, 2022, was trained with closely related methods. The lesson rippled through the industry: how you post-train can matter more than raw size.

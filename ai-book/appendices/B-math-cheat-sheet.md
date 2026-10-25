@@ -162,6 +162,9 @@ How to read it. Multiplication is written ×, division ÷, and "x squared" as `x
 | Cross-entropy, whole text | Average the per-token losses | `loss = mean(−ln(p_correct))` | 0.5, 0.25, 0.8, 0.9, 0.6: 2.919 ÷ 5 = 0.584 |
 | Perplexity | e to the average loss: the effective number of equally likely choices | `perplexity = e^(average loss)` | `e^2.303` = 10; `e^0.693` = 2 |
 | Bits of surprise | The same loss measured with base-2 logs | `bits = −log2(p_correct)` | p = 0.5: 1 bit; p = 0.25: 2 bits |
+| InfoNCE (contrastive loss) | Cross-entropy in which the true partner must beat every decoy, with each similarity divided by a temperature τ first (Chapter 16) | `loss = −ln(e^(s_true ÷ τ) ÷ sum of e^(s_j ÷ τ))` | similarities 0.31 (true), 0.02, 0.05 with τ = 0.07: 83.8 ÷ (83.8 + 1.33 + 2.04) ≈ 0.96, so the loss is −ln(0.96) ≈ 0.04 |
+| CLIP loss | InfoNCE across each row (each photo picks its caption) and down each column (each caption picks its photo), averaged (Chapter 16) | `CLIP loss = 0.5 × (average row loss + average column loss)` | Figure 16.2's batch: rows average 0.040, columns 0.041, so 0.5 × (0.040 + 0.041) ≈ 0.04 |
+| ELBO (the VAE's objective) | Rebuild score minus a KL penalty for straying from the standard bell curve; it is never above the true log-probability, so raising it trains the model (Chapter 16) | `ELBO = E[ln p(x given z)] − KL(q(z given x) ‖ p(z))`; for each latent number, KL = `0.5 × (mean^2 + spread^2 − ln(spread^2) − 1)` | mean 1.5, spread 0.2: KL = 0.5 × (2.25 + 0.04 + 3.22 − 1) ≈ 2.25; with a rebuild term of −3.0, ELBO = −3.0 − 2.25 = −5.25 |
 
 ## Calculus and learning
 
@@ -188,6 +191,16 @@ How to read it. Multiplication is written ×, division ÷, and "x squared" as `x
 | `ln(x)` | 1 ÷ x | at x = 2: 0.5 |
 | ReLU(x) | 0 for negative x, 1 for positive x | at x = 3: 1 |
 | sigmoid(x) = s | s × (1 − s) | at x = 0: 0.5 × 0.5 = 0.25 |
+
+## Classical machine learning and search
+
+| Rule | In plain words | In symbols | Tiny example |
+|---|---|---|---|
+| Bias–variance decomposition | Expected squared error on new data is bias squared plus variance across training sets plus noise (Chapter 9) | `E[(y − f_hat(x))^2] = (E[f_hat(x)] − f(x))^2 + E[(f_hat(x) − E[f_hat(x)])^2] + σ^2` | lines predicting 74, 76, 73, 75, 77 where the truth is 80 and the noise variance 4: 25 + 2 + 4 = 31 |
+| Information gain (tree split) | Entropy of the parent group minus the size-weighted entropy of the groups a question creates; the tree asks the question with the largest gain (Chapter 10) | `H = −sum over k of p_k × log2(p_k)`, `IG = H(parent) − sum over c of (n_c ÷ n) × H(c)` | 5 cancelled and 5 stayed (H = 1 bit); a split into 4 pure and 6 with 5 cancelled (H ≈ 0.65): IG = 1 − 0.6 × 0.65 ≈ 0.61 |
+| Random forest prediction | Majority vote of the trees for a category, their average for a number; each split tries about the square root of the number of features (Chapter 10) | `y_hat = most common of f_1(x), ..., f_B(x)`; `y_hat = (1 ÷ B) × sum of f_b(x)`; `m ≈ sqrt(p)` | votes stays, stays, cancels, stays, cancels: stays; predictions 10, 12, 11, 13, 9: 11; 16 features: 4 per split |
+| PCA directions and share kept | The principal directions are eigenvectors of the covariance matrix Σ; each eigenvalue λ is the variance along its direction (Chapter 10) | `Σ × v_j = λ_j × v_j`, `z = V_k^T × (x − μ)`, `share kept = λ_j ÷ sum of all λ` | variances 2 and 2, covariance 1.9: eigenvalues 3.9 and 0.1, so the first direction keeps 3.9 ÷ 4 = 97.5% |
+| BM25, one query word | Rare-word weight times a repeat count that saturates, discounted for long documents; add it up over the query's words (Chapter 27) | `IDF × f × (k1 + 1) ÷ (f + k1 × (1 − b + b × len(D) ÷ avgdl))`, with `IDF = ln(1 + (N − n + 0.5) ÷ (n + 0.5))` | "refund" in 50 of 1,000 documents, said twice in an average-length document, k1 = 1.2, b = 0.75: 2.99 × 4.4 ÷ 3.2 ≈ 4.11 |
 
 ## Model and compute rules of thumb
 
@@ -229,6 +242,22 @@ How to read it. Multiplication is written ×, division ÷, and "x squared" as `x
 | KV cache total | Per-token size times context length times conversations | `per token × tokens × users` | 0.33 MB × 128,000 tokens ≈ 42 GB for one long chat |
 | Decode speed ceiling | Every weight is read once per generated token | `tokens per s ≤ bandwidth ÷ bytes of weights` | 4,800 GB/s ÷ 70 GB ≈ 69 tokens per second |
 | Halving the precision | Half the bytes means half the memory and about twice the speed ceiling | `bytes ÷ 2`, `speed × 2` | 70B model, 4,800 GB/s chip: 140 GB and a ceiling of about 34 tokens/s at BF16; 70 GB and about 69 at FP8 |
+
+## Reinforcement learning and preference training
+
+| Rule | In plain words | In symbols | Tiny example |
+|---|---|---|---|
+| Markov decision process | States, actions, transition probabilities, rewards and a discount factor; the next state depends only on the current state and action, not the history (Chapter 48) | `MDP = (S, A, P, R, γ)`, with `P(s_(t+1) given s_t, a_t) = P(s_(t+1) given s_0, a_0, ..., s_t, a_t)` | "right" reaches B with probability 0.8 and slips back with 0.2; entering B pays 10: R(A, right) = 0.8 × 10 + 0.2 × 0 = 8 |
+| Discounted return | All future rewards added up, each multiplied by γ once per step of waiting (Chapter 48) | `G_t = r_(t+1) + γ × r_(t+2) + γ^2 × r_(t+3) + ... = r_(t+1) + γ × G_(t+1)` | rewards 0, 0, 10 with γ = 0.9: 0 + 0.9 × 0 + 0.81 × 10 = 8.1 |
+| State and action values | Expected return from a state (V), or from a state after a given first action (Q); V is the policy-weighted average of Q (Chapter 48) | `V_π(s) = E_π[G_t given s_t = s]`, `Q_π(s, a) = E_π[G_t given s_t = s, a_t = a]`, `V_π(s) = sum over a of (π(a given s) × Q_π(s, a))` | right 75% with Q = 8, left 25% with Q = 2: 0.75 × 8 + 0.25 × 2 = 6.5 |
+| Bellman expectation equation | Value now = expected reward plus discounted value of the next state, averaged over the policy's choices and the world's chances (Chapter 48) | `V_π(s) = sum over a of π(a given s) × sum over s' of P(s' given s, a) × (R(s, a, s') + γ × V_π(s'))` | γ = 0.9, two actions at 0.5 each: 0.5 × (1 + 0.9 × 2) + 0.5 × (0.8 × 0.9 × 10) = 1.4 + 3.6 = 5.0 |
+| Bellman optimality equation | The same, but take the best action instead of averaging over the policy (Chapter 48) | `V*(s) = max over a of sum over s' of P(s' given s, a) × (R(s, a, s') + γ × V*(s'))` | corridor square B: max(0.9 × 10, 0.9 × 8.1) = max(9, 7.29) = 9 |
+| TD(0) update | Nudge a value toward the reward plus the discounted next value; the gap is the TD error δ (Chapter 48) | `δ_t = r_(t+1) + γ × V(s_(t+1)) − V(s_t)`, then `V(s_t) ← V(s_t) + α × δ_t` | V(A) = 5, V(B) = 8, reward 1, γ = 0.9, α = 0.1: δ = 1 + 7.2 − 5 = 3.2, new V(A) = 5.32 |
+| Epsilon-greedy | The best-known action gets 1 − ε plus its share of the random picks; every other action gets ε divided by the number of actions (Chapter 48) | `π(best) = 1 − ε + ε ÷ (number of actions)`, `π(other) = ε ÷ (number of actions)` | two restaurants, ε = 0.1: 1 − 0.1 + 0.05 = 0.95 and 0.05 |
+| Policy gradient theorem | The slope (∇_θ, the gradient for the policy's parameters θ) of the expected return J is the average of "make this action more likely" times how good the action was (Chapter 48) | `∇_θ J(θ) = E[sum over t of (∇_θ ln π_θ(a_t given s_t) × Q(s_t, a_t))]` | 50/50 policy with directions +0.5 (right) and −0.5 (left), Q = 10 and 2: 0.5 × (0.5 × 10) + 0.5 × (−0.5 × 2) = 2.0 |
+| REINFORCE | Move the parameters along each action's "more likely" direction, scaled by its return minus a baseline (Chapter 48) | `θ ← θ + α × sum over t of ((G_t − b) × ∇_θ ln π_θ(a_t given s_t))` | Table 48.6, baseline 6: terms 2, 2, 1, 1 average 1.5; α = 0.1 moves θ from 0 to 0.15 |
+| PPO clipped objective | Ratio of new to old probability times the advantage, with no extra credit for moving outside the window 1 − ε to 1 + ε (Chapter 20) | `L_CLIP = E[min(r × A, clip(r, 1 − ε, 1 + ε) × A)]` | r = 1.5, A = 2, ε = 0.2: min(3.0, 2.4) = 2.4 |
+| GRPO objective | PPO's clipped term for every token (ρ is the token's new-to-old probability ratio), weighted by the answer's group advantage A_i, averaged over each answer's tokens and over the group, minus a KL leash with weight β (Chapter 21) | `J_GRPO = mean over the G answers of (mean over answer i's tokens of (min(ρ × A_i, clip(ρ, 1 − ε, 1 + ε) × A_i) − β × D_KL))` | A = +1.29, token ratio 1.3, ε = 0.2: the token counts as 1.2 × 1.29 ≈ 1.55, not 1.68 |
 
 ## Spreadsheet formulas
 

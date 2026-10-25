@@ -1,0 +1,700 @@
+{
+ "items": [
+  {
+   "id": "cd-matmul-flops",
+   "name": "Matrix multiplication cost: FLOPs and bytes moved (GEMM)",
+   "formula": "C = A × B with A of shape m × k and B of shape k × n: FLOPs = 2 × m × n × k ; bytes moved (ideal, each matrix touched once) = b × (m × k + k × n + m × n)",
+   "meaning": "Each of the m × n outputs is a dot product of length k: k multiplications and about k additions, so one multiply-accumulate (2 FLOPs) per (i, j, k) triple. b is bytes per number (2 for BF16, 1 for FP8). A matrix–vector product is the case n = 1: 2 × m × k FLOPs while reading all m × k weights, which is why decoding one token is memory-bound. Batched variants multiply by the batch count; an einsum costs 2 × (product of all distinct index sizes). The definition of matrix multiplication is in the foundations section (fnd-matmul); this entry is its hardware cost. Example: two 4,096 × 4,096 matrices: 2 × 4,096^3 ≈ 1.37 × 10^11 FLOPs and, in BF16, about 1.0 × 10^8 bytes, about 1,365 FLOPs per byte.",
+   "used_for": "Every FLOP count in AI starts here: model FLOPs, MFU accounting, kernel benchmarks (cuBLAS, CUTLASS, Triton) and accelerator spec sheets, which quote multiply-accumulates times 2. Book: Chapter 32 (Why matrix multiplication is a chip designer's dream; Counting the work: FLOP, FLOPS and spec-sheet literacy), Chapter 2 (Measuring compute: FLOP and FLOP/s), Appendix B (Matrix multiplication cost).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-fwd-bwd-flops",
+   "name": "Forward and backward FLOPs of a layer (where the 6 in 6ND comes from)",
+   "formula": "dense layer Y = X × W, X of shape B × d_in, W of shape d_in × d_out: forward = 2 × B × d_in × d_out ; backward = 2 × B × d_in × d_out (input gradient dX = dY × Wᵀ) + 2 × B × d_in × d_out (weight gradient dW = Xᵀ × dY) ; per token per parameter: 2 forward + 4 backward = 6 FLOPs (8 with full activation recomputation) ; Megatron-LM count for a GPT model: model FLOPs per iteration = 72 × B × s × L × h^2 × (1 + s ÷ (6 × h) + V ÷ (12 × h × L))",
+   "meaning": "The backward pass does two matrix multiplications for each one in the forward pass, so it costs about twice as much; summed over all weights this gives 2 × N forward and 4 × N backward FLOPs per token, the hardware origin of C ≈ 6 × N × D (the headline rule and its examples are in the llm section, llm-train-flops-6nd, and 2 × N per generated token in llm-inference-2n). Recomputing activations adds one more forward pass, about 8 × N per token of hardware work. The Megatron-LM formula (Narayanan et al. 2021; Korthikanti et al. 2022) counts only matrix multiplications for B sequences of s tokens, L layers, hidden size h, vocabulary V and a 4h MLP: 24 × B × s × h^2 + 4 × B × s^2 × h per layer forward plus 2 × B × s × h × V for the output layer, tripled for forward plus backward; with full recomputation it becomes 96 × B × s × L × h^2 × (1 + s ÷ (6 × h) + V ÷ (16 × L × h)).",
+   "used_for": "Model-FLOPs accounting for MFU in Megatron-LM, NeMo, MaxText and torchtitan; sizing every pretraining run. Book: Chapter 37 (Where the 6 comes from), Chapter 19 (Where the 6 comes from), Appendix B (Cost of a training step).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-peak-flops",
+   "name": "Peak FLOP/s of a chip (spec-sheet formula, precision, sparsity, TOPS)",
+   "formula": "peak FLOP/s = number of compute units × FLOPs per unit per clock cycle × clock frequency ; systolic array: rows × columns × 2 × f ; with 2:4 structured sparsity the quoted figure doubles ; TOPS = peak operations per second ÷ 10^12 ; H100-equivalents = sum over chips of (peak ÷ H100 peak)",
+   "meaning": "A tensor core, matrix unit or systolic-array cell performs a fixed number of multiply-accumulates per cycle (2 FLOPs each). Lower precision packs more operations into each cycle, so peak roughly doubles for each halving of bits (Vera Rubin, as the book reports: about 4 PFLOPS dense BF16, 17.5 FP8 and 35 NVFP4 for training). Spec sheets often quote sparse numbers (2:4 sparsity, two zeros in every four weights), twice the dense figure; dense is what training achieves. TOPS (trillions of operations per second) is the integer-math version used for phone and laptop NPUs. H100-equivalents (H100e) express a mixed fleet in one unit (Epoch AI). Examples: NVIDIA V100: 640 tensor cores × 128 FLOPs × 1.53 × 10^9 Hz ≈ 125 TFLOPS; Google TPU v1: 256 × 256 cells × 2 × 700 × 10^6 Hz ≈ 92 TOPS.",
+   "used_for": "Reading accelerator spec sheets (NVIDIA, AMD, Google TPU, AWS Trainium), chip design, export-control thresholds (TPP), fleet comparisons. Book: Chapter 32 (The peak-speed formula, checked on real chips; Dense versus sparse; The precision ladder), Chapter 35 (Edge NPUs and TOPS: AI in your pocket), Chapter 37 (H100-equivalent).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-training-time",
+   "name": "Training time, GPU count and GPU-hours from a compute budget",
+   "formula": "cluster speed = G × P × U ; time = C ÷ (G × P × U × goodput) ; GPUs needed = C ÷ (target time × P × U × goodput) ; GPU-hours = G × time in hours",
+   "meaning": "G is the number of chips, P the peak FLOP/s per chip at the precision used, U the achieved utilization (MFU, typically 0.3 to 0.5), C the total training FLOPs (C ≈ 6 × N × D, llm-train-flops-6nd) and goodput the share of wall-clock time not lost to failures, restarts and checkpoints (1 in the simple version). Example: Llama 3.1 405B, 3.8 × 10^25 FLOPs on 16,384 H100s at 989 × 10^12 FLOP/s and 40% MFU: cluster speed ≈ 6.5 × 10^18 FLOP/s, time ≈ 5.9 × 10^6 s ≈ 68 days, about 26.7 million GPU-hours.",
+   "used_for": "Planning every pretraining run, compute procurement, and Epoch AI's estimates of frontier training compute. Book: Chapter 37 (From FLOP to days), Chapter 19 (From FLOPs to dollars), Appendix B (Cluster speed; Training time; GPU-hours).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-mfu",
+   "name": "Model FLOPs utilization and hardware FLOPs utilization (MFU, HFU)",
+   "formula": "MFU = (model FLOPs per token × tokens processed per second) ÷ (number of chips × peak FLOP/s per chip) ; PaLM model FLOPs per token = 6 × N + 12 × L × H × Q × T ; HFU = (FLOPs actually executed per second, including recomputation) ÷ (chips × peak FLOP/s) ; with selective recomputation HFU ÷ MFU ≈ 1 + s ÷ (6 × h)",
+   "meaning": "MFU (Chowdhery et al. 2022, PaLM) measures how much of the hardware's peak goes into the arithmetic the model mathematically requires, independent of implementation tricks; HFU also counts recomputed work, so HFU ≥ MFU and MFU is the more honest number. L layers, H heads, Q head size, T sequence length (the attention term is discussed in llm-attention-flops); s sequence length and h hidden size in the HFU ratio (Korthikanti et al. 2022). Large BF16 runs typically reach about 35 to 50% MFU, and less against an FP8 peak. MBU, the decode-side counterpart, is in cd-decode-ceiling. Example: Llama 3 405B reported 38 to 43% BF16 MFU on 8,192 to 16,384 H100s; 0.41 × 989 ≈ 400 TFLOP/s of useful work per GPU.",
+   "used_for": "The headline efficiency number of every large training run (PaLM, Megatron-LM, Llama 3, MaxText). Book: Chapter 37 (Utilization: MFU, HFU and where the time goes), Chapter 19 (The machine), Appendix B (Cluster speed).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-step-time-overlap",
+   "name": "Step time with overlapped compute and communication (lower and upper bounds)",
+   "formula": "T_math = FLOPs ÷ (FLOP/s) ; T_comms = bytes ÷ (bytes per second) ; T_lower = max(T_math, T_comms) ; T_upper = T_math + T_comms",
+   "meaning": "Any piece of work needs time to compute and time to move its data (from memory, or between chips). If the two overlap perfectly the slower one sets the time; if they run one after the other the times add. Real kernels and training steps fall in between, and 'exposed communication' is the part not hidden behind math. This is the general form behind the roofline (memory) and the communication-bound tests of each kind of parallelism (How to Scale Your Model, Part 1).",
+   "used_for": "Performance modeling in JAX/XLA and PyTorch training stacks, reading profiler traces, choosing parallelism layouts. Book: Chapter 37 (Collective communication: how thousands of GPUs agree; Finding the lost time: profiling) describes overlap in words.",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-arithmetic-intensity",
+   "name": "Arithmetic intensity (FLOPs per byte)",
+   "formula": "I = FLOPs ÷ bytes moved ; matmul X[B × D] × W[D × F] in 16-bit: I = 2 × B × D × F ÷ (2 × B × D + 2 × D × F + 2 × B × F) ≈ B when B is much smaller than D and F ; elementwise c = a + b: I = 1 ÷ 6 ; square n × n matmul in 16-bit: I = n ÷ 3 ; tiled matmul with b_m × b_n output tiles: I ≈ 2 × b_m × b_n ÷ (b × (b_m + b_n))",
+   "meaning": "How much math a job does per byte it moves between memory and the compute units. For a weight matrix applied to a batch of B token vectors each weight byte is reused B times, so intensity grows with batch size; for decode with one user I ≈ 1 FLOP per byte with BF16 weights (2 FLOPs per 2-byte weight), 2 with FP8 and 4 with FP4. Attention during decode reads each cached key and value once for the query heads that share it, so its intensity is about the grouped-query group size whatever the batch. Tiling keeps blocks in on-chip SRAM (b bytes per element) so each byte fetched from HBM is used many times. Example: n = 8,192 square matmul in BF16: about 2,731 FLOPs per byte.",
+   "used_for": "Deciding whether a kernel is memory- or compute-bound (FlashAttention, fused kernels, batching policies in vLLM and SGLang). Book: Chapter 33 (Arithmetic intensity: how much math per byte; Tiling: how software reuses data), Appendix B (Arithmetic intensity).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-roofline",
+   "name": "Roofline model and ridge point",
+   "formula": "attainable FLOP/s = min(peak FLOP/s, I × memory bandwidth) ; ridge point I* = peak FLOP/s ÷ memory bandwidth ; compute-bound if I > I*, memory-bound if I < I*",
+   "meaning": "Williams, Waterman and Patterson (2009). On log-log axes, performance rises along a sloped roof (bandwidth × intensity) until it meets the flat roof of peak compute at the ridge point. Variants: one roof per memory level (registers, shared memory, L2, HBM: the hierarchical roofline) and network rooflines that replace memory bandwidth with link bandwidth (the communication tests in the parallelism entries). Because peak compute grew about 3.0× every two years against about 1.6× for DRAM bandwidth (Gholami et al. 2024), ridge points keep rising. Example: H100: 989 × 10^12 ÷ 3.35 × 10^12 ≈ 295 FLOPs per byte; a batch-1 BF16 decode at I = 1 reaches at most 3.35 TFLOP/s, about 0.3% of peak.",
+   "used_for": "Kernel optimization (NVIDIA Nsight Compute draws rooflines), chip design trade-offs, serving and batching decisions. Book: Chapter 33 (The roofline model, worked with numbers; The memory wall), Appendix B (Ridge point).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-decode-ceiling",
+   "name": "Memory-bandwidth ceiling on decode speed (and memory bandwidth utilization, MBU)",
+   "formula": "tokens per second per sequence ≤ memory bandwidth ÷ bytes read per token ; bytes read per token ≈ N_active × b + KV-cache bytes of that sequence ; with the weights split over n chips (tensor parallelism) the bandwidth is n × per-chip bandwidth ; MBU = (bytes read per token × tokens per second) ÷ peak memory bandwidth",
+   "meaning": "Generating one token requires streaming every active weight (and that sequence's KV cache) from memory through the compute units once, and at small batch the math is tiny, so bandwidth sets the speed. b is bytes per weight; N_active is all parameters for a dense model and the active ones for mixture of experts. Halving b roughly doubles the ceiling, which is why FP8 and 4-bit weights speed up decode. MBU (Databricks, 2023) reports the fraction of the bandwidth ceiling achieved, the decode counterpart of MFU. Speculative decoding and multi-token prediction raise speed by producing several tokens per weight read (llm section). Example: a 70B model in FP8 on one H200 (4.8 TB/s): at most 4,800 ÷ 70 ≈ 69 tokens per second.",
+   "used_for": "Predicting chatbot typing speed, sizing local models on laptops (llama.cpp, MLX), the case for SRAM-heavy inference chips. Book: Chapter 33 (Why decode is memory-bound: predicting your chatbot's speed), Chapter 23 (Worked example: how fast can one GPU write?), Appendix B (Decode speed ceiling; Halving the precision).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-batched-decode",
+   "name": "Batched decode step time and the throughput–latency trade-off",
+   "formula": "T_step ≈ max(2 × N_active × B ÷ F, (N_active × b + B × T × k_kv) ÷ BW) ; throughput = B ÷ T_step tokens per second ; per-user speed = 1 ÷ T_step ; weight reads stop dominating when B > F × b ÷ (2 × BW) ; simple linear model: T_step = t_0 + B × t_1",
+   "meaning": "B sequences decode together; F is peak FLOP/s, BW memory bandwidth, b bytes per weight, T the context length per sequence and k_kv the KV-cache bytes per token. Up to the critical batch every extra user rides on the same weight read, so throughput grows almost linearly while each user's speed barely drops; beyond it the step becomes compute-bound and per-user speed falls. KV-cache reads grow with B × T and are never shared, so long contexts cap the useful batch, and memory capacity caps B (llm-kv-budget). The critical batch is about 295 on an H100 in BF16, and about the same in FP8 because F doubles while b halves. NVIDIA presents the trade-off for 'AI factories' as tokens per second per megawatt against tokens per second per user.",
+   "used_for": "Choosing batch sizes and latency targets in vLLM, SGLang, TensorRT-LLM and NVIDIA Dynamo; comparing serving hardware. Book: Chapter 37 (Batching: the single biggest lever), Chapter 23 (Worked example: batching on one GPU), Chapter 33 (Worked example: how many users fit on one GPU?).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-prefill-time",
+   "name": "Prefill time (compute-bound prompt processing)",
+   "formula": "prefill time ≈ 2 × N_active × P ÷ (F × U) + attention term ; TTFT ≈ queueing delay + prefill time ; prefill intensity ≈ P FLOPs per byte of 16-bit weights, so prompts longer than about the ridge point are compute-bound",
+   "meaning": "P prompt tokens all share each read of the weights, so prompt processing runs near peak compute rather than at memory speed; F is peak FLOP/s and U the achieved fraction. The attention part grows with P^2 and dominates very long prompts (llm-attention-flops). Chunked prefill splits long prompts into pieces mixed with decode steps; disaggregated serving puts prefill and decode on separate GPU pools because they hit different roofs. Example: a 2,000-token prompt on a 70B model: 2 × 70 × 10^9 × 2,000 = 2.8 × 10^14 FLOPs, 0.14 s at an H100's FP8 peak of about 1,979 TFLOP/s, a few tenths of a second in practice.",
+   "used_for": "Time-to-first-token targets, prompt-caching economics, disaggregated prefill and decode (DistServe, NVIDIA Dynamo). Book: Chapter 23 (Worked example: how long does reading take?), Chapter 33 (Two phases of every answer), Chapter 37 (Prefill and decode).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-memory-capacity",
+   "name": "Memory capacity: weights, KV cache and the number of chips needed",
+   "formula": "weight bytes = N_total × b ; chips needed = ceil((weight bytes + KV-cache bytes + activation and runtime reserve) ÷ (memory per chip × usable fraction)) ; KV memory left = chips × memory per chip − weight bytes − reserve",
+   "meaning": "N_total counts every parameter that must be resident (all experts of a mixture-of-experts model, though only the active ones are computed) and b is bytes per parameter (4 FP32, 2 BF16, 1 FP8, about 0.5 to 0.56 for 4-bit formats with scales; the formats themselves are in the foundations section and quantized file sizes in llm-group-bits). This is the hardware-capacity view of the KV cache: the memory the weights leave free bounds context length times concurrent users (the per-token KV formula is llm-kv-cache, the concurrency limit llm-kv-budget). Example: 70 billion × 2 bytes = 140 GB, so at least two 80 GB H100s; in FP8 the 70 GB fits on one 141 GB H200 with about 70 GB left for KV cache, about 210,000 tokens at 327,680 bytes per token.",
+   "used_for": "Choosing tensor-parallel degree, deciding which GPU or laptop can run a model, the HBM capacity race. Book: Appendix B (Memory math: Weight memory; Chips needed to hold the weights; KV cache total), Chapter 5 (Memory math: how big is a model?), Chapter 33 (The KV cache: memory that grows while you talk).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-training-memory",
+   "name": "Training memory per parameter (mixed-precision Adam, about 16 bytes)",
+   "formula": "model-state bytes ≈ N × (b_w + b_g + K) = N × (2 + 2 + 12) = 16 × N ; total ≈ 16 × N + activation bytes + temporary buffers",
+   "meaning": "Per parameter: 2 bytes of BF16 weights, 2 of BF16 gradients and K = 12 bytes of optimizer state (4 for the FP32 master copy, 4 + 4 for Adam's first and second moments). Variants: FP32 gradients (18 bytes); 8-bit optimizer states; DeepSeek-V3's FP8 recipe keeps FP32 master weights and gradients but stores the Adam moments in BF16; optimizers with one state buffer (Muon, Lion, Adafactor-style factored moments) need fewer bytes. Activations come on top (cd-activation-memory). Example: 70 billion parameters × 16 = 1.12 TB before activations, at least 14 chips of 80 GB, which is why training state is sharded (cd-zero-fsdp).",
+   "used_for": "Sizing training clusters and choosing sharding for every large run. Book: Chapter 33 (Training memory: about 16 bytes per parameter), Chapter 37 (The memory wall of training), Appendix B (Training memory).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-activation-memory",
+   "name": "Activation memory of a Transformer layer (Korthikanti formula)",
+   "formula": "bytes per layer = s × b × h × (34 + 5 × a × s ÷ h) ; with tensor parallelism t and sequence parallelism: s × b × h × (34 ÷ t + 5 × a × s ÷ (h × t)) ; plus selective recomputation: 34 × s × b × h ÷ t ; full recomputation: 2 × s × b × h ; first pipeline stage (1F1B) holds L layers' worth: s × b × h × L × (34 + 5 × a × s ÷ h) ÷ t",
+   "meaning": "s sequence length, b micro-batch size, h hidden size, a attention heads, t tensor-parallel size, L layers, for 16-bit activations of a GPT-style layer (Korthikanti et al. 2022, the Megatron-LM paper on sequence parallelism and selective recomputation). The 5 × a × s ÷ h term is the stored attention-score matrices; memory-efficient attention such as FlashAttention never stores them, so the 34 term dominates today. Activation memory grows with tokens per micro-batch, not with parameter count, which is what limits long-context training. Example: GPT-3 (a = 96, s = 2,048, h = 12,288): 5 × a × s ÷ h = 80, about 2.9 GB per layer at b = 1 with no tricks and about 0.86 GB with selective recomputation.",
+   "used_for": "Memory planners in Megatron-LM and NeMo; choosing micro-batch size, recomputation and context parallelism. Book: Only here (Chapter 37, The memory wall of training, describes activations in words).",
+   "tier": "specialist"
+  },
+  {
+   "id": "cd-activation-checkpointing",
+   "name": "Activation checkpointing (recomputation) trade-off",
+   "formula": "keep checkpoints every k layers: activation memory ∝ L ÷ k + k, minimized at k = sqrt(L), giving memory ∝ 2 × sqrt(L) ; cost: one extra forward pass, so hardware FLOPs per token ≈ 8 × N instead of 6 × N (about 33% more)",
+   "meaning": "Instead of keeping every layer's activations for the backward pass, keep only the inputs of every k-th layer and recompute the rest when needed (Chen et al. 2016, 'Training deep nets with sublinear memory cost'). With k = sqrt(L), memory falls from proportional to L to proportional to sqrt(L) for the price of one extra forward pass. Selective recomputation recomputes only cheap, memory-hungry parts such as attention scores, costing a few percent of FLOPs; offloading activations to CPU memory is a third option. Recomputed FLOPs count toward HFU but not MFU; Megatron reported 30 to 40% time overhead for full recomputation.",
+   "used_for": "Standard in PyTorch (torch.utils.checkpoint), JAX (jax.checkpoint, remat), Megatron-LM and DeepSpeed. Book: Chapter 37 (The memory wall of training; Utilization: MFU, HFU and where the time goes).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-zero-fsdp",
+   "name": "ZeRO and FSDP sharding: memory and communication per GPU",
+   "formula": "Ψ parameters, K = 12 optimizer bytes per parameter, N_d data-parallel GPUs: plain data parallel = (2 + 2 + K) × Ψ ; ZeRO-1 (optimizer states sharded) = 2 × Ψ + 2 × Ψ + K × Ψ ÷ N_d ; ZeRO-2 (+ gradients) = 2 × Ψ + (2 + K) × Ψ ÷ N_d ; ZeRO-3 or FSDP (+ parameters) = (2 + 2 + K) × Ψ ÷ N_d ; communication volume per step: 2 × Ψ for plain data parallel, ZeRO-1 and ZeRO-2, 3 × Ψ for ZeRO-3",
+   "meaning": "Rajbhandari et al. (2019). Each data-parallel GPU keeps only its 1 ÷ N_d slice of the optimizer state, then of the gradients, then of the weights, and gathers what it needs just in time. ZeRO-3 replaces one all-reduce (a reduce-scatter plus an all-gather) with a reduce-scatter of gradients plus an all-gather of weights in the forward pass and another in the backward pass, so 1.5 times the traffic. Example from the paper: Ψ = 7.5 billion, N_d = 64: 120 GB, 31.4 GB, 16.6 GB and 1.9 GB per GPU. Hybrid sharding (HSDP) shards inside a node and replicates across nodes to keep the extra traffic on fast links.",
+   "used_for": "DeepSpeed ZeRO, PyTorch FSDP and FSDP2, JAX fully sharded data parallelism; DeepSeek-V3 used ZeRO-1 data parallelism. Book: Chapter 37 (ZeRO and FSDP: sharding the memory).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-hbm-bandwidth",
+   "name": "HBM stack bandwidth and capacity",
+   "formula": "bandwidth per stack (GB/s) = interface width in bits × data rate per pin in Gb/s ÷ 8 ; chip memory bandwidth = stacks × bandwidth per stack ; capacity per stack = dies per stack × capacity per die",
+   "meaning": "High-bandwidth memory gets its speed from a very wide interface placed beside the processor on a silicon interposer, not from fast pins. Examples: HBM3: 1,024 × 6.4 ÷ 8 ≈ 819 GB/s per stack; HBM3E at about 9.6 Gb/s: about 1.2 TB/s; HBM4 (JEDEC, April 2025): 2,048 × 8 ÷ 8 = 2,048 GB/s, and shipping parts run faster. A B300 has 288 GB in 8 stacks of 12 dies, 3 GB per die. The same formula with a 64-bit channel gives DDR5 module bandwidth.",
+   "used_for": "Every AI accelerator's memory spec (H100 3.35 TB/s, Blackwell about 8 TB/s, Rubin about 20 TB/s as reported) and therefore every decode-speed estimate. Book: Chapter 33 (HBM: a skyscraper of memory next door; The arithmetic of a stack; The generations).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-amat",
+   "name": "Average memory access time (cache hierarchy)",
+   "formula": "AMAT = hit time + miss rate × miss penalty ; two levels: AMAT = t_L1 + m_L1 × (t_L2 + m_L2 × t_memory)",
+   "meaning": "Hennessy and Patterson's standard equation for a memory hierarchy: most accesses hit in a small fast memory and only misses pay the long trip to the next level. t is access time and m miss rate at each level. In GPUs the levels are registers, shared memory and L1, L2 and HBM, and kernels such as FlashAttention are designed to keep the traffic to HBM low. Example: 1 ns hit time, 5% misses, 100 ns penalty: 1 + 0.05 × 100 = 6 ns.",
+   "used_for": "CPU and GPU architecture design, cache blocking and kernel tuning. Book: Only here (Chapter 33, The memory hierarchy: desk, shelf, library, warehouse, explains it in words).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-energy-per-op",
+   "name": "Energy of computing versus moving data",
+   "formula": "energy ≈ number of operations × energy per operation + sum over memory levels of (bytes moved × energy per byte) ; power = FLOP/s × joules per FLOP + bytes per second × joules per byte ; chip efficiency = FLOP/s ÷ watts = FLOPs per joule (TOPS per watt for integer math)",
+   "meaning": "Fetching a number from off-chip DRAM costs far more energy than doing arithmetic on it: Horowitz's widely used 45 nm figures (ISSCC 2014) put a 32-bit floating-point multiply at about 3.7 pJ against about 640 pJ for a 32-bit DRAM read. Lower precision cuts both terms, and keeping data in on-chip SRAM cuts the second. This is why data movement, not arithmetic, dominates the power of AI chips, and why efficiency is quoted as FLOPs per joule.",
+   "used_for": "Accelerator architecture (systolic arrays, large SRAM, near-memory and in-memory compute), comparing chips by performance per watt. Book: Chapter 33 (Moving data costs more than math), Chapter 2 (Moving data costs more than doing math), Chapter 32 (Why fewer bits mean more speed).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-iron-law",
+   "name": "Iron law of processor performance (CPU time)",
+   "formula": "CPU time = instruction count × cycles per instruction (CPI) × clock period = instruction count × CPI ÷ clock frequency ; performance = 1 ÷ execution time ; speedup = old time ÷ new time",
+   "meaning": "Hennessy and Patterson's basic performance equation: a program runs faster only if it executes fewer instructions, needs fewer cycles per instruction or runs at a higher clock. Vector, SIMD and tensor instructions win by doing far more work per instruction (one tensor-core instruction is a whole small matrix multiply). Example: 10^9 instructions at CPI 1.5 on a 3 GHz core: 10^9 × 1.5 ÷ (3 × 10^9) = 0.5 s.",
+   "used_for": "CPU design and benchmarking, including the data-loading and orchestration code that runs on the CPUs of every AI server. Book: Only here (Chapter 32, The CPU: a few brilliant workers, covers clocks and instructions in words).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-wave-quantization",
+   "name": "Tile and wave quantization on GPUs",
+   "formula": "tiles = ceil(M ÷ t_M) × ceil(N ÷ t_N) ; waves = ceil(tiles ÷ number of SMs) ; utilization ≈ tiles ÷ (waves × number of SMs)",
+   "meaning": "A GPU matrix multiply with an M × N output is cut into t_M × t_N tiles (for example 128 × 128), each handled by one streaming multiprocessor (SM). If the tile count is just over a multiple of the SM count, a last partial 'wave' runs with most SMs idle (wave quantization); if a dimension is not a multiple of the tile size, edge tiles do wasted work (tile quantization). Example: 133 tiles on a 132-SM H100 need 2 waves, about 50% utilization. This is why model dimensions are chosen as multiples of 64 or 128 and vocabularies are padded.",
+   "used_for": "NVIDIA's matrix-multiplication performance guidelines, kernel autotuning (CUTLASS, Triton), choosing hidden sizes and vocabulary padding. Book: Only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "cd-alpha-beta",
+   "name": "Message transfer time (latency–bandwidth or alpha–beta model)",
+   "formula": "T = α + n ÷ β ; link bandwidth = lanes × rate per lane ; bytes per second = bits per second ÷ 8",
+   "meaning": "α is the fixed start-up latency of a message (software, switch hops, propagation), n the message size in bytes and β the bandwidth in bytes per second (Hockney's model). Small messages are latency-bound and large ones bandwidth-bound; the crossover is n = α × β. Network ports are quoted in bits (400 Gb/s InfiniBand ≈ 50 GB/s), NVLink in bytes and often counting both directions (H100 NVLink 900 GB/s total, about 450 GB/s each way). An 800 Gb/s port is typically 8 lanes of 100 Gb/s or 4 of 200 Gb/s. Collective algorithms are analyzed as sums of such terms.",
+   "used_for": "Communication cost models in NCCL, MPI and parallelism planners; reading switch, NIC and NVLink specs. Book: Chapter 34 (Pluggable transceivers and the definition of a lane; exercise Bits, bytes and transfer times), Chapter 37 (Ring all-reduce, worked by hand: latency of rings versus trees).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-ring-allreduce",
+   "name": "Ring all-reduce time",
+   "formula": "T ≈ 2 × (n − 1) ÷ n × S ÷ B + 2 × (n − 1) × α ; data each GPU sends = 2 × (n − 1) ÷ n × S ; NCCL bus bandwidth = algorithm bandwidth × 2 × (n − 1) ÷ n",
+   "meaning": "n GPUs each hold S bytes (for example a full gradient) and must all end with the element-wise sum. A ring does a reduce-scatter (n − 1 steps) then an all-gather (n − 1 steps), each step sending a 1 ÷ n chunk to the next neighbor, so traffic per GPU approaches 2 × S however many GPUs join, which made large data parallelism practical (popularized by Baidu in 2017 and by Horovod). B is per-GPU link bandwidth in one direction and α the per-step latency, which is why rings give way to trees or hierarchical schemes for small messages at large n. NCCL's bus bandwidth makes measurements comparable across n. Example: 140 GB of BF16 gradients (a 70B model) over 50 GB/s InfiniBand: about 2 × 140 ÷ 50 = 5.6 s; over about 450 GB/s NVLink: about 0.62 s.",
+   "used_for": "Gradient synchronization in data-parallel training (NCCL, RCCL, Gloo, XLA collectives); tensor-parallel activation sums. Book: Chapter 37 (Ring all-reduce, worked by hand; Worked example: how long does an all-reduce take?).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-collectives",
+   "name": "Costs of the other collectives (all-gather, reduce-scatter, all-to-all, tree all-reduce)",
+   "formula": "ring all-gather or reduce-scatter: T ≈ (n − 1) ÷ n × S ÷ B + (n − 1) × α, S = full gathered size ; all-reduce = reduce-scatter + all-gather ; all-to-all: each GPU sends (n − 1) ÷ n × S_local ; tree or recursive-doubling all-reduce latency term ≈ 2 × log2(n) × α ; NCCL bus bandwidth for all-gather and reduce-scatter = algorithm bandwidth × (n − 1) ÷ n",
+   "meaning": "S_local is the data each GPU starts with in an all-to-all (it keeps 1 ÷ n and sends the rest). These are the building blocks of every parallelism scheme: data parallelism all-reduces gradients, ZeRO-3 and FSDP all-gather weights and reduce-scatter gradients, tensor and sequence parallelism all-reduce or reduce-scatter plus all-gather activations, and expert parallelism uses all-to-all. On TPU tori a collective spread over several mesh axes uses all their links at once, which cuts the bandwidth term (How to Scale Your Model). All-to-all gains nothing from ring tricks and is limited by the network's bisection bandwidth.",
+   "used_for": "NCCL, RCCL and XLA collectives; parallelism planners in Megatron-LM, DeepSpeed, MaxText and torchtitan. Book: Chapter 37 (Collective communication: how thousands of GPUs agree), Chapter 34 (Collectives: why the slowest link sets the pace).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-dp-comm-ratio",
+   "name": "When data parallelism is communication-bound (tokens per GPU per step)",
+   "formula": "T_compute = 6 × N × B_local ÷ (F × U) ; T_comm ≈ 2 × b_g × N ÷ BW ; compute-bound when B_local > (2 × b_g ÷ 6) × (F × U ÷ BW) ; TPU form (How to Scale Your Model): B ÷ X > C ÷ W_ici",
+   "meaning": "B_local is tokens processed per GPU per step, b_g bytes per gradient value, F peak FLOP/s, U utilization and BW per-GPU network bandwidth; the parameter count N cancels, so the test depends only on hardware ratios and batch size. In the TPU form B is the global batch in tokens, X the number of chips along the data-parallel axis, C FLOP/s per chip and W_ici the inter-chip bandwidth: about 2,550 tokens per chip on TPU v5p, fewer when several mesh axes share the traffic. Example: H100 at 400 TFLOP/s achieved over 50 GB/s with BF16 gradients: (4 ÷ 6) × 8,000 ≈ 5,300 tokens per GPU per step; Llama 3's 16 million-token batch over 16,384 GPUs is only about 1,000, which is why tensor and pipeline parallelism group 128 GPUs per model copy.",
+   "used_for": "Choosing global batch size and parallelism layout; explains batches of millions of tokens. Book: Chapter 37 (Worked example: when does the network become the bottleneck?).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-tensor-parallel",
+   "name": "Tensor parallelism communication cost (Megatron-style)",
+   "formula": "per Transformer layer: 2 all-reduces of the activations (B × s × h × b bytes each) in the forward pass and 2 in the backward pass ; T_comm per layer forward ≈ 2 × 2 × (t − 1) ÷ t × B × s × h × b ÷ BW ; T_compute per layer forward ≈ 24 × B × s × h^2 ÷ (t × F) ; TPU form: compute-bound when d_ff > Y × C ÷ W_ici (about Y < M_Y × d_ff ÷ 2,550 on TPU v5p)",
+   "meaning": "Megatron-LM (Shoeybi et al. 2019) splits attention heads and the MLP's inner dimension over t GPUs so each layer needs only two synchronizations forward and two backward. B sequences of s tokens, hidden size h, b bytes per value, F FLOP/s, BW link bandwidth. The communication-to-compute ratio grows like t ÷ h, so tensor parallelism stays inside the fastest domain (8 GPUs on NVLink, up to 72 in an NVL72 rack). Sequence parallelism replaces each all-reduce by a reduce-scatter plus all-gather of the same total volume while also sharding activations. In the TPU form Y is the tensor-parallel degree, d_ff the MLP width and M_Y the number of mesh axes used.",
+   "used_for": "Megatron-LM, NeMo, TensorRT-LLM and vLLM tensor parallelism; Llama 3 used tensor parallelism of 8. Book: Chapter 37 (Tensor parallelism: splitting each matrix).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-pipeline-bubble",
+   "name": "Pipeline bubble fraction",
+   "formula": "bubble share of step time = (p − 1) ÷ (m + p − 1) ; equivalently bubble time ÷ ideal time = (p − 1) ÷ m (GPipe and 1F1B) ; interleaved schedule with v model chunks per GPU: (p − 1) ÷ (v × m)",
+   "meaning": "p pipeline stages, m micro-batches per step. Filling and draining the pipeline leaves stages idle for p − 1 micro-batch slots, so m must be much larger than p to keep the bubble small. 1F1B scheduling (PipeDream) keeps the same bubble but caps stored activations at p micro-batches; interleaving (Narayanan et al. 2021) divides the bubble by v at the cost of more communication; zero-bubble schedules (Qi et al. 2023) and DeepSeek's DualPipe fill the gaps by splitting the backward pass into input-gradient and weight-gradient parts and overlapping communication. Example: p = 8, m = 32: 7 ÷ 39 ≈ 18% of the step idle.",
+   "used_for": "Pipeline parallelism in Megatron-LM, DeepSpeed, torchtitan and GPipe; Llama 3 used 16 stages and DeepSeek-V3 used DualPipe across 16 stages. Book: Chapter 37 (Pipeline parallelism: an assembly line of layers).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-expert-parallel",
+   "name": "Expert parallelism all-to-all traffic",
+   "formula": "bytes sent per token per MoE layer ≈ 2 × k × d_model × b × f_remote (dispatch plus combine) ; T_a2a ≈ tokens per GPU × that ÷ BW ; with node-limited routing f_remote is bounded by the number of nodes a token may reach",
+   "meaning": "Each token's hidden vector (d_model values of b bytes) is sent to the GPUs holding its k chosen experts and the results are sent back, so traffic grows with k and d_model but not with the number of experts. f_remote is the share of chosen experts that live on other GPUs (about 1 − 1 ÷ n_ep with random routing). Uneven routing makes the busiest GPU set the pace (load-balancing losses are in the deep-learning section). DeepSeek-V3 limits each token to experts on at most 4 nodes, dispatches in FP8, combines in BF16 and overlaps the all-to-all with computation; its DeepEP library implements these kernels.",
+   "used_for": "Training and serving DeepSeek-V3, Kimi K2, Qwen3 MoE, gpt-oss and other mixture-of-experts models; wide expert parallelism across NVL72 racks. Book: Chapter 37 (Expert parallelism: spreading out the specialists).",
+   "tier": "specialist"
+  },
+  {
+   "id": "cd-context-parallel",
+   "name": "Ring attention and context parallelism overlap condition",
+   "formula": "each of n devices holds c = S ÷ n tokens ; per ring step: compute ≈ 4 × c^2 × d FLOPs, communication ≈ 2 × c × d × b bytes (one key block and one value block) ; communication is hidden when c ≥ b × F ÷ (2 × BW)",
+   "meaning": "S is the sequence length, d the key and value width per layer, b bytes per value, F FLOP/s and BW link bandwidth. Splitting a long sequence over n devices and passing key/value blocks around a ring (Liu et al. 2023, Ring Attention) lets attention over millions of tokens run without any device holding the whole sequence; compute per block grows with c^2 and communication with c, so large enough blocks hide the transfer (the paper derives a minimum block size proportional to F ÷ BW). Variants: all-gather-based context parallelism (Llama 3) and DeepSpeed-Ulysses (all-to-all over heads). Causal masks unbalance the work, so chunks are assigned in zig-zag order.",
+   "used_for": "Long-context training (Llama 3 used context parallelism of 16 for its 128K stage), Megatron context parallelism, JAX ring attention. Book: Chapter 37 (Sequence and context parallelism: splitting long inputs).",
+   "tier": "specialist"
+  },
+  {
+   "id": "cd-parallel-layout",
+   "name": "Parallelism layout arithmetic (3D, 4D and 5D parallelism)",
+   "formula": "total GPUs = DP × TP × PP × CP (expert parallelism EP is usually carved out of DP × TP) ; global batch in sequences = micro-batch size × micro-batches (gradient-accumulation steps) × DP ; tokens per step = global batch × sequence length ; GPUs per model replica = TP × PP × CP",
+   "meaning": "DP data-parallel replicas, TP tensor-parallel degree, PP pipeline stages, CP context-parallel degree. The usual rule: the chattiest dimension (TP) inside a node or rack, CP and PP next, DP (least frequent communication, often with ZeRO or FSDP sharding) across the whole cluster. Example: Llama 3 405B: 8 × 16 × 128 = 16,384 GPUs (TP 8, PP 16, DP 128) with a 16 million-token batch, so each 128-GPU replica processed 125,000 tokens per step.",
+   "used_for": "Configuring Megatron-LM, NeMo, torchtitan, DeepSpeed and MaxText runs. Book: Chapter 37 (Putting it together: 3D, 4D and 5D parallelism).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-amdahl",
+   "name": "Amdahl's law",
+   "formula": "speedup(n) = 1 ÷ ((1 − p) + p ÷ n) ; limit as n grows = 1 ÷ (1 − p)",
+   "meaning": "p is the fraction of the original run time that can be spread over n workers; the serial remainder 1 − p caps the speedup (Amdahl 1967). Example: p = 0.95 gives 6.9× on 10 workers, 16.8× on 100, 19.6× on 1,000 and never more than 20×. In AI clusters the effectively serial part includes exposed communication, optimizer steps, data loading and synchronization waits, which is why speedups flatten as GPU counts grow.",
+   "used_for": "Reasoning about parallel hardware (why GPUs suit matrix math), scaling clusters, optimizing training and inference pipelines. Book: Chapter 32 (Parallelism: SIMD, SIMT and armies of simple workers).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-gustafson",
+   "name": "Gustafson's law (scaled speedup)",
+   "formula": "scaled speedup(n) = (1 − p) + p × n = n − (1 − p) × (n − 1)",
+   "meaning": "Gustafson (1988) observed that more processors are used to solve bigger problems in the same time rather than the same problem faster. With p the parallel fraction of the run time measured on the n-processor system and a fixed serial part, speedup grows almost linearly in n. This is the regime of AI scaling: more GPUs train bigger models on more tokens (weak scaling) rather than finishing a fixed run sooner. Example: p = 0.95 on 1,000 workers: about 950×.",
+   "used_for": "Weak-scaling analysis of training clusters and supercomputers. Book: Only here (Chapter 32 gives Amdahl's law).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-scaling-efficiency",
+   "name": "Parallel speedup, scaling efficiency and the Universal Scalability Law",
+   "formula": "speedup S(n) = T(1) ÷ T(n) ; strong-scaling efficiency = S(n) ÷ n ; weak-scaling efficiency = T(1) ÷ T(n) with the work per worker fixed ; Universal Scalability Law: C(n) = n ÷ (1 + σ × (n − 1) + κ × n × (n − 1))",
+   "meaning": "Strong scaling keeps the total problem fixed; weak scaling grows it with the number of workers n. Gunther's Universal Scalability Law adds a contention term σ (Amdahl-style serialization) and a coherency term κ (pairwise coordination such as global synchronization) that makes throughput eventually fall as n grows. Training-cluster reports quote scaling efficiency, for example throughput per GPU at 16,384 GPUs compared with 1,024.",
+   "used_for": "Cluster benchmarking (MLPerf Training results at different scales), capacity planning for serving systems. Book: Only here (Chapter 37's Watch out notes that scaling is sub-linear).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-fat-tree",
+   "name": "Fat-tree and leaf-spine network size, bisection bandwidth and oversubscription",
+   "formula": "two-layer leaf-spine of k-port switches (half the leaf ports down): max hosts = k^2 ÷ 2 ; three-layer fat tree: max hosts = k^3 ÷ 4, using 5 × k^2 ÷ 4 switches ; full bisection bandwidth = (hosts ÷ 2) × link bandwidth ; oversubscription ratio = downlink bandwidth ÷ uplink bandwidth at a switch layer",
+   "meaning": "A fat tree built from identical commodity switches (Al-Fares, Loukissas and Vahdat 2008) gives every host full bandwidth to every other host when it is not oversubscribed (1:1). AI back-end networks are built non-oversubscribed and often rail-optimized (GPU i of every server on the same leaf), while front-end and storage networks are commonly oversubscribed. Higher radix k cuts the number of layers: each doubling of k multiplies a three-layer fabric's maximum size by 8. Example: k = 128: 8,192 GPUs in two layers, 524,288 in three.",
+   "used_for": "Designing InfiniBand and Ethernet back-end fabrics (NVIDIA Quantum and Spectrum-X, Broadcom Tomahawk-based clusters) and comparing them with tori and dragonflies. Book: Chapter 34 (Switches and the fat tree; Rail-optimized designs).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-propagation-delay",
+   "name": "Propagation delay and the bandwidth–delay product",
+   "formula": "one-way delay = distance ÷ (c ÷ n_glass) ≈ 5 µs per km of optical fiber ; round-trip time = 2 × one-way delay + processing ; data in flight = bandwidth × round-trip time",
+   "meaning": "Light in glass travels at the speed of light c divided by the refractive index (n_glass ≈ 1.47), about 200,000 km per second, so each kilometer adds about 5 microseconds. The bandwidth–delay product (a form of Little's law) is how much data must be in flight to keep a long link full, which sizes buffers and shapes multi-data-center training. Example: 1,200 km of fiber: 6 ms one way; at 50 GB/s with a 12 ms round trip, 600 MB must be in flight.",
+   "used_for": "Placing data centers and inference regions, multi-campus training, TCP and RDMA tuning. Book: Chapter 34 (Training across campuses), Chapter 38 (The speed of light sets the rules), Chapter 4 (The speed of light sets a floor on delay).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-decibels",
+   "name": "Decibels and the optical link budget",
+   "formula": "gain or loss in dB = 10 × log10(P_out ÷ P_in) ; power in dBm = 10 × log10(P ÷ 1 mW) ; received power (dBm) = transmit power (dBm) − fiber loss per km × length − connector and splice losses ; the link works if received power ≥ receiver sensitivity + margin",
+   "meaning": "Signal budgets are added in decibels because losses multiply; every 3 dB halves the power. Transceivers inside and between data centers are specified this way, and part of the case for co-packaged optics is removing lossy, power-hungry electrical paths between the switch chip and the optics.",
+   "used_for": "Specifying optical transceivers, cabling plans and data-center interconnects. Book: Only here (Chapter 34, Optics: turning bits into light, in words).",
+   "tier": "specialist"
+  },
+  {
+   "id": "cd-littles-law",
+   "name": "Little's law",
+   "formula": "L = λ × W",
+   "meaning": "In any stable system the average number of items inside (L) equals the average arrival rate (λ) times the average time each spends inside (W), whatever the arrival pattern (Little 1961). Serving form: concurrent requests = requests per second × average latency, so a server that holds 64 conversations lasting 20 s each supports 3.2 new requests per second. Memory form: bytes in flight = bandwidth × latency, which tells chip designers how many outstanding memory requests (warps, prefetches) are needed to use HBM fully. Network form: the bandwidth–delay product.",
+   "used_for": "Capacity planning for inference fleets and APIs, GPU latency hiding, buffer sizing. Book: Only here (Chapter 23 and Chapter 37 use concurrency × speed without naming the law).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-mm1",
+   "name": "Queueing delay for random arrivals (utilization law, M/M/1, M/M/c)",
+   "formula": "utilization ρ = λ × S = λ ÷ μ ; M/M/1: mean wait in queue W_q = S × ρ ÷ (1 − ρ), mean time in system W = S ÷ (1 − ρ) = 1 ÷ (μ − λ) ; M/M/c: ρ = λ ÷ (c × μ), W_q = P_wait ÷ (c × μ − λ), with P_wait from the Erlang C formula",
+   "meaning": "λ arrival rate, S mean service time, μ = 1 ÷ S service rate, c servers. With random (Poisson) arrivals and exponential service times, waiting explodes as utilization nears 100%: at 50% busy the average wait is 1 service time, at 80% 4, at 90% 9, at 95% 19. Erlang C: P_wait = ((c × ρ)^c ÷ c!) × (1 ÷ (1 − ρ)) ÷ (sum over j from 0 to c − 1 of (c × ρ)^j ÷ j! + ((c × ρ)^c ÷ c!) × (1 ÷ (1 − ρ))). Pooling many servers (larger c) lets a fleet run hotter for the same wait.",
+   "used_for": "Headroom rules for inference servers and APIs, autoscaling targets, request schedulers. Book: Chapter 37 (Tail latency: why the slowest server sets your wait) gives busy ÷ (1 − busy).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-kingman",
+   "name": "Kingman's formula (waiting time with variable arrivals and service)",
+   "formula": "W_q ≈ (ρ ÷ (1 − ρ)) × ((c_a^2 + c_s^2) ÷ 2) × S",
+   "meaning": "For a single server with general arrival and service distributions (G/G/1), the mean wait is the M/M/1 utilization factor times the average of the squared coefficients of variation of inter-arrival times (c_a) and service times (c_s), times the mean service time S (Kingman 1961). LLM requests have very variable service times because output lengths range from a few tokens to tens of thousands, which lengthens queues; continuous batching and length-aware scheduling attack c_s. With c_a = c_s = 1 it reduces to M/M/1.",
+   "used_for": "Latency modeling for LLM serving and shared cluster job queues. Book: Only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "cd-tail-fanout",
+   "name": "Tail latency under fan-out (and hedged requests)",
+   "formula": "P(request is slow) = 1 − (1 − p)^n ; with a hedged backup sent to a second independent server: P(a sub-request is slow) ≈ p^2",
+   "meaning": "If each of the n servers a request must wait for is slow with probability p, the chance that at least one is slow grows quickly with n (Dean and Barroso, 'The Tail at Scale', 2013). Example: p = 0.01, n = 100: 1 − 0.99^100 ≈ 0.63, so 63% of requests are slow. Mixture-of-experts decode steps, synchronous training steps (stragglers) and multi-step agents all have this fan-out shape; hedged and tied requests, spare capacity and straggler detection are the defenses. In the paper's Google example, a hedged request after 10 ms cut 99.9th-percentile latency from 1,800 ms to 74 ms with 2% more requests.",
+   "used_for": "Designing large-scale serving and training systems; p99 latency targets. Book: Chapter 37 (Tail latency: why the slowest server sets your wait).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-fleet-sizing",
+   "name": "Inference fleet sizing",
+   "formula": "GPUs needed = peak demand in tokens per second ÷ (tokens per second per GPU at the latency target × target utilization) ; with disaggregation: prefill GPUs ÷ decode GPUs ≈ (prompt tokens per second ÷ prefill throughput per GPU) ÷ (output tokens per second ÷ decode throughput per GPU)",
+   "meaning": "Demand is set by the busiest hour, not the average, so fleets carry headroom (target utilization below 1) for queueing, bursts and failures. Throughput per GPU must be read at the batch size that still meets the per-user speed and time-to-first-token targets (cd-batched-decode). Disaggregated serving sizes separate pools for prompt processing and generation according to the input/output token mix.",
+   "used_for": "Capacity planning at API providers, autoscalers such as NVIDIA Dynamo's planner, cloud capacity reservations. Book: Only here (Chapter 37, Serving at scale: the economics of inference, discusses it in words).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-dynamic-power",
+   "name": "Dynamic and static power of a chip (P = α × C × V^2 × f)",
+   "formula": "P_dynamic = α × C × V^2 × f ; P_static = V × I_leak ; P_total = P_dynamic + P_static ; with voltage scaled along with frequency (DVFS): P_dynamic ∝ f^3 while speed ∝ f, so energy per operation ∝ f^2",
+   "meaning": "α is the activity factor (fraction of transistors switching each cycle), C the switched capacitance, V the supply voltage, f the clock frequency and I_leak the leakage current. Power grows with the square of voltage, so small voltage cuts save a lot: running GPUs slightly below maximum clock (power capping) often costs little speed for a large power saving, and memory-bound phases lose almost nothing. Example from the book: raising the clock 1.5× when the voltage must rise too costs about 2.2× the power.",
+   "used_for": "Chip design, GPU power capping and DVFS in data centers, thermal design power (TDP) ratings. Book: Chapter 32 (Moore's law, Dennard scaling and the end of free speed: Why the free lunch ended), Chapter 39 (Power budgets: oversubscription and capping).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-dennard",
+   "name": "Dennard scaling",
+   "formula": "shrink by a factor κ: lengths, widths, oxide thickness and voltage ÷ κ ; capacitance ÷ κ ; current ÷ κ ; delay ÷ κ (frequency × κ) ; power per transistor ÷ κ^2 ; transistors per area × κ^2 ; power density constant",
+   "meaning": "Dennard et al. (1974) showed that scaling every dimension and the voltage by the same factor keeps power per unit area constant, so each generation got more and faster transistors at the same power density. Around 2005 voltage stopped falling (threshold voltage and leakage set a floor), so power density rose with each shrink: clock speeds stalled, multicore and 'dark silicon' followed, and the industry turned to parallel, specialized accelerators.",
+   "used_for": "Explains the end of rising clock speeds and the turn to GPUs and AI ASICs; a staple of Hennessy and Patterson. Book: Chapter 2 (Moore's law, Dennard scaling and the turn to parallelism), Chapter 32 (Moore's law, Dennard scaling and the end of free speed).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-moore",
+   "name": "Moore's law and other exponential hardware trends (Koomey, price-performance, memory wall)",
+   "formula": "N(t) = N_0 × 2^((t − t_0) ÷ T_d) ; yearly growth factor = 2^(12 ÷ doubling time in months) ; doubling time in years = ln(2) ÷ ln(yearly factor)",
+   "meaning": "Moore (1965, revised 1975): transistors per chip double about every two years (T_d ≈ 2 years). The same exponential form describes Koomey's law (computations per kWh doubled about every 1.57 years from 1946 to 2009, more slowly since), the memory wall (Gholami et al. 2024: peak compute about 3.0× and DRAM bandwidth about 1.6× every two years), Epoch AI's measurements of AI-chip price-performance (about 1.49× per year) and energy efficiency (about 1.34× per year), and frontier training compute (about 4 to 5× per year). Example: doubling every 5.2 months: 2^(12 ÷ 5.2) ≈ 4.95× per year.",
+   "used_for": "Hardware roadmaps, compute and cost forecasts, GPU depreciation debates. Book: Chapter 2 (Moore's law, Dennard scaling and the turn to parallelism), Chapter 32 (Moore's law, Dennard scaling and the end of free speed), Chapter 33 (The memory wall), Chapter 35 (Physics limits and the long bets), Chapter 43 (Depreciation), Appendix B (Doubling time to yearly factor).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-die-yield",
+   "name": "Die yield models (Poisson, Murphy, Seeds, negative binomial)",
+   "formula": "Poisson: Y = exp(−A × D_0) ; Murphy: Y = ((1 − exp(−A × D_0)) ÷ (A × D_0))^2 ; Seeds: Y = 1 ÷ (1 + A × D_0) ; negative binomial (Stapper): Y = (1 + A × D_0 ÷ α)^(−α) ; Hennessy and Patterson: die yield = wafer yield × 1 ÷ (1 + D_0 × A)^N",
+   "meaning": "A is die area in cm^2, D_0 the density of fatal defects per cm^2, α a clustering parameter (defects cluster, so real yields beat the Poisson model; α → infinity recovers Poisson) and N a fitted process-complexity factor. All say the same thing: yield falls roughly exponentially with die area, so giant AI dies are expensive and designers add spare units and move to chiplets. Example: an H100-size die of 8.14 cm^2 at D_0 = 0.1: Poisson 44%, Murphy 47%, Seeds 55%, negative binomial with α = 3 about 49%; a 1 cm^2 chiplet yields about 90% (Poisson).",
+   "used_for": "Foundry and chip-company cost models, chiplet versus monolithic decisions, binning. Book: Chapter 36 (Yield: why giant dies are expensive) uses the Poisson form.",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-dies-per-wafer",
+   "name": "Dies per wafer",
+   "formula": "dies per wafer ≈ π × (d ÷ 2)^2 ÷ A − π × d ÷ sqrt(2 × A)",
+   "meaning": "d is the wafer diameter (300 mm) and A the die area in mm^2. The first term is wafer area over die area; the second subtracts the partial dies lost around the circular edge. The reticle limit (about 26 × 33 mm ≈ 858 mm^2) caps A for a single exposure. Example: H100 (814 mm^2): 70,686 ÷ 814 − 942.5 ÷ sqrt(1,628) ≈ 86.8 − 23.4 ≈ 63 dies.",
+   "used_for": "Chip cost estimates and supply planning for AI accelerators (how many GPUs a month of wafer capacity can make). Book: Chapter 36 (Worked example: what does the silicon in an H100 cost?; The reticle limit).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-die-cost",
+   "name": "Cost per good die and per packaged chip",
+   "formula": "cost per good die = wafer cost ÷ (dies per wafer × die yield) ; chip cost = (die cost + test cost + packaging cost) ÷ final test yield ; multi-die package yield ≈ (product over dies of die yield) × bonding yield, unless dies are tested before assembly (known-good die)",
+   "meaning": "Hennessy and Patterson's cost model. For chiplet and HBM-stacked designs every die and every bond must work, so testing dies first and building in spare units matter; in AI accelerators the HBM stacks and advanced packaging (CoWoS) increasingly cost more than the logic die. Example: about $17,000 per wafer ÷ 28 good H100 dies ≈ $600 of silicon per die, a few percent of the chip's price.",
+   "used_for": "Pricing and margin analysis of AI chips, chiplet architecture decisions (AMD Instinct, NVIDIA Blackwell's two-die design). Book: Chapter 36 (Worked example: what does the silicon in an H100 cost?; Binning and spare parts; Chiplets; Advanced packaging: the hidden bottleneck).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-thermal-resistance",
+   "name": "Junction temperature and thermal resistance",
+   "formula": "T_junction = T_coolant + P × R_th ; R_th = R_junction-to-case + R_interface + R_cold-plate-to-fluid (resistances in series add) ; convection: Q = h × A × ΔT, so R = 1 ÷ (h × A) ; heat flux = P ÷ die area",
+   "meaning": "R_th is in °C per watt and P is the chip's power; h is the heat-transfer coefficient and A the contact area. A chip must stay below its maximum junction temperature (typically around 85 to 105 °C) or it throttles, so more power needs lower thermal resistance (better interface materials, larger cold plates, higher h) or colder coolant. Example: 1,000 W through 0.05 °C per watt from 40 °C water: 40 + 50 = 90 °C. Heat fluxes above 100 W per cm^2 are why AI chips moved to direct liquid cooling.",
+   "used_for": "Cold-plate and heat-sink design, choosing coolant temperatures for direct-to-chip liquid cooling. Book: Chapter 40 (Why chips need to stay cool; Hop 1: from silicon to cold plate).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-tpp",
+   "name": "Total processing performance (TPP) and performance density for export controls",
+   "formula": "TPP = 2 × MacTOPS × bit length of the operation (summed over all processing units, at the precision giving the highest value) ; performance density PD = TPP ÷ die area in mm^2",
+   "meaning": "Defined in the US Export Administration Regulations (ECCN 3A090, October 2023 rules). Because 2 × MacTOPS is just TOPS, TPP ≈ dense peak TOPS × bits, nearly the same in a chip's 16-bit and 8-bit modes. The 2023 rule controls chips with TPP ≥ 4,800, or TPP ≥ 1,600 with PD ≥ 5.92. Example: H100: about 989 dense BF16 TFLOPS × 16 ≈ 15,800. The January 2026 rule described in the book allows case-by-case review for chips with TPP below 21,000 and memory bandwidth below 6,500 GB/s.",
+   "used_for": "Export licensing for NVIDIA, AMD and other accelerators; the design of market-specific chips such as the H20. Book: Chapter 36 (Geopolitics, part 1: export controls; Worked example: reading a TPP threshold).",
+   "tier": "specialist"
+  },
+  {
+   "id": "cd-ecc",
+   "name": "Error-correcting code check bits (Hamming SEC-DED)",
+   "formula": "single-error correction needs r check bits with 2^r ≥ m + r + 1 for m data bits ; SEC-DED adds one overall parity bit: (72, 64) code = 64 data bits + 8 check bits ; overhead = r ÷ m",
+   "meaning": "Hamming codes (1950) place parity bits so that the pattern of failed checks (the syndrome) points at the flipped bit. Server DRAM and the HBM on AI accelerators use such codes (and stronger symbol-based codes) to correct the random bit flips that become daily events across tens of thousands of chips; HBM3 memory faults caused 17.2% of Llama 3 405B's unexpected training interruptions. Example: m = 64: r = 7 satisfies 128 ≥ 72, plus 1 bit for double-error detection = 8 bits, 12.5% overhead.",
+   "used_for": "ECC memory in every data-center GPU and server; reliability engineering for large training runs. Book: Chapter 37 (When things break: failures, checkpointing and goodput, the ECC definition) in words.",
+   "tier": "specialist"
+  },
+  {
+   "id": "cd-ohm-power",
+   "name": "Electric power, Ohm's law and resistive (I^2 × R) loss",
+   "formula": "P = V × I ; V = I × R ; P_loss = I^2 × R ; R = ρ × L ÷ A ; for fixed delivered power I = P ÷ V, so loss = (P ÷ V)^2 × R falls with the square of the voltage",
+   "meaning": "P power in watts, V voltage in volts, I current in amperes, R resistance in ohms, ρ resistivity, L wire length, A cross-section. This is why power crosses long distances at hundreds of kilovolts and why racks are moving from 54 V to 800 V DC distribution; at about 1 V a 1,000 W chip draws about 1,000 A, so the last centimeters of copper and the voltage regulators beside the chip are major design problems. Example: 100 MW over a 5-ohm line: at 345 kV the current is about 290 A and the loss about 0.42 MW (0.4%).",
+   "used_for": "Power-delivery design from the grid to the GPU; busbar and cable sizing. Book: Chapter 39 (Voltage, current and resistance; Power equals voltage times current; Why wires get hot), Chapter 34 (A kilowatt in your palm; Power at the board).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-energy-power",
+   "name": "Energy, power and the electricity bill",
+   "formula": "E = P × t ; annual energy = P × 8,760 h × load factor ; 1 kWh = 3.6 × 10^6 J ; cost = energy × price per kWh (+ demand charge × peak kW)",
+   "meaning": "Power (watts) is a rate; energy (watt-hours or joules) is the amount used over time. A data center's grid connection is sized in power (MW) and its bill in energy (MWh), with the load factor the average share of capacity used. Examples: 1 GW for a year = 8,760 GWh = 8.76 TWh; a 217 MW site at 80% for 90 days ≈ 375 GWh, about $26 million at 7 cents per kWh.",
+   "used_for": "Every energy estimate for AI, from one prompt to national electricity forecasts (IEA, LBNL, EPRI). Book: Chapter 39 (Power versus energy; Capacity versus consumption; Example 4: the electricity bill of a 100 MW site for a year), Chapter 2 (Rates: per second, per token, per watt, per dollar).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-three-phase",
+   "name": "Three-phase AC power and power factor",
+   "formula": "apparent power S = sqrt(3) × V_LL × I (volt-amperes) ; real power P = sqrt(3) × V_LL × I × PF ; current per wire I = P ÷ (sqrt(3) × V_LL × PF) ; reactive power Q = sqrt(S^2 − P^2)",
+   "meaning": "V_LL is the line-to-line voltage and PF the power factor (real power ÷ apparent power, close to 1 for modern server power supplies). Transformers, UPS units and generators are rated in kVA or MVA (apparent power) while IT load is in kW, so PF converts between them. Example: a 130 kW rack on 415 V three-phase at PF 1: 130,000 ÷ (1.732 × 415) ≈ 181 A per wire.",
+   "used_for": "Sizing switchgear, transformers, busways and rack feeds in every data center. Book: Chapter 39 (Three-phase power; The current ladder).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-chain-efficiency",
+   "name": "Power-chain efficiency (conversion losses, AC versus DC)",
+   "formula": "η_total = η_1 × η_2 × ... × η_k ; power drawn = P_IT ÷ η_total ; losses = P_IT × (1 ÷ η_total − 1)",
+   "meaning": "Every conversion stage (transformers, UPS rectifier and inverter, power-distribution units, rack power supplies, on-board voltage regulators) wastes a little, and the efficiencies multiply. Removing AC-to-DC-to-AC double conversion, distributing higher-voltage DC (800 V DC) and solid-state transformers all aim to cut stages. Example from the book: 0.995 × 0.995 × 0.99 × 0.96 × 0.995 × 0.96 × 0.995 × 0.90 ≈ 0.80.",
+   "used_for": "Power-architecture choices (NVIDIA's 800 V DC plan, Open Compute Project rack power); feeds into PUE. Book: Chapter 39 (What gets lost along the way; New power architectures: 800 V DC and solid-state transformers).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-ups-runtime",
+   "name": "UPS and battery runtime and sizing",
+   "formula": "runtime (h) ≈ usable battery energy (Wh) × inverter efficiency ÷ load (W) ; battery energy needed = load × required time ÷ (efficiency × usable depth of discharge) ; C-rate = discharge power ÷ battery energy ; Peukert (lead-acid): t = H × (C ÷ (I × H))^k",
+   "meaning": "UPS batteries carry the load only for the seconds to minutes until generators start (ride-through), plus margin; battery energy storage systems (BESS) also smooth the fast power swings of synchronized training jobs. Peukert's law captures that lead-acid batteries deliver less energy at high currents (H rated discharge time, C rated capacity, I discharge current, k about 1.1 to 1.3); lithium-ion is closer to k = 1. Example: carrying 120 MW for 5 minutes: 120 × 5 ÷ 60 = 10 MWh.",
+   "used_for": "Backup design (UPS, N+1 generators), on-site batteries for grid-friendly AI campuses. Book: Chapter 39 (Keeping the power on: backup systems; Power that jumps: GPU spikes and smoothing).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-capacity-factor",
+   "name": "Capacity factor and load factor",
+   "formula": "capacity factor = actual energy produced (or used) ÷ (nameplate power × hours in the period) ; average power = nameplate × capacity factor",
+   "meaning": "For generators it says how much of their maximum they really deliver (roughly 90% for nuclear, 20 to 30% for solar, about a third for wind); for data centers the same ratio (load factor) says how much of the connected capacity is used on average (sites typically 60 to 80%, per Epoch AI as the book reports). It turns MW of capacity into MWh of energy and is central to matching a round-the-clock AI load with variable renewables.",
+   "used_for": "Energy procurement, grid planning, data-center energy forecasts. Book: Chapter 39 (Capacity versus consumption), Chapter 41 (Every energy source, compared).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-oversubscription",
+   "name": "Power oversubscription and capping",
+   "formula": "oversubscription ratio = sum of rated (or allocated) power of installed equipment ÷ provisioned power capacity ; coincidence factor = actual peak of the group ÷ sum of individual peaks ; safe when P(total draw > capacity) is acceptably small, enforced by power capping",
+   "meaning": "Because unrelated servers rarely peak together, large groups draw well below the sum of their nameplates (Fan, Weber and Barroso, 'Power provisioning for a warehouse-sized computer', 2007), so operators install more equipment than capacity and cap power when needed. Synchronized AI training breaks the bet, since all GPUs peak together, so training halls are provisioned close to full draw while inference halls can still oversubscribe.",
+   "used_for": "Hyperscaler power planning, rack-level power capping (DVFS), Datacenter as a Computer. Book: Chapter 39 (Power budgets: oversubscription and capping), Chapter 43.",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-cluster-power",
+   "name": "Cluster power from GPU count (and GPUs per gigawatt)",
+   "formula": "facility power = number of GPUs × all-in IT power per GPU × PUE ; GPUs per facility watt = 1 ÷ (all-in IT power per GPU × PUE) ; power swing ≈ number of GPUs × (P_busy − P_idle)",
+   "meaning": "All-in IT power per GPU includes its share of CPUs, memory, networking and storage (the book uses about 1.4 kW for H100-era servers and about 1.8 kW for GB300 or Rubin-class racks). The swing term is what happens when tens of thousands of synchronized GPUs pause for communication or a checkpoint at once: tens of megawatts within seconds, as Meta reported for Llama 3. Example: 1 GW ÷ (1,800 W × 1.2) ≈ 460,000 GPUs.",
+   "used_for": "Sizing campuses and grid connections (Stargate, Colossus, Hyperion, Rainier), translating chip orders into megawatts. Book: Chapter 34 (Campuses and AI factories), Chapter 38 (Your chatbot lives in a building), Chapter 39 (Worked examples: from one GPU to a 100 MW campus), Chapter 37 (From days to megawatts and dollars).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-heat-rate",
+   "name": "Generator heat rate, efficiency and fuel cost",
+   "formula": "efficiency = 3,412 ÷ heat rate (heat rate in Btu per kWh) ; fuel energy = electricity × heat rate ; fuel cost per MWh = heat rate in MMBtu per MWh × fuel price per MMBtu ; CO2 = fuel energy × emission factor",
+   "meaning": "One kWh equals 3,412 Btu, so a plant with a heat rate of 7,000 Btu per kWh is about 49% efficient; simple-cycle turbines and reciprocating engines have higher heat rates than combined-cycle plants. Natural gas emits about 53 kg of CO2 per MMBtu. This is the arithmetic of on-site ('behind-the-meter') gas power that several AI campuses used in 2025-2026 while waiting for grid connections.",
+   "used_for": "Costing and permitting on-site generation for AI data centers; comparing energy sources. Book: Only here (Chapter 41, Natural gas: the near-term winner, in words).",
+   "tier": "specialist"
+  },
+  {
+   "id": "cd-lcoe",
+   "name": "Levelized cost of energy (LCOE)",
+   "formula": "LCOE = (sum over years t of (I_t + M_t + F_t) ÷ (1 + r)^t) ÷ (sum over years t of E_t ÷ (1 + r)^t)",
+   "meaning": "I_t investment, M_t operations and maintenance, F_t fuel and E_t electricity generated in year t; r is the discount rate. It is the constant price per MWh at which a plant exactly recovers its costs, used to compare solar, wind, gas, nuclear and storage. It ignores when the energy arrives, which matters for a 24/7 AI load (firm versus variable power).",
+   "used_for": "Power purchase agreement pricing and energy-source comparisons for AI campuses (Lazard and government studies). Book: Chapter 41 (Every energy source, compared).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-cfe-score",
+   "name": "Hourly carbon-free energy (24/7 CFE) matching score",
+   "formula": "CFE score = (sum over hours h of min(load_h, carbon-free supply_h)) ÷ (sum over hours h of load_h) ; annual matching instead uses min(1, total carbon-free supply ÷ total load)",
+   "meaning": "Annual matching with certificates can claim '100% renewable' while a site runs on fossil power at night; hourly matching counts only clean energy available in the same hour on the same grid (Google's 24/7 CFE metric, which also credits the grid's own clean share). Example from the book: a 100 MW load with a solar farm making 240 MW from 7 a.m. to 5 p.m. is 100% matched daily but about 42% hourly (1,000 ÷ 2,400 MWh).",
+   "used_for": "Clean-energy procurement and reporting by Google, Microsoft and others; hourly-accounting debates in the GHG Protocol. Book: Chapter 41 (Clean-energy accounting: what '100% renewable' really means).",
+   "tier": "specialist"
+  },
+  {
+   "id": "cd-emissions",
+   "name": "Operational and embodied carbon emissions",
+   "formula": "operational CO2 = energy × carbon intensity ; facility form = IT energy × PUE × carbon intensity ; per query = energy per query × PUE × carbon intensity ; lifetime footprint = operational + embodied (amortized over the service life)",
+   "meaning": "Carbon intensity is grams or kilograms of CO2 per kWh (location-based accounting uses the local grid average; market-based uses contracted clean power, per the GHG Protocol's Scope 2 guidance). Embodied carbon covers making chips, servers and buildings and becomes a larger share as grids get cleaner. Example: 876 GWh of IT energy at PUE 1.2 on a 0.4 kg per kWh grid ≈ 420,000 tonnes of CO2 a year; on a 0.05 kg per kWh grid about 53,000.",
+   "used_for": "Corporate sustainability reports, model cards that report training emissions, Google's per-prompt Gemini footprint (August 2025). Book: Chapter 40 (CUE: how much carbon?), Chapter 41 (Clean-energy accounting; Effects on prices, reliability, emissions and air).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-pue",
+   "name": "Power usage effectiveness (PUE) and its relatives (partial PUE, TUE)",
+   "formula": "PUE = total facility energy ÷ IT equipment energy ; overhead energy = (PUE − 1) × IT energy ; share reaching IT = 1 ÷ PUE ; partial PUE of a subsystem = (subsystem overhead + IT energy) ÷ IT energy ; TUE = ITUE × PUE, ITUE = total IT energy ÷ energy reaching the compute components",
+   "meaning": "Introduced by The Green Grid in 2007 and standardized as ISO/IEC 30134-2; 1.0 would mean no overhead. Leading hyperscale sites run about 1.1 (Google reported a 2025 fleet average of 1.09) while industry surveys average about 1.5 (Uptime Institute 2025: about 1.54). Pitfalls: server fans count as IT, so moving to liquid cooling can raise PUE while cutting total energy; it says nothing about useful work, water or carbon; annual measured values differ from design values. TUE (Patterson et al. 2013) extends the idea inside the server.",
+   "used_for": "The headline efficiency metric of every data center, in sustainability reports and site designs; multiplies every IT-energy estimate. Book: Chapter 40 (PUE: how much overhead?; What PUE hides), Chapter 39 (PUE: the building's overhead in one number).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-wue",
+   "name": "Water usage effectiveness (WUE)",
+   "formula": "WUE (site) = annual site water consumption in liters ÷ IT energy in kWh ; source WUE = (site water + IT energy × PUE × water intensity of electricity) ÷ IT energy",
+   "meaning": "Defined by The Green Grid. Evaporative cooling towers can reach about 1.5 to 2 liters per kWh, closed-loop dry cooling about 0.1 or less; much of AI's water footprint is often indirect, at the power plants, which site WUE leaves out. Example: a 100 MW IT site flat out for a year (876 GWh) at WUE 1.8 consumes about 1.58 billion liters; at 0.15 (AWS's quoted fleet figure) about 131 million.",
+   "used_for": "Siting and cooling design, water disclosures, per-prompt water estimates. Book: Chapter 40 (WUE: how much water?; Water, done carefully).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-cue",
+   "name": "Carbon usage effectiveness (CUE)",
+   "formula": "CUE = total CO2 emissions from the facility's energy ÷ IT energy = PUE × carbon emission factor of the electricity (kg CO2 per kWh)",
+   "meaning": "The Green Grid's carbon companion to PUE. It falls with a cleaner grid or cleaner contracts as well as with lower overhead, and like PUE it leaves out embodied carbon. Example: PUE 1.2 on a 0.4 kg per kWh grid: 0.48 kg CO2 per kWh of IT energy.",
+   "used_for": "Comparing sites' carbon performance; choosing locations for AI campuses. Book: Chapter 40 (CUE: how much carbon?).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-ere",
+   "name": "Energy reuse effectiveness and energy reuse factor (ERE, ERF)",
+   "formula": "ERE = (total facility energy − reused energy) ÷ IT energy ; ERF = reused energy ÷ total facility energy ; ERE = (1 − ERF) × PUE",
+   "meaning": "Credits a site for exporting waste heat (for example to district heating), so unlike PUE it can fall below 1.0. Data-center heat is low-grade (about 30 to 60 °C), so heat pumps often raise its temperature before reuse. Example: 1,051 GWh total, 200 GWh of heat sold, 876 GWh IT: ERE = (1,051 − 200) ÷ 876 ≈ 0.97.",
+   "used_for": "Heat-reuse projects in the Nordics and Germany (whose 2023 Energy Efficiency Act sets heat-reuse shares for new data centers); Green Grid reporting. Book: Chapter 40 (ERE: credit for reusing heat; Heat reuse: turning waste into warmth).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-energy-proportionality",
+   "name": "Energy proportionality (linear server power model)",
+   "formula": "P(u) = P_idle + (P_peak − P_idle) × u ; energy per unit of work relative to full load = (P(u) ÷ u) ÷ P_peak",
+   "meaning": "u is utilization from 0 to 1. Barroso and Hölzle (2007) showed that servers spend most of their time at 10 to 50% load yet drew about half of peak power when nearly idle, so lightly loaded machines waste energy per unit of work. Example: 1,000 W peak and 500 W idle at u = 0.3: 650 W for 30% of the work, about 2.2 times the energy per unit of work. For AI it is why inference fleets fill quiet hours with batch work.",
+   "used_for": "Server and GPU power management, fleet scheduling, Datacenter as a Computer. Book: Chapter 40 (Idle power and energy proportionality).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-heat-flow",
+   "name": "Heat carried by a coolant (Q = mass flow × specific heat × temperature rise)",
+   "formula": "Q = ṁ × c_p × ΔT = ρ × V̇ × c_p × ΔT ; water flow per kW ≈ 60 ÷ (4.186 × ΔT in °C) liters per minute ; US units: GPM = Btu per hour ÷ (500 × ΔT in °F) ; 1 W = 3.412 Btu per hour ; 1 ton of cooling = 12,000 Btu per hour = 3.517 kW",
+   "meaning": "Q heat in watts, ṁ mass flow (kg per s), c_p specific heat (water about 4,186, air about 1,005 J per kg per °C), ρ density, V̇ volume flow and ΔT the coolant's temperature rise. Per cubic meter, water carries about 3,500 times as much heat per degree as air, which is why dense AI racks moved to liquid. Essentially all electrical power entering IT equipment leaves as heat. Example: a 130 kW rack with a 10 °C rise: 130,000 ÷ (4,186,000 × 10) ≈ 3.1 liters of water per second (about 1.43 liters per minute per kW).",
+   "used_for": "Sizing cold plates, coolant distribution units (CDUs), pipes, chillers and air handlers. Book: Chapter 40 (Measuring heat: BTUs and tons; Why water beats air: the master equation; Worked example: cooling one rack with air, then with water).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-airflow",
+   "name": "Airflow needed to cool IT equipment (CFM rule)",
+   "formula": "V̇ (m^3 per s) = P ÷ (ρ_air × c_p,air × ΔT) ≈ P ÷ (1,206 × ΔT in °C) ; CFM ≈ 1.76 × P (W) ÷ ΔT (°C) ≈ 3.16 × P (W) ÷ ΔT (°F) at sea level",
+   "meaning": "The heat equation applied to air, with P the heat in watts and ΔT the air's temperature rise. Servers typically warm air by 10 to 20 °C; denser racks need proportionally more airflow, which fans can only supply at steeply rising power (cd-fan-affinity), so air cooling tops out around 30 to 50 kW per rack. Example: a 130 kW rack at ΔT = 15 °C: about 7.2 m^3 per second, about 15,200 CFM.",
+   "used_for": "Air-handler and containment design, server fan control, deciding when to move to liquid cooling. Book: Chapter 40 (Worked example: cooling one rack with air, then with water; The air path: fifty years of cooling with air).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-cop",
+   "name": "Coefficient of performance (COP) of chillers and heat pumps",
+   "formula": "COP = heat removed ÷ electrical energy used ; Carnot limit: COP_max = T_cold ÷ (T_hot − T_cold), temperatures in kelvin ; chiller kW per ton = 3.517 ÷ COP ; heat-pump heating COP = heat delivered ÷ electricity used",
+   "meaning": "A chiller with COP 5 removes 5 kW of heat per kW of electricity. The Carnot limit shows why warmer coolant saves energy: the smaller the lift between the cold side and the outdoors, the higher the possible COP, so warm-water liquid cooling can often skip chillers (free cooling). Example: 20 MW of heat at COP 5 needs 4 MW of chiller power; COP 5 is about 0.70 kW per ton.",
+   "used_for": "Chiller plant design, free-cooling and heat-reuse economics; a major part of PUE. Book: Chapter 40 (Chillers: refrigerators for water; Free cooling and economizers; Heat reuse: turning waste into warmth).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-evaporative-water",
+   "name": "Evaporative cooling water use (evaporation, blowdown, cycles of concentration)",
+   "formula": "water evaporated (kg) ≈ heat rejected (kJ) ÷ latent heat of vaporization (about 2,400 kJ per kg) ≈ 1.5 liters per kWh of heat ; blowdown = evaporation ÷ (COC − 1) ; makeup water = evaporation × COC ÷ (COC − 1)",
+   "meaning": "Cooling towers reject heat by evaporating water. Dissolved minerals stay behind and concentrate, so some water (blowdown) must be drained and replaced; COC (cycles of concentration) is the ratio of mineral concentration in the tower water to that in the makeup water. Higher COC saves water but needs more treatment. Example: rejecting 100 MW entirely by evaporation uses about 150,000 liters per hour; at COC 4 the blowdown adds another third.",
+   "used_for": "Water planning for evaporatively cooled data centers, WUE calculations, siting in water-stressed regions. Book: Chapter 40 (Cooling towers: cooling by evaporation; The water–electricity trade-off).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-fan-affinity",
+   "name": "Fan and pump affinity laws",
+   "formula": "flow ∝ speed ; pressure ∝ speed^2 ; power ∝ speed^3 ; so for the same system power ∝ flow^3",
+   "meaning": "Doubling airflow needs about twice the fan speed and about eight times the fan power; running fans or pumps at 80% speed uses about half the power (0.8^3 ≈ 0.51). This is why variable-speed drives save so much energy and why air cooling hits a wall for dense racks.",
+   "used_for": "Fan and pump control in servers, air handlers and coolant loops. Book: Chapter 40 (Why air hits a wall).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-availability",
+   "name": "Availability, MTBF, MTTR and the nines",
+   "formula": "A = MTBF ÷ (MTBF + MTTR) ; downtime per year = (1 − A) × 8,760 hours ; number of nines = −log10(1 − A)",
+   "meaning": "MTBF is mean time between failures and MTTR mean time to repair. 99.9% ('three nines') allows about 8.8 hours of downtime a year, 99.99% about 53 minutes and 99.999% about 5.3 minutes. Uptime Institute Tier rule-of-thumb availabilities run from 99.671% (Tier I) to 99.995% (Tier IV). Raising availability means fewer failures or faster repair.",
+   "used_for": "Data-center tier design, cloud and API service-level agreements, reliability engineering. Book: Chapter 38 (Reliability and redundancy; Tiers and the nines).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-redundancy",
+   "name": "Availability of series, parallel and redundant (N+1, 2N) systems",
+   "formula": "series (all must work): A = A_1 × A_2 × ... × A_k ; parallel (any one suffices): A = 1 − (1 − A_1) × (1 − A_2) × ... × (1 − A_k) ; k-out-of-n identical units: A = sum over j from k to n of C(n, j) × A^j × (1 − A)^(n − j)",
+   "meaning": "A chain of components is less available than its weakest link, while duplicated components multiply their unavailabilities; C(n, j) is the binomial coefficient. N+1 (one spare) and 2N (a complete duplicate path) are the k-out-of-n and parallel cases. Example: two 99% UPS paths in parallel: 1 − 0.01 × 0.01 = 99.99%. The formulas assume independent failures; common-mode failures (shared software, a shared utility feed) break them.",
+   "used_for": "Electrical and cooling redundancy design, multi-region deployment of AI services. Book: Chapter 38 (Reliability and redundancy: N, N+1 and 2N).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-failure-scale",
+   "name": "Failure probability at cluster scale (exponential failures, FIT, MTBF of a job)",
+   "formula": "R(t) = exp(−t ÷ MTBF) ; failure rate λ = 1 ÷ MTBF ; for n independent parts all needed: λ_job = n × λ_part, MTBF_job = MTBF_part ÷ n ; P(at least one failure in time T) = 1 − exp(−n × T ÷ MTBF_part) ; expected failures = n × T ÷ MTBF_part ; FIT = failures per 10^9 device-hours, MTBF in hours = 10^9 ÷ FIT ; annualized failure rate = 1 − exp(−8,760 ÷ MTBF)",
+   "meaning": "With constant failure rates (the exponential model; Weibull distributions are used when wear-out matters), a job that needs all n components fails n times as often as one component. Example: Llama 3 405B saw 419 unexpected interruptions in 54 days on 16,384 GPUs, about one every 3.1 hours, equivalent to about 50,700 hours per GPU; at 100,000 GPUs with the same per-GPU reliability something would break about every 30 minutes.",
+   "used_for": "Planning checkpoints, hot spares and fault-tolerant training at 100,000-GPU scale. Book: Chapter 37 (When things break: failures, checkpointing and goodput; Worked example: how often does something break?).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-young-daly",
+   "name": "Optimal checkpoint interval (Young and Daly formulas)",
+   "formula": "Young (1974): τ_opt ≈ sqrt(2 × δ × M) ; Daly (2006), for δ < 2 × M: τ_opt ≈ sqrt(2 × δ × M) × (1 + (1 ÷ 3) × sqrt(δ ÷ (2 × M)) + (1 ÷ 9) × (δ ÷ (2 × M))) − δ, and τ_opt = M for δ ≥ 2 × M",
+   "meaning": "τ is the compute time between checkpoints, δ the time to write one checkpoint and M the mean time between failures of the whole job. Checkpointing too often wastes time saving; too rarely wastes work redone after each failure; the square root balances the two. Asynchronous checkpointing (snapshot to host memory in seconds, write to storage in the background) makes the blocking δ small, so checkpoints every few minutes become affordable. Example: δ = 1 minute, M = 180 minutes: Young gives sqrt(360) ≈ 19 minutes (Daly about 18).",
+   "used_for": "Checkpoint policies in large training runs (PyTorch Distributed Checkpoint, Orbax, Megatron-LM), supercomputer job scheduling. Book: Chapter 37 (When things break: failures, checkpointing and goodput) gives Young's formula.",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-goodput",
+   "name": "Training goodput (effective training time ratio)",
+   "formula": "goodput ≈ 1 − δ ÷ τ − (τ ÷ 2 + R) ÷ M ; useful compute = peak × MFU × goodput × wall-clock time ; ETTR = productive training time ÷ total wall-clock time",
+   "meaning": "δ blocking checkpoint time, τ checkpoint interval, R restart time (detect, replace, reload) and M mean time between job failures; on average a failure loses half an interval of work plus the restart. ETTR (effective training time ratio) is the name Meta uses for this share. Example from the book: δ = 1, τ = 20, R = 10, M = 180 minutes: 1 − 0.05 − 20 ÷ 180 ≈ 84%; with background checkpoints every 5 minutes and a 2-minute restart, about 97.5%.",
+   "used_for": "Tracking and improving the efficiency of frontier runs (Llama 3 reported over 90% effective training time); Google Cloud's ML goodput metric. Book: Chapter 37 (When things break: failures, checkpointing and goodput, Table 37.8).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-checkpoint-size",
+   "name": "Checkpoint size and save time",
+   "formula": "checkpoint bytes ≈ N × (b_w + b_master + b_opt) (about 14 bytes per parameter with BF16 weights, FP32 master weights and two FP32 Adam moments) ; blocking save time ≈ bytes held per GPU ÷ device-to-host bandwidth ; full write time ≈ checkpoint bytes ÷ aggregate storage write bandwidth",
+   "meaning": "A resumable checkpoint must hold weights, the FP32 master copy and the optimizer moments (gradients can be dropped), so it is several times larger than the model file people download. Sharded checkpoints let every GPU write its own slice in parallel, and asynchronous checkpointing pauses training only for the copy to host memory. Example: a 405B model at 14 bytes per parameter is about 5.7 TB; at 1 TB per second of storage bandwidth that is about 6 seconds of writing.",
+   "used_for": "Sizing storage for training clusters; asynchronous checkpointing in PyTorch Distributed Checkpoint, Orbax and NeMo. Book: Only here (Chapter 37 describes asynchronous checkpointing in words).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-gpu-hour-cost",
+   "name": "Owner's cost per GPU-hour, break-even rental price and cost per useful FLOP",
+   "formula": "cost per hour of life = capital cost ÷ (useful life in years × 8,760) + power cost per hour + facility and operating cost per hour ; break-even price per sold hour = cost per hour of life ÷ utilization ; cost per useful FLOP = price per GPU-hour ÷ (peak FLOP/s × MFU × 3,600)",
+   "meaning": "Utilization is the share of hours actually sold or used; power cost per hour = kW × price per kWh (times PUE if facility overhead is not covered elsewhere). Example from the book: a $50,000 GPU slot over 5 years ≈ $1.14 per hour, plus $0.16 of power and $0.49 of facility rent ≈ $1.79 per hour; at 70% utilization the break-even price is about $2.56 per sold hour.",
+   "used_for": "GPU cloud pricing (CoreWeave, Lambda, hyperscalers), build-versus-rent decisions, internal chargeback. Book: Chapter 43 (Renting compute: the price of a GPU-hour; Utilization: the hotel occupancy of AI; Worked example: does a GPU pay for itself?).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-tco",
+   "name": "Total cost of ownership (TCO) of AI infrastructure",
+   "formula": "TCO = capital expenditure (chips, servers, network, building) + sum over years of operating expenditure (power, staff, maintenance, rent, financing) − resale value ; TCO per GPU-hour = TCO ÷ (GPUs × lifetime hours) ; building capital cost ≈ IT megawatts × cost per MW",
+   "meaning": "The cost model of Datacenter as a Computer: capital costs are spread over each asset's life (servers about 4 to 6 years, buildings 15 to 25) and added to running costs. In AI the IT equipment usually costs several times the building per megawatt. Chip-makers and cloud providers now compete on 'tokens per dollar' or performance per TCO dollar rather than raw speed.",
+   "used_for": "Chip purchase decisions (custom ASICs versus GPUs: Meta MTIA, Google TPU, AWS Trainium, Microsoft Maia), data-center business plans. Book: Chapter 43 (Total cost of ownership; What it costs to build: dollars per megawatt; Putting it together: a 100 MW AI data center).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-depreciation",
+   "name": "Depreciation and annualized capital cost (straight-line, declining balance, capital recovery factor)",
+   "formula": "straight-line yearly depreciation = (cost − salvage value) ÷ useful life ; declining balance: depreciation in year t = rate × book value at the start of year t ; annualized cost with financing = cost × r ÷ (1 − (1 + r)^(−n))",
+   "meaning": "r is the yearly cost of capital and n the life in years; the last expression (the capital recovery factor) is the equal yearly payment that repays a purchase with interest, like a mortgage. Depreciation spreads a purchase over its useful life for accounting, and the assumed life of AI servers (4, 5 or 6 years) changes reported profit by billions. Example: $50,000 over 5 years: $10,000 a year straight-line; with 8% financing about $12,520 a year.",
+   "used_for": "Hyperscaler accounting for AI servers, GPU rental pricing, TCO models. Book: Chapter 43 (Depreciation: the 4, 5 or 6-year debate).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-npv-irr",
+   "name": "Net present value, internal rate of return and payback",
+   "formula": "NPV = sum over years t from 0 to n of CF_t ÷ (1 + r)^t ; IRR = the rate r at which NPV = 0 ; payback period = upfront cost ÷ yearly net cash flow (for equal yearly flows)",
+   "meaning": "CF_t is the net cash flow in year t (negative for the purchase in year 0) and r the discount rate (cost of capital). An investment is worthwhile if NPV > 0, equivalently if its IRR beats the cost of capital. Example from the book: paying $50,000 for a GPU slot that nets $12,670 a year for 5 years: payback about 3.9 years, IRR about 8.5%; if rental prices fall 20% a year the IRR turns negative.",
+   "used_for": "Evaluating GPU purchases, data-center projects and their financing (bonds, private credit, GPU-backed loans). Book: Chapter 43 (Worked example: does a GPU pay for itself?; Financing the buildout).",
+   "tier": "standard"
+  },
+  {
+   "id": "cd-cost-per-token",
+   "name": "Cost per million tokens from GPU cost (and tokens per dollar)",
+   "formula": "cost per million tokens = cost per GPU-hour ÷ (tokens per second per GPU × 3,600) × 10^6 ; tokens per dollar = tokens per second per GPU × 3,600 ÷ cost per GPU-hour ; gross margin = (price − cost) ÷ price",
+   "meaning": "Tokens per second per GPU is total throughput across all users at the batch size actually served, which is why batching, quantization and speculative decoding cut costs; input (prefill) tokens are much cheaper to produce than output (decode) tokens. The prices customers pay, including caching discounts, are in llm-request-cost. Example: $3 per GPU-hour at 1,000 tokens per second: 3 ÷ 3,600,000 × 10^6 ≈ $0.83 per million tokens.",
+   "used_for": "Pricing APIs; comparing serving stacks and chips on tokens per dollar. Book: Chapter 37 (From dollars per GPU-hour to dollars per million tokens), Chapter 43 (From GPU-hours to the price of a token), Chapter 33 (Worked example: how many users fit on one GPU?), Appendix B (Cost per million tokens from GPU rent).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-energy-per-token",
+   "name": "Energy per token and per query",
+   "formula": "joules per token = power (W) ÷ tokens per second ; facility energy per token = IT joules per token × PUE ; watt-hours per query = joules per token × tokens per query ÷ 3,600 ; tokens per second per megawatt = tokens per second per GPU × 1,000 ÷ (all-in kW per GPU × PUE)",
+   "meaning": "Like cost per token, energy per token falls steeply with batch size because the same power serves more users. Company-reported figures: Google measured a median Gemini Apps text prompt at 0.24 Wh (August 2025, counting idle machines and data-center overhead), and OpenAI's chief executive gave about 0.34 Wh for an average ChatGPT query (June 2025); reasoning-heavy and long-context requests use many times more. Example: 1,500 W ÷ 2,000 tokens per second = 0.75 J per token; 500 tokens ≈ 375 J ≈ 0.1 Wh.",
+   "used_for": "Energy and carbon disclosures, comparing hardware on tokens per watt, estimates of AI's energy use. Book: Appendix B (Energy per token), Chapter 44 (The energy budget), Chapter 40 (Distinction 4: per prompt versus in total).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-run-energy-cost",
+   "name": "Energy and cost of a training run",
+   "formula": "energy (kWh) = GPUs × all-in kW per GPU × PUE × hours ; compute cost = GPU-hours × price per GPU-hour ; electricity cost = energy × price per kWh",
+   "meaning": "Turns the training-time estimate into megawatts, megawatt-hours and dollars. Rental-equivalent cost leaves out research, failed runs, data and staff, which can exceed the final run's cost. Examples: DeepSeek-V3 reported 2.788 million H800 GPU-hours, $5.576 million at an assumed $2 per GPU-hour; Meta's model card gives about 31 million H100 GPU-hours for Llama 3.1 405B.",
+   "used_for": "Budgeting runs, model-card energy and emissions disclosures, policy estimates of frontier training cost. Book: Chapter 37 (From days to megawatts and dollars), Chapter 19 (From FLOPs to dollars), Appendix B (GPU-hours; Rental cost of a run).",
+   "tier": "core"
+  },
+  {
+   "id": "cd-wright",
+   "name": "Wright's law (experience curve)",
+   "formula": "cost of the x-th unit = C_1 × x^(−b) ; learning rate = 1 − 2^(−b) (the fractional cost drop per doubling of cumulative production)",
+   "meaning": "C_1 is the cost of the first unit and b the experience exponent. Wright (1936) found that each doubling of cumulative aircraft production cut unit cost by a roughly fixed percentage; the same pattern describes solar panels and batteries and is used for chips and inference prices. Example: a 20% learning rate gives b = log2(1 ÷ 0.8) ≈ 0.32, so quadrupling cumulative volume cuts cost to 0.64 of its starting value.",
+   "used_for": "Forecasting costs of solar, batteries and hardware for AI energy and compute planning. Book: Only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "cd-jevons",
+   "name": "Rebound effect (Jevons paradox) condition",
+   "formula": "total resource use = demand × resource per unit of service ; with demand ∝ price^(−ε) and price ∝ resource per unit e: total use ∝ e^(1 − ε) ; efficiency gains raise total use when ε > 1",
+   "meaning": "ε is the price elasticity of demand. If a 10× drop in energy or cost per token brings more than a 10× rise in tokens used (ε > 1), total energy or spending rises (Jevons 1865, about coal). Whether AI demand is that elastic is a central question in forecasting AI's electricity use.",
+   "used_for": "Forecasting data-center energy demand and compute spending as efficiency improves. Book: Chapter 37 (Efficiency and the Jevons paradox), Chapter 41 (Forecasts: why they disagree), Chapter 43.",
+   "tier": "specialist"
+  }
+ ]
+}

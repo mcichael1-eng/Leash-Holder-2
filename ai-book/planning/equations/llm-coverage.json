@@ -1,0 +1,660 @@
+[
+ {
+  "id": "llm-bpe-merge",
+  "name": "Byte-pair encoding merge rule (BPE)",
+  "status": "SHOWN",
+  "where": "Chapter 18 (Tokens: Building a tokenizer by hand: Byte-Pair Encoding) counts every adjacent pair and merges the most frequent, six merges worked in Figure 18.3, then encodes new words by applying merges in order; Chapter 15 (Step 1: Byte-pair encoding, worked by hand, Table 15.1)",
+  "owning_chapter": 18
+ },
+ {
+  "id": "llm-wordpiece-score",
+  "name": "WordPiece merge score",
+  "status": "WORDS",
+  "where": "Chapter 18 (Building a tokenizer by hand: Byte-Pair Encoding, closing paragraph and WordPiece definition): merges the pair that most improves the fit, '##' continuation marker; the count(ab) ÷ (count(a) × count(b)) score is not shown",
+  "owning_chapter": 18
+ },
+ {
+  "id": "llm-unigram-tokenizer",
+  "name": "Unigram language-model tokenizer likelihood",
+  "status": "WORDS",
+  "where": "Chapter 18 (Building a tokenizer by hand: Byte-Pair Encoding, Unigram tokenizer (SentencePiece) definition): prunes the least useful pieces; the segmentation likelihood is not shown; Appendix F (Training your own tokenizer) names it",
+  "owning_chapter": 18
+ },
+ {
+  "id": "llm-bytes-per-token",
+  "name": "Bytes per token, fertility and tokenizer compression ratio",
+  "status": "SHOWN",
+  "where": "Chapter 18 (What tokens explain about your chatbot: rules-of-thumb table, 1 token ≈ 4 characters ≈ 0.75 words; newer tokenizer 1.0 to 1.35 times as many tokens; other languages two to several times as many); Chapter 26 (Tokenizers differ: compare cost per task, not per token: 1.8 versus 1.33 tokens per word worked); Appendix B (Tokens and words)",
+  "owning_chapter": 18
+ },
+ {
+  "id": "llm-chain-rule",
+  "name": "Autoregressive factorization (chain rule over tokens)",
+  "status": "SHOWN",
+  "where": "Chapter 6 (Conditional probability: Chaining probabilities for a whole sentence: 0.05 × 0.01 × 0.2 and the log-sum version); Appendix B (Probability: Sentence probability, Log-probability); Chapter 18 (The one trick: predicting the next token) describes the autoregressive loop in words",
+  "owning_chapter": 6
+ },
+ {
+  "id": "llm-lm-head",
+  "name": "Next-token distribution from the final hidden state (LM head)",
+  "status": "SHOWN",
+  "where": "Chapter 15 (Step 9: From vectors back to words: last vector times the unembedding matrix gives one logit per token, weight tying defined, softmax worked on four logits); Chapter 18 (From scores to words: Logits: one score per token, softmax worked); Appendix B (Softmax). The unembedding product is stated in words, not as z = W_U × h",
+  "owning_chapter": 15
+ },
+ {
+  "id": "llm-next-token-nll",
+  "name": "Next-token cross-entropy loss (language-model negative log-likelihood)",
+  "status": "SHOWN",
+  "where": "Chapter 19 (How pretraining teaches: Measuring surprise: the loss: −ln(p) worked, averaged over all tokens); Chapter 15 (Step 10: How a Transformer learns); Chapter 6 (Cross-entropy: how surprised was the model?); Appendix B (Cross-entropy, whole text)",
+  "owning_chapter": 19
+ },
+ {
+  "id": "llm-perplexity",
+  "name": "Perplexity",
+  "status": "SHOWN",
+  "where": "Chapter 19 (Measuring surprise: the loss: e^0.44 ≈ 1.55); Chapter 6 (Perplexity: e^2.303 = 10); Appendix B (Perplexity; Bits of surprise). The 2^(bits per token) form is not stated",
+  "owning_chapter": 19
+ },
+ {
+  "id": "llm-bits-per-byte",
+  "name": "Bits per byte (and bits per character)",
+  "status": "WORDS",
+  "where": "Appendix F (Vision and language specifics: Bits per byte): surprise per byte of raw text, tokenizer-independent, 0.8 bits per byte means compression to one tenth; the conversion formula from per-token loss is not shown",
+  "owning_chapter": 19
+ },
+ {
+  "id": "llm-masked-lm",
+  "name": "Masked-language-model, span-corruption and fill-in-the-middle objectives",
+  "status": "WORDS",
+  "where": "Chapter 15 (Step 8: Encoders, decoders and the causal mask: Masked language modeling definition, 15 percent of tokens hidden); no loss formula; span corruption and fill-in-the-middle are not covered",
+  "owning_chapter": 15
+ },
+ {
+  "id": "llm-sft-loss",
+  "name": "Supervised fine-tuning loss with prompt masking",
+  "status": "SHOWN",
+  "where": "Chapter 20 (Stage 1: Supervised fine-tuning: What the data looks like, Loss masking definition, grading only the assistant's words; Worked example: one SFT step on one token, −ln(0.20) = 1.61 and −ln(0.90) = 0.11). The masked average is stated in words, not as a symbol formula",
+  "owning_chapter": 20
+ },
+ {
+  "id": "llm-mc-loglik",
+  "name": "Multiple-choice scoring by log-likelihood",
+  "status": "MISSING",
+  "where": "Not in the book. Chapter 9 (Benchmarks in the chatbot era) and Chapter 24 discuss evaluation harnesses, but scoring multiple-choice answers by summed or length-normalized log-likelihood is not described",
+  "owning_chapter": 24
+ },
+ {
+  "id": "llm-z-loss",
+  "name": "Softmax normalizer penalty (z-loss)",
+  "status": "WORDS",
+  "where": "Appendix F (Optimization and matrix mathematics: Stability tricks: z-loss and logit soft-capping): a tiny penalty keeping the softmax normalizing total near 1, used by PaLM; the λ × (ln Z)^2 formula is not shown; Chapter 13 (Loss spikes) and Chapter 19 (Watching the loss) treat spikes in words",
+  "owning_chapter": 17
+ },
+ {
+  "id": "llm-logit-softcap",
+  "name": "Logit soft-capping",
+  "status": "SHOWN",
+  "where": "Appendix F (Stability tricks: z-loss and logit soft-capping): `cap × tanh(logit ÷ cap)` with cap 30, Gemma 2; the attention-logit cap of 50 is not mentioned",
+  "owning_chapter": 17
+ },
+ {
+  "id": "llm-mtp-loss",
+  "name": "Multi-token prediction loss",
+  "status": "WORDS",
+  "where": "Chapter 15 (Step 10: How a Transformer learns, MTP definition); Chapter 17 (Recursion, memory and small models; The 2026 convergence); Chapter 23 (Speculative decoding: MTP as a built-in draft). No loss formula",
+  "owning_chapter": 15
+ },
+ {
+  "id": "llm-param-count",
+  "name": "Transformer parameter count",
+  "status": "SHOWN",
+  "where": "Chapter 15 (Step 7: The residual stream and one full block: about 4 × d² attention plus 8 × d² feed-forward = 12 × d² per block; GPT-3 check 12 × 96 × 12,288² ≈ 174 billion plus 50,257 × 12,288 embedding; Exercise 7 'parameters ≈ 12 × layers × d × d + vocabulary × d'); Appendix B (Parameters in a dense layer; Embedding table size). The untied output matrix is not mentioned",
+  "owning_chapter": 15
+ },
+ {
+  "id": "llm-moe-params",
+  "name": "Mixture-of-experts total versus active parameters",
+  "status": "WORDS",
+  "where": "Chapter 17 (Mixture of experts: Total versus active parameters: active = attention + shared experts + router + chosen routed experts, Table 17.1; Shared experts and fine-grained experts); Chapter 18 (Dense versus mixture of experts). Totals are quoted from model cards, never computed from expert counts; 2 × N_active is shown (Appendix B)",
+  "owning_chapter": 17
+ },
+ {
+  "id": "llm-train-flops-6nd",
+  "name": "Training compute C ≈ 6ND",
+  "status": "SHOWN",
+  "where": "Chapter 19 (The 6ND rule and what a training run costs: Where the 6 comes from, GPT-3, Llama 3.1 405B and DeepSeek-V4-Pro worked, active parameters for MoE); Chapter 5 (rules of thumb); Chapter 17 (Total versus active parameters); Chapter 37; Appendix B (Training compute; Cost of a training step). The 8ND recomputation variant is not shown",
+  "owning_chapter": 19
+ },
+ {
+  "id": "llm-inference-2n",
+  "name": "Inference compute ≈ 2N FLOPs per token",
+  "status": "SHOWN",
+  "where": "Chapter 23 (Two different jobs: prefill and decode: Worked example: how long does reading take?, 2 × 70 billion × 10,000 tokens); Chapter 18 (Parameters: Compute per token, 500 × 140 billion); Chapter 5 (Rule 1: about 2 × N FLOPs to generate one token); Appendix B (Inference cost per token; Cost of an answer). The attention add-on term is in words only",
+  "owning_chapter": 23
+ },
+ {
+  "id": "llm-attention-flops",
+  "name": "Attention FLOPs term (context-length cost)",
+  "status": "WORDS",
+  "where": "Chapter 15 (Step 4: The catch: attention costs grow with the square of length, n × n scores counted); Chapter 17 (Two bills every Transformer pays); Chapter 23 (Worked example: how long does reading take?: attention math equals the rest at about 100,000 tokens for a 70B Llama shape). No FLOP formula (2 × n_layer × n_ctx × d_attn or the PaLM/DeepSeek forms)",
+  "owning_chapter": 15
+ },
+ {
+  "id": "llm-mup",
+  "name": "Maximal update parametrization (μP) width scaling",
+  "status": "WORDS",
+  "where": "Chapter 19 (The pretraining run: The settings, μP definition and the 40-million-to-6.7-billion transfer); the per-layer width scaling rules are not shown",
+  "owning_chapter": 19
+ },
+ {
+  "id": "llm-hparam-scaling",
+  "name": "Compute-based learning-rate and batch-size scaling laws",
+  "status": "WORDS",
+  "where": "Chapter 19 (The pretraining run: The settings): DeepSeek and others published formulas for how the best batch size and learning rate change with compute; the fitted power laws are not shown",
+  "owning_chapter": 19
+ },
+ {
+  "id": "llm-critical-batch",
+  "name": "Critical batch size",
+  "status": "WORDS",
+  "where": "Chapter 37 (Data parallelism: past a certain size bigger batches stop speeding up learning); Chapter 13 (Batch size and the learning rate: Llama 3 doubling its batch twice); Chapter 19 (The settings: batch ramp). Critical batch size and the gradient noise scale are not named or shown",
+  "owning_chapter": 19
+ },
+ {
+  "id": "llm-kaplan-laws",
+  "name": "Kaplan power laws for language-model loss",
+  "status": "WORDS",
+  "where": "Chapter 19 (Scaling laws: Kaplan 2020: loss falls on a straight line): loss is a power law in size, data and compute; the fitted Kaplan formulas and exponents are not shown (generic power law y = c × x^k in Appendix B and Chapter 6 Log-log plots and scaling laws)",
+  "owning_chapter": 19
+ },
+ {
+  "id": "llm-chinchilla-loss",
+  "name": "Chinchilla parametric loss",
+  "status": "SHOWN",
+  "where": "Chapter 19 (Scaling laws: Chinchilla 2022: feed the model more data): loss ≈ 1.69 + 406.4 ÷ N^0.34 + 410.7 ÷ D^0.28, Gopher 1.993 versus Chinchilla 1.937 worked; the Epoch AI replication is mentioned in words without its refitted constants",
+  "owning_chapter": 19
+ },
+ {
+  "id": "llm-compute-optimal",
+  "name": "Compute-optimal allocation of model size and data",
+  "status": "WORDS",
+  "where": "Chapter 19 (Chinchilla 2022: Compute-optimal definition; Worked example: sizing a compute-optimal model and the budget table). Only the 20-tokens-per-parameter special case N = sqrt(C ÷ 120) is computed; the general closed form with G, a, b from the parametric loss is not shown",
+  "owning_chapter": 19
+ },
+ {
+  "id": "llm-20-tokens",
+  "name": "Twenty tokens per parameter rule",
+  "status": "SHOWN",
+  "where": "Chapter 19 (Chinchilla 2022: Worked example: sizing a compute-optimal model, 120 × N², N = sqrt(C ÷ 120), budget table 10^22 to 10^27; The data wall: D = 20 × sqrt(C ÷ 120)); Appendix B (Chinchilla ratio; Compute-optimal size)",
+  "owning_chapter": 19
+ },
+ {
+  "id": "llm-data-constrained",
+  "name": "Data-constrained scaling (repeated epochs)",
+  "status": "WORDS",
+  "where": "Chapter 19 (The data wall and how labs climb it: The escape routes): repeating data for up to about four passes was almost as good as fresh data; the effective-data formula with R*_D is not shown",
+  "owning_chapter": 19
+ },
+ {
+  "id": "llm-inference-aware",
+  "name": "Inference-aware (beyond-Chinchilla) scaling",
+  "status": "SHOWN",
+  "where": "Chapter 19 (The 6ND rule: Over-training: why labs train small models far past 'optimal'): Inference-aware scaling definition (minimize training plus expected use) and the two-option worked example computing 6ND training compute and 2N × 10^13 served-token inference compute at near-equal Chinchilla loss. The argmin itself is stated in words",
+  "owning_chapter": 19
+ },
+ {
+  "id": "llm-precision-scaling",
+  "name": "Precision-aware scaling law",
+  "status": "MISSING",
+  "where": "Not in the book. Chapter 19 (Fewer bits, more speed) and Chapter 23 (Quantization) discuss low precision and quantization quality loss in words, with no scaling law",
+  "owning_chapter": 19
+ },
+ {
+  "id": "llm-downstream-scaling",
+  "name": "Two-step downstream performance forecast",
+  "status": "WORDS",
+  "where": "Chapter 19 (Emergent abilities: The case against: the metric makes the cliff, p^10 example; The strongest version of each side: track a smooth underlying metric to forecast the jump; Kaplan 2020: GPT-4's loss predicted from small models). The Llama 3 two-step fit (compute to normalized NLL, NLL to accuracy by a sigmoid) is not described",
+  "owning_chapter": 19
+ },
+ {
+  "id": "llm-test-time-scaling",
+  "name": "Test-time compute scaling (log-linear)",
+  "status": "SHOWN",
+  "where": "Chapter 21 (Test-time compute: a second scaling law): Log-linear relationship definition and the table of 1,000 / 10,000 / 100,000 thinking tokens at 40%, 55%, 70% (about 15 points per tenfold), Figure 21.1. Written as a rule in words plus numbers, not as a symbol formula",
+  "owning_chapter": 21
+ },
+ {
+  "id": "llm-coverage-law",
+  "name": "Repeated-sampling coverage law",
+  "status": "SHOWN",
+  "where": "Chapter 21 (Thinking wider: Best-of-N: pass@N = 1 − 0.7^N worked for N = 1, 4, 8, 16). The fitted exp(a × k^b) coverage law is not shown",
+  "owning_chapter": 21
+ },
+ {
+  "id": "llm-minhash-dedup",
+  "name": "MinHash near-duplicate detection with LSH banding",
+  "status": "WORDS",
+  "where": "Chapter 19 (Cleaning the firehose: Worked example: catching near-duplicates): Jaccard similarity 4 ÷ 6 = 0.67 is shown; MinHash is defined as compact fingerprints in words; P(minhash equal) = J and the LSH banding formula are not shown",
+  "owning_chapter": 19
+ },
+ {
+  "id": "llm-quality-filter",
+  "name": "Perplexity and classifier quality filtering",
+  "status": "WORDS",
+  "where": "Chapter 19 (Cleaning the firehose: step 6 Model-based quality filtering, FineWeb-Edu classifier, Quality classifier definition); keep-above-threshold idea in words; perplexity filtering with a reference model is not covered",
+  "owning_chapter": 19
+ },
+ {
+  "id": "llm-mixture-sampling",
+  "name": "Temperature-scaled data-mixture sampling",
+  "status": "WORDS",
+  "where": "Chapter 19 (Choosing the recipe: data mixtures: upsampling and downsampling, Llama 3 mix, Epoch definition); the temperature-scaled sampling formula p_i = n_i^α ÷ sum of n_j^α is not shown",
+  "owning_chapter": 19
+ },
+ {
+  "id": "llm-kv-cache",
+  "name": "KV cache size",
+  "status": "SHOWN",
+  "where": "Chapter 23 (The KV cache: Worked example: KV-cache memory by hand, bytes per token = 2 × layers × KV heads × head size × bytes, Llama 3 70B = 327,680 bytes; Table 23.1 MLA row 61 layers × 576 numbers × 2 bytes); Chapter 15 (Step 5: The KV cache and its memory bill); Chapter 30 (Will it fit?); Appendix B (KV cache per token; KV cache total)",
+  "owning_chapter": 23
+ },
+ {
+  "id": "llm-kv-budget",
+  "name": "Concurrency limit from KV memory (and paged blocks)",
+  "status": "SHOWN",
+  "where": "Chapter 23 (Worked example: KV-cache memory by hand: 141 GB − 70 GB weights − 10 GB working space = 60 GB, about 45 conversations at 4,000 tokens; Serving many people at once: Table 23.2; PagedAttention with 16-token blocks, Figure 23.5). Blocks per sequence = ceil(T ÷ B) is shown only in the figure",
+  "owning_chapter": 23
+ },
+ {
+  "id": "llm-online-softmax",
+  "name": "Online softmax (FlashAttention running max and running sum)",
+  "status": "WORDS",
+  "where": "Chapter 15 (Making attention cheaper: FlashAttention works in tiles 'keeping a running softmax as it goes'); Chapter 23 (Long context: FlashAttention definition); Chapter 33 (Tiling: how software reuses data). The running max, running sum and rescaling formulas are not shown",
+  "owning_chapter": 15
+ },
+ {
+  "id": "llm-temperature",
+  "name": "Temperature-scaled softmax sampling",
+  "status": "SHOWN",
+  "where": "Chapter 18 (From scores to words: Temperature: the creativity dial, T = 0.5 and T = 2 worked, Figure 18.4); Chapter 15 (Step 9); Chapter 6 (Sampling and temperature: Temperature); Appendix B (Temperature)",
+  "owning_chapter": 18
+ },
+ {
+  "id": "llm-greedy",
+  "name": "Greedy decoding",
+  "status": "SHOWN",
+  "where": "Chapter 18 (Temperature: the creativity dial, Greedy decoding definition); Chapter 15 (Step 9); Appendix B (Greedy decoding: pick the largest p_i)",
+  "owning_chapter": 18
+ },
+ {
+  "id": "llm-top-k",
+  "name": "Top-k sampling",
+  "status": "SHOWN",
+  "where": "Chapter 18 (Cutting off the long tail: top-k, top-p and min-p: k = 2 worked, 64.4 ÷ 88.1 = 73.1%)",
+  "owning_chapter": 18
+ },
+ {
+  "id": "llm-top-p",
+  "name": "Top-p (nucleus) sampling",
+  "status": "SHOWN",
+  "where": "Chapter 18 (Cutting off the long tail: p = 0.9 worked, divide by 0.968); Chapter 6 (Top-p: cutting off the long tail); Appendix B (Top-p)",
+  "owning_chapter": 18
+ },
+ {
+  "id": "llm-min-p",
+  "name": "Min-p sampling",
+  "status": "SHOWN",
+  "where": "Chapter 18 (Cutting off the long tail: min-p 0.1 worked, cutoff 0.1 × 0.644 = 0.064)",
+  "owning_chapter": 18
+ },
+ {
+  "id": "llm-other-truncation",
+  "name": "Epsilon, eta and locally typical sampling",
+  "status": "MISSING",
+  "where": "Not in the book (epsilon, eta and locally typical sampling are not mentioned; entropy itself is defined in Chapter 6)",
+  "owning_chapter": 18
+ },
+ {
+  "id": "llm-repetition-penalty",
+  "name": "Repetition penalty (CTRL-style)",
+  "status": "MISSING",
+  "where": "Not in the book (Chapter 26 Sampling settings covers only temperature, top-p and top-k)",
+  "owning_chapter": 26
+ },
+ {
+  "id": "llm-freq-presence",
+  "name": "Frequency and presence penalties",
+  "status": "MISSING",
+  "where": "Not in the book (Chapter 26 Sampling settings covers only temperature, top-p and top-k)",
+  "owning_chapter": 26
+ },
+ {
+  "id": "llm-logit-bias",
+  "name": "Logit bias",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 26
+ },
+ {
+  "id": "llm-constrained-decoding",
+  "name": "Grammar-constrained (structured-output) decoding mask",
+  "status": "WORDS",
+  "where": "Chapter 26 (Structured outputs: getting forms, not prose: Constrained decoding definition, only tokens that keep the output valid are allowed, Figure 26.7); the −infinity mask over the automaton state is not shown (the same −infinity masking is shown for the causal mask in Chapter 15 Step 8)",
+  "owning_chapter": 26
+ },
+ {
+  "id": "llm-beam-search",
+  "name": "Beam search with length normalization",
+  "status": "SHOWN",
+  "where": "Chapter 18 (From scores to words: Beam search: looking a few steps ahead: beam width 2, 0.40 × 0.30 = 0.12 versus 0.35 × 0.80 = 0.28). Log-probability sums and length adjustment are mentioned in words only; no length-penalty formula",
+  "owning_chapter": 18
+ },
+ {
+  "id": "llm-contrastive-decoding",
+  "name": "Contrastive decoding",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 18
+ },
+ {
+  "id": "llm-gumbel-sampling",
+  "name": "Gumbel-max and exponential-race sampling",
+  "status": "MISSING",
+  "where": "Not in the book (Appendix B 'Sampling with a random number' and Chapter 6 Drawing from the bag show the inverse-CDF method instead)",
+  "owning_chapter": 18
+ },
+ {
+  "id": "llm-watermark",
+  "name": "Green-list text watermark and its z-test",
+  "status": "WORDS",
+  "where": "Chapter 58 (Can anyone tell whether a text was written by AI?: SynthID Text slightly adjusts which tokens a model chooses so a detector can spot the pattern); Chapter 47 (Watermarks: SynthID and friends). The green-list logit boost and the z-test are not shown",
+  "owning_chapter": 58
+ },
+ {
+  "id": "llm-semantic-entropy",
+  "name": "Semantic entropy (uncertainty for hallucination detection)",
+  "status": "MISSING",
+  "where": "Not in the book (Chapter 18 explains hallucination in words; entropy is defined in Chapter 6, but sampling several answers and measuring their disagreement by meaning is not described)",
+  "owning_chapter": 18
+ },
+ {
+  "id": "llm-spec-verify",
+  "name": "Speculative sampling acceptance rule and residual distribution",
+  "status": "WORDS",
+  "where": "Chapter 23 (Speculative decoding: guess ahead, check in one pass: definition says that with the right acceptance rule the output follows exactly the large model's probabilities; Figure 23.6 keeps tokens up to the first rejection). The min(1, p ÷ q) rule and residual distribution are not shown",
+  "owning_chapter": 23
+ },
+ {
+  "id": "llm-spec-expected",
+  "name": "Acceptance rate and expected tokens per verification step",
+  "status": "SHOWN",
+  "where": "Chapter 23 (Speculative decoding: Worked example: (1 − 0.8^5) ÷ (1 − 0.8) ≈ 3.36 tokens per round, also as 1 + 0.8 + 0.64 + 0.512 + 0.41; acceptance 0.5 gives 1.94). Acceptance rate as 1 − TV(p, q) is not shown",
+  "owning_chapter": 23
+ },
+ {
+  "id": "llm-spec-speedup",
+  "name": "Speculative decoding walltime speedup",
+  "status": "SHOWN",
+  "where": "Chapter 23 (Speculative decoding: Worked example: round cost 1 + 4 × 0.1 = 1.4 big-model steps, speed-up 3.36 ÷ 1.4 ≈ 2.4; about 1.4 at acceptance 0.5)",
+  "owning_chapter": 23
+ },
+ {
+  "id": "llm-absmax-quant",
+  "name": "Absmax (symmetric) quantization and dequantization",
+  "status": "SHOWN",
+  "where": "Chapter 23 (Quantization: Worked example: rounding four weights to 4 bits: scale = 0.97 ÷ 7, divide, round, multiply back, errors listed, Figure 23.7, outlier problem); Chapter 32 (Worked example: rounding to FP4, and how block scaling saves it, scale = 0.30 ÷ 6). The s ÷ 2 error bound is not stated",
+  "owning_chapter": 23
+ },
+ {
+  "id": "llm-affine-quant",
+  "name": "Affine (zero-point) quantization",
+  "status": "WORDS",
+  "where": "Chapter 30 (Quantization and GGUF: 16 evenly spaced levels between −1 and +1 give a gap of 2 ÷ 15, Figure 30.7) shows the range ÷ (levels − 1) step; zero-points and asymmetric ranges are not covered",
+  "owning_chapter": 23
+ },
+ {
+  "id": "llm-group-bits",
+  "name": "Scale granularity and effective bits per weight",
+  "status": "WORDS",
+  "where": "Chapter 30 (Quantization and GGUF: Bits per weight definition including scaling numbers, GGUF table Q8_0 8.5 to Q2_K about 3 bits; Will it fit?: 4-bit is slightly more than half a byte because each block stores a scale); Chapter 23 (Table 23.3: MXFP4 about 4.25 bits); Chapter 17 (116.8 billion × 4.25 bits ÷ 8 ≈ 62 GB file size); Appendix B (Memory math). The b + scale bits ÷ g derivation is not shown",
+  "owning_chapter": 30
+ },
+ {
+  "id": "llm-mx-block",
+  "name": "Microscaling (MX) block formats",
+  "status": "SHOWN",
+  "where": "Chapter 32 (The precision ladder: Worked example: rounding to FP4, and how block scaling saves it: per-block scale, MXFP4's power-of-two scale 1/16 versus 0.05, blocks of 32 in the Microscaling definition); Chapter 23 (Block scaling definition); Appendix B (MXFP4 about 4.25 bits). The 8 ÷ 32 overhead arithmetic is not shown",
+  "owning_chapter": 32
+ },
+ {
+  "id": "llm-nvfp4",
+  "name": "NVFP4 two-level block scaling",
+  "status": "WORDS",
+  "where": "Chapter 32 (NVFP4 definition: blocks of 16 with an FP8 scale plus one per-tensor scale; FP4 E2M1 values 0, 0.5, 1, 1.5, 2, 3, 4, 6 listed in the FP4 definition); Chapter 23 (Block scaling definition); Chapter 37 (Fewer bits: low-precision training). The two-level formula and 4.5 bits per value are not shown",
+  "owning_chapter": 32
+ },
+ {
+  "id": "llm-fp8-scaling",
+  "name": "FP8 scaling factors (per-tensor, delayed and fine-grained)",
+  "status": "WORDS",
+  "where": "Chapter 32 (The ladder: FP8 definition, E4M3 largest value 448 and E5M2 57,344); Chapter 5 (The precision ladder); Chapter 19 (Fewer bits, more speed: 'careful scaling tricks keep it under control'); Chapter 37 (Fewer bits: low-precision training). scale = FP8_max ÷ amax is not shown for FP8",
+  "owning_chapter": 37
+ },
+ {
+  "id": "llm-gptq",
+  "name": "GPTQ / Optimal Brain Quantization objective and update",
+  "status": "MISSING",
+  "where": "Not explained. Chapter 30 (Quantization and GGUF) names GPTQ files only; Chapter 23 (PTQ definition) mentions using a small data sample to choose scales",
+  "owning_chapter": 23
+ },
+ {
+  "id": "llm-awq",
+  "name": "Activation-aware weight quantization (AWQ)",
+  "status": "MISSING",
+  "where": "Not explained. Chapter 30 (Quantization and GGUF) names AWQ (activation-aware weight quantization) files only",
+  "owning_chapter": 23
+ },
+ {
+  "id": "llm-smoothquant",
+  "name": "SmoothQuant (migrating outliers from activations to weights)",
+  "status": "MISSING",
+  "where": "Not in the book (Chapter 23 Quantization notes that activations hold the worst outliers, without this method)",
+  "owning_chapter": 23
+ },
+ {
+  "id": "llm-rotation-quant",
+  "name": "Hadamard rotation for outlier removal",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 23
+ },
+ {
+  "id": "llm-ste",
+  "name": "Quantization-aware training with the straight-through estimator",
+  "status": "WORDS",
+  "where": "Chapter 23 (Quantization: QAT definition, training while simulating low-precision rounding); Chapter 30 (Quantization and GGUF: QAT definition); Chapter 19 (Fewer bits, more speed). The straight-through gradient trick is not described",
+  "owning_chapter": 23
+ },
+ {
+  "id": "llm-nf4",
+  "name": "NormalFloat-4 (NF4) levels and double quantization",
+  "status": "WORDS",
+  "where": "Chapter 30 (QLoRA: fine-tuning on one GPU: NF4 definition, 16 levels spaced to match bell-shaped weights; double quantization of the scales in words). The quantile formula and the 0.5 to 0.127 bits overhead are not shown",
+  "owning_chapter": 30
+ },
+ {
+  "id": "llm-ternary",
+  "name": "Ternary (1.58-bit) absmean quantization",
+  "status": "WORDS",
+  "where": "Chapter 32 (Mixed precision and quantization: BitNet b1.58, Ternary weights definition, '2 to the power 1.58 is about 3'). The absmean RoundClip quantizer is not shown",
+  "owning_chapter": 32
+ },
+ {
+  "id": "llm-lora",
+  "name": "Low-rank adaptation (LoRA)",
+  "status": "SHOWN",
+  "where": "Chapter 30 (LoRA: the clip-on lens: The idea in a 3 × 3 example; The idea at real scale: B 4,096 × 16 and A 16 × 4,096 = 131,072 numbers, new behavior W + (alpha ÷ r) × (B × A), merging an adapter); Chapter 20 (Fine-tuning for everyone: rank-8 worked example)",
+  "owning_chapter": 30
+ },
+ {
+  "id": "llm-qlora",
+  "name": "QLoRA forward pass",
+  "status": "WORDS",
+  "where": "Chapter 30 (QLoRA: fine-tuning on one GPU): frozen base in 4-bit NF4 with double quantization, adapters in higher precision, paged optimizers; Chapter 20 (Fine-tuning for everyone). The forward-pass formula is not shown",
+  "owning_chapter": 30
+ },
+ {
+  "id": "llm-dora",
+  "name": "Weight-decomposed low-rank adaptation (DoRA)",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 30
+ },
+ {
+  "id": "llm-adapters",
+  "name": "Bottleneck adapters and (IA)^3 scaling vectors",
+  "status": "MISSING",
+  "where": "Not in the book. Chapter 30 (The idea at real scale) names the parameter-efficient fine-tuning family; bottleneck adapters and (IA)^3 are not described",
+  "owning_chapter": 30
+ },
+ {
+  "id": "llm-prompt-tuning",
+  "name": "Prompt tuning and prefix tuning (soft prompts)",
+  "status": "SHOWN",
+  "where": "Chapter 30 (LoRA: The idea at real scale: prompt tuning places trained virtual-token embeddings in front of every input, 20 × 4,096 = 81,920 trainable numbers; Prompt tuning (soft prompt) definition). Prefix tuning (per-layer key and value prefixes) is not covered",
+  "owning_chapter": 30
+ },
+ {
+  "id": "llm-model-merging",
+  "name": "Model merging (weight averaging and task arithmetic)",
+  "status": "SHOWN",
+  "where": "Chapter 20 (Model merging: Worked example on one weight: soup (0.56 + 0.47) ÷ 2 = 0.515, task arithmetic 0.50 + 0.06 − 0.03 = 0.53, Task vector definition, TIES-merging in words). The λ scaling and DARE rescaling are not shown",
+  "owning_chapter": 20
+ },
+ {
+  "id": "llm-kd-soft-targets",
+  "name": "Knowledge distillation with soft targets",
+  "status": "WORDS",
+  "where": "Chapter 20 (Distillation: big teachers, small students: The idea, Soft labels definition, logit distillation matches the teacher's probabilities at every token); Chapter 30. The temperature-softened KL loss with T^2 is not shown (KL divergence itself is defined in Chapter 6)",
+  "owning_chapter": 20
+ },
+ {
+  "id": "llm-seq-kd",
+  "name": "Sequence-level distillation (training on teacher outputs)",
+  "status": "WORDS",
+  "where": "Chapter 20 (Distillation: sequence distillation trains the student on teacher-written text as ordinary SFT; Synthetic data and self-improvement); Chapter 21 (The DeepSeek-R1 story). No formula beyond the SFT loss",
+  "owning_chapter": 20
+ },
+ {
+  "id": "llm-onpolicy-kd",
+  "name": "On-policy (reverse-KL) distillation",
+  "status": "WORDS",
+  "where": "Chapter 20 (Distillation: On-policy distillation definition, the student writes and the teacher grades every token); the reverse-KL objective is not shown",
+  "owning_chapter": 20
+ },
+ {
+  "id": "llm-rope-base",
+  "name": "RoPE frequencies, wavelengths and base",
+  "status": "WORDS",
+  "where": "Chapter 15 (Step 3: RoPE: rotating the arrows: toy 10 degrees per position worked, then 'hundreds of pairs, each spinning at a different speed' like clock hands). θ_i = base^(−2i ÷ d) and wavelengths are not shown",
+  "owning_chapter": 15
+ },
+ {
+  "id": "llm-position-interpolation",
+  "name": "Position interpolation (PI)",
+  "status": "WORDS",
+  "where": "Chapter 15 (Stretching the context window: RoPE rotations are rescaled (slowed down) so long distances map onto angles the model already understands); Chapter 23 (Long context: RoPE scaling definition). The m × L ÷ L' formula is not shown",
+  "owning_chapter": 15
+ },
+ {
+  "id": "llm-ntk-aware",
+  "name": "NTK-aware RoPE scaling",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 15
+ },
+ {
+  "id": "llm-yarn",
+  "name": "YaRN context extension (NTK-by-parts plus attention temperature)",
+  "status": "WORDS",
+  "where": "Chapter 15 (Stretching the context window: YaRN named as a widely used RoPE-rescaling recipe, Context extension definition); Chapter 23 (Long context: RoPE scaling definition, Table 23.4). The by-parts ramp and attention temperature are not described",
+  "owning_chapter": 15
+ },
+ {
+  "id": "llm-dense-retrieval",
+  "name": "Embedding-similarity top-k retrieval (and hybrid score)",
+  "status": "SHOWN",
+  "where": "Chapter 27 (Measuring closeness: cosine similarity by hand: A worked example with three passages; Semantic search returns nearest neighbors); Appendix B (Cosine similarity; Normalize). Hybrid merging is shown as reciprocal rank fusion (Chapter 27 Hybrid search and reciprocal rank fusion), not as the α-weighted score",
+  "owning_chapter": 27
+ },
+ {
+  "id": "llm-rag-marginal",
+  "name": "RAG marginal likelihood (RAG-Sequence and RAG-Token)",
+  "status": "MISSING",
+  "where": "Not in the book. Chapter 27 (RAG from end to end: Where the idea came from) names the 2020 Lewis et al. paper that trained retriever and generator together, without the marginalization over retrieved documents",
+  "owning_chapter": 27
+ },
+ {
+  "id": "llm-cross-encoder",
+  "name": "Cross-encoder reranker score",
+  "status": "WORDS",
+  "where": "Chapter 27 (Reranking: a second, pickier judge: Bi-encoder, Cross-encoder and Reranker definitions, Figure 27.8 funnel); the score head w · h_[CLS] + b is not shown",
+  "owning_chapter": 27
+ },
+ {
+  "id": "llm-colbert",
+  "name": "Late interaction (ColBERT MaxSim)",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 27
+ },
+ {
+  "id": "llm-matryoshka",
+  "name": "Matryoshka embeddings (truncatable dimensions)",
+  "status": "MISSING",
+  "where": "Not in the book (Chapter 27 What embeddings cost notes that dimension count sets storage, without truncatable embeddings)",
+  "owning_chapter": 27
+ },
+ {
+  "id": "llm-chunking",
+  "name": "Chunk count with overlap",
+  "status": "SHOWN",
+  "where": "Chapter 27 (Chunking: cutting the book into index cards: Worked example: 400-token chunks with 50 overlap advance 350, 200,000 ÷ 350 ≈ 572 chunks, 572 × 6 KB ≈ 3.4 MB; What embeddings cost: 1,536 × 4 bytes per vector)",
+  "owning_chapter": 27
+ },
+ {
+  "id": "llm-best-of-n",
+  "name": "Best-of-N selection with a reward model or verifier",
+  "status": "WORDS",
+  "where": "Chapter 21 (Thinking wider: Best-of-N definition, choose the best of N with a verifier, reward model or judge; Process versus outcome rewards: PRMs rerank samples); Chapter 20 (Synthetic data: rejection sampling). The argmax rule, PRM aggregation and the ln(N) KL bound are not shown",
+  "owning_chapter": 21
+ },
+ {
+  "id": "llm-self-consistency",
+  "name": "Self-consistency (majority vote over sampled answers)",
+  "status": "SHOWN",
+  "where": "Chapter 21 (Step 1: Chain-of-thought prompting: Self-consistency: ask several times, take a vote: most common answer, majority-vote accuracy 0.648, 0.683, 0.753 worked). The weighted vote is not covered",
+  "owning_chapter": 21
+ },
+ {
+  "id": "llm-request-cost",
+  "name": "Request cost with prompt caching, batch discounts and reasoning tokens",
+  "status": "SHOWN",
+  "where": "Chapter 26 (Tokens, money and speed: A worked cost example: 1,000 customer emails, Key idea formula with thinking counted as output, batch 50% off; Prompt caching: 1.25× write, 2× one-hour, 0.1×/0.05×/0.025× reads, worked example); Chapter 23 (Prompt caching: ten questions about one report; How it all shows up in your bill); Appendix B (API bill)",
+  "owning_chapter": 26
+ },
+ {
+  "id": "llm-serving-latency",
+  "name": "Latency decomposition: time to first token and time per output token",
+  "status": "SHOWN",
+  "where": "Chapter 23 (Measuring speed: latency, throughput and cost: total wait ≈ TTFT + output tokens × inter-token latency, 0.8 + 600 × 0.02 = 12.8 s; ITL definition, 20 ms = 50 tokens per second; Table 23.2 total tokens per second across a batch)",
+  "owning_chapter": 23
+ },
+ {
+  "id": "llm-image-tokens",
+  "name": "Visual token count for vision-language model inputs",
+  "status": "SHOWN",
+  "where": "Chapter 22 (How a picture becomes tokens: Worked example: what does one photo cost?: 1,008 ÷ 14 = 72, 72 × 72 ÷ 4 = 1,296; Claude one token per 28 × 28 patch, 36 × 36 = 1,296; 4,784-token cap and shrinking worked; Table 22.2 other providers)",
+  "owning_chapter": 22
+ }
+]

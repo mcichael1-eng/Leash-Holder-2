@@ -1,0 +1,972 @@
+{
+ "items": [
+  {
+   "id": "gc-ar-likelihood",
+   "name": "Autoregressive likelihood for images and audio (PixelCNN, WaveNet, image-token models)",
+   "formula": "p(x) = p(x_1) × p(x_2 | x_1) × ... × p(x_n | x_1, ..., x_(n−1)) = product over i of p(x_i | x_<i); training loss = −ln p(x) = sum over i of −ln p(x_i | x_<i); bits per dimension = −ln p(x) ÷ (D × ln(2))",
+   "meaning": "x_i is the i-th pixel value, audio sample or image/audio token in a fixed order (raster scan for pixels, time order for audio); x_<i are all earlier ones; D is the number of dimensions (3,072 for a 32 × 32 × 3 image). Each factor is a softmax over the possible values (256 per pixel channel in PixelCNN). Bits per dimension is the standard likelihood score for image generators (lower is better). Variants merged here: PixelRNN/PixelCNN (pixels), WaveNet (raw audio samples), VQ-token models (DALL-E 1, Parti, LlamaGen, Chameleon, Janus), codec-token speech models, and next-scale prediction VAR, p = product over scales k of p(r_k | r_1, ..., r_(k−1)). The text-LLM version of the same chain rule is in the LLM section.",
+   "used_for": "PixelCNN (2016) and WaveNet (2016); token-based image generators (Parti, LlamaGen, VAR, NeurIPS 2024 best paper) and codec-token speech models such as VALL-E (2023) and Kyutai's Moshi (2024) train with exactly this factorization. Book: Ch 16 (Autoregressive image generation: painting by tokens); Ch 46 (WaveNet).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-mu-law",
+   "name": "μ-law companding (8-bit audio for WaveNet and telephony)",
+   "formula": "f(x) = sign(x) × ln(1 + μ × |x|) ÷ ln(1 + μ), with μ = 255 and −1 ≤ x ≤ 1, then quantized to 256 levels; inverse x = sign(y) × ((1 + μ)^|y| − 1) ÷ μ",
+   "meaning": "x is an audio sample scaled to the range −1 to 1; |x| its size without sign; sign(x) is +1 or −1; μ controls how much extra resolution quiet sounds get; y = f(x). Quiet sounds get many levels and loud sounds few, matching hearing, so a 256-way softmax per sample suffices instead of 65,536 levels.",
+   "used_for": "WaveNet's 256-way output; G.711 telephone codecs (8-bit μ-law at 8 kHz). Book: only here (Ch 46 discusses WaveNet).",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-autoencoder",
+   "name": "Autoencoder reconstruction loss and compression ratio",
+   "formula": "z = enc(x); x̂ = dec(z); loss = ||x − x̂||^2 (sum or mean of squared differences); compression ratio = (numbers in x) ÷ (numbers in z)",
+   "meaning": "x is the input (e.g., 784 pixel values of a 28 × 28 digit); enc the encoder network; z the short code (latent); dec the decoder; x̂ the reconstruction; ||v||^2 is the squared length of vector v (sum of squared entries). Variants: denoising autoencoder (encode a corrupted x̃, reconstruct the clean x), L1 loss, sparse autoencoders (an added λ × sum of |z| penalty; their interpretability use is covered in the safety section).",
+   "used_for": "Compression, anomaly detection, pretraining; the VAEs and tokenizers inside latent diffusion; MAE. Book: Ch 16 (The autoencoder: 784 ÷ 32 = 24.5 times).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-vae-model",
+   "name": "VAE encoder, prior and decoder (the VAE's probability model)",
+   "formula": "encoder q_φ(z | x) = N(z; μ_φ(x), diag(σ_φ(x)^2)); prior p(z) = N(0, I); decoder p_θ(x | z) = N(x; dec_θ(z), σ_x^2 × I) or Bernoulli per pixel; to generate: z ~ N(0, I), then x = dec_θ(z)",
+   "meaning": "q_φ is the encoder with weights φ, outputting a mean vector μ and a spread vector σ for each input; N(m, s^2) a normal (bell-curve) distribution; diag(...) means each latent dimension is independent; I the identity matrix; p_θ the decoder with weights θ; σ_x the assumed pixel noise. A Gaussian decoder makes −ln p(x | z) equal to squared error ÷ (2 × σ_x^2) plus a constant; a Bernoulli decoder makes it binary cross-entropy.",
+   "used_for": "Kingma and Welling (2013); the image VAE inside Stable Diffusion, SDXL, SD3 and FLUX; the video VAEs of Wan and HunyuanVideo. Book: Ch 16 (The variational autoencoder (VAE)).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-reparam",
+   "name": "Reparameterization trick",
+   "formula": "z = μ + σ × ε, with ε ~ N(0, I) (elementwise); in practice σ = exp(0.5 × ln(σ^2)) from a predicted log-variance",
+   "meaning": "μ and σ come from the encoder; ε is random standard-normal noise drawn outside the network, so gradients flow through μ and σ. The encoder usually outputs ln(σ^2) for numerical stability. The same 'mean + scale × noise' form is the diffusion forward jump and appears in stochastic RL policies. Discrete-latent analogue: Gumbel-softmax (separate entry).",
+   "used_for": "Every VAE (including the autoencoders of latent diffusion); also SAC-style stochastic policies. Book: Ch 16 (Reparameterization trick definition: 1.5 + 0.2 × (−0.7) = 1.36).",
+   "tier": "core"
+  },
+  {
+   "id": "gc-elbo",
+   "name": "Evidence lower bound (ELBO): reconstruction minus KL",
+   "formula": "ln p(x) ≥ ELBO = E_(z ~ q_φ(z | x))[ln p_θ(x | z)] − KL(q_φ(z | x) || p(z)); exact gap: ln p(x) − ELBO = KL(q_φ(z | x) || p(z | x)); β-VAE loss = −E[ln p_θ(x | z)] + β × KL(q_φ(z | x) || p(z))",
+   "meaning": "ln p(x) is the log-likelihood of the data ('evidence'); E_(z ~ q) an average over codes sampled from the encoder (usually one reparameterized sample); KL(q || p) the Kullback–Leibler divergence (always ≥ 0) from encoder distribution to prior; p(z | x) the true but intractable posterior. Training maximizes the ELBO. β > 1 encourages disentangled codes; latent-diffusion autoencoders use a tiny β (Stable Diffusion's KL autoencoder config uses 10^−6) plus perceptual and adversarial losses. Variant: the IWAE bound averages K importance weights inside the log for a tighter bound. The same bound, applied over many noise steps, is diffusion's variational bound.",
+   "used_for": "Training VAEs; the theory behind diffusion's loss; variational inference in Bayesian models and EM (Murphy, Bishop). Book: Ch 16 describes the two loss terms in words (The variational autoencoder).",
+   "tier": "core"
+  },
+  {
+   "id": "gc-gauss-kl",
+   "name": "Closed-form KL divergence for Gaussians (VAE KL term)",
+   "formula": "KL(N(μ, diag(σ^2)) || N(0, I)) = 0.5 × sum over j of (μ_j^2 + σ_j^2 − ln(σ_j^2) − 1); general one-dimensional form: KL(N(μ1, σ1^2) || N(μ2, σ2^2)) = ln(σ2 ÷ σ1) + (σ1^2 + (μ1 − μ2)^2) ÷ (2 × σ2^2) − 0.5",
+   "meaning": "j indexes latent dimensions; μ_j and σ_j are the encoder's mean and spread for dimension j. The term is zero exactly when μ = 0 and σ = 1 and grows as the encoder's bell curve moves or narrows. The general two-Gaussian form gives each term of the diffusion variational bound. (KL divergence itself is defined in the foundations section.)",
+   "used_for": "The KL term of every Gaussian VAE; DDPM's variational bound; KL-regularized autoencoders of latent diffusion. Book: only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-gan-minimax",
+   "name": "GAN minimax objective",
+   "formula": "min over G of max over D of V(D, G) = E_(x ~ p_data)[ln D(x)] + E_(z ~ p(z))[ln(1 − D(G(z)))]",
+   "meaning": "G is the generator mapping random noise z (usually from N(0, I)) to a fake sample G(z); D is the discriminator, outputting the probability that its input is real; p_data is the real-data distribution. D tries to maximize V (tell real from fake), G to minimize it (fool D); training alternates gradient steps. Variants merged here: conditional GANs (feed a label or image to both networks; pix2pix adds λ × L1 reconstruction with λ = 100), CycleGAN's cycle-consistency loss ||F(G(x)) − x||_1, and StyleGAN's truncation trick w' = w̄ + ψ × (w − w̄) (ψ below 1 trades variety for quality).",
+   "used_for": "GANs (Goodfellow et al. 2014), StyleGAN faces, image-to-image translation; GAN losses survive in 2025-2026 as parts of other systems: VQGAN and VAE tokenizers, HiFi-GAN-style vocoders and audio codecs, and adversarial few-step distillation (SDXL-Turbo's ADD, DMD2). Book: Ch 16 (GANs: the forger and the detective).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-gan-optimal-d",
+   "name": "Optimal discriminator and the Jensen–Shannon view of GANs",
+   "formula": "D*(x) = p_data(x) ÷ (p_data(x) + p_g(x)); V(D*, G) = −ln(4) + 2 × JSD(p_data || p_g)",
+   "meaning": "p_g is the distribution of generated samples; JSD is the Jensen–Shannon divergence, 0.5 × KL(p || m) + 0.5 × KL(q || m) with m = (p + q) ÷ 2, between 0 and ln(2). The global optimum is p_g = p_data, where D* = 0.5 everywhere and V = −ln(4). When real and fake distributions barely overlap the JSD saturates at ln(2) and gives vanishing gradients, which motivated the non-saturating and Wasserstein losses.",
+   "used_for": "GAN theory (Goodfellow et al. 2014; Goodfellow, Bengio and Courville ch. 20; CS236). Book: only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-gan-nonsat",
+   "name": "Non-saturating GAN losses (generator and discriminator)",
+   "formula": "loss_D = −E_x[ln D(x)] − E_z[ln(1 − D(G(z)))]; loss_G = −E_z[ln D(G(z))] (instead of minimizing E_z[ln(1 − D(G(z)))]); with logits l and D = sigmoid(l): loss_G = E[softplus(−l(G(z)))], loss_D = E[softplus(−l(x))] + E[softplus(l(G(z)))], softplus(a) = ln(1 + e^a)",
+   "meaning": "Same fixed point as the minimax game, but the generator gets strong gradients early on, when the discriminator easily rejects fakes (D(G(z)) near 0, where ln(1 − D) is flat). The discriminator loss is ordinary binary cross-entropy with real = 1 and fake = 0.",
+   "used_for": "Default GAN loss in DCGAN and StyleGAN 1-3. Book: Ch 16 describes both losses in words ('82% real', '35% real').",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-wgan",
+   "name": "Wasserstein GAN critic objective and gradient penalty (WGAN, WGAN-GP)",
+   "formula": "W(p_data, p_g) = max over 1-Lipschitz f of (E_(x ~ p_data)[f(x)] − E_z[f(G(z))]); critic loss L = E_z[f(G(z))] − E_x[f(x)] + λ × E_x̂[(||∇_x̂ f(x̂)|| − 1)^2], with x̂ = u × x + (1 − u) × G(z), u ~ Uniform(0, 1), λ = 10; generator loss = −E_z[f(G(z))]",
+   "meaning": "W is the earth-mover (Wasserstein-1) distance: the least 'mass × distance' needed to move one distribution onto the other; f is the critic, whose output is an unbounded score, not a probability; 1-Lipschitz means its slope never exceeds 1; ∇ is the gradient and ||·|| its length. Ways to enforce the slope limit: weight clipping to ±0.01 (original WGAN), the gradient penalty (WGAN-GP), or spectral normalization W ÷ σ_max(W) (SN-GAN, used in BigGAN discriminators).",
+   "used_for": "Stable GAN training 2017-2019; spectral normalization in SAGAN and BigGAN. Book: only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-gan-variants",
+   "name": "Hinge and least-squares GAN losses and the R1 gradient penalty",
+   "formula": "hinge: loss_D = E_x[max(0, 1 − D(x))] + E_z[max(0, 1 + D(G(z)))], loss_G = −E_z[D(G(z))]; least squares (LSGAN): loss_D = E_x[(D(x) − 1)^2] + E_z[D(G(z))^2], loss_G = E_z[(D(G(z)) − 1)^2]; R1 = (γ ÷ 2) × E_(x ~ p_data)[||∇_x D(x)||^2]",
+   "meaning": "D outputs a raw score; hinge pushes real scores above 1 and fake scores below −1; LSGAN regresses real to 1 and fake to 0; R1 penalizes the discriminator's slope on real data with weight γ, which stabilizes training. HiFi-GAN combines LSGAN with a mel-spectrogram L1 loss and a feature-matching loss.",
+   "used_for": "Hinge: SAGAN, BigGAN, VQGAN tokenizers, adversarial diffusion distillation (SDXL-Turbo). LSGAN: HiFi-GAN vocoders and many neural audio codecs. R1: StyleGAN2 and StyleGAN3. Book: only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-change-of-vars",
+   "name": "Change of variables for normalizing flows (log-determinant of the Jacobian)",
+   "formula": "ln p_x(x) = ln p_z(f(x)) + ln |det(J_f(x))|, where J_f(x) is the matrix of partial derivatives ∂f_i ÷ ∂x_j; for a stack f = f_K ∘ ... ∘ f_1: ln p_x(x) = ln p_z(z_K) + sum over k of ln |det(J_(f_k))|; to sample: z ~ N(0, I), x = f^(−1)(z)",
+   "meaning": "f is an invertible network mapping data x to a latent z of the same size; p_z a simple base density (standard normal); det the determinant, which measures how much f stretches or squeezes volume near x; |·| absolute value; ∘ means 'applied after'. Gives exact likelihoods, so flows train by maximizing ln p_x(x) directly.",
+   "used_for": "RealNVP (2016), Glow (2018), WaveGlow audio; flows were revived for high-resolution images by Apple's TARFlow (2024) and STARFlow (June 2025, Transformer autoregressive flows in a pretrained autoencoder's latent space). Book: Ch 16 (Normalizing flows) explains it in words.",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-coupling",
+   "name": "Affine coupling layers and autoregressive flows",
+   "formula": "split x into (x_a, x_b): y_a = x_a; y_b = x_b × exp(s(x_a)) + t(x_a); ln |det J| = sum over j of s(x_a)_j; inverse x_b = (y_b − t(y_a)) × exp(−s(y_a))",
+   "meaning": "s and t are any neural networks (scale and shift); because y_a copies x_a, the Jacobian is triangular and its determinant is just exp(sum of s), cheap to compute. Variants: Glow's invertible 1 × 1 convolution (ln |det| = height × width × ln |det W|); autoregressive flows (MAF, IAF, TARFlow), where each dimension's scale and shift depend on all earlier dimensions.",
+   "used_for": "RealNVP, Glow, WaveGlow; TARFlow and STARFlow (Apple, 2024-2025). Book: only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-cnf",
+   "name": "Continuous normalizing flow (instantaneous change of variables)",
+   "formula": "dx ÷ dt = v_θ(x, t); d ln p(x(t)) ÷ dt = −trace(∂v_θ ÷ ∂x); so ln p_1(x(1)) = ln p_0(x(0)) − integral from 0 to 1 of trace(∂v_θ ÷ ∂x) dt; Hutchinson estimate trace(A) ≈ ε^T × A × ε with ε ~ N(0, I)",
+   "meaning": "v_θ is a velocity-field network; trace is the sum of the diagonal (here, the divergence of v); the integral is computed alongside the sample by an ODE solver. This is how flow-matching and probability-flow-ODE models report exact likelihoods.",
+   "used_for": "Neural ODEs and FFJORD (2018); likelihood evaluation of diffusion and flow-matching models. Book: only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-ebm",
+   "name": "Energy-based model and the partition function (Boltzmann distribution)",
+   "formula": "p_θ(x) = exp(−E_θ(x) ÷ T) ÷ Z(θ); Z(θ) = sum over all x of exp(−E_θ(x) ÷ T) (an integral for continuous x); RBM energy E(v, h) = −a · v − b · h − v^T × W × h; Hopfield energy E(s) = −0.5 × sum over i, j of w_ij × s_i × s_j",
+   "meaning": "E_θ is the energy score (low for realistic data); T the temperature (often 1); Z the partition function, the normalizing total, intractable for images. RBM: v visible units, h hidden units, a and b biases, W weights. Hopfield network: s_i = ±1 unit states, w_ij symmetric weights; updates only lower the energy, so stored memories are valleys. Softmax is the special case of a finite set with E = −score.",
+   "used_for": "Boltzmann machines (1985), restricted Boltzmann machines and deep belief networks (2006), Hopfield networks (2024 Nobel Prize in Physics to Hopfield and Hinton); energy-based framing of JEPA world models. Book: Ch 16 (Energy-based models and Boltzmann machines; Partition function definition).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-ebm-grad",
+   "name": "Maximum-likelihood gradient of an energy-based model (contrastive divergence)",
+   "formula": "∇_θ ln p_θ(x) = −∇_θ E_θ(x) + E_(x' ~ p_θ)[∇_θ E_θ(x')]; RBM weight update ΔW = η × (E_data[v × h^T] − E_model[v × h^T]); CD-k approximates the model average with k Gibbs (or Langevin) steps started at the data",
+   "meaning": "The first term lowers the energy of real data ('positive phase'), the second raises the energy of the model's own samples ('negative phase'); that second average needs samples from the model, which is why EBM training needs MCMC. η is the learning rate.",
+   "used_for": "Training RBMs and deep belief networks (Hinton 2002, 2006); modern EBM training. Book: only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-langevin",
+   "name": "Langevin dynamics sampling (and annealed Langevin)",
+   "formula": "x_(k+1) = x_k + (η ÷ 2) × ∇_x ln p(x_k) + sqrt(η) × z_k, with z_k ~ N(0, I); for an EBM ∇_x ln p(x) = −∇_x E(x)",
+   "meaning": "η is the step size; ∇_x ln p(x) is the score, the direction in which data becomes more likely; the injected noise z keeps samples diverse, and with small steps and many iterations the samples come from p. Annealed Langevin (NCSN) runs it at a decreasing sequence of noise levels σ_1 > ... > σ_L using a learned score s_θ(x, σ).",
+   "used_for": "Sampling EBMs; NCSN (Song and Ermon 2019); the stochastic 'corrector' step of predictor–corrector diffusion samplers; SGLD for Bayesian neural networks. Book: Ch 16 (Score-based models: diffusion's twin) in words.",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-score-matching",
+   "name": "Score matching (Hyvärinen) and sliced score matching",
+   "formula": "L(θ) = E_(x ~ p_data)[0.5 × ||s_θ(x)||^2 + trace(∇_x s_θ(x))], which equals 0.5 × E[||s_θ(x) − ∇_x ln p_data(x)||^2] up to a constant; sliced version: E_(x, v)[v^T × ∇_x s_θ(x) × v + 0.5 × (v^T × s_θ(x))^2]",
+   "meaning": "s_θ(x) is a network estimating the score ∇_x ln p(x); trace(∇_x s_θ) is its divergence. The trick avoids needing the true score or the partition function. Sliced score matching uses random projection vectors v to avoid computing the full Jacobian.",
+   "used_for": "Training EBMs without Z; the theoretical root of score-based diffusion (Song and Ermon 2019; Song et al. 2021). Book: only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-dsm",
+   "name": "Denoising score matching",
+   "formula": "x̃ = x + σ × ε; L(θ) = E_(x, ε)[||s_θ(x̃, σ) − ∇_x̃ ln q(x̃ | x)||^2] = E[||s_θ(x̃, σ) + (x̃ − x) ÷ σ^2||^2] = E[||s_θ(x̃, σ) + ε ÷ σ||^2]; multi-scale training weights each noise level by λ(σ) = σ^2",
+   "meaning": "x is clean data, ε standard-normal noise, σ the noise level, x̃ the noisy sample, q(x̃ | x) the Gaussian noising distribution, whose score is −(x̃ − x) ÷ σ^2 (Vincent 2011). Regressing onto it learns the score of the noised data distribution. With weight σ^2 the loss becomes ||σ × s_θ + ε||^2: DDPM's noise-prediction loss in disguise.",
+   "used_for": "NCSN, score SDEs, EDM; in effect every diffusion model is trained by denoising score matching. Book: Ch 16 (Score-based models: diffusion's twin).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-score-noise",
+   "name": "Score–noise relation and Tweedie's formula",
+   "formula": "for x_t = sqrt(ᾱ_t) × x_0 + sqrt(1 − ᾱ_t) × ε: ∇_(x_t) ln q(x_t | x_0) = −ε ÷ sqrt(1 − ᾱ_t), so s_θ(x_t, t) = −ε_θ(x_t, t) ÷ sqrt(1 − ᾱ_t); Tweedie: E[x_0 | x_t] = (x_t + (1 − ᾱ_t) × ∇ ln p_t(x_t)) ÷ sqrt(ᾱ_t)",
+   "meaning": "ᾱ_t is the surviving signal fraction at step t (see the forward jump); ε_θ the noise predictor; s_θ the score model. A noise predictor and a score model are the same thing up to a scale factor, and Tweedie's formula gives the best estimate of the clean image from the score; substituting the relation gives the clean-image estimate entry.",
+   "used_for": "Switching between noise, score, clean-image and velocity parameterizations; classifier guidance; score distillation; diffusion posterior sampling for inverse problems (medical and scientific imaging). Book: only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-forward-step",
+   "name": "Diffusion forward noising step",
+   "formula": "q(x_t | x_(t−1)) = N(x_t; sqrt(1 − β_t) × x_(t−1), β_t × I), i.e. x_t = sqrt(1 − β_t) × x_(t−1) + sqrt(β_t) × ε; α_t = 1 − β_t",
+   "meaning": "x_t is the image after t noising steps (t = 1 to T, with T = 1,000 in DDPM); β_t a small noise variance for step t (e.g., 0.0001 rising to 0.02); ε standard-normal noise; I the identity matrix. Shrinking the image by sqrt(1 − β_t) keeps the total variance at 1 ('variance preserving').",
+   "used_for": "Defines DDPM (Ho et al. 2020) and every variance-preserving diffusion model. Book: Ch 16 (Part 1: the forward process).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-forward-closed",
+   "name": "Closed-form forward jump q(x_t | x_0)",
+   "formula": "ᾱ_t = α_1 × α_2 × ... × α_t = product over s ≤ t of (1 − β_s); q(x_t | x_0) = N(sqrt(ᾱ_t) × x_0, (1 − ᾱ_t) × I); x_t = sqrt(ᾱ_t) × x_0 + sqrt(1 − ᾱ_t) × ε, ε ~ N(0, I)",
+   "meaning": "ᾱ_t ('alpha bar', called a in Chapter 16) is the fraction of the original signal's variance that survives to step t; x_0 the clean image. Training jumps to any random t in one step instead of applying t small steps. Variance-exploding form (NCSN, EDM): x_t = x_0 + σ_t × ε.",
+   "used_for": "Every diffusion training step (one random t per example): DDPM, Imagen, Stable Diffusion 1.x-XL, DALL-E 2, Diffusion Policy for robots. Book: Ch 16 (Part 1: noisy pixel = sqrt(a) × clean pixel + sqrt(1 − a) × noise).",
+   "tier": "core"
+  },
+  {
+   "id": "gc-schedules",
+   "name": "Noise schedules (linear, cosine), signal-to-noise ratio and SNR loss weighting",
+   "formula": "linear: β_t evenly spaced from 10^−4 to 0.02 over T = 1,000; cosine: ᾱ_t = f(t) ÷ f(0), f(t) = cos(((t ÷ T + s) ÷ (1 + s)) × π ÷ 2)^2, s = 0.008, β_t = min(1 − ᾱ_t ÷ ᾱ_(t−1), 0.999); SNR(t) = ᾱ_t ÷ (1 − ᾱ_t); log-SNR λ_t = ln(SNR(t)); min-SNR-γ weight w_t = min(SNR(t), γ) ÷ SNR(t), γ = 5",
+   "meaning": "The schedule sets how fast the signal fades. Cosine (Nichol and Dhariwal 2021) destroys information more evenly than linear. SNR is signal power divided by noise power; Kingma et al.'s VDM showed the diffusion loss depends on the schedule mainly through SNR. Stable Diffusion's 'scaled linear' schedule spaces sqrt(β) evenly from sqrt(0.00085) to sqrt(0.012). Zero-terminal-SNR (Lin et al. 2023) rescales so ᾱ_T = 0 (pure noise at the last step; needs v-prediction). Min-SNR weighting (Hang et al. 2023) speeds convergence. Flow models express the schedule through timestep sampling instead (separate entry).",
+   "used_for": "DDPM, improved DDPM, Stable Diffusion 1.x/2.x/XL, SNR-weighted training recipes. Book: Ch 16 (Noise schedule definition).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-ddpm-loss",
+   "name": "DDPM simplified loss (noise prediction)",
+   "formula": "L_simple = E_(t, x_0, ε)[||ε − ε_θ(sqrt(ᾱ_t) × x_0 + sqrt(1 − ᾱ_t) × ε, t)||^2], with t uniform in 1..T and ε ~ N(0, I); conditional version ε_θ(x_t, t, c)",
+   "meaning": "ε_θ is the denoiser network (U-Net or Transformer) with weights θ, predicting the noise that was added; c a condition such as a text embedding. It is a mean squared error, equal to the variational bound with its per-step weights dropped. Latent diffusion uses z_0 = encoder(x) in place of x_0.",
+   "used_for": "DDPM, Imagen, DALL-E 2, Stable Diffusion 1.x to XL, Diffusion Policy (robot actions, 2023), the per-token 'diffusion loss' of MAR (2024). Book: Ch 16 (Part 2: training, learning to spot the noise).",
+   "tier": "core"
+  },
+  {
+   "id": "gc-diffusion-vlb",
+   "name": "Diffusion variational bound and the forward-process posterior",
+   "formula": "−ln p_θ(x_0) ≤ L_VLB = KL(q(x_T | x_0) || p(x_T)) + sum over t ≥ 2 of E_q[KL(q(x_(t−1) | x_t, x_0) || p_θ(x_(t−1) | x_t))] − E_q[ln p_θ(x_0 | x_1)]; q(x_(t−1) | x_t, x_0) = N(μ̃_t, β̃_t × I), μ̃_t = (sqrt(ᾱ_(t−1)) × β_t ÷ (1 − ᾱ_t)) × x_0 + (sqrt(α_t) × (1 − ᾱ_(t−1)) ÷ (1 − ᾱ_t)) × x_t, β̃_t = ((1 − ᾱ_(t−1)) ÷ (1 − ᾱ_t)) × β_t",
+   "meaning": "Diffusion seen as a deep VAE whose encoder (the noising) is fixed. Each KL compares two Gaussians and, with the noise parameterization, reduces to a weighted ||ε − ε_θ||^2; dropping the weights gives L_simple. μ̃_t and β̃_t are the mean and variance of one step back when the clean image is known. Improved DDPM also learns the variances with a hybrid loss L_simple + 0.001 × L_VLB.",
+   "used_for": "Theory and likelihood reporting (bits per dimension); learned-variance models (improved DDPM, ADM, DiT). Book: only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-x0",
+   "name": "Clean-image estimate from a noise prediction",
+   "formula": "x̂_0 = (x_t − sqrt(1 − ᾱ_t) × ε_θ(x_t, t)) ÷ sqrt(ᾱ_t)",
+   "meaning": "Inverts the forward jump using the predicted noise. At high noise the estimate is blurry, an average of all plausible images; it sharpens as t falls. Used inside DDIM, guidance and in-progress previews.",
+   "used_for": "Every diffusion sampler; live previews in image tools. Book: Ch 16 (Part 3: estimated clean pixel = (noisy − sqrt(1 − a) × predicted noise) ÷ sqrt(a)).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-ddpm-reverse",
+   "name": "DDPM reverse sampling step (ancestral sampling)",
+   "formula": "x_(t−1) = (1 ÷ sqrt(α_t)) × (x_t − (β_t ÷ sqrt(1 − ᾱ_t)) × ε_θ(x_t, t)) + σ_t × z, z ~ N(0, I) (z = 0 at the final step), σ_t^2 = β_t or β̃_t; start from x_T ~ N(0, I)",
+   "meaning": "Remove a scaled share of the predicted noise, rescale, then add a little fresh noise; repeat for t = T down to 1 (1,000 steps originally). Equivalent to sampling from the posterior N(μ̃_t, σ_t^2) with x̂_0 plugged in.",
+   "used_for": "Original DDPM sampling; 'ancestral' samplers (such as Euler ancestral) in Stable Diffusion tools. Book: Ch 16 (Part 3: the reverse process).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-ddim",
+   "name": "DDIM step (deterministic and η-stochastic)",
+   "formula": "x_(t−1) = sqrt(ᾱ_(t−1)) × x̂_0 + sqrt(1 − ᾱ_(t−1) − σ_t^2) × ε_θ(x_t, t) + σ_t × z, with σ_t = η × sqrt((1 − ᾱ_(t−1)) ÷ (1 − ᾱ_t)) × sqrt(1 − ᾱ_t ÷ ᾱ_(t−1)); η = 0 is deterministic, η = 1 recovers DDPM",
+   "meaning": "'Predict the clean image, then re-noise it to the next lower noise level along the predicted noise direction.' t − 1 can be replaced by any earlier step, so 1,000 training steps can be sampled in about 50. Deterministic sampling means the same seed gives the same image and allows DDIM inversion (image to noise) for editing.",
+   "used_for": "DDIM (Song, Meng and Ermon 2020), a default sampler in many Stable Diffusion pipelines; DDIM inversion for image editing. Book: Ch 16 (Samplers and step counts; DDIM definition).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-vpred",
+   "name": "v-prediction (velocity parameterization) and other prediction targets",
+   "formula": "v_t = sqrt(ᾱ_t) × ε − sqrt(1 − ᾱ_t) × x_0; loss ||v_t − v_θ(x_t, t)||^2; recover x̂_0 = sqrt(ᾱ_t) × x_t − sqrt(1 − ᾱ_t) × v_θ and ε̂ = sqrt(1 − ᾱ_t) × x_t + sqrt(ᾱ_t) × v_θ",
+   "meaning": "The target mixes noise and image, so it stays well behaved at both ends of the schedule (needed for zero-terminal SNR). With the trigonometric form sqrt(ᾱ) = cos(φ), sqrt(1 − ᾱ) = sin(φ), v is the rate of change of x_t with angle φ. Other targets: ε-prediction (DDPM), x_0-prediction, EDM's F-prediction and flow-matching velocity.",
+   "used_for": "Progressive distillation (Salimans and Ho 2022), Imagen Video, Stable Diffusion 2.x 768-pixel models, zero-terminal-SNR models; the TrigFlow form of OpenAI's continuous-time consistency models (2024). Book: only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-sde",
+   "name": "Stochastic differential equation (SDE) view of diffusion: forward and reverse SDE",
+   "formula": "forward dx = f(x, t) dt + g(t) dw; reverse-time dx = [f(x, t) − g(t)^2 × ∇_x ln p_t(x)] dt + g(t) dw̄; VP-SDE: f = −0.5 × β(t) × x, g = sqrt(β(t)); VE-SDE: f = 0, g = sqrt(d[σ(t)^2] ÷ dt)",
+   "meaning": "dt is a tiny time step; dw a random Brownian increment (Gaussian with variance dt); dw̄ the same running backward in time; f the drift and g the noise strength; ∇_x ln p_t(x) the score at time t, replaced by a learned s_θ. DDPM is a discretized VP-SDE and NCSN a VE-SDE (Song et al. 2021; the reverse SDE is Anderson 1982).",
+   "used_for": "Unifying framework for diffusion; SDE samplers (Euler–Maruyama, predictor–corrector, DPM-Solver-SDE). Book: only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-pfode",
+   "name": "Probability-flow ODE",
+   "formula": "dx ÷ dt = f(x, t) − 0.5 × g(t)^2 × ∇_x ln p_t(x); EDM form dx ÷ dσ = −σ × ∇_x ln p(x; σ) = (x − D(x; σ)) ÷ σ",
+   "meaning": "A deterministic path whose marginal distributions p_t match those of the SDE, so solving it backward from noise generates samples without injected noise. D(x; σ) is the denoiser's clean-image estimate at noise level σ. Enables exact likelihoods (via the continuous-flow formula), fast high-order solvers and deterministic encoding; DDIM is a discretization of it.",
+   "used_for": "DDIM, DPM-Solver/DPM-Solver++, UniPC, EDM's Heun sampler; consistency models distill along its trajectories. Book: only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-edm",
+   "name": "EDM design (Karras et al. 2022): preconditioning, loss weighting and Karras step schedule",
+   "formula": "x = x_0 + σ × ε; D_θ(x; σ) = c_skip(σ) × x + c_out(σ) × F_θ(c_in(σ) × x; c_noise(σ)), c_skip = σ_data^2 ÷ (σ^2 + σ_data^2), c_out = σ × σ_data ÷ sqrt(σ^2 + σ_data^2), c_in = 1 ÷ sqrt(σ^2 + σ_data^2), c_noise = ln(σ) ÷ 4; loss λ(σ) × ||D_θ(x; σ) − x_0||^2, λ = (σ^2 + σ_data^2) ÷ (σ × σ_data)^2, ln σ ~ N(−1.2, 1.2^2); steps σ_i = (σ_max^(1/ρ) + (i ÷ (N − 1)) × (σ_min^(1/ρ) − σ_max^(1/ρ)))^ρ with σ_max = 80, σ_min = 0.002, ρ = 7, σ_data = 0.5",
+   "meaning": "F_θ is the raw network; the c-coefficients keep its input and target at unit variance at every noise level; σ_data is the data's standard deviation; N the number of sampling steps. The ρ = 7 'Karras sigmas' spend more steps at low noise, where detail is decided.",
+   "used_for": "EDM and EDM2 (NVIDIA); 'Karras' sigma schedules in diffusers (use_karras_sigmas) and ComfyUI; the parameterization of consistency models. Book: only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-ode-solver",
+   "name": "ODE sampler steps (Euler and Heun) for flow and diffusion models",
+   "formula": "Euler: x_(t + Δt) = x_t + Δt × v_θ(x_t, t); Heun: x' = x_t + Δt × v_θ(x_t, t), then x_(t + Δt) = x_t + (Δt ÷ 2) × (v_θ(x_t, t) + v_θ(x', t + Δt)); for diffusion in EDM form use v = (x − D(x; σ)) ÷ σ and step in σ",
+   "meaning": "Δt is the step size (N steps of size 1 ÷ N); v_θ the model's velocity. Euler costs one network call per step; Heun costs two but its error shrinks like Δt^2 (second order). DPM-Solver++, UniPC and DEIS are higher-order multistep variants built for diffusion.",
+   "used_for": "Sampling in SD3, FLUX and Wan (diffusers' FlowMatchEulerDiscreteScheduler is an Euler solver); Heun in EDM; DPM-Solver++ in many Stable Diffusion pipelines. Book: Ch 16 (Flow matching: one step of size 0.5; Exercise 9).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-classifier-guidance",
+   "name": "Classifier guidance",
+   "formula": "∇_x ln p(x_t | y) = ∇_x ln p(x_t) + ∇_x ln p(y | x_t); guided noise ε̂ = ε_θ(x_t, t) − w × sqrt(1 − ᾱ_t) × ∇_(x_t) ln p_φ(y | x_t)",
+   "meaning": "y is the desired label or caption; p_φ(y | x_t) a separately trained classifier that works on noisy images; w the guidance scale (the model then samples roughly from p(x) × p(y | x)^w). It is Bayes' rule in gradient form, where the normalizer p(y) drops out. Variants: CLIP guidance, universal guidance with any differentiable loss, and diffusion posterior sampling (DPS) for inverse problems, which uses ∇ ln p(measurement | x̂_0).",
+   "used_for": "ADM, 'Diffusion Models Beat GANs' (Dhariwal and Nichol 2021); CLIP-guided diffusion (2021); reward-guided and inverse-problem sampling in scientific and medical imaging. Book: only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-cfg",
+   "name": "Classifier-free guidance (CFG)",
+   "formula": "ε̃ = ε_θ(x_t, ∅) + w × (ε_θ(x_t, c) − ε_θ(x_t, ∅)), equivalently (1 + w') × ε_cond − w' × ε_uncond with w = 1 + w'; the same form for velocities: ṽ = v_uncond + w × (v_cond − v_uncond)",
+   "meaning": "ε_θ(x_t, ∅) is the unconditional prediction (empty or negative prompt); ε_θ(x_t, c) the prediction conditioned on prompt c; w the guidance scale (w = 1 means no guidance; 7.5 was the classic Stable Diffusion default; flow models often use about 3 to 5). Training drops the condition about 10 to 20% of the time so one network learns both. Each step costs two network passes. Variants: negative prompts (replace ∅), guidance rescale (Lin et al. 2023), guidance applied only in an interval of noise levels, guidance distillation (FLUX.1 [dev] takes the guidance scale as an input), autoguidance (Karras et al. 2024, guiding with a weaker version of the same model), and CFG on the logits of autoregressive image models.",
+   "used_for": "Virtually every text-to-image, video and audio diffusion or flow model: Stable Diffusion, SDXL, SD3, FLUX, Imagen, Wan, Stable Audio; also Parti and LlamaGen. Book: Ch 16 (Classifier-free guidance: guided prediction = u + w × (c − u)).",
+   "tier": "core"
+  },
+  {
+   "id": "gc-latent-diffusion",
+   "name": "Latent diffusion: autoencoder compression factor and latent size",
+   "formula": "z = E(x), x ≈ D(z); image H × W × 3 → latent (H ÷ f) × (W ÷ f) × c; compression = (H × W × 3) ÷ ((H ÷ f) × (W ÷ f) × c) = 3 × f^2 ÷ c; video latent frames = 1 + (T − 1) ÷ f_t; latent scaling z' = s × z (s = 0.18215 for Stable Diffusion 1.x)",
+   "meaning": "E and D are the encoder and decoder of a VAE trained first (with reconstruction, perceptual, adversarial and a small KL loss); f the spatial downsampling factor (8 in Stable Diffusion, SD3 and FLUX; 32 or 64 in DC-AE); c the latent channels (4 in SD 1.x and SDXL, 16 in SD3, FLUX and Wan); T the number of video frames and f_t the temporal factor (4 in Wan and HunyuanVideo); s rescales latents to unit variance. Diffusion then runs on z with the usual loss. Worked: 512 × 512 × 3 = 786,432 numbers become 64 × 64 × 4 = 16,384, 48 times fewer.",
+   "used_for": "Stable Diffusion (2022) onward: SDXL, SD3, FLUX, SANA (DC-AE), Sora-style and open video models such as Wan 2.1 (4 × 8 × 8 compression, 16 channels) and HunyuanVideo. Book: Ch 16 (Latent diffusion: 48 times smaller; Video generation: video VAE).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-dit",
+   "name": "Diffusion Transformer (DiT): patch-token count and adaLN-Zero conditioning",
+   "formula": "tokens N = (h ÷ p) × (w ÷ p) for an h × w × c latent with patch size p; video N = t' × (h ÷ p) × (w ÷ p); adaLN: y = (1 + γ(c)) × LayerNorm(x) + β(c); residual x + α(c) × Block(y), with α initialized to 0",
+   "meaning": "p is the patch size (2 is typical); t' the number of latent frames; γ, β and α are scale, shift and gate vectors predicted from the conditioning c (timestep embedding plus class label or pooled text). Zero-initialized gates make each block start as the identity, which stabilizes training. Attention cost grows with N^2. Text enters through cross-attention or, in MM-DiT (SD3, FLUX), joint attention over text and image tokens. Worked: a 1,024 × 1,024 image → 128 × 128 × 16 latent (f = 8) → 2 × 2 patches give 64 × 64 = 4,096 tokens.",
+   "used_for": "DiT (Peebles and Xie 2023), Sora, SD3, FLUX, Wan, HunyuanVideo, Movie Gen; nearly all 2025-2026 image and video generators use a Transformer denoiser. Book: Ch 16 (The Diffusion Transformer (DiT); Exercise 7).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-sdedit",
+   "name": "Image-to-image strength (SDEdit) and inpainting by re-noising",
+   "formula": "pick t_0 = strength × T; x_(t_0) = sqrt(ᾱ_(t_0)) × x_guide + sqrt(1 − ᾱ_(t_0)) × ε; run the reverse sampler from t_0 down to 0; steps actually run ≈ strength × num_inference_steps; flow-model form: start from (1 − s) × x_guide + s × ε, with noise share s = strength",
+   "meaning": "x_guide is the input image (sketch, photo, low-resolution render); strength between 0 and 1 sets how much is regenerated (0 keeps the input, 1 ignores it). Inpainting variants keep the known region by re-noising it to each level and pasting it back (RePaint), or use a model trained with an extra mask channel.",
+   "used_for": "img2img in Stable Diffusion tools and diffusers ('strength'), 'hires fix' upscaling, editing workflows. Book: only here (Ch 47 covers editing in words).",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-controlnet",
+   "name": "ControlNet zero-convolution injection (and image-prompt adapters)",
+   "formula": "y_c = F(x; Θ) + Z(F_copy(x + Z(c; Θ_z1); Θ_c); Θ_z2)",
+   "meaning": "F is a frozen pretrained block with weights Θ; F_copy its trainable copy with weights Θ_c; c the control image's features (edge map, pose skeleton, depth map); Z a 1 × 1 convolution whose weights and bias start at zero, so at the start y_c = F(x; Θ) exactly and training cannot damage the base model. Edge maps for control usually come from the Canny detector, built on Sobel gradient magnitude sqrt(G_x^2 + G_y^2). Related: IP-Adapter's decoupled cross-attention Attn(Q, K_text, V_text) + λ × Attn(Q, K_image, V_image) for image prompts; T2I-Adapter.",
+   "used_for": "ControlNet (Zhang et al. 2023) in Stable Diffusion, SDXL and FLUX ecosystems: pose, depth and edge control. Book: Ch 16 (Control and customization: ControlNet).",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-personalize",
+   "name": "Personalization objectives (DreamBooth prior preservation, textual inversion)",
+   "formula": "DreamBooth: L = E[||ε − ε_θ(x_t, t, c_subject)||^2] + λ × E[||ε' − ε_θ(x'_t, t, c_class)||^2]; textual inversion: v* = argmin over v of E[||ε − ε_θ(z_t, t, τ(prompt containing v))||^2]",
+   "meaning": "c_subject is a prompt with a rare identifier ('a [V] dog'); x' are images the frozen model generated for the plain class prompt c_class ('a dog'), and the second term (weight λ, often 1) preserves the model's knowledge of the class; textual inversion trains only a new word embedding v, with the model frozen; τ is the text encoder. In practice usually combined with LoRA (covered in the LLM section).",
+   "used_for": "DreamBooth and textual inversion (2022); diffusers' DreamBooth-LoRA training scripts; product and character consistency in image tools. Book: only here (Ch 16 covers LoRA customization).",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-fm-interp",
+   "name": "Straight-line interpolation path (rectified flow / optimal-transport path)",
+   "formula": "x_t = (1 − t) × x_0 + t × x_1, t from 0 to 1, x_0 ~ N(0, I) noise, x_1 data; general Gaussian path x_t = α_t × x_1 + σ_t × x_0; Lipman's OT path x_t = t × x_1 + (1 − (1 − σ_min) × t) × x_0",
+   "meaning": "t is time: 0 is pure noise and 1 is data in this (Chapter 16's and Lipman's) convention; SD3, FLUX and diffusers flip it, writing x_t = (1 − t) × x_data + t × noise. α_t and σ_t give a general schedule; diffusion's sqrt(ᾱ_t), sqrt(1 − ᾱ_t) is a special case (the 'stochastic interpolants' view). σ_min is a tiny noise floor.",
+   "used_for": "Rectified flow (Liu et al. 2022) and flow matching (Lipman et al. 2022): SD3, FLUX, Wan (whose report trains on this linear interpolation), HunyuanVideo, Movie Gen; Physical Intelligence's π0 robot policy (flow-matching actions); Voicebox and F5-TTS speech. Book: Ch 16 (Flow matching: x(t) = (1 − t) × noise + t × data).",
+   "tier": "core"
+  },
+  {
+   "id": "gc-cfm-loss",
+   "name": "Conditional flow-matching loss (velocity target x_1 − x_0)",
+   "formula": "L = E_(t, x_0, x_1)[||v_θ(x_t, t) − (x_1 − x_0)||^2]; for a general path the target is u_t = α'_t × x_1 + σ'_t × x_0 (time derivatives); conversions: x̂_1 = x_t + (1 − t) × v_θ, x̂_0 = x_t − t × v_θ",
+   "meaning": "v_θ is the network predicting velocity; the target is constant along each straight line; the regression's optimum is the average velocity through each point, a field that carries the noise distribution to the data distribution. Generation integrates dx ÷ dt = v_θ from noise (ODE sampler entry). Reflow (rectified flow): regenerate (noise, sample) pairs with the trained model and retrain to straighten paths further (InstaFlow). Conditioning and CFG work as in diffusion.",
+   "used_for": "Training SD3, FLUX, Wan, HunyuanVideo, Movie Gen, π0, F5-TTS; flow matching is a default for new image and video generators in 2025-2026. Book: Ch 16 (Flow matching and rectified flow: velocity = data − noise).",
+   "tier": "core"
+  },
+  {
+   "id": "gc-timestep-sampling",
+   "name": "Timestep sampling and resolution shift for flow models (logit-normal, shift)",
+   "formula": "logit-normal: t = sigmoid(u) = 1 ÷ (1 + exp(−u)), u ~ N(m, s^2) (SD3: m = 0, s = 1); shift: t' = α × t ÷ (1 + (α − 1) × t) (SD3 uses α = 3 at 1,024 pixels; α = sqrt(m_pixels ÷ n_pixels) when changing resolution from n to m pixels); here t is the noise share, as in SD3",
+   "meaning": "Training spends more examples at middle noise levels, which are hardest to learn. The shift moves sampling toward noisier steps for bigger images, because more pixels keep more recognizable signal at the same noise level. FLUX uses a resolution-dependent shift (diffusers' use_dynamic_shifting, with base_shift 0.5 and max_shift 1.15 by default).",
+   "used_for": "SD3 (Esser et al. 2024), FLUX, many 2025 video models; diffusers' FlowMatchEulerDiscreteScheduler. Book: only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-consistency",
+   "name": "Consistency models (consistency function and training loss)",
+   "formula": "f_θ(x_t, t) = c_skip(t) × x_t + c_out(t) × F_θ(x_t, t), with c_skip(ε) = 1 and c_out(ε) = 0 so f_θ(x_ε, ε) = x_ε; loss E[λ(t_n) × d(f_θ(x_(t_(n+1)), t_(n+1)), f_(θ⁻)(x̂_(t_n), t_n))]; θ⁻ ← μ × θ⁻ + (1 − μ) × θ (or a stop-gradient copy); one-step sample x = f_θ(x_T, T)",
+   "meaning": "f maps any point on a probability-flow-ODE trajectory to the trajectory's start (the clean image); ε is the smallest time; x̂_(t_n) is one ODE step back from x_(t_(n+1)), taken with a teacher model (consistency distillation) or from the same noise (consistency training); d is a distance (squared error, LPIPS, or pseudo-Huber sqrt(||a − b||^2 + k^2) − k); θ⁻ an EMA or stop-gradient copy. Variants: latent consistency models (LCM, LCM-LoRA), continuous-time consistency models (sCM, OpenAI, ICLR 2025: 2-step FID 1.88 on ImageNet 512 × 512), shortcut models.",
+   "used_for": "Few-step and real-time image generation (LCM in Stable Diffusion tools); research one-step generators. Book: Ch 16 (Distillation: from 50 steps to 1).",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-meanflow",
+   "name": "MeanFlow average velocity (one-step flow models)",
+   "formula": "u(z_t, r, t) = (1 ÷ (t − r)) × integral from r to t of v(z_τ, τ) dτ; MeanFlow identity u(z_t, r, t) = v(z_t, t) − (t − r) × (d ÷ dt) u(z_t, r, t); one-step sample z_r = z_t − (t − r) × u(z_t, r, t), from t = 1 (noise) to r = 0 (data)",
+   "meaning": "v is the instantaneous velocity of flow matching; u the average velocity over the interval from r to t, so one jump of length (t − r) lands exactly; d ÷ dt is the total derivative along the path, computed with a Jacobian-vector product. Training regresses u_θ onto a stop-gradient copy of the identity's right-hand side. Convention here: t = 1 is noise (as in SD3).",
+   "used_for": "MeanFlow (Geng, Deng, Bai, Kolter and He, May 2025): one-network-evaluation FID 3.43 on ImageNet 256 × 256, trained from scratch; part of the 2025-2026 push toward one-step generators. Book: only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-score-distill",
+   "name": "Score distillation gradients (SDS, DMD) and adversarial distillation",
+   "formula": "SDS: ∇_θ L_SDS = E_(t, ε)[w(t) × (ε_φ(x_t; y, t) − ε) × ∂x ÷ ∂θ], with x = g(θ); DMD: ∇_θ KL(p_fake || p_real) ≈ E_(z, t)[w_t × (s_fake(x_t, t) − s_real(x_t, t)) × ∂G_θ(z) ÷ ∂θ]",
+   "meaning": "SDS: g(θ) is a differentiable renderer (such as a NeRF with parameters θ), ε_φ a frozen text-to-image diffusion model, y the prompt; the gradient pushes rendered images toward images the diffusion model finds likely. DMD: G_θ is a one-step generator; s_real the frozen teacher's score; s_fake the score of a helper model trained online on the generator's own outputs; their difference points from 'fake' toward 'real'. Variants: VSD (ProlificDreamer), DMD2 (adds a GAN loss), adversarial diffusion distillation ADD (SDXL-Turbo: GAN loss plus distillation), progressive distillation (halve the step count each round).",
+   "used_for": "DreamFusion text-to-3D (2022); one- to four-step generators such as SDXL-Turbo and DMD2, and fast video models. Book: Ch 16 (Distillation: from 50 steps to 1, SDXL-Turbo).",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-vq-lookup",
+   "name": "Vector quantization codebook lookup (VQ-VAE image and audio tokenizers)",
+   "formula": "k = argmin over j of ||z_e(x) − e_j||^2; z_q(x) = e_k; tokens per image = (H ÷ f) × (W ÷ f); bits per image = (H ÷ f) × (W ÷ f) × log2(K)",
+   "meaning": "z_e(x) is the encoder's output vector at one grid position; e_1, ..., e_K the codebook vectors (K entries, e.g., 8,192 or 16,384); the index k is the token; z_q the snapped vector passed to the decoder; f the downsampling factor. Worked: a 256 × 256 image with f = 16 gives 16 × 16 = 256 tokens.",
+   "used_for": "VQ-VAE (2017), VQ-VAE-2, VQGAN (2021), DALL-E 1's discrete VAE, Parti, image tokenizers of multimodal models (Chameleon, Janus, Emu3), discrete speech units. Book: Ch 16 (Autoregressive image generation; Image tokenizer (VQ-VAE) definition); Ch 22 (codebook).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-vq-loss",
+   "name": "VQ-VAE loss with codebook and commitment terms",
+   "formula": "L = −ln p(x | z_q(x)) + ||sg[z_e(x)] − e_k||^2 + β × ||z_e(x) − sg[e_k]||^2, with β = 0.25; EMA codebook variant: N_k ← γ × N_k + (1 − γ) × n_k, m_k ← γ × m_k + (1 − γ) × (sum of encoder outputs assigned to k), e_k = m_k ÷ N_k",
+   "meaning": "The first term is reconstruction (squared error in practice; VQGAN adds perceptual and GAN losses); sg[·] is stop-gradient (treated as a constant); the second term moves the chosen codebook vector toward the encoder output; the third, the commitment loss, keeps encoder outputs close to their codes, weighted by β. The EMA variant replaces the second term with running averages (γ about 0.99; n_k is how many vectors chose code k this batch). Unused 'dead' codes are often re-initialized.",
+   "used_for": "VQ-VAE, VQGAN, and the residual quantizers of neural audio codecs (SoundStream, EnCodec). Book: only here (Ch 16 describes the codebook).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-ste",
+   "name": "Straight-through estimator",
+   "formula": "forward: y = q(x) (rounding, sign, or nearest codebook vector); backward: treat ∂y ÷ ∂x = 1; implemented as y = x + sg[q(x) − x]",
+   "meaning": "q is a quantizer with zero or undefined gradient; sg is stop-gradient. The value equals q(x), but the gradient passes to x unchanged (Bengio et al. 2013), letting networks train through discrete steps.",
+   "used_for": "VQ-VAE, FSQ and LFQ tokenizers; quantization-aware training of low-bit models (the LLM section covers quantization); binary networks. Book: only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-rvq",
+   "name": "Residual vector quantization (neural audio codecs) and codec bitrate",
+   "formula": "r_0 = z; for k = 1..N_q: q_k = Q_k(r_(k−1)), r_k = r_(k−1) − q_k; z_q = q_1 + q_2 + ... + q_(N_q); bitrate = frame rate × N_q × log2(codebook size)",
+   "meaning": "z is the encoder output for one audio frame; Q_k the k-th codebook's nearest-vector lookup; r_k the residual error still left after k stages; N_q the number of codebooks per frame. Each stage encodes what earlier stages missed; dropping later codebooks lowers bitrate and quality. Worked: Kyutai's Mimi codec turns 24 kHz audio into 12.5 frames per second with 8 codebooks of 2,048 entries: 12.5 × 8 × 11 bits = 1,100 bits per second (1.1 kbps).",
+   "used_for": "SoundStream (2021), EnCodec (2022), DAC, Mimi (used by Moshi, 2024); VALL-E-style and most speech-token LLMs generate RVQ tokens. Book: Ch 46 (codec tokens in text-to-speech and music); Ch 22.",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-fsq",
+   "name": "Finite scalar quantization (FSQ) and lookup-free quantization (LFQ)",
+   "formula": "FSQ: ẑ_i = round(floor(L_i ÷ 2) × tanh(z_i)) for each dimension i (with a straight-through gradient), implicit codebook size = product over i of L_i; LFQ: q_i = sign(z_i), token index = sum over i of 2^(i − 1) × [z_i > 0], codebook size 2^d",
+   "meaning": "z_i is the i-th channel of a low-dimensional encoder output; L_i the number of allowed levels for that channel (odd L as written; even L uses a half-step offset); d the number of channels; [·] is 1 if true and 0 otherwise. No learned codebook, so no codebook collapse. Worked: levels [8, 5, 5, 5] give 8 × 5 × 5 × 5 = 1,000 codes.",
+   "used_for": "FSQ (Mentzer et al. 2023), NVIDIA Cosmos discrete tokenizers; LFQ in MAGVIT-v2 (2023). Book: only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-gumbel",
+   "name": "Gumbel-softmax (concrete) relaxation and the Gumbel-max trick",
+   "formula": "y_i = exp((ln π_i + g_i) ÷ τ) ÷ sum over j of exp((ln π_j + g_j) ÷ τ), g_i = −ln(−ln(u_i)), u_i ~ Uniform(0, 1); Gumbel-max: argmax over i of (ln π_i + g_i) is an exact sample from π",
+   "meaning": "π_i are category probabilities; g_i Gumbel noise; τ a temperature (as τ → 0, y approaches a one-hot vector). A differentiable stand-in for drawing a discrete category, the discrete cousin of the reparameterization trick.",
+   "used_for": "DALL-E 1's discrete VAE (2021) and other discrete-latent models; the Gumbel-max trick also underlies some token samplers and text watermarking schemes (decoding is covered in the LLM section). Book: only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-masked-gen",
+   "name": "Masked generative modeling and masked (discrete) diffusion",
+   "formula": "MaskGIT mask schedule γ(r) = cos(π × r ÷ 2) for progress r from 0 to 1; masked-diffusion loss L = −E_(t, x_0, x_t)[(1 ÷ t) × sum over i of [x_t^i = MASK] × ln p_θ(x_0^i | x_t)], with t ~ Uniform(0, 1) and each token masked independently with probability t",
+   "meaning": "The model predicts all masked tokens in parallel; generation starts fully masked and unmasks the most confident tokens over a few rounds. [x_t^i = MASK] is 1 for masked positions; the 1 ÷ t weighting makes the loss an upper bound on the negative log-likelihood (LLaDA, Eq. 3). General discrete diffusion (D3PM) uses q(x_t | x_(t−1)) = Cat(x_t; x_(t−1) × Q_t) with a transition matrix Q_t.",
+   "used_for": "MaskGIT (2022) and Muse (2023) image generation; diffusion language models: LLaDA (2025), LLaDA2.0, Inception Labs' Mercury, Google's Gemini Diffusion (announced May 2025). Book: Ch 16 (Diffusion language models).",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-infonce",
+   "name": "InfoNCE contrastive loss",
+   "formula": "L = −ln(exp(sim(q, k+) ÷ τ) ÷ sum over j = 0..K of exp(sim(q, k_j) ÷ τ)); mutual-information bound I(x; y) ≥ ln(K + 1) − L; MoCo momentum encoder θ_k ← m × θ_k + (1 − m) × θ_q, m = 0.999",
+   "meaning": "q is a query embedding; k+ its positive (another view of the same image, or its paired caption); k_0..k_K the positive plus K negatives; sim usually cosine similarity; τ a temperature (0.05 to 0.1 is common) that sharpens the softmax. It is cross-entropy in which the 'correct class' is the positive. MoCo keeps a queue of negatives from a slowly updated momentum encoder.",
+   "used_for": "CPC (2018), MoCo, SimCLR, CLIP, wav2vec 2.0 speech pretraining, and the text-embedding models behind retrieval (the retrieval metrics are in the classical-ML section). Book: Ch 16 (Contrastive learning and CLIP) in words.",
+   "tier": "core"
+  },
+  {
+   "id": "gc-clip",
+   "name": "CLIP symmetric contrastive loss with learned temperature",
+   "formula": "logits = exp(t) × (I_e × T_e^T), an N × N matrix of cosine similarities; L = 0.5 × (CE_rows(logits, diagonal) + CE_columns(logits, diagonal)); zero-shot classification: class = argmax over k of cos(image embedding, text embedding of 'a photo of a {k}')",
+   "meaning": "I_e and T_e are the image and text embedding matrices (N × d, each row normalized to length 1); exp(t) a learned inverse temperature (initialized to 1 ÷ 0.07 ≈ 14.3, capped at 100); CE cross-entropy; the correct answers lie on the diagonal, so each image must pick its own caption from N and each caption its own image.",
+   "used_for": "CLIP (OpenAI 2021, about 400 million pairs), OpenCLIP, ALIGN; CLIP text encoders condition Stable Diffusion 1.x and SDXL; CLIP-style vision encoders feed many multimodal LLMs. Book: Ch 16 (Contrastive learning and CLIP: a worked batch of three pairs); Ch 22.",
+   "tier": "core"
+  },
+  {
+   "id": "gc-siglip",
+   "name": "SigLIP pairwise sigmoid loss",
+   "formula": "L = −(1 ÷ N) × sum over i of sum over j of ln sigmoid(z_ij × (t' × x_i · y_j + b)), with z_ij = 1 if i = j and −1 otherwise; t' = exp(t) learned (t initialized to ln 10), b a learned bias (initialized to −10)",
+   "meaning": "x_i and y_j are normalized image and text embeddings; every image–text pair becomes its own yes/no question, so no softmax over the whole batch is needed; this is cheaper and works for both small and very large batches.",
+   "used_for": "SigLIP (Google 2023) and SigLIP 2 (February 2025, which adds captioning, self-distillation and masked-prediction losses); Gemma 3 uses a 400M-parameter SigLIP vision encoder (256 tokens per image); PaliGemma. Book: only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-simclr",
+   "name": "SimCLR NT-Xent loss (normalized temperature-scaled cross-entropy)",
+   "formula": "for N images, two augmented views each give 2N embeddings; ℓ(i, j) = −ln(exp(sim(z_i, z_j) ÷ τ) ÷ sum over k ≠ i of exp(sim(z_i, z_k) ÷ τ)); L = (1 ÷ 2N) × sum over positive pairs of (ℓ(i, j) + ℓ(j, i))",
+   "meaning": "z = g(f(x)) is the output of a small projection head g on top of the encoder f; sim cosine similarity; each embedding has 1 positive and 2N − 2 negatives; τ a temperature (about 0.1 to 0.5). The augmentations (crops, color jitter, blur) define what the network learns to ignore.",
+   "used_for": "SimCLR (Chen et al. 2020); self-supervised pretraining for vision and medical imaging. Book: only here (Ch 16 covers self-supervised learning in words).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-triplet",
+   "name": "Triplet loss and margin-based face-recognition losses",
+   "formula": "L = max(0, ||f(a) − f(p)||^2 − ||f(a) − f(n)||^2 + m); ArcFace: L = −ln(exp(s × cos(θ_y + m)) ÷ (exp(s × cos(θ_y + m)) + sum over j ≠ y of exp(s × cos(θ_j))))",
+   "meaning": "f is the embedding network; a an anchor, p a positive (same identity), n a negative (different identity); m a margin (0.2 in FaceNet). The loss pushes positives closer than negatives by at least m. ArcFace: θ_j is the angle between the face embedding and class j's weight vector, y the true identity, s a scale (64) and m an angular margin (0.5).",
+   "used_for": "FaceNet (Google 2015) and ArcFace (2019) face recognition, person re-identification, speaker verification, image retrieval. Book: only here (Ch 45 covers face recognition in words).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-dino",
+   "name": "Self-distillation without labels (DINO, BYOL-style EMA teacher)",
+   "formula": "P_t(x) = softmax((g_t(x) − c) ÷ τ_t); P_s(x') = softmax(g_s(x') ÷ τ_s); L = −sum over view pairs of sum over k of P_t(x)_k × ln P_s(x')_k; teacher θ_t ← λ × θ_t + (1 − λ) × θ_s; center c ← m × c + (1 − m) × (batch mean of g_t)",
+   "meaning": "g_s is the student and g_t the teacher network, seeing different crops (x a global crop, x' any crop); τ_s ≈ 0.1 and τ_t ≈ 0.04 to 0.07 (a sharper teacher); centering by c and sharpening prevent collapse to a constant output; λ rises from about 0.996 toward 1. BYOL instead has the student predict the teacher's embedding with squared error and no negatives. DINOv2 adds a masked-patch (iBOT) loss and a KoLeo spreading term; DINOv3 (August 2025) adds Gram anchoring, a penalty keeping the student's patch-similarity (Gram) matrix close to an earlier checkpoint's, to stop dense features degrading.",
+   "used_for": "DINO (2021), DINOv2 (2023) and DINOv3 (Meta, 2025) vision backbones for segmentation, depth, robotics and satellite imagery; SigLIP 2's self-distillation term. Book: only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-mae-jepa",
+   "name": "Masked image modeling (MAE) and joint-embedding predictive architectures (JEPA)",
+   "formula": "MAE: L = (1 ÷ |M|) × sum over masked patches i of ||x̂_i − x_i||^2 (75% of patches masked); JEPA: L = (1 ÷ |M|) × sum over masked targets j of ||P_φ(s_x, position_j) − sg[s̄_(y_j)]||, squared L2 in I-JEPA and L1 in V-JEPA, with the target encoder an EMA of the context encoder",
+   "meaning": "M is the set of masked patches; x_i a patch's pixels (normalized per patch) and x̂_i the reconstruction; JEPA predicts embeddings instead of pixels: s_x is the context encoder's output on the visible part, P_φ a predictor, s̄_(y_j) the target encoder's embedding of masked block j, sg stop-gradient. Variants: BEiT (predict discrete tokens), VICReg and Barlow Twins (variance and covariance regularizers that prevent collapse).",
+   "used_for": "MAE (He et al. 2021) pretraining of Vision Transformers, including the image encoder of Meta's Segment Anything; I-JEPA (2023), V-JEPA (2024), V-JEPA 2 (June 2025: pretrained on over 1 million hours of video; its action-conditioned version plans robot pick-and-place toward image goals). Book: Ch 47 (Other approaches: Cosmos, World Labs and JEPA); Ch 16 (Self-supervised learning).",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-style-gram",
+   "name": "Gram-matrix style loss (neural style transfer)",
+   "formula": "G^l_ij = sum over k of F^l_ik × F^l_jk; style loss = sum over layers l of w_l × (1 ÷ (4 × N_l^2 × M_l^2)) × sum over i, j of (G^l_ij − A^l_ij)^2; content loss = 0.5 × sum of (F^l − P^l)^2",
+   "meaning": "F^l is layer l's feature map of the generated image, reshaped to N_l channels × M_l positions; G^l its Gram matrix (which channels fire together, ignoring where); A^l the Gram matrix of the style image; P^l the content image's features; w_l layer weights. Matching Gram matrices transfers texture and style while the content loss keeps the layout.",
+   "used_for": "Neural style transfer (Gatys et al. 2015) and texture synthesis, a CS231n staple; Gram-matrix regularization reappears in DINOv3's Gram anchoring (2025). Book: only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-fid",
+   "name": "Fréchet Inception Distance (FID) and its video and audio variants",
+   "formula": "FID = ||μ_r − μ_g||^2 + trace(Σ_r + Σ_g − 2 × (Σ_r × Σ_g)^(1/2))",
+   "meaning": "μ_r and Σ_r are the mean vector and covariance matrix of Inception-v3 pool features (2,048 numbers per image) over real images; μ_g and Σ_g the same for generated images; (·)^(1/2) the matrix square root; trace the sum of the diagonal. It is the Fréchet (Wasserstein-2) distance between two Gaussians fitted to the features. Lower is better and 0 means identical statistics; biased with few samples, so 50,000 images are standard (FID-50k). Variants: FVD (video, I3D features), FAD (audio, VGGish features), FD-DINOv2 (DINOv2 features).",
+   "used_for": "The standard image-generation benchmark since 2017 (e.g., class-conditional ImageNet 256 × 256; MeanFlow and sCM report it in 2024-2025). Book: Ch 16 (How do you grade a generator?; FID definition).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-is",
+   "name": "Inception Score (IS)",
+   "formula": "IS = exp(E_(x ~ p_g)[KL(p(y | x) || p(y))]), with p(y) = E_x[p(y | x)]",
+   "meaning": "p(y | x) is Inception-v3's class distribution for one generated image (should be confident: a sharp, recognizable object); p(y) the average over all generated images (should be spread out: diverse classes). Ranges from 1 to the number of classes (1,000); higher is better; it never looks at real images.",
+   "used_for": "GAN-era benchmarks; still reported alongside FID for ImageNet generation. Book: only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-kid",
+   "name": "Kernel Inception Distance and CMMD (maximum mean discrepancy)",
+   "formula": "MMD^2 = E[k(x, x')] + E[k(y, y')] − 2 × E[k(x, y)]; KID kernel k(a, b) = (a · b ÷ d + 1)^3 on Inception features; CMMD: Gaussian kernel k(a, b) = exp(−||a − b||^2 ÷ (2 × σ^2)) on CLIP embeddings",
+   "meaning": "x, x' are features of independent real images and y, y' of generated images; d the feature dimension; σ the kernel width. The unbiased estimate works with few samples and makes no Gaussian assumption, unlike FID.",
+   "used_for": "KID (Bińkowski et al. 2018); CMMD (Google, CVPR 2024) proposed as an FID replacement for text-to-image models; MMD two-sample tests. Book: only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-psnr",
+   "name": "Peak signal-to-noise ratio (PSNR)",
+   "formula": "MSE = mean over pixels of (x − y)^2; PSNR = 10 × log10(MAX^2 ÷ MSE) = 20 × log10(MAX) − 10 × log10(MSE), in decibels",
+   "meaning": "x is the reference image, y the reconstruction; MAX the largest possible pixel value (255 for 8-bit images, 1 for values from 0 to 1). Higher is better; about 30 to 40 dB is typical of good reconstructions; halving the error amplitude adds about 6 dB.",
+   "used_for": "Reconstruction quality of VAEs and image/video tokenizers (reported for SD3, FLUX and Cosmos tokenizers), super-resolution, compression, and NeRF or Gaussian-splat novel views. Book: only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-ssim",
+   "name": "Structural similarity index (SSIM)",
+   "formula": "SSIM(x, y) = ((2 × μ_x × μ_y + C1) × (2 × σ_xy + C2)) ÷ ((μ_x^2 + μ_y^2 + C1) × (σ_x^2 + σ_y^2 + C2)), C1 = (0.01 × L)^2, C2 = (0.03 × L)^2",
+   "meaning": "Computed on small local windows (often 11 × 11 Gaussian-weighted) and averaged; μ means, σ^2 variances and σ_xy the covariance of the two patches; L the dynamic range (255). It compares luminance, contrast and structure; 1 means identical. Variant: multi-scale MS-SSIM.",
+   "used_for": "Tokenizer and VAE evaluation, novel-view synthesis tables (PSNR, SSIM, LPIPS), compression, medical imaging; Gaussian splatting trains on 0.8 × L1 + 0.2 × (1 − SSIM). Book: only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-lpips",
+   "name": "LPIPS perceptual distance (and perceptual loss)",
+   "formula": "LPIPS(x, x_0) = sum over layers l of (1 ÷ (H_l × W_l)) × sum over positions h, w of ||w_l × (ŷ^l_hw − ŷ^l_0hw)||^2",
+   "meaning": "ŷ^l are unit-normalized activations of layer l of a pretrained network (AlexNet or VGG) for each image; w_l learned per-channel weights fitted to human similarity judgments; H_l × W_l the layer's spatial size. 0 means identical; lower is better. Used as a training loss it is the 'perceptual loss'.",
+   "used_for": "Training the autoencoders of latent diffusion (Stable Diffusion's autoencoder uses reconstruction + LPIPS + GAN losses), VQGAN, consistency models (as the distance d); reconstruction metrics. Book: only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-clipscore",
+   "name": "CLIPScore (text–image alignment)",
+   "formula": "CLIPScore(image, caption) = w × max(cos(E_I, E_C), 0), with w = 2.5",
+   "meaning": "E_I is the CLIP image embedding and E_C the CLIP text embedding; cos cosine similarity; w rescales scores to roughly 0 to 1 (Hessel et al. 2021); averaged over a prompt set. It inherits CLIP's blind spots, such as counting. Related: VQAScore and learned human-preference scores (reward models are covered in the alignment section).",
+   "used_for": "Measuring prompt adherence of text-to-image models. Book: Ch 16 (CLIP score definition).",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-pinhole",
+   "name": "Pinhole camera projection, rigid transforms and stereo depth",
+   "formula": "camera frame X_c = R × X_w + t; projection u = f_x × X_c ÷ Z_c + c_x, v = f_y × Y_c ÷ Z_c + c_y (matrix form s × [u, v, 1] = K × [R | t] × [X, Y, Z, 1]); stereo depth Z = f × B ÷ d",
+   "meaning": "X_w is a 3D point in world coordinates; R a 3 × 3 rotation and t a translation (the camera's pose, or extrinsics); (X_c, Y_c, Z_c) the point in camera coordinates, Z_c its depth; f_x and f_y focal lengths in pixels; (c_x, c_y) the image center; K the intrinsic matrix; (u, v) the pixel; s a scale factor; B the baseline between two cameras; d the disparity (how far the point shifts between left and right images). Stereo depth error grows with Z^2.",
+   "used_for": "Ray generation for NeRF and Gaussian splatting, structure-from-motion (COLMAP), camera–lidar fusion in self-driving, robot hand–eye calibration, AR headsets, stereo depth on phones. Book: Ch 45 (Seeing in 3D: stereo vision); Ch 49 (coordinate frames); Ch 50 (sensor fusion).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-nerf",
+   "name": "NeRF volume rendering",
+   "formula": "Ĉ(r) = sum over i = 1..N of T_i × (1 − exp(−σ_i × δ_i)) × c_i, with T_i = exp(−sum over j < i of σ_j × δ_j); loss = sum over rays of ||Ĉ(r) − C(r)||^2; positional encoding γ(p) = (sin(2^0 × π × p), cos(2^0 × π × p), ..., sin(2^(L−1) × π × p), cos(2^(L−1) × π × p))",
+   "meaning": "r is the camera ray through one pixel; i indexes N sample points along it; σ_i (density) and c_i (color) come from the network given position and viewing direction; δ_i is the distance between neighboring samples; T_i the transmittance, the share of light that survives to point i; 1 − exp(−σ_i × δ_i) the point's opacity α_i; C(r) the true pixel color. L is the number of frequencies (10 for positions).",
+   "used_for": "NeRF (2020) novel-view synthesis, Instant-NGP, DreamFusion text-to-3D, 3D capture apps. Book: Ch 45 (NeRF definition).",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-3dgs",
+   "name": "3D Gaussian splatting (alpha compositing of Gaussians)",
+   "formula": "pixel color C = sum over i of c_i × α_i × product over j < i of (1 − α_j); Gaussian G(x) = exp(−0.5 × (x − μ)^T × Σ^(−1) × (x − μ)), Σ = R × S × S^T × R^T; projected 2D covariance Σ' = J × W × Σ × W^T × J^T; training loss (1 − λ) × L1 + λ × (1 − SSIM), λ = 0.2",
+   "meaning": "Gaussians are sorted front to back for each pixel; c_i is a Gaussian's color (spherical-harmonic function of view direction); α_i its learned opacity times its 2D Gaussian value at the pixel; μ the center; Σ the covariance, built from a rotation R and scale S so it stays valid; W the viewing transform and J the Jacobian of the projection. The same 'over' compositing as NeRF, but rasterized, so it renders in real time.",
+   "used_for": "3D Gaussian splatting (Kerbl et al. 2023): real-time captured scenes, 3D generation pipelines, digital twins and robot simulation, explorable world generation. Book: Ch 45 (Gaussian splatting definition); Ch 47 (3D and avatars).",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-detection",
+   "name": "Object-detection box encoding and non-maximum suppression (NMS)",
+   "formula": "box offsets t_x = (x − x_a) ÷ w_a, t_y = (y − y_a) ÷ h_a, t_w = ln(w ÷ w_a), t_h = ln(h ÷ h_a); NMS: sort boxes by score, keep the best, delete every other box with IoU(best, other) > threshold (e.g., 0.5), repeat",
+   "meaning": "(x, y, w, h) are a box's center, width and height; (x_a, y_a, w_a, h_a) the anchor box or grid cell it is predicted relative to; IoU is intersection over union (its formula is with the evaluation metrics in the classical-ML section). YOLO-family detectors predict bounded offsets inside grid cells; DETR-style detectors replace NMS with one-to-one Hungarian matching during training.",
+   "used_for": "Faster R-CNN, SSD, the YOLO family (Ultralytics), and detection heads in self-driving and robot perception. Book: Ch 45 (How a one-stage detector works).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-nyquist",
+   "name": "Sampling rate, Nyquist limit and raw audio size",
+   "formula": "f_max = f_s ÷ 2 (sample at f_s > 2 × f_max to capture f_max); bits per second = f_s × bit depth × channels; dynamic range ≈ 6.02 × bit depth dB; aliasing: a tone at f above f_s ÷ 2 shows up at |f − k × f_s| for the integer k that brings it below f_s ÷ 2",
+   "meaning": "f_s is samples per second (8 kHz telephone, 16 kHz speech AI, 24 kHz codecs, 44.1 or 48 kHz music); f_max the highest frequency that can be represented; bit depth the bits per sample (16 for CDs, 65,536 levels); channels 1 (mono) or 2 (stereo). Worked: CD audio is 44,100 × 16 × 2 = 1,411,200 bits per second.",
+   "used_for": "Every audio pipeline: Whisper resamples input to 16 kHz, Mimi works at 24 kHz, music generators at 44.1 or 48 kHz. Book: Ch 46 (Sound as numbers; Nyquist limit definition).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-stft",
+   "name": "Discrete Fourier transform, short-time Fourier transform and the spectrogram",
+   "formula": "DFT: X[k] = sum over n = 0..N−1 of x[n] × exp(−2π × i × k × n ÷ N); STFT: X[m, k] = sum over n = 0..N−1 of x[n + m × H] × w[n] × exp(−2π × i × k × n ÷ N); power spectrogram S[m, k] = |X[m, k]|^2, in decibels 10 × log10(S[m, k] + ε); bin spacing Δf = f_s ÷ N; number of frames ≈ 1 + floor((L − N) ÷ H)",
+   "meaning": "x[n] are the audio samples; N the window (FFT) length in samples; k the frequency bin (frequency k × f_s ÷ N); i = sqrt(−1); w[n] a tapering window (usually Hann); H the hop between windows; m the frame index; L the signal length; |·| magnitude; ε a tiny constant. Decibels: dB = 10 × log10(power ratio) = 20 × log10(amplitude ratio). The fast Fourier transform computes a DFT in about N × log2(N) operations.",
+   "used_for": "Speech front ends (25 ms windows every 10 ms: at 16 kHz, N = 400 and H = 160, giving 100 frames per second), text-to-speech targets, multi-resolution STFT losses for vocoders and codecs, music source separation. Book: Ch 46 (Spectrograms: a picture of sound; Fourier transform definition).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-mel",
+   "name": "Mel scale, log-mel spectrogram and MFCCs (with the musical pitch formula)",
+   "formula": "mel(f) = 2595 × log10(1 + f ÷ 700), inverse f = 700 × (10^(mel ÷ 2595) − 1); log-mel M[m, b] = ln(sum over k of F_b[k] × |X[m, k]|^2 + ε); MFCC = discrete cosine transform of the log-mel frame; musical pitch f = 440 × 2^((n − 69) ÷ 12) Hz for MIDI note n",
+   "meaning": "f is frequency in Hz; F_b the b-th triangular filter, spaced evenly on the mel scale (80 or 128 filters); ε avoids ln(0); MFCCs are the first ~13 cosine-transform coefficients (the classic HMM-era features, often after pre-emphasis y[n] = x[n] − 0.97 × x[n − 1]). The 'Slaney' mel variant (librosa's default) is linear below 1 kHz. The MIDI formula is music's log scale: 12 semitones per doubling of frequency.",
+   "used_for": "Whisper (80 log-mel bands, 128 in large-v3; 30 seconds → 3,000 frames), text-to-speech acoustic targets (Tacotron, VITS), audio classifiers and bioacoustics (BirdNET); MIDI pitch in symbolic music models and pitch (F0) conditioning in voice models. Book: Ch 46 (Mel scale; Log-mel spectrogram).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-audio-tokens",
+   "name": "Audio frame and token rates",
+   "formula": "frames per second = f_s ÷ H; encoder positions per second = frames per second ÷ encoder stride; codec tokens per second = frame rate × number of codebooks",
+   "meaning": "f_s is the sampling rate and H the hop in samples; the encoder stride is any further downsampling. Worked: Whisper takes 16,000 ÷ 160 = 100 frames per second, a stride-2 convolution halves that to 50, so a 30-second window is 1,500 positions; Mimi gives 12.5 frames per second × 8 codebooks = 100 tokens per second; the Gemini API counts 32 tokens per second of audio (1,920 per minute).",
+   "used_for": "Budgeting audio inside multimodal LLM context windows and latency planning for speech-to-speech agents (Gemini, Moshi). Book: Ch 22 (Hearing: how sound becomes tokens); Ch 46.",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-wer",
+   "name": "Word error rate (WER) and character error rate (CER)",
+   "formula": "WER = (S + D + I) ÷ N; CER = the same count over characters",
+   "meaning": "S substitutions, D deletions and I insertions are counted in the minimum edit-distance (Levenshtein) alignment of the transcript to the reference, found by dynamic programming; N is the number of words in the reference. WER can exceed 100%; text normalization (case, punctuation, numbers) changes it a lot.",
+   "used_for": "Every speech-recognition benchmark (LibriSpeech, the Open ASR Leaderboard), Whisper's results, and intelligibility checks of synthesized speech. Book: Ch 46 (Measuring speech recognition: word error rate).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-ctc",
+   "name": "Connectionist temporal classification (CTC) loss",
+   "formula": "p(y | x) = sum over alignments a in B^(−1)(y) of product over t = 1..T of p(a_t | x); loss = −ln p(y | x), computed with a forward–backward dynamic program",
+   "meaning": "x is the sequence of T audio frames; y the label sequence (characters or subword tokens, no longer than T); a a frame-by-frame path over labels plus a special 'blank'; B the collapse function (merge repeats, then remove blanks: 'hh-e-ll-l-oo' → 'hello'); the sum covers every path that collapses to y. Variants: RNN-Transducer (adds a prediction network over previous labels) and token-and-duration transducers (TDT).",
+   "used_for": "DeepSpeech, wav2vec 2.0 fine-tuning, NVIDIA's Parakeet CTC and TDT recognizers, streaming on-device speech recognition (RNN-T), handwriting and OCR line recognition. Book: only here (Ch 46 covers the deep-learning turn in speech in words).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-search-cost",
+   "name": "Path cost, uniform-cost search and search-tree size",
+   "formula": "g(n) = sum of step costs c(s, a, s') along the path to node n; uniform-cost search (Dijkstra) always expands the frontier node with the lowest g; nodes in a tree with branching factor b down to depth d: 1 + b + b^2 + ... + b^d = (b^(d+1) − 1) ÷ (b − 1), i.e. O(b^d); bidirectional search O(b^(d/2)); iterative deepening generates d × b + (d − 1) × b^2 + ... + 1 × b^d nodes",
+   "meaning": "n is a search node (a state plus the path that reached it); c(s, a, s') the cost of action a taking state s to s'; b the average number of successors; d the depth of the shallowest goal; O(·) 'grows like'. Breadth-first search is uniform-cost search when all steps cost the same. The b^d growth is the combinatorial explosion that sank early AI's search-only methods.",
+   "used_for": "Route planning, puzzle solving, game AI, robot grid planning; explains why robot arms need sampling planners (100 settings per joint for 7 joints is 100^7 = 10^14 cells). Book: Ch 48 (States, actions and goals; Blind search; Uniform-cost search definition); Ch 7 (Combinatorial explosion); Ch 49.",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-astar",
+   "name": "A* search evaluation function (and greedy best-first search)",
+   "formula": "f(n) = g(n) + h(n); always expand the frontier node with the smallest f; greedy best-first search uses f(n) = h(n)",
+   "meaning": "g(n) is the cost already paid to reach n; h(n) a heuristic estimate of the cheapest remaining cost to a goal; f(n) the estimated total cost of the best solution through n. A* is optimal when h is admissible (tree search) or consistent (graph search), and with a consistent heuristic it expands no node that an equally informed optimal algorithm could skip.",
+   "used_for": "Game pathfinding, map routing, robot navigation on grids, puzzle solvers, heuristic search planners (Fast Downward, LAMA). Book: Ch 48 (A*: search with a sense of direction).",
+   "tier": "core"
+  },
+  {
+   "id": "gc-admissible",
+   "name": "Admissible and consistent heuristics, common heuristics and effective branching factor",
+   "formula": "admissible: h(n) ≤ h*(n) for every n; consistent: h(n) ≤ c(n, a, n') + h(n') and h(goal) = 0; Manhattan distance |x1 − x2| + |y1 − y2|; straight-line distance sqrt((x1 − x2)^2 + (y1 − y2)^2); max(h1, h2) of admissible heuristics is admissible; effective branching factor b* solves N + 1 = 1 + b* + (b*)^2 + ... + (b*)^d",
+   "meaning": "h*(n) is the true cheapest remaining cost; consistency is a triangle inequality and implies admissibility; Manhattan distance suits 4-direction grids and sliding-tile puzzles, straight-line distance suits maps; N is the number of nodes generated to find a solution at depth d, so a b* closer to 1 means a better heuristic. Admissible heuristics come from relaxed problems or pattern databases.",
+   "used_for": "Guaranteeing optimal A* in routing, games and planning. Book: Ch 48 (A*: admissible heuristics).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-weighted-astar",
+   "name": "Weighted A* (bounded-suboptimal search)",
+   "formula": "f(n) = g(n) + W × h(n), with W > 1; solution cost ≤ W × C* when h is admissible",
+   "meaning": "W is the weight (often 1.5 to 5); C* the optimal cost. Trusting the heuristic more finds answers much faster at a bounded loss of quality; W → infinity becomes greedy best-first search. Related: anytime repairing A* (ARA*, lowering W over time) and beam search (keep only the best k nodes).",
+   "used_for": "Game AI and robot planners that need fast answers (ARA* in motion planning); the LAMA planner. Book: only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-annealing",
+   "name": "Simulated annealing acceptance rule",
+   "formula": "ΔE = value(next) − value(current); if ΔE > 0 accept the move, otherwise accept it with probability exp(ΔE ÷ T); cool the temperature over time, e.g. T_k = T_0 × r^k",
+   "meaning": "Written for maximizing a value (for minimizing a cost, accept a worse move with probability exp(−Δcost ÷ T)); T is the temperature: high T accepts many bad moves and explores, low T only climbs; r a cooling rate such as 0.95; k the iteration. This is the Metropolis criterion from statistical physics.",
+   "used_for": "Chip placement and routing (since the 1980s), scheduling, combinatorial optimization, hyperparameter search. Book: Ch 48 (Local search: Simulated annealing definition).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-genetic",
+   "name": "Genetic algorithm selection, crossover and mutation",
+   "formula": "fitness-proportional selection P(select i) = f_i ÷ sum over j of f_j; one-point crossover child = parent1[1..c] + parent2[c+1..n]; mutation changes each gene independently with probability p_m (often 1 ÷ n)",
+   "meaning": "f_i is individual i's fitness score; c a random cut point; n the genome length. Variants: tournament selection, elitism (copy the best unchanged), evolution strategies such as CMA-ES (sample candidates from N(m, σ^2 × C) and move m and C toward the best ones).",
+   "used_for": "Design optimization (NASA's evolved antenna, 2006), neural architecture search, evolution strategies for RL; LLM-driven evolutionary search: DeepMind's FunSearch (2023) and AlphaEvolve (2025) evolve programs with a language model as the mutation operator. Book: Ch 54 (Genetic algorithm, one generation on paper); Ch 48 (Local search: population-based relatives).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-minimax",
+   "name": "Minimax value of a game tree",
+   "formula": "MINIMAX(s) = UTILITY(s) if s is terminal; max over a of MINIMAX(RESULT(s, a)) if MAX is to move; min over a of MINIMAX(RESULT(s, a)) if MIN is to move; depth-limited search replaces UTILITY with EVAL(s) at a cutoff depth",
+   "meaning": "s is a game state; a an action; RESULT(s, a) the state after the move; UTILITY the final score from MAX's point of view (e.g., +1 win, 0 draw, −1 loss); the two players alternate. Negamax form: value(s) = max over a of −value(child). Full search costs O(b^m) for branching factor b and depth m. (Zero-sum game theory and the minimax theorem are in the game-theory section.)",
+   "used_for": "Chess and checkers engines and classic game AI. Book: Ch 48 (Game trees; Minimax, worked by hand).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-alphabeta",
+   "name": "Alpha–beta pruning bounds",
+   "formula": "keep α = best value MAX can already guarantee and β = best value MIN can already guarantee (start α = −∞, β = +∞); at a MAX node α = max(α, child value); at a MIN node β = min(β, child value); stop searching a node's remaining children once α ≥ β; nodes examined: best case O(b^(m/2)), random order about O(b^(3m/4))",
+   "meaning": "Pruning never changes the minimax value at the root; good move ordering roughly doubles the depth searchable in the same time. Enhancements: iterative deepening, transposition tables, principal-variation search, aspiration windows.",
+   "used_for": "Deep Blue (1997), Chinook checkers, Stockfish (alpha–beta search with an NNUE neural evaluation). Book: Ch 48 (Alpha-beta pruning and evaluation functions).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-expectiminimax",
+   "name": "Expectiminimax (games with chance)",
+   "formula": "chance node: value(s) = sum over outcomes r of P(r) × value(RESULT(s, r)); MAX and MIN nodes as in minimax",
+   "meaning": "P(r) is the probability of dice roll or card r; layers of maximizing, minimizing and averaging alternate. Because averages are taken, the evaluation function's scale matters: only positive linear rescalings keep decisions unchanged.",
+   "used_for": "Backgammon programs (TD-Gammon searched shallow expectiminimax trees), card and dice games. Book: Ch 48 (Games with dice: chance nodes).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-eval-fn",
+   "name": "Weighted linear evaluation function",
+   "formula": "EVAL(s) = w_1 × f_1(s) + w_2 × f_2(s) + ... + w_n × f_n(s)",
+   "meaning": "f_i(s) are features of a position (material, mobility, king safety); w_i their weights (classic chess material values: pawn 1, knight 3, bishop 3, rook 5, queen 9). Samuel's checkers program (1959) tuned the weights by learning; TD-Gammon and AlphaZero replaced the whole function with a neural value network.",
+   "used_for": "Depth-limited game search; Stockfish's NNUE is a learned successor. Book: Ch 48 (Alpha-beta pruning and evaluation functions).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-uct",
+   "name": "UCT selection rule for Monte Carlo tree search",
+   "formula": "UCT(n) = U(n) ÷ N(n) + C × sqrt(ln(N(parent(n))) ÷ N(n)); select the child with the largest UCT; C = sqrt(2) in theory, tuned in practice",
+   "meaning": "U(n) is the total reward (e.g., wins) from playouts through node n; N(n) its visit count; N(parent(n)) the parent's visits. The first term exploits moves that have done well; the second is an exploration bonus that grows for rarely tried moves. It applies the UCB1 bandit formula (bandits are in the reinforcement-learning section) at every tree node. The MCTS loop: selection, expansion, simulation (playout), back-propagation.",
+   "used_for": "Computer Go before AlphaGo (MoGo, Crazy Stone), general game playing, planning under uncertainty. Book: Ch 48 (Monte Carlo tree search: win rate + c × square root of (ln N ÷ n)).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-puct",
+   "name": "PUCT: neural-network-guided MCTS (AlphaZero, MuZero)",
+   "formula": "a* = argmax over a of [Q(s, a) + c_puct × P(s, a) × sqrt(sum over b of N(s, b)) ÷ (1 + N(s, a))]; move played with probability π(a) ∝ N(s, a)^(1 ÷ τ); network loss l = (z − v)^2 − π^T × ln p + c × ||θ||^2",
+   "meaning": "Q(s, a) is the mean value of action a from state s found so far; P(s, a) the policy network's prior; N visit counts; c_puct an exploration constant; τ a temperature (1 early in self-play games, near 0 later); z the game's final outcome, v the value-network prediction, p the policy output, π the search's visit distribution, c a weight-decay factor. MuZero adds a slowly growing log term to c_puct and searches inside a learned model; Gumbel MuZero samples root actions with Gumbel noise.",
+   "used_for": "AlphaGo Zero and AlphaZero (2017), MuZero (2020), KataGo, Leela Chess Zero, AlphaDev; MCTS over reasoning steps in some LLM math systems (e.g., Microsoft's rStar-Math, January 2025). Book: Ch 48 (AlphaGo Zero and AlphaZero; MuZero).",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-csp",
+   "name": "Constraint satisfaction problem (formal definition and counts; no single numeric equation)",
+   "formula": "CSP = (X, D, C): variables X = {X_1, ..., X_n}, domains D_i, constraints C; a solution assigns every X_i a value from D_i satisfying every constraint; brute-force search space d^n; X_i is arc-consistent with X_j if every value in D_i has some value in D_j satisfying their constraint (AC-3 runs in O(c × d^3))",
+   "meaning": "d is the domain size, n the number of variables, c the number of binary constraints. The real content is this definition plus heuristics stated as rules rather than equations: minimum remaining values, degree heuristic, least-constraining value, and min-conflicts local search.",
+   "used_for": "Scheduling, timetabling, product configuration, Sudoku, SAT-based hardware verification; grammar-constrained decoding of LLM output applies the same idea to tokens. Book: Ch 48 (Constraint satisfaction: puzzles, timetables and schedules).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-truth-table",
+   "name": "Truth-table semantics, entailment and model checking",
+   "formula": "¬A is true iff A is false; A ∧ B is true iff both are true; A ∨ B is true iff at least one is true; A ⇒ B ≡ ¬A ∨ B; A ⇔ B ≡ (A ⇒ B) ∧ (B ⇒ A); De Morgan ¬(A ∧ B) ≡ ¬A ∨ ¬B; n symbols give 2^n rows (models); KB ⊨ α iff α is true in every model in which KB is true",
+   "meaning": "A and B are propositions (true/false statements); ¬ not, ∧ and, ∨ or, ⇒ implies, ⇔ if and only if, ≡ logically equivalent; a model is one row of truth values; KB the knowledge base; ⊨ 'entails'. Model checking enumerates all 2^n rows; SAT solvers (DPLL, CDCL) avoid most of them.",
+   "used_for": "SAT and SMT solvers for chip and software verification, planning as satisfiability, package-dependency solving, rule engines. Book: Ch 54 (Propositional logic: 2 × 2 × 2 = 8 situations worked example).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-resolution",
+   "name": "Resolution and modus ponens inference rules",
+   "formula": "resolution: from (A ∨ B) and (¬B ∨ C) infer (A ∨ C) (in general, two clauses containing a literal and its negation yield the union of their other literals); modus ponens: from A and A ⇒ B infer B; refutation: KB ⊨ α iff KB ∧ ¬α resolves to the empty clause",
+   "meaning": "A clause is an OR of literals (symbols or their negations); CNF (conjunctive normal form) is an AND of clauses, and every formula can be converted to it. Resolution is sound and refutation-complete. Horn clauses (at most one positive literal) allow fast forward chaining (data-driven) and backward chaining (goal-driven) with modus ponens.",
+   "used_for": "Automated theorem provers (Vampire, E), Prolog's SLD resolution, clause learning in CDCL SAT solvers, expert-system inference engines, Datalog. Book: Ch 54 (Resolution rule definition; Forward and backward chaining).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-fol",
+   "name": "First-order logic: quantifiers, unification and generalized modus ponens",
+   "formula": "∀x P(x) is true iff P holds for every object; ∃x P(x) iff for at least one; ¬∀x P(x) ≡ ∃x ¬P(x); UNIFY(p, q) = θ such that SUBST(θ, p) = SUBST(θ, q); generalized modus ponens: from p1', ..., pn' and (p1 ∧ ... ∧ pn ⇒ q) infer SUBST(θ, q), where SUBST(θ, pi') = SUBST(θ, pi) for every i",
+   "meaning": "x is a variable; P a predicate (a property or relation); θ a substitution (variable bindings such as {x/Maria}); SUBST applies it. Example: 'every person who owns a car needs insurance' and 'Maria owns a car' unify to give 'Maria needs insurance'.",
+   "used_for": "Prolog, knowledge representation and ontologies (description logics, OWL), knowledge-graph rule engines, interactive theorem proving. Book: Ch 54 (First-order logic).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-strips",
+   "name": "STRIPS/PDDL action model for classical planning",
+   "formula": "action a is applicable in state s iff PRECOND(a) ⊆ s; RESULT(s, a) = (s − DEL(a)) ∪ ADD(a); a plan is an action sequence leading from the initial state to a state that satisfies the goal",
+   "meaning": "A state is the set of facts currently true; PRECOND the facts the action needs; ADD the facts it makes true; DEL the facts it makes false; ⊆ 'is contained in', − set difference, ∪ union. Planner heuristics come from relaxations that ignore delete lists (h_max, h_add, h_FF) and from planning graphs.",
+   "used_for": "Shakey (1972), PDDL planners (Fast Downward, LAMA), space-mission and logistics planning, systems that have an LLM translate goals into PDDL for a classical planner. Book: Ch 48 (Planning with actions: from Shakey to PDDL).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-bn-joint",
+   "name": "Bayesian network joint factorization",
+   "formula": "P(x_1, ..., x_n) = product over i of P(x_i | parents(X_i)); numbers needed = sum over i of (k_i − 1) × (product of its parents' sizes), versus (product of all k_i) − 1 for the full joint table",
+   "meaning": "parents(X_i) are X_i's direct causes in a directed acyclic graph; each node carries a conditional probability table; k_i is the number of values X_i can take. The assumption: given its parents, a node is independent of its non-descendants. Book example: rain, sprinkler, wet grass need 1 + 1 + 4 = 6 numbers instead of 2^3 − 1 = 7; the saving grows exponentially with size. Naive Bayes is a special case (in the classical-ML section).",
+   "used_for": "Medical diagnosis (Pathfinder), troubleshooting wizards, risk and reliability models, causal modeling. Book: Ch 54 (A Bayesian network, worked by hand).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-mrf",
+   "name": "Markov random fields, factor graphs and conditional random fields",
+   "formula": "P(x) = (1 ÷ Z) × product over cliques c of ψ_c(x_c), with Z = sum over all x of product over c of ψ_c(x_c); CRF: P(y | x) = (1 ÷ Z(x)) × exp(sum over k of w_k × f_k(y, x))",
+   "meaning": "ψ_c is a non-negative potential (compatibility score) over the variables x_c in clique c; Z the partition function; for a CRF, f_k are feature functions of labels y and input x with weights w_k. The undirected counterpart of a Bayesian network, and an energy-based model with E = −sum of ln ψ_c.",
+   "used_for": "Image-segmentation smoothing (DeepLab's CRF post-processing, 2015-2017), sequence labeling (CRF taggers for named entities), factor-graph SLAM and sensor fusion (GTSAM), Ising-type models. Book: Ch 54 (Probabilistic graphical models: Markov random fields).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-enumeration",
+   "name": "Inference by enumeration (normalization constant α)",
+   "formula": "P(X | e) = α × P(X, e) = α × sum over y of P(X, e, y), with α = 1 ÷ P(e)",
+   "meaning": "X is the query variable; e the observed evidence; y ranges over every combination of the hidden variables, which are 'summed out'; each P(X, e, y) is computed with the network's factorization; α rescales the answers to add to 1. 'Explaining away' falls out automatically. Exact inference is NP-hard in general (Cooper 1990).",
+   "used_for": "Exact queries on small Bayesian networks; the definition every faster algorithm must match. Book: Ch 54 (A Bayesian network, worked by hand: explaining away).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-var-elim",
+   "name": "Variable elimination and belief propagation",
+   "formula": "factor product f(X, Y, Z) = f_1(X, Y) × f_2(Y, Z) (entry by entry); summing out f'(X, Z) = sum over y of f(X, y, Z); P(X | e) = α × (sum over the hidden variables, one at a time, of the product of factors); sum-product message on a tree m_(i→j)(x_j) = sum over x_i of ψ(x_i, x_j) × product over k ≠ j of m_(k→i)(x_i)",
+   "meaning": "A factor is a table over a few variables; pushing each sum inside the product avoids recomputing shared pieces. Cost is exponential only in the largest intermediate factor (governed by the graph's treewidth). Belief propagation passes these partial sums as messages between neighbors; the HMM forward algorithm is a special case.",
+   "used_for": "Exact Bayesian-network engines and the junction-tree algorithm; belief-propagation decoding of LDPC error-correcting codes (Wi-Fi, 5G). Book: only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-noisy-or",
+   "name": "Noisy-OR conditional distribution",
+   "formula": "P(no effect | the set T of causes that are present) = product over j in T of q_j; P(effect | T) = 1 − product over j in T of q_j (with a leak cause, also multiply by q_0)",
+   "meaning": "q_j is the probability that cause j, acting alone, fails to produce the effect; k causes need only k numbers instead of a 2^k-row table; the leak q_0 covers causes not in the model.",
+   "used_for": "Large diagnostic networks (the QMR-DT medical network), fault diagnosis. Book: only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-bn-sampling",
+   "name": "Approximate inference by sampling: likelihood weighting, Gibbs sampling and Metropolis–Hastings",
+   "formula": "likelihood weighting: sample the non-evidence variables in parent-first order and weight each sample w = product over evidence variables E_i of P(e_i | parents(E_i)); estimate P(x | e) ≈ (sum of w over samples with X = x) ÷ (sum of all w); Gibbs: resample X_i from P(X_i | mb(X_i)) = α × P(x_i | parents(X_i)) × product over children Y_j of P(y_j | parents(Y_j)); Metropolis–Hastings: accept a proposal x' with probability min(1, (p(x') × q(x | x')) ÷ (p(x) × q(x' | x)))",
+   "meaning": "mb(X_i) is X_i's Markov blanket (parents, children and the children's other parents); q a proposal distribution; Gibbs and Metropolis–Hastings are Markov chain Monte Carlo (MCMC) methods whose long-run samples follow the posterior. Rejection sampling is the naive alternative that discards samples disagreeing with the evidence.",
+   "used_for": "Probabilistic programming (Stan, PyMC), Bayesian statistics, inference in large Bayesian networks and Markov random fields, sampling energy-based models. Book: only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-causal-adjust",
+   "name": "Causal effect by back-door adjustment (the do-operator)",
+   "formula": "P(y | do(x)) = sum over z of P(y | x, z) × P(z), where Z blocks every back-door path from X to Y",
+   "meaning": "do(x) means X is set by intervention rather than observed; Z is a set of variables (confounders) that, once conditioned on, leaves no non-causal path between X and Y. Differs from the observational P(y | x) whenever confounders exist.",
+   "used_for": "Causal Bayesian networks (AIMA 4th edition, Pearl), uplift and policy evaluation in advertising and medicine, debiasing observational data. Book: only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-hmm",
+   "name": "Hidden Markov model joint probability",
+   "formula": "P(x_0, ..., x_T, e_1, ..., e_T) = P(x_0) × product over t = 1..T of P(x_t | x_(t−1)) × P(e_t | x_t); transition matrix A_ij = P(x_t = j | x_(t−1) = i); emission B_j(e) = P(e | x_t = j)",
+   "meaning": "x_t is the hidden state at time t (e.g., which phoneme, or whether it is raining); e_t the observation (evidence); the next state depends only on the current one (first-order Markov assumption) and each observation only on the current state (sensor Markov assumption). Kalman filters (Gaussian states) and particle filters share this structure (a dynamic Bayesian network).",
+   "used_for": "Speech recognition from the 1980s to the early 2010s, part-of-speech tagging, gene finding and profile HMMs in bioinformatics, gesture recognition. Book: Ch 54 (filters and the umbrella example; HMM definition); Ch 46.",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-bayes-filter",
+   "name": "Bayes filter and the HMM forward algorithm (filtering), with the POMDP belief update",
+   "formula": "predict: P(x_(t+1) | e_(1:t)) = sum over x_t of P(x_(t+1) | x_t) × P(x_t | e_(1:t)); update: P(x_(t+1) | e_(1:t+1)) = η × P(e_(t+1) | x_(t+1)) × P(x_(t+1) | e_(1:t)); unnormalized forward variable α_t(j) = B_j(e_t) × sum over i of α_(t−1)(i) × A_ij, with P(e_(1:T)) = sum over j of α_T(j); POMDP: b'(s') = η × P(o | s') × sum over s of P(s' | s, a) × b(s)",
+   "meaning": "The belief is a probability distribution over the hidden state; η a normalizing constant (written α in AIMA, not to be confused with the forward variable α_t); predict with the motion (transition) model, then correct with the sensor model. A POMDP planner applies the same update after choosing action a and observing o. Kalman and particle filters are this recursion for Gaussian and sampled beliefs. Cost per step O(S^2) for S states.",
+   "used_for": "Robot localization and tracking, HMM speech decoding, belief tracking in POMDP planners and dialogue systems. Book: Ch 54 (filters that track a hidden state over time; umbrella example).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-smoothing",
+   "name": "Forward–backward smoothing",
+   "formula": "backward variable β_t(i) = sum over j of A_ij × B_j(e_(t+1)) × β_(t+1)(j), with β_T(i) = 1; smoothed γ_t(i) = P(x_t = i | e_(1:T)) = α_t(i) × β_t(i) ÷ P(e_(1:T))",
+   "meaning": "β_t(i) is the probability of all later evidence given state i at time t; γ_t combines past and future evidence ('was it really raining on Monday?'). Cost O(T × S^2).",
+   "used_for": "Offline tracking and annotation, Baum–Welch training, the same dynamic program as the CTC loss, gene annotation. Book: Ch 54 (Smoothing).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-viterbi",
+   "name": "Viterbi algorithm (most likely hidden-state sequence)",
+   "formula": "δ_t(j) = B_j(e_t) × max over i of (δ_(t−1)(i) × A_ij); backpointer ψ_t(j) = argmax over i of (δ_(t−1)(i) × A_ij); end at argmax over j of δ_T(j) and follow the backpointers; log form ln δ_t(j) = ln B_j(e_t) + max over i of (ln δ_(t−1)(i) + ln A_ij)",
+   "meaning": "δ_t(j) is the probability of the single best path that ends in state j at time t; ψ stores where that path came from; it is the forward algorithm with the sum replaced by a max. Logs prevent numerical underflow. Cost O(T × S^2).",
+   "used_for": "HMM speech recognizers, decoding convolutional error-correcting codes in phones and Wi-Fi, part-of-speech tagging, CRF decoding, gene finding. Book: Ch 54 (Viterbi algorithm).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-baum-welch",
+   "name": "Baum–Welch algorithm (EM for hidden Markov models)",
+   "formula": "ξ_t(i, j) = α_t(i) × A_ij × B_j(e_(t+1)) × β_(t+1)(j) ÷ P(e_(1:T)); A_ij ← (sum over t of ξ_t(i, j)) ÷ (sum over t of γ_t(i)); B_j(k) ← (sum over t with e_t = k of γ_t(j)) ÷ (sum over t of γ_t(j))",
+   "meaning": "ξ_t(i, j) is the expected probability of moving from state i to state j at time t; γ the smoothed state probabilities; re-estimate and repeat. Each round never lowers the likelihood (it is expectation–maximization, whose general form is in the classical-ML section).",
+   "used_for": "Training HMM speech recognizers before 2012; profile HMMs in bioinformatics (HMMER). Book: only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-kalman-predict",
+   "name": "Kalman filter predict step",
+   "formula": "x̂⁻_t = F × x̂_(t−1) + B × u_t; P⁻_t = F × P_(t−1) × F^T + Q",
+   "meaning": "x̂ is the state estimate (e.g., position and velocity); F the state-transition (motion) matrix; u_t a control input with matrix B; P the covariance (uncertainty) of the estimate; Q the process-noise covariance; the ⁻ mark means 'before this step's measurement'. Uncertainty grows at every prediction. 1D version: μ⁻ = μ + motion, P⁻ = P + Q.",
+   "used_for": "GPS and inertial navigation, the Apollo guidance computer, object tracking in self-driving perception, robot localization and EKF-SLAM, multi-object trackers in computer vision (SORT, ByteTrack). Book: Ch 54 (Kalman filter definition); Ch 50 (Localization; Prediction).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-kalman-update",
+   "name": "Kalman filter update step (Kalman gain)",
+   "formula": "K_t = P⁻_t × H^T × (H × P⁻_t × H^T + R)^(−1); x̂_t = x̂⁻_t + K_t × (z_t − H × x̂⁻_t); P_t = (I − K_t × H) × P⁻_t; 1D: K = P⁻ ÷ (P⁻ + R), x̂ = x̂⁻ + K × (z − x̂⁻), P = (1 − K) × P⁻",
+   "meaning": "z_t is the measurement; H maps a state to the reading it should produce; R the sensor-noise covariance; K the Kalman gain (0 = ignore the sensor, 1 = trust it fully); z − H × x̂⁻ the innovation (surprise). Optimal for linear systems with Gaussian noise. The extended Kalman filter linearizes nonlinear models with Jacobians; the unscented Kalman filter propagates a few 'sigma points'.",
+   "used_for": "Same systems as the predict step. Book: Ch 54 (Kalman filter: predict-and-correct arithmetic).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-particle-filter",
+   "name": "Particle filter (sequential importance resampling)",
+   "formula": "move each particle x_t^(i) ~ P(x_t | x_(t−1)^(i), u_t); weight w^(i) ∝ P(z_t | x_t^(i)); normalize w^(i) ← w^(i) ÷ sum over j of w^(j); effective sample size N_eff = 1 ÷ sum over i of (w^(i))^2; resample N particles with probabilities w^(i) (typically when N_eff falls below N ÷ 2)",
+   "meaning": "i indexes the N particles (guesses of the state); the motion model moves them; the sensor model scores them against measurement z_t; resampling copies good particles and drops poor ones. Handles non-Gaussian, many-peaked beliefs that a Kalman filter cannot.",
+   "used_for": "Monte Carlo localization in mobile robots and robot vacuums, FastSLAM, visual tracking. Book: Ch 54 (Particle filter definition).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-occupancy",
+   "name": "Occupancy-grid log-odds update",
+   "formula": "l_(t, i) = l_(t−1, i) + ln(p(m_i | z_t, x_t) ÷ (1 − p(m_i | z_t, x_t))) − l_0; P(cell i occupied) = 1 − 1 ÷ (1 + exp(l_(t, i)))",
+   "meaning": "l is the log-odds that cell i is occupied; p(m_i | z_t, x_t) the inverse sensor model (probability the cell is occupied given this reading z_t and robot pose x_t); l_0 the prior log-odds (0 for a 50% prior). Adding log-odds equals multiplying odds, which is Bayes' rule for a yes/no variable.",
+   "used_for": "Robot vacuums and warehouse robots, lidar mapping and SLAM, self-driving occupancy grids (increasingly predicted directly by networks). Book: Ch 50 (Occupancy grid definition).",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-kinematics",
+   "name": "Forward kinematics and transform chains",
+   "formula": "two-link planar arm: x = l_1 × cos(θ_1) + l_2 × cos(θ_1 + θ_2), y = l_1 × sin(θ_1) + l_2 × sin(θ_1 + θ_2); general chain T_(base→hand) = T_1(θ_1) × T_2(θ_2) × ... × T_n(θ_n) (4 × 4 homogeneous transforms); numerical inverse kinematics Δθ = J^+ × Δx",
+   "meaning": "l_1 and l_2 are link lengths; θ_1 and θ_2 joint angles; each T_i is joint i's 'rotate, then shift' transform; J the Jacobian of hand position with respect to joint angles and J^+ its pseudo-inverse; Δx a small desired hand motion. Inverse kinematics may have many solutions or none.",
+   "used_for": "Robot arms and humanoids, animation rigs; robot foundation models that output hand poses rely on IK to turn them into joint commands. Book: Ch 49 (From 'go there' to motor commands: Forward and inverse kinematics; Coordinate frame).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-pid",
+   "name": "PID controller",
+   "formula": "u(t) = K_p × e(t) + K_i × (integral from 0 to t of e(τ) dτ) + K_d × de(t) ÷ dt, with e = target − measured; discrete form u_k = K_p × e_k + K_i × (sum over j ≤ k of e_j × Δt) + K_d × (e_k − e_(k−1)) ÷ Δt",
+   "meaning": "u is the control output (e.g., motor torque); e the error; K_p, K_i and K_d the proportional, integral and derivative gains; Δt the control period. The integral term removes steady offsets (an arm sagging under gravity); the derivative term brakes before overshoot.",
+   "used_for": "Low-level joint control underneath learned robot policies, drones, cruise control, industrial process control. Book: Ch 49 (Holding steady: PID controller worked example).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-mpc",
+   "name": "Model predictive control objective",
+   "formula": "at each control step solve min over u_0, ..., u_(H−1) of sum over k = 0..H−1 of (||x_k − x_ref,k||_Q^2 + ||u_k||_R^2) subject to x_(k+1) = f(x_k, u_k) and limits on x and u; apply only u_0, measure, and solve again",
+   "meaning": "H is the planning horizon; f the dynamics model (hand-derived or learned); x_ref the desired trajectory; ||v||_Q^2 = v^T × Q × v a weighted squared error, with Q and R trading tracking accuracy against control effort. Sampling-based variants (MPPI, the cross-entropy method) work with learned world models.",
+   "used_for": "Legged robots, self-driving planning and control, process control; planning in learned world models: V-JEPA 2-AC (2025) picks robot actions with the cross-entropy method by minimizing the L1 distance between predicted and goal embeddings. Book: Ch 49 (Model predictive control definition).",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-rrt",
+   "name": "RRT extension step (sampling-based motion planning)",
+   "formula": "sample x_rand; x_near = argmin over tree nodes x of ||x − x_rand||; x_new = x_near + η × (x_rand − x_near) ÷ ||x_rand − x_near||; add x_new if the segment from x_near is collision-free; RRT* rewires neighbors within radius r ∝ (ln(n) ÷ n)^(1/d)",
+   "meaning": "x are points in configuration space (joint angles or vehicle poses); η the step size; n the number of nodes in the tree; d the dimension of the space. RRT quickly explores high-dimensional spaces; RRT* converges to the shortest path. The probabilistic roadmap (PRM) is the multi-query cousin.",
+   "used_for": "Robot-arm motion planning (MoveIt and OMPL), automated parking, drones. Book: Ch 49 (RRT definition; Configuration space).",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-eu",
+   "name": "Expected utility and the maximum-expected-utility principle",
+   "formula": "EU(a) = sum over outcomes s' of P(s' | a) × U(s'); choose a* = argmax over a of EU(a)",
+   "meaning": "a is an action; s' a possible outcome; P(s' | a) its probability if a is taken; U(s') its utility (how desirable it is). AIMA defines a rational agent as one that maximizes expected utility. Decision networks add decision and utility nodes to a Bayesian network to compute it.",
+   "used_for": "Decision-theoretic agents, medical decision support, robot task selection; it is the expected-reward objective that reinforcement learning optimizes. Book: Ch 48 (Deciding when you are not sure: expected utility).",
+   "tier": "core"
+  },
+  {
+   "id": "gc-voi",
+   "name": "Value of perfect information (VPI)",
+   "formula": "VPI(E) = (sum over values e of P(E = e) × max over a of EU(a | E = e)) − max over a of EU(a); VPI ≥ 0; gather the information only if VPI exceeds its cost",
+   "meaning": "E is an unknown variable you could observe (a test, a sensor reading, a clarifying question); the formula compares the average value of deciding after seeing E with the value of deciding now. Information that cannot change the decision is worth nothing.",
+   "used_for": "Choosing medical tests, sensor placement, active learning, agents deciding whether to ask a clarifying question or call a tool before acting. Book: Ch 48 (value of information).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-utility-forms",
+   "name": "Utility of money, risk attitude and multiattribute utility",
+   "formula": "risk aversion: U(E[X]) > E[U(X)] for a concave U (e.g., U(w) = ln(w)); certainty equivalent CE solves U(CE) = E[U(X)]; risk premium = E[X] − CE; additive multiattribute utility U(x_1, ..., x_n) = sum over i of w_i × u_i(x_i)",
+   "meaning": "X is an uncertain amount of money; w wealth; a concave utility prefers a sure thing to a gamble with the same average; w_i are attribute weights and u_i single-attribute utilities (the additive form is valid when the attributes are mutually preferentially independent).",
+   "used_for": "Decision support, preference elicitation, multi-objective agent and reward design. Book: only here (Ch 48 introduces expected utility).",
+   "tier": "specialist"
+  },
+  {
+   "id": "gc-value-iteration",
+   "name": "Value iteration and policy iteration (planning with a known MDP model)",
+   "formula": "value iteration: U_(i+1)(s) = max over a of sum over s' of P(s' | s, a) × (R(s, a, s') + γ × U_i(s')); stop when the largest change is below ε × (1 − γ) ÷ γ; policy iteration: evaluate U^π(s) = sum over s' of P(s' | s, π(s)) × (R(s, π(s), s') + γ × U^π(s')), then improve π(s) ← argmax over a of sum over s' of P(s' | s, a) × (R(s, a, s') + γ × U^π(s')), until π stops changing",
+   "meaning": "s and s' are states; a an action; P the known transition model; R the reward; γ the discount factor between 0 and 1; U the utility (value) of each state; π a policy; ε the error tolerance. Its fixed point is the Bellman optimality equation (given in the reinforcement-learning section); here the model is known, so this is planning, not learning from trial and error.",
+   "used_for": "Grid-world and robot-navigation planning, inventory and maintenance planning, point-based POMDP solvers, planning steps inside model-based RL. Book: Ch 48 (Markov decision processes: the formal frame; Value iteration definition).",
+   "tier": "standard"
+  },
+  {
+   "id": "gc-fuzzy",
+   "name": "Fuzzy membership, fuzzy operators and defuzzification",
+   "formula": "membership μ_A(x) between 0 and 1, e.g. a ramp μ_warm(x) = max(0, min(1, (x − a) ÷ (b − a))); μ_(A AND B) = min(μ_A, μ_B); μ_(A OR B) = max(μ_A, μ_B); μ_(NOT A) = 1 − μ_A; weighted-average (centroid-style) defuzzification output = (sum over rules r of μ_r × y_r) ÷ (sum over rules r of μ_r)",
+   "meaning": "μ_A(x) is the degree to which x belongs to the vague category A; a and b are where the ramp starts and ends; μ_r a rule's firing strength and y_r its output value (e.g., fan speed). Degrees of truth are not probabilities. Book worked example: at 27 °C, warm = 0.2 and hot = 0.5 give (8 + 50) ÷ 0.7 ≈ 83% fan speed.",
+   "used_for": "Appliance and vehicle control (Sendai subway, 1987; washing machines, rice cookers, camera autofocus), industrial controllers. Book: Ch 54 (Fuzzy logic: degrees of truth; worked fuzzy fan).",
+   "tier": "specialist"
+  }
+ ]
+}

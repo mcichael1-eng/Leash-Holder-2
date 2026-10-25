@@ -1,0 +1,849 @@
+[
+ {
+  "id": "gc-ar-likelihood",
+  "name": "Autoregressive likelihood for images and audio (PixelCNN, WaveNet, image-token models)",
+  "status": "WORDS",
+  "where": "Ch 16 (Autoregressive image generation: painting by tokens) and Ch 22 (Models that draw, definition) explain predicting each image token from all earlier ones; Ch 46 (Teaching machines to speak) says WaveNet predicts each audio sample from all samples before it. The product formula appears only for text (Appendix B, Probability: Sentence probability); the pixel/audio form, the −ln p loss and bits per dimension are not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-mu-law",
+  "name": "μ-law companding (8-bit audio for WaveNet and telephony)",
+  "status": "MISSING",
+  "where": "Not in the book. Ch 46 (Sound as numbers) covers bit depth and Ch 46 (Teaching machines to speak) covers WaveNet, but μ-law companding is never mentioned.",
+  "owning_chapter": 46
+ },
+ {
+  "id": "gc-autoencoder",
+  "name": "Autoencoder reconstruction loss and compression ratio",
+  "status": "SHOWN",
+  "where": "Ch 16 (The autoencoder): compression 784 ÷ 32 = 24.5 times, reconstruction loss as mean squared error worked as (0.90 − 0.70)² = 0.04 averaged over 784 pixels, Figure 16.3. Denoising and sparse variants only in words (Ch 16; Appendix F, Autoencoder variants).",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-vae-model",
+  "name": "VAE encoder, prior and decoder (the VAE's probability model)",
+  "status": "WORDS",
+  "where": "Ch 16 (The variational autoencoder (VAE)): encoder outputs a mean and a spread per latent number, regions pulled toward a standard bell curve, generation by sampling from the bell curve and decoding. No q(z|x), p(z) or p(x|z) notation.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-reparam",
+  "name": "Reparameterization trick",
+  "status": "SHOWN",
+  "where": "Ch 16 (The variational autoencoder (VAE)): definition 'mean + spread × random noise' and worked 1.5 + 0.2 × (−0.7) = 1.36 and 1.5 + 0.2 × 1.1 = 1.72. The log-variance form σ = exp(0.5 × ln σ²) is not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-elbo",
+  "name": "Evidence lower bound (ELBO): reconstruction minus KL",
+  "status": "WORDS",
+  "where": "Ch 16 (The variational autoencoder (VAE)) describes the two loss terms (rebuild error plus a pull toward the bell curve); Appendix F (The ELBO, MAP inference and wake-sleep) defines the ELBO as a computable lower bound on the log-probability; Ch 54 (A Bayesian network, worked by hand) defines variational inference. The formula, the KL gap and β-VAE are not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-gauss-kl",
+  "name": "Closed-form KL divergence for Gaussians (VAE KL term)",
+  "status": "WORDS",
+  "where": "Ch 16 (The variational autoencoder (VAE)) describes the KL term's job in words (pulls each fuzzy region toward the shared bell curve). KL divergence itself is shown for discrete distributions in Ch 6 (Maximum likelihood, entropy and KL divergence) and Ch 20 (The KL leash), but the Gaussian closed form is not in the book.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-gan-minimax",
+  "name": "GAN minimax objective",
+  "status": "WORDS",
+  "where": "Ch 16 (GANs: the forger and the detective): generator tries to fool the discriminator, discriminator tries not to be fooled, Figure 16.4. The min-max value function is not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-gan-optimal-d",
+  "name": "Optimal discriminator and the Jensen–Shannon view of GANs",
+  "status": "MISSING",
+  "where": "Not in the book (no optimal discriminator, no Jensen–Shannon divergence).",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-gan-nonsat",
+  "name": "Non-saturating GAN losses (generator and discriminator)",
+  "status": "WORDS",
+  "where": "Ch 16 (GANs: the forger and the detective): one round worked in words ('82% real' should be high, '35% real' should be low, the loss rewards both; the generator is updated so the 'real' score on its fakes goes up). Loss formulas and softplus form not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-wgan",
+  "name": "Wasserstein GAN critic objective and gradient penalty (WGAN, WGAN-GP)",
+  "status": "MISSING",
+  "where": "Not in the book (no Wasserstein GAN, critic or gradient penalty).",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-gan-variants",
+  "name": "Hinge and least-squares GAN losses and the R1 gradient penalty",
+  "status": "MISSING",
+  "where": "Not in the book (hinge, least-squares GAN and R1 penalty absent; the hinge loss in Appendix F is the SVM one).",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-change-of-vars",
+  "name": "Change of variables for normalizing flows (log-determinant of the Jacobian)",
+  "status": "WORDS",
+  "where": "Ch 16 (Normalizing flows): reversible steps let the model compute the exact probability of any image; Appendix F (Measure theory and change of variables) explains density stretching with a 1D example (Fahrenheit density = Celsius density ÷ 1.8) and links it to flows. The log-determinant-of-Jacobian formula is not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-coupling",
+  "name": "Affine coupling layers and autoregressive flows",
+  "status": "MISSING",
+  "where": "Not in the book. Ch 16 (Normalizing flows) names Glow (2018) and says reversibility limits each step, but coupling layers and autoregressive flows are not described.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-cnf",
+  "name": "Continuous normalizing flow (instantaneous change of variables)",
+  "status": "MISSING",
+  "where": "Not explained. Ch 16 (Normalizing flows) says only that flow matching 'grew out of a continuous version of normalizing flows'; the instantaneous change of variables and the Hutchinson trace estimate are absent.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-ebm",
+  "name": "Energy-based model and the partition function (Boltzmann distribution)",
+  "status": "WORDS",
+  "where": "Ch 16 (Energy-based models and Boltzmann machines): energy score, divide by a total over every possible input (partition function definition), Boltzmann machines and RBMs described. Appendix F (The partition function and the ways around it) repeats the idea. No exp(−E)/Z, RBM or Hopfield energy formulas.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-ebm-grad",
+  "name": "Maximum-likelihood gradient of an energy-based model (contrastive divergence)",
+  "status": "WORDS",
+  "where": "Appendix F (The partition function and the ways around it): contrastive divergence defined as comparing real data with a few Gibbs-sampling steps started from the data, Figure F.3. The gradient and RBM weight update are not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-langevin",
+  "name": "Langevin dynamics sampling (and annealed Langevin)",
+  "status": "WORDS",
+  "where": "Ch 16 (Score-based models: diffusion's twin): sampling starts from noise and repeatedly steps along the score 'with a little added randomness'. The update formula and annealing are not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-score-matching",
+  "name": "Score matching (Hyvärinen) and sliced score matching",
+  "status": "WORDS",
+  "where": "Appendix F (The partition function and the ways around it): score matching defined as matching the slope of the log-probability, so the partition function cancels; Ch 16 (Score-based models) defines the score. Hyvärinen and sliced objectives not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-dsm",
+  "name": "Denoising score matching",
+  "status": "WORDS",
+  "where": "Ch 16 (Score-based models: diffusion's twin) says predicting the score and predicting the noise are two views of the same thing; Appendix F (Autoencoder variants) notes denoising autoencoders foreshadowed diffusion. The denoising score matching objective and σ² weighting are not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-score-noise",
+  "name": "Score–noise relation and Tweedie's formula",
+  "status": "WORDS",
+  "where": "Ch 16 (Score-based models: diffusion's twin): 'Predicting the score and predicting the noise ... turned out to be two views of the same thing.' The relation s = −ε ÷ sqrt(1 − ᾱ) and Tweedie's formula are not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-forward-step",
+  "name": "Diffusion forward noising step",
+  "status": "WORDS",
+  "where": "Ch 16 (Part 1: the forward process): add a small amount of Gaussian noise, then a bit more, for 1,000 steps (definitions of Gaussian noise, forward process, timestep). The one-step formula with β_t is not shown; only the closed-form jump is.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-forward-closed",
+  "name": "Closed-form forward jump q(x_t | x_0)",
+  "status": "SHOWN",
+  "where": "Ch 16 (Part 1: the forward process): `noisy pixel = sqrt(a) × clean pixel + sqrt(1 − a) × noise`, worked at a = 0.81, 0.25 and near 0; Exercise 4 (spreadsheet). The book's a is ᾱ_t; ᾱ as a product of (1 − β_s) is not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-schedules",
+  "name": "Noise schedules (linear, cosine), signal-to-noise ratio and SNR loss weighting",
+  "status": "WORDS",
+  "where": "Ch 16 (Part 1: the forward process): noise schedule defined in words and a described as the surviving signal fraction set by the schedule. Linear and cosine schedules, SNR, log-SNR and min-SNR weighting are not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-ddpm-loss",
+  "name": "DDPM simplified loss (noise prediction)",
+  "status": "SHOWN",
+  "where": "Ch 16 (Part 2: training, learning to spot the noise): five-step recipe (random timestep, fresh noise, noisy version via the formula, predict the noise, mean squared error) worked as (−0.4 − (−0.5))² = 0.01; Denoiser definition. Conditional version described via the caption.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-diffusion-vlb",
+  "name": "Diffusion variational bound and the forward-process posterior",
+  "status": "MISSING",
+  "where": "Not in the book (no variational bound for diffusion, no forward-process posterior).",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-x0",
+  "name": "Clean-image estimate from a noise prediction",
+  "status": "SHOWN",
+  "where": "Ch 16 (Part 3: the reverse process): `estimated clean pixel = (noisy − sqrt(1 − a) × predicted noise) ÷ sqrt(a)` worked to ≈ 0.776; Exercise 4 (column C).",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-ddpm-reverse",
+  "name": "DDPM reverse sampling step (ancestral sampling)",
+  "status": "WORDS",
+  "where": "Ch 16 (Part 3: the reverse process): start from pure noise, predict the noise, remove a slice, move only part of the way and keep a smaller amount of noise, repeat to step 0; Figure 16.7. The DDPM step formula with σ_t × z is not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-ddim",
+  "name": "DDIM step (deterministic and η-stochastic)",
+  "status": "WORDS",
+  "where": "Ch 16 (Samplers and step counts): DDIM takes larger, non-random steps along the same path, about 50 steps instead of 1,000 (DDIM definition). The update formula and η are not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-vpred",
+  "name": "v-prediction (velocity parameterization) and other prediction targets",
+  "status": "MISSING",
+  "where": "Not in the book. Ch 16 (Denoiser definition) mentions only that some variants predict the clean image; v-prediction is absent.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-sde",
+  "name": "Stochastic differential equation (SDE) view of diffusion: forward and reverse SDE",
+  "status": "MISSING",
+  "where": "Not explained. Ch 16 (Score-based models) says Song and colleagues unified score models and diffusion in 2021, without describing forward or reverse SDEs.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-pfode",
+  "name": "Probability-flow ODE",
+  "status": "WORDS",
+  "where": "Ch 16 (Samplers and step counts): samplers such as Euler, DPM-Solver and UniPC 'treat the denoising path as a smooth curve and follow it accurately'. The probability-flow ODE formula and EDM form are not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-edm",
+  "name": "EDM design (Karras et al. 2022): preconditioning, loss weighting and Karras step schedule",
+  "status": "MISSING",
+  "where": "Not in the book (no EDM preconditioning, loss weighting or Karras step schedule).",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-ode-solver",
+  "name": "ODE sampler steps (Euler and Heun) for flow and diffusion models",
+  "status": "SHOWN",
+  "where": "Ch 16 (Flow matching and rectified flow): one Euler step −0.2 + 0.5 × 2.0 = 0.8; Exercise 9 states 'new x = x + step size × velocity' and works straight versus curved paths. Heun's method is not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-classifier-guidance",
+  "name": "Classifier guidance",
+  "status": "MISSING",
+  "where": "Not in the book; only classifier-free guidance is covered (Ch 16).",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-cfg",
+  "name": "Classifier-free guidance (CFG)",
+  "status": "SHOWN",
+  "where": "Ch 16 (Classifier-free guidance: the 'follow the prompt' knob): `guided prediction = u + w × (c − u)` worked at w = 1 and 7.5, negative prompts; Exercise 5; Check your understanding 3. Ch 47 (recap) describes the knob in words.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-latent-diffusion",
+  "name": "Latent diffusion: autoencoder compression factor and latent size",
+  "status": "SHOWN",
+  "where": "Ch 16 (Latent diffusion: do the hard work on a thumbnail): 512 × 512 × 3 to 64 × 64 × 4, 786,432 ÷ 16,384 = 48 times; Ch 16 (Video generation): 120 frames ÷ 4 = 30 latent frames, 1280 × 720 ÷ 8; Exercise 7. The latent scaling factor is not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-dit",
+  "name": "Diffusion Transformer (DiT): patch-token count and adaLN-Zero conditioning",
+  "status": "SHOWN",
+  "where": "Ch 16 (The Diffusion Transformer (DiT)): 64 × 64 × 4 latent in 2 × 2 patches gives 32 × 32 = 1,024 tokens of 16 numbers; Ch 16 (Video generation): 80 × 45 = 3,600 tokens per latent frame, 108,000 per clip; Exercise 7. adaLN-Zero conditioning is not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-sdedit",
+  "name": "Image-to-image strength (SDEdit) and inpainting by re-noising",
+  "status": "WORDS",
+  "where": "Ch 16 (Control and customization): image-to-image at strength 0.3 noises the photo 30% of the way and denoises from there; inpainting keeps the unmasked area fixed at every step (definitions). The re-noising formula and steps-run rule are not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-controlnet",
+  "name": "ControlNet zero-convolution injection (and image-prompt adapters)",
+  "status": "WORDS",
+  "where": "Ch 16 (Control and customization): ControlNet attaches a trainable copy of part of the denoiser to a frozen model and injects guidance from a control image (definition). Zero convolutions and the injection formula are not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-personalize",
+  "name": "Personalization objectives (DreamBooth prior preservation, textual inversion)",
+  "status": "MISSING",
+  "where": "Not in the book. Ch 16 (Control and customization) covers LoRA customization, but DreamBooth prior preservation and textual inversion are not mentioned.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-fm-interp",
+  "name": "Straight-line interpolation path (rectified flow / optimal-transport path)",
+  "status": "SHOWN",
+  "where": "Ch 16 (Flow matching and rectified flow): `x(t) = (1 − t) × noise + t × data` worked at t = 0.5 (x = −0.2); Figure 16.9. The general Gaussian path and Lipman's σ_min path are not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-cfm-loss",
+  "name": "Conditional flow-matching loss (velocity target x_1 − x_0)",
+  "status": "SHOWN",
+  "where": "Ch 16 (Flow matching and rectified flow): velocity target `data − noise` worked as 0.8 − (−1.2) = 2.0, and the model learns to predict it from any point (Flow matching definition). The squared-error loss is stated only implicitly; general-path targets and x̂ conversions are not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-timestep-sampling",
+  "name": "Timestep sampling and resolution shift for flow models (logit-normal, shift)",
+  "status": "MISSING",
+  "where": "Not in the book (no logit-normal timestep sampling or resolution shift).",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-consistency",
+  "name": "Consistency models (consistency function and training loss)",
+  "status": "WORDS",
+  "where": "Ch 16 (Distillation: from 50 steps to 1): consistency models map any point on a denoising path straight to its endpoint; step distillation defined. The consistency function, loss and EMA target are not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-meanflow",
+  "name": "MeanFlow average velocity (one-step flow models)",
+  "status": "MISSING",
+  "where": "Not in the book.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-score-distill",
+  "name": "Score distillation gradients (SDS, DMD) and adversarial distillation",
+  "status": "WORDS",
+  "where": "Ch 47 (3D and avatars: Route 1): DreamFusion's score distillation renders a shape from many angles and uses a 2D diffusion model's judgment to nudge it (definition); Ch 16 (Distillation) says SDXL-Turbo added a GAN-style discriminator. SDS and DMD gradients are not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-vq-lookup",
+  "name": "Vector quantization codebook lookup (VQ-VAE image and audio tokenizers)",
+  "status": "WORDS",
+  "where": "Ch 16 (Autoregressive image generation: painting by tokens): each grid cell replaced by the closest codebook entry (Image tokenizer (VQ-VAE) definition), DALL·E 256 × 256 to 32 × 32 = 1,024 tokens from an 8,192-entry codebook; Ch 22 (Late fusion and early fusion): Vector quantization (codebook) definition. The argmin formula and bits per image are not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-vq-loss",
+  "name": "VQ-VAE loss with codebook and commitment terms",
+  "status": "MISSING",
+  "where": "Not in the book. Ch 16 and Ch 22 describe the codebook, but not the codebook, commitment or EMA-update terms of the VQ-VAE loss.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-ste",
+  "name": "Straight-through estimator",
+  "status": "MISSING",
+  "where": "Not in the book.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-rvq",
+  "name": "Residual vector quantization (neural audio codecs) and codec bitrate",
+  "status": "WORDS",
+  "where": "Ch 22 (Hearing: how sound becomes tokens): codecs use codebooks in layers, the second encoding what the first got wrong and so on; EnCodec 75 and Mimi 12.5 frames per second; Neural audio codec definition. Ch 46 (Teaching machines to speak) mentions codec tokens. The residual recursion and bitrate formula are not shown.",
+  "owning_chapter": 22
+ },
+ {
+  "id": "gc-fsq",
+  "name": "Finite scalar quantization (FSQ) and lookup-free quantization (LFQ)",
+  "status": "MISSING",
+  "where": "Not in the book (no FSQ or lookup-free quantization).",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-gumbel",
+  "name": "Gumbel-softmax (concrete) relaxation and the Gumbel-max trick",
+  "status": "MISSING",
+  "where": "Not in the book.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-masked-gen",
+  "name": "Masked generative modeling and masked (discrete) diffusion",
+  "status": "WORDS",
+  "where": "Ch 16 (Diffusion language models): noise means masking, the model predicts every masked position and keeps the most confident, Figure 16.11, Masked diffusion definition; Ch 16 (Self-supervised learning): BERT hides about 15% of words. MaskGIT's cosine schedule and the masked-diffusion loss are not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-infonce",
+  "name": "InfoNCE contrastive loss",
+  "status": "WORDS",
+  "where": "Ch 16 (Contrastive learning and CLIP): each row treated as a multiple-choice question, turned into percentages with softmax, penalized when the true pair does not win; Contrastive learning definitions in Ch 16, Ch 22 and Ch 27; Appendix F defines noise-contrastive estimation. The InfoNCE formula, temperature, mutual-information bound and MoCo momentum update are not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-clip",
+  "name": "CLIP symmetric contrastive loss with learned temperature",
+  "status": "WORDS",
+  "where": "Ch 16 (Contrastive learning and CLIP): Figure 16.2 similarity matrix, softmax over rows and over columns, zero-shot classification by the closest phrase; Ch 45 (Image classification) works zero-shot picking by cosine (0.31 versus 0.27 and 0.19); Ch 16 Exercise 6. The symmetric loss formula and learned temperature are not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-siglip",
+  "name": "SigLIP pairwise sigmoid loss",
+  "status": "WORDS",
+  "where": "Ch 16 (Contrastive learning and CLIP, SigLIP definition) and Ch 22 (Step 3): each image–caption pair scored independently with a sigmoid. The loss formula, temperature and bias are not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-simclr",
+  "name": "SimCLR NT-Xent loss (normalized temperature-scaled cross-entropy)",
+  "status": "WORDS",
+  "where": "Ch 45 (A quick recap: the networks that see) mentions pretraining by 'matching different crops of the same photo'; Ch 16 (Self-supervised learning) covers pretext tasks. SimCLR and NT-Xent are not named or shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-triplet",
+  "name": "Triplet loss and margin-based face-recognition losses",
+  "status": "WORDS",
+  "where": "Ch 45 (Faces: Face embedding definition): photos of the same person trained to land close together and different people far apart (FaceNet, 128 numbers); Ch 46 (Speaker embedding definition) the same for voices. Triplet loss and ArcFace formulas are not shown.",
+  "owning_chapter": 45
+ },
+ {
+  "id": "gc-dino",
+  "name": "Self-distillation without labels (DINO, BYOL-style EMA teacher)",
+  "status": "WORDS",
+  "where": "Ch 45 (A quick recap: the networks that see): Meta's DINO family learned features from images alone by self-supervision ('matching different crops of the same photo'). The teacher–student self-distillation, EMA teacher and centering are not explained.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-mae-jepa",
+  "name": "Masked image modeling (MAE) and joint-embedding predictive architectures (JEPA)",
+  "status": "WORDS",
+  "where": "Ch 16 (Self-supervised learning): masked autoencoders hide most patches and repaint them; Ch 16 (Beyond single media) and Ch 47 (Other approaches: Cosmos, World Labs and JEPA): JEPA predicts in embedding space; Ch 49 (World models) V-JEPA 2. The MAE and JEPA losses are not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-style-gram",
+  "name": "Gram-matrix style loss (neural style transfer)",
+  "status": "WORDS",
+  "where": "Ch 14 (Neural style transfer bullet and definition): content from deep CNN features, style from texture statistics of its layers; Appendix F (Texture). The Gram matrix and style/content losses are not shown.",
+  "owning_chapter": 14
+ },
+ {
+  "id": "gc-fid",
+  "name": "Fréchet Inception Distance (FID) and its video and audio variants",
+  "status": "WORDS",
+  "where": "Ch 16 (How do you grade a generator?): FID compares statistics of features from real and generated images, lower is better (FID definition). The mean-and-covariance formula is not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-is",
+  "name": "Inception Score (IS)",
+  "status": "MISSING",
+  "where": "Not in the book.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-kid",
+  "name": "Kernel Inception Distance and CMMD (maximum mean discrepancy)",
+  "status": "WORDS",
+  "where": "Appendix F (Generative stochastic networks and moment matching): maximum mean discrepancy defined in words as comparing a rich collection of summary statistics. KID and CMMD are not named; the MMD² formula and kernels are not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-psnr",
+  "name": "Peak signal-to-noise ratio (PSNR)",
+  "status": "MISSING",
+  "where": "Not in the book.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-ssim",
+  "name": "Structural similarity index (SSIM)",
+  "status": "MISSING",
+  "where": "Not in the book.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-lpips",
+  "name": "LPIPS perceptual distance (and perceptual loss)",
+  "status": "MISSING",
+  "where": "Not in the book.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-clipscore",
+  "name": "CLIPScore (text–image alignment)",
+  "status": "WORDS",
+  "where": "Ch 16 (How do you grade a generator?, CLIP score definition): similarity between image and prompt in CLIP's shared space. The w × max(cos, 0) form with w = 2.5 is not shown.",
+  "owning_chapter": 16
+ },
+ {
+  "id": "gc-pinhole",
+  "name": "Pinhole camera projection, rigid transforms and stereo depth",
+  "status": "WORDS",
+  "where": "Appendix F (Image formation: cameras, lenses and light): pinhole model and perspective projection, an object twice as far looks half as tall; Ch 45 (Seeing in 3D): stereo depth in words (closer objects shift more between the two images); Ch 49 (From 'go there' to motor commands): coordinate frames as 'rotate, then shift', one-degree tilt worked. Projection, rigid-transform and Z = f × B ÷ d formulas are not shown.",
+  "owning_chapter": 45
+ },
+ {
+  "id": "gc-nerf",
+  "name": "NeRF volume rendering",
+  "status": "WORDS",
+  "where": "Ch 45 (Seeing in 3D, NeRF definition and Table 45.2): a network returns color and density for any point and direction, rendered by querying many points along each pixel's line of sight. The volume-rendering sum and positional encoding are not shown.",
+  "owning_chapter": 45
+ },
+ {
+  "id": "gc-3dgs",
+  "name": "3D Gaussian splatting (alpha compositing of Gaussians)",
+  "status": "WORDS",
+  "where": "Ch 45 (Seeing in 3D, Gaussian splatting definition): millions of soft, colored, semi-transparent blobs; worked file size (about 60 numbers per Gaussian, 3,000,000 × 60 = 180 million numbers); Ch 47 (3D and avatars). Alpha compositing, covariance and loss formulas are not shown.",
+  "owning_chapter": 45
+ },
+ {
+  "id": "gc-detection",
+  "name": "Object-detection box encoding and non-maximum suppression (NMS)",
+  "status": "WORDS",
+  "where": "Ch 45 (How a one-stage detector works): grid cells predict boxes, NMS keeps the most confident of heavily overlapping boxes (definition, Figure 45.4); Appendix F (ResNeXt, RegNet and anchor boxes): detectors predict how to stretch and shift each anchor. Box-offset encoding and the IoU-threshold loop are not shown (IoU itself is worked in Ch 45, Scoring a detector).",
+  "owning_chapter": 45
+ },
+ {
+  "id": "gc-nyquist",
+  "name": "Sampling rate, Nyquist limit and raw audio size",
+  "status": "SHOWN",
+  "where": "Ch 46 (Sound as numbers): Nyquist limit = half the sampling rate (16,000 samples per second captures up to 8,000 Hz); bits per second worked as 44,100 × 16 × 2 = 1,411,200; also Ch 3 (audio bitrate). Aliasing and the 6.02 dB per bit rule are not shown.",
+  "owning_chapter": 46
+ },
+ {
+  "id": "gc-stft",
+  "name": "Discrete Fourier transform, short-time Fourier transform and the spectrogram",
+  "status": "WORDS",
+  "where": "Ch 46 (Spectrograms: a picture of sound): Fourier transform definition, 25 ms windows every 10 ms, one column per window stacked into a spectrogram (Figure 46.3); Appendix F (Fast convolution) defines the FFT. The DFT/STFT formulas, bin spacing and frame count are not shown.",
+  "owning_chapter": 46
+ },
+ {
+  "id": "gc-mel",
+  "name": "Mel scale, log-mel spectrogram and MFCCs (with the musical pitch formula)",
+  "status": "WORDS",
+  "where": "Ch 46 (Spectrograms: a picture of sound): Mel scale and Log-mel spectrogram definitions, 80 mel bands, worked 100 × 80 = 8,000 numbers per second. The mel formula, MFCCs and the MIDI pitch formula are not shown.",
+  "owning_chapter": 46
+ },
+ {
+  "id": "gc-audio-tokens",
+  "name": "Audio frame and token rates",
+  "status": "SHOWN",
+  "where": "Ch 46 (Spectrograms): a new window every 10 ms gives 100 columns per second; Ch 22 (Hearing: how sound becomes tokens): Whisper's 1,500 vectors per 30-second window = 50 per second, 3,600 × 32 = 115,200 tokens per hour; EnCodec 75 and Mimi 12.5 frames per second (also Ch 46, WaveNet worked example). Codec tokens per second = frame rate × codebooks is described but not computed.",
+  "owning_chapter": 22
+ },
+ {
+  "id": "gc-wer",
+  "name": "Word error rate (WER) and character error rate (CER)",
+  "status": "SHOWN",
+  "where": "Ch 46 (Measuring speech recognition: word error rate): WER = (S + D + I) ÷ N, worked 3 ÷ 9 ≈ 33%, CER definition; Exercises 2, 3 and 8.",
+  "owning_chapter": 46
+ },
+ {
+  "id": "gc-ctc",
+  "name": "Connectionist temporal classification (CTC) loss",
+  "status": "MISSING",
+  "where": "Not in the book. Ch 46 (The deep learning turn) describes end-to-end recognition without CTC.",
+  "owning_chapter": 46
+ },
+ {
+  "id": "gc-search-cost",
+  "name": "Path cost, uniform-cost search and search-tree size",
+  "status": "SHOWN",
+  "where": "Ch 48 (Blind search: breadth-first and depth-first): uniform-cost search defined, most nodes sit in the deepest level, bidirectional search worked as 10^6 versus 2 × 10^3; Ch 48 (Game trees) Table 48.4 (35^80 ≈ 10^123); Ch 49 (100^7 = 10^14). The path-cost sum and the geometric tree-size formula are not written out.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "gc-astar",
+  "name": "A* search evaluation function (and greedy best-first search)",
+  "status": "SHOWN",
+  "where": "Ch 48 (A*: search with a sense of direction): f = g + h with Table 48.2 and the grid walk-through; greedy best-first (h alone) in words; Exercise 4; Check your understanding 2.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "gc-admissible",
+  "name": "Admissible and consistent heuristics, common heuristics and effective branching factor",
+  "status": "SHOWN",
+  "where": "Ch 48 (A*: search with a sense of direction): admissible = never overestimates the true remaining cost; Manhattan distance worked 0 + 7 = 7; heuristics from relaxed problems (Planning with actions). Consistency, max of heuristics, straight-line distance and effective branching factor are not shown.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "gc-weighted-astar",
+  "name": "Weighted A* (bounded-suboptimal search)",
+  "status": "SHOWN",
+  "where": "Ch 48 (A*: search with a sense of direction): g + 2 × h, path at most the weight times the best when h is admissible; Weighted A* definition.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "gc-annealing",
+  "name": "Simulated annealing acceptance rule",
+  "status": "WORDS",
+  "where": "Ch 48 (Local search: improving one solution at a time): accepts worse moves with a probability that shrinks as the temperature falls (Simulated annealing definition). The exp(ΔE ÷ T) rule and cooling schedule are not shown.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "gc-genetic",
+  "name": "Genetic algorithm selection, crossover and mutation",
+  "status": "SHOWN",
+  "where": "Ch 54 (One generation, worked by hand): roulette selection 17 ÷ 48 ≈ 35%, one-point crossover 01|110, bit-flip mutation; Exercises 5 and 6 (Colab code).",
+  "owning_chapter": 54
+ },
+ {
+  "id": "gc-minimax",
+  "name": "Minimax value of a game tree",
+  "status": "SHOWN",
+  "where": "Ch 48 (Minimax, worked by hand): min at O's level, max at X's level, worked tic-tac-toe tree (Figure 48.3); depth cutoff with an evaluation function in Ch 48 (Alpha-beta pruning and evaluation functions); Exercise 1.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "gc-alphabeta",
+  "name": "Alpha–beta pruning bounds",
+  "status": "WORDS",
+  "where": "Ch 48 (Alpha-beta pruning and evaluation functions): the cut shown on Option B in words, and perfect move ordering lets alpha-beta search about twice as deep. The α and β bookkeeping and the O(b^(m/2)) formula are not shown.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "gc-expectiminimax",
+  "name": "Expectiminimax (games with chance)",
+  "status": "SHOWN",
+  "where": "Ch 48 (Games with dice: chance nodes): probability-weighted average at chance nodes, worked 1/36 ≈ 0.03 versus 11/36 − 1/36 = 10/36 ≈ 0.28.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "gc-eval-fn",
+  "name": "Weighted linear evaluation function",
+  "status": "WORDS",
+  "where": "Ch 48 (Alpha-beta pruning and evaluation functions): evaluation function defined as scoring an unfinished position, e.g. counting material and judging king safety; Stockfish uses a small network. The weighted linear sum is not shown.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "gc-uct",
+  "name": "UCT selection rule for Monte Carlo tree search",
+  "status": "SHOWN",
+  "where": "Ch 48 (Monte Carlo tree search): `win rate + c × square root of (ln N ÷ n)`, worked 1.30 versus 2.06 with c = 1.4.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "gc-puct",
+  "name": "PUCT: neural-network-guided MCTS (AlphaZero, MuZero)",
+  "status": "WORDS",
+  "where": "Ch 48 (AlphaGo and Move 37; AlphaGo Zero and AlphaZero): a policy network suggests moves and a value network judges positions, both guiding MCTS; Figure 48.4 plays the most-visited move. The PUCT rule, visit-count policy and AlphaZero loss are not shown.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "gc-csp",
+  "name": "Constraint satisfaction problem (formal definition and counts; no single numeric equation)",
+  "status": "SHOWN",
+  "where": "Ch 48 (Constraint satisfaction: puzzles, timetables and schedules): variables, domains and constraints worked for four meetings, brute force 3 × 3 × 3 × 1 = 27, arc consistency and backtracking worked; Appendix F (Structure in constraint problems). AC-3 complexity is not shown.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "gc-truth-table",
+  "name": "Truth-table semantics, entailment and model checking",
+  "status": "SHOWN",
+  "where": "Ch 54 (Logic: the mathematics underneath the rules): 2 × 2 × 2 = 8 situations checked by brute force, entailment defined as true in every situation where the facts hold, IF-THEN rewritten as NOT A OR B. Full truth tables and De Morgan's laws are not shown.",
+  "owning_chapter": 54
+ },
+ {
+  "id": "gc-resolution",
+  "name": "Resolution and modus ponens inference rules",
+  "status": "SHOWN",
+  "where": "Ch 54 (Logic: the mathematics underneath the rules): resolution worked ('alarm OR guard' with 'NOT guard' gives 'alarm'; 'NOT alarm OR locked' with 'alarm' gives 'locked'), Resolution rule definition; modus ponens as forward chaining in Ch 54 (A tiny expert system, worked by hand). Refutation is not shown.",
+  "owning_chapter": 54
+ },
+ {
+  "id": "gc-fol",
+  "name": "First-order logic: quantifiers, unification and generalized modus ponens",
+  "status": "WORDS",
+  "where": "Ch 54 (Logic: the mathematics underneath the rules): first-order logic with 'for all' and 'there exists', the Maria insurance example; Appendix F (Unification, lifted inference and fast rule engines): unification of Mortal(x) with Mortal(Socrates). Quantifier equivalences and generalized modus ponens are not written out.",
+  "owning_chapter": 54
+ },
+ {
+  "id": "gc-strips",
+  "name": "STRIPS/PDDL action model for classical planning",
+  "status": "WORDS",
+  "where": "Ch 48 (Planning with actions: from Shakey to PDDL): actions as preconditions and effects (Table 48.3), worked tea plan, PDDL. The applicability test and RESULT(s, a) = (s − DEL) ∪ ADD are not shown.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "gc-bn-joint",
+  "name": "Bayesian network joint factorization",
+  "status": "SHOWN",
+  "where": "Ch 54 (A Bayesian network, worked by hand): joint probabilities computed as products of the tables (1,000 × 0.2 × 0.3 mornings, 99% wet); parameter counts 6 versus 2^3 − 1 = 7 and 30 × 2^3 = 240 versus about a billion. The general product formula is not written symbolically.",
+  "owning_chapter": 54
+ },
+ {
+  "id": "gc-mrf",
+  "name": "Markov random fields, factor graphs and conditional random fields",
+  "status": "WORDS",
+  "where": "Ch 54 (A Bayesian network, worked by hand): Markov random field and probabilistic graphical model definitions; Appendix F (Reading independence off a diagram) defines factor graphs. The clique-potential formula and CRFs are not shown.",
+  "owning_chapter": 54
+ },
+ {
+  "id": "gc-enumeration",
+  "name": "Inference by enumeration (normalization constant α)",
+  "status": "SHOWN",
+  "where": "Ch 54 (A Bayesian network, worked by hand): P(rain given wet) = 185.4 ÷ 405.4 ≈ 0.46 by summing over the sprinkler and normalizing, plus the two explaining-away cases; Exercise 3.",
+  "owning_chapter": 54
+ },
+ {
+  "id": "gc-var-elim",
+  "name": "Variable elimination and belief propagation",
+  "status": "MISSING",
+  "where": "Not explained. Appendix F (Reading independence off a diagram) says only that message-passing algorithms run on factor graphs; variable elimination and the sum-product message are absent.",
+  "owning_chapter": 54
+ },
+ {
+  "id": "gc-noisy-or",
+  "name": "Noisy-OR conditional distribution",
+  "status": "SHOWN",
+  "where": "Appendix F (Noisy-OR and continuous variables): no fever with both causes 0.6 × 0.2 = 0.12, so fever 0.88; Noisy-OR definition. The leak term is not shown.",
+  "owning_chapter": 54
+ },
+ {
+  "id": "gc-bn-sampling",
+  "name": "Approximate inference by sampling: likelihood weighting, Gibbs sampling and Metropolis–Hastings",
+  "status": "WORDS",
+  "where": "Ch 54 (A Bayesian network, worked by hand): simulate 100,000 mornings, keep the wet ones and count (rejection sampling), MCMC defined; Appendix F (Gibbs sampling and importance sampling) defines both in words. Likelihood weighting and Metropolis–Hastings are not covered.",
+  "owning_chapter": 54
+ },
+ {
+  "id": "gc-causal-adjust",
+  "name": "Causal effect by back-door adjustment (the do-operator)",
+  "status": "SHOWN",
+  "where": "Ch 54 (A worked confounder): adjustment worked as 0.5 × 28% + 0.5 × 8% = 18% versus 0.5 × 30% + 0.5 × 10% = 20%; Ch 54 (Pearl's ladder of causation): P(Y given do(X)); Exercise 7. The back-door criterion is not named.",
+  "owning_chapter": 54
+ },
+ {
+  "id": "gc-hmm",
+  "name": "Hidden Markov model joint probability",
+  "status": "WORDS",
+  "where": "Ch 54 (Reasoning over time: hidden states and filters): Markov chain and HMM definitions, umbrella example with transition (0.7/0.3) and emission (0.9/0.2) probabilities; Ch 46 (HMM definition). The joint-probability product is not shown.",
+  "owning_chapter": 54
+ },
+ {
+  "id": "gc-bayes-filter",
+  "name": "Bayes filter and the HMM forward algorithm (filtering), with the POMDP belief update",
+  "status": "SHOWN",
+  "where": "Ch 54 (Reasoning over time: hidden states and filters): umbrella filter worked, predict 0.82 × 0.7 + 0.18 × 0.3 ≈ 0.63, correct 0.567 ÷ (0.567 + 0.074) ≈ 0.88; Filtering definition. Ch 48 (Markov decision processes) describes the POMDP belief update in words. Forward-variable notation is not shown.",
+  "owning_chapter": 54
+ },
+ {
+  "id": "gc-smoothing",
+  "name": "Forward–backward smoothing",
+  "status": "WORDS",
+  "where": "Ch 54 (Reasoning over time): one sentence, smoothing revises estimates of past states using later evidence. The forward–backward formulas are not shown.",
+  "owning_chapter": 54
+ },
+ {
+  "id": "gc-viterbi",
+  "name": "Viterbi algorithm (most likely hidden-state sequence)",
+  "status": "WORDS",
+  "where": "Ch 54 (Reasoning over time): one sentence, Viterbi finds the single most likely sequence of hidden states, used by HMM speech recognizers. The recursion is not shown.",
+  "owning_chapter": 54
+ },
+ {
+  "id": "gc-baum-welch",
+  "name": "Baum–Welch algorithm (EM for hidden Markov models)",
+  "status": "WORDS",
+  "where": "Ch 10 (Gaussian mixtures, EM paragraph and definition): EM explained and said to be how the HMMs of classic speech recognition were trained; Appendix F (The ELBO, MAP inference and wake-sleep) mentions EM. Baum–Welch is not named and its re-estimation formulas are not shown.",
+  "owning_chapter": 54
+ },
+ {
+  "id": "gc-kalman-predict",
+  "name": "Kalman filter predict step",
+  "status": "WORDS",
+  "where": "Ch 54 (Reasoning over time): the Kalman filter does the predict-and-correct arithmetic exactly for bell-shaped noise (Kalman filter definition); Appendix F (Optimal control: LQR, DDP and LQG; Tracking many objects at once). The predict equations are not shown.",
+  "owning_chapter": 54
+ },
+ {
+  "id": "gc-kalman-update",
+  "name": "Kalman filter update step (Kalman gain)",
+  "status": "WORDS",
+  "where": "Ch 54 (Reasoning over time): the Kalman filter optimally blends a motion prediction with noisy measurements (definition). The Kalman gain and update equations, including the 1D form, are not shown.",
+  "owning_chapter": 54
+ },
+ {
+  "id": "gc-particle-filter",
+  "name": "Particle filter (sequential importance resampling)",
+  "status": "WORDS",
+  "where": "Ch 54 (Reasoning over time, Particle filter definition): belief as thousands of particles, moved by the motion model, more copies kept of those that match the sensors. Weights, normalization, effective sample size and resampling rule are not shown.",
+  "owning_chapter": 54
+ },
+ {
+  "id": "gc-occupancy",
+  "name": "Occupancy-grid log-odds update",
+  "status": "WORDS",
+  "where": "Ch 50 (Perception: what is around me?, Occupancy grid definition): cells around the car with an estimate of whether each is occupied. The log-odds update is not shown.",
+  "owning_chapter": 50
+ },
+ {
+  "id": "gc-kinematics",
+  "name": "Forward kinematics and transform chains",
+  "status": "WORDS",
+  "where": "Ch 49 (From 'go there' to motor commands: the classic toolkit): forward and inverse kinematics defined, forward kinematics as a chain of 'rotate, then shift' steps through coordinate frames, worked one-degree camera tilt. The two-link formula, transform chain and Jacobian inverse are not shown.",
+  "owning_chapter": 49
+ },
+ {
+  "id": "gc-pid",
+  "name": "PID controller",
+  "status": "SHOWN",
+  "where": "Ch 49 (From 'go there' to motor commands: Holding steady): P term 0.5 × 10 = 5, D term 0.5 × 4 = 2, net 3; integral term explained in words; PID controller definition. The integral and discrete-time formulas are not written out.",
+  "owning_chapter": 49
+ },
+ {
+  "id": "gc-mpc",
+  "name": "Model predictive control objective",
+  "status": "WORDS",
+  "where": "Ch 49 (From 'go there' to motor commands): MPC plans the best commands over a short horizon with a model, applies only the first, measures and re-solves (definition); Appendix F (Optimal control: LQR, DDP and LQG). The cost function and constraints are not shown.",
+  "owning_chapter": 49
+ },
+ {
+  "id": "gc-rrt",
+  "name": "RRT extension step (sampling-based motion planning)",
+  "status": "WORDS",
+  "where": "Ch 49 (Collision-free paths): RRT repeatedly picks a random pose, finds the nearest pose in the tree and steps a little toward it if the step is collision-free (definition); Appendix F (Other motion planners). The step formula and RRT* radius are not shown.",
+  "owning_chapter": 49
+ },
+ {
+  "id": "gc-eu",
+  "name": "Expected utility and the maximum-expected-utility principle",
+  "status": "SHOWN",
+  "where": "Ch 48 (Deciding when you are not sure: expected utility): umbrella worked, leave it 0.7 × 100 + 0.3 × 0 = 70 versus take it 80, break-even at 20%; Maximum expected utility principle definition.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "gc-voi",
+  "name": "Value of perfect information (VPI)",
+  "status": "SHOWN",
+  "where": "Ch 48 (Deciding when you are not sure: expected utility): perfect forecast worth 0.3 × 80 + 0.7 × 100 = 94, so information worth 94 − 80 = 14 points; Value of information definition.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "gc-utility-forms",
+  "name": "Utility of money, risk attitude and multiattribute utility",
+  "status": "WORDS",
+  "where": "Ch 48 (Deciding when you are not sure: expected utility): risk aversion with the sure $1,000 versus a coin flip for $2,000 (definition); Appendix F (Multiattribute utility and decision networks): often a weighted sum; Appendix F (Human judgment and irrationality). Certainty equivalent, risk premium and the additive formula are not shown.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "gc-value-iteration",
+  "name": "Value iteration and policy iteration (planning with a known MDP model)",
+  "status": "SHOWN",
+  "where": "Ch 48 (Markov decision processes: the formal frame): value iteration defined as 'best immediate reward plus the discounted value of where that action leads', worked sweeps C = 10, B = 0.9 × 10 = 9, A = 0.9 × 9 = 8.1; policy iteration in words. The sum over P(s′ | s, a), stopping rule and policy-iteration equations are not shown.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "gc-fuzzy",
+  "name": "Fuzzy membership, fuzzy operators and defuzzification",
+  "status": "SHOWN",
+  "where": "Ch 54 (Fuzzy logic: degrees of truth): ramp memberships worked ((28 − 26) ÷ 5 = 0.4, (26 − 24) ÷ 6 ≈ 0.33), weighted-average defuzzification ≈ 67%; Exercise 4 (MAX/MIN ramp formulas). Fuzzy AND = min, OR = max, NOT = 1 − μ are not stated.",
+  "owning_chapter": 54
+ }
+]

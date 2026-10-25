@@ -1,0 +1,905 @@
+[
+ {
+  "id": "fnd-vector-ops",
+  "name": "Vector addition, scaling and linear combinations",
+  "status": "SHOWN",
+  "where": "Ch 5 (Vectors: Vector arithmetic: [1, 2] + [3, 1] = [4, 3], subtraction, 2 × [1, 2] = [2, 4]; Embeddings: king − man + woman worked); App B (Add vectors; Scale a vector; Embedding analogy); Ch 17 (MoE worked example: blend 0.67 × Expert 3 + 0.33 × Expert 5, a linear combination). The term 'linear combination' and the mean-of-vectors centroid are not named",
+  "owning_chapter": 5
+ },
+ {
+  "id": "fnd-dot-product",
+  "name": "Dot product (inner product)",
+  "status": "SHOWN",
+  "where": "Ch 5 (The dot product: Multiply matching entries, then add: grocery bill 8.50 and movie scores 40 and 10; What the sign of a dot product tells you; Counting the cost 2 × n FLOPs); App B (Dot product; Dot product cost; =SUMPRODUCT). Geometric form appears via Ch 5 (Cosine similarity: 'equals the cosine of the angle') and Ch 15 (RoPE: dot product of unit arrows = cos 20 degrees = 0.940)",
+  "owning_chapter": 5
+ },
+ {
+  "id": "fnd-norms-distances",
+  "name": "Vector norms and distances (L1, L2, L-infinity, Lp; Euclidean distance)",
+  "status": "SHOWN",
+  "where": "Ch 5 (Length and distance: length of [3, 4] = sqrt(25) = 5, Euclidean distance [1, 2] to [4, 6] = 5; Magnitude definition 'also called the norm'); App B (Length; Distance; =SQRT(SUMXMY2)); Ch 13 (Vanishing and exploding gradients: gradient norm = square root of the sum of squared slopes, Exercise clips [6, 8] to norm 5); Ch 9 (L1 and L2 regularization definition: sum of absolute weights, in words). L-infinity, general Lp and the squared-distance identity are not shown",
+  "owning_chapter": 5
+ },
+ {
+  "id": "fnd-cosine-similarity",
+  "name": "Cosine similarity and unit normalization",
+  "status": "SHOWN",
+  "where": "Ch 5 (Cosine similarity: Worked by hand: you and friend 84 ÷ 84.0 = 1.0, Movie A 0.96, Movie B 0.30, table of 1, 0, −1; normalizing [3, 4] to [0.6, 0.8] makes the dot product the cosine); App B (Cosine similarity; Normalize); Ch 14 (cat and dog 0.994 worked); Ch 27 (Measuring closeness: cosine similarity by hand). Cosine distance and the unit-vector distance identity are not shown",
+  "owning_chapter": 5
+ },
+ {
+  "id": "fnd-matmul",
+  "name": "Matrix multiplication (and the matrix–vector product)",
+  "status": "SHOWN",
+  "where": "Ch 5 (A matrix as a machine: bakery 3 × 2 matrix times [4, 10]; By hand: a 2 × 2 example [17, 39]; Matrix multiplication: The rule: row times column, Figure 5.8 [19, 22; 43, 50]; The shape rule; Order matters B × A = [23, 34; 31, 46]; Counting the cost 2 × m × n × p); App B (Matrix times vector; Matrix times matrix; Shape rule; Order matters; =MMULT); Ch 32 (What a neural network actually computes). Associativity and distributivity are not stated",
+  "owning_chapter": 5
+ },
+ {
+  "id": "fnd-transpose",
+  "name": "Transpose",
+  "status": "WORDS",
+  "where": "Ch 15 (Step 4: Self-attention, Scaled dot-product attention definition: softmax(Q × K-transposed ÷ √d) × V, 'transposed means the grid of keys is flipped so its rows become columns'); Ch 17 (Linear attention and the delta rule: ᵀ explained as laying the key on its side as a row); App F (Matrix machinery: symmetric matrix, entry in row i, column j equals entry in row j, column i). The index rule (A^T)[i, j] = A[j, i] and (A × B)^T = B^T × A^T are not written",
+  "owning_chapter": 5
+ },
+ {
+  "id": "fnd-hadamard-product",
+  "name": "Element-wise (Hadamard) product",
+  "status": "WORDS",
+  "where": "Ch 15 (Step 6: The feed-forward block: SwiGLU's Swish branch 'multiplies the other branch number by number'); App F (Fast convolution: FFT and Winograd: convolution becomes element-by-element multiplication); Ch 12 (Exercise 10 code dz1 = dh * (1 - h ** 2), uncommented elementwise product). The element-wise product is never named or written as a formula",
+  "owning_chapter": 5
+ },
+ {
+  "id": "fnd-outer-product",
+  "name": "Outer product (rank-one matrix)",
+  "status": "SHOWN",
+  "where": "Ch 30 (LoRA: The idea in a 3 × 3 example: column [1, 2, 3] times row [1, 0, 2] gives the 9-number change, 'column-times-row pieces'); Ch 17 (Linear attention and the delta rule: value × keyᵀ is a grid whose entry in row r, column c is value r times key c). Not called 'outer product' by name",
+  "owning_chapter": 5
+ },
+ {
+  "id": "fnd-einsum",
+  "name": "Tensor contraction (einsum and named-axis notation)",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 5 Tensors: stacks of matrices covers tensor shapes and element counts only; no contraction notation or einsum)",
+  "owning_chapter": 5
+ },
+ {
+  "id": "fnd-inverse",
+  "name": "Identity matrix and matrix inverse",
+  "status": "WORDS",
+  "where": "App F (Optimization and matrix mathematics > Matrix machinery: identity, inverse, determinant and friends: identity matrix and matrix inverse definitions, 'undoes it, like dividing'); Ch 5 (Matrices as transformations: the matrix [1, 0; 0, 1] leaves [3, 2] unchanged). The 2 × 2 inverse formula, (A × B)^-1 rule and solving A × x = b are not shown",
+  "owning_chapter": 5
+ },
+ {
+  "id": "fnd-determinant",
+  "name": "Determinant",
+  "status": "WORDS",
+  "where": "App F (Matrix machinery: determinant definition, the factor by which a matrix scales area or volume, zero means no inverse). The a × d − b × c formula and product rule are not shown",
+  "owning_chapter": 5
+ },
+ {
+  "id": "fnd-trace",
+  "name": "Trace",
+  "status": "WORDS",
+  "where": "App F (Matrix machinery: Trace of a matrix definition, the sum of the numbers on the main diagonal). Cyclic property, eigenvalue sum and the Hutchinson estimator are not shown",
+  "owning_chapter": 5
+ },
+ {
+  "id": "fnd-rank",
+  "name": "Rank, linear independence and low-rank factorization",
+  "status": "SHOWN",
+  "where": "Ch 30 (LoRA: The idea in a 3 × 3 example: a rank-1 change from 6 numbers instead of 9; Low-rank matrix and Rank (r) definitions; The idea at real scale, 42 million adapter numbers); Ch 20 (Fine-tuning for everyone: LoRA rank 8 on 4,096 × 4,096 stores 4,096 × 8 + 8 × 4,096 = 65,536 numbers, 0.39%); App F (Matrix machinery: Span and Linear dependence definitions); Ch 16 (Control and customization: LoRA). rank(A × B) ≤ min of the ranks and 'number of nonzero singular values' are not stated",
+  "owning_chapter": 30
+ },
+ {
+  "id": "fnd-orthogonal-rotation",
+  "name": "Orthogonal matrices, rotations and Euler's formula",
+  "status": "WORDS",
+  "where": "Ch 5 (Matrices as transformations: quarter-turn matrix [0, −1; 1, 0] turns [1, 0] into [0, 1], worked); Ch 15 (RoPE: rotating the arrows: turning [1, 0] by an angle gives [cos, sin], 50 and 30 degree arrows, only the 20 degree difference matters); App F (Matrix machinery: Orthogonal matrix definition, 'its inverse is simply its mirror image across the diagonal'); Ch 57 (Superposition: Orthogonal definition). The general R(θ) matrix, Q^T × Q = I, length preservation and Euler's formula are not written",
+  "owning_chapter": 5
+ },
+ {
+  "id": "fnd-projection-qr",
+  "name": "Orthogonal projection, Gram–Schmidt and QR decomposition",
+  "status": "MISSING",
+  "where": "Not in the book (no projection of one vector onto another, Gram–Schmidt or QR; Ch 10 PCA keeps 'the first few' directions in words only, and Ch 57 probes read a direction with a dot product without calling it a projection)",
+  "owning_chapter": 5
+ },
+ {
+  "id": "fnd-eigen",
+  "name": "Eigenvalues, eigenvectors, eigendecomposition and spectral radius",
+  "status": "WORDS",
+  "where": "Ch 10 (Shrinking many columns into a few: PCA, t-SNE and UMAP: Eigenvector definition, 'a direction that a matrix only stretches or shrinks, without turning; the amount of stretch is its eigenvalue'; PCA's components are eigenvectors of the covariance table). A × v = λ × v, the characteristic equation, eigendecomposition and spectral radius are not shown",
+  "owning_chapter": 10
+ },
+ {
+  "id": "fnd-svd",
+  "name": "Singular value decomposition (SVD)",
+  "status": "WORDS",
+  "where": "Ch 10 (PCA, t-SNE and UMAP: SVD definition, a rotation, a stretch along each axis and another rotation; singular values rank directions by importance); Ch 13 (Muon: Try it, after orthogonalizing every singular value equals 1). A = U × Σ × V^T is not written",
+  "owning_chapter": 10
+ },
+ {
+  "id": "fnd-low-rank-approx",
+  "name": "Best low-rank approximation (Eckart–Young theorem)",
+  "status": "WORDS",
+  "where": "Ch 10 (PCA, t-SNE and UMAP: keeping only the first few components compresses the data, 2 of 64 components keep about 28.5% of the variation; singular values rank the directions, and LoRA bets a change is captured by a few such directions). The Eckart–Young theorem, truncated-SVD error and energy-kept ratio formulas are not shown",
+  "owning_chapter": 10
+ },
+ {
+  "id": "fnd-matrix-norms",
+  "name": "Matrix norms (Frobenius, spectral, nuclear)",
+  "status": "MISSING",
+  "where": "Not in the book (only vector length and the gradient norm appear, Ch 5 and Ch 13; Frobenius, spectral and nuclear norms are absent)",
+  "owning_chapter": 13
+ },
+ {
+  "id": "fnd-condition-number",
+  "name": "Condition number",
+  "status": "WORDS",
+  "where": "App F (Optimization and matrix mathematics > Jacobians, Hessians and conditioning: Condition number definition, ratio of steepest to flattest curvature, long narrow valley where gradient descent zigzags). κ = σ_max ÷ σ_min is not written",
+  "owning_chapter": 13
+ },
+ {
+  "id": "fnd-psd-cholesky",
+  "name": "Positive semidefinite matrices, quadratic forms, Gram matrices and Cholesky factorization",
+  "status": "MISSING",
+  "where": "Not in the book (App F Covariance matrix and Symmetric matrix definitions stop short of positive semidefiniteness; no quadratic forms, Gram matrices or Cholesky factorization)",
+  "owning_chapter": 10
+ },
+ {
+  "id": "fnd-least-squares-pinv",
+  "name": "Least-squares solution and the Moore–Penrose pseudoinverse",
+  "status": "WORDS",
+  "where": "App F (Learning theory and statistics > Normal equations and locally weighted regression: a formula gives the best weights in one step, cost grows with the cube of the features; Matrix machinery: Pseudoinverse definition); Ch 8 (Doing it in a spreadsheet: least squares as a direct formula, Legendre and Gauss). Only the one-feature special case is SHOWN, in App B (Line of best fit, slope and intercept: 10.5 ÷ 5 = 2.1, b = 1.0); the matrix normal equations and A^+ are not written",
+  "owning_chapter": 8
+ },
+ {
+  "id": "fnd-power-iteration",
+  "name": "Power iteration",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 10
+ },
+ {
+  "id": "fnd-polar-newton-schulz",
+  "name": "Polar decomposition and Newton–Schulz orthogonalization",
+  "status": "WORDS",
+  "where": "Ch 13 (Optimizers > Muon: balance the whole matrix: orthogonalizing keeps the directions but makes all strengths equal, toy [3.0, 0; 0, 0.1] becomes [1, 0; 0, 1]; Newton–Schulz iteration definition, about five rounds of matrix multiplications). The polar decomposition U × V^T and the iteration 1.5 × X − 0.5 × X × X^T × X are not shown",
+  "owning_chapter": 13
+ },
+ {
+  "id": "fnd-kronecker",
+  "name": "Kronecker product",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 13 Beyond Adam: Lion, Shampoo and SOAP says only that Shampoo and SOAP keep per-layer curvature summaries; Kronecker factors are not mentioned)",
+  "owning_chapter": 13
+ },
+ {
+  "id": "fnd-woodbury",
+  "name": "Sherman–Morrison and Woodbury identities",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 10
+ },
+ {
+  "id": "fnd-matrix-exponential",
+  "name": "Matrix exponential",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 17 state-space models show only the toy recurrence state = 0.9 × state + input; no continuous-time discretization)",
+  "owning_chapter": 17
+ },
+ {
+  "id": "fnd-walsh-hadamard",
+  "name": "Walsh–Hadamard matrix and the fast Hadamard transform",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 23 and Ch 32 handle quantization outliers with block scaling only; no Hadamard rotations)",
+  "owning_chapter": 23
+ },
+ {
+  "id": "fnd-johnson-lindenstrauss",
+  "name": "Johnson–Lindenstrauss lemma (random projections)",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 57 Superposition notes that random high-dimensional arrows are nearly orthogonal, but random projections preserving distances are not covered)",
+  "owning_chapter": 10
+ },
+ {
+  "id": "fnd-random-vector-dot",
+  "name": "Norms and dot products of random high-dimensional vectors",
+  "status": "SHOWN",
+  "where": "Ch 57 (Part 1: Looking inside > Superposition: random arrows in 1,000 dimensions have cosine similarity about 1 ÷ √1,000 ≈ 0.03, about 88 degrees; in 4,096 dimensions about 1 ÷ 64 ≈ 0.016); Ch 15 (Step C: scale: with 64 or 128 numbers dot products get large, dividing by √128 ≈ 11.3 turns [22, 0] into about [2, 0]). E[q · k] = 0 and Var(q · k) = d are not written",
+  "owning_chapter": 15
+ },
+ {
+  "id": "fnd-dft",
+  "name": "Discrete Fourier transform and the convolution theorem",
+  "status": "WORDS",
+  "where": "Ch 46 (Spectrograms: a picture of sound: Fourier transform definition, splits a signal into frequencies, one column per 25 ms window); App F (Vision and language specifics > Fast convolution: FFT and Winograd: in frequency form convolution becomes plain multiplication; FFT definition). The DFT sum and N × log2(N) cost are not shown",
+  "owning_chapter": 46
+ },
+ {
+  "id": "fnd-exp-log-rules",
+  "name": "Exponent and logarithm rules",
+  "status": "SHOWN",
+  "where": "Ch 6 (Exponentials: Powers and doubling, compound interest 1,000 × 1.07^n, 2^2.3 ≈ 4.9; Logarithms: log(a × b) = log(a) + log(b) checked with 100 × 1,000; table of ln values); App B (Numbers and scale: multiplying and dividing powers of ten add and subtract exponents; Growth, exponentials and logarithms: log of a product, quotient and power, change of base log2(1,024) = 10)",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-derivative",
+  "name": "Derivative (limit definition and finite differences)",
+  "status": "SHOWN",
+  "where": "Ch 6 (Slopes and derivatives > Finding a slope by nudging: x^2 at x = 3 with nudges 0.1, 0.01, 0.001 giving 6.1, 6.01, 6.001; Derivative definition; Exercise 8 =(C2-B2)/0.001); App B (Slope by nudging (f(x + h) − f(x)) ÷ h); Ch 12 (Checking backpropagation by nudging). The formal limit and the central difference are not shown",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-derivative-rules",
+  "name": "Derivative rules",
+  "status": "SHOWN",
+  "where": "Ch 6 (Finding a slope by nudging: derivative table for a constant, w × x, x^2, e^x, ln(x)); App B (Calculus and learning: derivative table adds x^n → n × x^(n − 1), ReLU and sigmoid s × (1 − s)). Sum, product and quotient rules are not stated",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-partial-derivative",
+  "name": "Partial derivative",
+  "status": "SHOWN",
+  "where": "Ch 6 (Gradients > One knob at a time: line w × x + b on x = 2, y = 5, nudging w and b gives slopes −8 and −4; Partial derivative definition); App B (Partial derivative row)",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-gradient",
+  "name": "Gradient and directional derivative",
+  "status": "SHOWN",
+  "where": "Ch 6 (Gradients > The gradient points uphill: [−8, −4], step against it to go from loss 4 to 1; Gradient definition); App B (Gradient); Ch 12 (worked example: nine slopes form the complete gradient). The directional derivative ∇f · u is not shown",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-chain-rule",
+  "name": "Chain rule (single-variable and multivariable)",
+  "status": "SHOWN",
+  "where": "Ch 6 (The chain rule: gears turning gears: u = 3 × x, y = u^2 gives 6 × 3 = 18, checked by nudging; Figure 6.6; Backpropagation); Ch 12 (Backpropagation: The chain rule as gears; The worked example: one complete forward and backward pass, Steps 2 to 6); App B (Chain rule). The multivariable sum over paths and the J^T form are not written",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-jacobian",
+  "name": "Jacobian matrix and Jacobian-vector products (forward and reverse mode)",
+  "status": "WORDS",
+  "where": "App F (Optimization and matrix mathematics > Jacobians, Hessians and conditioning: Jacobian definition, a table of every output's slope for every input); Ch 12 (Why backpropagation is such a big deal: reverse-mode differentiation named). J[i, j] = ∂f_i/∂x_j, Jacobian-vector products and forward versus reverse mode are not shown",
+  "owning_chapter": 12
+ },
+ {
+  "id": "fnd-hessian",
+  "name": "Hessian matrix and Hessian-vector products",
+  "status": "WORDS",
+  "where": "App F (Jacobians, Hessians and conditioning: Hessian definition, table of second derivatives describing curvature; Newton's method, BFGS: a 70-billion-parameter Hessian has about 4.9 × 10^21 entries); Ch 13 (Beyond Adam: Lion, Shampoo and SOAP: curvature in words). The matrix of second partials and Hessian-vector products are not shown",
+  "owning_chapter": 13
+ },
+ {
+  "id": "fnd-taylor",
+  "name": "Taylor approximation",
+  "status": "WORDS",
+  "where": "Not named. The first-order idea is in Ch 6 (Finding a slope by nudging: 'a slope of 6 means the output changes about 6 times as much as the input, near that point') and Ch 12 (worked example, point 3: each slope describes moving one knob, so moving all nine overshot); the second-order idea underlies App F (Newton's method: on a parabola a step of slope ÷ curvature lands at the minimum). No Taylor formula",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-matrix-calculus",
+  "name": "Matrix calculus identities",
+  "status": "SHOWN",
+  "where": "Ch 12 (Backpropagation > The worked example: Steps 3 to 6, slope for each weight = blame × its input, blame passed back = blame × weight; Exercise 10 code dW2 = h.T @ dz2, dh = dz2 @ W2.T, dW1 = X.T @ dz1); App B (MSE slopes for a line). Only the linear-layer identities appear; the gradients of x^T × A × x, traces and ln det are absent",
+  "owning_chapter": 12
+ },
+ {
+  "id": "fnd-integral",
+  "name": "Integral and the fundamental theorem of calculus",
+  "status": "WORDS",
+  "where": "Ch 6 (The normal distribution > Smooth quantities: densities and areas: integral as the area under a curve from many thin slices, written ∫, the whole area under a density is 1, AUC as an example; Integral definition). The Riemann sum, fundamental theorem and Gaussian integral are not shown",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-log-sum-exp",
+  "name": "Log-sum-exp and the max-subtraction trick",
+  "status": "WORDS",
+  "where": "Ch 15 (Step D: softmax: 'subtract the largest score first', worked [9.19, 4.24, 7.78] to [0, −4.95, −1.41]); Ch 6 (Worked with three numbers: adding 1 to every score leaves softmax unchanged); App B (Shift makes no difference); App F (Stability tricks: z-loss keeps the softmax normalizing total near 1). The log-sum-exp function itself, its bounds and its gradient are not shown",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-geometric-series",
+  "name": "Geometric series",
+  "status": "SHOWN",
+  "where": "Ch 13 (Optimizers > Momentum: a rolling ball: velocity 1, 1.9, 2.71, 3.44 climbing towards 10; Check your understanding 2: approaches 1 ÷ (1 − 0.9) = 10); Ch 48 (Discount factor: 10 × 0.9^3 = 7.29); Ch 6 (Powers and doubling: rice on the chessboard, whole board about 1.8 × 10^19). The finite-sum formula (1 − r^n) ÷ (1 − r) is not written",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-euler-ode",
+  "name": "Euler's method for differential equations (and gradient flow)",
+  "status": "SHOWN",
+  "where": "Ch 16 (Flow matching and the race to fewer steps > Flow matching and rectified flow: one step of size 0.5 from −0.2 with velocity 2.0 lands at 0.8; Exercise 9 'new x = x + step size × velocity', straight versus curved paths with 1, 2, 4, 10 steps); Ch 16 (Samplers and step counts: Euler sampler named). Differential equations, Heun's method and gradient flow are not named",
+  "owning_chapter": 16
+ },
+ {
+  "id": "fnd-interpolation",
+  "name": "Linear and spherical interpolation (lerp and slerp)",
+  "status": "SHOWN",
+  "where": "Ch 16 (Flow matching and rectified flow: x(t) = (1 − t) × noise + t × data, at t = 0.5 x = −0.2); Ch 20 (Model merging: weight soup (0.56 + 0.47) ÷ 2 = 0.515, an even blend). Spherical interpolation (slerp) is not covered",
+  "owning_chapter": 16
+ },
+ {
+  "id": "fnd-probability-rules",
+  "name": "Basic rules of probability",
+  "status": "SHOWN",
+  "where": "Ch 6 (Probability > Counting outcomes: P(6) = 1 ÷ 6, P(even) = 0.5; The three rules you need: not, and, or with heart-or-king 16/52); Ch 6 (Probability distributions: probabilities add to 1, loaded die check); App B (Probability: by counting, valid range, not, and, or, distribution)",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-conditional-probability",
+  "name": "Conditional, joint and marginal probability (product rule)",
+  "status": "SHOWN",
+  "where": "Ch 6 (Random variables, joint tables and marginals: spam and 'free' table, P(spam and free) = 0.20, marginals 0.30 and 0.25, 0.20 ÷ 0.25 = 0.8; Conditional probability > Narrowing the room: P(glasses given book) = 0.20 ÷ 0.30 ≈ 0.67); App B (Conditional probability). The product rule P(A and B) = P(A given B) × P(B) is used but not written separately",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-probability-chain-rule",
+  "name": "Chain rule of probability",
+  "status": "SHOWN",
+  "where": "Ch 6 (Conditional probability > Chaining probabilities for a whole sentence: 0.05 × 0.01 × 0.2 = 0.0001, log10 sum −4.0; A language model you can build by counting: 2/3 × 1/2 = 1/3); App B (Sentence probability; Log-probability)",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-independence",
+  "name": "Independence and conditional independence",
+  "status": "SHOWN",
+  "where": "Ch 6 (The three rules you need: Rule 2, two heads 0.25, two sixes 1/36; Independence definition; gambler's fallacy); App B (And, for independent events); Ch 47 (Seeds, randomness and iteration: at least one keeper in 4 tries 1 − 0.8^4 = 0.59); Ch 54 (Conditional independence definition, in words); Ch 10 (Random forests: majority of five independent trees)",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-total-probability",
+  "name": "Law of total probability, marginalization and mixtures",
+  "status": "SHOWN",
+  "where": "Ch 6 (Bayes' rule > The rule itself: P(positive) = 0.9 × 0.01 + 0.09 × 0.99 = 0.0981); App B (Total probability); Ch 54 (A Bayesian network, worked by hand: wet mornings summed over four cases, 405.4 of 1,000). Mixtures appear in words only (Ch 10 Gaussian mixture model); the continuous form is absent",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-bayes-rule",
+  "name": "Bayes' rule",
+  "status": "SHOWN",
+  "where": "Ch 6 (Bayes' rule: The medical test, with 1,000 people, 9 ÷ 98 ≈ 9%, Figure 6.4; The rule itself: P(A given B) = P(B given A) × P(A) ÷ P(B), 0.9 × 0.01 ÷ 0.0981 ≈ 0.092; Updating again, about 50%); App B (Bayes' rule; Bayes with natural frequencies); Ch 54 (Bayesian network questions 0.46, 0.24, 0.82); Ch 10 (Naive Bayes). The odds form is not shown",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-expectation",
+  "name": "Expected value (linearity and LOTUS)",
+  "status": "SHOWN",
+  "where": "Ch 6 (Probability > Expected value: fair die 3.5 as a dot product of outcomes and probabilities; $2 lottery ticket worth $1); App B (Expected value); Ch 20 (Worked toy example: expected reward 0.50 × 2.0 + 0.30 × 2.6 + 0.20 × (−1.0) = 1.58). Linearity, LOTUS and the continuous form are not stated",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-variance",
+  "name": "Variance and standard deviation",
+  "status": "SHOWN",
+  "where": "Ch 6 (Descriptive statistics > Spread: variance and standard deviation: 2, 4, 4, 4, 5, 5, 7, 9 gives variance 32 ÷ 8 = 4 and standard deviation 2; =VAR.P, =STDEV.P); App B (Variance; Standard deviation). E[X^2] − E[X]^2, the scaling rule and the n − 1 sample version are not shown",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-variance-of-sums",
+  "name": "Variance of sums and of averages",
+  "status": "WORDS",
+  "where": "Ch 9 (Splitting the data > How sure is the score?: two independent margins combine to about 1.4 times one margin, 'the square root of 2', not twice it); Ch 57 (Dangerous capability evaluations: halving the range needs four times as many participants because group size sits under a square root); Ch 10 (Random forests: decorrelated trees' errors partly cancel). Var(X + Y) = Var(X) + Var(Y) + 2 × Cov(X, Y) and Var(mean) = σ^2 ÷ n are not written",
+  "owning_chapter": 9
+ },
+ {
+  "id": "fnd-covariance-correlation",
+  "name": "Covariance, covariance matrix and correlation (Pearson and Spearman)",
+  "status": "SHOWN",
+  "where": "App B (Statistics > Correlation: r = sum((x − mean x)(y − mean y)) ÷ sqrt(...), quiz data 10.5 ÷ sqrt(5 × 22.75) ≈ 0.98; =CORREL); Ch 6 (Correlation, causation and honest testing: correlation definition, −1 to 1, =CORREL()); App F (Covariance and the covariance matrix: covariance as the average product of deviations, covariance matrix definition, in words). Spearman rank correlation is not covered",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-total-expectation-variance",
+  "name": "Law of total expectation and law of total variance",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-jensen",
+  "name": "Jensen's inequality",
+  "status": "MISSING",
+  "where": "Not in the book (App F The ELBO, MAP inference and wake-sleep states that the ELBO is always at most the log-probability, without the inequality behind it)",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-odds-logit",
+  "name": "Odds and log-odds (logit)",
+  "status": "WORDS",
+  "where": "Ch 10 (Linear and logistic regression, revisited: odds defined as 'the chance it happens divided by the chance it does not', each extra hour multiplies the odds by e^−0.6 ≈ 0.55). The word 'logit' is used in Ch 6 for any raw score; ln(p ÷ (1 − p)) and the log-odds form of Bayes are not shown (the inverse, the sigmoid, is SHOWN in Ch 8 and Ch 12)",
+  "owning_chapter": 8
+ },
+ {
+  "id": "fnd-density-cdf",
+  "name": "Probability density, CDF, quantiles and inverse-transform sampling",
+  "status": "WORDS",
+  "where": "Ch 6 (The normal distribution > Smooth quantities: densities and areas: probability as area under the density, total area 1; Probability density definition); Ch 6 (Sampling and temperature > Drawing from the bag: probabilities laid end to end from 0 to 1, a random number picks the stretch, r = 0.96 gives 'a', which is discrete inverse-CDF sampling, also App B Sampling with a random number); Ch 6 (Percentiles definition). The CDF, quantile function and empirical CDF are not named",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-change-of-variables",
+  "name": "Change of variables for probability densities",
+  "status": "WORDS",
+  "where": "App F (Learning theory and statistics > Measure theory and change of variables: temperatures over 10 Celsius degrees spread over 18 Fahrenheit degrees, so the density per Fahrenheit degree is the Celsius density ÷ 1.8; Change of variables definition); Ch 16 (Normalizing flows: reversible steps give exact probabilities). The |dx/dy| and Jacobian-determinant formula is not written",
+  "owning_chapter": 16
+ },
+ {
+  "id": "fnd-bernoulli",
+  "name": "Bernoulli distribution",
+  "status": "WORDS",
+  "where": "Not named. Coin flips with probability p run through Ch 6 (The three rules you need; The law of large numbers), App F (Exponential families) names the 'coin-flip distribution', and p × (1 − p) appears inside the error-bar formula (Ch 9 How sure is the score?; Ch 24 How precise is a score? Error bars by hand; App B Error bar on an accuracy score) without being derived as a Bernoulli variance",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-binomial",
+  "name": "Binomial distribution and the binomial coefficient",
+  "status": "SHOWN",
+  "where": "Ch 10 (Random forests: a crowd of trees: five 70% trees, 10 × 0.7^3 × 0.3^2 = 0.309, 5 × 0.7^4 × 0.3 = 0.360, 0.7^5 = 0.168, total 0.84, with the 10 and 5 explained as ways to choose); Ch 21 (Self-consistency: vote of 3 gives 0.648, vote of 5 gives 0.683). The C(n, k) factorial formula, mean n × p and variance are not shown",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-categorical",
+  "name": "Categorical and multinomial distributions",
+  "status": "SHOWN",
+  "where": "Ch 6 (Probability distributions: the shape of uncertainty: bag of marbles, loaded die 0.5 + 5 × 0.1 = 1, next-token distribution Figure 6.2); App B (Distribution: 0.92 + 0.03 + 0.02 + 0.01 + 0.02 = 1); Ch 18 (logits, softmax and sampling). The one-hot product form and the multinomial are not shown",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-uniform",
+  "name": "Uniform distribution",
+  "status": "SHOWN",
+  "where": "Ch 6 (Probability distributions: a fair die gives 1/6 to each face, 'called uniform'; Counting outcomes P(A) = favorable ÷ total); App B (Random number from 0 to 1: =RAND()). The continuous density 1 ÷ (b − a), mean and variance are not shown",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-gaussian",
+  "name": "Gaussian (normal) distribution",
+  "status": "SHOWN",
+  "where": "Ch 10 (Clustering: Gaussian mixture paragraph: bell-curve height falls off as e^(−distance² ÷ (2 × spread²)), 'the formula behind the normal distribution', worked e^(−1.28) ≈ 0.278 and e^(−2) ≈ 0.135); Ch 6 (The bell curve: 68–95–99.7 with heights mean 170, sd 7; Normal distribution definition); App B (z-score; 68–95–99.7 rule). The normalizing constant 1 ÷ sqrt(2 × π × σ^2) and the sum-of-Gaussians rule are not shown",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-multivariate-gaussian",
+  "name": "Multivariate Gaussian distribution",
+  "status": "WORDS",
+  "where": "App F (Learning theory and statistics > Gaussian discriminant analysis: Multivariate normal distribution definition, a cloud whose spread and tilt are set by a covariance matrix); Ch 16 (diffusion adds Gaussian noise, in words). The density with det(Σ) and Σ^-1 and the sampling rule μ + L × z are not shown",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-poisson",
+  "name": "Poisson distribution",
+  "status": "WORDS",
+  "where": "App F (Exponential families: Poisson distribution definition, events in a fixed period at a steady average rate); Ch 50 (How to read a '% fewer crashes' claim: Poisson named, 2 observed events give a 95% range of about 0.24 to 7.2); Ch 10 (Linear and logistic regression, revisited: Poisson regression for counts). λ^k × e^(−λ) ÷ k! is not shown",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-exponential",
+  "name": "Exponential distribution",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 37 When things break: MTBF definition and cluster interruption counts treat failures as a steady rate, but the exponential distribution and memorylessness are not covered)",
+  "owning_chapter": 37
+ },
+ {
+  "id": "fnd-geometric-distribution",
+  "name": "Geometric distribution",
+  "status": "SHOWN",
+  "where": "Ch 47 (The craft of image making > Seeds, randomness and iteration: if 1 in 5 generations is a keeper, expected tries to the first keeper = 1 ÷ 0.2 = 5; all four miss with 0.8^4 ≈ 0.41). The variance (1 − p) ÷ p^2 is not shown",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-beta",
+  "name": "Beta distribution, the Beta–Bernoulli update and add-one smoothing",
+  "status": "MISSING",
+  "where": "The Beta distribution and the Beta–Bernoulli update are not in the book. Only add-one smoothing is SHOWN: Ch 6 (A language model you can build by counting: P(coffee given drink) = (0 + 1) ÷ (1 + 5) = 1/6); Ch 10 (Naive Bayes exercise: Laplace smoothing)",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-dirichlet",
+  "name": "Dirichlet distribution",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-laplace-distribution",
+  "name": "Laplace distribution",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 11 Privacy describes differential privacy as adding carefully calibrated noise and works the coin-flip randomized-response survey, without the Laplace distribution)",
+  "owning_chapter": 11
+ },
+ {
+  "id": "fnd-gumbel-max",
+  "name": "Gumbel distribution and the Gumbel-max trick",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 6 Drawing from the bag and App B Sampling with a random number show the cumulative-stretch method instead)",
+  "owning_chapter": 18
+ },
+ {
+  "id": "fnd-power-law-zipf",
+  "name": "Power laws and Zipf's law",
+  "status": "SHOWN",
+  "where": "Ch 6 (Logarithms > Log-log plots and scaling laws: area = side squared, straight line on a log-log plot whose slope is the power; Power law definition); App B (Power law y = c × x^k, log(y) = log(c) + k × log(x)); Ch 19 (scaling laws). Zipf's law and Pareto tails are not covered",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-exponential-family",
+  "name": "Exponential family",
+  "status": "WORDS",
+  "where": "App F (Learning theory and statistics > Exponential families: normal, coin-flip and Poisson share one mathematical form, which is why generalized linear models work; definition). The form h(x) × exp(η · T(x) − A(η)) is not shown",
+  "owning_chapter": 10
+ },
+ {
+  "id": "fnd-markov-chain",
+  "name": "Markov chains and stationary distributions",
+  "status": "SHOWN",
+  "where": "Ch 54 (Reasoning under uncertainty > Reasoning over time: hidden states and filters: Markov chain definition; umbrella detective transition probabilities 0.7 and 0.3, predict step 0.82 × 0.7 + 0.18 × 0.3 ≈ 0.63); Ch 48 (Markov decision processes: Markov property definition); Ch 6 (A language model you can build by counting: bigram transition table used to generate text). The transition-matrix notation and stationary distribution are not shown",
+  "owning_chapter": 54
+ },
+ {
+  "id": "fnd-counting",
+  "name": "Counting rules (factorials, permutations, combinations, Stirling)",
+  "status": "WORDS",
+  "where": "Counts are given without formulas: Ch 10 (Random forests: '10 ways to choose which three of the five trees are the right ones'); Ch 17 (Shared experts and fine-grained experts: 28 pairs from 8, about 4.9 × 10^14 ways to choose 16 from 64); Ch 2 (Bits: n bits give 2^n patterns, 64 bits about 1.8 × 10^19, SHOWN). Factorials, permutations, the combinations formula and Stirling's approximation are not shown",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-monte-carlo",
+  "name": "Monte Carlo estimation (and control variates)",
+  "status": "WORDS",
+  "where": "Ch 54 (A Bayesian network, worked by hand: simulate 100,000 mornings, keep the wet ones and count, within about half a percentage point of 46%; Monte Carlo inference definition); Ch 48 (Monte Carlo tree search: 'estimate something by running many random trials and averaging'); Ch 6 (The law of large numbers; Exercise 7 flips a coin 10,000 times). The estimator (1 ÷ n) × sum of f(x_i), its sd ÷ sqrt(n) error and control variates are not written",
+  "owning_chapter": 54
+ },
+ {
+  "id": "fnd-importance-sampling",
+  "name": "Importance sampling",
+  "status": "WORDS",
+  "where": "App F (Probability and decision theory > Gibbs sampling and importance sampling: bridge-failure example, sample severe storms and down-weight each; definition); Ch 21 (The GRPO family: Importance ratio definition, new-model over generating-model probability); Ch 20 (What PPO adds: ratio 0.45 ÷ 0.30 = 1.5). The weighted estimator, self-normalization and effective sample size are not shown",
+  "owning_chapter": 54
+ },
+ {
+  "id": "fnd-rejection-sampling",
+  "name": "Rejection sampling",
+  "status": "WORDS",
+  "where": "Ch 54 (A Bayesian network, worked by hand: generate random mornings and keep only those where the grass is wet); Ch 20 (Synthetic data and self-improvement: Rejection sampling definition, generate many and keep those that pass a check, 16,000 attempts with 30% kept). The accept-if u ≤ p(x) ÷ (M × q(x)) rule and acceptance rate 1 ÷ M are not shown",
+  "owning_chapter": 54
+ },
+ {
+  "id": "fnd-mcmc-metropolis-hastings",
+  "name": "Markov chain Monte Carlo (Metropolis–Hastings)",
+  "status": "WORDS",
+  "where": "Ch 54 (A Bayesian network, worked by hand: Markov chain Monte Carlo, 'wanders through the likely possibilities', in the Monte Carlo inference definition); App F (Gibbs sampling and importance sampling: Gibbs sampling definition, redraw one variable at a time). Metropolis–Hastings and its acceptance probability are not named",
+  "owning_chapter": 54
+ },
+ {
+  "id": "fnd-score-function",
+  "name": "Log-derivative trick (score-function gradient)",
+  "status": "WORDS",
+  "where": "Ch 48 (Reinforcement learning from scratch > Policy gradients and actor-critic methods: four episodes, baseline 6, advantages +4, −4, +2, −2 nudge the policy from 50% to 60% right); Ch 20 (Stage 3: RLHF: why compare against a baseline, Advantage definition). The identity ∇p = p × ∇ln p and the estimator E[f(x) × ∇ln p(x)] are not shown",
+  "owning_chapter": 48
+ },
+ {
+  "id": "fnd-descriptive-stats",
+  "name": "Descriptive statistics (mean, median, mode, percentiles; weighted, geometric and harmonic means)",
+  "status": "SHOWN",
+  "where": "Ch 6 (Descriptive statistics > Mean, median and mode: salaries 515 ÷ 9 ≈ 57.2, median 55, mode 50, billionaire example; Percentiles: p50 and p99 latency); App B (Statistics: Mean, Median, Mode, Range, Percentile); Ch 9 (F1 score as the harmonic mean 2 × P × R ÷ (P + R) = 0.26); Ch 54 (Measuring translation: BLEU geometric mean √(0.83 × 0.60) ≈ 0.71); Ch 10 (Decision trees: size-weighted average Gini)",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-z-score",
+  "name": "Standardization (z-score) and whitening",
+  "status": "SHOWN",
+  "where": "App B (z-score: (184 − 170) ÷ 7 = 2); Ch 10 (Anomaly detection: Z-score definition, (85 − 40) ÷ 15 = 3, $400 day z = 24). Standardizing features as a preprocessing step and whitening with Σ^(−1/2) are not shown",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-moments",
+  "name": "Higher moments (skewness and kurtosis)",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-law-of-large-numbers",
+  "name": "Law of large numbers",
+  "status": "WORDS",
+  "where": "Ch 6 (Probability > The law of large numbers: 10 flips might give 7 heads, 10,000 flips almost certainly near 5,000; definition; why a 1,000-question test tells you a lot); Ch 6 (Exercise 7 Part 1 code: share of heads should be close to 0.5). The sample-mean limit is stated in words, not as a formula",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-central-limit-theorem",
+  "name": "Central limit theorem",
+  "status": "WORDS",
+  "where": "Ch 6 (The normal distribution > The bell curve: 'when many small, independent random effects add together, the total tends to follow a bell curve, whatever the individual effects look like'). Not named; sqrt(n) × (mean − μ) ÷ σ → N(0, 1) is not shown",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-standard-error",
+  "name": "Standard error of a mean or proportion",
+  "status": "SHOWN",
+  "where": "Ch 9 (Splitting the data > How sure is the score?: margin 1.96 × sqrt(accuracy × (1 − accuracy) ÷ n), 90% on 1,500 emails gives ±1.5 points, 100 emails ±6; two margins combine by √2; Exercise =1.96*SQRT(B32*(1-B32)/30)); Ch 24 (How precise is a score? Error bars by hand: standard error sqrt(p × (1 − p) ÷ n), 80% on 500 questions 1.79 points); App B (Error bar on an accuracy score). The σ ÷ sqrt(n) form for a mean is not written separately",
+  "owning_chapter": 9
+ },
+ {
+  "id": "fnd-confidence-interval",
+  "name": "Confidence intervals (normal, t and Wilson) and sample size",
+  "status": "SHOWN",
+  "where": "Ch 24 (How precise is a score? Error bars by hand: 95% interval = about 1.96 standard errors either side, ±3.5 points on 500 questions; Confidence interval definition; Try it =1.96*SQRT(A1*(1-A1)/B1)); Ch 9 (Margin of error definition); Ch 50 (How to read a '% fewer crashes' claim: Poisson 95% range 0.24 to 7.2; Rule of three, 3 ÷ rate = 275 million miles); Ch 57 (four times the participants halves the range). The t-interval and Wilson interval are not shown",
+  "owning_chapter": 24
+ },
+ {
+  "id": "fnd-hypothesis-test",
+  "name": "Hypothesis tests and p-values (z-test and t-test)",
+  "status": "WORDS",
+  "where": "Ch 9 (How sure is the score?: significance test logic, p-value and statistical significance definitions, 0.05 cutoff, a 0.8-point gap falls short of about 2 points; paired comparison mentioned); Ch 31 (Worked example: grading two prompts: an exact sign-test p-value, (7 + 1) ÷ 128 ≈ 6%, from 128 equally likely patterns); Ch 54 (Causality: from 'goes with' to 'causes' > The gold standard: randomize). The z and t statistics and the p-value formula 2 × (1 − Φ(|z|)) are not shown",
+  "owning_chapter": 9
+ },
+ {
+  "id": "fnd-multiple-comparisons",
+  "name": "Multiple-comparison corrections (Bonferroni and Benjamini–Hochberg)",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 9 Check your understanding 1 warns that picking the best of 50 models by test score makes the winning score optimistic, but no Bonferroni or Benjamini–Hochberg correction)",
+  "owning_chapter": 9
+ },
+ {
+  "id": "fnd-bootstrap",
+  "name": "Bootstrap resampling",
+  "status": "WORDS",
+  "where": "Ch 10 (Random forests: a crowd of trees: bootstrap sample, 'a random draw of rows with replacement'; Bagging definition). Resampling is explained only for building ensembles; the bootstrap standard error and percentile interval are not covered",
+  "owning_chapter": 24
+ },
+ {
+  "id": "fnd-concentration-inequalities",
+  "name": "Concentration inequalities (Markov, Chebyshev, Hoeffding) and the union bound",
+  "status": "MISSING",
+  "where": "Not in the book (App F Generalization bounds describes 'with 95% confidence, the error on new data is at most the training error plus a gap' in words, and Ch 9 names PAC learning, but Markov, Chebyshev, Hoeffding and the union bound are absent)",
+  "owning_chapter": 9
+ },
+ {
+  "id": "fnd-maximum-likelihood",
+  "name": "Maximum likelihood estimation (MLE)",
+  "status": "WORDS",
+  "where": "Ch 6 (Loss functions > Maximum likelihood, entropy and KL divergence: likelihood of a text is the product of its token probabilities, minus the log turns it into a sum of per-token losses, so maximizing likelihood equals minimizing average cross-entropy; MLE definition); Ch 6 and App B (Bigram estimate count(a then b) ÷ count(a then anything), an MLE not labeled as one). The argmax formula and the Bernoulli and Gaussian MLE results are not written",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-map-estimation",
+  "name": "Maximum a posteriori (MAP) estimation and priors as regularizers",
+  "status": "WORDS",
+  "where": "App F (Classic neural networks and generative-model mathematics > The ELBO, MAP inference and wake-sleep: MAP keeps the single most probable answer, and a prior that weights should be small turns it into ordinary training with L2 regularization; MAP inference definition); Ch 9 (Regularization: L2 penalty worked, without the prior interpretation). ln p(D given θ) + ln p(θ) and the Gaussian and Laplace prior penalties are not shown",
+  "owning_chapter": 9
+ },
+ {
+  "id": "fnd-fisher-information",
+  "name": "Fisher information and the Cramér–Rao bound",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 13
+ },
+ {
+  "id": "fnd-surprisal",
+  "name": "Information content (surprisal), bits and nats",
+  "status": "SHOWN",
+  "where": "Ch 6 (Loss functions > Cross-entropy: how surprised was the model?: −ln(p) table from 1.0 to 0.001, 'measured in base-2 logs, the loss is the number of bits of surprise, so a coin flip carries exactly 1 bit'); App B (Bits of surprise: −log2(0.5) = 1, −log2(0.25) = 2); Ch 6 (fair coin ln 2 ≈ 0.693 nats = 1 bit). The 1 nat ≈ 1.443 bits conversion is not stated",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-entropy",
+  "name": "Entropy",
+  "status": "SHOWN",
+  "where": "Ch 6 (Maximum likelihood, entropy and KL divergence: entropy as the average of minus the log of each outcome's probability, fair coin ln 2 ≈ 0.693, exactly 1 bit; the lowest average loss any model can reach; Entropy definition); Ch 21 (Entropy collapse definition, in words). The binary-entropy formula, the log(K) maximum and Gaussian differential entropy are not shown",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-cross-entropy",
+  "name": "Cross-entropy",
+  "status": "SHOWN",
+  "where": "Ch 6 (Cross-entropy: how surprised was the model?: loss = −ln(p correct), table; fair coin under a 90/10 model 0.5 × (−ln 0.9) + 0.5 × (−ln 0.1) = 1.204; Exercise 11 grades two models); App B (Cross-entropy, one token and whole text); Ch 8 (Cross-entropy: the loss for categories); Ch 12 (Cross-entropy, for choosing between options)",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-kl-divergence",
+  "name": "Kullback–Leibler (KL) divergence",
+  "status": "SHOWN",
+  "where": "Ch 6 (Maximum likelihood, entropy and KL divergence: KL = cross-entropy minus entropy, 1.204 − 0.693 = 0.511; definition); Ch 20 (The KL leash: KL = sum of p × ln(p ÷ q), worked 0.03 + 0.15 − 0.07 ≈ 0.11; KL penalty). Asymmetry is not discussed and the Gaussian closed form is absent",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-conditional-entropy",
+  "name": "Joint entropy, conditional entropy and the entropy chain rule",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-mutual-information",
+  "name": "Mutual information (and the data-processing inequality)",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 10 decision trees use Gini impurity, not information gain)",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-perplexity",
+  "name": "Perplexity (and bits per byte)",
+  "status": "SHOWN",
+  "where": "Ch 6 (Loss functions > Perplexity: e^2.303 = 10, e^0.693 = 2; definition; Exercise 11 =EXP(average loss)); App B (Perplexity); Ch 19 (Every token is a free lesson > Measuring surprise: the loss: loss 0.44 gives perplexity about 1.55); App F (Vision and language specifics > Bits per byte: tokenizer-independent, 0.8 bits per byte compresses text to one tenth, in words). The bits-per-byte formula is not written",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-jensen-shannon",
+  "name": "Jensen–Shannon divergence",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 16 GANs are described without the divergence they minimize)",
+  "owning_chapter": 16
+ },
+ {
+  "id": "fnd-f-divergence-tv",
+  "name": "f-divergences and total variation distance",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 16
+ },
+ {
+  "id": "fnd-source-coding",
+  "name": "Source coding bound (compression equals prediction)",
+  "status": "WORDS",
+  "where": "Ch 3 (Compression: making data smaller > Is a language model a compressed copy?: Shannon's link, 'a system that predicts the next symbol well can be turned into a good compressor'); App F (Bits per byte: the average number of bits the model needs to encode each byte, 0.8 bits per byte is one tenth of 8); Ch 6 (bits of surprise). The bound L ≥ H(X) and −log2 q(x) code lengths are not stated as formulas",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-gradient-descent",
+  "name": "Gradient descent update (and the minibatch gradient)",
+  "status": "SHOWN",
+  "where": "Ch 6 (Gradient descent: walking downhill in fog > The algorithm: new knob = old knob − learning rate × slope; Worked: rolling down a parabola from x = 10 with rate 0.1; The training loop: quiz line from w = b = 0 to 2.1 and 1.0; SGD and Mini-batch definitions); Ch 12 (worked update with rate 0.1; real training averages the gradient over a batch); Ch 13; App B (Gradient descent step; MSE slopes for a line). The minibatch estimate's unbiasedness and 1 ÷ B variance are not shown",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-optimality-conditions",
+  "name": "Optimality conditions (stationary points, minima and saddle points)",
+  "status": "WORDS",
+  "where": "Ch 6 (Slopes and derivatives: 'Zero means flat. At the very bottom of a valley the slope is zero', x^2 at x = 0; Local minimum definition; Valleys, plateaus and smarter walkers); Ch 13 (The trouble with plain SGD: Saddle point definition, slope zero but low in some directions and high in others). The ∇f = 0 condition and the Hessian test are not written",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-convexity",
+  "name": "Convexity (strong convexity and subgradients)",
+  "status": "WORDS",
+  "where": "Ch 6 (Valleys, plateaus and smarter walkers: Convex function definition, 'the straight line between any two points on its graph never passes below the graph'; linear and logistic regression losses are convex, neural-network losses are not). The inequality, first- and second-order tests, strong convexity and subgradients are not shown",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-smoothness-rates",
+  "name": "Lipschitz continuity, L-smoothness and convergence rates",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 6 says only that gradient descent on a convex landscape with a sensible stride reaches the lowest point; no Lipschitz constants, descent lemma or convergence rates)",
+  "owning_chapter": 13
+ },
+ {
+  "id": "fnd-quadratic-stability",
+  "name": "Step-size stability on a quadratic (edge of stability)",
+  "status": "SHOWN",
+  "where": "Ch 6 (Gradient descent > Choosing the step size: loss (x − 3)^2 with rates 0.01, 0.1, 0.5, 1.0 (bounces) and 1.1 (explodes); Worked: rolling down a parabola); App B (Learning rate on a simple bowl: distance_next = (1 − 2 × lr) × distance, × 0.8 at 0.1, × −1.2 at 1.1); Ch 6 (Exercise 9; Exercise 10 asks what happens at 0.12). The general η < 2 ÷ λ_max(H) rule and edge of stability are not stated",
+  "owning_chapter": 6
+ },
+ {
+  "id": "fnd-lagrange-kkt",
+  "name": "Lagrange multipliers and KKT conditions",
+  "status": "WORDS",
+  "where": "App F (Optimization and matrix mathematics > Constrained optimization: Lagrange multipliers and KKT conditions: 100 meters of fence, 25 × 25 square encloses 625 versus 600 for 20 × 30; each rule added with a 'price'; KKT for inequality rules produces the SVM dual; L2 penalty as a size limit; definitions). L(x, λ) = f + λ × g and the KKT equations are not written",
+  "owning_chapter": 10
+ },
+ {
+  "id": "fnd-newton",
+  "name": "Newton's method",
+  "status": "WORDS",
+  "where": "App F (Newton's method, BFGS and second-order optimization: uses slope and curvature, 'on a perfect parabola, a step equal to the slope divided by the curvature lands exactly at the minimum', Hessian too large for big models; definition). x − f'(x) ÷ f''(x), the H^-1 × gradient form and root finding are not written",
+  "owning_chapter": 13
+ },
+ {
+  "id": "fnd-quasi-newton",
+  "name": "Quasi-Newton methods (BFGS and L-BFGS) and line search",
+  "status": "WORDS",
+  "where": "App F (Newton's method, BFGS and second-order optimization: BFGS and L-BFGS build a running curvature estimate from recent gradients; definition). The BFGS update and the Armijo line-search condition are not shown",
+  "owning_chapter": 13
+ },
+ {
+  "id": "fnd-natural-gradient",
+  "name": "Natural gradient",
+  "status": "MISSING",
+  "where": "Not in the book",
+  "owning_chapter": 13
+ },
+ {
+  "id": "fnd-projected-proximal",
+  "name": "Projected and proximal gradient methods (soft-thresholding)",
+  "status": "MISSING",
+  "where": "Not in the book (Ch 9 says L1 'tends to push unhelpful weights to exactly zero' and App F links an L2 penalty to a size limit, but projected gradient steps and soft-thresholding are absent)",
+  "owning_chapter": 13
+ },
+ {
+  "id": "fnd-steepest-descent-norms",
+  "name": "Steepest descent under a chosen norm",
+  "status": "WORDS",
+  "where": "Only the instances appear, in words: Ch 13 (Beyond Adam: Lion moves each parameter by a fixed amount in the direction of the sign of its momentum, the L-infinity case; Muon: balance the whole matrix, orthogonalized update with all strengths equal, the spectral-norm case); Ch 13 (Gradient clipping rescales by the norm). The unifying 'steepest descent under a chosen norm' view and its formulas are not covered",
+  "owning_chapter": 13
+ },
+ {
+  "id": "fnd-mirror-descent",
+  "name": "Mirror descent and exponentiated gradient (multiplicative weights)",
+  "status": "SHOWN",
+  "where": "Ch 20 (Stage 3: RLHF > Worked toy example: one prompt, three replies, Step 3: multiply each probability by e^(step size × advantage), then rescale to add to 1, 0.50 × e^0.21 = 0.617 and so on), which is the exponentiated-gradient update, not named as such. General mirror descent and multiplicative weights by name are not covered",
+  "owning_chapter": 20
+ },
+ {
+  "id": "fnd-binary-integers",
+  "name": "Binary integers and two's complement",
+  "status": "SHOWN",
+  "where": "Ch 2 (Counting in binary: place values 8, 4, 2, 1, 1101 = 8 + 4 + 0 + 1 = 13, count to 15; Converting a decimal number to binary: 41 = 101001; Bits table: n bits give 2^n patterns, 4 bits 16 values); Ch 32 (The ladder, Figure 32.9: INT8 whole numbers −128 to 127, INT4 −8 to 7; INT8 / INT4 definition 256 and 16 values). The two's-complement formula is not shown",
+  "owning_chapter": 2
+ },
+ {
+  "id": "fnd-float-value",
+  "name": "Floating-point value formula",
+  "status": "SHOWN",
+  "where": "Ch 32 (The precision ladder > How a computer stores a decimal number: 6.5 = 110.1 in binary = 1.101 × 2^2, stored as sign, exponent 2 and the digits after the leading 1; The ladder, Figure 32.9 bit layouts 1+8+23, 1+8+7, 1+5+10, 1+4+3, 1+5+2, 1+2+1); Ch 5 (Number precision > Floating point: scientific notation for computers; The precision ladder, pi stored in each format). The exponent bias and subnormal numbers are not covered",
+  "owning_chapter": 32
+ },
+ {
+  "id": "fnd-float-range",
+  "name": "Range of a floating-point format (overflow and underflow)",
+  "status": "WORDS",
+  "where": "Largest values are stated without derivation: Ch 5 (The precision ladder table: FP32 and BF16 3.4 × 10^38, FP16 65,504, FP8 E4M3 448, FP4 6); Ch 32 (FP16, BF16 and FP8 definitions: 65,504, 448 and 57,344; Check your understanding 5: FP16 overflows and small values underflow to zero because it has only 5 exponent bits). The (2 − 2^−M) × 2^(e_max − bias) and smallest-normal formulas are not shown",
+  "owning_chapter": 32
+ },
+ {
+  "id": "fnd-machine-epsilon",
+  "name": "Machine epsilon, unit roundoff and ULP",
+  "status": "WORDS",
+  "where": "Ch 5 (Why AI tolerates rough numbers > Watch out: in FP16 a running total stuck at 256 because 0.1 is smaller than the gap between neighboring numbers; precision table of significant decimal digits per format; Numerical precision definition); Ch 32 (Try it: none of FP32, BF16, FP8 stores 0.1 exactly). ε = 2^(−M), unit roundoff and ULP are not defined",
+  "owning_chapter": 5
+ },
+ {
+  "id": "fnd-rounding-error-model",
+  "name": "Rounding error model and catastrophic cancellation",
+  "status": "WORDS",
+  "where": "Ch 5 (Why AI tolerates rough numbers: rounding errors point in random directions and partly cancel); Ch 32 (Try it: the error grows as the bits shrink; Worked example: rounding to FP4). fl(x) = x × (1 + δ) and catastrophic cancellation are not shown",
+  "owning_chapter": 5
+ },
+ {
+  "id": "fnd-non-associativity",
+  "name": "Floating-point addition is not associative",
+  "status": "WORDS",
+  "where": "Ch 18 (From scores to words > Why 'temperature 0' is still not perfectly repeatable: rounding makes the order of operations change results, batch invariance, Thinking Machines Lab 2025; Check your understanding 4); Ch 23 (Serving many people at once: batching: floating-point addition gives slightly different results in different orders). No numeric example of (a + b) + c ≠ a + (b + c)",
+  "owning_chapter": 18
+ },
+ {
+  "id": "fnd-summation-error",
+  "name": "Accumulation error in long sums (swamping, pairwise and Kahan summation)",
+  "status": "WORDS",
+  "where": "Ch 5 (Why AI tolerates rough numbers > Watch out: adding 0.1 ten thousand times in FP16 sticks at 256 instead of 1,000, so running totals stay in higher precision; Exercise 11 reproduces it); Ch 32 (Mixed precision and quantization: FP32 running sums inside tensor cores). The error bounds, pairwise summation and Kahan summation are not covered",
+  "owning_chapter": 5
+ },
+ {
+  "id": "fnd-stochastic-rounding",
+  "name": "Round-to-nearest-even and stochastic rounding",
+  "status": "MISSING",
+  "where": "Not in the book. Only plain round-to-nearest appears: Ch 32 (Worked example: rounding to FP4: 0.30 → 0.5 because it is 0.20 away from 0.5 and 0.30 from 0) and Ch 23 (Worked example: rounding four weights); ties-to-even and stochastic rounding are absent",
+  "owning_chapter": 32
+ },
+ {
+  "id": "fnd-block-scaled-formats",
+  "name": "Block-scaled (microscaling) formats: MXFP8, MXFP6, MXFP4 and NVFP4",
+  "status": "SHOWN",
+  "where": "Ch 32 (Worked example: rounding to FP4, and how block scaling saves it: scale 0.30 ÷ 6 = 0.05, block restored as 0.025, −0.10, 0.075, 0.30; MXFP4 power-of-two scale 0.0625 gives 0.031, −0.125, 0.0625, 0.25; Microscaling (MX) and NVFP4 definitions, blocks of 32 and 16); App B (Memory math: MXFP4 about 4.25 bits, 0.53 bytes per parameter); Ch 23 (Quantization: Block scaling definition, outlier 5.0 ÷ 7 example); Ch 5 (At the frontier: gpt-oss MXFP4). The bits-per-value formula d + w ÷ k is not written, and NVFP4's 4.5 bits is not computed",
+  "owning_chapter": 32
+ },
+ {
+  "id": "fnd-loss-scaling",
+  "name": "Loss scaling for FP16 training",
+  "status": "WORDS",
+  "where": "Ch 32 (The ladder: FP16 definition, training with it 'needs tricks like loss scaling to stop small numbers from vanishing'); Ch 13 (Numbers on hardware: precision in brief). The multiply-by-S then divide-by-S rule and dynamic scaling are not described",
+  "owning_chapter": 13
+ }
+]

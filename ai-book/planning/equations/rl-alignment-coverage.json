@@ -1,0 +1,772 @@
+[
+ {
+  "id": "rla-mdp",
+  "name": "Markov decision process and the Markov property (MDP)",
+  "status": "WORDS",
+  "where": "Chapter 48 (Markov decision processes: the formal frame): MDP and Markov property defined in words (states, actions, transition probabilities, reward, discount); no notation or tuple. Chapter 20 (A two-paragraph refresher on reinforcement learning) maps agent/action/episode to a chatbot.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-return",
+  "name": "Discounted return (G)",
+  "status": "WORDS",
+  "where": "Chapter 48 (Rewards, returns and discounting): return and discount factor defined in words, worked only with numbers (10 × 0.9 × 0.9 × 0.9 = 7.29; 1 + 0.9 + 0.81 = 2.71; Exercise 6 sums −1 − 0.9 − ... + 0.9^5 × 10). The general sum and the recursive form G_t = r + γ × G_(t+1) are not written.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-value-functions",
+  "name": "State-value and action-value functions (V and Q)",
+  "status": "WORDS",
+  "where": "Chapter 48 (Policies and values): value function and Q-value defined in words (Q(state, action) named); Chapter 20 (The RLHF loop) value model definition. No expectation formula and no V = sum of π × Q relation.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-bellman-expectation",
+  "name": "Bellman expectation equation",
+  "status": "WORDS",
+  "where": "Chapter 48 (Policies and values): Bellman equation definition in words only ('value now = reward now + discounted value of where you land'), deterministic form; no sums over actions or next states.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-bellman-optimality",
+  "name": "Bellman optimality equation",
+  "status": "WORDS",
+  "where": "Chapter 48 (Markov decision processes: the formal frame, value iteration definition: 'best immediate reward plus the discounted value of where that action leads'; Q-learning, worked by hand: final values 10, 9, 8.1). Deterministic special case in words; the max-over-actions, probability-weighted formula is not written.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-value-iteration",
+  "name": "Value iteration",
+  "status": "WORDS",
+  "where": "Chapter 48 (Markov decision processes: the formal frame): value iteration defined in words and worked in three sweeps on the corridor (C = 10, B = 0.9 × 10 = 9, A = 8.1); deterministic case only, general update not written.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-policy-iteration",
+  "name": "Policy iteration and the policy improvement theorem",
+  "status": "WORDS",
+  "where": "Chapter 48 (Markov decision processes: the formal frame): one clause inside the value iteration definition ('alternates between scoring a policy and improving it'); no formula, no improvement theorem.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-monte-carlo",
+  "name": "Monte Carlo value estimate and the incremental mean",
+  "status": "WORDS",
+  "where": "Chapter 48 (Monte Carlo tree search: 'estimate something by running many random trials and averaging'; Policy gradients: average return of four episodes = 6; Exercise 2 picks the cup with the higher average score). Averaging returns explained; the incremental update V ← V + α × (G − V) is not written.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-potential-shaping",
+  "name": "Potential-based reward shaping",
+  "status": "MISSING",
+  "where": "Not in the book. Chapter 48 (Credit assignment) defines plain reward shaping in words and warns it can be gamed; the potential-based form γ × Φ(s') − Φ(s) and its policy-preserving guarantee are absent.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-pomdp-belief",
+  "name": "POMDP belief update",
+  "status": "WORDS",
+  "where": "Chapter 48 (Markov decision processes: the formal frame): POMDP and belief state defined, belief updated 'with Bayes' rule after every observation' in words. Chapter 54 (Reasoning over time: hidden states and filters, umbrella detective) works the predict-and-correct update numerically without actions. The action-conditioned belief-update formula is not written.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-model-based",
+  "name": "Model-based RL: learned dynamics, Dyna planning and model-predictive control",
+  "status": "WORDS",
+  "where": "Chapter 48 (Model-free and model-based; MuZero (2020): learned model of the rules); Chapter 49 (model predictive control, in words). No model loss, Dyna or MPC formula.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-td0",
+  "name": "TD(0) learning and the TD error (δ)",
+  "status": "WORDS",
+  "where": "Chapter 48 (Q-learning, worked by hand): TD learning defined in words; the TD error appears only as numbers ('Error = 4.5 − 0'); the state-value TD(0) update and δ are not written, though the Q-learning form of the same update is shown.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-n-step",
+  "name": "n-step return",
+  "status": "MISSING",
+  "where": "Not in the book.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-td-lambda",
+  "name": "TD(λ), the λ-return and eligibility traces",
+  "status": "MISSING",
+  "where": "Not in the book. Chapter 48 (Early learners: checkers and backgammon) says TD-Gammon used temporal-difference learning, but λ-returns and eligibility traces are never described.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-sarsa",
+  "name": "SARSA and Expected SARSA",
+  "status": "MISSING",
+  "where": "Not in the book (no SARSA, Expected SARSA or on-policy TD control).",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-q-learning",
+  "name": "Q-learning update",
+  "status": "SHOWN",
+  "where": "Chapter 48 (Q-learning, worked by hand): 'new Q = old Q + α × (reward + γ × best Q of next state − old Q)', worked over three episodes (Table 48.5), spreadsheet Exercise 3, Colab code Exercise 6, Check your understanding 4.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-dqn-loss",
+  "name": "Deep Q-network loss with target network and experience replay (DQN)",
+  "status": "WORDS",
+  "where": "Chapter 48 (From tables to neural networks: Deep Q-Networks): DQN, experience replay and target network defined in words; the squared TD-error loss is not written.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-double-dqn",
+  "name": "Double DQN target",
+  "status": "MISSING",
+  "where": "Not in the book.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-dueling",
+  "name": "Dueling network architecture",
+  "status": "MISSING",
+  "where": "Not in the book.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-per",
+  "name": "Prioritized experience replay",
+  "status": "MISSING",
+  "where": "Not in the book (Chapter 48 defines plain experience replay only).",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-distributional",
+  "name": "Distributional Bellman equation (categorical and quantile value learning)",
+  "status": "MISSING",
+  "where": "Not in the book.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-importance-sampling",
+  "name": "Importance sampling ratio for off-policy learning",
+  "status": "WORDS",
+  "where": "Chapter 21 (The GRPO family: importance ratio definition, new-model probability over generating-model probability, in words); Appendix F (Gibbs sampling and importance sampling: reweighting samples, in words); Chapter 20 (On-policy and off-policy data definition). The ratio formula and the reweighting identity are not written.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-vtrace",
+  "name": "V-trace off-policy value target (IMPALA)",
+  "status": "MISSING",
+  "where": "Not in the book (no IMPALA or V-trace).",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-pg-theorem",
+  "name": "Policy gradient theorem (log-derivative trick)",
+  "status": "WORDS",
+  "where": "Chapter 48 (Policy gradients and actor-critic methods): policy gradient method defined in words ('make better-than-expected actions more likely'); Chapter 21 (A quick refresher: how RL nudges a model). The gradient of ln π formula and the log-derivative trick are not shown.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-reinforce",
+  "name": "REINFORCE with baseline",
+  "status": "WORDS",
+  "where": "Chapter 48 (Policy gradients and actor-critic methods): four-episode example with baseline 6 and advantages +4, −4, +2, −2, update described in words; Chapter 20 (Worked toy example) uses a multiply-by-e^(step size × advantage) update instead. The REINFORCE update θ ← θ + α × (G − b) × ∇ ln π is not written.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-advantage",
+  "name": "Advantage function (A = Q − V) and its one-step estimate",
+  "status": "SHOWN",
+  "where": "Chapter 20 (The RLHF loop and Worked toy example: baseline = 0.50 × 2.0 + 0.30 × 2.6 + 0.20 × (−1.0) = 1.58, advantage = score − baseline: +0.42, +1.02, −2.58); Chapter 48 (Policy gradients: 'subtract that baseline from each episode's return'); Chapter 21 (GRPO). A = Q − V written as reward minus baseline; the one-step TD-error estimate is not shown.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-actor-critic",
+  "name": "Actor-critic loss (A2C, A3C)",
+  "status": "WORDS",
+  "where": "Chapter 48 (Policy gradients and actor-critic methods: actor-critic definition); Chapter 20 (The RLHF loop: value model/critic). The combined policy, value and entropy loss is not written.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-gae",
+  "name": "Generalized advantage estimation (GAE)",
+  "status": "MISSING",
+  "where": "Not in the book (Chapter 20 describes the value model and advantage in words, but no GAE or λ-weighted advantage).",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-trpo",
+  "name": "Trust-region policy optimization and the natural policy gradient (TRPO)",
+  "status": "MISSING",
+  "where": "Not in the book (no TRPO, trust region or natural policy gradient; Chapter 48's PPO definition says only that it limits how much the policy changes).",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-ppo-clip",
+  "name": "PPO clipped surrogate objective",
+  "status": "WORDS",
+  "where": "Chapter 20 (What PPO adds: small, careful steps): ratio of new to old probability, window 0.8 to 1.2, worked case 0.30 to 0.45 (ratio 1.5) counted only up to 1.2 (0.36); Clipping definition; Chapter 21 (Importance ratio). The clipped surrogate min(r × A, clip(r, 1 − ε, 1 + ε) × A) is not written.",
+  "owning_chapter": 20
+ },
+ {
+  "id": "rla-ppo-full",
+  "name": "PPO full loss with value loss and entropy bonus",
+  "status": "WORDS",
+  "where": "Chapter 20 (The RLHF loop: policy, reference, reward and value models; Figure 20.2). No full loss with value term and entropy bonus.",
+  "owning_chapter": 20
+ },
+ {
+  "id": "rla-entropy-bonus",
+  "name": "Policy entropy and entropy regularization",
+  "status": "MISSING",
+  "where": "Not in the book as an RL regularizer. Chapter 21 (The GRPO family) defines entropy collapse and DAPO's clip-higher as its fix; Chapter 6 defines entropy in general; no entropy bonus or policy-entropy formula.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-ddpg-td3",
+  "name": "Deterministic policy gradient (DDPG, TD3)",
+  "status": "MISSING",
+  "where": "Not in the book.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-sac",
+  "name": "Soft actor-critic and maximum-entropy RL (SAC)",
+  "status": "MISSING",
+  "where": "Not in the book (no soft actor-critic or maximum-entropy RL).",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-eps-greedy",
+  "name": "ε-greedy exploration",
+  "status": "WORDS",
+  "where": "Chapter 48 (Exploration versus exploitation): epsilon-greedy defined, worked as 0.1 × 0.5 = 5% of nights at the new restaurant; Exercise 6 code implements it. The action-probability formula 1 − ε + ε ÷ |A| is not written.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-boltzmann",
+  "name": "Softmax (Boltzmann) exploration and the gradient bandit",
+  "status": "MISSING",
+  "where": "Not in the book as an exploration rule. The same softmax-with-temperature formula is shown for picking tokens (Chapter 6, Temperature; Appendix B), and Chapter 6's restaurant analogy hints at it, but never for choosing actions; no gradient bandit.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-ucb1",
+  "name": "UCB1 upper-confidence-bound rule",
+  "status": "SHOWN",
+  "where": "Chapter 48 (Monte Carlo tree search): 'win rate + c × square root of (ln N ÷ n)' with c = 1.4, worked for moves scoring 1.30 and 2.06; UCB definition. Shown in its tree-search (UCT) form; the bandit setting is the same formula.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-thompson",
+  "name": "Thompson sampling (Beta-Bernoulli)",
+  "status": "MISSING",
+  "where": "Not in the book (Chapter 48 and Chapter 51 define multi-armed bandits but never Thompson sampling or Beta posteriors).",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-regret",
+  "name": "Regret of a bandit or online learner",
+  "status": "WORDS",
+  "where": "Chapter 48 (Poker: CFR definition, 'how much better would I have done had I chosen differently'; Exercise 2 counts nights spent on the worse cup). Bandit regret T × μ* − sum of rewards and the log T bound are not written.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-linucb",
+  "name": "LinUCB contextual bandit",
+  "status": "MISSING",
+  "where": "Not in the book. Appendix F (Contextual bandits) explains contextual bandits in words and Chapter 48 shows UCB, but LinUCB's linear model plus confidence bonus is absent.",
+  "owning_chapter": 51
+ },
+ {
+  "id": "rla-exploration-bonus",
+  "name": "Exploration bonuses: count-based and random network distillation (RND)",
+  "status": "MISSING",
+  "where": "Not in the book (Chapter 48 mentions DQN's failure on Montezuma's Revenge 'launched years of research on exploration', but no count-based or RND bonus).",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-puct",
+  "name": "PUCT selection rule (AlphaZero, MuZero)",
+  "status": "WORDS",
+  "where": "Chapter 48 (AlphaGo and Move 37: MCTS guided by policy and value networks; Monte Carlo tree search shows plain UCB). The PUCT rule with the policy prior P(s, a) is not written.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-alphazero-loss",
+  "name": "AlphaZero training loss and visit-count policy target",
+  "status": "WORDS",
+  "where": "Chapter 48 (AlphaGo Zero and AlphaZero; Why games matter, Figure 48.9 self-play loop: 'train the network to predict better moves and outcomes'). Loss (z − v)^2 − π · ln p and the visit-count target are not written.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-muzero-loss",
+  "name": "MuZero loss over unrolled model steps",
+  "status": "WORDS",
+  "where": "Chapter 48 (MuZero (2020): not even told the rules): learned model in words; no unrolled loss.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-behavior-cloning",
+  "name": "Behavior cloning loss (imitation learning)",
+  "status": "WORDS",
+  "where": "Chapter 49 (The robot data problem: imitation learning (behavior cloning) definition, 'learns to predict the action a human operator took'); Chapter 48 (When rewards go wrong: imitation learning definition). The log-likelihood or squared-error loss is not written.",
+  "owning_chapter": 49
+ },
+ {
+  "id": "rla-dagger",
+  "name": "Compounding error of behavior cloning versus DAgger",
+  "status": "WORDS",
+  "where": "Chapter 49 (Why copying is not enough): compounding error defined and the 'collect corrections' fix described in words (the DAgger idea, not named). The T^2 × ε versus T × ε bounds are not shown.",
+  "owning_chapter": 49
+ },
+ {
+  "id": "rla-maxent-irl",
+  "name": "Maximum-entropy inverse reinforcement learning",
+  "status": "WORDS",
+  "where": "Chapter 48 (When rewards go wrong: inverse reinforcement learning definition); Chapter 56 (Other research bets: Learning values by watching). IRL explained in words; the maximum-entropy model exp(θ · f(τ)) ÷ Z is not described.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-gail",
+  "name": "Generative adversarial imitation learning (GAIL)",
+  "status": "MISSING",
+  "where": "Not in the book.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-awr",
+  "name": "Advantage-weighted regression (AWR)",
+  "status": "MISSING",
+  "where": "Not in the book.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-cql-iql",
+  "name": "Offline RL regularizers: conservative Q-learning (CQL) and implicit Q-learning (IQL)",
+  "status": "MISSING",
+  "where": "Not in the book (no offline RL, CQL or IQL).",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-bradley-terry",
+  "name": "Bradley-Terry preference model",
+  "status": "SHOWN",
+  "where": "Chapter 20 (Reward models: From comparisons to a single number): 'P(B is preferred over A) = sigmoid(score_B − score_A)', sigmoid formula, worked gap 1.5 gives 0.82. Chapter 48 (Elo rating formula) is the same model in base 10.",
+  "owning_chapter": 20
+ },
+ {
+  "id": "rla-rm-loss",
+  "name": "Reward model pairwise loss",
+  "status": "SHOWN",
+  "where": "Chapter 20 (Worked example: training the judge on one comparison): loss = −ln(sigmoid(gap)) worked (−ln 0.82 = 0.20 if B chosen, −ln 0.18 ≈ 1.71 if A chosen), tied to cross-entropy. Shown for one pair; the InstructGPT average over K-choose-2 pairs is not.",
+  "owning_chapter": 20
+ },
+ {
+  "id": "rla-rm-combine",
+  "name": "Combining and normalizing several reward signals",
+  "status": "WORDS",
+  "where": "Chapter 20 (From comparisons to a single number: Llama 2's separate helpfulness and safety reward models 'combined during training'; At the frontier (2026): many reward signals combined). No weighted sum or gating formula.",
+  "owning_chapter": 20
+ },
+ {
+  "id": "rla-cai-soft-labels",
+  "name": "Constitutional AI and RLAIF preference labels",
+  "status": "WORDS",
+  "where": "Chapter 20 (Constitutional AI: phase 2, an AI judge picks the better answer using a principle; Figure 20.4); Chapter 56 (Constitutional AI and RLAIF). The normalized (A)/(B) probability label is not written.",
+  "owning_chapter": 20
+ },
+ {
+  "id": "rla-rlhf-objective",
+  "name": "RLHF objective (expected reward minus β times KL)",
+  "status": "SHOWN",
+  "where": "Chapter 20 (The KL leash): 'total reward = reward model score − β × drift', KL divergence as the sum of p × ln(p ÷ q) worked to 0.11; Figure 20.2.",
+  "owning_chapter": 20
+ },
+ {
+  "id": "rla-kl-penalty",
+  "name": "Per-token KL penalty and the adaptive KL controller",
+  "status": "SHOWN",
+  "where": "Chapter 20 (The KL leash): per-token penalty worked: a token at 0.40 versus 0.10 adds ln(0.40 ÷ 0.10) = 1.39 of drift, β = 0.1 gives 0.14 off the reward; KL penalty definition. The adaptive KL controller is not covered.",
+  "owning_chapter": 20
+ },
+ {
+  "id": "rla-kl-estimators",
+  "name": "Sampled KL estimators k1, k2 and k3",
+  "status": "MISSING",
+  "where": "Not in the book. Chapter 20 (The KL leash) shows the exact KL sum and one per-token log ratio (the k1 quantity) but never sampled estimators k2 or k3 or GRPO's KL term.",
+  "owning_chapter": 20
+ },
+ {
+  "id": "rla-kl-optimal-policy",
+  "name": "Optimal KL-regularized policy (exponential tilt of the reference)",
+  "status": "SHOWN",
+  "where": "Chapter 20 (The KL leash): 'best policy = SFT probability × e^(score ÷ β), rescaled to add up to 1', worked at β = 2 (0.53, 0.43, 0.05) and β = 0.5.",
+  "owning_chapter": 20
+ },
+ {
+  "id": "rla-implicit-reward",
+  "name": "Implicit reward (DPO reparameterization)",
+  "status": "SHOWN",
+  "where": "Chapter 20 (DPO and its cousins: The shortcut): 'score = β × ln(policy probability ÷ reference probability) + a constant', with the algebra steps.",
+  "owning_chapter": 20
+ },
+ {
+  "id": "rla-dpo",
+  "name": "Direct preference optimization loss (DPO)",
+  "status": "SHOWN",
+  "where": "Chapter 20 (The shortcut; Worked example: one DPO pair): Bradley–Terry applied to implicit rewards, margin = β × (log-ratio of chosen − log-ratio of rejected), loss = −ln sigmoid(margin), worked to 0.69, 0.55 (β = 0.1) and 0.20 (β = 0.5). Assembled in prose and steps rather than one displayed line.",
+  "owning_chapter": 20
+ },
+ {
+  "id": "rla-ipo",
+  "name": "Identity preference optimization loss (IPO)",
+  "status": "WORDS",
+  "where": "Chapter 20 (The cousins: IPO definition and comparison table). No loss formula.",
+  "owning_chapter": 20
+ },
+ {
+  "id": "rla-kto",
+  "name": "Kahneman-Tversky optimization loss (KTO)",
+  "status": "WORDS",
+  "where": "Chapter 20 (The cousins: KTO definition and table); Appendix F (Human judgment and irrationality: prospect theory). No loss formula.",
+  "owning_chapter": 20
+ },
+ {
+  "id": "rla-orpo",
+  "name": "Odds-ratio preference optimization loss (ORPO)",
+  "status": "WORDS",
+  "where": "Chapter 20 (The cousins: ORPO definition and table). No odds-ratio formula.",
+  "owning_chapter": 20
+ },
+ {
+  "id": "rla-simpo",
+  "name": "Simple preference optimization loss (SimPO)",
+  "status": "WORDS",
+  "where": "Chapter 20 (The cousins: SimPO definition: average per-token log-probability as implicit reward plus a margin). The loss is not written.",
+  "owning_chapter": 20
+ },
+ {
+  "id": "rla-rlvr-reward",
+  "name": "Verifiable reward (RLVR)",
+  "status": "SHOWN",
+  "where": "Chapter 21 (Reinforcement learning with verifiable rewards: table '1 if equal, else 0', format bonus; Worked example: a reward function, and how to break it: reward = 1 if the cleaned answer equals the key, otherwise 0); Chapter 21 (R1-Zero: accuracy and format rewards).",
+  "owning_chapter": 21
+ },
+ {
+  "id": "rla-grpo-advantage",
+  "name": "GRPO group-relative advantage",
+  "status": "SHOWN",
+  "where": "Chapter 21 (GRPO: The idea, step 4 'advantage = (its reward − the mean) ÷ the standard deviation'; Worked example: a group of eight answers: mean 0.375, std √(0.375 × 0.625) = 0.484, advantages +1.29 and −0.77; What the curve teaches table).",
+  "owning_chapter": 21
+ },
+ {
+  "id": "rla-grpo-objective",
+  "name": "GRPO objective (group relative policy optimization)",
+  "status": "WORDS",
+  "where": "Chapter 21 (GRPO: the recipe for one question, step 5: every token weighted by the answer's advantage, PPO-style clipping, KL leash; Figure 21.3). The objective with per-answer length averaging is not written.",
+  "owning_chapter": 21
+ },
+ {
+  "id": "rla-dr-grpo",
+  "name": "Dr. GRPO (GRPO done right)",
+  "status": "WORDS",
+  "where": "Chapter 21 (The GRPO family: Dr. GRPO, with the per-token arithmetic −0.77 ÷ 100 = −0.0077 versus ÷ 1,000 = −0.00077 showing the length bias). The corrected loss is not written.",
+  "owning_chapter": 21
+ },
+ {
+  "id": "rla-dapo",
+  "name": "DAPO objective (clip-higher, token-level loss, dynamic sampling, overlong shaping)",
+  "status": "WORDS",
+  "where": "Chapter 21 (The GRPO family: DAPO's four changes, clip-higher, dynamic sampling, token-level loss, overlong shaping; definition and table). No formula.",
+  "owning_chapter": 21
+ },
+ {
+  "id": "rla-gspo",
+  "name": "GSPO sequence-level importance ratio",
+  "status": "WORDS",
+  "where": "Chapter 21 (The GRPO family: GSPO computes the importance ratio and clipping per whole answer; definition and table). The length-normalized sequence ratio is not written.",
+  "owning_chapter": 21
+ },
+ {
+  "id": "rla-rloo",
+  "name": "REINFORCE leave-one-out baseline (RLOO) and REINFORCE++",
+  "status": "MISSING",
+  "where": "Not in the book (Chapter 21's GRPO group-mean baseline is the nearest idea; no leave-one-out baseline or REINFORCE++).",
+  "owning_chapter": 21
+ },
+ {
+  "id": "rla-cispo-tis",
+  "name": "Clipped importance-sampling REINFORCE (CISPO) and truncated importance sampling (TIS)",
+  "status": "MISSING",
+  "where": "Not in the book.",
+  "owning_chapter": 21
+ },
+ {
+  "id": "rla-rl-scaling-sigmoid",
+  "name": "Sigmoidal compute-performance curve for RL (ScaleRL)",
+  "status": "MISSING",
+  "where": "Not in the book (Chapter 21, Test-time compute, shows o1's RL-compute and thinking curves only as a log-linear shape; no sigmoidal RL compute-performance fit).",
+  "owning_chapter": 21
+ },
+ {
+  "id": "rla-length-shaping",
+  "name": "Length-aware reward shaping (length penalty)",
+  "status": "WORDS",
+  "where": "Chapter 21 (The GRPO family: DAPO's overlong shaping, 'a gentle, gradually increasing penalty'; Overthinking definition); Chapter 20 (Verbosity and style bias: length penalties). No formula.",
+  "owning_chapter": 21
+ },
+ {
+  "id": "rla-prm",
+  "name": "Process reward aggregation (PRM versus ORM)",
+  "status": "WORDS",
+  "where": "Chapter 21 (Process versus outcome rewards: ORM and PRM definitions, Figure 21.5, PRM800K). The product or minimum aggregation of step scores is not written.",
+  "owning_chapter": 21
+ },
+ {
+  "id": "rla-rubric-reward",
+  "name": "Rubric-based reward",
+  "status": "SHOWN",
+  "where": "Chapter 21 (Rubrics and AI judges for tasks no program can check): rubric with point values per criterion, reward = points earned ÷ points possible = 8 ÷ 10 = 0.8. Shown as a worked example.",
+  "owning_chapter": 21
+ },
+ {
+  "id": "rla-best-of-n",
+  "name": "Best-of-N against a reward model and its KL cost",
+  "status": "WORDS",
+  "where": "Chapter 21 (Thinking wider: Best-of-N definition and pass@N = 1 − 0.7^N worked); Chapter 48 (Planning and search today). Selecting by argmax reward is in words; the KL cost ln N − (N − 1) ÷ N is absent.",
+  "owning_chapter": 21
+ },
+ {
+  "id": "rla-rejection-sampling-ft",
+  "name": "Rejection-sampling fine-tuning (STaR, expert iteration)",
+  "status": "WORDS",
+  "where": "Chapter 20 (Synthetic data and self-improvement: rejection sampling and STaR definitions, worked 16,000 attempts, 30% kept ≈ 4,800); Chapter 21 (R1: adding a cold start, Figure 21.4). The keep-set and loss are not written.",
+  "owning_chapter": 20
+ },
+ {
+  "id": "rla-overoptimization",
+  "name": "Reward model over-optimization curves (Goodhart scaling)",
+  "status": "WORDS",
+  "where": "Chapter 20 (Reward hacking and over-optimization: Figure 20.7 proxy versus true quality against KL drift; reward model over-optimization definition; toy table where average reward climbs while helpfulness collapses); Chapter 55 (Goodhart's law). The fitted curves d × (α − β × d) and d × (α − β × ln d) are not shown.",
+  "owning_chapter": 20
+ },
+ {
+  "id": "rla-regressional-goodhart",
+  "name": "Regressional Goodhart and the optimizer's curse",
+  "status": "WORDS",
+  "where": "Chapter 48 (Deciding when you are not sure: optimizer's curse definition and the 20-vendors example); Chapter 55 (Objectives, proxies and Goodhart's law). The normal-noise shrinkage formula is not written.",
+  "owning_chapter": 55
+ },
+ {
+  "id": "rla-weak-to-strong",
+  "name": "Performance gap recovered (weak-to-strong generalization, PGR)",
+  "status": "SHOWN",
+  "where": "Chapter 56 (Scalable oversight: Weak-to-strong generalization): PGR definition and 'PGR = (75 − 60) / (90 − 60) = 15 / 30 = 50%'.",
+  "owning_chapter": 56
+ },
+ {
+  "id": "rla-off-switch",
+  "name": "Off-switch game (value of deferring to a human)",
+  "status": "WORDS",
+  "where": "Chapter 56 (Other research bets: Learning values by watching, the off-switch game and assistance game definitions, in words); Chapter 55 (Power-seeking: corrigibility). The E[max(U, 0)] ≥ max(E[U], 0) inequality is not written.",
+  "owning_chapter": 56
+ },
+ {
+  "id": "rla-linear-probe",
+  "name": "Linear probe",
+  "status": "SHOWN",
+  "where": "Chapter 57 (Probes: simple detectors): probe = dot product plus threshold, worked w · a = 0.8 × 2.0 + (−0.2) × 1.0 + ... = 1.4 > 1.0. The sigmoid output and logistic training loss are not shown.",
+  "owning_chapter": 57
+ },
+ {
+  "id": "rla-steering",
+  "name": "Activation steering with a steering vector",
+  "status": "SHOWN",
+  "where": "Chapter 57 (Steering: turning the dials): 'steering is just addition', worked [2.5, 1.0, 0.0, 1.5] + 10 × [1.0, 0.0, 0.0, 0.5] = [12.5, 1.0, 0.0, 6.5]; steering vector = average on one prompt set minus average on the contrasting set (in words). SAE feature clamping described (Golden Gate Claude) without a formula.",
+  "owning_chapter": 57
+ },
+ {
+  "id": "rla-directional-ablation",
+  "name": "Directional ablation (projecting out a direction)",
+  "status": "WORDS",
+  "where": "Chapter 57 (Steering: ablation definition, 'switching a feature off (setting it to zero)'). Projecting out a direction a − (a · v_hat) × v_hat and weight orthogonalization are not shown.",
+  "owning_chapter": 57
+ },
+ {
+  "id": "rla-sae-l1",
+  "name": "Sparse autoencoder loss with an L1 penalty (SAE)",
+  "status": "SHOWN",
+  "where": "Chapter 57 (Sparse autoencoders: unpacking the suitcase): encoder 'multiply, add, ReLU', decoder 'strength times direction, added up' worked to [2.5, 1.0, 0.0, 1.5]; loss = squared reconstruction error + 0.01 × sum of feature strengths, worked 0.02 + 0.041 = 0.061 versus 0.04; Figure 57.4. The decoder-norm weighting is not shown.",
+  "owning_chapter": 57
+ },
+ {
+  "id": "rla-topk-sae",
+  "name": "TopK, BatchTopK and JumpReLU sparse autoencoders",
+  "status": "MISSING",
+  "where": "Not in the book (no TopK, BatchTopK or JumpReLU; Chapter 57 mentions Gemma Scope only by name).",
+  "owning_chapter": 57
+ },
+ {
+  "id": "rla-sae-metrics",
+  "name": "Sparse autoencoder quality metrics (L0, FVU, loss recovered)",
+  "status": "WORDS",
+  "where": "Chapter 57 (Sparse autoencoders: reconstruction error and 'dark matter' definitions, 'only a small fraction light up', feature splitting). L0, FVU and cross-entropy loss recovered are not named or written.",
+  "owning_chapter": 57
+ },
+ {
+  "id": "rla-transcoder",
+  "name": "Transcoders, cross-layer transcoders and attribution-graph edges",
+  "status": "WORDS",
+  "where": "Chapter 57 (Sparse autoencoders: transcoder definition; Circuits and attribution graphs: replacement model and attribution graph definitions). No formulas for the transcoder loss or edge weights.",
+  "owning_chapter": 57
+ },
+ {
+  "id": "rla-superposition",
+  "name": "Toy model of superposition",
+  "status": "SHOWN",
+  "where": "Chapter 57 (Superposition: more ideas than neurons): toy model worked by hand, three concepts as 120-degree arrows in two neurons, activation = sum of present arrows, readout = ReLU(dot product with each arrow) (the ReLU(W^T × W × x) forward pass); Figure 57.2. The importance-weighted training loss is not shown.",
+  "owning_chapter": 57
+ },
+ {
+  "id": "rla-logit-lens",
+  "name": "Logit lens and direct logit attribution",
+  "status": "MISSING",
+  "where": "Not in the book (no logit lens or direct logit attribution; the unembedding is explained in Chapters 15 and 18 for other purposes).",
+  "owning_chapter": 57
+ },
+ {
+  "id": "rla-patching",
+  "name": "Activation patching and attribution patching",
+  "status": "WORDS",
+  "where": "Chapter 57 (Steering: ablation; Circuits and attribution graphs: swapping 'Texas' features for 'California' changes the answer to Sacramento). Interventions explained in words; the patching-effect formula and attribution patching are not.",
+  "owning_chapter": 57
+ },
+ {
+  "id": "rla-grad-input",
+  "name": "Saliency maps and gradient times input",
+  "status": "WORDS",
+  "where": "Chapter 14 (Looking inside a trained CNN: saliency maps, how much the score changes when each pixel is nudged, its gradient; Grad-CAM); Chapter 57 (The black-box problem: saliency map definition and its unreliability). No |∂F ÷ ∂x_i| or gradient × input formula.",
+  "owning_chapter": 57
+ },
+ {
+  "id": "rla-integrated-gradients",
+  "name": "Integrated gradients",
+  "status": "MISSING",
+  "where": "Not in the book.",
+  "owning_chapter": 57
+ },
+ {
+  "id": "rla-compounding",
+  "name": "Compounding reliability over many steps",
+  "status": "SHOWN",
+  "where": "Chapter 55 (From answers to actions: errors compound: p^n, 0.95^20 ≈ 0.358 and the reliability table); Chapter 28 (Why long tasks are hard: reliability compounds); Chapter 31 (Evals: Evaluating agents, 0.99^50); Chapter 57 (Why evaluations keep getting harder: 1 − (1 − p)^k and pass@k). The required per-step reliability T^(1 ÷ n) is given only as a read-off (99.9% for 100 steps).",
+  "owning_chapter": 55
+ },
+ {
+  "id": "rla-attack-success",
+  "name": "Attack success rate (ASR) and refusal rates",
+  "status": "SHOWN",
+  "where": "Chapter 31 (Red-teaming your own system: record the attack success rate; Exercise 9: attack success rate = successes ÷ 30); Chapter 56 (Exercise 3: same formula; Classifiers worked example 860 versus 44 of 1,000); Chapter 57 (Why evaluations keep getting harder: at least one of 10 attempts succeeds 1 − 0.8^10 ≈ 0.89); Chapter 20 (Refusal calibration: over-refusal 150 of 1,000 = 15%).",
+  "owning_chapter": 31
+ },
+ {
+  "id": "rla-expected-harm",
+  "name": "Expected harm (risk = probability × severity)",
+  "status": "SHOWN",
+  "where": "Chapter 56 (What other safety-critical industries learned: 'risk = probability × severity', 1-in-1,000 chance of $1 million = $1,000); Chapter 55 (Why small error rates are big numbers: 900,000,000 ÷ 100,000 = 9,000 a week); Chapter 57 (1 − (1 − p)^N for at least one success).",
+  "owning_chapter": 56
+ },
+ {
+  "id": "rla-hazard-exposure",
+  "name": "Risk decomposition: hazard × exposure × vulnerability",
+  "status": "SHOWN",
+  "where": "Chapter 56 (What other safety-critical industries learned): 'risk ≈ hazard × exposure × vulnerability', phishing worked example 20,000 × 0.02 = 400 cut to 10,000 × 0.01 = 100.",
+  "owning_chapter": 56
+ },
+ {
+  "id": "rla-defense-depth",
+  "name": "Defense in depth (multiplying layer pass-through rates)",
+  "status": "SHOWN",
+  "where": "Chapter 56 (Worked example: how layers multiply): each layer lets through 1 minus its catch rate, independent layers multiply, 0.10 × 0.20 × 0.25 × 0.5 = 0.0025; correlated case 0.10 × 0.60 = 0.06.",
+  "owning_chapter": 56
+ },
+ {
+  "id": "rla-uplift",
+  "name": "Uplift study effect and its uncertainty",
+  "status": "SHOWN",
+  "where": "Chapter 57 (Dangerous capability evaluations): uplift = 48 − 30 = 18 points, uncertainty √(20²/20 + 20²/20) ≈ 6.3 explained piece by piece, rough 95% range 18 ± 2 × 6.3; uplift definition.",
+  "owning_chapter": 57
+ },
+ {
+  "id": "rla-metr-horizon",
+  "name": "METR 50% time horizon (logistic fit) and its doubling trend",
+  "status": "WORDS",
+  "where": "Chapter 57 (Measuring autonomy: time horizons: Table 57.5, 'METR fits a smooth curve ... where it crosses 50%', doubling arithmetic 2^7.5 ≈ 181 and 35 ÷ 7.5 ≈ 4.7 months); Chapter 28 (worked growth, about eight doublings); Chapter 60 (How progress is measured: worked extrapolation); Chapter 24 (benchmark table). The logistic fit is not written; the doubling trend is worked only as arithmetic (Appendix B has the general doubling-time rule).",
+  "owning_chapter": 57
+ },
+ {
+  "id": "rla-externality",
+  "name": "Private versus social expected loss (externality gap)",
+  "status": "SHOWN",
+  "where": "Chapter 59 (Worked example: who pays for the accident?): expected loss = chance × cost, lab's 1% × $100 million = $1 million versus society's 1% × $1 billion, then $10 billion, compared with a $50 million test; externality, market failure and moral hazard definitions.",
+  "owning_chapter": 59
+ },
+ {
+  "id": "rla-meu",
+  "name": "Maximum expected utility (MEU)",
+  "status": "WORDS",
+  "where": "Chapter 48 (Deciding when you are not sure: expected utility): the recipe 'multiply each score by its probability, add them up, pick the highest' in prose, umbrella worked (80 versus 0.7 × 100 + 0.3 × 0 = 70, break-even 20%); MEU principle definition. Appendix B has the expected-value formula E = sum(outcome × probability), but EU(a) and argmax are not written.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-voi",
+  "name": "Value of perfect information (VPI)",
+  "status": "WORDS",
+  "where": "Chapter 48 (Deciding when you are not sure: expected utility): value of information defined as expected utility with the information minus without it, worked 0.3 × 80 + 0.7 × 100 = 94, 94 − 80 = 14. The general VPI formula is not written.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-nash",
+  "name": "Payoff matrix, dominant strategy and Nash equilibrium",
+  "status": "WORDS",
+  "where": "Chapter 48 (Poker: Nash equilibrium definition; A short course in game theory: dominant strategy, prisoner's dilemma reasoning); Chapter 59 (Worked example: the racing game). Defined and checked in words; the inequality u_i(s_i*, s_−i*) ≥ u_i(s_i, s_−i*) is not written.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-prisoners-dilemma",
+  "name": "Prisoner's dilemma payoffs and the repeated-game cooperation threshold",
+  "status": "WORDS",
+  "where": "Chapter 48 (A short course in game theory: Table 48.8, tit-for-tat and repeated games in words); Chapter 59 (racing game payoff table). The ordering T > R > P > S and the repeated-game threshold δ ≥ (T − R) ÷ (T − P) are not written.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-mixed-minimax",
+  "name": "Mixed-strategy equilibrium and the minimax theorem",
+  "status": "WORDS",
+  "where": "Chapter 48 (A short course in game theory: 'randomness can be the best strategy', rock-paper-scissors one-third each; mixed strategy definition). No indifference condition or minimax theorem formula.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-cfr",
+  "name": "Counterfactual regret minimization (regret matching, CFR)",
+  "status": "WORDS",
+  "where": "Chapter 48 (Poker: Libratus and Pluribus; CFR definition in words). Regret sums and regret matching are not written.",
+  "owning_chapter": 48
+ },
+ {
+  "id": "rla-racing-model",
+  "name": "Expected-value model of an AI race",
+  "status": "WORDS",
+  "where": "Chapter 59 (Worked example: the racing game, a 2 × 2 prisoner's-dilemma payoff table; race to the bottom; evolutionary pressure); Chapter 60 (racing dynamics definition). The expected-value race model with a safety level s and disaster probability d(s) is not shown.",
+  "owning_chapter": 59
+ },
+ {
+  "id": "rla-vickrey",
+  "name": "Second-price (Vickrey) auction and truthful bidding",
+  "status": "WORDS",
+  "where": "Chapter 48 (A short course in game theory: sealed-bid second-price auction, winner pays the second-highest bid, truthful bidding is best, in words); Chapter 51 (The auction, worked by hand: generalized second-price rule, $0.020 ÷ 0.03 ≈ $0.67). Bidder utility v − b_(2) and the truthfulness argument are not written.",
+  "owning_chapter": 48
+ }
+]

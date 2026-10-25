@@ -1,0 +1,1036 @@
+{
+ "items": [
+  {
+   "id": "fnd-vector-ops",
+   "name": "Vector addition, scaling and linear combinations",
+   "formula": "`a + b = [a_1 + b_1, a_2 + b_2, ..., a_n + b_n]`; `k × a = [k × a_1, k × a_2, ..., k × a_n]`; linear combination `c_1 × v_1 + c_2 × v_2 + ... + c_m × v_m`",
+   "meaning": "a, b, v_1..v_m are vectors of the same length n; k and c_1..c_m are ordinary numbers. Vectors add entry by entry; multiplying by k scales every entry. A linear combination is a weighted sum of vectors. Merged variants: subtraction a − b, and the mean of several vectors (their sum ÷ count), which gives a centroid.",
+   "used_for": "Every layer output is a linear combination of weight columns; residual connections add vectors (x + f(x)); embedding arithmetic (king − man + woman); averaging token embeddings into one sentence vector; model merging and task vectors add and scale whole weight vectors. Book: Chapter 5 (Vector arithmetic); Appendix B.",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-dot-product",
+   "name": "Dot product (inner product)",
+   "formula": "`a · b = sum over i of (a_i × b_i) = a_1 × b_1 + a_2 × b_2 + ... + a_n × b_n`; geometric form `a · b = ||a|| × ||b|| × cos(θ)`",
+   "meaning": "a and b are vectors of length n; θ (theta) is the angle between them; ||a|| is the length of a. The result is positive when the vectors point roughly the same way, zero when they are perpendicular (orthogonal), negative when they point opposite ways. In matrix notation it is written a^T × b.",
+   "used_for": "The basic operation of every artificial neuron (weights · inputs + bias); attention scores (query · key); scoring embeddings against each other in retrieval; output logits (final hidden state · each vocabulary row). Book: Chapter 5 (The dot product); Appendix B.",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-norms-distances",
+   "name": "Vector norms and distances (L1, L2, L-infinity, Lp; Euclidean distance)",
+   "formula": "`||x||_2 = sqrt(sum over i of x_i^2)`; `||x||_1 = sum over i of |x_i|`; `||x||_inf = max over i of |x_i|`; `||x||_p = (sum over i of |x_i|^p)^(1 ÷ p)`; distance `d(a, b) = ||a − b||_2 = sqrt(sum over i of (a_i − b_i)^2)`; identity `||a − b||^2 = ||a||^2 + ||b||^2 − 2 × (a · b)`",
+   "meaning": "||x|| (read 'the norm of x') is a vector's size. L2 is ordinary length (Appendix B's length()); L1 adds absolute values (Manhattan or taxicab distance); L-infinity is the largest single entry in size; |x_i| is the absolute value. Every norm obeys the triangle inequality ||a + b|| ≤ ||a|| + ||b||. The squared-distance identity lets nearest-neighbor search reuse dot products. Merged variant: Mahalanobis distance sqrt((x − μ)^T × Σ^-1 × (x − μ)), a distance rescaled by a covariance matrix Σ (see the multivariate Gaussian).",
+   "used_for": "L2: global gradient-norm clipping, L2 regularization and weight decay, embedding normalization, RMSNorm (deep-learning); L1: lasso and sparsity penalties such as those in sparse autoencoders; L-infinity: the perturbation budget of adversarial attacks and the max-absolute-value (absmax) scale in quantization (llm); Euclidean distance: k-nearest neighbors and vector databases (classical-ml). Book: Chapter 5 (Length and distance); Appendix B.",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-cosine-similarity",
+   "name": "Cosine similarity and unit normalization",
+   "formula": "`cos_sim(a, b) = (a · b) ÷ (||a|| × ||b||)`; unit vector `a_hat = a ÷ ||a||`; cosine distance `1 − cos_sim(a, b)`; for unit vectors `||a − b||^2 = 2 − 2 × cos_sim(a, b)`",
+   "meaning": "Compares direction only, ignoring size: 1 means same direction, 0 unrelated (perpendicular), −1 opposite. a_hat is a rescaled to length 1 (normalizing). For unit vectors cosine similarity equals the dot product, and ranking by distance and by cosine give the same order.",
+   "used_for": "Semantic search and RAG compare text embeddings by cosine (ranking metrics are in classical-ml); CLIP-style image-text models normalize embeddings before the dot product; near-duplicate detection; interpretability compares feature and gradient directions by cosine. Book: Chapter 5 (Cosine similarity); Appendix B.",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-matmul",
+   "name": "Matrix multiplication (and the matrix–vector product)",
+   "formula": "`C[i, j] = sum over k of (A[i, k] × B[k, j])`; shape rule `(m × n) times (n × p) gives (m × p)`; matrix–vector `y = W × x`, i.e. `y_i = sum over j of (W[i, j] × x_j)`; `(A × B) × C = A × (B × C)`; `A × (B + C) = A × B + A × C`; in general `A × B ≠ B × A`",
+   "meaning": "Each entry of the result is the dot product of a row of A with a column of B, so the inner sizes must match. Multiplying a matrix by a vector is a linear map that turns a length-n vector into a length-m vector. Stacking many input vectors as rows (batching) lets one matrix product handle them all. The cost, about 2 × m × n × p FLOPs, is counted in compute-datacenter.",
+   "used_for": "Every dense (linear) layer y = W × x + b; attention's Q × K^T and its weighted sum of V; an embedding lookup equals a one-hot vector times the embedding matrix; GPU tensor cores and TPU systolic arrays exist to do this one operation fast. Book: Chapter 5 (Matrices; Matrix multiplication); Chapter 32 (What a neural network actually computes); Appendix B.",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-transpose",
+   "name": "Transpose",
+   "formula": "`(A^T)[i, j] = A[j, i]`; `(A × B)^T = B^T × A^T`; `(A^T)^T = A`; `a · b = a^T × b`",
+   "meaning": "Flips a matrix over its diagonal so rows become columns: an m × n matrix becomes n × m. A matrix equal to its own transpose is called symmetric. Note the order reversal for a product.",
+   "used_for": "Attention's Q × K^T lines every query up against every key; backpropagation through y = W × x sends the gradient back as W^T × (gradient at y); models with tied embeddings use one matrix E for input and E^T for output. Book: Chapter 15 (scaled dot-product attention definition).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-hadamard-product",
+   "name": "Element-wise (Hadamard) product",
+   "formula": "`(a ⊙ b)_i = a_i × b_i`; for matrices `(A ⊙ B)[i, j] = A[i, j] × B[i, j]`",
+   "meaning": "Multiply matching entries and keep the shape; nothing is added up (⊙ is read 'element-wise times'). Merged variants: element-wise division, square root and powers, used for per-parameter scaling.",
+   "used_for": "Gates in LSTMs and GRUs and in the SwiGLU/GeGLU feed-forward blocks of modern LLMs (deep-learning); dropout masks and attention masks; the per-channel gain of LayerNorm and RMSNorm; Adam's per-parameter step size. Book: Only here (gating described in words in Chapters 14 and 15).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-outer-product",
+   "name": "Outer product (rank-one matrix)",
+   "formula": "`(a ⊗ b)[i, j] = a_i × b_j`, also written `a × b^T`; a length-m vector and a length-n vector give an m × n matrix of rank 1",
+   "meaning": "Every entry of a times every entry of b. Any matrix can be written as a sum of rank-one outer products, which the SVD makes explicit. The symbol ⊗ is also used for the Kronecker product; context tells which is meant.",
+   "used_for": "The weight gradient of a linear layer is an outer product, gradient of W = (gradient at y) × x^T, summed over the batch; linear-attention and delta-rule state updates add key-value outer products (deep-learning); a LoRA update B × A is a sum of r outer products (llm); rank-one model edits such as ROME (Meng et al. 2022). Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-einsum",
+   "name": "Tensor contraction (einsum and named-axis notation)",
+   "formula": "`C[i, k] = sum over j of (A[i, j] × B[j, k])`, written `einsum(\"ij,jk->ik\", A, B)`; batched `C[b, i, k] = sum over j of (A[b, i, j] × B[b, j, k])`, written `einsum(\"bij,bjk->bik\", A, B)`",
+   "meaning": "One general rule: an index that appears in the inputs but not in the output is summed over; indices that appear in the output are kept. Dot products, outer products, matrix multiplication, traces and batched products are all special cases. A tensor is a stack of matrices with more than two indices.",
+   "used_for": "torch.einsum and jnp.einsum express attention, multi-head projections and MoE dispatch compactly; the 'How to Scale Your Model' guide writes sharded matrix multiplications in a named-axis variant of this notation, such as A[I_X, J] × B[J, K], to reason about which axes are split across chips (compute-datacenter covers the communication costs). Book: Only here (tensors in Chapter 5).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-inverse",
+   "name": "Identity matrix and matrix inverse",
+   "formula": "`I × A = A × I = A`; `A × A^-1 = A^-1 × A = I`; 2 × 2 case `[[a, b], [c, d]]^-1 = (1 ÷ (a × d − b × c)) × [[d, −b], [−c, a]]`; `(A × B)^-1 = B^-1 × A^-1`; solving `A × x = b` gives `x = A^-1 × b`",
+   "meaning": "I (the identity) has 1s on the diagonal and 0s elsewhere and changes nothing. The inverse A^-1 undoes A. It exists only when det(A) ≠ 0 (A is not singular). Matrices are written as lists of rows, [[row 1], [row 2]]. In practice software solves A × x = b directly (LU or Cholesky factorization) rather than forming A^-1.",
+   "used_for": "Closed-form linear and ridge regression (classical-ml); Gaussian posteriors and Kalman gains (generative-classical); second-order optimizers apply inverse or inverse-root preconditioners (Shampoo uses inverse fourth roots of its statistics, deep-learning); GPTQ quantization uses the inverse Hessian (llm). Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-determinant",
+   "name": "Determinant",
+   "formula": "`det([[a, b], [c, d]]) = a × d − b × c`; `det(A × B) = det(A) × det(B)`; `det(A) = product over i of λ_i` (eigenvalues); `det(A^-1) = 1 ÷ det(A)`",
+   "meaning": "How much a square matrix scales area (in 2-D) or volume (in n-D); a negative sign means it also flips orientation. Zero means it squashes space flat and has no inverse. Software usually works with ln(det(A)) for stability.",
+   "used_for": "The normalizing constant of the multivariate Gaussian; the log-determinant term of normalizing flows (generative-classical); testing whether a matrix can be inverted. Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-trace",
+   "name": "Trace",
+   "formula": "`tr(A) = sum over i of A[i, i]`; `tr(A × B) = tr(B × A)`; `tr(A) = sum over i of λ_i`; `||A||_F^2 = tr(A^T × A)`; Hutchinson estimator `tr(A) ≈ E[z^T × A × z]` for random z with independent mean-0, variance-1 entries",
+   "meaning": "The sum of a square matrix's diagonal, which also equals the sum of its eigenvalues λ_i. Products can be rotated inside a trace (tr(A × B × C) = tr(C × A × B)), which simplifies many derivations. Hutchinson's estimator gets a trace from matrix–vector products alone.",
+   "used_for": "Matrix-calculus derivations of gradients; Hessian-trace estimates in curvature studies; FFJORD-style continuous normalizing flows estimate a Jacobian trace with Hutchinson's trick (generative-classical); Frobenius norms; closed-form KL between Gaussians. Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-rank",
+   "name": "Rank, linear independence and low-rank factorization",
+   "formula": "`rank(A) = number of linearly independent columns = number of nonzero singular values`; `rank(A × B) ≤ min(rank(A), rank(B))`; an m × n matrix written `B × A` with B of shape m × r and A of shape r × n has rank at most r and stores `r × (m + n)` numbers instead of `m × n`",
+   "meaning": "Vectors are linearly independent when none is a linear combination of the others; their span is every combination. Rank is how many genuinely different output directions a matrix has. A low-rank factorization stores a big matrix as the product of two thin ones.",
+   "used_for": "LoRA fine-tuning adds a rank-r product B × A to frozen weights (llm); DeepSeek's multi-head latent attention passes keys and values through a low-rank latent (llm); GaLore projects gradients to low rank to save optimizer memory (Zhao et al. 2024); low-rank compression of weights. Book: Chapter 10 (SVD), Chapter 30 (LoRA).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-orthogonal-rotation",
+   "name": "Orthogonal matrices, rotations and Euler's formula",
+   "formula": "`Q^T × Q = Q × Q^T = I` (so `Q^-1 = Q^T`); `||Q × x|| = ||x||`; 2-D rotation `R(θ) = [[cos θ, −sin θ], [sin θ, cos θ]]`; `R(α) × R(β) = R(α + β)`; Euler's formula `e^(i × θ) = cos θ + i × sin θ`",
+   "meaning": "An orthogonal matrix has unit-length, mutually perpendicular columns; it rotates or reflects without stretching, so lengths and dot products are preserved. Rotations compose by adding angles; with complex numbers (i is the square root of −1) a rotation is multiplication by e^(i × θ).",
+   "used_for": "RoPE positional encoding rotates pairs of query and key entries by position-dependent angles so their dot product depends only on relative position (formula in deep-learning); orthogonal weight initialization (Saxe et al. 2014; PyTorch's orthogonal_ initializer); rotating weights and activations to spread outliers before 4-bit quantization (QuaRot and SpinQuant, 2024, llm); Muon orthogonalizes its updates (deep-learning). Book: Chapter 5 (Matrices as transformations), Chapter 13 (Muon), Chapter 15 (positional encodings).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-projection-qr",
+   "name": "Orthogonal projection, Gram–Schmidt and QR decomposition",
+   "formula": "`proj_a(b) = ((a · b) ÷ (a · a)) × a`; remove a direction `b − proj_a(b)`; projection onto the columns of A `P = A × (A^T × A)^-1 × A^T` with `P × P = P`; Gram–Schmidt `q_k = normalize(a_k − sum over j < k of ((q_j · a_k) × q_j))`; QR `A = Q × R`",
+   "meaning": "Projection finds the closest point to b along a (or inside a subspace); the leftover b − proj_a(b) is perpendicular to a. Gram–Schmidt turns independent vectors into perpendicular unit vectors by repeatedly subtracting projections; QR records the result as Q (orthonormal columns) times R (upper triangular).",
+   "used_for": "Least squares is a projection onto a column space; interpretability removes a concept direction from activations (directional ablation of a 'refusal direction', Arditi et al. 2024; LEACE concept erasure, Belrose et al. 2023; both in rl-alignment); orthogonal initialization takes the Q of a random matrix; PCA projects data onto its top components (classical-ml). Book: Chapter 10 (PCA).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-eigen",
+   "name": "Eigenvalues, eigenvectors, eigendecomposition and spectral radius",
+   "formula": "`A × v = λ × v`; characteristic equation `det(A − λ × I) = 0`; `A = Q × Λ × Q^-1`; symmetric A (spectral theorem) `A = Q × Λ × Q^T` with orthogonal Q and real λ; powers `A^t = Q × Λ^t × Q^-1`; spectral radius `ρ(A) = max over i of |λ_i|`, and `A^t → 0` as t grows exactly when `ρ(A) < 1`",
+   "meaning": "An eigenvector v is a direction the matrix only stretches, by the factor λ (lambda, its eigenvalue). Q holds the eigenvectors as columns and Λ is the diagonal matrix of eigenvalues. Repeated multiplication grows along eigenvalues larger than 1 in size and dies along those smaller than 1, which the spectral radius ρ summarizes.",
+   "used_for": "PCA's directions are eigenvectors of the covariance matrix (classical-ml); the largest Hessian eigenvalue measures sharpness, which settles near 2 ÷ learning rate during training (Cohen et al., ICLR 2021); SOAP runs Adam in the eigenbasis of Shampoo's preconditioner (Vyas et al. 2024); exploding and vanishing gradients in RNNs and the stability of linear recurrences and state-space models depend on the spectral radius (deep-learning); spectral clustering and PageRank. Book: Chapter 10 (Eigenvector definition).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-svd",
+   "name": "Singular value decomposition (SVD)",
+   "formula": "`A = U × Σ × V^T = sum over i of (σ_i × u_i × v_i^T)`; U (m × m) and V (n × n) orthogonal; Σ diagonal with `σ_1 ≥ σ_2 ≥ ... ≥ 0`; `σ_i = sqrt(λ_i(A^T × A))`",
+   "meaning": "Any matrix is a rotation (V^T), then a stretch by the singular values σ_i along each axis, then another rotation (U); u_i and v_i are the columns of U and V. Singular values rank how much each direction matters, and the number of nonzero ones is the rank. Merged variant: the thin (economy) SVD keeps only min(m, n) columns.",
+   "used_for": "Muon's update is the orthogonal factor U × V^T of the momentum matrix, all singular values set to 1 (deep-learning); PiSSA initializes LoRA adapters from the top singular vectors (llm); analysis of the effective rank of weights and updates; spectral norm = σ_1; PCA is usually computed by SVD. Book: Chapter 10 (SVD definition), Chapter 13 (Muon).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-low-rank-approx",
+   "name": "Best low-rank approximation (Eckart–Young theorem)",
+   "formula": "`A_k = sum over i = 1 to k of (σ_i × u_i × v_i^T)`; `||A − A_k||_F = sqrt(σ_(k+1)^2 + σ_(k+2)^2 + ...)`; `||A − A_k||_2 = σ_(k+1)`; share of energy kept `= (sum of the top k σ_i^2) ÷ (sum of all σ_i^2)`",
+   "meaning": "Keeping only the k largest singular values gives the closest possible rank-k matrix, measured in either the Frobenius or the spectral norm, and the error is exactly the singular values thrown away.",
+   "used_for": "Justifies compressing weight matrices and projections to low rank; truncated PCA; LoRA's working assumption that fine-tuning updates are close to low rank (llm); matrix-factorization recommenders (classical-ml). Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-matrix-norms",
+   "name": "Matrix norms (Frobenius, spectral, nuclear)",
+   "formula": "Frobenius `||A||_F = sqrt(sum over i, j of A[i, j]^2) = sqrt(sum over i of σ_i^2)`; spectral (operator) `||A||_2 = max over x ≠ 0 of (||A × x|| ÷ ||x||) = σ_1`; nuclear `||A||_* = sum over i of σ_i`; `||A × x|| ≤ ||A||_2 × ||x||`; `||A||_2 ≤ ||A||_F ≤ sqrt(rank(A)) × ||A||_2`",
+   "meaning": "Three ways to measure a matrix's size: Frobenius treats it as one long vector; spectral is the most it can stretch any vector (its top singular value σ_1); nuclear adds all the stretches and serves as a convex stand-in for rank.",
+   "used_for": "Spectral normalization divides each GAN discriminator layer by its spectral norm (Miyato et al. 2018); Muon is steepest descent under the spectral norm (Bernstein & Newhouse 2024); Frobenius norms in weight decay, reconstruction errors and distillation of matrices; nuclear-norm matrix completion (classical-ml). Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-condition-number",
+   "name": "Condition number",
+   "formula": "`κ(A) = ||A||_2 × ||A^-1||_2 = σ_max ÷ σ_min`; for a symmetric positive definite Hessian `κ = λ_max ÷ λ_min`",
+   "meaning": "How lopsided a matrix's stretching is (κ is kappa). A large κ means small input errors can become large output errors, and that gradient descent zig-zags down long narrow valleys: on a quadratic it needs on the order of κ steps per constant-factor improvement.",
+   "used_for": "Explains why preconditioned optimizers (Adam, Shampoo, SOAP) and normalization layers speed up training (deep-learning); numerical stability of solving systems in low precision; GPTQ adds a small damping term to the diagonal of its Hessian before inverting it (llm). Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-psd-cholesky",
+   "name": "Positive semidefinite matrices, quadratic forms, Gram matrices and Cholesky factorization",
+   "formula": "quadratic form `x^T × A × x = sum over i, j of (A[i, j] × x_i × x_j)`; positive semidefinite (PSD): `x^T × A × x ≥ 0` for every x (all eigenvalues ≥ 0); Gram matrix `G = X × X^T` with `G[i, j] = x_i · x_j` is always PSD; Cholesky `A = L × L^T` with L lower triangular, for positive definite A",
+   "meaning": "A quadratic form is a bowl- or saddle-shaped function of x; PSD matrices give bowls with no downhill direction. Covariance matrices, Gram (kernel) matrices and Hessians of convex functions are PSD. Cholesky is a fast, stable 'square root' of a positive definite matrix.",
+   "used_for": "Covariance matrices and Gaussian sampling x = μ + L × z; kernel methods and Gaussian processes (classical-ml); Shampoo's statistics G × G^T (deep-learning); the second-order term of Taylor expansions; GPTQ uses a Cholesky factorization of the inverse Hessian for numerical stability (Frantar et al. 2023, llm). Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-least-squares-pinv",
+   "name": "Least-squares solution and the Moore–Penrose pseudoinverse",
+   "formula": "minimize `||A × x − b||^2`: normal equations `A^T × A × x = A^T × b`, so `x = (A^T × A)^-1 × A^T × b`; in general `x = A^+ × b` with `A^+ = V × Σ^+ × U^T` (Σ^+ inverts the nonzero singular values); ridge variant `x = (A^T × A + λ × I)^-1 × A^T × b`",
+   "meaning": "When a linear system has no exact solution, least squares picks the x whose results miss b by the smallest total squared amount. The pseudoinverse A^+ extends the inverse to non-square or singular matrices and returns the smallest such x. Linear regression (classical-ml) is this formula applied to data; λ is the ridge penalty strength.",
+   "used_for": "Linear probes and closed-form readouts on frozen features (rl-alignment interpretability); closed-form model edits that rewrite one stored association with a rank-one update (ROME, Meng et al. 2022); layer-wise calibration solves in quantization and pruning (llm). Book: Chapter 5 (Fitting a line to messy data), Chapter 10 (linear regression).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-power-iteration",
+   "name": "Power iteration",
+   "formula": "`v_(k+1) = (A × v_k) ÷ ||A × v_k||`; top eigenvalue estimate `λ_max ≈ v_k^T × A × v_k` (symmetric A); top singular value `σ_1 ≈ ||A × v_k||` when iterating with `A^T × A`",
+   "meaning": "Repeatedly multiplying a random vector by a matrix and rescaling it lines the vector up with the top eigenvector, because that direction grows fastest. It needs only matrix–vector products, so it works on huge matrices that are never written out (such as a Hessian reached through Hessian-vector products).",
+   "used_for": "Spectral normalization runs one power-iteration step per training step to track each layer's largest singular value (Miyato et al. 2018); measuring sharpness (the top Hessian eigenvalue) in edge-of-stability studies; PageRank. Book: Only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "fnd-polar-newton-schulz",
+   "name": "Polar decomposition and Newton–Schulz orthogonalization",
+   "formula": "`A = U_p × P` with `U_p = U × V^T` (the nearest orthogonal matrix to A) and `P = V × Σ × V^T`; cubic Newton–Schulz iteration `X_(k+1) = 1.5 × X_k − 0.5 × X_k × X_k^T × X_k`, starting from `X_0 = A ÷ ||A||_F`, converges to `U × V^T`",
+   "meaning": "Any matrix splits into a pure rotation part U_p and a pure stretch part P, like writing a number as its sign times its size. Newton–Schulz finds the rotation part with matrix multiplications only: each step moves every singular value toward 1 while leaving the singular vectors alone (it converges for singular values between 0 and sqrt(3)).",
+   "used_for": "Muon (Keller Jordan, December 2024) orthogonalizes each weight matrix's momentum with about five steps of a tuned quintic Newton–Schulz polynomial (its coefficients belong to the deep-learning optimizer entries); Moonshot's MuonClip for Kimi K2 builds on it; orthogonality constraints in some recurrent networks. Book: Chapter 13 (Muon; Newton–Schulz iteration definition).",
+   "tier": "specialist"
+  },
+  {
+   "id": "fnd-kronecker",
+   "name": "Kronecker product",
+   "formula": "`A ⊗ B = [[A[1,1] × B, A[1,2] × B, ...], [A[2,1] × B, A[2,2] × B, ...], ...]`, an (m × p) by (n × q) block matrix for A of shape m × n and B of shape p × q; `(A ⊗ B) × vec(X) = vec(B × X × A^T)`; `(A ⊗ B)^-1 = A^-1 ⊗ B^-1`",
+   "meaning": "Every entry of A multiplies the whole of B, giving a block matrix. vec(X) stacks a matrix's columns into one long vector. The identities let a huge matrix that acts on a weight matrix be stored, applied and inverted as two small ones.",
+   "used_for": "K-FAC approximates each layer's Fisher matrix as a Kronecker product of two small matrices (Martens & Grosse 2015); Shampoo preconditions each weight matrix with a left and a right factor, a Kronecker-factored approximation of full-matrix AdaGrad; a Distributed Shampoo submission won the external-tuning track of the AlgoPerf training-speed benchmark (analysis published February 2025). Book: Chapter 13 (Shampoo and SOAP).",
+   "tier": "specialist"
+  },
+  {
+   "id": "fnd-woodbury",
+   "name": "Sherman–Morrison and Woodbury identities",
+   "formula": "`(A + u × v^T)^-1 = A^-1 − (A^-1 × u × v^T × A^-1) ÷ (1 + v^T × A^-1 × u)`; Woodbury `(A + U × C × V)^-1 = A^-1 − A^-1 × U × (C^-1 + V × A^-1 × U)^-1 × V × A^-1`",
+   "meaning": "How an inverse changes when the matrix receives a low-rank update, without inverting again from scratch: a rank-k change costs only a k × k inverse. (U, C, V here are any matrices of compatible shapes, not the SVD factors.)",
+   "used_for": "Recursive least squares and online linear models; Gaussian-process and Kalman-filter update formulas (classical-ml, generative-classical); cheap inverse updates in influence-function and natural-gradient approximations; deriving closed-form rank-one model edits. Book: Only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "fnd-matrix-exponential",
+   "name": "Matrix exponential",
+   "formula": "`exp(A) = I + A + A^2 ÷ 2! + A^3 ÷ 3! + ... = sum over k ≥ 0 of (A^k ÷ k!)`; diagonal A: exponentiate each diagonal entry; `exp(Q × Λ × Q^-1) = Q × exp(Λ) × Q^-1`; the solution of `dx/dt = A × x` is `x(t) = exp(t × A) × x(0)`",
+   "meaning": "The matrix version of e^x (k! is k factorial). It converts a continuous-time linear rule (how fast x changes) into the exact jump over a time step t.",
+   "used_for": "Discretizing continuous-time state-space models such as S4 and Mamba (their zero-order-hold step is in deep-learning); rotations and rigid motions as Lie-group exponentials in robotics and 3-D vision; continuous-time Markov chains. Book: Only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "fnd-walsh-hadamard",
+   "name": "Walsh–Hadamard matrix and the fast Hadamard transform",
+   "formula": "`H_1 = [1]`; `H_(2n) = (1 ÷ sqrt(2)) × [[H_n, H_n], [H_n, −H_n]]`; `H^T × H = I` and `H × H = I`; applying H to a length-n vector costs about `n × log2(n)` additions",
+   "meaning": "A square orthogonal matrix of ±1 entries (rescaled), built by repeated doubling, that is its own inverse. Multiplying by it mixes every entry with every other, so one large outlier is spread evenly across all entries.",
+   "used_for": "Rotating weights and activations before 4-bit quantization so outliers do not wreck a shared scale (QuaRot, SpinQuant; method in llm); NVIDIA's NVFP4 pretraining recipe applies random Hadamard transforms to bound block-level outliers (arXiv 2509.25149, 2025). Book: Only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "fnd-johnson-lindenstrauss",
+   "name": "Johnson–Lindenstrauss lemma (random projections)",
+   "formula": "for n points and a suitable random linear map f into k dimensions, with high probability `(1 − ε) × ||u − v||^2 ≤ ||f(u) − f(v)||^2 ≤ (1 + ε) × ||u − v||^2` for every pair u, v, provided `k ≥ 4 × ln(n) ÷ (ε^2 ÷ 2 − ε^3 ÷ 3)`",
+   "meaning": "Many points in a huge space can be squashed by a random matrix into far fewer dimensions while every distance stays within a factor 1 ± ε (epsilon, a small tolerance). The dimension needed grows only with ln(n), not with the original dimension. Corollary: a space of d dimensions holds exponentially many almost-perpendicular directions.",
+   "used_for": "Random projections and sketches for fast similarity search and locality-sensitive hashing (classical-ml); TRAK data attribution compresses per-example gradients with random projections (Park et al. 2023); the near-orthogonality argument used to explain how networks can store more features than dimensions (superposition, rl-alignment interpretability). Book: Only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "fnd-random-vector-dot",
+   "name": "Norms and dot products of random high-dimensional vectors",
+   "formula": "if q and k have d independent entries with mean 0 and variance 1: `E[q · k] = 0`, `Var(q · k) = d`, `sd(q · k) = sqrt(d)`; `E[||q||^2] = d`, so `||q|| ≈ sqrt(d)`; for independent random unit vectors `cos_sim` is approximately `N(0, 1 ÷ d)`",
+   "meaning": "A sum of d independent products has spread that grows like sqrt(d), so raw dot products get bigger as vectors get longer; dividing by sqrt(d) keeps them near size 1. Random directions in high dimensions are almost perpendicular to one another.",
+   "used_for": "The 1 ÷ sqrt(d_k) scaling in scaled dot-product attention (the original Transformer paper's footnote derives Var(q · k) = d_k; the attention formula is in deep-learning); variance-preserving initializations such as Xavier and He (deep-learning); why cosine similarity between unrelated embeddings sits near 0. Book: Chapter 15 (scaled dot-product attention), Chapter 13 (initialization).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-dft",
+   "name": "Discrete Fourier transform and the convolution theorem",
+   "formula": "`X_k = sum over n = 0 to N − 1 of (x_n × exp(−2 × π × i × k × n ÷ N))`; inverse `x_n = (1 ÷ N) × sum over k of (X_k × exp(2 × π × i × k × n ÷ N))`; convolution theorem `DFT(x circularly convolved with y) = DFT(x) ⊙ DFT(y)`; the fast Fourier transform (FFT) costs about `N × log2(N)`",
+   "meaning": "Rewrites N samples of a signal as a sum of N waves of different frequencies; X_k (a complex number; i is the square root of −1) gives the strength and phase of frequency k. Convolution in time becomes element-wise multiplication in frequency, which the FFT makes cheap.",
+   "used_for": "Spectrograms for speech and audio models (the short-time Fourier transform and mel scale are in generative-classical); FFT-based long convolutions in Hyena-style models and Fourier token mixing in FNet (deep-learning); frequency analysis of positional encodings; classic image processing. Book: Chapter 46 (Fourier transform definition).",
+   "tier": "specialist"
+  },
+  {
+   "id": "fnd-exp-log-rules",
+   "name": "Exponent and logarithm rules",
+   "formula": "`a^m × a^n = a^(m + n)`; `(a^m)^n = a^(m × n)`; `a^(−n) = 1 ÷ a^n`; `ln(a × b) = ln(a) + ln(b)`; `ln(a ÷ b) = ln(a) − ln(b)`; `ln(a^k) = k × ln(a)`; `exp(ln(x)) = x`; change of base `log2(x) = ln(x) ÷ ln(2)`",
+   "meaning": "Logarithms turn multiplication into addition and powers into multiplication; exp and ln undo each other. ln is the natural log, base e ≈ 2.718. Merged variant: probabilities multiply while log-probabilities add.",
+   "used_for": "Working with log-probabilities everywhere (losses, likelihoods, beam-search scores) so tiny products do not underflow; log-scale charts of compute and scaling laws; learning rates and budgets compared on log scales. Book: Chapter 6 (Exponentials; Logarithms); Appendix B (Growth, exponentials and logarithms).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-derivative",
+   "name": "Derivative (limit definition and finite differences)",
+   "formula": "`f'(x) = lim as h → 0 of (f(x + h) − f(x)) ÷ h`; forward difference `f'(x) ≈ (f(x + h) − f(x)) ÷ h`; central difference `f'(x) ≈ (f(x + h) − f(x − h)) ÷ (2 × h)`",
+   "meaning": "The slope of a function at a point: how much the output changes per tiny change h in the input. 'lim as h → 0' means the value the ratio approaches as h shrinks toward zero. The central difference is more accurate (its error shrinks like h^2 instead of h).",
+   "used_for": "Gradient checking compares autodiff gradients against finite differences (for example torch.autograd.gradcheck); zeroth-order optimizers estimate gradients from forward passes only (MeZO fine-tuning, Malladi et al. 2023). Book: Chapter 6 (Slopes and derivatives); Appendix B (Slope by nudging).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-derivative-rules",
+   "name": "Derivative rules",
+   "formula": "`(c)' = 0`; `(x^n)' = n × x^(n − 1)`; `(e^x)' = e^x`; `(ln x)' = 1 ÷ x`; sum `(f + g)' = f' + g'`; constant multiple `(c × f)' = c × f'`; product `(f × g)' = f' × g + f × g'`; quotient `(f ÷ g)' = (f' × g − f × g') ÷ g^2`",
+   "meaning": "The short table that, together with the chain rule, differentiates any formula built from these pieces. f' is read 'f prime', the derivative of f; c is a constant. Derivatives of activation functions (ReLU, sigmoid, GELU) follow from it and are listed in deep-learning.",
+   "used_for": "Every automatic-differentiation library implements one backward rule per primitive operation, built from this table; hand-derived gradients in courses such as CS229 and CS231n. Book: Chapter 6; Appendix B (derivative table).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-partial-derivative",
+   "name": "Partial derivative",
+   "formula": "`∂f/∂x_i = lim as h → 0 of (f(x_1, ..., x_i + h, ..., x_n) − f(x_1, ..., x_n)) ÷ h`",
+   "meaning": "The slope of a many-input function along one input x_i while every other input is held fixed. ∂ is read 'partial'. In training, each parameter gets one partial derivative of the loss.",
+   "used_for": "Every training step computes one partial derivative of the loss per parameter, billions per step for a large model. Book: Chapter 6 (Gradients: one knob at a time); Appendix B (Partial derivative).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-gradient",
+   "name": "Gradient and directional derivative",
+   "formula": "`∇f(x) = [∂f/∂x_1, ∂f/∂x_2, ..., ∂f/∂x_n]`; directional derivative `D_u f(x) = ∇f(x) · u` for a unit vector u; steepest-ascent direction `∇f(x) ÷ ||∇f(x)||`",
+   "meaning": "The gradient (∇, read 'nabla' or 'grad') lists every partial derivative. It points in the direction of fastest increase and its length is that rate; the slope in any other direction u is a dot product with u, so moving against the gradient decreases f fastest (when step size is measured by ordinary length).",
+   "used_for": "Gradient descent and every optimizer; gradient norms monitored for loss spikes and used for clipping (deep-learning); input-gradient saliency and integrated-gradients attribution (rl-alignment); the fast gradient-sign adversarial attack moves an input along the sign of the gradient. Book: Chapter 6 (The gradient points uphill); Appendix B (Gradient).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-chain-rule",
+   "name": "Chain rule (single-variable and multivariable)",
+   "formula": "`dy/dx = (dy/du) × (du/dx)`; multivariable `∂L/∂x_i = sum over j of ((∂L/∂u_j) × (∂u_j/∂x_i))`; vector form `∂L/∂x = J^T × ∂L/∂u` with `J = ∂u/∂x`",
+   "meaning": "The slope through a chain of steps is the product of the steps' slopes; when an input affects the output through several paths, add the contributions of all paths. J is the Jacobian (next entry). Backpropagation (deep-learning) is this rule applied layer by layer from the loss backward.",
+   "used_for": "Backpropagation in every neural network; reverse-mode automatic differentiation in PyTorch, JAX and TensorFlow. Book: Chapter 6 (The chain rule; Backpropagation), Chapter 12; Appendix B (Chain rule).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-jacobian",
+   "name": "Jacobian matrix and Jacobian-vector products (forward and reverse mode)",
+   "formula": "`J[i, j] = ∂f_i/∂x_j` for f taking n inputs to m outputs (shape m × n); forward mode computes `J × v` (a JVP); reverse mode computes `v^T × J` (a VJP); chain `J_(g of f)(x) = J_g(f(x)) × J_f(x)`",
+   "meaning": "The Jacobian collects every partial derivative of a vector-valued function. Automatic differentiation never builds it: forward mode pushes a direction v through the computation, reverse mode pulls a vector v back through it, each costing a small multiple of one forward pass. Reverse mode wins for many inputs and one output (a loss), which is why training uses it.",
+   "used_for": "torch.func.jvp/vjp and jax.jvp/vjp; backprop is a chain of VJPs; JVPs appear in forward-mode tricks and in some consistency-model training (generative-classical); Jacobian regularization; the Jacobian determinant of normalizing flows. Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-hessian",
+   "name": "Hessian matrix and Hessian-vector products",
+   "formula": "`H[i, j] = ∂^2 f ÷ (∂x_i × ∂x_j)` (symmetric, n × n); Hessian-vector product `H × v = ∇(∇f(x) · v)` (Pearlmutter's trick, cost about two gradient evaluations); squared error of a linear layer on inputs X: `H = 2 × X × X^T`",
+   "meaning": "Second derivatives: how the slope itself changes, i.e. curvature. Its eigenvalues say how sharply the loss bends in each direction: all positive means a bowl, mixed signs a saddle. For billions of parameters it is never stored, only multiplied by vectors.",
+   "used_for": "Sharpness and edge-of-stability analysis; second-order optimizers approximate it (Newton, Shampoo, K-FAC, Sophia's diagonal Hessian estimate); Optimal-Brain-Surgeon pruning and GPTQ quantization use the layer Hessian 2 × X × X^T of calibration inputs (llm); influence functions; sharpness-aware minimization (SAM). Book: Only here (curvature described in words in Chapter 13).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-taylor",
+   "name": "Taylor approximation",
+   "formula": "`f(x + Δ) ≈ f(x) + f'(x) × Δ + (1 ÷ 2) × f''(x) × Δ^2`; full series `f(x) = sum over n ≥ 0 of (f^(n)(a) × (x − a)^n ÷ n!)`; many variables `f(x + Δ) ≈ f(x) + ∇f(x) · Δ + (1 ÷ 2) × Δ^T × H × Δ`",
+   "meaning": "Close to a point, any smooth function looks like a straight line (first order) or a parabola or bowl (second order). Δ (delta) is a small change, f^(n) the n-th derivative, H the Hessian. Familiar cases: e^x ≈ 1 + x + x^2 ÷ 2 and ln(1 + x) ≈ x for small x.",
+   "used_for": "Derives gradient descent (minimize the first-order model plus a step penalty) and Newton's method (minimize the second-order model); predicts the loss change from pruning or quantizing weights (Optimal Brain Surgeon, GPTQ, llm); linearized networks and the neural tangent kernel; first-order Taylor importance scores for pruning. Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-matrix-calculus",
+   "name": "Matrix calculus identities",
+   "formula": "`∂(a^T × x)/∂x = a`; `∂(x^T × A × x)/∂x = (A + A^T) × x` (= `2 × A × x` for symmetric A); `∂(||x||^2)/∂x = 2 × x`; for `y = W × x` and loss L: `∂L/∂W = (∂L/∂y) × x^T` and `∂L/∂x = W^T × (∂L/∂y)`; `∂ tr(A × X)/∂X = A^T`; `∂ ln(det(X))/∂X = (X^-1)^T`",
+   "meaning": "Shortcuts for differentiating expressions in vectors and matrices directly, without writing out every partial derivative. The gradient of a single number with respect to a matrix has the same shape as the matrix.",
+   "used_for": "Deriving backward passes for linear layers and attention; closed-form solutions such as least squares and Gaussian maximum likelihood; course derivations of backprop (CS229, CS231n). Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-integral",
+   "name": "Integral and the fundamental theorem of calculus",
+   "formula": "`integral from a to b of f(x) dx ≈ sum over slices of (f(x_k) × Δx)`; if `F'(x) = f(x)` then `integral from a to b of f(x) dx = F(b) − F(a)`; Gaussian integral `integral from −∞ to ∞ of exp(−x^2 ÷ 2) dx = sqrt(2 × π)`",
+   "meaning": "An integral is the area under a curve, added up from very many thin slices of width Δx. Integration and differentiation undo each other. The Gaussian integral is why sqrt(2π) appears in the bell curve's formula.",
+   "used_for": "Continuous probabilities and expectations (see the probability entries); AUC is the integral under a ROC curve (classical-ml); diffusion and flow-matching samplers integrate an equation over time (generative-classical); integrated-gradients attribution averages gradients along a path (rl-alignment). Book: Chapter 6 (Smooth quantities: densities and areas; Integral definition).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-log-sum-exp",
+   "name": "Log-sum-exp and the max-subtraction trick",
+   "formula": "`LSE(x) = ln(sum over i of exp(x_i)) = m + ln(sum over i of exp(x_i − m))` with `m = max over i of x_i`; `max(x) ≤ LSE(x) ≤ max(x) + ln(n)`; `∂LSE/∂x_i = exp(x_i) ÷ sum over j of exp(x_j)`",
+   "meaning": "A smooth version of the maximum. Subtracting the largest value first gives exactly the same answer while keeping every exp() at most 1, so nothing overflows (in FP32, exp(89) already exceeds the largest representable number, about 3.4 × 10^38). Its gradient is the softmax (defined in deep-learning).",
+   "used_for": "Numerically stable softmax and cross-entropy in every framework; the running maximum and running sum of the online softmax inside FlashAttention (llm); log-likelihoods of mixtures; the log-normalizer of exponential families; PaLM's z-loss penalizes the square of the output LSE to keep logits from drifting. Book: Only here (shift rule for softmax in Chapter 6 and Appendix B).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-geometric-series",
+   "name": "Geometric series",
+   "formula": "`sum over k = 0 to n − 1 of r^k = (1 − r^n) ÷ (1 − r)`; for `|r| < 1`: `sum over k ≥ 0 of r^k = 1 ÷ (1 − r)`; `sum over k ≥ 0 of (k × r^k) = r ÷ (1 − r)^2`",
+   "meaning": "Adding a quantity that shrinks by a fixed factor r each step gives a finite total; 1 ÷ (1 − r) acts as an 'effective number of terms'.",
+   "used_for": "The memory of an exponential moving average with decay β spans about 1 ÷ (1 − β) steps (Adam's β2 = 0.999 averages roughly 1,000 steps; deep-learning); discounted returns in reinforcement learning (rl-alignment); the expected number of tokens per step in speculative decoding (llm). Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-euler-ode",
+   "name": "Euler's method for differential equations (and gradient flow)",
+   "formula": "for `dx/dt = f(x, t)`: Euler step `x_(t + h) = x_t + h × f(x_t, t)`; Heun (second-order) step `x_(t + h) = x_t + (h ÷ 2) × (f(x_t, t) + f(x_t + h × f(x_t, t), t + h))`; gradient flow `dθ/dt = −∇L(θ)`, whose Euler step is gradient descent",
+   "meaning": "Follow a rule for how fast something changes by taking small straight steps of size h; smaller steps are more accurate, and higher-order methods (Heun, Runge–Kutta) take a corrected step for less error per evaluation.",
+   "used_for": "Sampling from diffusion and flow-matching models integrates an ordinary differential equation with Euler or Heun steps (the EDM sampler of Karras et al. 2022 uses Heun; specific samplers in generative-classical); neural ODEs; physics simulators for robots; gradient descent seen as Euler steps on gradient flow. Book: Only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "fnd-interpolation",
+   "name": "Linear and spherical interpolation (lerp and slerp)",
+   "formula": "`lerp(a, b, t) = (1 − t) × a + t × b` for t from 0 to 1; `slerp(a, b, t) = (sin((1 − t) × Ω) ÷ sin(Ω)) × a + (sin(t × Ω) ÷ sin(Ω)) × b` with `cos(Ω) = (a · b) ÷ (||a|| × ||b||)`",
+   "meaning": "lerp walks in a straight line between two points; slerp walks along the arc of a circle at constant speed, so unit vectors stay unit length. Ω (omega) is the angle between a and b.",
+   "used_for": "Model merging by interpolating weights (weight averaging and model soups; SLERP merges in tools such as mergekit); straight-line noise-to-data paths in flow matching and rectified flow (generative-classical); latent-space interpolation in image generators; an exponential moving average of weights is a repeated lerp. Book: Only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "fnd-probability-rules",
+   "name": "Basic rules of probability",
+   "formula": "`0 ≤ P(A) ≤ 1`; `sum over all outcomes x of P(x) = 1`; `P(not A) = 1 − P(A)`; `P(A or B) = P(A) + P(B) − P(A and B)`; equally likely outcomes `P(A) = favorable ÷ total`",
+   "meaning": "The axioms every probability obeys: values between 0 and 1, a full distribution adds to 1, the complement rule, and the addition rule that subtracts the double-counted overlap (zero overlap for mutually exclusive events).",
+   "used_for": "Every output distribution of a classifier or language model must add to 1; complement tricks for 'at least one' success or failure. Book: Chapter 6 (Counting outcomes; The three rules you need); Appendix B (Probability).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-conditional-probability",
+   "name": "Conditional, joint and marginal probability (product rule)",
+   "formula": "`P(A given B) = P(A and B) ÷ P(B)`; product rule `P(A and B) = P(A given B) × P(B)`; marginal `P(A) = sum over b of P(A and B = b)`",
+   "meaning": "Conditioning narrows the world to the cases where B is true. A joint probability is two things together; a marginal probability adds the other variable away (the row and column totals of a table).",
+   "used_for": "Every language model outputs P(next token given everything so far); classifiers output P(class given input); conditional generation in image and audio models. Book: Chapter 6 (Random variables, joint tables and marginals; Conditional probability); Appendix B.",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-probability-chain-rule",
+   "name": "Chain rule of probability",
+   "formula": "`P(x_1, x_2, ..., x_n) = P(x_1) × P(x_2 given x_1) × P(x_3 given x_1, x_2) × ... = product over t of P(x_t given x_1, ..., x_(t − 1))`; in logs `ln P(x_1, ..., x_n) = sum over t of ln P(x_t given x_1, ..., x_(t − 1))`",
+   "meaning": "Any joint probability can be built one variable at a time, each conditioned on all earlier ones. It is exact for any ordering and needs no assumptions.",
+   "used_for": "The foundation of autoregressive language models, which predict each token from the ones before (their likelihood and loss are in llm); autoregressive image and audio token models; Bayesian networks factor it using independence (generative-classical). Book: Chapter 6 (Chaining probabilities for a whole sentence); Appendix B (Sentence probability).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-independence",
+   "name": "Independence and conditional independence",
+   "formula": "`P(A and B) = P(A) × P(B)` (equivalently `P(A given B) = P(A)`); conditional `P(A and B given C) = P(A given C) × P(B given C)`; at least one success in k independent tries `1 − (1 − p)^k`",
+   "meaning": "Independent events carry no information about each other, so their probabilities multiply. Conditional independence holds once C is known. The 'at least one' formula is one minus the chance that all k tries fail, each failing with probability 1 − p.",
+   "used_for": "The i.i.d. (independent and identically distributed) assumption behind training data, minibatches and eval error bars; naive Bayes (classical-ml) and Bayesian networks (generative-classical); best-of-k intuition (exact pass@k estimators are in classical-ml and llm); reliability of systems built from many parts (compute-datacenter). Book: Chapter 6 (The three rules you need); Appendix B.",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-total-probability",
+   "name": "Law of total probability, marginalization and mixtures",
+   "formula": "`P(B) = sum over i of P(B given A_i) × P(A_i)` for outcomes A_1, A_2, ... that cover every case without overlap; continuous `p(x) = integral of p(x given z) × p(z) dz`; mixture `p(x) = sum over k of π_k × p_k(x)` with `sum over k of π_k = 1`",
+   "meaning": "Add up every route to B, each weighted by how likely that route is. A mixture picks component k with probability π_k (a weight, not 3.14) and then draws from that component. Latent-variable models integrate out a hidden variable z the same way.",
+   "used_for": "The denominator of Bayes' rule; Gaussian mixture models (classical-ml); latent-variable models such as VAEs and diffusion models (generative-classical); mixture-of-experts outputs as weighted sums (deep-learning); pretraining data mixtures. Book: Chapter 6; Appendix B (Total probability).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-bayes-rule",
+   "name": "Bayes' rule",
+   "formula": "`P(A given B) = P(B given A) × P(A) ÷ P(B)`; proportional form `p(θ given D) ∝ p(D given θ) × p(θ)` (posterior ∝ likelihood × prior); odds form `posterior odds = prior odds × P(B given A) ÷ P(B given not A)`",
+   "meaning": "Turns the probability of the evidence given a hypothesis into the probability of the hypothesis given the evidence, respecting the base rate P(A). ∝ means 'proportional to' (equal up to a constant that makes everything add to 1); θ stands for model parameters and D for data.",
+   "used_for": "Naive Bayes spam filters (classical-ml); Bayesian networks and filtering (generative-classical); MAP estimation and regularization; classifier guidance in diffusion is derived from Bayes' rule on scores (generative-classical); Bayesian optimization of hyperparameters; correcting detector alarms for base rates. Book: Chapter 6 (Bayes' rule); Appendix B.",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-expectation",
+   "name": "Expected value (linearity and LOTUS)",
+   "formula": "discrete `E[X] = sum over x of (x × P(x))`; continuous `E[X] = integral of x × p(x) dx`; `E[g(X)] = sum over x of (g(x) × P(x))`; linearity `E[a × X + b × Y + c] = a × E[X] + b × E[Y] + c`; independent X and Y: `E[X × Y] = E[X] × E[Y]`",
+   "meaning": "The probability-weighted average outcome. Linearity holds always, even for dependent variables. LOTUS ('law of the unconscious statistician') says you can average g(x) directly using the distribution of X.",
+   "used_for": "Every training loss is an expected loss over the data distribution, estimated by a minibatch average; expected reward in RL (rl-alignment); expected cost and latency; inverted dropout rescales kept units so expected activations stay unchanged (deep-learning). Book: Chapter 6 (Expected value); Appendix B.",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-variance",
+   "name": "Variance and standard deviation",
+   "formula": "`Var(X) = E[(X − μ)^2] = E[X^2] − (E[X])^2` with `μ = E[X]`; `sd(X) = sqrt(Var(X))`; `Var(a × X + b) = a^2 × Var(X)`; sample variance `s^2 = sum over i of (x_i − x_bar)^2 ÷ (n − 1)` (Bessel's correction; divide by n for the population formula)",
+   "meaning": "The average squared distance from the mean, and its square root in the original units. Shifting data leaves variance unchanged; scaling by a multiplies it by a^2. x_bar is the sample mean; dividing by n − 1 corrects the slight underestimate that comes from measuring spread around the sample's own mean.",
+   "used_for": "Normalization layers divide by a standard deviation (LayerNorm; RMSNorm uses the root mean square; deep-learning); variance-preserving initialization; Adam's second moment tracks squared gradients; eval error bars; GRPO divides each group's rewards by their standard deviation (rl-alignment). Book: Chapter 6 (Spread: variance and standard deviation); Appendix B.",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-variance-of-sums",
+   "name": "Variance of sums and of averages",
+   "formula": "`Var(X + Y) = Var(X) + Var(Y) + 2 × Cov(X, Y)`; independent values: `Var(sum over i of X_i) = sum over i of Var(X_i)`; mean of n i.i.d. values: `Var(x_bar) = σ^2 ÷ n`, so `sd(x_bar) = σ ÷ sqrt(n)`",
+   "meaning": "For independent quantities variances add (standard deviations do not), so averaging n noisy measurements shrinks the noise by sqrt(n), not by n. σ^2 is the variance of a single value; Cov is covariance (next entry).",
+   "used_for": "Gradient noise falls as 1 ÷ batch size, the basis of gradient-noise-scale and critical-batch-size analyses (deep-learning, llm); Xavier and He initialization keep the variance of a sum of fan-in terms constant (deep-learning); standard errors of benchmark scores; why two independent eval margins combine to sqrt(2) times one margin (Chapter 9). Book: Chapter 9 (How sure is the score?).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-covariance-correlation",
+   "name": "Covariance, covariance matrix and correlation (Pearson and Spearman)",
+   "formula": "`Cov(X, Y) = E[(X − μ_X) × (Y − μ_Y)] = E[X × Y] − E[X] × E[Y]`; Pearson `ρ = Cov(X, Y) ÷ (σ_X × σ_Y)`, sample form `r = sum((x − x_bar) × (y − y_bar)) ÷ sqrt(sum((x − x_bar)^2) × sum((y − y_bar)^2))`; covariance matrix `Σ = E[(x − μ) × (x − μ)^T]`; Spearman (no ties) `ρ_s = 1 − 6 × sum over i of d_i^2 ÷ (n × (n^2 − 1))`",
+   "meaning": "Covariance says whether two quantities rise and fall together; correlation rescales it to the range −1 to 1. The covariance matrix Σ holds every pairwise covariance, with variances on its diagonal. Spearman correlation is Pearson correlation computed on ranks (d_i is the rank difference of item i), so it detects any steadily increasing relationship.",
+   "used_for": "PCA and whitening (classical-ml); activation covariance used by GPTQ-style quantization and concept erasure; Shampoo and K-FAC statistics; rank correlation between leaderboards or between an LLM judge and human ratings; paired model comparisons gain precision from positive covariance between models' per-question scores (Miller 2024). Book: Chapter 6 (Things that move together); Chapter 5 (line of best fit); Appendix B (Correlation).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-total-expectation-variance",
+   "name": "Law of total expectation and law of total variance",
+   "formula": "`E[X] = E[E[X given Y]]`; `Var(X) = E[Var(X given Y)] + Var(E[X given Y])`",
+   "meaning": "Average within each group, then average the group averages. Total spread equals the average spread within groups plus the spread between group averages.",
+   "used_for": "Eval statistics: Miller's 'Adding Error Bars to Evals' (2024) splits the variance of a score into question-to-question variance plus within-question sampling variance via the law of total variance, which is why resampling each question several times, or scoring with next-token probabilities, narrows error bars; Bellman equations are conditional expectations (rl-alignment); variance-reduced gradient estimators. Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-jensen",
+   "name": "Jensen's inequality",
+   "formula": "for convex f: `f(E[X]) ≤ E[f(X)]`; for concave f such as ln: `ln(E[X]) ≥ E[ln(X)]`",
+   "meaning": "Averaging first and then applying a bowl-shaped (convex) function gives no more than applying it first and then averaging; the inequality flips for dome-shaped (concave) functions. Equality holds only when X is constant or f is a straight line.",
+   "used_for": "Proves KL divergence is never negative (Gibbs' inequality); the evidence lower bound (ELBO) of VAEs and diffusion models follows from ln E ≥ E ln (generative-classical); explains why an average of perplexities differs from the perplexity of the average loss. Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-odds-logit",
+   "name": "Odds and log-odds (logit)",
+   "formula": "`odds = p ÷ (1 − p)`; `logit(p) = ln(p ÷ (1 − p))`; inverse `p = 1 ÷ (1 + exp(−logit(p)))` (the sigmoid, defined in deep-learning); Bayes in log-odds `posterior logit = prior logit + ln(likelihood ratio)`",
+   "meaning": "Odds compare yes to no; log-odds put probabilities on an unbounded scale where 0 means 50-50 and pieces of evidence simply add. A model's raw scores before softmax or sigmoid are called logits for this reason.",
+   "used_for": "Logistic regression (classical-ml); Bradley–Terry reward models score a preference as a sigmoid of a reward difference (rl-alignment); the logit lens in interpretability; Platt scaling for calibration; Elo ratings. Book: Chapter 6 and Chapter 12 (logits).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-density-cdf",
+   "name": "Probability density, CDF, quantiles and inverse-transform sampling",
+   "formula": "`P(a ≤ X ≤ b) = integral from a to b of p(x) dx`; `integral over all x of p(x) dx = 1`; CDF `F(x) = P(X ≤ x)`, with `p(x) = F'(x)`; quantile `Q(u) = smallest x with F(x) ≥ u`; empirical CDF `F_n(x) = (number of x_i ≤ x) ÷ n`; inverse-transform sampling `X = Q(U)` with `U ~ Uniform(0, 1)`",
+   "meaning": "For continuous quantities probabilities are areas under the density p(x), and the cumulative distribution function F is the running total of that area. Feeding a uniform random number through the inverse CDF yields a sample with the desired distribution; for a discrete distribution this is Appendix B's 'lay the probabilities end to end and see where a random number lands'.",
+   "used_for": "Sampling the next token with one uniform random number (llm); percentiles such as p99 latency (compute-datacenter); NF4 quantization levels are quantiles of a normal distribution (llm); Kolmogorov–Smirnov drift checks (classical-ml). Book: Chapter 6 (Smooth quantities: densities and areas; Sampling with a random number; Percentiles); Appendix B.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-change-of-variables",
+   "name": "Change of variables for probability densities",
+   "formula": "one variable, y = g(x) invertible: `p_Y(y) = p_X(x) × |dx ÷ dy|`; many variables: `p_Y(y) = p_X(g^-1(y)) × |det(J_(g^-1)(y))|`",
+   "meaning": "When a random variable is transformed, its density must be stretched or squeezed by the local scaling factor so the total probability stays 1. In many dimensions that factor is the absolute Jacobian determinant.",
+   "used_for": "Normalizing flows compute exact likelihoods this way (their log-likelihood formula is in generative-classical); tanh-squashed Gaussian policies in soft actor-critic (rl-alignment); log-normal and other derived distributions. Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-bernoulli",
+   "name": "Bernoulli distribution",
+   "formula": "`P(X = 1) = p`, `P(X = 0) = 1 − p`; compactly `P(x) = p^x × (1 − p)^(1 − x)` for x in {0, 1}; `E[X] = p`; `Var(X) = p × (1 − p)`",
+   "meaning": "A single yes/no trial that succeeds with probability p, such as one coin flip or one benchmark question passed or failed.",
+   "used_for": "Binary classification outputs and the binary cross-entropy loss (deep-learning); dropout masks keep each unit with probability 1 − drop rate; pass/fail scoring of eval items, whose variance p × (1 − p) gives the familiar error bar; pairwise preference labels. Book: Only here (pass rates in Chapters 9, 24 and 31).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-binomial",
+   "name": "Binomial distribution and the binomial coefficient",
+   "formula": "`P(K = k) = C(n, k) × p^k × (1 − p)^(n − k)` with `C(n, k) = n! ÷ (k! × (n − k)!)`; `E[K] = n × p`; `Var(K) = n × p × (1 − p)`",
+   "meaning": "The number of successes K in n independent trials that each succeed with probability p. C(n, k), read 'n choose k', counts the ways to pick which k trials succeed; n! (n factorial) is 1 × 2 × ... × n.",
+   "used_for": "The number of correct answers on an n-question benchmark; exact binomial tests and intervals for small eval sets; the unbiased pass@k estimator for code generation is built from binomial coefficients (Chen et al. 2021; the estimator itself is in classical-ml or llm). Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-categorical",
+   "name": "Categorical and multinomial distributions",
+   "formula": "`P(X = i) = p_i` with `p_i ≥ 0` and `sum over i of p_i = 1`; one-hot form `P(x) = product over i of p_i^(x_i)`; multinomial counts `P(x_1, ..., x_K) = (n! ÷ (x_1! × ... × x_K!)) × product over i of p_i^(x_i)`; `E[X_i] = n × p_i`",
+   "meaning": "One draw from K options with probabilities p_1 to p_K (a loaded die); the multinomial counts how often each option comes up in n draws. One-hot means a vector of 0s with a single 1 marking the outcome.",
+   "used_for": "Every next-token prediction is a categorical distribution over the vocabulary; multi-class classification; mixture-of-experts router probabilities (deep-learning); sampling training documents across data sources. Book: Chapter 6 (Probability distributions); Appendix B (Distribution).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-uniform",
+   "name": "Uniform distribution",
+   "formula": "discrete, K outcomes: `P(x) = 1 ÷ K`; continuous on [a, b]: `p(x) = 1 ÷ (b − a)`; `E[X] = (a + b) ÷ 2`; `Var(X) = (b − a)^2 ÷ 12`",
+   "meaning": "Every outcome, or every point of the interval, is equally likely. All random sampling in software starts from Uniform(0, 1) numbers.",
+   "used_for": "Uniform initialization ranges such as Xavier-uniform (deep-learning); the uniform random numbers behind token sampling and dropout; modeling rounding error as uniform noise with variance step^2 ÷ 12 (quantization in llm); random hyperparameter search; the maximum-entropy baseline of ln(K) nats. Book: Chapter 6 (Probability distributions).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-gaussian",
+   "name": "Gaussian (normal) distribution",
+   "formula": "`p(x) = (1 ÷ sqrt(2 × π × σ^2)) × exp(−(x − μ)^2 ÷ (2 × σ^2))`; standard normal `Z = (X − μ) ÷ σ ~ N(0, 1)`; `a × X + b ~ N(a × μ + b, a^2 × σ^2)`; independent sum `N(μ_1, σ_1^2) + N(μ_2, σ_2^2) = N(μ_1 + μ_2, σ_1^2 + σ_2^2)`; 68–95–99.7 rule",
+   "meaning": "The bell curve with mean μ (its center) and standard deviation σ (its width); N(μ, σ^2) is read 'normal with mean μ and variance σ^2', and '~' means 'is distributed as'. Shifting, scaling or adding independent Gaussians gives another Gaussian, which is what makes 'x = μ + σ × noise' sampling work.",
+   "used_for": "Random weight initialization; the noise of diffusion models (generative-classical); Gaussian noise in DP-SGD for differential privacy; the Gaussian likelihood behind mean squared error; CLT-based error bars; Gaussian policies in continuous-control RL. Book: Chapter 6 (The bell curve; The normal distribution); Appendix B (68–95–99.7 rule).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-multivariate-gaussian",
+   "name": "Multivariate Gaussian distribution",
+   "formula": "`p(x) = (2 × π)^(−d ÷ 2) × det(Σ)^(−1 ÷ 2) × exp(−(1 ÷ 2) × (x − μ)^T × Σ^-1 × (x − μ))`; sampling `x = μ + L × z` with `Σ = L × L^T` and `z ~ N(0, I)`; isotropic case `Σ = σ^2 × I`",
+   "meaning": "The bell curve in d dimensions, with mean vector μ and covariance matrix Σ; its contours are ellipses. (x − μ)^T × Σ^-1 × (x − μ) is the squared Mahalanobis distance. With Σ = σ^2 × I every direction is independent with the same spread.",
+   "used_for": "Diffusion forward processes and VAE latents (generative-classical); Gaussian processes and Bayesian optimization (classical-ml); Kalman filters for tracking in self-driving (generative-classical); Mahalanobis-distance out-of-distribution detection; the closed-form KL between Gaussians. Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-poisson",
+   "name": "Poisson distribution",
+   "formula": "`P(K = k) = λ^k × exp(−λ) ÷ k!` for k = 0, 1, 2, ...; `E[K] = Var(K) = λ`",
+   "meaning": "The number of events in a fixed window when they occur independently at an average rate; λ (lambda) = rate × window length. Its mean equals its variance.",
+   "used_for": "Load tests for LLM serving: vLLM's serving benchmark synthesizes request arrival times as a Poisson process by default (queueing analysis is in compute-datacenter); Poisson regression for count data (classical-ml); counting rare hardware failures in large clusters. Book: Chapters 9 and 10 (Poisson mentioned).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-exponential",
+   "name": "Exponential distribution",
+   "formula": "`p(x) = λ × exp(−λ × x)` for x ≥ 0; CDF `F(x) = 1 − exp(−λ × x)`; `E[X] = 1 ÷ λ`; `Var(X) = 1 ÷ λ^2`; memoryless `P(X > s + t given X > s) = P(X > t)`",
+   "meaning": "The waiting time between events of a Poisson process with rate λ. It is memoryless: having already waited does not change how much longer you expect to wait.",
+   "used_for": "Inter-arrival times of simulated serving traffic; time-to-failure and mean time between failures of GPUs and nodes (compute-datacenter); vLLM's sampler draws exponential noise q and picks the token maximizing p ÷ q, which samples exactly from p (the exponential-race form of the Gumbel-max trick). Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-geometric-distribution",
+   "name": "Geometric distribution",
+   "formula": "`P(K = k) = (1 − p)^(k − 1) × p` for k = 1, 2, ...; `E[K] = 1 ÷ p`; `Var(K) = (1 − p) ÷ p^2`; `P(K > k) = (1 − p)^k`",
+   "meaning": "How many independent tries until the first success, when each succeeds with probability p; on average 1 ÷ p tries.",
+   "used_for": "Expected attempts in retry loops and rejection sampling; the number of draft tokens accepted per step in speculative decoding is a capped geometric under an i.i.d. acceptance assumption (Leviathan et al. 2023; formula in llm); expected samples until a verifier accepts an answer. Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-beta",
+   "name": "Beta distribution, the Beta–Bernoulli update and add-one smoothing",
+   "formula": "`p(x) = x^(α − 1) × (1 − x)^(β − 1) ÷ B(α, β)` for x in [0, 1], with `B(α, β) = Γ(α) × Γ(β) ÷ Γ(α + β)`; mean `α ÷ (α + β)`; after k successes in n trials the posterior is `Beta(α + k, β + n − k)`; add-one (Laplace) smoothing `(k + 1) ÷ (n + 2)`, or `(count + 1) ÷ (n + K)` for K categories",
+   "meaning": "A distribution over an unknown probability, such as a model's true pass rate. α and β act like prior counts of successes and failures, and updating simply adds the observed counts. Γ is the gamma function (Γ(n) = (n − 1)! for whole numbers). Laplace smoothing is the posterior mean under the flat prior Beta(1, 1).",
+   "used_for": "Thompson sampling for bandits and A/B tests (bandits in rl-alignment); Bayesian estimates of pass rates on small eval sets; add-one smoothing in n-gram language models and naive Bayes; Beta-distributed sampling of noise levels in some flow-matching recipes (generative-classical). Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-dirichlet",
+   "name": "Dirichlet distribution",
+   "formula": "`p(p_1, ..., p_K) = (Γ(sum over i of α_i) ÷ product over i of Γ(α_i)) × product over i of p_i^(α_i − 1)`, for `p_i ≥ 0` with `sum of p_i = 1`; mean `E[p_i] = α_i ÷ sum over j of α_j`; after observing counts c_i the posterior is `Dirichlet(α_1 + c_1, ..., α_K + c_K)`",
+   "meaning": "A distribution over whole probability vectors, the many-outcome version of the Beta. Concentration values α below 1 favor spiky vectors with a few large entries; large α favors nearly uniform vectors.",
+   "used_for": "AlphaZero adds Dirichlet noise to the move priors at the root of its search to force exploration (α = 0.3 for chess; search math in rl-alignment and generative-classical); topic models (LDA); Bayesian smoothing of categorical counts; drawing random data-mixture weights. Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-laplace-distribution",
+   "name": "Laplace distribution",
+   "formula": "`p(x) = (1 ÷ (2 × b)) × exp(−|x − μ| ÷ b)`; `Var(X) = 2 × b^2`",
+   "meaning": "A sharper-peaked, heavier-tailed cousin of the Gaussian that uses absolute rather than squared distance from the center μ; b sets the width.",
+   "used_for": "Maximum likelihood under Laplace noise gives the mean absolute error (L1) loss; a Laplace prior gives L1 (lasso) regularization under MAP; the Laplace mechanism of differential privacy adds Laplace noise scaled to a query's sensitivity (Dwork et al. 2006). Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-gumbel-max",
+   "name": "Gumbel distribution and the Gumbel-max trick",
+   "formula": "`G = −ln(−ln(U))` with `U ~ Uniform(0, 1)`; `argmax over i of (ln(p_i) + G_i)` is distributed as Categorical(p); equivalent exponential race `argmax over i of (p_i ÷ E_i)` with `E_i ~ Exponential(1)`",
+   "meaning": "Adding independent Gumbel noise to log-probabilities and taking the largest gives an exact sample from the categorical distribution, turning sampling into an argmax. Taking the top k instead samples k items without replacement.",
+   "used_for": "vLLM implements token sampling as exponential noise followed by an argmax (vllm/v1/sample/ops/topk_topp_sampler.py); Gumbel-softmax relaxations for differentiable discrete choices (deep-learning); Gumbel AlphaZero and MuZero planning (Danihelka et al. 2022); sampling diverse candidates without replacement. Book: Only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "fnd-power-law-zipf",
+   "name": "Power laws and Zipf's law",
+   "formula": "power law `y = c × x^k`, so `ln(y) = ln(c) + k × ln(x)` (a straight line of slope k on a log-log plot); Zipf's law `frequency(r) ∝ 1 ÷ r^s` with s ≈ 1 for the word of rank r; Pareto tail `P(X > x) = (x_min ÷ x)^α`",
+   "meaning": "One quantity varies as another raised to a fixed power, which appears as a straight line on log-log axes. In language, the second most common word appears about half as often as the first and the third about a third as often, so a few tokens are very common and a long tail is rare.",
+   "used_for": "Token and word frequencies (why vocabularies and BPE merges look as they do, and why rare facts are hard to learn); heavy-tailed data and activation outliers; neural scaling laws for loss against compute, data and parameters are power laws (their fitted forms are in llm). Book: Chapter 6 (Log-log plots and scaling laws); Appendix B (Power law).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-exponential-family",
+   "name": "Exponential family",
+   "formula": "`p(x given η) = h(x) × exp(η · T(x) − A(η))`; log-normalizer `A(η) = ln(sum or integral over x of h(x) × exp(η · T(x)))`; `∇A(η) = E[T(X)]`",
+   "meaning": "One template covering the Bernoulli, categorical, Gaussian, Poisson, exponential, Beta, Dirichlet and others: η (eta) is the natural parameter, T(x) the sufficient statistics, A(η) the log-normalizer (a log-sum-exp). Because its gradient is the expected statistics, maximum likelihood amounts to matching expected statistics to the data's.",
+   "used_for": "Explains why softmax (categorical) and sigmoid (Bernoulli) are the natural output layers and why the cross-entropy gradient is 'prediction minus target' (deep-learning); generalized linear models (classical-ml, CS229); energy-based and maximum-entropy models. Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-markov-chain",
+   "name": "Markov chains and stationary distributions",
+   "formula": "Markov property `P(x_(t+1) given x_1, ..., x_t) = P(x_(t+1) given x_t)`; transition matrix `T[i, j] = P(next = j given now = i)`; update `π_(t+1) = π_t × T`; stationary distribution `π = π × T`",
+   "meaning": "A random process whose next step depends only on the current state. Applying the transition matrix repeatedly to a distribution over states (π here, not 3.14) settles, for well-behaved chains, into a stationary distribution that no longer changes.",
+   "used_for": "n-gram language models are Markov chains over tokens (llm); MCMC samplers are built so the target is their stationary distribution; hidden Markov models (generative-classical) and Markov decision processes (rl-alignment) extend the idea; PageRank is the stationary distribution of a random surfer. Book: Chapter 54 (Markov chain definition).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-counting",
+   "name": "Counting rules (factorials, permutations, combinations, Stirling)",
+   "formula": "`n! = 1 × 2 × ... × n`; ordered arrangements of k items from n `n! ÷ (n − k)!`; combinations `C(n, k) = n! ÷ (k! × (n − k)!)`; sequences of length L from V symbols `V^L`; Stirling `ln(n!) ≈ n × ln(n) − n`",
+   "meaning": "How many ways things can be arranged or chosen. The number of possible token sequences, V^L, is astronomically large (a 100,000-token vocabulary and just 10 tokens give 10^50), which is why language models must generalize rather than memorize every sequence.",
+   "used_for": "Binomial coefficients in pass@k estimators (classical-ml, llm); counting expert combinations in fine-grained mixture-of-experts routing (for example 8 of 256 routed experts in DeepSeek-V3; deep-learning); sizes of game trees and search spaces (generative-classical); Shapley-value weights for feature attribution (classical-ml). Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-monte-carlo",
+   "name": "Monte Carlo estimation (and control variates)",
+   "formula": "`E[f(X)] ≈ (1 ÷ n) × sum over i of f(x_i)` with each x_i drawn from p; standard error about `sd(f(X)) ÷ sqrt(n)`; control variate `f(X) − c × (g(X) − E[g(X)])` keeps the same mean and can cut the variance",
+   "meaning": "Estimate an average by sampling and averaging. The error shrinks like 1 ÷ sqrt(n) regardless of dimension, so 100 times more samples give 10 times less error. Subtracting a correlated quantity whose mean is known (a baseline) removes noise without adding bias.",
+   "used_for": "A minibatch gradient is a Monte Carlo estimate of the full gradient; estimating pass rates by repeated sampling; RL returns and policy gradients with baselines (rl-alignment); rollouts in Monte Carlo tree search (generative-classical); Monte Carlo dropout for uncertainty. Book: Chapter 54 (Monte Carlo inference), Chapter 6 (The law of large numbers).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-importance-sampling",
+   "name": "Importance sampling",
+   "formula": "`E_p[f(X)] = E_q[f(X) × p(X) ÷ q(X)] ≈ (1 ÷ n) × sum over i of (w_i × f(x_i))` with `x_i ~ q` and `w_i = p(x_i) ÷ q(x_i)`; self-normalized `sum(w_i × f(x_i)) ÷ sum(w_i)`; effective sample size `ESS = (sum of w_i)^2 ÷ (sum of w_i^2)`",
+   "meaning": "Estimate an average under distribution p using samples drawn from a different distribution q, weighting each sample by how much more or less likely p makes it. Wildly varying weights leave few effective samples and high variance.",
+   "used_for": "The ratio of new to old policy probabilities in PPO, GRPO and their relatives is an importance weight that lets one batch of generations serve several updates (objectives in rl-alignment); correcting the mismatch between the inference engine that generated RL samples and the trainer's own probabilities; off-policy evaluation; rare-event estimation. Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-rejection-sampling",
+   "name": "Rejection sampling",
+   "formula": "draw `x ~ q` and `u ~ Uniform(0, 1)`; accept x if `u ≤ p(x) ÷ (M × q(x))`, where `p(x) ≤ M × q(x)` for all x; acceptance rate `1 ÷ M` (for normalized p and q)",
+   "meaning": "Sample from a hard distribution p by proposing from an easy one q and keeping each proposal with probability proportional to how much p wants it; the kept samples follow p exactly. M is a constant that makes M × q lie above p everywhere.",
+   "used_for": "Speculative decoding's accept/reject step is a modified rejection sampler that keeps the large model's output distribution exact (Leviathan et al. 2023; llm); 'rejection sampling' fine-tuning keeps only generations that a reward model or checker accepts (rl-alignment); sampling from truncated distributions. Book: Chapters 20 and 21 (rejection sampling in post-training, in words).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-mcmc-metropolis-hastings",
+   "name": "Markov chain Monte Carlo (Metropolis–Hastings)",
+   "formula": "propose `x' ~ q(x' given x)`; accept with probability `A = min(1, (p(x') × q(x given x')) ÷ (p(x) × q(x' given x)))`, otherwise stay at x",
+   "meaning": "Builds a random walk whose long-run (stationary) distribution is the target p. Only the ratio p(x') ÷ p(x) is needed, so an unknown normalizing constant cancels out.",
+   "used_for": "Bayesian posterior sampling in probabilistic programming (Stan, PyMC); Karan & Du (October 2025) used Metropolis–Hastings to sample from a sharpened distribution p^α of a base language model, with single-shot reasoning gains that nearly match and sometimes beat RL training on tasks including MATH500, HumanEval and GPQA; energy-based models; Langevin dynamics in score-based generation (generative-classical). Book: Chapter 54 (MCMC named).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-score-function",
+   "name": "Log-derivative trick (score-function gradient)",
+   "formula": "`∇_θ p_θ(x) = p_θ(x) × ∇_θ ln p_θ(x)`, so `∇_θ E_(x ~ p_θ)[f(x)] = E_(x ~ p_θ)[f(x) × ∇_θ ln p_θ(x)]`; with a baseline b: `E[(f(x) − b) × ∇_θ ln p_θ(x)]` has the same mean for any constant b",
+   "meaning": "Lets you take the gradient of an average over a distribution you sample from, even when f cannot be differentiated (a reward from a checker, a pass/fail). ∇_θ ln p_θ(x) is called the score; subscript θ marks the parameters being trained.",
+   "used_for": "REINFORCE and every policy-gradient method used in LLM post-training (the RL-specific objectives such as PPO and GRPO are in rl-alignment); black-box variational inference; gradient estimators for discrete latent variables. Book: Only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "fnd-descriptive-stats",
+   "name": "Descriptive statistics (mean, median, mode, percentiles; weighted, geometric and harmonic means)",
+   "formula": "mean `x_bar = (1 ÷ n) × sum over i of x_i`; weighted mean `sum(w_i × x_i) ÷ sum(w_i)`; median = middle of the sorted values; mode = most frequent value; p-th percentile = value below which p% of the data falls; geometric mean `(product of x_i)^(1 ÷ n) = exp(mean of ln(x_i))`; harmonic mean `n ÷ sum over i of (1 ÷ x_i)`",
+   "meaning": "Single numbers that summarize a pile of data. The median and percentiles resist outliers; the geometric mean is the right average for ratios and growth factors; the harmonic mean is the right average for rates (F1 is the harmonic mean of precision and recall, classical-ml).",
+   "used_for": "Benchmark averages and aggregate indices; p50 and p99 latency (compute-datacenter); token-weighted versus example-weighted loss averages; geometric means of speedups; perplexity is a geometric mean of inverse token probabilities. Book: Chapter 6 (Mean, median and mode; Percentiles); Appendix B (Statistics).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-z-score",
+   "name": "Standardization (z-score) and whitening",
+   "formula": "`z = (x − μ) ÷ σ`; standardize data `x' = (x − mean) ÷ sd`; whitening `x' = Σ^(−1 ÷ 2) × (x − μ)`",
+   "meaning": "How many standard deviations a value sits from the mean. Standardized data has mean 0 and standard deviation 1; whitening also removes correlations between features (Σ^(−1 ÷ 2) is the inverse square root of the covariance matrix).",
+   "used_for": "Feature scaling for classical models (classical-ml); normalization layers apply the same idea per token or per batch (deep-learning); GRPO's advantage is each answer's reward standardized within its group (rl-alignment); anomaly detection by z-score (Chapter 10). Book: Appendix B (z-score), Chapter 10 (z-score).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-moments",
+   "name": "Higher moments (skewness and kurtosis)",
+   "formula": "skewness `E[((X − μ) ÷ σ)^3]`; kurtosis `E[((X − μ) ÷ σ)^4]` (3 for a Gaussian); excess kurtosis = kurtosis − 3",
+   "meaning": "Skewness measures lopsidedness; kurtosis measures how heavy the tails are, i.e. how often extreme outliers occur compared with a bell curve.",
+   "used_for": "Diagnosing outlier features and very large activations in transformers, whose heavy tails make low-bit quantization hard; rotation methods (Hadamard, QuaRot, SpinQuant; llm) spread outliers so distributions become less heavy-tailed; monitoring weight and gradient distributions during training. Book: Only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "fnd-law-of-large-numbers",
+   "name": "Law of large numbers",
+   "formula": "`x_bar_n = (1 ÷ n) × sum over i of X_i → μ` as `n → ∞`, for i.i.d. X_i with mean μ",
+   "meaning": "The average of many independent repeats gets closer and closer to the true expected value μ.",
+   "used_for": "Why minibatch losses and gradients estimate the true ones; why eval scores over thousands of questions are stable; why per-token serving costs are predictable even though each response is random. Book: Chapter 6 (The law of large numbers).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-central-limit-theorem",
+   "name": "Central limit theorem",
+   "formula": "`sqrt(n) × (x_bar_n − μ) ÷ σ` approaches `N(0, 1)` as n grows; in practice `x_bar_n ≈ N(μ, σ^2 ÷ n)`",
+   "meaning": "The average of many independent values is approximately bell-shaped whatever each value's own distribution looks like, with spread σ ÷ sqrt(n). This is what lets ±1.96 standard errors serve as a 95% interval.",
+   "used_for": "Error bars on benchmark scores: Miller (2024) derives eval standard errors from the CLT; Gaussian models of SGD noise in optimization theory; A/B tests on product metrics. Book: Chapter 6 (bell curve, described in words), Chapter 24 (confidence intervals).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-standard-error",
+   "name": "Standard error of a mean or proportion",
+   "formula": "`SE = σ ÷ sqrt(n)`, estimated as `s ÷ sqrt(n)`; proportion `SE = sqrt(p × (1 − p) ÷ n)`; difference of two independent estimates `SE_diff = sqrt(SE_1^2 + SE_2^2)`",
+   "meaning": "How much an average, or a pass rate p measured on n items, would wobble if the measurement were repeated on a fresh sample; s is the sample standard deviation. Quadrupling n halves it. Benchmark-specific refinements (clustered and paired standard errors) are in classical-ml.",
+   "used_for": "Error bars on eval scores and leaderboards; deciding whether two models' scores really differ; sizing eval sets. Book: Chapter 9 (How sure is the score?), Chapter 24, Chapter 31; Appendix B (Error bar on an accuracy score).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-confidence-interval",
+   "name": "Confidence intervals (normal, t and Wilson) and sample size",
+   "formula": "`estimate ± z × SE` with z = 1.96 for 95% (1.645 for 90%, 2.576 for 99%); small samples `x_bar ± t_(n − 1) × s ÷ sqrt(n)`; Wilson interval for a proportion `(p_hat + z^2 ÷ (2 × n) ± z × sqrt(p_hat × (1 − p_hat) ÷ n + z^2 ÷ (4 × n^2))) ÷ (1 + z^2 ÷ n)`; items needed for margin E: `n ≈ z^2 × p × (1 − p) ÷ E^2`",
+   "meaning": "A range built so that, over many repeats, it contains the true value the stated share of the time. t_(n − 1) is a slightly larger multiplier from Student's t distribution for small samples; p_hat is the measured proportion. The Wilson interval behaves sensibly near 0% or 100% and with few items, where the plain formula fails.",
+   "used_for": "Reporting benchmark scores with uncertainty (METR's time-horizon estimates and arena-style leaderboards publish intervals); planning how many eval items are needed; A/B tests. Book: Chapter 24 (Confidence interval definition), Chapter 31 (margin of error).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-hypothesis-test",
+   "name": "Hypothesis tests and p-values (z-test and t-test)",
+   "formula": "`z = (estimate − null value) ÷ SE`; two proportions `z = (p_hat_1 − p_hat_2) ÷ sqrt(p_hat_1 × (1 − p_hat_1) ÷ n_1 + p_hat_2 × (1 − p_hat_2) ÷ n_2)`; t-statistic `t = (x_bar − μ_0) ÷ (s ÷ sqrt(n))`; two-sided p-value `p = 2 × (1 − Φ(|z|))`; reject the null hypothesis if p < α (often 0.05)",
+   "meaning": "Assume there is no real effect (the null hypothesis), measure how many standard errors the observed result lies from it, and convert that into the probability of a result at least that extreme by chance alone. Φ is the standard normal CDF; |z| > 1.96 corresponds to p < 0.05 two-sided.",
+   "used_for": "Comparing two models on a benchmark (paired tests and McNemar's test are in classical-ml); A/B tests of prompts and product changes; checking whether an ablation's effect is real. Book: Chapter 9 (p-value; Statistical significance).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-multiple-comparisons",
+   "name": "Multiple-comparison corrections (Bonferroni and Benjamini–Hochberg)",
+   "formula": "Bonferroni: test each of m hypotheses at level `α ÷ m`, since `P(any false positive) ≤ m × α_per_test`; Benjamini–Hochberg: sort p-values `p_(1) ≤ ... ≤ p_(m)`, find the largest k with `p_(k) ≤ (k ÷ m) × α`, and reject hypotheses 1 to k",
+   "meaning": "Run enough tests and some will look significant by luck. Bonferroni controls the chance of even one false positive; Benjamini–Hochberg controls the expected share of false discoveries and is less strict.",
+   "used_for": "Comparing a model across dozens of benchmarks or data slices; picking the best of many hyperparameter runs; interpretability and red-teaming studies that test many features or prompts at once. Book: Only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "fnd-bootstrap",
+   "name": "Bootstrap resampling",
+   "formula": "draw B resamples of size n with replacement from the data; compute the statistic θ_hat*_b on each; `SE_boot = sd(θ_hat*_1, ..., θ_hat*_B)`; percentile 95% interval = 2.5th to 97.5th percentile of the θ_hat*_b",
+   "meaning": "Estimates the uncertainty of any statistic, however complicated (a median, a rating, a win rate), by recomputing it on many simulated datasets made by resampling the one dataset you have.",
+   "used_for": "Confidence intervals for leaderboard ratings and win rates computed from pairwise votes; uncertainty of eval metrics that have no closed-form standard error; bagging and random forests reuse the same resampling to train models (classical-ml). Book: Chapter 10 (bootstrap sample in bagging).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-concentration-inequalities",
+   "name": "Concentration inequalities (Markov, Chebyshev, Hoeffding) and the union bound",
+   "formula": "Markov `P(X ≥ a) ≤ E[X] ÷ a` for X ≥ 0; Chebyshev `P(|X − μ| ≥ k × σ) ≤ 1 ÷ k^2`; Hoeffding for the mean of n independent values in [a, b]: `P(|x_bar − μ| ≥ t) ≤ 2 × exp(−2 × n × t^2 ÷ (b − a)^2)`; union bound `P(A_1 or ... or A_m) ≤ sum over i of P(A_i)`",
+   "meaning": "Guaranteed (not approximate) limits on how far a random quantity can stray from its mean. Hoeffding says averages of bounded values concentrate exponentially fast; the union bound handles many events at once.",
+   "used_for": "Distribution-free guarantees on how many eval items pin down a pass rate; PAC and generalization bounds (learning theory in classical-ml); the exploration bonus of upper-confidence-bound bandits comes from Hoeffding (rl-alignment); proofs about sampling and sketching algorithms. Book: Only here (PAC learning named in Chapter 9).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-maximum-likelihood",
+   "name": "Maximum likelihood estimation (MLE)",
+   "formula": "`θ_MLE = argmax over θ of product over i of p(x_i given θ) = argmin over θ of (−sum over i of ln p(x_i given θ))`; Bernoulli `p_hat = successes ÷ n`; Gaussian `μ_hat = x_bar`, `σ_hat^2 = (1 ÷ n) × sum over i of (x_i − x_bar)^2`; with Gaussian noise of fixed σ, MLE of a prediction function equals least squares",
+   "meaning": "Choose the parameters under which the observed data is most probable. Taking minus the log turns the product into a sum, the negative log-likelihood (NLL). For a categorical model, minimizing average cross-entropy is the same instruction.",
+   "used_for": "Pretraining of every language model is maximum likelihood on next tokens (the LM loss is in llm); fitting classifiers, Gaussian mixtures and n-gram counts; mean-squared-error regression; fitting Bradley–Terry and Elo ratings (rl-alignment, classical-ml). Book: Chapter 6 (Maximum likelihood, entropy and KL divergence).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-map-estimation",
+   "name": "Maximum a posteriori (MAP) estimation and priors as regularizers",
+   "formula": "`θ_MAP = argmax over θ of (ln p(D given θ) + ln p(θ))`; Gaussian prior `p(θ) ∝ exp(−||θ||^2 ÷ (2 × τ^2))` adds the penalty `||θ||^2 ÷ (2 × τ^2)` (L2, weight decay); Laplace prior adds `||θ||_1 ÷ b` (L1)",
+   "meaning": "Like MLE, but also rewards parameters the prior considers plausible; the log-prior becomes a penalty term in the loss. τ^2 (tau squared) is the prior variance: a tighter prior means stronger regularization.",
+   "used_for": "Explains L2 penalties and weight decay (implementations in deep-learning) and L1 sparsity (lasso, classical-ml); add-one smoothing of counts; priors in Bayesian optimization. Book: Only here (regularization in Chapters 9 and 13).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-fisher-information",
+   "name": "Fisher information and the Cramér–Rao bound",
+   "formula": "`I(θ) = E[(∂ ln p(x given θ) ÷ ∂θ)^2] = −E[∂^2 ln p(x given θ) ÷ ∂θ^2]`; matrix form `F = E[∇_θ ln p × (∇_θ ln p)^T]`; Cramér–Rao `Var(θ_hat) ≥ 1 ÷ (n × I(θ))` for unbiased estimators; `KL(p_θ || p_(θ + δ)) ≈ (1 ÷ 2) × δ^T × F × δ`",
+   "meaning": "How much one observation tells you about a parameter: the expected squared slope of the log-likelihood, which equals its expected curvature. More information means a tighter best-possible estimate. The Fisher matrix F also measures how much a small parameter change δ alters the model's output distribution.",
+   "used_for": "Natural-gradient and K-FAC optimizers; TRPO's trust region (rl-alignment); elastic weight consolidation against catastrophic forgetting weights each parameter by its Fisher value (Kirkpatrick et al. 2017); Fisher-weighted model merging; Laplace approximations for uncertainty. Book: Only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "fnd-surprisal",
+   "name": "Information content (surprisal), bits and nats",
+   "formula": "`I(x) = −log2(P(x))` bits, or `−ln(P(x))` nats; `1 nat = 1 ÷ ln(2) ≈ 1.443 bits`; bits needed to index K equally likely items `log2(K)`",
+   "meaning": "Rarer events carry more information: probability 1/2 is 1 bit, 1/4 is 2 bits, 1/1024 is 10 bits. Natural logs give nats, the unit most training losses use.",
+   "used_for": "The per-token training loss is the surprisal of the correct token in nats; bits-per-byte and bits-per-character reporting of language-model quality; a 100,000-token vocabulary needs log2(100,000) ≈ 16.6, so 17 bits per token ID; compression and watermark-detection scores. Book: Chapter 6 (Cross-entropy); Appendix B (Bits of surprise).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-entropy",
+   "name": "Entropy",
+   "formula": "`H(X) = −sum over x of P(x) × log P(x) = E[−log P(X)]`; binary `H(p) = −p × log(p) − (1 − p) × log(1 − p)`; `0 ≤ H(X) ≤ log(K)`, the maximum reached by the uniform distribution; Gaussian (differential entropy) `(1 ÷ 2) × ln(2 × π × e × σ^2)`",
+   "meaning": "The average surprise of a distribution: how unpredictable it is. A fair coin has 1 bit (ln 2 ≈ 0.693 nats); a certain outcome has 0. It is the lowest average loss any model can reach on data from that distribution.",
+   "used_for": "Entropy of the next-token distribution as an uncertainty signal and in decoding methods (llm); entropy bonuses and watching for entropy collapse during RL fine-tuning (rl-alignment); semantic entropy over clusters of sampled answers to detect confabulations (Farquhar et al., Nature 2024); decision-tree information gain (classical-ml); the maximum-entropy derivation of softmax. Book: Chapter 6 (Entropy definition).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-cross-entropy",
+   "name": "Cross-entropy",
+   "formula": "`H(p, q) = −sum over x of p(x) × log q(x)`; `H(p, q) = H(p) + KL(p || q) ≥ H(p)`; one observed outcome y (p one-hot): `H = −log q(y)`",
+   "meaning": "The average surprise when reality follows p but you predict with q. It can never beat the true entropy H(p); the excess is the KL divergence. With a one-hot target it is minus the log probability of the correct answer (the training-loss form, including label smoothing, is in deep-learning).",
+   "used_for": "The standard loss for classification and next-token prediction; knowledge distillation with soft teacher targets (llm); contrastive objectives (generative-classical). Book: Chapter 6 (Cross-entropy: how surprised was the model?); Appendix B.",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-kl-divergence",
+   "name": "Kullback–Leibler (KL) divergence",
+   "formula": "`KL(p || q) = sum over x of p(x) × log(p(x) ÷ q(x)) = H(p, q) − H(p)`; `KL ≥ 0`, zero only when p = q; not symmetric: `KL(p || q) ≠ KL(q || p)`; Gaussians `KL(N(μ_1, σ_1^2) || N(μ_2, σ_2^2)) = ln(σ_2 ÷ σ_1) + (σ_1^2 + (μ_1 − μ_2)^2) ÷ (2 × σ_2^2) − 1 ÷ 2`",
+   "meaning": "The extra surprise from believing q when the truth is p. Minimizing forward KL(p || q) makes q cover everything p does (mass-covering); minimizing reverse KL(q || p) makes q lock onto one mode of p (mode-seeking).",
+   "used_for": "The KL penalty that keeps an RLHF- or RL-tuned model close to its reference model, and its sample estimators (rl-alignment); the VAE regularizer (generative-classical); forward- or reverse-KL distillation losses (llm); trust regions in PPO and TRPO; measuring drift between model versions. Book: Chapter 6 (KL divergence definition), Chapter 20 (KL leash).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-conditional-entropy",
+   "name": "Joint entropy, conditional entropy and the entropy chain rule",
+   "formula": "`H(X, Y) = −sum over x, y of P(x, y) × log P(x, y)`; `H(Y given X) = −sum over x, y of P(x, y) × log P(y given x) = H(X, Y) − H(X)`; chain rule `H(X_1, ..., X_n) = sum over t of H(X_t given X_1, ..., X_(t − 1))`; `H(Y given X) ≤ H(Y)`",
+   "meaning": "Conditional entropy is the uncertainty left in Y once X is known; on average, knowing more never increases uncertainty. The chain rule mirrors the chain rule of probability: a sequence's total entropy is the sum of its per-step conditional entropies.",
+   "used_for": "A language model's average per-token loss estimates (from above) the conditional entropy of the next token given its context; information gain in decision trees (classical-ml); measuring how much extra context helps prediction. Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-mutual-information",
+   "name": "Mutual information (and the data-processing inequality)",
+   "formula": "`I(X; Y) = H(X) − H(X given Y) = H(X) + H(Y) − H(X, Y) = sum over x, y of P(x, y) × log(P(x, y) ÷ (P(x) × P(y))) = KL(P(x, y) || P(x) × P(y))`; data processing: if X → Y → Z form a Markov chain, `I(X; Z) ≤ I(X; Y)`",
+   "meaning": "How much knowing one variable reduces uncertainty about the other; zero exactly when they are independent. Processing data can never create new information about its source.",
+   "used_for": "Contrastive objectives such as InfoNCE maximize a lower bound on the mutual information between two views (generative-classical); feature selection (classical-ml); the information-bottleneck view of representations; measuring how much a probe or a watermark reveals. Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-perplexity",
+   "name": "Perplexity (and bits per byte)",
+   "formula": "`perplexity = exp(H)` with entropy or cross-entropy H in nats (`2^H` with H in bits); for a text of N tokens `PPL = exp(−(1 ÷ N) × sum over t of ln q(x_t given x_<t))`; bits per byte `= (total loss in nats) ÷ (ln(2) × number of bytes)`",
+   "meaning": "Exponentiated average surprise: the number of equally likely options the model is effectively choosing among. A fair coin has perplexity 2; a uniform choice among K options has perplexity K. Bits per byte measures the same loss per byte of raw text, so models with different tokenizers can be compared.",
+   "used_for": "The standard intrinsic metric for language models and for tracking pretraining; filtering training data by a reference model's perplexity (llm); detecting machine-generated text. Book: Chapter 6 (Perplexity); Appendix B.",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-jensen-shannon",
+   "name": "Jensen–Shannon divergence",
+   "formula": "`JS(p, q) = (1 ÷ 2) × KL(p || m) + (1 ÷ 2) × KL(q || m)` with `m = (p + q) ÷ 2`; `0 ≤ JS ≤ ln(2)`",
+   "meaning": "A symmetric, always-finite version of KL that compares each distribution with their average m. Its square root is a true distance.",
+   "used_for": "With an optimal discriminator, the original GAN objective equals 2 × JS − 2 × ln(2) (Goodfellow et al. 2014; generative-classical); comparing token or topic distributions between datasets; measuring diversity and agreement among model outputs. Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-f-divergence-tv",
+   "name": "f-divergences and total variation distance",
+   "formula": "`D_f(p || q) = sum over x of q(x) × f(p(x) ÷ q(x))` for convex f with f(1) = 0 (KL uses `f(t) = t × ln(t)`); total variation `TV(p, q) = (1 ÷ 2) × sum over x of |p(x) − q(x)|`; Pinsker's inequality `TV(p, q) ≤ sqrt(KL(p || q) ÷ 2)`",
+   "meaning": "A family of ways to measure how different two distributions are; KL, reverse KL, Jensen–Shannon, chi-squared and total variation are all members. Total variation is the largest difference in probability the two distributions can give any event.",
+   "used_for": "Speculative decoding accepts a draft token with overall probability 1 − TV between the draft and target distributions (Leviathan et al. 2023; llm); f-GANs (generative-classical); Pinsker's inequality turns KL bounds into probability bounds in RL and safety analyses; alternative divergences for distillation. Book: Only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "fnd-source-coding",
+   "name": "Source coding bound (compression equals prediction)",
+   "formula": "average code length `L ≥ H(X)` bits per symbol; an ideal code (arithmetic coding) spends about `−log2 q(x)` bits on symbol x, so a whole text costs about `sum over t of −log2 q(x_t given x_<t)` bits",
+   "meaning": "No lossless code can beat the entropy on average, and a good probability model yields a code that nearly reaches it: each bit of cross-entropy loss is a bit of compressed file size. Better prediction means better compression.",
+   "used_for": "'Language Modeling Is Compression' (Delétang et al., ICLR 2024) used Chinchilla 70B with arithmetic coding to compress ImageNet patches to 43.4% and LibriSpeech audio to 16.4% of raw size, beating PNG (58.5%) and FLAC (30.3%); bits-per-byte evaluation; the compression view of pretraining loss. Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-gradient-descent",
+   "name": "Gradient descent update (and the minibatch gradient)",
+   "formula": "`θ_(t+1) = θ_t − η × ∇L(θ_t)`; minibatch estimate `g = (1 ÷ B) × sum over i in the batch of ∇ℓ_i(θ)`, with `E[g] = ∇L(θ)` and variance falling as `1 ÷ B`",
+   "meaning": "Move every parameter a small step against its slope; η (eta) is the learning rate and θ the parameters. In stochastic gradient descent the gradient is estimated from a random batch of B examples (ℓ_i is example i's loss): unbiased but noisy. Momentum, Adam, Muon and learning-rate schedules are in deep-learning.",
+   "used_for": "The core of training every neural network, from a small classifier to a frontier LLM. Book: Chapter 6 (Gradient descent: walking downhill in fog), Chapter 13; Appendix B (Gradient descent step).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-optimality-conditions",
+   "name": "Optimality conditions (stationary points, minima and saddle points)",
+   "formula": "first-order necessary condition `∇f(x*) = 0`; second-order: at a minimum the Hessian `H(x*)` is positive semidefinite, and positive definite is enough for a strict local minimum; saddle point: `∇f = 0` with H having both positive and negative eigenvalues",
+   "meaning": "At the bottom of a valley the slope is zero in every direction and the surface curves upward. A flat point that curves up in some directions and down in others is a saddle; in very high dimensions most flat points are saddles rather than poor local minima.",
+   "used_for": "Explains plateaus and saddle escapes in deep-network training, helped by SGD noise; using the gradient norm to judge convergence; closed-form solutions found by setting the gradient to zero (least squares, MLE). Book: Chapter 6 (Valleys, plateaus and smarter walkers; Local minimum), Chapter 13 (saddle point).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-convexity",
+   "name": "Convexity (strong convexity and subgradients)",
+   "formula": "`f(λ × x + (1 − λ) × y) ≤ λ × f(x) + (1 − λ) × f(y)` for λ in [0, 1]; first-order test `f(y) ≥ f(x) + ∇f(x) · (y − x)`; second-order test: Hessian PSD everywhere; μ-strongly convex `f(y) ≥ f(x) + ∇f(x) · (y − x) + (μ ÷ 2) × ||y − x||^2`; subgradient g at x: `f(y) ≥ f(x) + g · (y − x)` for all y",
+   "meaning": "A convex function is a bowl: the chord between any two points lies on or above the graph, every local minimum is global, and every tangent plane lies below the function. Strong convexity means the bowl curves up at least as fast as a parabola of curvature μ. Subgradients extend slopes to kinks such as |x| or ReLU at 0.",
+   "used_for": "Linear and logistic regression, SVMs and linear probes have convex losses with guaranteed global solutions (classical-ml); deep networks are non-convex, so convex theory guides choices (learning-rate rules, optimizer derivations) without guaranteeing them; subgradients define what frameworks return at non-differentiable points. Book: Chapter 6 (Convex function definition).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-smoothness-rates",
+   "name": "Lipschitz continuity, L-smoothness and convergence rates",
+   "formula": "Lipschitz `|f(x) − f(y)| ≤ K × ||x − y||`; L-smooth `||∇f(x) − ∇f(y)|| ≤ L × ||x − y||`, giving the descent lemma `f(x − (1 ÷ L) × ∇f(x)) ≤ f(x) − ||∇f(x)||^2 ÷ (2 × L)`; gradient descent with η = 1 ÷ L on convex f: `f(x_t) − f* ≤ L × ||x_0 − x*||^2 ÷ (2 × t)`; μ-strongly convex: error shrinks by a factor of about `(1 − μ ÷ L)` per step; SGD on convex problems: error about `1 ÷ sqrt(t)`",
+   "meaning": "A Lipschitz bound K limits how fast a function can change; an L-smoothness bound limits how fast its slope can change (all Hessian eigenvalues at most L), which sets the largest safe step at about 1 ÷ L. f* is the minimum value and x* a minimizer; the ratio L ÷ μ is the condition number that sets how many steps are needed.",
+   "used_for": "Theory behind learning-rate choices; spectral normalization enforces a Lipschitz bound on GAN discriminators and WGAN critics (generative-classical); certified-robustness bounds (rl-alignment); the modular-norm and Muon line of work picks per-layer step sizes from such bounds. Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-quadratic-stability",
+   "name": "Step-size stability on a quadratic (edge of stability)",
+   "formula": "on `f(x) = (λ ÷ 2) × x^2`, gradient descent gives `x_(t+1) = (1 − η × λ) × x_t`, which converges only if `η < 2 ÷ λ`; in many dimensions, stable only if `η < 2 ÷ λ_max(H)`",
+   "meaning": "Each step multiplies the distance to the bottom by (1 − η × λ); past η = 2 ÷ λ that factor drops below −1 and the iterates bounce outward and explode. The sharpest direction (largest Hessian eigenvalue λ_max) sets the limit. Appendix B's bowl (x − c)^2 has λ = 2, which gives its factor 1 − 2 × learning rate.",
+   "used_for": "Explains learning-rate blow-ups and loss spikes; Cohen et al. (ICLR 2021) found that full-batch gradient descent on neural networks pushes the top Hessian eigenvalue up until it hovers just above 2 ÷ η (the 'edge of stability'); motivates warmup and sharpness-aware methods. Book: Chapter 6 (Choosing the step size; Worked: rolling down a parabola); Appendix B (Learning rate on a simple bowl).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-lagrange-kkt",
+   "name": "Lagrange multipliers and KKT conditions",
+   "formula": "minimize f(x) subject to g(x) = 0: `L(x, λ) = f(x) + λ × g(x)`, solve `∇f(x) + λ × ∇g(x) = 0` and `g(x) = 0`; with inequality constraints h_i(x) ≤ 0 (Karush–Kuhn–Tucker): `∇f + sum over j of λ_j × ∇g_j + sum over i of μ_i × ∇h_i = 0`, `μ_i ≥ 0`, `h_i(x) ≤ 0`, `μ_i × h_i(x) = 0`",
+   "meaning": "At a constrained optimum the objective's gradient is balanced by the constraints' gradients. Each multiplier (λ or μ) is the 'price' of its constraint: how much the optimum would improve per unit of loosening. Complementary slackness (μ_i × h_i = 0) says a constraint that is not binding has zero price.",
+   "used_for": "Deriving softmax as the maximum-entropy distribution with a fixed expected score; the closed-form optimal policy of KL-regularized RL that DPO builds on (rl-alignment); the SVM dual and its support vectors (classical-ml); constrained RLHF such as Safe RLHF's Lagrangian trade-off between helpfulness and harmlessness (Dai et al. 2023). Book: Only here.",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-newton",
+   "name": "Newton's method",
+   "formula": "optimization `x_(t+1) = x_t − H(x_t)^-1 × ∇f(x_t)` (one variable: `x − f'(x) ÷ f''(x)`); root finding `x_(t+1) = x_t − f(x_t) ÷ f'(x_t)`; damped variant `x − (H + λ × I)^-1 × ∇f(x)`",
+   "meaning": "Fit a parabola (the second-order Taylor model) at the current point and jump to its bottom. Near the answer it converges very fast (correct digits roughly double each step), but it needs the Hessian, which has N^2 entries for N parameters, so huge networks use approximations. Damping (adding λ × I) keeps steps safe far from the answer.",
+   "used_for": "Iteratively reweighted least squares for logistic regression (classical-ml); Newton–Schulz iterations used by Muon are Newton-type iterations for a matrix function; second-order and approximate second-order optimizers (Shampoo, SOAP, K-FAC, Sophia) approximate H^-1; Levenberg–Marquardt fitting in robotics and vision. Book: Chapter 13 (curvature-based optimizers; Newton–Schulz iteration).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-quasi-newton",
+   "name": "Quasi-Newton methods (BFGS and L-BFGS) and line search",
+   "formula": "BFGS inverse-Hessian update `H_(k+1) = (I − ρ × s × y^T) × H_k × (I − ρ × y × s^T) + ρ × s × s^T` with `s = x_(k+1) − x_k`, `y = ∇f(x_(k+1)) − ∇f(x_k)`, `ρ = 1 ÷ (y^T × s)`; Armijo line search: accept step α if `f(x + α × d) ≤ f(x) + c × α × ∇f(x) · d`",
+   "meaning": "Builds an approximation of the inverse Hessian from how the gradient changes between steps, instead of computing it. L-BFGS keeps only the last few (s, y) pairs, so memory stays small. A line search picks a step length α along direction d that lowers f by enough (c is a small constant such as 0.0001).",
+   "used_for": "L-BFGS is scikit-learn's default solver for logistic regression (classical-ml); full-batch problems such as physics-informed networks, neural style transfer and fitting scaling-law curves (the Chinchilla paper fit its parametric loss with L-BFGS); rarely used for large stochastic training. Book: Only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "fnd-natural-gradient",
+   "name": "Natural gradient",
+   "formula": "`θ_(t+1) = θ_t − η × F^-1 × ∇L(θ_t)`, with F the Fisher information matrix",
+   "meaning": "Steepest descent measured by how much the model's predictions change (KL divergence, whose local curvature is F) rather than by how much the raw parameter numbers change, so the step does not depend on how the model happens to be parameterized.",
+   "used_for": "K-FAC approximates F^-1 with Kronecker factors (Martens & Grosse 2015); TRPO and natural policy gradient in reinforcement learning (rl-alignment); a common motivation for Adam-style and Shampoo-style preconditioning. Book: Only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "fnd-projected-proximal",
+   "name": "Projected and proximal gradient methods (soft-thresholding)",
+   "formula": "projected `x_(t+1) = Proj_C(x_t − η × ∇f(x_t))` with `Proj_C(z) = argmin over x in C of ||x − z||` (for an L-infinity ball of radius ε around x_0: clip each entry to [x_0 − ε, x_0 + ε]); proximal `x_(t+1) = prox_(η × λ × g)(x_t − η × ∇f(x_t))`, and for the L1 penalty `prox(z)_i = sign(z_i) × max(|z_i| − η × λ, 0)`",
+   "meaning": "Projected descent takes a normal gradient step, then snaps back to the nearest allowed point in the set C. Proximal descent handles a smooth loss f with a gradient step and a non-smooth penalty g exactly; for L1 this soft-thresholding shrinks every entry toward zero and sets small ones exactly to zero, producing sparsity.",
+   "used_for": "PGD adversarial attacks and adversarial training (Madry et al. 2018; robustness in rl-alignment); keeping weights nonnegative, unit-norm or on the probability simplex; lasso and elastic-net solvers apply soft-thresholding (scikit-learn's coordinate descent; classical-ml); sparse coding (ISTA). Book: Only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "fnd-steepest-descent-norms",
+   "name": "Steepest descent under a chosen norm",
+   "formula": "`Δ = argmin over ||Δ|| ≤ η of (∇L · Δ)`; L2 norm: `Δ = −η × g ÷ ||g||_2`; L-infinity norm: `Δ = −η × sign(g)`; spectral norm on a weight matrix whose gradient is `G = U × Σ × V^T`: `Δ = −η × U × V^T`",
+   "meaning": "What counts as 'most downhill' depends on how step size is measured. Measured by ordinary length, the best step follows the gradient; measured by the largest single entry, every parameter moves the same amount in the sign direction; measured by a matrix's largest stretch, every singular direction moves equally.",
+   "used_for": "Bernstein & Newhouse (2024) showed that Adam, Shampoo and Prodigy, with their moving averages switched off, are each steepest descent under a particular norm; sign-based optimizers (signSGD, Lion) and Muon's orthogonalized updates are the L-infinity and spectral cases (deep-learning); the fast gradient-sign adversarial attack (FGSM). Book: Chapter 13 (Lion; Muon).",
+   "tier": "specialist"
+  },
+  {
+   "id": "fnd-mirror-descent",
+   "name": "Mirror descent and exponentiated gradient (multiplicative weights)",
+   "formula": "exponentiated gradient on probability weights `w_i ← w_i × exp(−η × g_i) ÷ sum over j of (w_j × exp(−η × g_j))`; general mirror descent `∇ψ(x_(t+1)) = ∇ψ(x_t) − η × ∇f(x_t)` for a mirror map ψ (negative entropy gives the exponentiated form)",
+   "meaning": "Gradient descent carried out in a transformed space that suits the constraint. For probability weights each weight is multiplied by an exponential of its negative gradient and the weights are renormalized, so they stay positive and add to 1; ascent on a reward uses +η.",
+   "used_for": "DoReMi tunes pretraining data-mixture weights with exponentiated-gradient ascent on per-domain excess loss (Xie et al. 2023); Hedge and multiplicative weights for online learning and solving games (game theory in rl-alignment); softmax policy updates in natural policy gradient. Book: Only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "fnd-binary-integers",
+   "name": "Binary integers and two's complement",
+   "formula": "unsigned `value = sum over i of (b_i × 2^i)`; signed two's complement `value = −b_(n−1) × 2^(n−1) + sum over i < n − 1 of (b_i × 2^i)`; signed n-bit range `−2^(n−1)` to `2^(n−1) − 1` (INT8: −128 to 127; INT4: −8 to 7); bits needed to index K items `ceiling(log2(K))`",
+   "meaning": "Computers write whole numbers in base 2, where bit b_i is worth 2^i. Two's complement gives the top bit a negative weight so the same adder circuits handle negative numbers.",
+   "used_for": "INT8 and INT4 weights in quantized models (the scale-and-round step is in llm); token IDs (a 200,000-token vocabulary needs 18 bits, so IDs are stored as 32-bit integers); packing several 4-bit weights into one byte. Book: Chapter 2 (Counting in binary; Bytes and file sizes).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-float-value",
+   "name": "Floating-point value formula",
+   "formula": "normal numbers `value = (−1)^s × (1 + m ÷ 2^M) × 2^(e − bias)` with `bias = 2^(E − 1) − 1`; subnormals (e = 0) `value = (−1)^s × (m ÷ 2^M) × 2^(1 − bias)`; formats as (E exponent bits, M mantissa bits): FP32 (8, 23), BF16 (8, 7), FP16 (5, 10), FP8 E4M3 (4, 3), FP8 E5M2 (5, 2), FP6 E2M3 and E3M2, FP4 E2M1 (2, 1)",
+   "meaning": "s is the sign bit, e the stored exponent (E bits) and m the stored mantissa (M bits), the digits after an implicit leading 1. Exponent bits buy range; mantissa bits buy precision. Subnormal numbers fill the gap near zero. Several 8-bit and smaller formats drop or repurpose the infinity and NaN codes to gain range (FP4 E2M1 can only express 0, 0.5, 1, 1.5, 2, 3, 4 and 6 with a sign).",
+   "used_for": "Every number in training and inference: FP32 master weights and accumulators, BF16 training, FP8 training and serving on Hopper and Blackwell GPUs (DeepSeek-V3 used E4M3 for all FP8 tensors), FP4 serving and the first FP4 pretraining runs. Book: Chapter 5 (Floating point; The precision ladder), Chapter 32 (How a computer stores a decimal number).",
+   "tier": "core"
+  },
+  {
+   "id": "fnd-float-range",
+   "name": "Range of a floating-point format (overflow and underflow)",
+   "formula": "largest normal `(2 − 2^(−M)) × 2^(e_max − bias)` for IEEE-style formats (top exponent code reserved, so `e_max = 2^E − 2`); smallest normal `2^(1 − bias)`; smallest subnormal `2^(1 − bias − M)`; FP16 max `(2 − 2^−10) × 2^15 = 65,504`; BF16 and FP32 max ≈ 3.4 × 10^38; FP8 E4M3 max 448 (`1.75 × 2^8`, an exception because only one code is NaN); E5M2 max 57,344; FP4 E2M1 max 6",
+   "meaning": "Exponent bits set how large and how small a format can go before overflowing to infinity or underflowing to zero. FP16 overflows past 65,504, which is why it needs loss scaling; BF16 copies FP32's 8 exponent bits, so it rarely overflows or underflows.",
+   "used_for": "Choosing BF16 over FP16 for large-model training; the E4M3 (more precision) versus E5M2 (more range) trade-off in FP8; the need for per-block scale factors in FP8 and FP4, whose ranges are tiny. Book: Chapter 5 (The precision ladder table), Chapter 32 (FP16 and BF16 definitions).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-machine-epsilon",
+   "name": "Machine epsilon, unit roundoff and ULP",
+   "formula": "`ε_mach = 2^(−M)` (the gap between 1 and the next representable number); unit roundoff `u = 2^(−M − 1)` (worst-case relative error of round-to-nearest); spacing near x `ulp(x) = 2^(floor(log2(|x|)) − M)`; FP32 ε ≈ 1.19 × 10^−7; FP16 ε ≈ 9.77 × 10^−4; BF16 ε = 2^−7 = 0.0078125",
+   "meaning": "The relative precision of a format, roughly −log10(ε) significant decimal digits. The absolute gap between neighboring numbers (the ULP, unit in the last place) grows with the number's size, so a large running total cannot absorb small additions.",
+   "used_for": "Explains why BF16 keeps only 2 to 3 significant digits and why optimizer states and accumulations stay in FP32; the small constant added inside Adam and normalization layers to avoid dividing by zero (also called epsilon, deep-learning) must be representable in the working format. Book: Chapter 5 (The precision ladder; Watch out on FP16 sums).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-rounding-error-model",
+   "name": "Rounding error model and catastrophic cancellation",
+   "formula": "`fl(x) = x × (1 + δ)` with `|δ| ≤ u`; each operation `fl(a op b) = (a op b) × (1 + δ)`; relative error of a computed difference up to about `u × (|a| + |b|) ÷ |a − b|`",
+   "meaning": "fl(x) is the stored (rounded) version of x. Every stored number and every arithmetic result is off by a tiny relative amount δ, at most the unit roundoff u. Subtracting two nearly equal numbers cancels their shared leading digits and leaves mostly rounding error (catastrophic cancellation).",
+   "used_for": "Why variance is computed with stable algorithms (Welford's method, or subtracting the mean first) rather than E[x^2] − E[x]^2 in low precision; why softmax subtracts the maximum; why tiny logit differences vary across hardware (deep-learning, llm). Book: Chapter 5 (Why AI tolerates rough numbers).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-non-associativity",
+   "name": "Floating-point addition is not associative",
+   "formula": "in floating point, in general `(a + b) + c ≠ a + (b + c)`; example in double precision: `(0.1 + 10^20) − 10^20 = 0` but `0.1 + (10^20 − 10^20) = 0.1`",
+   "meaning": "Because every addition rounds, the order in which numbers are added changes the result slightly. Parallel hardware adds in different orders depending on how the work is split.",
+   "used_for": "Thinking Machines Lab (Horace He and colleagues, September 2025) traced nondeterministic LLM outputs mainly to kernels that are not batch-invariant: the reduction order, and so the rounding, changes with batch size, which varies with server load; batch-invariant kernels restore reproducible results; also why results differ across GPU counts and parallelism layouts. Book: Chapter 18 (batch invariance).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-summation-error",
+   "name": "Accumulation error in long sums (swamping, pairwise and Kahan summation)",
+   "formula": "naive summation of n numbers: error up to about `(n − 1) × u × sum over i of |x_i|`; pairwise (tree) summation: about `log2(n) × u × sum over i of |x_i|`; Kahan compensated summation with running sum s and correction c: `y = x_i − c`, `t = s + y`, `c = (t − s) − y`, `s = t`",
+   "meaning": "Adding many numbers one at a time lets rounding errors pile up, and once the running total is large, small additions are rounded away entirely (swamping: in FP16, adding 0.1 again and again gets stuck at 256). Adding in a tree, or carrying the lost low-order bits along (Kahan), keeps the error small.",
+   "used_for": "Matrix-multiply hardware accumulates low-precision products at higher precision: DeepSeek-V3 found FP8 GEMM accumulation on H800 tensor cores keeps only about 14 bits, so it copies partial sums into FP32 every 128 elements (arXiv 2412.19437); FP32 gradient accumulation and all-reduce; Kahan summation and stochastic rounding for BF16-only weight updates (Zamirai et al., 'Revisiting BFloat16 Training', 2020). Book: Chapter 5 (Watch out: FP16 stuck at 256; Exercise 11).",
+   "tier": "standard"
+  },
+  {
+   "id": "fnd-stochastic-rounding",
+   "name": "Round-to-nearest-even and stochastic rounding",
+   "formula": "round-to-nearest (ties to even): pick the closer of the neighbors `x_low ≤ x ≤ x_high`, breaking ties toward the one whose last bit is even; stochastic rounding `SR(x) = x_high` with probability `(x − x_low) ÷ (x_high − x_low)`, otherwise `x_low`, so `E[SR(x)] = x`",
+   "meaning": "Ordinary rounding always moves the same input the same way, so tiny updates can be lost every single time. Stochastic rounding rounds up or down at random in proportion to closeness, so its error averages to zero and small updates survive on average.",
+   "used_for": "NVIDIA's NVFP4 pretraining recipe (a 12-billion-parameter model on 10 trillion tokens) uses stochastic rounding for gradients and round-to-nearest-even for weights and activations (arXiv 2509.25149, 2025); low-precision training since Gupta et al. 2015; the OCP MX specification requires round-to-nearest-even for conversions to FP6 and FP4. Book: Only here.",
+   "tier": "specialist"
+  },
+  {
+   "id": "fnd-block-scaled-formats",
+   "name": "Block-scaled (microscaling) formats: MXFP8, MXFP6, MXFP4 and NVFP4",
+   "formula": "each value `v_i = X × P_i`, where a block of k elements P_1 to P_k shares one scale X; bits per value `= d + w ÷ k` (element bits d, scale bits w); OCP MX (2023): k = 32 and X is an E8M0 power of two `2^(stored − 127)`, so MXFP4 = 4 + 8 ÷ 32 = 4.25 bits; NVFP4: k = 16 with an FP8 E4M3 block scale plus one FP32 scale per tensor, about 4 + 8 ÷ 16 = 4.5 bits",
+   "meaning": "Tiny formats such as FP4 hold only a handful of values, so each small block of numbers gets its own multiplier; one outlier then distorts only its own block. Smaller blocks and finer scales (NVFP4) follow the data more closely at a little extra storage. How the scales are chosen is part of quantization (llm).",
+   "used_for": "OpenAI's gpt-oss stores its MoE weights in MXFP4 so gpt-oss-120b runs on a single 80 GB GPU (model card, August 2025); NVIDIA Blackwell and Rubin tensor cores run NVFP4 and MXFP4 natively; NVFP4 pretraining (NVIDIA 2025) and Nemotron 3 Super (March 2026); DeepSeek-V3's FP8 training used fine-grained scales per 1 × 128 activation tile and per 128 × 128 weight block. Book: Chapter 23 (Block scaling definition), Chapter 32 (rounding to FP4 and block scaling), Chapter 5 (At the frontier).",
+   "tier": "specialist"
+  },
+  {
+   "id": "fnd-loss-scaling",
+   "name": "Loss scaling for FP16 training",
+   "formula": "compute gradients of `S × L` instead of L, then use `g = ∇(S × L) ÷ S`; dynamic scaling: if any gradient is inf or NaN, skip the step and set `S ← S ÷ 2`, otherwise grow S periodically (for example double it after N good steps)",
+   "meaning": "FP16's small range makes tiny gradients underflow to zero. Multiplying the loss by a large factor S lifts gradients into the representable range during backpropagation; dividing afterwards, in FP32, restores their true size.",
+   "used_for": "Mixed-precision training in FP16 (Micikevicius et al. 2018; PyTorch's GradScaler); unnecessary with BF16, which has FP32's range, one reason BF16 became the default; the per-tensor and per-block scales of FP8 and FP4 training extend the same idea. Book: Chapter 32 (FP16 definition mentions loss scaling), Chapter 13 (Numbers on hardware).",
+   "tier": "specialist"
+  }
+ ]
+}
