@@ -957,5 +957,54 @@
   "status": "MISSING",
   "where": "Not in the book",
   "owning_chapter": 54
+ },
+ {
+  "id": "cml-glm-poisson-irls",
+  "name": "Generalized linear models: Poisson regression and iteratively reweighted least squares",
+  "status": "WORDS",
+  "where": "Ch 10 (Linear and logistic regression, revisited: generalized linear models and Poisson regression in words; GLM defined)",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-successive-halving-hyperband",
+  "name": "Successive halving and Hyperband budgets",
+  "status": "WORDS",
+  "where": "Ch 9 (Tuning hyperparameters without cheating: successive halving worked numerically, no formula)",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-lime",
+  "name": "LIME local surrogate explanation",
+  "status": "WORDS",
+  "where": "Ch 10 (Random forests: a crowd of trees: LIME described and defined)",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-dbscan",
+  "name": "DBSCAN density rule (ε-neighborhoods and core points)",
+  "status": "WORDS",
+  "where": "Ch 10 (Clustering: finding groups without answers: DBSCAN defined in words)",
+  "owning_chapter": 10
+ },
+ {
+  "id": "cml-cost-threshold",
+  "name": "Cost-sensitive decision threshold",
+  "status": "WORDS",
+  "where": "Ch 9 (Precision or recall: which matters more?; The threshold game: thresholds and costs discussed in words)",
+  "owning_chapter": 9
+ },
+ {
+  "id": "cml-group-fairness",
+  "name": "Group fairness metrics (demographic parity, equalized odds, predictive parity, impact ratio)",
+  "status": "WORDS",
+  "where": "Ch 58 (Bias and fairness: Why \"fair\" has several meanings: definitions and a worked example computing false positive rates; formulas not written)",
+  "owning_chapter": 58
+ },
+ {
+  "id": "cml-pagerank",
+  "name": "PageRank and personalized PageRank",
+  "status": "SHOWN",
+  "where": "Ch 51 (PageRank: votes from important pages: formula written in words with damping 0.85 and a four-page worked example; Exercise 7)",
+  "owning_chapter": 51
  }
 ]

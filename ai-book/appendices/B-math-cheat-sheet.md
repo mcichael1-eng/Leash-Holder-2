@@ -228,6 +228,7 @@ How to read it. Multiplication is written ×, division ÷, and "x squared" as `x
 | Energy per token | Power divided by tokens per second; 3,600 joules = 1 watt-hour | `J per token = watts ÷ tokens per s` | 1,500 W ÷ 2,000 tokens per s = 0.75 J; 500 tokens ≈ 375 J ≈ 0.1 Wh (assumed figures) |
 | Arithmetic intensity | Math done per byte moved from memory | `FLOPs ÷ bytes moved` | decode for one user at 16 bits: each 2-byte weight is read once and used in one multiply-add (2 FLOPs), so 2 FLOPs ÷ 2 bytes = 1 FLOP per byte |
 | Ridge point | Where a chip stops waiting on memory | `peak FLOP/s ÷ bandwidth` | H100: 989 × 10^12 ÷ 3.35 × 10^12 ≈ 295 FLOP per byte |
+| Message transfer time | A fixed start-up delay α plus the message size n divided by the bandwidth β in bytes per second; network speeds are quoted in bits, so divide by 8 (Chapter 34) | `T = α + n ÷ β` | 1 MB over an 800 Gb/s port (100 GB/s) with α = 5 µs: 5 + 10 = 15 µs; 1 KB still takes about 5 µs |
 
 ## Memory math
 

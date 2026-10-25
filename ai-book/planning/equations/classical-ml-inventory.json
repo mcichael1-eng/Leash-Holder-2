@@ -1094,5 +1094,61 @@
   "meaning": "Y is the outcome; the treated group receives a change (a new model in one market, a policy in one region) and the control group does not; subtracting the control group's change removes trends common to both, under the parallel-trends assumption. Usually estimated as a regression with group, period and interaction terms; synthetic control builds a weighted control group instead.",
   "used_for": "Measuring the impact of launches that cannot be randomized per user (market-level rollouts, pricing changes), economics studies of AI adoption effects on employment and productivity. Book: only here.",
   "tier": "specialist"
+ },
+ {
+  "id": "cml-glm-poisson-irls",
+  "name": "Generalized linear models: Poisson regression and iteratively reweighted least squares",
+  "formula": "g(E[y given x]) = w · x + b; Poisson: μ = exp(w · x + b), L = sum over i of (μ_i − y_i × ln(μ_i)); IRLS: w_new = (X^T × W × X)^(−1) × X^T × W × z, z = X × w + W^(−1) × (y − μ)",
+  "meaning": "g is the link function; μ the expected count; W the diagonal IRLS weights (μ_i for Poisson, p_i(1 − p_i) for logistic); z the working response.",
+  "used_for": "Insurance claim-frequency and severity models, count forecasting, statsmodels/R glm (IRLS), scikit-learn PoissonRegressor/TweedieRegressor, LightGBM/XGBoost Poisson objectives. Book: Chapter 10 (generalized linear models, in words).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-successive-halving-hyperband",
+  "name": "Successive halving and Hyperband budgets",
+  "formula": "n_i = floor(n × η^(−i)), r_i = r × η^i; Hyperband s_max = floor(log_η(R ÷ r)), bracket s starts ceil((s_max + 1) × η^s ÷ (s + 1)) settings at budget R × η^(−s)",
+  "meaning": "n settings, minimum budget r, cut factor η, maximum budget R, bracket s.",
+  "used_for": "Optuna pruners, Ray Tune ASHA, Keras Tuner Hyperband, scikit-learn HalvingGridSearchCV. Book: Chapter 9 (successive halving worked: 27 settings, 108 versus 729 epochs).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-lime",
+  "name": "LIME local surrogate explanation",
+  "formula": "explanation(x) = argmin over g of [sum over z of π_x(z) × (f(z) − g(z))^2 + Ω(g)], π_x(z) = exp(−D(x, z)^2 ÷ σ^2)",
+  "meaning": "f the black-box model, g a simple (sparse linear) surrogate, z perturbed inputs, π_x a closeness kernel, Ω a complexity penalty.",
+  "used_for": "lime library; per-decision explanations in credit, medical and fraud models. Book: Chapter 10 (LIME, in words).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-dbscan",
+  "name": "DBSCAN density rule (ε-neighborhoods and core points)",
+  "formula": "N_ε(x) = {z : d(x, z) ≤ ε}; x is core if |N_ε(x)| ≥ minPts; clusters = core points linked through neighborhoods plus border points; the rest is noise",
+  "meaning": "ε the radius, minPts the crowding threshold (counting the point itself).",
+  "used_for": "Spatial and GPS clustering, outlier detection, scikit-learn DBSCAN/HDBSCAN; HDBSCAN on UMAP embeddings in BERTopic. Book: Chapter 10 (DBSCAN, in words).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-cost-threshold",
+  "name": "Cost-sensitive decision threshold",
+  "formula": "predict positive if p ≥ t* = C_FP ÷ (C_FP + C_FN); cost(t) = C_FP × FP(t) + C_FN × FN(t)",
+  "meaning": "p calibrated probability; C_FP and C_FN the costs of a false alarm and a miss.",
+  "used_for": "Alert thresholds for fraud, screening and moderation classifiers; scikit-learn TunedThresholdClassifierCV (Elkan 2001). Book: Chapter 9 (which mistake costs more, the threshold game).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-group-fairness",
+  "name": "Group fairness metrics (demographic parity, equalized odds, predictive parity, impact ratio)",
+  "formula": "SR_g = P(y_hat = 1 given g); DP difference = max SR − min SR; impact ratio = SR_g ÷ max SR; equalized odds TPR_A = TPR_B and FPR_A = FPR_B; predictive parity PPV_A = PPV_B; FPR = (prev ÷ (1 − prev)) × ((1 − PPV) ÷ PPV) × TPR",
+  "meaning": "Selection rates and per-group confusion-matrix rates; prev the group base rate (Chouldechova 2017 identity).",
+  "used_for": "Fairlearn, AIF360, the four-fifths rule, NYC Local Law 144 bias audits. Book: Chapter 58 (Why 'fair' has several meanings, worked risk-tool example).",
+  "tier": "standard"
+ },
+ {
+  "id": "cml-pagerank",
+  "name": "PageRank and personalized PageRank",
+  "formula": "PR(p) = (1 − d) ÷ N + d × sum over q linking to p of PR(q) ÷ L(q); personalized: (1 − d) × v_p in place of (1 − d) ÷ N",
+  "meaning": "d damping factor (0.85), N pages, L(q) out-links of q, v restart distribution on seed nodes.",
+  "used_for": "Web ranking signal, random-walk recommenders (Twitter WTF, Pinterest Pixie), TextRank, HippoRAG graph retrieval. Book: Chapter 51 (PageRank: votes from important pages, formula in words and four-page worked example).",
+  "tier": "standard"
  }
 ]

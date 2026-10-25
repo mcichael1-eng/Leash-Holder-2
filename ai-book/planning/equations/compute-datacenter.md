@@ -36,7 +36,7 @@ flowchart TD
 
 **In plain words:** A program gets faster only if it executes fewer instructions, needs fewer ticks per instruction or ticks faster. Clock speeds stopped rising quickly in the mid-2000s (the Dennard scaling entry below explains why), so modern chips mostly win on the first factor: vector, SIMD and tensor instructions each do many operations, so the same job needs far fewer instructions.
 
-**Tiny example:** 1 billion instructions at CPI 1.5 on a 3 GHz core: 10^9 × 1.5 ÷ (3 × 10^9) = 1.5 × 10^9 ÷ 3 × 10^9 = 0.5 s. Suppose one vector instruction now does the work of 8 ordinary ones at the same CPI: the count falls to 10^9 ÷ 8 = 1.25 × 10^8, the time to 1.25 × 10^8 × 1.5 ÷ (3 × 10^9) = 0.0625 s, a speedup of 0.5 ÷ 0.0625 = 8.
+**Tiny example:** 1 billion instructions at CPI 1.5 on a 3 GHz core: 10^9 × 1.5 ÷ (3 × 10^9) = 1.5 × 10^9 ÷ (3 × 10^9) = 0.5 s. Suppose one vector instruction now does the work of 8 ordinary ones at the same CPI: the count falls to 10^9 ÷ 8 = 1.25 × 10^8, the time to 1.25 × 10^8 × 1.5 ÷ (3 × 10^9) = 0.0625 s, a speedup of 0.5 ÷ 0.0625 = 8.
 
 **Where it is used:** Hennessy and Patterson's basic performance equation, used in CPU design and benchmarking. In AI servers it governs the CPU-side work that feeds the accelerators: data loading, tokenization and orchestration. One tensor-core instruction is a whole small matrix multiplication, the extreme case of doing more per instruction.
 **In the book:** Chapter 2 (The clock: a metronome for billions of steps; The processor: how a CPU runs a program) and Chapter 32 (The CPU: a few brilliant workers) explain clocks and instructions in words; the formula is only here.
@@ -80,7 +80,7 @@ flowchart TD
 
 **Tiny example:** B = 4 tokens, d_in = 3, d_out = 2 (6 weights): forward = 2 × 4 × 3 × 2 = 48 FLOPs; backward = 48 + 48 = 96; total 144, which equals 6 × 6 weights × 4 tokens = 144.
 
-**Where it is used:** Model-FLOPs accounting in Megatron-LM, NeMo, MaxText and torchtitan. Megatron's fuller count for a GPT model with B sequences of s tokens, L layers, hidden size h and vocabulary V is `72 × B × s × L × h^2 × (1 + s ÷ (6 × h) + V ÷ (12 × h × L))` FLOPs per training step (Narayanan and others, 2021), which adds the attention and output-layer terms; for GPT-3's shape it gives about 1.08 × 10^12 FLOPs per token against 6 × N ≈ 1.05 × 10^12. The headline rule C ≈ 6 × N × D and its examples are in the large language models section of this appendix.
+**Where it is used:** Model-FLOPs accounting in Megatron-LM, NeMo, MaxText and torchtitan. Megatron's fuller count for a GPT model with B sequences of s tokens, L layers, hidden size h and vocabulary V is `72 × B × s × L × h^2 × (1 + s ÷ (6 × h) + V ÷ (12 × h × L))` FLOPs per training step without recomputation (Korthikanti and others, 2022; Narayanan and others, 2021 print the same count with 96 and 16 in place of 72 and 12, because they include full recomputation), which adds the attention and output-layer terms; for GPT-3's shape it gives about 1.08 × 10^12 FLOPs per token against 6 × N ≈ 1.05 × 10^12. The headline rule C ≈ 6 × N × D and its examples are in the large language models section of this appendix.
 **In the book:** Chapter 37 (Where the 6 comes from), Chapter 19 (Where the 6 comes from) and Appendix B (Cost of a training step); the per-layer split, the 8 × N variant and Megatron's count are only here.
 
 ### Peak FLOP/s of a chip (spec-sheet formula, sparsity, TOPS)
@@ -116,7 +116,7 @@ flowchart TD
 
 **In plain words:** Divide the work by the speed the whole cluster really achieves. Rearranged, the same equation tells you how many chips you need for a deadline.
 
-**Tiny example:** C = 10^21 FLOPs on 8 GPUs with P = 10^15 and U = 0.4: cluster speed = 8 × 10^15 × 0.4 = 3.2 × 10^15 FLOP/s; time = 10^21 ÷ 3.2 × 10^15 = 312,500 s ≈ 3.6 days; GPU-hours = 8 × 312,500 ÷ 3,600 ≈ 694. Llama 3.1 405B: 3.8 × 10^25 ÷ (16,384 × 989 × 10^12 × 0.4) ≈ 5.9 × 10^6 s ≈ 68 days and about 26.7 million GPU-hours; at 90% goodput, about 75 days.
+**Tiny example:** C = 10^21 FLOPs on 8 GPUs with P = 10^15 and U = 0.4: cluster speed = 8 × 10^15 × 0.4 = 3.2 × 10^15 FLOP/s; time = 10^21 ÷ (3.2 × 10^15) = 312,500 s ≈ 3.6 days; GPU-hours = 8 × 312,500 ÷ 3,600 ≈ 694. Llama 3.1 405B: 3.8 × 10^25 ÷ (16,384 × 989 × 10^12 × 0.4) ≈ 5.9 × 10^6 s ≈ 68 days and about 26.7 million GPU-hours; at 90% goodput, about 75 days.
 
 **Where it is used:** Planning every pretraining run, compute procurement and Epoch AI's estimates of frontier training compute.
 **In the book:** Chapter 37 (From FLOP to days), Chapter 19 (From FLOPs to dollars), Chapter 2 and Appendix B (Cluster speed; Training time; GPU-hours); the goodput factor is only here.
@@ -137,7 +137,7 @@ flowchart TD
 
 **Tiny example:** 8 GPUs at 989 × 10^12 FLOP/s train a 7-billion-parameter model at 75,000 tokens per second: useful work = 6 × 7 × 10^9 × 75,000 = 3.15 × 10^15 FLOP/s; peak = 8 × 989 × 10^12 ≈ 7.91 × 10^15; MFU = 3.15 ÷ 7.91 ≈ 40%. With full recomputation the hardware does 8 × N per token, so HFU ≈ 53%.
 
-**Where it is used:** The headline efficiency of every large training run (PaLM, Megatron-LM, Llama 3, MaxText); Llama 3 405B reported 38 to 43% BF16 MFU, about 0.41 × 989 ≈ 400 TFLOP/s of useful work per GPU. The decode-side counterpart, MBU, is in the decode-ceiling entry below.
+**Where it is used:** The headline efficiency of every large training run (PaLM, Megatron-LM, Llama 3, MaxText); Llama 3 405B reported 38 to 43% BF16 MFU, about 0.41 × 989 ≈ 400 TFLOP/s of useful work per GPU. The HFU ÷ MFU ratio for selective recomputation is the approximation Korthikanti and others (2022) give, about 1.03 for GPT-3's shape. The decode-side counterpart, MBU, is in the decode-ceiling entry below.
 **In the book:** Chapter 37 (Utilization: MFU, HFU and where the time goes), Chapter 32 (Peak versus achieved) and Appendix B (Cluster speed); the PaLM per-token count and the HFU ÷ MFU ratio are only here.
 
 ### Amdahl's law
@@ -194,7 +194,7 @@ flowchart TD
 
 **Tiny example:** A job takes 100 hours on 1 machine and 14 hours on 8: S = 100 ÷ 14 ≈ 7.14; efficiency = 7.14 ÷ 8 ≈ 89%. With σ = 0.02 and κ = 0.0001: C(64) = 64 ÷ (1 + 0.02 × 63 + 0.0001 × 64 × 63) = 64 ÷ 2.66 ≈ 24.0; the peak is near n = sqrt(0.98 ÷ 0.0001) ≈ 99 (C ≈ 25.2), and C(200) ≈ 22.3 is lower again.
 
-**Where it is used:** Cluster benchmarking (MLPerf Training results at different scales report throughput per GPU) and capacity planning for serving systems.
+**Where it is used:** Cluster benchmarking (MLPerf Training reports time to train for systems of different sizes, from which speedup and scaling efficiency are computed) and capacity planning for serving systems.
 **In the book:** Only here (Chapter 37's Watch out notes that scaling is sub-linear).
 
 > **Definition — Strong scaling:** Speeding up a fixed-size job by adding processors; ideally doubling the processors halves the time.
@@ -274,7 +274,7 @@ flowchart TD
 
 **In plain words:** Plotted on log-log axes, speed rises along a slanted roof (bandwidth × intensity) until it hits the flat roof of peak compute. Peak compute has grown faster than memory bandwidth, so ridge points keep rising and more jobs are memory-bound.
 
-**Tiny example:** H100: 989 × 10^12 ÷ 3.35 × 10^12 ≈ 295 FLOPs per byte. One-user BF16 decode (I = 1) reaches at most 1 × 3.35 × 10^12 = 3.35 TFLOP/s, about 0.3% of peak. A big matmul with I = 1,000 reaches min(989, 3,350) = 989 TFLOP/s.
+**Tiny example:** H100: 989 × 10^12 ÷ (3.35 × 10^12) ≈ 295 FLOPs per byte. One-user BF16 decode (I = 1) reaches at most 1 × 3.35 × 10^12 = 3.35 TFLOP/s, about 0.3% of peak. A big matmul with I = 1,000 reaches min(989, 3,350) = 989 TFLOP/s.
 
 **Where it is used:** Kernel optimization (NVIDIA Nsight Compute draws rooflines), chip design and batching decisions (Williams, Waterman and Patterson, 2009). Variants: one roof per memory level (hierarchical roofline) and network rooflines that use link bandwidth. Gholami and others (2024) measured peak compute growing about 3.0 times every two years against about 1.6 for DRAM bandwidth.
 **In the book:** Chapter 33 (The roofline model, worked with numbers; Newer chips are even hungrier) and Appendix B (Ridge point).
@@ -324,18 +324,19 @@ flowchart TD
 
 **What it does:** Adds up a job's energy as arithmetic plus data movement, which shows that moving data usually costs far more.
 
-`energy ≈ operations × energy per operation + sum over memory levels of (bytes moved × energy per byte); power = FLOP/s × joules per FLOP + bytes per second × joules per byte; efficiency = FLOP/s ÷ watts = FLOPs per joule`
+`energy ≈ operations × energy per operation + sum over memory levels of (bytes moved × energy per byte); power = FLOP/s × joules per FLOP + bytes per second × joules per byte; efficiency = FLOP/s ÷ watts = FLOPs per joule; link power = bits per second × energy per bit`
 
 - **energy per operation**: joules for one arithmetic operation
 - **energy per byte**: joules to move one byte from a given memory level (registers, on-chip SRAM, off-chip DRAM)
 - **power**: energy per second, in watts
+- **energy per bit**: joules to send one bit over a chip-to-chip or network link, usually quoted in picojoules per bit (pJ/bit)
 
 **In plain words:** Fetching a number from off-chip memory costs over a hundred times more energy than multiplying it, using Horowitz's widely cited 45 nm figures (ISSCC 2014): about 3.7 picojoules for a 32-bit floating-point multiply and about 640 for a 32-bit DRAM read. Keeping data on chip and using fewer bits cut the second term.
 
-**Tiny example:** 1,000 multiplies, each fetching one 32-bit number from DRAM: 1,000 × 3.7 pJ + 1,000 × 640 pJ = 3.7 nJ + 640 nJ = 643.7 nJ, and 640 ÷ 643.7 ≈ 99.4% of it is data movement. A chip doing 989 × 10^12 FLOP/s at 700 W delivers about 1.4 × 10^12 FLOPs per joule.
+**Tiny example:** 1,000 multiplies, each fetching one 32-bit number from DRAM: 1,000 × 3.7 pJ + 1,000 × 640 pJ = 3.7 nJ + 640 nJ = 643.7 nJ, and 640 ÷ 643.7 ≈ 99.4% of it is data movement. A chip doing 989 × 10^12 FLOP/s at 700 W delivers about 1.4 × 10^12 FLOPs per joule. An 800 Gb/s optical link at an assumed 15 pJ per bit: 800 × 10^9 × 15 × 10^−12 = 12 W, for every such link end in the cluster.
 
-**Where it is used:** Accelerator architecture (systolic arrays, large SRAM, near-memory compute) and comparing chips by performance per watt.
-**In the book:** Chapter 33 (Moving data costs more than math), Chapter 2 (Moving data costs more than doing math) and Chapter 32 (Why fewer bits mean more speed); the summed formula is only here.
+**Where it is used:** Accelerator architecture (systolic arrays, large SRAM, near-memory compute), comparing chips by performance per watt, and network design: pJ per bit is the standard efficiency figure for SerDes, transceivers and co-packaged optics.
+**In the book:** Chapter 33 (Moving data costs more than math), Chapter 2 (Moving data costs more than doing math), Chapter 32 (Why fewer bits mean more speed) and Chapter 34 (Co-packaged optics and optical circuit switches); the summed formula and link power are only here.
 
 ### Memory-bandwidth ceiling on decode speed (and MBU)
 
@@ -381,7 +382,7 @@ flowchart TD
 
 **What it does:** Gives the time of one decoding step when B conversations are served together, and from it each user's speed and the server's total throughput.
 
-`T_step ≈ max(2 × N_active × B ÷ F, (N_active × b + B × T × k_kv) ÷ BW); throughput = B ÷ T_step; per-user speed = 1 ÷ T_step; weight reads stop dominating when B > F × b ÷ (2 × BW)`
+`T_step ≈ max(2 × N_active × B ÷ F, (N_active × b + B × T × k_kv) ÷ BW); throughput = B ÷ T_step; per-user speed = 1 ÷ T_step; the math takes longer than reading the weights once B > F × b ÷ (2 × BW)`
 
 - **B**: conversations decoded together (the batch)
 - **N_active**, **b**: active parameters and bytes per weight
@@ -390,7 +391,7 @@ flowchart TD
 
 **In plain words:** One read of the weights serves every conversation in the batch, so throughput rises almost in step with B while each user slows only a little, until the step becomes compute-bound. Every conversation's KV cache must still be read separately, so long contexts and memory capacity cap the useful batch.
 
-**Tiny example:** An 8-billion-parameter model in BF16 (16 GB) on an H100 (F = 989 × 10^12, BW = 3.35 × 10^12), 2,000-token contexts, k_kv = 131,072 bytes. B = 1: (16 × 10^9 + 2.6 × 10^8) ÷ 3.35 × 10^12 ≈ 4.9 ms, about 206 tokens per second. B = 32: (16 + 8.4) × 10^9 ÷ 3.35 × 10^12 ≈ 7.3 ms (the math takes only 0.5 ms), so each user gets about 137 tokens per second and the GPU about 4,400. B = 128: 49.6 GB read, 14.8 ms, 68 per user and about 8,650 in total. The crossover batch is 989 × 10^12 × 2 ÷ (2 × 3.35 × 10^12) ≈ 295.
+**Tiny example:** An 8-billion-parameter model in BF16 (16 GB) on an H100 (F = 989 × 10^12, BW = 3.35 × 10^12), 2,000-token contexts, k_kv = 131,072 bytes. B = 1: (16 × 10^9 + 2.6 × 10^8) ÷ (3.35 × 10^12) ≈ 4.9 ms, about 206 tokens per second. B = 32: (16 + 8.4) × 10^9 ÷ (3.35 × 10^12) ≈ 7.3 ms (the math takes only 0.5 ms), so each user gets about 137 tokens per second and the GPU about 4,400. B = 128: 49.6 GB read, 14.8 ms, 68 per user and about 8,650 in total. The crossover batch is 989 × 10^12 × 2 ÷ (2 × 3.35 × 10^12) ≈ 295, but 295 such conversations would need about 16 + 295 × 0.26 ≈ 93 GB, more than the GPU holds, so here memory caps the batch first.
 
 **Where it is used:** Choosing batch sizes and latency targets in vLLM, SGLang, TensorRT-LLM and NVIDIA Dynamo; NVIDIA presents the trade-off as tokens per second per megawatt against tokens per second per user. A simpler fitted form, T_step = t_0 + B × t_1, is common in serving simulators.
 **In the book:** Chapter 37 (Batching: the single biggest lever), Chapter 23 (Worked example: batching on one GPU) and Chapter 33 (Worked example: how many users fit on one GPU?); the crossover batch formula is only here.
@@ -441,11 +442,11 @@ flowchart TD
 - **h**: hidden size
 - **a**: attention heads
 - **t**: tensor-parallel size
-- **34**, **5**: byte counts per value derived for 16-bit activations of a GPT-style layer
+- **34**, **5**: bytes stored per token per unit of hidden width, and per entry of each head's attention-score matrix, for 16-bit activations of a GPT-style layer
 
 **In plain words:** The 34 term is everything except the attention-score matrices; the 5 × a × s ÷ h term is those matrices, which grow with the square of the sequence. FlashAttention-style kernels never store them, so the 34 term dominates today. Activation memory grows with tokens per micro-batch, not with parameter count, which is what limits long-context training.
 
-**Tiny example:** GPT-3's shape (a = 96, s = 2,048, h = 12,288, b = 1): s × b × h = 25,165,824; 5 × 96 × 2,048 ÷ 12,288 = 80; so 25,165,824 × (34 + 80) ≈ 2.87 GB per layer, about 275 GB for all 96 layers. Selective recomputation keeps 34 × 25,165,824 ≈ 0.86 GB per layer; with t = 8 as well, 2.87 ÷ 8 ≈ 0.36 GB.
+**Tiny example:** GPT-3's shape (a = 96, s = 2,048, h = 12,288, b = 1): s × b × h = 25,165,824; 5 × 96 × 2,048 ÷ 12,288 = 80; so 25,165,824 × (34 + 80) ≈ 2.87 GB per layer, about 275 GB for all 96 layers. Selective recomputation keeps 34 × 25,165,824 ≈ 0.86 GB per layer. Tensor and sequence parallelism over t = 8 GPUs without recomputation: 2.87 ÷ 8 ≈ 0.36 GB per GPU; with both, 0.86 ÷ 8 ≈ 0.11 GB.
 
 **Where it is used:** Memory planners in Megatron-LM and NeMo; choosing micro-batch size, recomputation and context parallelism (Korthikanti and others, 2022). In pipeline-parallel training the first stage holds activations for several micro-batches at once, about L layers' worth in total.
 **In the book:** Only here (Chapter 37, The memory wall of training, describes activations in words).
@@ -486,7 +487,7 @@ flowchart TD
 
 **Tiny example:** An 800 Gb/s port is 4 lanes × 200 Gb/s = 800 Gb/s, and 800 ÷ 8 = 100 GB/s. Suppose α = 5 µs. A 1 KB message: 5 + 0.01 = 5.01 µs (all latency). A 1 MB message: 5 + 10 = 15 µs. A 1 GB message: 5 µs + 10 ms ≈ 10 ms (all bandwidth). Crossover: 5 × 10^−6 s × 10^11 bytes per second = 500 KB.
 
-**Where it is used:** Communication cost models in NCCL, MPI and parallelism planners (Hockney's model), and reading switch, network-card and NVLink specs: an H100's NVLink is rated 900 GB/s counting both directions, about 450 GB/s each way.
+**Where it is used:** Communication cost models in NCCL, MPI and parallelism planners (Hockney's model), and reading switch, network-card and NVLink specs: an H100's NVLink is rated 900 GB/s counting both directions, about 450 GB/s each way. Some links also lose a little to line encoding: a PCIe 5.0 lane runs 32 billion transfers per second with 128b/130b encoding (130 bits sent for every 128 of data), so 16 lanes give 32 × 16 × 128 ÷ 130 ÷ 8 ≈ 63 GB/s each way.
 **In the book:** Chapter 34 (The ladder: eight levels from silicon to campus, Table 34.2), Chapter 4 (Latency and bandwidth), Chapter 37 (Ring all-reduce, worked by hand) and Appendix B (Message transfer time).
 
 > **Definition — Alpha–beta model (latency–bandwidth model):** A simple formula for the time to send a message: a fixed start-up delay (alpha) plus the message size divided by the link's bandwidth (beta). It shows why many small messages are slow even on a very fast link.
@@ -562,18 +563,19 @@ flowchart TD
 
 **What it does:** Gives the time of the other group exchanges that parallel training and serving are built from.
 
-`ring all-gather or reduce-scatter: T ≈ (n − 1) ÷ n × S ÷ B + (n − 1) × α; all-reduce = reduce-scatter + all-gather; all-to-all: each GPU sends (n − 1) ÷ n × S_local; tree or recursive-doubling all-reduce latency ≈ 2 × log2(n) × α`
+`ring all-gather or reduce-scatter: T ≈ (n − 1) ÷ n × S ÷ B + (n − 1) × α; all-reduce = reduce-scatter + all-gather; all-to-all: each GPU sends (n − 1) ÷ n × S_local; tree or recursive-doubling all-reduce latency ≈ 2 × log2(n) × α; hierarchical all-reduce over m servers of g GPUs: T ≈ 2 × (g − 1) ÷ g × S ÷ B_fast + 2 × (m − 1) ÷ m × (S ÷ g) ÷ B_slow`
 
 - **n**: GPUs taking part
 - **S**: the full gathered size; **S_local**: the data each GPU starts with in an all-to-all
 - **B**: per-GPU bandwidth; **α**: per-step latency
 - **log2(n)**: how many times n can be halved (10 for 1,024)
+- **g**, **m**: GPUs per server and servers; **B_fast**, **B_slow**: per-GPU bandwidth inside a server (NVLink) and between servers (one network card per GPU)
 
-**In plain words:** All-gather and reduce-scatter are each half of a ring all-reduce. In an all-to-all every GPU keeps 1 ÷ n of its data and sends the rest; ring tricks do not help, so the network's bisection bandwidth sets its speed. Trees finish small messages in about log2(n) steps instead of n.
+**In plain words:** All-gather and reduce-scatter are each half of a ring all-reduce. In an all-to-all every GPU keeps 1 ÷ n of its data and sends the rest; ring tricks do not help, so the network's bisection bandwidth sets its speed. Trees finish small messages in about log2(n) steps instead of n. A hierarchical all-reduce first reduce-scatters inside each server over the fast links, then each GPU all-reduces only its 1 ÷ g slice with its counterparts in the other servers, then all-gathers inside the server again, so the slow network carries 1 ÷ g of the data per GPU.
 
-**Tiny example:** All-gather over 4 GPUs of a 1 GB result at 50 GB/s: 3 ÷ 4 × 1 ÷ 50 = 15 ms. All-to-all over 8 GPUs with 1 GB each: each sends 7 ÷ 8 = 0.875 GB, 17.5 ms at 50 GB/s. Latency with α = 5 µs over 1,024 GPUs: ring 2 × 1,023 × 5 µs ≈ 10.2 ms; tree 2 × 10 × 5 µs = 0.1 ms.
+**Tiny example:** All-gather over 4 GPUs of a 1 GB result at 50 GB/s: 3 ÷ 4 × 1 ÷ 50 = 15 ms. All-to-all over 8 GPUs with 1 GB each: each sends 7 ÷ 8 = 0.875 GB, 17.5 ms at 50 GB/s. Latency with α = 5 µs over 1,024 GPUs: ring 2 × 1,023 × 5 µs ≈ 10.2 ms; tree 2 × 10 × 5 µs = 0.1 ms. Hierarchical, S = 1 GB, 16 servers of 8 GPUs, 450 GB/s NVLink and 50 GB/s per network card: 2 × 7 ÷ 8 × 1 ÷ 450 ≈ 3.9 ms inside, 2 × 15 ÷ 16 × 0.125 ÷ 50 ≈ 4.7 ms between, about 8.6 ms in total; one ring through all 128 GPUs moving at the 50 GB/s network speed would take 2 × 127 ÷ 128 × 1 ÷ 50 ≈ 39.7 ms.
 
-**Where it is used:** Data parallelism all-reduces gradients; ZeRO-3 and FSDP all-gather weights and reduce-scatter gradients; tensor and sequence parallelism exchange activations; expert parallelism uses all-to-all. On TPU tori a collective spread over several mesh axes uses all their links at once (How to Scale Your Model).
+**Where it is used:** Data parallelism all-reduces gradients; ZeRO-3 and FSDP all-gather weights and reduce-scatter gradients; tensor and sequence parallelism exchange activations; expert parallelism uses all-to-all. On TPU tori a collective spread over several mesh axes uses all their links at once (How to Scale Your Model). Two-level schemes like the hierarchical one are built into NCCL and Horovod, and the hybrid sharding of the ZeRO entry below applies the same idea to sharded weights.
 **In the book:** Chapter 37 (Collective communication: how thousands of GPUs agree) and Chapter 34 (Collectives: why the slowest link sets the pace) in words; the cost formulas are only here.
 
 ### ZeRO and FSDP sharding: memory and communication per GPU
@@ -598,7 +600,7 @@ flowchart TD
 
 **What it does:** Tells how many tokens each GPU must process per step for the gradient sync to hide behind the math.
 
-`T_compute = 6 × N × B_local ÷ (F × U); T_comm ≈ 2 × b_g × N ÷ BW; compute-bound when B_local > (2 × b_g ÷ 6) × (F × U ÷ BW); TPU form: B ÷ X > C ÷ W_ici`
+`T_compute = 6 × N × B_local ÷ (F × U); T_comm ≈ 2 × b_g × N ÷ BW; compute-bound when B_local > (2 × b_g ÷ 6) × (F × U ÷ BW); strict form, counting only the backward pass: B_local > (b_g ÷ 2) × (F × U ÷ BW); TPU form: B ÷ X > C ÷ W_ici`
 
 - **N**: parameters; **B_local**: tokens per GPU per step
 - **F**, **U**: peak FLOP/s and utilization; **BW**: per-GPU network bandwidth
@@ -606,9 +608,9 @@ flowchart TD
 - **B**, **X**: global batch in tokens and chips along the data-parallel axis (TPU form)
 - **C**, **W_ici**: FLOP/s per chip and inter-chip bandwidth (TPU form)
 
-**In plain words:** Compute grows with tokens; the all-reduce does not. N cancels, so the test depends only on hardware ratios and batch size, which is why frontier runs use batches of millions of tokens.
+**In plain words:** Compute grows with tokens; the all-reduce does not. N cancels, so the test depends only on hardware ratios and batch size, which is why frontier runs use batches of millions of tokens. The gradient exchange can only hide behind the backward pass (4 of the 6 FLOPs per parameter per token), so the strict form uses 4 instead of 6; with BF16 gradients (b_g = 2) it reduces to B_local > F × U ÷ BW, which is How to Scale Your Model's TPU form.
 
-**Tiny example:** An H100 at 400 × 10^12 achieved FLOP/s over 50 GB/s with BF16 gradients: (4 ÷ 6) × (400 × 10^12 ÷ 50 × 10^9) = 0.667 × 8,000 ≈ 5,300 tokens per GPU per step. Llama 3's 16 million-token batch over 16,384 GPUs is only about 1,000, which is why it grouped 128 GPUs per model copy with tensor and pipeline parallelism.
+**Tiny example:** An H100 at 400 × 10^12 achieved FLOP/s over 50 GB/s with BF16 gradients: (4 ÷ 6) × (400 × 10^12 ÷ (50 × 10^9)) = 0.667 × 8,000 ≈ 5,300 tokens per GPU per step, the figure Chapter 37 uses; the strict form gives 8,000. Llama 3's 16 million-token batch over 16,384 GPUs is only about 1,000, which is one reason (besides memory) it grouped 128 GPUs per model copy with tensor and pipeline parallelism.
 
 **Where it is used:** Choosing global batch size and parallelism layout; How to Scale Your Model gives about 2,550 tokens per chip for TPU v5p.
 **In the book:** Chapter 37 (Worked example: when does the network become the bottleneck?); the TPU form is only here.
@@ -626,7 +628,7 @@ flowchart TD
 
 **In plain words:** Megatron-LM splits attention heads and the feed-forward block's inner dimension across t GPUs so each layer needs only two synchronizations forward and two backward. The ratio grows with t and shrinks with h, and needs NVLink-class bandwidth, which is why tensor parallelism stays inside one server or rack.
 
-**Tiny example:** h = 8,192, t = 8, b = 2, F = 400 × 10^12, 1,000 tokens: compute = 24 × 1,000 × 8,192^2 ÷ (8 × 400 × 10^12) ≈ 0.50 ms; communication over 450 GB/s NVLink = 4 × 7 ÷ 8 × 1,000 × 8,192 × 2 ÷ 450 × 10^9 ≈ 0.13 ms, a ratio of 0.25, so it hides. Over 50 GB/s InfiniBand the ratio is about 2.3, communication-bound.
+**Tiny example:** h = 8,192, t = 8, b = 2, F = 400 × 10^12, 1,000 tokens: compute = 24 × 1,000 × 8,192^2 ÷ (8 × 400 × 10^12) ≈ 0.50 ms; communication over 450 GB/s NVLink = 4 × 7 ÷ 8 × 1,000 × 8,192 × 2 ÷ (450 × 10^9) ≈ 0.13 ms, a ratio of 0.25, so it hides. Over 50 GB/s InfiniBand the ratio is about 2.3, communication-bound.
 
 **Where it is used:** Megatron-LM, NeMo, TensorRT-LLM and vLLM (Shoeybi and others, 2019); Llama 3 used a tensor-parallel size of 8. Sequence parallelism swaps each all-reduce for a reduce-scatter plus an all-gather of the same volume while also splitting activations.
 **In the book:** Chapter 37 (Tensor parallelism: splitting each matrix) in words; the cost formulas are only here.
@@ -641,7 +643,7 @@ flowchart TD
 - **m**: micro-batches per step
 - **v**: model chunks per GPU in an interleaved schedule
 
-**In plain words:** The first stage starts alone and the last finishes alone, wasting p − 1 micro-batch slots at each end, so m must be much larger than p. Interleaving divides the bubble by v for more communication; zero-bubble schedules and DeepSeek's DualPipe fill the gaps by splitting the backward pass in two.
+**In plain words:** The first stage starts alone and the last finishes alone, wasting p − 1 micro-batch slots at each end, so m must be much larger than p. Interleaving divides the bubble by v for more communication; zero-bubble schedules and DeepSeek's DualPipe shrink the gaps further by splitting the backward pass in two (gradients for the inputs first, for the weights later) and slotting the pieces into the idle time.
 
 **Tiny example:** p = 4, m = 4: 3 ÷ 7 ≈ 43% idle. p = 8, m = 32: 7 ÷ 39 ≈ 18%. Interleaved with v = 2: 7 ÷ 64 ≈ 0.109 of the ideal time, so 0.109 ÷ 1.109 ≈ 10% of the step.
 
@@ -721,6 +723,28 @@ flowchart TD
 
 > **Definition — Oversubscription ratio (network):** The bandwidth a switch layer offers toward its hosts divided by the bandwidth it has toward the rest of the network. At 1:1 every host can send at full speed at once; at 3:1, only a third of them can.
 
+### Torus networks: size, hops and bisection
+
+**What it does:** Gives how many chips a wrap-around grid network connects, how many hops separate them and how many links cross its middle.
+
+`k-ary n-dimensional torus (k chips along each of n axes): chips = k^n; links per chip = 2 × n; diameter = n × floor(k ÷ 2) hops; average distance ≈ n × k ÷ 4 hops; bisection = 2 × k^(n − 1) links (k even); bisection bandwidth = 2 × k^(n − 1) × link bandwidth`
+
+- **k**: chips along each axis
+- **n**: the number of axes (2 for a flat grid, 3 for a cube)
+- **links per chip**: one to the neighbor on each side along every axis
+- **diameter**: the most hops any message needs, between the two farthest chips
+- **floor()**: round down to a whole number
+- **bisection**: the links cut when the torus is split into two equal halves; the 2 comes from the wrap-around links
+
+**In plain words:** Every chip talks directly only to its neighbors, so no big switches are needed and the cables are short and cheap. The price is distance: far-apart chips are many hops away, and the links across the middle grow only like k^(n − 1) while the chip count grows like k^n, so each chip's share of them shrinks as the torus grows. Rings and neighbor exchanges map well onto a torus; all-to-all traffic, as in mixture-of-experts layers, does not.
+
+**Tiny example:** The 4 × 4 torus of Chapter 34 (k = 4, n = 2): 16 chips, 4 links each, diameter 2 × 2 = 4 hops, bisection 2 × 4 = 8 links. A 16 × 16 × 16 torus (k = 16, n = 3): 4,096 chips, 6 links each, diameter 3 × 8 = 24 hops, 3 × 16 ÷ 4 = 12 on average, bisection 2 × 16^2 = 512 links, an eighth of a link per chip. A full fat tree with 4,096 hosts has 2,048 host links' worth across its middle, half a link per host.
+
+**Where it is used:** Google's TPU pods (ICI links in a 3D torus, with optical circuit switches to rewire slices and route around failed chips) and other direct-connect designs; How to Scale Your Model works out TPU collectives along these axes. Supercomputer networks such as Fujitsu's Tofu (a 6D mesh and torus) use the same arithmetic.
+**In the book:** Chapter 34 (Tori, dragonflies and Google's approach) in words, with the 4 × 4 example; the formulas are only here.
+
+> **Definition — Network diameter:** The largest number of hops a message must make between any two devices in a network, following the shortest route. It sets the worst-case delay before any switch or link speed is counted.
+
 ### Little's law
 
 **What it does:** Links how many items are inside a system to how fast they arrive and how long each stays.
@@ -739,6 +763,31 @@ flowchart TD
 **In the book:** Only here (Chapter 44's 100,000 ÷ 80 ≈ 1,250 people decoding at once uses it without the name).
 
 > **Definition — Little's law:** The rule that, in any stable system, the average number of things inside equals their arrival rate times the average time each spends inside. Ten customers an hour staying half an hour means five customers in the shop on average.
+
+### GPU occupancy (how many warps an SM keeps active)
+
+**What it does:** Works out how many groups of threads one of a GPU's processor blocks can keep active at once, which decides how well it can hide memory delays.
+
+`blocks per SM = min(block limit, floor(max threads per SM ÷ threads per block), floor(registers per SM ÷ (registers per thread × threads per block)), floor(shared memory per SM ÷ shared memory per block)); occupancy = blocks per SM × warps per block ÷ max warps per SM`
+
+- **SM**: streaming multiprocessor, one of the GPU's processor blocks (132 on an H100)
+- **block**: a thread block, the group of threads a kernel hands to one SM at a time; **warps per block** = threads per block ÷ 32
+- **block limit**: the most blocks one SM can host (32 on an H100)
+- **max threads per SM**, **max warps per SM**: 2,048 threads, which is 64 warps, on an H100
+- **registers per SM**: 65,536 on an H100, shared by every resident thread; **registers per thread**: set by the compiler for each kernel
+- **shared memory**: the fast on-chip scratchpad, up to about 228 KB per SM on an H100
+- **floor()**: round down to a whole number
+
+**In plain words:** Each resource an SM has (thread slots, registers, scratchpad memory) is divided among the blocks living on it, and whichever runs out first sets how many blocks fit. While one warp waits hundreds of nanoseconds for memory, the SM switches to another that is ready, so by Little's law it needs enough warps, and enough memory requests in flight, to cover the wait.
+
+**Tiny example:** An H100 kernel with 256 threads per block (8 warps), 64 registers per thread and 48 KB of shared memory per block: registers allow 65,536 ÷ (64 × 256) = 4 blocks, thread slots allow 2,048 ÷ 256 = 8 and shared memory floor(228 ÷ 48) = 4, so 4 blocks × 8 warps = 32 of 64 warps, 50% occupancy. At 128 registers per thread, registers allow only 2 blocks: 25%. From the Little's law example above, 1.7 MB in flight spread over 132 SMs is about 12.7 KB per SM, roughly a hundred 128-byte loads outstanding on each.
+
+**Where it is used:** NVIDIA's occupancy calculator (in Nsight Compute) and launch-setting tuning in CUDA and Triton kernels. High occupancy is a means, not a goal: modern tensor-core kernels such as FlashAttention-3 and CUTLASS's warp-specialized matrix multiplications often run one or two large blocks per SM and hide memory delays with asynchronous copy hardware (Hopper's Tensor Memory Accelerator) instead.
+**In the book:** Only here (Chapter 32, Inside a GPU, explains SMs and warps).
+
+> **Definition — Occupancy (GPU):** The share of the maximum number of warps an SM can hold that a kernel actually keeps active. More active warps give the SM more ready work to switch to while others wait on memory.
+
+> **Definition — Thread block (CUDA block):** A group of up to 1,024 GPU threads that run together on one streaming multiprocessor and can share its fast scratchpad memory. A kernel launches many blocks, and the GPU spreads them over its SMs.
 
 ### Queueing delay for random arrivals (utilization, M/M/1, M/M/c)
 
@@ -815,7 +864,7 @@ flowchart TD
 
 **Tiny example:** Peak 1,000,000 tokens per second, 2,000 per GPU at the target, 60% utilization: 1,000,000 ÷ (2,000 × 0.6) ≈ 834 GPUs. Prompts at 3,000,000 tokens per second with 15,000 per prefill GPU need 200; output at 400,000 with 1,000 per decode GPU needs 400; a 1:2 ratio.
 
-**Where it is used:** Capacity planning at API providers, autoscalers such as NVIDIA Dynamo's planner, and cloud capacity reservations.
+**Where it is used:** Capacity planning at API providers, autoscalers such as NVIDIA Dynamo's planner, and cloud capacity reservations. Serving research calls the throughput that still meets the latency targets goodput (DistServe, 2024), the serving cousin of training goodput below.
 **In the book:** Chapter 44 (The same numbers from both directions) and Chapter 37 (Disaggregated serving and inference chips) in words; the pool ratio is only here.
 
 ### Availability, MTBF, MTTR and the nines
@@ -860,17 +909,18 @@ flowchart TD
 
 **What it does:** Shows how a job that needs every one of n parts fails n times as often as one part.
 
-`R(t) = exp(−t ÷ MTBF); λ = 1 ÷ MTBF; λ_job = n × λ_part, so MTBF_job = MTBF_part ÷ n; P(at least one failure in T) = 1 − exp(−n × T ÷ MTBF_part); FIT = failures per 10^9 device-hours, MTBF in hours = 10^9 ÷ FIT; annualized failure rate = 1 − exp(−8,760 ÷ MTBF)`
+`R(t) = exp(−t ÷ MTBF); λ = 1 ÷ MTBF; λ_job = n × λ_part, so MTBF_job = MTBF_part ÷ n; P(at least one failure in T) = 1 − exp(−n × T ÷ MTBF_part); FIT = failures per 10^9 device-hours, MTBF in hours = 10^9 ÷ FIT; annualized failure rate = 1 − exp(−8,760 ÷ MTBF); parts down at any moment ≈ n × repair time ÷ MTBF_part`
 
 - **R(t)**: the chance a part survives t hours
 - **exp()**: e raised to the power
 - **λ** (lambda): the failure rate per hour
 - **n**: parts the job needs; **T**: the length of the job
 - **FIT**: failures in time, a standard unit for chip and component failure rates
+- **repair time**: hours from a failure until the part is replaced and back in service
 
-**In plain words:** With constant failure rates (the exponential model; Weibull curves are used when parts wear out), failure rates add up. A part that fails once in years becomes, across 100,000 copies, an interruption every half hour.
+**In plain words:** With constant failure rates (the exponential model; Weibull curves are used when parts wear out), failure rates add up. A part that fails once in years becomes, across 100,000 copies, an interruption every half hour. By Little's law (above), failures per hour times hours each part stays broken gives how many are broken at once, which sets the number of hot spares to keep; failures arrive at random (a Poisson count), so planners add a few times its square root.
 
-**Tiny example:** One part fails every 10,000 hours on average; a job needs 1,000 of them: job MTBF = 10 hours, and P(failure within 1 hour) = 1 − exp(−0.1) ≈ 9.5%. Llama 3 405B: 419 interruptions in 54 days on 16,384 GPUs is one every 54 × 24 ÷ 419 ≈ 3.1 hours, about 3.1 × 16,384 ≈ 50,700 hours per GPU (about 19,700 FIT); at 100,000 GPUs, about every 30 minutes.
+**Tiny example:** One part fails every 10,000 hours on average; a job needs 1,000 of them: job MTBF = 10 hours, and P(failure within 1 hour) = 1 − exp(−0.1) ≈ 9.5%. Llama 3 405B: 419 interruptions in 54 days on 16,384 GPUs is one every 54 × 24 ÷ 419 ≈ 3.1 hours, about 3.1 × 16,384 ≈ 50,700 hours per GPU (about 19,700 FIT); at 100,000 GPUs, about every 30 minutes. With 48-hour repairs, 100,000 × 48 ÷ 50,700 ≈ 95 GPUs are down at a typical moment; 125 spares (95 plus about 3 × sqrt(95) ≈ 29) run short only about 0.1% of the time.
 
 **Where it is used:** Planning checkpoints, hot spares and fault-tolerant training at 100,000-GPU scale.
 **In the book:** Chapter 37 (Worked example: how often does something break?), Chapter 34 (Failures at scale) and Chapter 44 (Step 2: the pretraining run); the exponential model, FIT and annualized failure rate are only here.
@@ -952,9 +1002,32 @@ flowchart TD
 **Tiny example:** 1 billion parameters × 14 = 14 GB. A 405-billion-parameter model: 405 × 10^9 × 14 ≈ 5.7 TB; at 1 TB/s of storage about 5.7 s, at 95 GB/s about 60 s. Spread over 1,024 GPUs that is about 5.5 GB each, about 87 ms over a 64 GB/s link.
 
 **Where it is used:** Sizing storage for training clusters; asynchronous checkpointing in PyTorch Distributed Checkpoint, Orbax and NeMo.
-**In the book:** Chapter 34 (Worked example: why checkpoints need parallel storage) and Chapter 37 (asynchronous checkpointing in words).
+**In the book:** Chapter 34 (Worked example: why checkpoints need parallel storage) and Chapter 37 (When things break: failures, checkpointing and goodput), which describes asynchronous checkpointing in words.
 
 > **Definition — Asynchronous checkpointing:** Saving a training run by first copying its state quickly into the servers' ordinary memory, then writing it to storage in the background while training continues, so the run pauses only for seconds.
+
+### Replication and erasure coding (storage overhead and durability)
+
+**What it does:** Compares how much extra disk space two ways of protecting stored data cost, and how likely each is to lose data when disks fail.
+
+`r-way replication: storage overhead = r, survives r − 1 lost copies, P(loss) ≈ p^r; erasure code with k data and m parity pieces: storage overhead = (k + m) ÷ k, survives any m lost pieces, P(loss) = sum over j from m + 1 to k + m of C(k + m, j) × p^j × (1 − p)^(k + m − j); rebuilding one lost piece reads k pieces`
+
+- **r**: the number of full copies
+- **k**: data pieces each block is split into; **m**: extra parity pieces computed from them
+- **p**: the chance that a given piece's disk fails before a lost piece can be rebuilt (failures assumed independent)
+- **C(k + m, j)**: the number of ways to choose which j of the k + m pieces fail
+- **P(loss)**: the chance that more pieces fail than the scheme can tolerate
+
+**In plain words:** Three full copies cost three times the space. An erasure code such as Reed–Solomon spreads k data pieces and m parity pieces over different disks and rebuilds the block from any k survivors, so it survives as many failures for half the space or less. The cost is repair work: rebuilding one piece means reading k others, which is why locally repairable codes add small extra parity groups. The loss formula is the k-out-of-n sum of the redundancy entry above, applied to disks.
+
+**Tiny example:** With p = 0.001: three copies cost 3 times the space and lose data with probability 0.001^3 = 10^−9. A (6, 3) code costs 9 ÷ 6 = 1.5 times and needs 4 of its 9 pieces to fail: about C(9, 4) × 0.001^4 = 126 × 10^−12 ≈ 1.3 × 10^−10, both cheaper and safer under these assumptions. A (10, 4) code costs 1.4 times with P(loss) ≈ C(14, 5) × 0.001^5 = 2,002 × 10^−15 ≈ 2.0 × 10^−12, but each repair reads 10 pieces.
+
+**Where it is used:** The distributed file and object stores that hold training data and checkpoints: HDFS's erasure-coding policies (such as RS-6-3 and RS-10-4), Facebook's f4 blob store (a (10, 4) Reed–Solomon code) and Azure Storage's locally repairable codes (Huang and others, 2012). Real failures are often correlated (a power or rack outage), so pieces are also spread across racks and sites.
+**In the book:** Chapter 34 (The software that turns a cluster into one computer, the erasure-coding definition) explains it in words with the (6, 3) example; the formulas are only here.
+
+> **Definition — Reed–Solomon code:** The most widely used erasure code: it turns k pieces of data into k + m pieces such that any k of them are enough to rebuild the original. It protects data in storage systems, QR codes and CDs.
+
+> **Definition — Locally repairable code:** An erasure code that adds small extra parity groups so that a single lost piece can be rebuilt from a few nearby pieces instead of from all k, cutting repair traffic at a small cost in storage.
 
 ### Moore's law and other exponential hardware trends
 
@@ -989,7 +1062,7 @@ flowchart TD
 
 **In plain words:** Power is voltage times current. Heat lost in a wire grows with the square of the current, so ten times the voltage carries the same power with one-tenth the current and one-hundredth the loss. A chip running near 1 V must draw enormous currents, so the last centimeters of copper are a major design problem.
 
-**Tiny example:** A toaster at 120 V drawing 10 A uses 1,200 W and has R = 120 ÷ 10 = 12 ohms. 100 MW over a 5-ohm line: at 345 kV, I ≈ 290 A and loss = 290^2 × 5 ≈ 0.42 MW (0.4%); at 34.5 kV, I ≈ 2,900 A and the loss is 42 MW. A 1,000 W chip at 1 V draws 1,000 A; through just 0.1 milliohm that wastes 1,000^2 × 0.0001 = 100 W. One meter of 1 mm^2 copper wire: 1.68 × 10^−8 × 1 ÷ 10^−6 ≈ 0.017 ohm.
+**Tiny example:** A toaster at 120 V drawing 10 A uses 1,200 W and has R = 120 ÷ 10 = 12 ohms. 100 MW over a 5-ohm line, treated as one simple circuit (three-phase lines, below, spread it over three wires): at 345 kV, I ≈ 290 A and loss = 290^2 × 5 ≈ 0.42 MW (0.4%); at 34.5 kV, I ≈ 2,900 A and the loss is 42 MW. A 1,000 W chip at 1 V draws 1,000 A; through just 0.1 milliohm that wastes 1,000^2 × 0.0001 = 100 W. One meter of 1 mm^2 copper wire: 1.68 × 10^−8 × 1 ÷ 10^−6 ≈ 0.017 ohm.
 
 **Where it is used:** Power-delivery design from the grid to the GPU, busbar and cable sizing, and the move of racks from 54 V toward 800 V DC.
 **In the book:** Chapter 39 (Voltage, current and resistance; Power equals voltage times current; Why wires get hot) and Chapter 34 (A kilowatt in your palm; Power at the board); R = ρ × L ÷ A is only here.
@@ -1003,7 +1076,7 @@ flowchart TD
 `P_dynamic = α × C × V^2 × f; P_static = V × I_leak; P_total = P_dynamic + P_static; with voltage scaled along with frequency: P_dynamic ∝ f^3 while speed ∝ f`
 
 - **α** (alpha): activity factor, the share of transistors switching each cycle
-- **C**: the switched capacitance, the electric charge storage being filled and emptied
+- **C**: the switched capacitance, how much electric charge the switching wires and transistors hold per volt; it is filled and emptied every time they switch
 - **V**: supply voltage; **f**: clock frequency
 - **I_leak**: leakage current that flows even when nothing switches
 
@@ -1081,7 +1154,7 @@ flowchart TD
 - **final test yield**: the share of packaged chips that pass
 - **bonding yield**: the chance every connection in the package works
 
-**In plain words:** Bad dies raise the cost of good ones. For chiplet and HBM designs every die and every bond must work, so dies are tested before assembly; HBM stacks and advanced packaging (CoWoS) can now cost more than the logic die.
+**In plain words:** Bad dies raise the cost of good ones. For chiplet and HBM designs every die and every bond must work, so dies are tested before assembly; analysts estimate that the HBM stacks and advanced packaging (CoWoS) together cost more than the logic die.
 
 **Tiny example:** 63 dies × 44% ≈ 28 good dies; $17,000 ÷ 28 ≈ $607 of silicon per H100 die. Ten attachments each 99% reliable: 0.99^10 ≈ 90% package yield. With assumed test and packaging costs of $50 and $1,000 and 98% final yield: (607 + 50 + 1,000) ÷ 0.98 ≈ $1,691.
 
@@ -1250,7 +1323,7 @@ flowchart LR
 - **total facility energy**: everything the site draws: IT, cooling, power losses, lighting
 - **IT equipment energy**: servers, storage and network gear
 - **partial PUE**: PUE counting only one subsystem's overhead
-- **ITUE**: the same idea inside a server (fans and power supplies as overhead); **TUE**: total-power usage effectiveness
+- **ITUE**: the same idea inside a server (fans and power supplies as overhead), which Datacenter as a Computer calls SPUE (server PUE); **TUE**: total-power usage effectiveness (TPUE there)
 
 **In plain words:** 1.0 would be no overhead. Leading hyperscale sites run about 1.1 (Google reported a 2025 fleet average of 1.09) while industry surveys average about 1.5 (Uptime Institute 2025: about 1.54). Server fans count as IT, so moving to liquid cooling can raise PUE while cutting total energy, and PUE says nothing about useful work, water or carbon.
 
@@ -1662,6 +1735,7 @@ flowchart TD
 - **I_t**: investment in year t; **M_t**: operations and maintenance; **F_t**: fuel
 - **E_t**: electricity generated in year t
 - **r**: the discount rate
+- **t**: the year, counting the upfront investment as year 0 (not discounted)
 
 **In plain words:** Discounted lifetime costs divided by discounted lifetime energy, used to compare solar, wind, gas, nuclear and storage. It ignores when the energy arrives, which matters for a round-the-clock AI load.
 

@@ -1,6 +1,6 @@
 ## Classical machine learning, evaluation and retrieval
 
-This family holds the equations that do most of the everyday work of machine learning outside the giant neural networks, and the equations that decide whether any model, giant or small, is actually good. The first group builds models from data: weighted sums fitted by least squares (linear and logistic regression), margins and kernels (support vector machines and Gaussian processes), impurity scores that grow decision trees, and the voting and boosting rules that turn many trees into random forests and XGBoost, still the strongest tools for spreadsheet-style data in 2026. The second group finds structure without answers: distances, k-means, mixtures fitted by expectation-maximization, and PCA, t-SNE and UMAP for squashing many columns into a picture. The third and largest group is measurement: the confusion-matrix rates (precision, recall, F1, AUC), calibration scores, regression and forecasting errors, text-overlap scores such as BLEU, the pass@k estimators of coding benchmarks, and the statistics that put honest error bars on a leaderboard (standard errors, paired tests, the bootstrap, Elo and Bradley-Terry ratings, A/B tests and causal estimates). The last group ranks things: TF-IDF and BM25 for keyword search, approximate nearest-neighbor indexes for vector search, the ranking metrics NDCG and MRR that score both, and the matrix-factorization, two-tower and auction formulas behind recommenders and ads. The same few ideas recur throughout: a weighted sum, a squared or logarithmic error, a distance or dot product, and an average over examples with a standard error attached. The entries run from the simplest (rescaling a column) to the most specialized (ad auctions), so each one needs only those before it.
+This family holds the equations that do most of the everyday work of machine learning outside the giant neural networks, and the equations that decide whether any model, giant or small, is actually good. The first group builds models from data: weighted sums fitted by least squares (linear and logistic regression), margins and kernels (support vector machines and Gaussian processes), impurity scores that grow decision trees, and the voting and boosting rules that turn many trees into random forests and XGBoost, still the strongest tools for spreadsheet-style data in 2026. The second group finds structure without answers: distances, k-means, mixtures fitted by expectation-maximization, and PCA, t-SNE and UMAP for squashing many columns into a picture. The third and largest group is measurement: the confusion-matrix rates (precision, recall, F1, AUC) and the group fairness rates built from them, calibration scores, regression and forecasting errors, text-overlap scores such as BLEU, the pass@k estimators of coding benchmarks, and the statistics that put honest error bars on a leaderboard (standard errors, paired tests, the bootstrap, Elo and Bradley-Terry ratings, A/B tests and causal estimates). The last group ranks things: TF-IDF and BM25 for keyword search, PageRank for link graphs, approximate nearest-neighbor indexes for vector search, the ranking metrics NDCG and MRR that score both, and the matrix-factorization, two-tower and auction formulas behind recommenders and ads. The same few ideas recur throughout: a weighted sum, a squared or logarithmic error, a distance or dot product, and an average over examples with a standard error attached. The entries run from the simplest (rescaling a column) to the most specialized (ad auctions), so each one needs only those before it.
 
 ```mermaid
 flowchart LR
@@ -89,7 +89,7 @@ flowchart LR
 **Tiny example:** x = [1, 2, 3] and z = [4, 0, 3] differ by 3, 2 and 0. Manhattan: 3 + 2 + 0 = 5. Euclidean: sqrt(9 + 4 + 0) = sqrt(13) ≈ 3.61. Chebyshev: 3. The codes 10110 and 11100 differ in positions 2 and 4, so their Hamming distance is 2.
 
 **Where it is used:** k-NN, clustering, vector databases (L2 and inner-product indexes in FAISS and pgvector), search over binary-quantized embeddings (Hamming), error-correcting codes.
-**In the book:** Chapter 10 (k-nearest neighbors) and Appendix B (Distance) for Euclidean; Chapter 48 (A*: search with a sense of direction) for Manhattan; the general p-norm, Chebyshev and Hamming are only here.
+**In the book:** Chapter 10 (k-nearest neighbors) and Appendix B (Distance) for Euclidean; Chapter 48 (A*: search with a sense of direction) for Manhattan; the general p-norm, Chebyshev and Hamming are only here. Vector norms themselves are also in the foundations section of this appendix.
 
 > **Definition — Minkowski distance:** A family of distances between two vectors that raises each coordinate gap to a power p, adds them and takes the p-th root; p = 1 gives Manhattan distance and p = 2 gives ordinary straight-line (Euclidean) distance.
 
@@ -185,7 +185,7 @@ flowchart LR
 **Tiny example:** Data (1, 3) and (2, 5) with w = 1, b = 0: predictions 1 and 2, errors −2 and −3, loss (4 + 9) ÷ 2 = 6.5. Gradient for w: (2 ÷ 2) × (−2 × 1 + −3 × 2) = −8; for b: (2 ÷ 2) × (−2 − 3) = −5. Both are negative, so w and b should grow.
 
 **Where it is used:** The training objective of linear regression and of any network that predicts real numbers (value heads, regression heads, the noise-prediction loss of diffusion models); the same formula on test data is the MSE metric.
-**In the book:** Chapter 8 (Measuring wrongness: the loss function; Exercise 6), Appendix B (Mean squared error; MSE slopes for a line).
+**In the book:** Chapter 8 (Measuring wrongness: the loss function; Exercise 6), Appendix B (Mean squared error; MSE slopes for a line). MSE as a network training loss is also in the neural networks and deep learning section of this appendix.
 
 ### Normal equations (closed-form least squares)
 
@@ -240,7 +240,7 @@ flowchart LR
 **Tiny example:** One feature, no bias, x = [1, 2], y = [2, 4]. Plain least squares: w = (1 × 2 + 2 × 4) ÷ (1 + 4) = 10 ÷ 5 = 2. Ridge with λ = 5: w = 10 ÷ (5 + 5) = 1. Check the ridge loss: at w = 2 it is 0 + 5 × 4 = 20; at w = 1 it is (1^2 + 2^2) + 5 × 1 = 10, lower.
 
 **Where it is used:** The default regularizer for linear and logistic models (scikit-learn Ridge; LogisticRegression's default penalty is L2), the λ term in XGBoost leaf weights, L2 penalties in matrix factorization.
-**In the book:** Chapter 9 (Regularization: keeping models simple on purpose); the closed form is only here.
+**In the book:** Chapter 9 (Regularization: keeping models simple on purpose); the closed form is only here. The prior view (MAP estimation, priors as regularizers) is in the foundations section of this appendix.
 
 ### Lasso (L1 regularization) and soft thresholding
 
@@ -259,7 +259,7 @@ flowchart LR
 **Tiny example:** With λ = 0.3: z_j = 0.8 becomes 0.8 − 0.3 = 0.5; z_j = −0.9 becomes −0.6; z_j = −0.2 becomes 0, because |−0.2| − 0.3 is negative.
 
 **Where it is used:** Sparse feature selection in tabular models, genomics and finance (scikit-learn Lasso, glmnet); the L1 penalty on sparse-autoencoder activations in interpretability research is the same term.
-**In the book:** Chapter 9 (Regularization: L1 and L2 regularization) in words; the formula and update are only here.
+**In the book:** Chapter 9 (Regularization: L1 and L2 regularization) in words; the formula and update are only here. Soft-thresholding as a general proximal step is also in the foundations section of this appendix.
 
 > **Definition — Soft thresholding:** The update that shrinks a number toward zero by a fixed amount and sets it to exactly zero if it would cross; it is how the lasso turns small weights off.
 
@@ -364,6 +364,33 @@ flowchart LR
 
 **Where it is used:** Multi-class text and image classifiers and intent classifiers; the final layer of every classification network and of an LLM's next-token prediction has this form.
 **In the book:** Chapter 10 (Linear and logistic regression, revisited: softmax regression, in words); the softmax itself is in Chapter 6 and Appendix B.
+
+### Generalized linear models: Poisson regression and iteratively reweighted least squares
+
+**What it does:** Extends the weighted sum to counts and other kinds of targets by passing it through a fixed link function, and fits the model by repeated weighted least squares.
+
+`g(E[y given x]) = w · x + b`; Poisson regression: `E[y given x] = μ = exp(w · x + b)`, loss `L = sum over i of (μ_i − y_i × ln(μ_i))`; IRLS step: `w_new = (X^T × W × X)^(−1) × X^T × W × z`, with `z = X × w + W^(−1) × (y − μ)`
+
+- **y**: the target (for Poisson regression a count: 0, 1, 2, ...); **E[y given x]**: its expected value for input x
+- **g**: the link function: the identity for linear regression, the logit ln(p ÷ (1 − p)) for logistic regression, ln for Poisson regression
+- **w**, **b**: the weights and bias; **μ** (mu), **μ_i**: the predicted average count for x and for example i
+- **L**: the Poisson negative log-likelihood, leaving out a term that does not depend on the weights
+- **X**: the data matrix with a column of 1s, so b is one of the weights; **y**, **μ**: the lists of targets and predictions
+- **W**: a diagonal matrix of example weights, μ_i for Poisson and p_i × (1 − p_i) for logistic regression; **W^(−1)**: its inverse (1 divided by each weight)
+- **z**: the "working response", the current score plus each example's scaled error
+
+**In plain words:** Linear and logistic regression are two members of one family: a weighted sum passed through the inverse of a link function chosen to suit the target. For counts, the exponential keeps predictions positive, and raising feature j by one multiplies the expected count by exp(w_j). The standard fitting method, iteratively reweighted least squares (IRLS), is Newton's method in disguise: each round solves the normal equations with example weights recomputed from the current predictions. Gamma regression for positive amounts and Tweedie regression for amounts with many exact zeros (such as yearly claim costs) are siblings.
+
+**Tiny example:** Claims per driver per year with ln(μ) = −2 + 0.7 × young, where young is 1 for drivers under 25: other drivers expect exp(−2) ≈ 0.135 claims and young ones exp(−1.3) ≈ 0.273, so being young multiplies the expected count by exp(0.7) ≈ 2.01. A young driver who filed 1 claim adds 0.273 − 1 × ln(0.273) ≈ 0.273 + 1.300 = 1.573 to the loss. IRLS with only an intercept on the counts 0, 2 and 4 reduces to w_new = w + (mean y − μ) ÷ μ: starting at w = 0 (μ = 1) it moves to 0 + (2 − 1) ÷ 1 = 1, then 0.736, 0.694 and 0.693 = ln(2), the log of the mean count.
+
+**Where it is used:** Insurance pricing, where Poisson models of claim frequency, Gamma models of claim size and Tweedie models of total claim cost are the long-standing standard; count forecasting (calls, sales, visits); scikit-learn PoissonRegressor and TweedieRegressor, statsmodels GLM and R's glm, which fit by IRLS; LightGBM objective='poisson' and XGBoost count:poisson put the same loss inside boosted trees.
+**In the book:** Chapter 10 (Linear and logistic regression, revisited: generalized linear models and Poisson regression, in words); the formulas are only here. Newton's method and the Poisson distribution are in the foundations section of this appendix.
+
+> **Definition — Link function:** In a generalized linear model, the function that connects the expected value of the target to the weighted sum of the inputs, such as the logit for probabilities or the logarithm for counts.
+
+> **Definition — Poisson regression:** A generalized linear model for counts, such as claims or visits, that predicts the logarithm of the expected count as a weighted sum of the inputs.
+
+> **Definition — IRLS (iteratively reweighted least squares):** The standard way to fit generalized linear models: repeatedly solve a weighted least-squares problem whose weights and targets are updated from the current predictions; it is Newton's method applied to the model's likelihood.
 
 ### Perceptron learning rule
 
@@ -525,11 +552,31 @@ flowchart LR
 
 > **Definition — Expected improvement:** An acquisition function equal to the average amount by which a candidate setting would beat the best result so far, counting only the outcomes where it does.
 
+### Successive halving and Hyperband (early-stopping budgets for tuning)
+
+**What it does:** Spends a tuning budget mostly on promising hyperparameter settings by training many settings briefly and promoting only the best to longer runs.
+
+`n_i = floor(n × η^(−i))` settings, each trained with budget `r_i = r × η^i`, in round i = 0, 1, 2, ... of successive halving; Hyperband: `s_max = floor(log_η(R ÷ r))`, and bracket s = s_max, ..., 0 starts `ceil((s_max + 1) × η^s ÷ (s + 1))` settings at budget `R × η^(−s)`, then runs successive halving
+
+- **n**: the number of settings started; **r**: the smallest budget (epochs, steps or data) any setting gets
+- **η** (eta): the cut factor, usually 3: each round keeps the best 1 ÷ η of the settings and gives them η times the budget
+- **floor**, **ceil**: round down and round up
+- **R**: the most budget any single setting may receive
+- **s**: a bracket; large s starts many settings on small budgets, small s a few settings on large budgets; **s_max**: the largest bracket, the one that starts at the smallest budget r
+- **log_η**: the logarithm to base η (how many times r can be multiplied by η before reaching R)
+
+**In plain words:** Bad settings usually look bad early, so successive halving runs a tournament: everyone trains a little, the top third trains three times longer, and so on, until one winner gets the full budget. Each round costs about the same, n × r. The risk is eliminating a slow starter, so Hyperband runs several tournaments, from aggressive (many settings, tiny first budget) to cautious (a few settings trained fully from the start). ASHA is an asynchronous version that promotes settings as soon as enough results arrive, and BOHB (Bayesian optimization plus Hyperband) chooses the settings to try with Bayesian optimization instead of at random.
+
+**Tiny example:** Chapter 9's tournament: n = 27, r = 1 epoch, η = 3. Rounds of 27 × 1, 9 × 3, 3 × 9 and 1 × 27 epochs cost 27 epochs each, 108 in total, against 27 × 27 = 729 to train every setting fully. Hyperband with R = 27 epochs: s_max = log_3(27) = 3, and its four brackets start 27 settings at 1 epoch, ceil(4 × 9 ÷ 3) = 12 at 3 epochs, ceil(4 × 3 ÷ 2) = 6 at 9 epochs, and 4 at the full 27 epochs.
+
+**Where it is used:** Optuna's SuccessiveHalvingPruner and HyperbandPruner, Ray Tune's ASHA scheduler, Keras Tuner's Hyperband tuner, scikit-learn's HalvingGridSearchCV and HalvingRandomSearchCV (Hyperband: Li et al., JMLR 2018).
+**In the book:** Chapter 9 (Tuning hyperparameters without cheating: successive halving, 108 versus 729 epochs); the bracket formulas are only here.
+
 ### k-nearest neighbors prediction (with the curse of dimensionality)
 
 **What it does:** Predicts from the labels of the most similar training examples.
 
-classification: `y_hat = most common label among the k training points closest to x`; regression: `y_hat = (1 ÷ k) × sum over i in N_k(x) of y_i`; distance-weighted: `y_hat = sum of (y_i ÷ d_i) ÷ sum of (1 ÷ d_i)`; cube edge needed to hold a fraction r of uniform data in d dimensions `= r^(1 ÷ d)`
+`y_hat = most common label among the k training points closest to x` (classification); `y_hat = (1 ÷ k) × sum over i in N_k(x) of y_i` (regression); `y_hat = sum of (y_i ÷ d_i) ÷ sum of (1 ÷ d_i)` (distance-weighted); `cube edge = r^(1 ÷ d)`, the edge needed to hold a fraction r of uniform data in d dimensions
 
 - **x**: the new example
 - **k**: how many neighbors to consult (chosen by cross-validation)
@@ -581,7 +628,7 @@ classification: `y_hat = most common label among the k training points closest t
 **Tiny example:** A word never seen in 100 spam words, vocabulary 50: (0 + 1) ÷ (100 + 50) ≈ 0.0067 instead of 0.
 
 **Where it is used:** Naive Bayes text classifiers (the scikit-learn alpha parameter), n-gram language models, smoothing click-through estimates for items with few impressions.
-**In the book:** Chapter 10 (Naive Bayes; Exercise 4 adds 1 to each count and 2 to each total); the general formula is only here.
+**In the book:** Chapter 10 (Naive Bayes; Exercise 4 adds 1 to each count and 2 to each total); the general formula is only here. Add-one smoothing as a Beta prior is also in the foundations section of this appendix.
 
 > **Definition — Laplace smoothing (additive smoothing):** Adding a small pretend count to every possible outcome before turning counts into probabilities, so nothing gets probability zero just because it was not seen in training.
 
@@ -624,7 +671,7 @@ classification: `y_hat = most common label among the k training points closest t
 
 **What it does:** Grows a tree that predicts numbers, choosing splits that make each side's values as alike as possible.
 
-choose the split minimizing `sum over i in L of (y_i − mean_L)^2 + sum over i in R of (y_i − mean_R)^2`; leaf prediction `= mean of the y_i in the leaf`
+`split error = sum over i in L of (y_i − mean_L)^2 + sum over i in R of (y_i − mean_R)^2`, minimized over all candidate splits; `leaf prediction = mean of the y_i in the leaf`
 
 - **L**, **R**: the examples sent left and right by a candidate question (a feature and a threshold)
 - **y_i**: example i's target value
@@ -682,7 +729,7 @@ choose the split minimizing `sum over i in L of (y_i − mean_L)^2 + sum over i 
 
 **What it does:** Combines many decorrelated decision trees into one prediction.
 
-classification: `y_hat = most common class among f_1(x), ..., f_B(x)` (soft vote: average the trees' class probabilities); regression: `y_hat = (1 ÷ B) × sum over b of f_b(x)`; features tried per split `m ≈ sqrt(p)`
+`y_hat = most common class among f_1(x), ..., f_B(x)` (classification; a soft vote averages the trees' class probabilities instead); `y_hat = (1 ÷ B) × sum over b of f_b(x)` (regression); `m ≈ sqrt(p)` features tried per split
 
 - **f_b(x)**: tree b's prediction for input x
 - **B**: the number of trees
@@ -728,7 +775,7 @@ classification: `y_hat = most common class among f_1(x), ..., f_B(x)` (soft vote
 
 **In plain words:** Each tree minimizes a quadratic approximation of the loss, sum over leaves of [G_j × w_j + (1 ÷ 2) × (H_j + λ) × w_j^2] + γ × (number of leaves). Solving for each leaf gives w_j, and plugging it back gives how much a split lowers the loss. A split is kept only if Gain is positive.
 
-**Tiny example:** Squared error, current prediction 0, targets 2, 4, −1, −3: g = [−2, −4, 1, 3] and every h = 1. Split the first two from the last two, with λ = 1: G_L = −6, H_L = 2, G_R = 4, H_R = 2. Leaf values 6 ÷ 3 = 2 and −4 ÷ 3 ≈ −1.33. Gain = 0.5 × (36 ÷ 3 + 16 ÷ 3 − 4 ÷ 5) = 0.5 × (12 + 5.33 − 0.8) ≈ 8.27; with γ = 1 it is 7.27, so keep the split.
+**Tiny example:** XGBoost's squared-error loss is (1 ÷ 2) × (prediction − y)^2, whose slope is prediction − y and whose curvature is 1. With current prediction 0 and targets 2, 4, −1, −3: g = [−2, −4, 1, 3] and every h = 1. Split the first two from the last two, with λ = 1: G_L = −6, H_L = 2, G_R = 4, H_R = 2. Leaf values 6 ÷ 3 = 2 and −4 ÷ 3 ≈ −1.33. Gain = 0.5 × (36 ÷ 3 + 16 ÷ 3 − 4 ÷ 5) = 0.5 × (12 + 5.33 − 0.8) ≈ 8.27; with γ = 1 it is 7.27, so keep the split.
 
 **Where it is used:** XGBoost (Chen and Guestrin, 2016), and the same second-order formulas in LightGBM and CatBoost, the libraries behind most production tabular models.
 **In the book:** Only here (Chapter 10 names XGBoost, LightGBM and CatBoost).
@@ -794,6 +841,26 @@ classification: `y_hat = most common class among f_1(x), ..., f_B(x)` (soft vote
 **Where it is used:** The standard explanation tool for gradient-boosted and other tabular models (the shap library; XGBoost and LightGBM pred_contribs), regulated credit and insurance decisions, data valuation (Data Shapley). Interpretability methods for neural networks are in the reinforcement learning, alignment and safety section of this appendix.
 **In the book:** Chapter 48 (A short course in game theory: Shapley value worked by join orders) and Chapter 10 (SHAP, in words); the factorial formula is only here.
 
+### LIME local surrogate explanation
+
+**What it does:** Explains one prediction of any model by fitting a simple, readable model to the black box's answers on slightly changed copies of the input.
+
+`explanation(x) = argmin over simple models g of [sum over perturbed samples z of π_x(z) × (f(z) − g(z))^2 + Ω(g)]`, with `π_x(z) = exp(−D(x, z)^2 ÷ σ^2)`
+
+- **x**: the input being explained; **z**: a perturbed copy of it (some features changed or removed)
+- **f**: the black-box model; **f(z)**: its prediction for z
+- **g**: a simple model, usually a sparse linear model whose weights are the explanation
+- **π_x(z)** (pi): a closeness weight, 1 when z equals x and falling with distance
+- **D**: a distance between inputs; **σ** (sigma): the kernel width
+- **Ω(g)** (Omega): a complexity penalty, such as allowing g at most K features
+
+**In plain words:** Poke the model with many small variations of one input, record its answers, and fit a straight line to them, trusting the variations closest to the original most. The line's slopes say which features mattered for this one case. The answer depends on choices such as the kernel width and how inputs are perturbed, and it can change from run to run.
+
+**Tiny example:** A churn model gives 0.9, 0.8 and 0.5 for copies of a customer using the product 1, 2 and 3 hours a week; the real customer uses 2. With σ = 1 the closeness weights are exp(−1) ≈ 0.37, 1 and 0.37. Because the weights are symmetric, the weighted straight-line fit has slope (0.5 − 0.9) ÷ 2 = −0.2: near this customer, each extra weekly hour lowers the churn probability by about 0.2.
+
+**Where it is used:** The lime library for tabular, text and image classifiers (Ribeiro, Singh and Guestrin, 2016); explaining individual credit, medical and fraud decisions, alongside or instead of SHAP.
+**In the book:** Chapter 10 (Random forests: a crowd of trees: LIME, in words); the objective is only here.
+
 ### k-means objective and Lloyd's algorithm
 
 **What it does:** Groups points into k clusters by repeatedly assigning each to its nearest center and moving each center to the middle of its group.
@@ -822,7 +889,7 @@ classification: `y_hat = most common class among f_1(x), ..., f_B(x)` (soft vote
 - **x**: a candidate point
 - **D(x)**: the distance from x to the nearest center already chosen (the first center is picked uniformly at random)
 
-**In plain words:** Points far from every existing center are much more likely to be picked next, so the seeds spread out. This gives an expected objective within a factor of about log(k) of the best possible.
+**In plain words:** Points far from every existing center are much more likely to be picked next, so the seeds spread out. Arthur and Vassilvitskii (2007) proved that the expected objective of these seeds alone is at most 8 × (ln(k) + 2) times the best possible; running Lloyd's algorithm afterwards only lowers it.
 
 **Tiny example:** Points 1, 2, 3, 10, 11, 12 with first center 2: D^2 = 1, 0, 1, 64, 81, 100, total 247. The point 12 is picked with probability 100 ÷ 247 ≈ 0.40, and some point of the far group with probability 245 ÷ 247 ≈ 0.99.
 
@@ -870,6 +937,29 @@ classification: `y_hat = most common class among f_1(x), ..., f_B(x)` (soft vote
 
 > **Definition — Dendrogram:** A tree diagram that records the order in which hierarchical clustering merged points and groups, with the height of each join showing how far apart the merged groups were.
 
+### DBSCAN density rule (ε-neighborhoods and core points)
+
+**What it does:** Finds clusters of any shape as crowded regions of the data, and labels points in empty regions as noise.
+
+`N_ε(x) = all points z with d(x, z) ≤ ε`; `x is a core point if |N_ε(x)| ≥ minPts`; a cluster is a set of core points linked through each other's neighborhoods, plus the other points inside those neighborhoods; every remaining point is noise
+
+- **x**, **z**: data points; **d**: a distance, usually Euclidean
+- **ε** (epsilon): the neighborhood radius
+- **N_ε(x)**: the ε-neighborhood of x, including x itself
+- **|...|**: the number of points in it
+- **minPts**: how many points a neighborhood needs to count as crowded
+
+**In plain words:** A point with enough neighbors close by is a core point, and core points within ε of each other belong to the same cluster, which grows outward like a chain. Points near a core point but not crowded themselves join as border points; lonely points are noise. Unlike k-means, you do not choose the number of clusters, but you do choose ε and minPts. HDBSCAN repeats the idea at every radius and keeps the clusters that last longest, so ε need not be chosen.
+
+**Tiny example:** Points 1, 2, 3, 10, 11, 12 and 30 on a line with ε = 1.5 and minPts = 3. N(2) = {1, 2, 3} and N(11) = {10, 11, 12} have 3 points each, so 2 and 11 are core points; 1, 3, 10 and 12 have only 2 points in their neighborhoods and become border points. The result is two clusters, {1, 2, 3} and {10, 11, 12}, and 30, with no neighbors, is noise.
+
+**Where it is used:** Clustering GPS and map data and spotting outliers (scikit-learn DBSCAN, whose min_samples counts the point itself, and HDBSCAN); HDBSCAN on UMAP-reduced embeddings is the default clustering step of the BERTopic topic-modeling library.
+**In the book:** Chapter 10 (Clustering: finding groups without answers: DBSCAN, in words); the rule is only here.
+
+> **Definition — Core point (in DBSCAN):** A data point that has at least a set minimum number of points, itself included, within a set radius; clusters are grown by linking core points that lie within that radius of each other.
+
+> **Definition — HDBSCAN (hierarchical DBSCAN):** A version of DBSCAN that considers every neighborhood radius at once and keeps the clusters that persist over the widest range, so the radius does not have to be chosen by hand.
+
 ### Gaussian mixture model
 
 **What it does:** Describes data as a blend of several bell curves, giving every point a soft membership in each.
@@ -892,15 +982,18 @@ classification: `y_hat = most common class among f_1(x), ..., f_B(x)` (soft vote
 
 **What it does:** Fits a mixture by alternating between guessing soft memberships and refitting each component to them.
 
-E-step: `r_ik = π_k × N(x_i given μ_k, Σ_k) ÷ sum over j of π_j × N(x_i given μ_j, Σ_j)`; M-step: `N_k = sum over i of r_ik`, `μ_k = (1 ÷ N_k) × sum over i of r_ik × x_i`, `Σ_k = (1 ÷ N_k) × sum over i of r_ik × (x_i − μ_k) × (x_i − μ_k)^T`, `π_k = N_k ÷ n`
+`r_ik = π_k × N(x_i given μ_k, Σ_k) ÷ sum over j of π_j × N(x_i given μ_j, Σ_j)` (E-step); `N_k = sum over i of r_ik`, `μ_k = (1 ÷ N_k) × sum over i of r_ik × x_i`, `Σ_k = (1 ÷ N_k) × sum over i of r_ik × (x_i − μ_k) × (x_i − μ_k)^T`, `π_k = N_k ÷ n` (M-step); general form for any model with hidden variables: `Q(θ given θ_old) = sum over z of P(z given x, θ_old) × ln P(x, z given θ)`, then `θ_new = argmax over θ of Q(θ given θ_old)`
 
 - **r_ik**: the responsibility, the probability that component k produced point i
 - **N_k**: the effective number of points in component k
 - **n**: the number of points
 - **π_k**, **μ_k**, **Σ_k**: the mixture's weights, means and covariances
 - **T**: transpose
+- **x**, **z**: in the general form, the observed data and the hidden variables (for a mixture, which component produced each point)
+- **θ** (theta), **θ_old**: all the model's parameters, and their values from the previous round
+- **Q**: the expected log-likelihood of data and hidden variables together, averaged over the hidden variables' current posterior
 
-**In plain words:** The E-step is Bayes' rule for each point; the M-step computes weighted averages, weighted spreads and shares. Each round can only raise the data's log-likelihood. In general, EM maximizes the expected complete-data log-likelihood Q(θ given θ_old) over hidden variables; k-means is its hard-assignment limit.
+**In plain words:** The E-step is Bayes' rule for each point; the M-step computes weighted averages, weighted spreads and shares. No round ever lowers the data's log-likelihood. The general form says the same thing for any model with hidden parts: fill them in softly using the current parameters (E-step), then pick the parameters that best explain data plus filled-in parts (M-step); for a Gaussian mixture that maximization gives exactly the updates above. k-means is its hard-assignment limit.
 
 **Tiny example:** Continuing the mixture above with points 1 and 3. At x = 1 the responsibility of the first component is 0.121 ÷ 0.123 ≈ 0.98; at x = 3 it is about 0.02. Then N_1 = 0.98 + 0.02 = 1.0, μ_1 = (0.98 × 1 + 0.02 × 3) ÷ 1.0 ≈ 1.04 and π_1 = 1.0 ÷ 2 = 0.5.
 
@@ -1053,7 +1146,7 @@ E-step: `r_ik = π_k × N(x_i given μ_k, Σ_k) ÷ sum over j of π_j × N(x_i g
 
 **What it does:** Estimates how well a model will do on new data by rotating which part of the data is held out.
 
-`CV_K = (1 ÷ K) × sum over k = 1..K of error_k`; leave-one-out shortcut for linear smoothers: `(1 ÷ n) × sum over i of ((y_i − y_hat_i) ÷ (1 − h_ii))^2`
+`CV_K = (1 ÷ K) × sum over k = 1..K of error_k`; leave-one-out shortcut for least squares (and many other linear fits): `(1 ÷ n) × sum over i of ((y_i − y_hat_i) ÷ (1 − h_ii))^2`
 
 - **K**: the number of folds (5 or 10 is typical; K = n is leave-one-out)
 - **error_k**: the error of a model trained on the other K − 1 folds and tested on fold k
@@ -1071,7 +1164,7 @@ E-step: `r_ik = π_k × N(x_i given μ_k, Σ_k) ÷ sum over j of π_j × N(x_i g
 
 **What it does:** Compares models fitted to the same data by rewarding fit and charging for parameters, with no held-out set.
 
-`AIC = 2 × k − 2 × ln(L_hat)`; `BIC = k × ln(n) − 2 × ln(L_hat)`; small-sample `AICc = AIC + 2k(k + 1) ÷ (n − k − 1)`
+`AIC = 2 × k − 2 × ln(L_hat)`; `BIC = k × ln(n) − 2 × ln(L_hat)`; small-sample `AICc = AIC + 2 × k × (k + 1) ÷ (n − k − 1)`
 
 - **k**: the number of fitted parameters
 - **L_hat**: the model's maximized likelihood on the data
@@ -1092,7 +1185,7 @@ E-step: `r_ik = π_k × N(x_i given μ_k, Σ_k) ÷ sum over j of π_j × N(x_i g
 
 **What it does:** Guarantees how close a measured error rate is to the true one, for one model on a test set and for the best of many models on training data.
 
-single model on n test examples: `P(|error_test − error_true| > ε) ≤ 2 × exp(−2 × n × ε^2)`; finite class H with m training examples, with probability at least 1 − δ for every h in H: `|error_true(h) − error_train(h)| ≤ sqrt((1 ÷ (2m)) × ln(2 × |H| ÷ δ))`; VC version: gap of order `sqrt((d ÷ m) × ln(m ÷ d) + (1 ÷ m) × ln(1 ÷ δ))`
+`P(|error_test − error_true| > ε) ≤ 2 × exp(−2 × n × ε^2)` for one model on n test examples; for a finite class H with m training examples, with probability at least 1 − δ for every h in H: `|error_true(h) − error_train(h)| ≤ sqrt((1 ÷ (2m)) × ln(2 × |H| ÷ δ))`; VC version: gap of order `sqrt((d ÷ m) × ln(m ÷ d) + (1 ÷ m) × ln(1 ÷ δ))`
 
 - **error_test**, **error_train**: measured error rates; **error_true**: the error on the whole distribution
 - **ε** (epsilon): the allowed gap; **δ** (delta): the allowed chance of failure
@@ -1105,7 +1198,7 @@ single model on n test examples: `P(|error_test − error_true| > ε) ≤ 2 × e
 **Tiny example:** A test set of 1,000 and a gap of 5 points: 2 × exp(−2 × 1,000 × 0.0025) = 2 × exp(−5) ≈ 0.013, so a gap over 5 points happens less than 1.4% of the time. Choosing among |H| = 1,000 models with m = 10,000 and δ = 0.05: sqrt(ln(40,000) ÷ 20,000) = sqrt(10.6 ÷ 20,000) ≈ 0.023.
 
 **Where it is used:** The learning-theory foundation for why more data and simpler model classes generalize (CS229), sizing held-out test sets and evaluation suites, the starting point of PAC learning.
-**In the book:** Chapter 9 (Bias and variance: statistical learning theory, VC dimension and PAC learning) and Appendix F (Generalization bounds) in words; the formulas are only here.
+**In the book:** Chapter 9 (Bias and variance: statistical learning theory, VC dimension and PAC learning) and Appendix F (Generalization bounds) in words; the formulas are only here. Hoeffding's inequality and the union bound on their own are also in the foundations section of this appendix.
 
 > **Definition — Hoeffding's inequality:** A guarantee that the average of many independent bounded measurements, such as right/wrong answers, is unlikely to be far from its true mean, with the chance of a large gap shrinking exponentially as the number of measurements grows.
 
@@ -1115,7 +1208,7 @@ single model on n test examples: `P(|error_test − error_true| > ε) ≤ 2 × e
 
 **What it does:** Makes rare classes count more in training, by weighting their errors or by inventing extra examples of them.
 
-balanced weight `w_c = n ÷ (K × n_c)`; `weighted loss = sum over i of w_(y_i) × loss_i`; SMOTE `x_new = x_i + u × (x_nn − x_i)`, with u uniform between 0 and 1
+`w_c = n ÷ (K × n_c)` (balanced class weight); `weighted loss = sum over i of w_(y_i) × loss_i`; SMOTE `x_new = x_i + u × (x_nn − x_i)`, with u uniform between 0 and 1
 
 - **n**: the number of training examples; **K**: the number of classes; **n_c**: the count of class c
 - **w_(y_i)**: the weight of example i's class
@@ -1135,7 +1228,7 @@ balanced weight `w_c = n ÷ (K × n_c)`; `weighted loss = sum over i of w_(y_i) 
 
 **What it does:** Picks which unlabeled examples to send to a human, choosing those the model is least sure about.
 
-least confident: `x* = argmax over unlabeled x of (1 − max over y of P(y given x))`; margin: `x* = argmin over x of (P(y_1 given x) − P(y_2 given x))`; entropy: `x* = argmax over x of −sum over y of P(y given x) × ln P(y given x)`
+`x* = argmax over unlabeled x of (1 − max over y of P(y given x))` (least confident); `x* = argmin over x of (P(y_1 given x) − P(y_2 given x))` (margin); `x* = argmax over x of −sum over y of P(y given x) × ln P(y given x)` (entropy)
 
 - **P(y given x)**: the current model's predicted probability of label y for example x
 - **y_1**, **y_2**: the two most probable labels
@@ -1268,6 +1361,29 @@ least confident: `x* = argmax over unlabeled x of (1 − max over y of P(y given
 **Where it is used:** Medical AI and screening tools, fraud and content-moderation planning, fairness audits comparing error rates across groups (equalized odds compares TPR and FPR).
 **In the book:** Chapter 9 (A worked medical test), Chapter 6 and Appendix B (Bayes' rule; Bayes with natural frequencies); NPV, FNR and FDR are only here.
 
+### Group fairness metrics (demographic parity, equalized odds, predictive parity, impact ratio)
+
+**What it does:** Compares a classifier's selection rates and error rates across groups of people, and shows why the common definitions of fairness cannot all hold at once.
+
+`selection rate SR_g = P(y_hat = 1 given group g)`; demographic parity difference `= max over g of SR_g − min over g of SR_g`; `impact ratio_g = SR_g ÷ (largest SR of any group)`; equalized odds: `TPR_A = TPR_B` and `FPR_A = FPR_B`; predictive parity: `PPV_A = PPV_B`; within each group: `FPR = (prev ÷ (1 − prev)) × ((1 − PPV) ÷ PPV) × TPR`
+
+- **y_hat**: the decision (1 = selected, flagged or approved)
+- **SR_g**: group g's selection rate, the share of its members with y_hat = 1
+- **g**, **A**, **B**: groups of people, such as applicants of different sexes or races
+- **TPR**, **FPR**, **PPV**: the true positive rate (recall), false positive rate and positive predictive value (precision), each computed within one group
+- **prev**: the group's base rate, the share of its members who truly have the outcome
+
+**In plain words:** Demographic parity asks for equal selection rates; equalized odds asks for equal error rates both among people who have the outcome and among people who do not; predictive parity asks that a positive decision be equally reliable in every group. The last formula (Chouldechova, 2017) ties them together: if two groups have different base rates and the same PPV, they cannot also share the same TPR and FPR while predictions are imperfect. The equalized-odds gap is usually reported as the larger of the TPR and FPR differences, and an impact ratio below 0.8 fails the "four-fifths rule" of US employment guidance.
+
+**Tiny example:** Chapter 58's risk tool. Group A (base rate 50%): TPR 36 ÷ 50 = 0.72, FPR 24 ÷ 50 = 0.48, PPV 0.6. Group B (base rate 20%): TPR 12 ÷ 20 = 0.60, FPR 8 ÷ 80 = 0.10, PPV 0.6. Predictive parity holds, but the equalized-odds gap is max(0.12, 0.38) = 0.38. The formula checks out: for A, (0.5 ÷ 0.5) × (0.4 ÷ 0.6) × 0.72 = 0.48; for B, (0.2 ÷ 0.8) × (0.4 ÷ 0.6) × 0.60 = 0.10. Selection rates are 60% and 20%, a demographic parity difference of 0.40. In hiring, selecting 30 of 100 men and 20 of 100 women gives women an impact ratio of 0.20 ÷ 0.30 ≈ 0.67, below 0.8.
+
+**Where it is used:** Fairness audits with Fairlearn (demographic_parity_difference, equalized_odds_difference) and IBM's AI Fairness 360; the four-fifths rule of the US Uniform Guidelines on Employee Selection Procedures (1978); New York City's Local Law 144, enforced since July 2023, requires automated hiring tools to have had a bias audit reporting selection rates and impact ratios within the year before use.
+**In the book:** Chapter 58 (Bias and fairness: Why "fair" has several meanings, the worked risk-tool example) in words; the formulas are only here.
+
+> **Definition — Equalized odds:** A fairness definition requiring that a classifier have the same true positive rate and the same false positive rate in every group.
+
+> **Definition — Impact ratio (four-fifths rule):** One group's selection rate divided by the selection rate of the most-selected group; US employment guidance treats a ratio below 0.8 as evidence of adverse impact.
+
 ### Macro, micro and weighted averaging for multi-class metrics
 
 **What it does:** Turns per-class scores into one number for a problem with several classes.
@@ -1314,7 +1430,7 @@ least confident: `x* = argmax over unlabeled x of (1 − max over y of P(y given
 - **p_e**: the agreement expected by chance from each rater's label frequencies
 - **κ** (kappa): 1 for perfect agreement, 0 for chance level
 
-**In plain words:** Two raters who both say "yes" most of the time will agree often by luck; kappa subtracts that luck. Weighted kappa handles ordered labels, and Fleiss' kappa and Krippendorff's alpha handle more than two raters.
+**In plain words:** Two raters who both say "yes" most of the time will agree often by luck; kappa subtracts that luck. Weighted kappa handles ordered labels, and Fleiss' kappa and Krippendorff's alpha (1 − observed disagreement ÷ disagreement expected by chance) handle more than two raters.
 
 **Tiny example:** Rater 1 says yes to 60% of items and rater 2 to 50%: p_e = 0.6 × 0.5 + 0.4 × 0.5 = 0.5. If they agree on 85%, κ = (0.85 − 0.5) ÷ (1 − 0.5) = 0.70, the value in Chapter 11.
 
@@ -1340,6 +1456,26 @@ least confident: `x* = argmax over unlabeled x of (1 − max over y of P(y given
 
 **Where it is used:** Threshold-free comparison of classifiers and detectors in medical diagnostics, fraud, ads click models and safety classifiers; linear probes and deception or jailbreak detectors in interpretability research; membership-inference attacks.
 **In the book:** Chapter 9 (Thresholds, ROC curves and AUC; 85 wins of 96 pairs = 0.885).
+
+### Cost-sensitive decision threshold
+
+**What it does:** Turns a predicted probability into a yes/no decision that minimizes the expected cost, given what each kind of mistake costs.
+
+`predict positive if p × C_FN ≥ (1 − p) × C_FP`, that is if `p ≥ t* = C_FP ÷ (C_FP + C_FN)`; `cost(t) = C_FP × FP(t) + C_FN × FN(t)`, the total cost of a threshold t on validation data
+
+- **p**: the model's calibrated probability that the case is positive
+- **C_FP**: the cost of a false positive (a false alarm); **C_FN**: the cost of a false negative (a miss); correct decisions are taken to cost nothing
+- **t***: the cost-minimizing threshold
+- **FP(t)**, **FN(t)**: the numbers of false positives and false negatives when everything scoring at or above t is flagged
+
+**In plain words:** Flag a case when the expected cost of letting it pass (the chance it is positive times the cost of a miss) is at least the expected cost of flagging it (the chance it is negative times the cost of a false alarm). The usual threshold of 0.5 is right only when both mistakes cost the same. The formula needs calibrated probabilities; with uncalibrated scores, pick the t with the lowest cost(t) on validation data instead.
+
+**Tiny example:** Reviewing a legitimate payment costs $5 and missing a fraud costs $200, so t* = 5 ÷ 205 ≈ 0.024: flag anything above about 2.4%. For a payment with p = 0.05, letting it through costs 0.05 × 200 = $10 on average and flagging it 0.95 × 5 = $4.75, so flag it. For a spam filter where losing a real email is 10 times worse than a spam reaching the inbox (C_FP = 10, C_FN = 1), t* = 10 ÷ 11 ≈ 0.91.
+
+**Where it is used:** Setting alert thresholds for fraud, medical-screening and content-moderation classifiers (Elkan, "The Foundations of Cost-Sensitive Learning", 2001); scikit-learn's TunedThresholdClassifierCV, added in 2024, searches for the threshold that optimizes a chosen score or cost.
+**In the book:** Chapter 9 (Precision or recall: which matters more?; The threshold game) in words; the formula is only here.
+
+> **Definition — Cost-sensitive threshold:** The probability cutoff above which a classifier says yes, chosen to minimize the expected cost of mistakes when false alarms and misses cost different amounts.
 
 ### Precision-recall curve, average precision and mean average precision
 
@@ -1381,37 +1517,41 @@ least confident: `x* = argmax over unlabeled x of (1 − max over y of P(y given
 
 **What it does:** Measures how far a model's stated confidence is from its actual accuracy.
 
-`ECE = sum over bins b = 1..B of (n_b ÷ n) × |accuracy(b) − confidence(b)|`; `MCE = max over b of |accuracy(b) − confidence(b)|`
+`ECE = sum over bins b = 1..B of (n_b ÷ n) × |accuracy(b) − confidence(b)|`; `MCE = max over b of |accuracy(b) − confidence(b)|`; `RMS calibration error = sqrt(sum over b of (n_b ÷ n) × (accuracy(b) − confidence(b))^2)`
 
 - **B**: the number of confidence bins (often 10 or 15 of equal width)
 - **n_b**: the number of predictions in bin b; **n**: the total
 - **accuracy(b)**: the fraction correct in the bin
 - **confidence(b)**: the average stated confidence in the bin
 - **MCE**: the maximum calibration error, the worst bin
+- **RMS**: root mean square; squaring the gaps before averaging makes large gaps count more
 
-**In plain words:** Group predictions by how sure the model said it was, compare with how often it was right, and average the gaps weighted by bin size. A perfectly calibrated model has ECE 0 and its reliability diagram lies on the diagonal. Equal-mass bins and class-wise ECE are variants.
+**In plain words:** Group predictions by how sure the model said it was, compare with how often it was right, and average the gaps weighted by bin size. A perfectly calibrated model has ECE 0 and its reliability diagram lies on the diagonal. Equal-mass bins (the same number of predictions in each) and class-wise ECE are variants; the RMS version weighs a few badly miscalibrated bins more heavily.
 
-**Tiny example:** 40 predictions made at 90% confidence of which 30 were right (75%), and 60 at 60% of which 36 were right (60%): ECE = 0.4 × 0.15 + 0.6 × 0 = 0.06; MCE = 0.15.
+**Tiny example:** 40 predictions made at 90% confidence of which 30 were right (75%), and 60 at 60% of which 36 were right (60%): ECE = 0.4 × 0.15 + 0.6 × 0 = 0.06; MCE = 0.15; RMS calibration error = sqrt(0.4 × 0.15^2) = sqrt(0.009) ≈ 0.095.
 
-**Where it is used:** Calibration studies of neural networks (Guo et al., 2017) and of LLMs, including the GPT-4 technical report's comparison before and after post-training and Anthropic's 2022 "Language Models (Mostly) Know What They Know".
+**Where it is used:** Calibration studies of neural networks (Guo et al., 2017) and of LLMs, including the GPT-4 technical report's comparison before and after post-training and Anthropic's 2022 "Language Models (Mostly) Know What They Know" (equal-mass bins, with RMS error too); Humanity's Last Exam (2025) reports each model's RMS calibration error from its own stated confidence next to its accuracy.
 **In the book:** Chapter 8 (Calibration: what "80% sure" should mean, Table 8.11) in words; the formula is only here.
 
 > **Definition — Expected calibration error (ECE):** The size-weighted average gap between a model's stated confidence and its actual accuracy, computed over groups of predictions with similar confidence.
+
+> **Definition — RMS calibration error:** A calibration score like expected calibration error, but taking the square root of the size-weighted average of the squared gaps between stated confidence and actual accuracy, so a few badly miscalibrated groups count more.
 
 ### Platt scaling and temperature scaling (recalibration)
 
 **What it does:** Fixes over- or under-confident probabilities after training with one or two fitted numbers.
 
-`Platt: P(y = 1 given s) = sigmoid(a × s + b)`; temperature scaling: `p = softmax(z ÷ T)`
+`Platt: P(y = 1 given s) = sigmoid(a × s + b)`; temperature scaling: `p = softmax(z ÷ T)`; isotonic: `minimize sum over i of (y_i − f_i)^2 subject to f_1 ≤ f_2 ≤ ... ≤ f_n`
 
 - **s**: a model's raw score
 - **a**, **b**: fitted by minimizing log loss on a held-out calibration set
 - **z**: the logits (raw class scores) of a multi-class model
 - **T**: a single temperature above 0, fitted the same way
+- **y_i**, **f_i**: (isotonic) the 0/1 label and the calibrated probability of the i-th calibration example, with examples sorted by raw score
 
-**In plain words:** Platt scaling runs the raw score through a fitted logistic regression. Temperature scaling divides every logit by T; T above 1 softens overconfident predictions, and the predicted class never changes. Isotonic regression fits a non-decreasing step function instead, which is more flexible but needs more data.
+**In plain words:** Platt scaling runs the raw score through a fitted logistic regression. Temperature scaling divides every logit by T; T above 1 softens overconfident predictions, and the predicted class never changes. Isotonic regression fits a non-decreasing step function instead, which is more flexible but needs more data; the pool-adjacent-violators algorithm solves it by averaging any neighbors that are out of order.
 
-**Tiny example:** Platt with a = 0.5, b = −0.2 turns s = 2 into sigmoid(0.8) ≈ 0.69. Logits [3, 1, 0] give a top probability of 20.09 ÷ 23.80 ≈ 0.84 at T = 1 and 4.48 ÷ 7.13 ≈ 0.63 at T = 2; class 1 stays on top.
+**Tiny example:** Platt with a = 0.5, b = −0.2 turns s = 2 into sigmoid(0.8) ≈ 0.69. Logits [3, 1, 0] give a top probability of 20.09 ÷ 23.80 ≈ 0.84 at T = 1 and 4.48 ÷ 7.13 ≈ 0.63 at T = 2; class 1 stays on top. Isotonic: four equal-sized groups sorted by score whose positive rates are 0.1, 0.4, 0.3 and 0.8 have one out-of-order pair, which is pooled to (0.4 + 0.3) ÷ 2 = 0.35, giving 0.1, 0.35, 0.35, 0.8.
 
 **Where it is used:** Calibrating SVMs and boosted trees (scikit-learn CalibratedClassifierCV), deep classifiers (Guo et al., 2017), and the confidence scores of LLM-based classifiers and judges.
 **In the book:** Chapter 8 (Calibration) in words; the temperature formula appears for sampling in Chapter 6 and Appendix B; using it for calibration is only here.
@@ -1485,7 +1625,7 @@ least confident: `x* = argmax over unlabeled x of (1 − max over y of P(y given
 - **SS_tot**: the sum of squared errors of always predicting the mean
 - **n**: the number of cases; **p**: the number of predictors
 
-**In plain words:** 1 is perfect, 0 no better than the mean, and negative is worse than the mean (possible on test data). Adjusted R^2 charges for each extra predictor. Only for a straight-line fit on its own training data does R^2 equal the squared correlation.
+**In plain words:** 1 is perfect, 0 no better than the mean, and negative is worse than the mean (possible on test data). Adjusted R^2 charges for each extra predictor. For a least-squares fit with an intercept, on its own training data, R^2 equals the squared correlation between predictions and true values (with one feature, the squared correlation of x and y); on test data, or for other models, the two can differ.
 
 **Tiny example:** Chapter 9: 1 − 4,900 ÷ 75,000 ≈ 0.935. With n = 5 and one predictor, adjusted R^2 = 1 − 0.065 × 4 ÷ 3 ≈ 0.913.
 
@@ -1645,21 +1785,24 @@ least confident: `x* = argmax over unlabeled x of (1 − max over y of P(y given
 
 **What it does:** Trains and scores forecasts of a chosen percentile, such as "90% of days will sell fewer than this".
 
-`L_q(y, y_hat_q) = q × max(y − y_hat_q, 0) + (1 − q) × max(y_hat_q − y, 0)`; `WQL = (1 ÷ |Q|) × sum over q in Q of [2 × sum over t of L_q(y_t, y_hat_(q,t)) ÷ sum over t of |y_t|]`
+`L_q(y, y_hat_q) = q × max(y − y_hat_q, 0) + (1 − q) × max(y_hat_q − y, 0)`; `WQL = (1 ÷ |Q|) × sum over q in Q of [2 × sum over t of L_q(y_t, y_hat_(q,t)) ÷ sum over t of |y_t|]`; `CRPS = 2 × integral from 0 to 1 of L_q(y, y_hat_q) dq`
 
 - **q**: the quantile level between 0 and 1 (0.5 is the median)
 - **y**: the true value; **y_hat_q**: the predicted q-quantile
 - **Q**: the set of quantile levels evaluated; **|Q|** their number
 - **y_t**: the series at time t
+- **integral from 0 to 1 of ... dq**: the average over every quantile level from 0 to 1, the continuous version of averaging over Q
 
-**In plain words:** Under-predicting costs q per unit and over-predicting costs 1 − q, so a 0.9-quantile forecast learns to sit high. At q = 0.5 the loss is half the absolute error. WQL normalizes by the series' total size and approximates the continuous ranked probability score (CRPS).
+**In plain words:** Under-predicting costs q per unit and over-predicting costs 1 − q, so a 0.9-quantile forecast learns to sit high. At q = 0.5 the loss is half the absolute error. The continuous ranked probability score (CRPS) is twice the pinball loss averaged over all quantile levels, so it scores a whole forecast distribution; WQL approximates it on a finite grid of levels and normalizes by the series' total size.
 
-**Tiny example:** q = 0.9 and true value 100: forecasting 90 costs 0.9 × 10 = 9, forecasting 110 costs only 0.1 × 10 = 1. For a median forecast of [90, 60] against [100, 50]: losses 5 + 5 = 10, WQL = 2 × 10 ÷ 150 ≈ 0.13.
+**Tiny example:** q = 0.9 and true value 100: forecasting 90 costs 0.9 × 10 = 9, forecasting 110 costs only 0.1 × 10 = 1. For a median forecast of [90, 60] against [100, 50]: losses 5 + 5 = 10, WQL = 2 × 10 ÷ 150 ≈ 0.13. A forecast that is a single number (every quantile equal to 90) against the truth 100 has CRPS = 2 × (average of q × 10 over q from 0 to 1) = 2 × 5 = 10, exactly its absolute error.
 
 **Where it is used:** Quantile regression (LightGBM objective='quantile') and probabilistic forecasters; Amazon's Chronos-2 (October 2025) is trained with this loss over 21 quantile levels from 0.01 to 0.99, and forecasting benchmarks report WQL or CRPS.
 **In the book:** Only here (Chapter 10 covers time-series foundation models).
 
 > **Definition — Quantile loss (pinball loss):** A loss that charges under-predictions and over-predictions at different rates, set by a chosen quantile, so a model trained with it learns to predict that percentile of the outcome.
+
+> **Definition — CRPS (continuous ranked probability score):** A score for a probabilistic forecast that compares the whole predicted distribution with the value that happened, equal to twice the quantile loss averaged over all quantile levels; lower is better, and for a single-number forecast it equals the absolute error.
 
 ### BLEU score (machine translation)
 
@@ -1833,7 +1976,7 @@ least confident: `x* = argmax over unlabeled x of (1 − max over y of P(y given
 **Tiny example:** 80% on 400 questions: SE = sqrt(0.16 ÷ 400) = 0.02, so about ±3.9 points. 9 right out of 10: Wald gives 0.9 ± 1.96 × 0.095 = 0.71 to 1.09, impossible above 1; Wilson gives a center of (0.9 + 0.192) ÷ 1.384 ≈ 0.79 and a half-width of about 0.19, so 0.60 to 0.98.
 
 **Where it is used:** Error bars on eval results, recommended for language-model evals by Anthropic's "Adding Error Bars to Evals" (Miller, 2024); deciding whether a leaderboard gap is real; intervals for pass rates on small evals (attack success rates, dangerous-capability evals with few tasks), A/B conversion rates.
-**In the book:** Chapter 24 (Error bars by hand), Chapter 9 (How sure is the score?), Chapter 31 (Table 31.2), Appendix B (Error bar on an accuracy score); the Wilson interval is only here. The standard error itself is also in the foundations section of this appendix.
+**In the book:** Chapter 24 (Error bars by hand), Chapter 9 (How sure is the score?), Chapter 31 (Table 31.2), Appendix B (Error bar on an accuracy score); the Wilson interval is only here among the chapters. The standard error and the normal, t and Wilson intervals in general are also in the foundations section of this appendix.
 
 > **Definition — Wilson score interval:** A confidence interval for a success rate that stays inside 0 to 1 and remains accurate with few trials or rates near 0% or 100%, unlike the simple plus-or-minus formula.
 
@@ -1879,7 +2022,7 @@ least confident: `x* = argmax over unlabeled x of (1 − max over y of P(y given
 
 **What it does:** Builds an error bar for any metric by recomputing it on many resampled versions of the data.
 
-for b = 1..B: resample n items with replacement and compute the metric `θ_b`; percentile 95% CI `= [2.5th percentile, 97.5th percentile] of θ_1, ..., θ_B`
+`θ_b = the metric computed on resample b`, for b = 1..B, each resample drawing n items with replacement; percentile 95% CI `= [2.5th percentile, 97.5th percentile] of θ_1, ..., θ_B`
 
 - **n**: the number of evaluation items (questions, battles, users)
 - **B**: the number of resamples (often 1,000 to 10,000)
@@ -1928,7 +2071,7 @@ for b = 1..B: resample n items with replacement and compute the metric `θ_b`; p
 **Tiny example:** Gains over 4 seeds of 1.0, 2.0, 0.5 and 1.5 points: mean 1.25, sd ≈ 0.645, t = 1.25 ÷ (0.645 ÷ 2) ≈ 3.87, above the 3.18 needed with 3 degrees of freedom. For 10 runs with 90/10 splits, mean 1.0 and sd 1.5, the plain t is 2.11 but the corrected one is 1.0 ÷ sqrt((0.1 + 0.111) × 2.25) ≈ 1.45.
 
 **Where it is used:** Comparing models across random seeds, folds or datasets; reporting the significance of ablation gains in papers (scipy.stats.ttest_rel).
-**In the book:** Only here.
+**In the book:** Only here. The general one- and two-sample t-tests are in the foundations section of this appendix.
 
 > **Definition — Paired t-test:** A significance test for whether the average of paired differences, such as two models' scores on the same items or seeds, is different from zero.
 
@@ -1954,7 +2097,7 @@ for b = 1..B: resample n items with replacement and compute the metric `θ_b`; p
 
 **What it does:** Adjusts significance thresholds when many tests are run at once, so lucky results are not mistaken for real ones.
 
-Bonferroni: reject if `p_i ≤ α ÷ m`; Holm: sort the p-values and reject while `p_(k) ≤ α ÷ (m − k + 1)`; Benjamini-Hochberg: sort `p_(1) ≤ ... ≤ p_(m)`, find the largest k with `p_(k) ≤ (k ÷ m) × α`, reject hypotheses 1..k
+`reject if p_i ≤ α ÷ m` (Bonferroni); `reject in order while p_(k) ≤ α ÷ (m − k + 1)` (Holm, p-values sorted from smallest); `reject hypotheses 1..k for the largest k with p_(k) ≤ (k ÷ m) × α` (Benjamini-Hochberg, with p_(1) ≤ ... ≤ p_(m))
 
 - **m**: the number of hypotheses tested (model pairs, benchmarks, metrics)
 - **α** (alpha): the target error rate, often 0.05
@@ -1965,7 +2108,7 @@ Bonferroni: reject if `p_i ≤ α ÷ m`; Holm: sort the p-values and reject whil
 **Tiny example:** Five p-values 0.003, 0.012, 0.02, 0.04, 0.3 at α = 0.05. Bonferroni (threshold 0.01) keeps only 0.003. Holm compares with 0.01, 0.0125, 0.0167 and stops at the third, keeping two. Benjamini-Hochberg compares with 0.01, 0.02, 0.03, 0.04, 0.05; the fourth (0.04 ≤ 0.04) is the largest that passes, so it keeps four.
 
 **Where it is used:** Leaderboards comparing many models at once, A/B platforms testing many metrics, eval suites with dozens of benchmarks, genomics.
-**In the book:** Only here (Chapter 9 explains that picking the best of 50 models on one set inflates its score).
+**In the book:** Only here (Chapter 9 explains that picking the best of 50 models on one set inflates its score). Bonferroni and Benjamini-Hochberg are also in the foundations section of this appendix; this entry adds Holm and the eval setting.
 
 > **Definition — Bonferroni correction:** Dividing the significance threshold by the number of tests run, so the chance of even one false positive across all of them stays at the target level.
 
@@ -2123,7 +2266,7 @@ Bonferroni: reject if `p_i ≤ α ÷ m`; Holm: sort the p-values and reject whil
 **Tiny example:** 100 of 1,000 convert in A (10%) and 130 of 1,000 in B (13%): lift 30%. p_pool = 230 ÷ 2,000 = 0.115, SE = sqrt(0.115 × 0.885 × 0.002) ≈ 0.0143, z = 0.03 ÷ 0.0143 ≈ 2.10, significant.
 
 **Where it is used:** Online experiments for ranking models, product features and prompts at every large platform (Microsoft ExP, Netflix, Meta, Booking); shipping decisions for new recommender or LLM versions.
-**In the book:** Chapter 54 (The gold standard: randomize: A/B test), Chapter 51 (Online experiments) and Chapter 9 (p-value) in words; the formulas are only here.
+**In the book:** Chapter 54 (The gold standard: randomize: A/B test), Chapter 51 (Online experiments) and Chapter 9 (p-value) in words; the formulas are only here. General z-tests and t-tests are in the foundations section of this appendix.
 
 > **Definition — Two-proportion z-test:** A significance test for whether two groups' success rates differ, dividing the gap by its standard error computed from the pooled rate.
 
@@ -2145,7 +2288,7 @@ Bonferroni: reject if `p_i ≤ α ÷ m`; Holm: sort the p-values and reject whil
 **Tiny example:** Chapter 54's shop: 20% of customers buy and you want to detect 20% versus 22%. (1.96 + 0.84)^2 × (0.16 + 0.1716) ÷ 0.02^2 = 7.84 × 0.3316 ÷ 0.0004 ≈ 6,500 per group, the figure in Chapter 54; the rule of thumb gives 16 × 0.16 ÷ 0.0004 = 6,400.
 
 **Where it is used:** Planning experiment duration and traffic on A/B platforms; sizing evaluation sets and samples per question for model comparisons.
-**In the book:** Chapter 54 (The gold standard: randomize: about 6,500 per group) and Chapter 31 (How many test cases is enough?) without the formula; the formula is only here.
+**In the book:** Chapter 54 (The gold standard: randomize: about 6,500 per group) and Chapter 31 (How many test cases is enough?) without the formula; the formula is only here. The sample size needed for a confidence interval of a given width is in the foundations section of this appendix.
 
 > **Definition — Minimum detectable effect:** The smallest true difference an experiment of a given size can reliably detect at chosen levels of significance and power.
 
@@ -2196,17 +2339,18 @@ Bonferroni: reject if `p_i ≤ α ÷ m`; Holm: sort the p-values and reject whil
 
 **What it does:** Estimates causal effects from non-randomized data, or the value of a new policy from logs of an old one, by reweighting each observation.
 
-`ATE_hat = (1 ÷ n) × sum over i of [T_i × Y_i ÷ e(x_i) − (1 − T_i) × Y_i ÷ (1 − e(x_i))]`, with `e(x) = P(T = 1 given x)`; `V_hat(π) = (1 ÷ n) × sum over i of r_i × π(a_i given x_i) ÷ μ(a_i given x_i)`
+`ATE_hat = (1 ÷ n) × sum over i of [T_i × Y_i ÷ e(x_i) − (1 − T_i) × Y_i ÷ (1 − e(x_i))]`, with `e(x) = P(T = 1 given x)`; `V_hat(π) = (1 ÷ n) × sum over i of r_i × π(a_i given x_i) ÷ μ(a_i given x_i)`; doubly robust: `V_hat_DR(π) = (1 ÷ n) × sum over i of [r_hat(x_i, π) + (π(a_i given x_i) ÷ μ(a_i given x_i)) × (r_i − r_hat(x_i, a_i))]`
 
 - **T_i**: 1 if unit i was treated, 0 if not; **Y_i**: its outcome
 - **e(x)**: the propensity score, the probability of treatment given features x (estimated, for example, by logistic regression)
 - **μ**: the old (logging) policy that chose action a_i in context x_i and earned reward r_i
 - **π** (pi): the new policy being evaluated
 - **n**: the number of units or logged events
+- **r_hat(x, a)**: a fitted model's predicted reward for action a in context x; **r_hat(x, π)**: its predicted average reward when the new policy chooses
 
-**In plain words:** Units that were unlikely to be treated but were treated stand in for many similar untreated ones, so they get bigger weights; this makes the observed sample look like a randomized one. In the logged-bandit version, rewards are reweighted by how much more the new policy likes each logged action. Doubly robust estimators add an outcome model to cut variance; clipping large weights trades bias for variance.
+**In plain words:** Units that were unlikely to be treated but were treated stand in for many similar untreated ones, so they get bigger weights; this makes the observed sample look like a randomized one. In the logged-bandit version, rewards are reweighted by how much more the new policy likes each logged action. The doubly robust version starts from a reward model's guess and reweights only that model's error, which cuts variance and stays unbiased if either the model or the logged probabilities are right (its version for causal effects is called augmented inverse propensity weighting, AIPW); clipping large weights trades bias for variance.
 
-**Tiny example:** Four users (T, Y, e): (1, 10, 0.8), (1, 6, 0.5), (0, 4, 0.5), (0, 2, 0.2). Treated terms 10 ÷ 0.8 = 12.5 and 6 ÷ 0.5 = 12; control terms 4 ÷ 0.5 = 8 and 2 ÷ 0.8 = 2.5. ATE_hat = (12.5 + 12 − 8 − 2.5) ÷ 4 = 3.5. Off-policy: a logged click (r = 1) on an item the old policy showed with probability 0.2 and the new one would show with 0.6 counts 1 × 0.6 ÷ 0.2 = 3.
+**Tiny example:** Four users (T, Y, e): (1, 10, 0.8), (1, 6, 0.5), (0, 4, 0.5), (0, 2, 0.2). Treated terms 10 ÷ 0.8 = 12.5 and 6 ÷ 0.5 = 12; control terms 4 ÷ 0.5 = 8 and 2 ÷ 0.8 = 2.5. ATE_hat = (12.5 + 12 − 8 − 2.5) ÷ 4 = 3.5. Off-policy: a logged click (r = 1) on an item the old policy showed with probability 0.2 and the new one would show with 0.6 counts 1 × 0.6 ÷ 0.2 = 3. Doubly robust, for the same event, with a reward model predicting 0.4 for the logged item and 0.5 on average for the new policy's choices: 0.5 + 3 × (1 − 0.4) = 2.3.
 
 **Where it is used:** Causal analysis of observational data, offline evaluation of new recommender and ad policies from logged data before an A/B test, unbiased learning to rank.
 **In the book:** Only here.
@@ -2214,6 +2358,8 @@ Bonferroni: reject if `p_i ≤ α ÷ m`; Holm: sort the p-values and reject whil
 > **Definition — Propensity score:** The probability that a unit receives a treatment given its characteristics; weighting by its inverse corrects for who chose, or was chosen, to be treated.
 
 > **Definition — Off-policy evaluation:** Estimating how well a new decision policy would have performed using only data logged while a different policy was running.
+
+> **Definition — Doubly robust estimator:** An estimate of a causal effect or a policy's value that combines a model's predicted outcomes with inverse-propensity reweighting of that model's errors, so it stays correct if either the outcome model or the propensities are right.
 
 ### Difference-in-differences
 
@@ -2459,6 +2605,30 @@ Bonferroni: reject if `p_i ≤ α ÷ m`; Holm: sort the p-values and reject whil
 **In the book:** Only here (Chapter 51 describes re-ranking for variety in words).
 
 > **Definition — Maximal marginal relevance (MMR):** A re-ranking rule that picks each next result to be relevant to the query but dissimilar to the results already chosen.
+
+### PageRank and personalized PageRank
+
+**What it does:** Scores every node of a link graph by how often a random surfer would visit it, so links from important pages count for more.
+
+`PR(p) = (1 − d) ÷ N + d × sum over pages q linking to p of PR(q) ÷ L(q)`; personalized: `PR(p) = (1 − d) × v_p + d × sum over pages q linking to p of PR(q) ÷ L(q)`
+
+- **p**, **q**: pages (or the nodes of any graph)
+- **PR(p)**: page p's score; all scores add up to 1
+- **d**: the damping factor, the chance that the surfer follows a link rather than jumping somewhere at random (usually 0.85)
+- **N**: the number of pages
+- **L(q)**: the number of links going out of page q (a page with none is treated as linking to every page)
+- **v_p**: in personalized PageRank, the share of random jumps that land on p; it is concentrated on a few chosen seed nodes and adds up to 1
+
+**In plain words:** Each round, every page hands its score out evenly along its outgoing links, and a fixed 1 − d share is sprinkled over all pages (the bored surfer jumping anywhere). Repeating until nothing changes is power iteration, and the result is the share of time the random surfer spends on each page. Personalized PageRank makes every jump return to the seed nodes, so the scores measure closeness to those seeds rather than global importance.
+
+**Tiny example:** Chapter 51's four-page web (A→B, A→C, B→C, C→A, D→C) with d = 0.85, starting at 0.25 each. Round 1: A = 0.0375 + 0.85 × 0.25 = 0.25, B = 0.0375 + 0.85 × 0.125 ≈ 0.144, C = 0.0375 + 0.85 × (0.125 + 0.25 + 0.25) ≈ 0.569, D = 0.0375. The scores settle at C ≈ 0.394, A ≈ 0.373, B ≈ 0.196 and D = 0.0375. Personalized to B (every jump returns to B), they settle at C ≈ 0.384, A ≈ 0.327, B ≈ 0.289 and D = 0, because no path from B leads to D.
+
+**Where it is used:** Google's original ranking (Brin and Page, 1998), now one signal among hundreds; personalized PageRank and random walks with restart for "who to follow" and related-pin recommendations (Twitter's WTF service, 2013; Pinterest's Pixie, 2018); TextRank, which runs PageRank on a graph of words or sentences to pick keywords and summary sentences; HippoRAG (2024) and HippoRAG 2 (2025), which rank passages for retrieval-augmented generation by running personalized PageRank over a knowledge graph seeded with the question's entities.
+**In the book:** Chapter 51 (PageRank: votes from important pages; Exercise 7). Power iteration and the stationary distribution of a Markov chain are in the foundations section of this appendix.
+
+> **Definition — Damping factor (in PageRank):** The probability, usually 0.85, that PageRank's imaginary surfer follows a link on the current page instead of jumping to a random page.
+
+> **Definition — Personalized PageRank:** A version of PageRank in which every random jump returns to a chosen set of seed nodes, so a node's score measures how easily it is reached from those seeds; it is used for recommendations and graph-based retrieval.
 
 ### Neighborhood collaborative filtering (user-based and item-based)
 
