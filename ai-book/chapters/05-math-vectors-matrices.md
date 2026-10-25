@@ -324,6 +324,14 @@ You can also multiply a vector by a single ordinary number, which multiplies eve
 
 You cannot add vectors of different lengths. `[1, 2] + [1, 2, 3]` has no meaning, because the third element has no partner. This "shapes must match" rule will follow us all the way to matrices.
 
+There is one more way to combine two vectors of the same length: multiply matching elements and keep the results as a list, without adding them up. This is the element-wise product:
+
+`(a ⊙ b)_i = a_i × b_i`
+
+Here a and b are the two vectors, ⊙ (a circle with a dot in it, read "element-wise times") is the operation, and the small i means "position i", so position i of the answer is a's element at position i times b's element at position i. Prices [2, 3] (dollars per apple and per loaf) element-wise times quantities [5, 1] give `[2 × 5, 3 × 1] = [10, 3]`, the cost of each item. Two matrices of the same shape multiply element-wise in the same way, cell by cell. Neural networks use this as a gate: multiplying a number by something near 0 shuts it off, and by something near 1 lets it through (Chapters 14 and 15).
+
+> **Definition — Element-wise product (Hadamard product):** Multiplying two vectors or matrices of the same shape position by position and keeping the shape, so [1, 2, 3] ⊙ [4, 0, 0.5] = [4, 0, 1.5]. Unlike the dot product (later in this chapter), nothing is added up.
+
 ### Length and distance
 
 How long is the arrow for the vector [3, 4]? Use the rule you may remember from school (Pythagoras): square each element, add them up, and take the square root.
@@ -678,6 +686,18 @@ With ordinary numbers, 3 × 5 = 5 × 3. With matrices, the order usually changes
 
 B × A has rows [23, 34] and [31, 46], which is different from A × B's [19, 22] and [43, 50]. "Rotate then stretch" is not the same as "stretch then rotate", and that is why the order of layers in a network matters.
 
+### Flipping a matrix: the transpose
+
+Sometimes a calculation needs a matrix's rows laid out as columns. Flipping a matrix over its diagonal (the line of entries running from top-left to bottom-right) is called transposing it, and the flipped copy is written with a small raised T:
+
+`(A^T)[i, j] = A[j, i]`
+
+Here A is any matrix, `A^T` (read "A transposed") is its flipped copy, and [i, j] means "the entry in row i, column j", so whatever sits in row j, column i of A lands in row i, column j of `A^T`. A matrix with rows [1, 2, 3] and [4, 5, 6] (shape 2 × 3) becomes one with rows [1, 4], [2, 5] and [3, 6] (shape 3 × 2).
+
+Transposing a product reverses the order, one more place where order matters: `(A × B)^T = B^T × A^T`. With the A and B above, A × B has rows [19, 22] and [43, 50], so its transpose has rows [19, 43] and [22, 50]; `B^T` (rows [5, 7] and [6, 8]) times `A^T` (rows [1, 3] and [2, 4]) gives the same answer, starting with 5 × 1 + 7 × 2 = 19. You will meet the transpose again in Chapter 15, where attention computes `Q × K^T`: flipping the table of keys lines every query up against every key in a single matrix multiplication.
+
+> **Definition — Transpose:** Flipping a matrix over its diagonal so that its rows become its columns; a 2 × 3 matrix becomes 3 × 2. It is written with a small raised T, as in A^T.
+
 ### Why AI multiplies matrices, not just vectors: batching
 
 A layer applies the same weight matrix to every token. When you paste a 2,000-token document into Claude, the model could transform each token's vector one at a time, doing 2,000 separate matrix-vector multiplications. Instead, it stacks all 2,000 vectors into one matrix and does a single big matrix-matrix multiplication. The arithmetic is identical, but the chip can organize the work far more efficiently, keeping thousands of tiny calculators busy at once. The same trick lets a data center serve many users' requests together. Chapter 23 shows how much money this saves.
@@ -997,7 +1017,7 @@ A matrix is a table of numbers. Multiplying a vector by a matrix is just a batch
 
 ## Key terms
 
-Token, Mathematical function, Mathematical variable, Parameter, Weight, Bias, Model, Vocabulary, Training, Inference, Composition (of functions), Linear function, Nonlinear function, Coordinate, Slope, Intercept, Error (residual), Mean squared error (MSE), Line of best fit, Vector, Dimension, Scalar, Square root, Magnitude, Euclidean distance, Embedding, word2vec, Embedding table, Dot product, Weighted sum, FLOP (floating-point operation), Multiply-add, Cosine similarity, Matrix, Shape, Matrix-vector multiplication, Linear transformation, Matrix multiplication, Tensor, Batch, Hidden size, Layer, Activation function, ReLU (Rectified Linear Unit), Neural network, Deep learning, Forward pass, Mixture of experts (MoE), Active parameters, MFU (model FLOPs utilization), Floating point, Exponent and mantissa, Numerical precision, FP32, BF16 (bfloat16), FP16, FP8, FP4, INT8 and INT4, Mixed precision, Quantization, Memory bandwidth
+Token, Mathematical function, Mathematical variable, Parameter, Weight, Bias, Model, Vocabulary, Training, Inference, Composition (of functions), Linear function, Nonlinear function, Coordinate, Slope, Intercept, Error (residual), Mean squared error (MSE), Line of best fit, Vector, Dimension, Scalar, Element-wise product (Hadamard product), Square root, Magnitude, Euclidean distance, Embedding, word2vec, Embedding table, Dot product, Weighted sum, FLOP (floating-point operation), Multiply-add, Cosine similarity, Matrix, Shape, Matrix-vector multiplication, Linear transformation, Matrix multiplication, Transpose, Tensor, Batch, Hidden size, Layer, Activation function, ReLU (Rectified Linear Unit), Neural network, Deep learning, Forward pass, Mixture of experts (MoE), Active parameters, MFU (model FLOPs utilization), Floating point, Exponent and mantissa, Numerical precision, FP32, BF16 (bfloat16), FP16, FP8, FP4, INT8 and INT4, Mixed precision, Quantization, Memory bandwidth
 
 ## Exercises
 

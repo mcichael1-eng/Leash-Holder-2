@@ -80,6 +80,7 @@ How to read it. Multiplication is written ×, division ÷, and "x squared" as `x
 | Vector | An ordered list of numbers; its length is its dimension | `a = [a1, a2, ..., an]` | a house as [3 bedrooms, 120 square meters, 15 years] |
 | Add vectors | Add matching entries | `a + b = [a1 + b1, a2 + b2, ...]` | [1, 2] + [3, 1] = [4, 3] |
 | Scale a vector | Multiply every entry by one number | `k × a = [k × a1, k × a2, ...]` | 2 × [1, 2] = [2, 4] |
+| Element-wise (Hadamard) product | Multiply matching entries and keep them as a list; nothing is added up (Chapter 5) | `a ⊙ b = [a1 × b1, a2 × b2, ...]` | [2, 3] ⊙ [5, 1] = [10, 3] |
 | Length (magnitude) | Square the entries, add, take the square root | `length(a) = sqrt(a1^2 + a2^2 + ...)` | [3, 4]: sqrt(9 + 16) = 5 |
 | Distance | The length of the difference | `distance(a, b) = length(a − b)` | [1, 2] to [4, 6]: length of [3, 4] = 5 |
 | Dot product | Multiply matching entries, then add | `a · b = a1 × b1 + a2 × b2 + ...` | [2, 1, 3] · [1.5, 4, 0.5] = 3 + 4 + 1.5 = 8.5 |
@@ -92,6 +93,7 @@ How to read it. Multiplication is written ×, division ÷, and "x squared" as `x
 | Matrix times matrix | Each entry is a row of the left matrix dotted with a column of the right | `C[i, j] = row i of A · column j of B` | rows [1, 2], [3, 4] times rows [5, 6], [7, 8] = rows [19, 22], [43, 50] |
 | Shape rule | Inner sizes must match; outer sizes give the answer | `(m × n) times (n × p) gives (m × p)` | (2 × 3)(3 × 2) gives 2 × 2; (2 × 3)(2 × 3) is not allowed |
 | Order matters | Swapping the matrices usually changes the answer | `A × B ≠ B × A` | B × A above gives rows [23, 34], [31, 46] |
+| Transpose | Flip a matrix so its rows become its columns; transposing a product reverses the order (Chapter 5) | `(A^T)[i, j] = A[j, i]`, `(A × B)^T = B^T × A^T` | rows [1, 2, 3], [4, 5, 6] become rows [1, 4], [2, 5], [3, 6] |
 | Matrix multiplication cost | m × n × p multiply-adds | `≈ 2 × m × n × p FLOPs` | two 4,096 × 4,096 matrices: about 1.4 × 10^11 FLOPs |
 | Tensor size | Multiply all the sizes in the shape | `count = size1 × size2 × ...` | 32 × 224 × 224 × 3 = 4,816,896 numbers |
 | Embedding table size | One row of numbers per vocabulary token | `vocabulary × hidden size` | 100,000 × 4,096 ≈ 4.1 × 10^8 numbers |
@@ -127,6 +129,7 @@ How to read it. Multiplication is written ×, division ÷, and "x squared" as `x
 | Bayes' rule | Update a belief with evidence, respecting the base rate | P(A given B) = P(B given A) × P(A) ÷ P(B) | sick given positive: 0.9 × 0.01 ÷ 0.0981 ≈ 0.092 |
 | Bayes with natural frequencies | True cases among all positives, counted in a crowd | `true positives ÷ (true positives + false positives)` | 1,000 people: 9 ÷ (9 + 89) ≈ 9% |
 | Expected value | Each outcome times its probability, added up | `E = sum(outcome × probability)` | a fair die: (1 + 2 + ... + 6) × 1/6 = 3.5 |
+| Bernoulli (yes/no) variable | One trial that gives 1 with probability p and 0 otherwise; its mean is p and its variance p × (1 − p) (Chapter 6) | `P(X = 1) = p`, `P(X = 0) = 1 − p`, `E[X] = p`, `Var(X) = p × (1 − p)` | p = 0.8: mean 0.8, variance 0.8 × 0.2 = 0.16 |
 | Distribution | All probabilities in a distribution add to 1 | `sum of P = 1` | 0.92 + 0.03 + 0.02 + 0.01 + 0.02 = 1 |
 | Sentence probability | Multiply each token's probability given everything before it | P(w1, w2, w3) = P(w1) × P(w2 given w1) × P(w3 given w1, w2) | 0.05 × 0.01 × 0.2 = 0.0001 |
 | Log-probability | Add logs instead of multiplying probabilities | `log P = log P(w1) + log P(w2 ...) + ...` | log10: −1.30 − 2 − 0.70 = −4.0 |
@@ -146,7 +149,10 @@ How to read it. Multiplication is written ×, division ÷, and "x squared" as `x
 | 68–95–99.7 rule | Shares of a normal distribution within 1, 2 and 3 sd of the mean | `mean ± 1 sd`, `± 2 sd`, `± 3 sd` | mean 170, sd 7: about 68% between 163 and 177 cm |
 | Percentile | The value that a given percentage of the data falls below | p50 = median; p99 = where the slowest 1% begins | p99 latency 30 s: 99% of requests finish faster |
 | Correlation | How strongly two things move together in a straight line, from −1 to 1 | `r = sum((x − mean x)(y − mean y)) ÷ sqrt(sum((x − mean x)^2) × sum((y − mean y)^2))` | quiz data: 10.5 ÷ sqrt(5 × 22.75) ≈ 0.98 |
+| Law of large numbers | The average of many independent repeats closes in on the expected value μ (Chapter 6) | `x_bar_n = (X_1 + X_2 + ... + X_n) ÷ n → μ` as n grows | fair coin, heads = 1: 7 heads in 10 flips averages 0.7; a typical 5,030 in 10,000 averages 0.503 |
 | Error bar on an accuracy score | One standard deviation of a pass rate p measured on n questions | `sd ≈ sqrt(p × (1 − p) ÷ n)` | 80% on 400 questions: sqrt(0.16 ÷ 400) = 0.02, so about ±4 points at 95% confidence (two standard deviations, by the 68–95–99.7 rule) |
+| Variance of a sum | Variances of independent quantities add (standard deviations do not), so an average of n values wobbles by σ ÷ sqrt(n); Cov is the covariance, 0 for independent quantities (Chapter 9) | `Var(X + Y) = Var(X) + Var(Y) + 2 × Cov(X, Y)`, `sd(average) = σ ÷ sqrt(n)` | two independent ±1.5-point margins: sqrt(1.5^2 + 1.5^2) ≈ 2.1 points, not 3 |
+| Maximum likelihood | Choose the parameters θ that make the observed data most probable; for yes/no counts that is the observed share (Chapter 6) | `θ_MLE = argmax over θ of P(data given θ) = argmin over θ of (−sum over i of ln P(x_i given θ))` | 7 heads in 10 flips: p^7 × (1 − p)^3 is 0.00098 at p = 0.5 and peaks at p = 0.7 (0.00222) |
 
 ## From scores to tokens: softmax, sampling and loss
 

@@ -11,7 +11,7 @@ flowchart TD
     E --> F["Scaling laws<br/>Kaplan, Chinchilla, compute-optimal"]
     F --> G["A trained model"]
     G --> H["Adapting it<br/>LoRA, distillation, merging"]
-    G --> I["Shrinking it<br/>quantization formats"]
+    G --> I["Shrinking it<br/>quantization, pruning"]
     G --> J["Serving it<br/>2 × N FLOPs, KV cache, latency"]
     J --> K["Choosing each token<br/>temperature, top-p, penalties"]
     J --> L["Going faster<br/>speculative decoding"]
@@ -119,6 +119,32 @@ flowchart TD
 **Where it is used:** Every decoder-only language model, including GPT, Claude, Gemini, Llama, DeepSeek and Qwen.
 **In the book:** Chapter 6 (Chaining probabilities for a whole sentence), Chapter 18 (The one trick: predicting the next token) and Appendix B (Sentence probability; Log-probability).
 
+### N-gram language model with smoothing (add-one and Kneser-Ney)
+
+**What it does:** Estimates next-word probabilities by counting, looking back only a few words, and moves a little probability onto word pairs never seen in training.
+
+`counting (maximum likelihood): P(w given v) = count(v, w) ÷ count(v); add-one: P(w given v) = (count(v, w) + 1) ÷ (count(v) + V); interpolated Kneser-Ney: P_KN(w given v) = max(count(v, w) − d, 0) ÷ count(v) + λ(v) × P_cont(w), with λ(v) = d × N_follow(v) ÷ count(v) and P_cont(w) = N_precede(w) ÷ (number of distinct word pairs)`
+
+- **v**: the previous word (in an n-gram model, the previous n − 1 words)
+- **w**: the candidate next word
+- **count(v, w)**: how many times v is immediately followed by w in the training text
+- **count(v)**: how many times v is followed by any word
+- **V**: the vocabulary size, the number of different words
+- **d**: the discount subtracted from every seen count, usually about 0.75
+- **N_follow(v)**: how many different words ever follow v
+- **λ(v)** (lambda): the probability freed up by the discounts, handed to the backup estimate
+- **N_precede(w)**: how many different words ever come right before w
+- **P_cont(w)**: the "continuation" probability, how readily w appears after new contexts
+
+**In plain words:** The chain rule needs the probability of each word given all earlier words; an n-gram model approximates it by looking back only n − 1 words and dividing counts. Pure counting gives zero to any pair it never saw, so one unseen pair makes a whole sentence impossible (and its perplexity infinite). Add-one smoothing pretends every pair was seen once more, which is simple but steals too much from common pairs. Kneser-Ney subtracts a small fixed discount from each seen pair and shares the freed probability out by how many different contexts a word follows, so a word that appears in many places gets more of it than a word that is frequent only in one fixed phrase.
+
+**Tiny example:** Chapter 6's text "I like tea. I like coffee. I drink tea." has five word types and the pairs (I, like) 2, (I, drink) 1, (like, tea) 1, (like, coffee) 1, (drink, tea) 1. Counting: P(like given I) = 2 ÷ 3 ≈ 0.667 and P(coffee given drink) = 0 ÷ 1 = 0. Add-one: P(coffee given drink) = (0 + 1) ÷ (1 + 5) ≈ 0.167, but P(like given I) falls to 3 ÷ 8 = 0.375. Kneser-Ney with d = 0.75: λ(drink) = 0.75 × 1 ÷ 1 = 0.75; tea follows 2 different words out of 5 distinct pairs, so P_cont(tea) = 0.4, and coffee follows 1, so P_cont(coffee) = 0.2. Then P_KN(tea given drink) = (1 − 0.75) ÷ 1 + 0.75 × 0.4 = 0.55 and P_KN(coffee given drink) = 0 + 0.75 × 0.2 = 0.15; the five probabilities after "drink" still add to 1.
+
+**Where it is used:** Statistical language models before neural ones, and still today: the KenLM toolkit (modified Kneser-Ney) built the 5-gram reference model in CCNet's perplexity filter (below); n-gram models still help speech recognizers in some decoders; Google's "stupid backoff" (Brants and others, 2007) skipped normalization for web-scale counts; infini-gram (Liu and others, 2024) backs off to the longest matching run of words in trillions of tokens and is used to analyze training data and machine-written text. The textbook treatment is Jurafsky and Martin's chapter on n-gram language models.
+**In the book:** Chapter 6 (A language model you can build by counting) builds this bigram model and computes P("I like tea") = 1/3; the smoothing formulas are only here.
+
+> **Definition — Kneser-Ney smoothing:** A way of fixing the zero probabilities of an n-gram language model that subtracts a small discount from every seen word pair and gives the freed probability to unseen pairs, favoring words that appear after many different words.
+
 ### Next-token distribution from the final hidden state (LM head)
 
 **What it does:** Turns the model's last internal vector into one score per vocabulary token and then into probabilities.
@@ -176,7 +202,7 @@ flowchart TD
 
 **Tiny example:** From the loss example above, L = 0.768: exp(0.768) ≈ 2.15. In bits: 0.768 ÷ 0.693 ≈ 1.107 bits per token, and `2^1.107` ≈ 2.15, the same answer.
 
-**Where it is used:** Language-model evaluation, quick checks after quantizing a model, and filtering web data with a reference model (below).
+**Where it is used:** Language-model evaluation, quick checks after quantizing a model, and filtering web data with a reference model (below). A text longer than the context window is scored with a sliding window (Hugging Face documents a "stride"), so each scored token keeps more context, which gives a lower and fairer perplexity than cutting the text into separate pieces.
 **In the book:** Chapter 19 (Measuring surprise: the loss), Chapter 6 (Perplexity) and Appendix B (Perplexity); the `2^(bits per token)` form is only here.
 
 ### Bits per byte (and bits per character)
@@ -259,7 +285,7 @@ flowchart TD
 - **T**: the number of positions
 - **P_k(...)**: the probability the k-th module gives the true token 1 + k steps ahead
 
-**In plain words:** Small extra heads look further into the future from each position. Their losses are averaged, scaled down by λ and added to the main loss. The original version (Gloeckle and others, 2024) uses n parallel heads, each predicting one of the next n tokens; DeepSeek-V3 chains small modules one after another.
+**In plain words:** Small extra heads look further into the future from each position. Their losses are averaged, scaled down by λ and added to the main loss. The original version (Gloeckle and others, 2024) uses n parallel heads, each predicting one of the next n tokens from x_1, ..., x_t exactly as the formula shows; DeepSeek-V3 chains small modules one after another, and its k-th module is also fed the true tokens up to position t + k, so each module still predicts just one token past what it has seen.
 
 **Tiny example:** Main loss 1.2 nats, one extra module (D = 1) with loss 1.8, λ = 0.3: 1.2 + (0.3 ÷ 1) × 1.8 = 1.2 + 0.54 = 1.74.
 
@@ -421,7 +447,7 @@ flowchart TD
 
 **Tiny example:** N = 70 billion, D = 1.4 trillion: `406.4 ÷ (7 × 10^10)^0.34` ≈ 0.083; `410.7 ÷ (1.4 × 10^12)^0.28` ≈ 0.163; L ≈ 1.69 + 0.083 + 0.163 = 1.937.
 
-**Where it is used:** The standard functional form for planning model size and data, and the base of later variants (data-constrained, precision-aware). Epoch AI's 2024 replication (Besiroglu and others) refitted it as E = 1.82, A = 482.01, B = 2,085.43, α = 0.3478, β = 0.3658.
+**Where it is used:** The standard functional form for planning model size and data, and the base of later variants (data-constrained, precision-aware, and fine-grained mixture of experts, where Krajewski and others (2024) fit `L = c + (g ÷ G^γ + a) ÷ N^α + b ÷ D^β` where a, b, c, g, α, β and γ are fitted constants and the granularity G = d_ff ÷ d_expert is the dense feed-forward width divided by one expert's width, so finer experts shrink the parameter penalty). Epoch AI's 2024 replication (Besiroglu and others) refitted it as E = 1.82, A = 482.01, B = 2,085.43, α = 0.3478, β = 0.3658.
 **In the book:** Chapter 19 (Chinchilla 2022: feed the model more data); the Epoch AI constants are only here.
 
 > **Definition — Irreducible loss:** The part of a model's loss that no amount of size, data or compute can remove, because text itself contains genuine randomness. In the Chinchilla formula it is the constant E.
@@ -460,7 +486,7 @@ flowchart TD
 
 **Tiny example:** With Epoch AI's constants at C = 10^24: a = 0.3658 ÷ 0.7136 ≈ 0.513 and b ≈ 0.487; G = (0.3478 × 482.01 ÷ (0.3658 × 2,085.43))^(1 ÷ 0.7136) = (167.6 ÷ 762.9)^1.401 ≈ 0.120; C ÷ 6 ≈ 1.67 × 10^23; N_opt ≈ `0.120 × (1.67 × 10^23)^0.513` ≈ 9.6 × 10^10 and D_opt ≈ 1.7 × 10^12, about 18 tokens per parameter. The same formula with the 2022 paper's rounded constants gives about 41 billion parameters and 98 tokens per parameter, out of line with the paper's other two methods; Epoch AI's replication reported that inconsistency and its refit agrees with the roughly 20-to-1 answer.
 
-**Where it is used:** Sizing pretraining runs (Chinchilla, Llama 3, DeepSeek). Llama 3 fitted `D*(C) = A × C^α` with (α, A) = (0.53, 0.29) on IsoFLOP curves, predicting 402 billion parameters on 16.55 trillion tokens at 3.8 × 10^25 FLOPs; Meta trained 405 billion.
+**Where it is used:** Sizing pretraining runs (Chinchilla, Llama 3, DeepSeek). Llama 3 fitted `D*(C) = A × C^α` with (α, A) = (0.53, 0.29) on IsoFLOP curves, and reported that it predicts 402 billion parameters on 16.55 trillion tokens at 3.8 × 10^25 FLOPs; Meta trained 405 billion. The printed constants do not reproduce that prediction: `0.29 × (3.8 × 10^25)^0.53` ≈ 10.5 trillion tokens, so treat the published pair as rounded.
 **In the book:** Chapter 19 (Chinchilla 2022: feed the model more data) computes the 20-tokens special case; the general closed form is only here.
 
 > **Definition — IsoFLOP curve:** A set of training runs that all use the same compute budget but trade model size against data differently. Plotting their final losses against model size gives a U-shaped curve whose bottom marks the compute-optimal size for that budget.
@@ -500,7 +526,7 @@ flowchart TD
 - **`R*_N` ≈ 5.3**: the matching scale for parameters
 - **E**, **A**, **B**, **α**, **β**: the Chinchilla constants
 
-**In plain words:** Each extra pass over the same data is worth a bit less than the one before. Up to about 4 epochs costs almost nothing; when R_D equals `R*_D`, repeated tokens are worth 1 − 1 ÷ e ≈ 63% of fresh ones; beyond that, extra epochs add little (Muennighoff and others, 2023).
+**In plain words:** Each extra pass over the same data is worth a bit less than the one before. Up to about 4 epochs costs almost nothing; when R_D equals `R*_D`, the repeated tokens are worth, on average, 1 − 1 ÷ e ≈ 63% of fresh ones; beyond that, extra epochs add little (Muennighoff and others, 2023).
 
 **Tiny example:** 100 billion unique tokens. Four epochs (R_D = 3): D' = 100 + 100 × 15.4 × (1 − exp(−3 ÷ 15.4)) = 100 + 1,540 × 0.177 ≈ 373 billion effective, versus 400 billion read. Forty epochs (R_D = 39): 100 + 1,540 × (1 − exp(−39 ÷ 15.4)) = 100 + 1,540 × 0.921 ≈ 1,518 billion effective, versus 4,000 billion read.
 
@@ -526,7 +552,7 @@ flowchart TD
 
 **Tiny example:** C = 10^22: η_opt ≈ 0.3118 × 10^(−2.75) ≈ 0.3118 × 0.00178 ≈ 5.5 × 10^−4; B_opt ≈ 0.2920 × 10^7.196 ≈ 4.6 million tokens; M_opt ≈ 5.9 × 10^10 FLOPs per token; D_opt ≈ 1.7 × 10^11 tokens. Check: 5.9 × 10^10 × 1.7 × 10^11 ≈ 10^22.
 
-**Where it is used:** DeepSeek LLM and its successors, and the general practice of fitting hyperparameter laws on proxies before a frontier run. The other standard way to carry settings from a small proxy to a big model, μP (maximal update parametrization), rescales initialization and learning rates with width; its rules are in the deep-learning section, and Depth-μP and CompleteP (2025) extend them to depth.
+**Where it is used:** DeepSeek LLM and its successors, and the general practice of fitting hyperparameter laws on proxies before a frontier run. The other standard way to carry settings from a small proxy to a big model, μP (maximal update parametrization), rescales initialization and learning rates with width; its rules are in the deep-learning section, and Depth-μP (2023) and CompleteP (2025) extend them to depth.
 **In the book:** Chapter 19 (The settings) says in words that DeepSeek and others published such formulas and defines μP; the fitted laws are only here.
 
 > **Definition — μTransfer:** Tuning hyperparameters such as the learning rate on a small, cheap model set up with μP and copying them directly to a much larger model, which μP makes possible.
@@ -575,6 +601,28 @@ flowchart TD
 **Where it is used:** Meta used this method to predict the Llama 3 405B model's ARC-Challenge score across four orders of magnitude of compute; labs forecast capabilities this way before committing to a frontier run.
 **In the book:** Chapter 19 (Emergent abilities: sudden leaps or smooth progress?) argues in words for tracking a smooth metric; the two-step fit is only here.
 
+### Effective compute and compute-equivalent gain
+
+**What it does:** Measures an improvement in training recipe (architecture, data, optimizer) as the extra raw compute the old recipe would have needed to match it.
+
+`compute-equivalent gain CEG = C_old(ℓ) ÷ C_new(ℓ); effective compute = physical compute × algorithmic multiplier; if the compute needed for a fixed result halves every h months, the multiplier after t months = 2^(t ÷ h)`
+
+- **ℓ** (script l): a fixed target, such as a loss or a benchmark score
+- **C_old(ℓ)**, **C_new(ℓ)**: the training compute the old and the new recipe need to reach ℓ (read off their scaling-law fits)
+- **CEG**: the compute-equivalent gain of the new recipe
+- **physical compute**: the FLOPs actually spent
+- **algorithmic multiplier**: the combined CEG of all improvements since a chosen starting recipe
+- **h**: the halving time; **t**: months elapsed
+
+**In plain words:** Two scaling curves for two recipes are usually parallel lines on a log-log plot, so the better recipe is worth a fixed factor of compute at every size. Multiplying real FLOPs by that factor gives "effective compute", a single number for how much better models get from bigger budgets and smarter methods together. It is an estimate: different targets and benchmarks give different multipliers.
+
+**Tiny example:** A new recipe reaches loss 2.0 with 10^23 FLOPs where the old one needed 4 × 10^23: CEG = 4, so a 10^24-FLOP run with the new recipe counts as 4 × 10^24 effective FLOPs. With an 8-month halving time, 24 months give `2^(24 ÷ 8)` = 8 times; if physical training compute also grows 5 times a year (25 times in two years), effective compute grows about 25 × 8 = 200 times.
+
+**Where it is used:** Epoch AI estimated that the compute needed to reach a fixed language-model performance halved about every 8 months between 2012 and 2023, with a wide uncertainty range of roughly 5 to 14 months (Ho and others, 2024). Anthropic's first Responsible Scaling Policy (2023) set its re-testing trigger in effective compute (every 4 times increase). Papers state gains the same way: Moonshot AI's "Muon is Scalable for LLM Training" (2025) reported about 2 times the computational efficiency of AdamW in compute-optimal training, a CEG of about 2 (Muon is in Chapter 13). It is also why fixed FLOP thresholds in law, such as the EU AI Act's 10^25, age quickly.
+**In the book:** Only here (Chapter 59, in a Watch out on compute thresholds, notes in words that algorithms get more efficient every year).
+
+> **Definition — Effective compute:** Training compute adjusted for better methods: the raw compute multiplied by how many times more compute an older recipe would have needed for the same result.
+
 ### Compounding success over many tokens or steps (exact match and long agent tasks)
 
 **What it does:** Gives the chance that every part of a long answer or a long task comes out right, which explains sudden-looking jumps in scores and why long agent runs fail.
@@ -610,7 +658,7 @@ flowchart TD
 
 **Tiny example:** Shingle sets {a, b, c, d} and {b, c, d, e}: J = 3 ÷ 5 = 0.6. With FineWeb's setting of 14 bands of 8 hashes: J = 0.9 gives 1 − (1 − `0.9^8`)^14 = 1 − (1 − 0.430)^14 ≈ 0.9996; J = 0.75 gives 1 − (1 − 0.100)^14 ≈ 0.77; J = 0.5 gives 1 − (1 − 0.0039)^14 ≈ 0.053.
 
-**Where it is used:** Deduplication in FineWeb (5-word shingles, 112 hashes in 14 bands of 8, targeting about 75% similarity), RefinedWeb, Dolma and NVIDIA NeMo Curator. A related check, n-gram decontamination, flags benchmark items that share a long run of words with the training data (13-grams in GPT-3; its score is in the evaluation-metrics section).
+**Where it is used:** Deduplication in FineWeb (5-word shingles, 112 hashes in 14 bands of 8, targeting about 75% similarity), RefinedWeb, OLMo 3's pretraining data (MinHash followed by an exact Jaccard check) and NVIDIA NeMo Curator. A related check, n-gram decontamination, flags benchmark items that share a long run of words with the training data (13-grams in GPT-3; its score is in the evaluation-metrics section).
 **In the book:** Chapter 19 (Cleaning the firehose: the curation pipeline) works the Jaccard similarity and defines MinHash in words; the match probability and the banding formula are only here.
 
 > **Definition — Shingle:** A short overlapping run of consecutive words (or characters) taken from a document, such as every 5-word window. Comparing documents' sets of shingles measures how much text they share.
@@ -687,7 +735,7 @@ flowchart LR
 
 **Tiny example:** Logits [2, 1, 0.1]. At T = 0.5 they become [4, 2, 0.2], giving 0.864, 0.117 and 0.019. At T = 2 they become [1, 0.5, 0.05], giving 0.502, 0.304 and 0.194.
 
-**Where it is used:** The temperature setting of every LLM API and local runner; most engines apply it before the truncation rules below.
+**Where it is used:** The temperature setting of local runners and of most LLM APIs; most engines apply it before the truncation rules below. Some reasoning models fix it: as of late 2026 Anthropic's current Claude models reject custom temperature values (Chapter 26).
 **In the book:** Chapter 18 (Temperature: the creativity dial), Chapter 6 (Temperature), Chapter 26 (Sampling settings: the creativity dials) and Appendix B (Temperature).
 
 ### Greedy decoding
@@ -722,7 +770,7 @@ flowchart LR
 
 **Tiny example:** Probabilities 0.5, 0.3, 0.15, 0.05 with k = 2: keep 0.5 and 0.3, total 0.8, so 0.5 ÷ 0.8 = 0.625 and 0.3 ÷ 0.8 = 0.375.
 
-**Where it is used:** The top_k setting in the Anthropic, Gemini and Hugging Face APIs, vLLM and llama.cpp.
+**Where it is used:** The top_k setting in the Gemini API, Hugging Face transformers, vLLM and llama.cpp. Anthropic's API offered it too, but its October 2026 version rejects it along with temperature and top-p (Chapter 26).
 **In the book:** Chapter 18 (Cutting off the long tail: top-k, top-p and min-p) and Chapter 26 (Sampling settings: the creativity dials).
 
 ### Top-p (nucleus) sampling
@@ -739,7 +787,7 @@ flowchart LR
 
 **Tiny example:** Probabilities 0.4, 0.3, 0.2, 0.1 with p = 0.8: 0.4 + 0.3 = 0.7 is not enough, 0.4 + 0.3 + 0.2 = 0.9 is, so keep three and divide by 0.9: 0.444, 0.333, 0.222.
 
-**Where it is used:** The top_p setting in almost every API and engine.
+**Where it is used:** The top_p setting in most APIs and every common engine, except where a reasoning model fixes its own sampling (Chapter 26).
 **In the book:** Chapter 18 (Cutting off the long tail: top-k, top-p and min-p), Chapter 6 (Top-p: cutting off the long tail) and Appendix B (Top-p).
 
 ### Min-p sampling
@@ -756,7 +804,7 @@ flowchart LR
 
 **Tiny example:** Probabilities 0.6, 0.25, 0.1, 0.04, 0.01 with p_base = 0.1: threshold 0.1 × 0.6 = 0.06, so keep 0.6, 0.25 and 0.1 (total 0.95) and rescale to 0.632, 0.263 and 0.105.
 
-**Where it is used:** Hugging Face transformers, vLLM, llama.cpp and other local runners.
+**Where it is used:** Hugging Face transformers, vLLM, llama.cpp and other local runners. A relative, top-nσ (Tang and others, 2024, offered by llama.cpp), works on logits instead: it keeps tokens whose logit is at least the top logit minus n standard deviations of all the logits.
 **In the book:** Chapter 18 (Cutting off the long tail: top-k, top-p and min-p).
 
 ### Epsilon, eta and locally typical sampling
@@ -923,7 +971,7 @@ flowchart LR
 - **x**: the input (for example the sentence to translate)
 - **B**: the beam width, how many candidates to keep
 - **|y|**: the length of the candidate in tokens
-- **α** (alpha): the length-penalty strength (0.6 to 0.7 in GNMT)
+- **α** (alpha): the length-penalty strength, tuned on held-out data (GNMT found 0.6 to 0.7 best for plain division by `|y|^α`, and used 0.2 with its lp(y))
 - **lp(y)**: GNMT's length penalty
 
 **In plain words:** Instead of one greedy path, keep the B best prefixes, extend each by every likely token, and keep the best B again. Raw sums of log-probabilities always favor short outputs (each extra token adds a negative number), so scores are divided by a length term.
@@ -1060,7 +1108,7 @@ flowchart LR
 **Tiny example:** Scores [1, 3, 2, 5] with values [10, 20, 30, 40], in two blocks. Block 1: m = 3; l = exp(−2) + exp(0) = 1.135; O = 0.135 × 10 + 1 × 20 = 21.35. Block 2: new max 5, rescale factor exp(3 − 5) = 0.135; l = 0.135 × 1.135 + exp(−3) + exp(0) = 1.203; O = 0.135 × 21.35 + 0.0498 × 30 + 1 × 40 = 44.38. Answer O ÷ l = 44.38 ÷ 1.203 ≈ 36.88, the same as softmax over all four scores at once.
 
 **Where it is used:** FlashAttention 1 to 4, FlashInfer, cuDNN attention and every modern serving engine (Milakov and Gimelshein, 2018; Dao and others, 2022). Flash-decoding splits a long cache across processors and merges the partial results with the same rescaling.
-**In the book:** Chapter 15 (Making attention cheaper) and Chapter 23 (Long context: making a million tokens affordable) describe FlashAttention's tiles and "running softmax" in words; the update rules are only here.
+**In the book:** Chapter 15 (Making attention cheaper) describes FlashAttention's tiles and its "running softmax" in words, and Chapter 23 (Long context: making a million tokens affordable) defines FlashAttention; the update rules are only here.
 
 > **Definition — Online softmax:** A way to compute softmax over a long list in pieces, keeping a running maximum and running total and rescaling them whenever a larger value appears, so the whole list never has to be stored at once.
 
@@ -1218,8 +1266,8 @@ flowchart LR
 
 **Tiny example:** 1,000 × 1,000 pixels: ceil(1,000 ÷ 28) = 36, so 36 × 36 = 1,296 tokens. An 800 × 600 image: 29 × 22 = 638 tokens.
 
-**Where it is used:** Estimating the cost and context use of screenshots, documents and computer-use agents. Anthropic shrinks images until they fit at most 4,784 visual tokens and 2,576 pixels on the long side for Claude 4.7 and later models (1,568 tokens and 1,568 pixels for older ones); its 2024-2025 guidance used tokens ≈ width × height ÷ 750. Video is priced per sampled frame (Gemini documented about 258 tokens per frame at 1 frame per second in 2025).
-**In the book:** Chapter 22 (Worked example: what does one photo cost?), which also explains the 2 × 2 patch merging and the size limits.
+**Where it is used:** Estimating the cost and context use of screenshots, documents and computer-use agents. Anthropic shrinks images until they fit at most 4,784 visual tokens and 2,576 pixels on the long side for Claude 4.7 and later models (1,568 tokens and 1,568 pixels for older ones); its 2024-2025 guidance used tokens ≈ width × height ÷ 750. Video is priced per sampled frame (Gemini documented about 258 tokens per frame at 1 frame per second in 2025, plus about 32 tokens per second of audio, so about 290 tokens per second of video).
+**In the book:** Chapter 22 (Worked example: what does one photo cost?, which also explains the 2 × 2 patch merging and the size limits; Video understanding, which works a 10-minute video).
 
 ### Absmax (symmetric) quantization and dequantization
 
@@ -1236,7 +1284,7 @@ flowchart LR
 - **clamp(v, lo, hi)**: keep v inside the range lo to hi
 - **x̂** (x-hat): the value recovered when the integer is multiplied back
 
-**In plain words:** Divide by the scale, round to an integer, store it; to use it, multiply back. Every number ends up within half a step of its true value (the average squared error is about s^2 ÷ 12). One huge outlier inflates s and wastes resolution for all the others, which motivates per-group scales, smoothing and rotations (below).
+**In plain words:** Divide by the scale, round to an integer, store it; to use it, multiply back. Every number ends up within half a step of its true value (the average squared error is about s^2 ÷ 12). Each extra bit halves s and so cuts that error by 4, the "about 6 decibels per bit" rule of signal processing. One huge outlier inflates s and wastes resolution for all the others, which motivates per-group scales, smoothing and rotations (below).
 
 **Tiny example:** x = [0.5, −1.27, 0.123] with b = 8: s = 1.27 ÷ 127 = 0.01. Divide: 50, −127, 12.3; round: 50, −127, 12. Multiply back: 0.5, −1.27, 0.12. The third value is off by 0.003, within the bound 0.01 ÷ 2 = 0.005.
 
@@ -1282,7 +1330,7 @@ flowchart LR
 
 **Tiny example:** 4-bit integers with one 16-bit scale per 128 weights: 4 + 16 ÷ 128 = 4.125 bits per weight. An 8-billion-parameter model then takes 8 × 10^9 × 4.125 ÷ 8 ≈ 4.1 GB. With a 16-bit scale and a 16-bit zero-point per 32 weights: 4 + 32 ÷ 32 = 5 bits.
 
-**Where it is used:** Every weight-only quantization format: GPTQ, AWQ, GGUF k-quants (Q4_K_M averages about 4.8 bits per weight) and MLX.
+**Where it is used:** Every weight-only quantization format: GPTQ, AWQ, GGUF k-quants and MLX. llama.cpp's Q4_K packs 8 blocks of 32 weights into a 256-weight super-block, each block with a 6-bit scale and a 6-bit minimum, plus two 16-bit super-block numbers: 4 + (8 × 12) ÷ 256 + 32 ÷ 256 = 4.5 bits per weight. A Q4_K_M file mixes in some higher-precision tensors and averages about 4.8 to 4.9.
 **In the book:** Chapter 30 (Quantization and GGUF; Will it fit? The memory rule of thumb), Chapter 17 and Appendix B (Memory math); the b + scale bits ÷ g count is only here.
 
 > **Definition — Quantization group (group size):** A run of consecutive weights that share one scale (and sometimes one zero-point). The group size, often 32 to 128, trades accuracy against the overhead of storing scales.
@@ -1315,8 +1363,8 @@ flowchart LR
 `x ≈ s_tensor × s_block × q, q in {0, ±0.5, ±1, ±1.5, ±2, ±3, ±4, ±6}; one FP8 (E4M3) s_block per 16 values; one FP32 s_tensor per tensor; storage ≈ 4 + 8 ÷ 16 = 4.5 bits per value`
 
 - **x**: the original value
-- **q**: the stored 4-bit value (format E2M1)
-- **s_block**: the block's scale, stored as an 8-bit floating-point number, one per 16 values
+- **q**: the stored 4-bit value (format E2M1: 1 sign bit, 2 exponent bits and 1 mantissa bit)
+- **s_block**: the block's scale, stored as an 8-bit floating-point number (E4M3: 4 exponent bits and 3 mantissa bits), one per 16 values
 - **s_tensor**: a 32-bit scale for the whole tensor, keeping the block scales inside E4M3's range (largest value 448)
 
 **In plain words:** Blocks of 16 instead of 32, and block scales that can be any FP8 number rather than only powers of two, fit the data more tightly. Each block scale is chosen so the block's largest value maps near 6, the largest FP4 value.
@@ -1500,6 +1548,27 @@ flowchart LR
 
 > **Definition — Hadamard matrix:** A square matrix whose entries are all +1 or −1 (often divided by the square root of its size) and whose rows are mutually perpendicular. Multiplying by it is a cheap rotation that mixes every entry of a vector into every other.
 
+### Pruning scores (magnitude and Wanda) and 2:4 sparsity
+
+**What it does:** Decides which weights of a trained model to set to zero, so the model gets smaller or faster with as little damage as possible.
+
+`magnitude score: S_ij = |W_ij|; Wanda score: S_ij = |W_ij| × length(X_j); in each output row i, zero the weights with the lowest scores until a fraction s of the row is zero; 2:4 pattern: in every group of 4 neighboring weights keep the 2 with the highest scores`
+
+- **W_ij**: the weight in output row i that multiplies input channel j
+- **|W_ij|**: its size, ignoring sign
+- **X_j**: the values input channel j takes over the calibration data (see GPTQ above); **length(X_j)**: the size of that list of values, the square root of the sum of their squares
+- **S_ij**: the importance score; the lowest scores are pruned
+- **s**: the target sparsity, the fraction of weights set to zero (for example 0.5)
+
+**In plain words:** The simplest rule removes the smallest weights. But a small weight that multiplies a huge input can matter more than a large weight on a tiny input, so Wanda ("pruning by weights and activations", Sun and others, 2024) multiplies each weight's size by its input's typical size, compares weights within each output row and needs no retraining. The 2:4 pattern is half sparsity in a fixed shape that NVIDIA chips since the A100 can skip, which is what turns zeros into real speed. Removing whole heads, channels or layers instead (structured pruning) makes the model smaller outright and is normally followed by distillation to recover quality.
+
+**Tiny example:** One output row W = [0.5, −0.1, 0.3, 0.05] whose inputs have sizes [1, 10, 0.5, 2]. Magnitude keeps 0.5 and 0.3. Wanda scores are 0.5, 1.0, 0.15 and 0.1, so it keeps 0.5 and −0.1 (both choices are valid 2:4 patterns). For the input x = [1, 10, 0.5, 2] the true output is 0.5 − 1 + 0.15 + 0.1 = −0.25; the magnitude-pruned row gives 0.5 + 0.15 = 0.65 (off by 0.9) and the Wanda-pruned row gives 0.5 − 1 = −0.5 (off by 0.25).
+
+**Where it is used:** NVIDIA's Minitron recipe (Llama 3.1 8B pruned to 4 billion and Mistral NeMo 12B to 8 billion, then distilled) ranks heads, neurons and embedding channels by activation-based importance and layers by how much removing them hurts; 2:4 sparse tensor cores on A100 and later GPUs, whose "sparse" FLOPS figures assume this pattern; SparseGPT (Frantar and Alistarh, 2023) prunes with the same inverse-Hessian correction as GPTQ; Wanda is a standard baseline in pruning research.
+**In the book:** Chapter 30 (Quantization and GGUF) defines pruning and names the Minitron report, and Chapter 32 (Dense versus sparse) defines 2:4 structured sparsity; the scores are only here.
+
+> **Definition — Wanda (pruning):** A pruning method that scores each weight by its size times the typical size of the input it multiplies, and removes the lowest-scoring weights in each output row without any retraining.
+
 ### Precision-aware scaling law
 
 **What it does:** Extends the Chinchilla formula to say how much quality is lost by training or storing a model in fewer bits.
@@ -1595,19 +1664,16 @@ flowchart LR
 - **←**: "is replaced by"
 - **k**, **v**, **ffn**: attention keys, values and feed-forward activations
 - **l_k**, **l_v**, **l_ff**: trainable vectors that rescale them
-- **⊙**: element-wise multiplication (multiply matching entries)
+- **⊙**: element-wise multiplication (multiply matching entries, so [1, 2] ⊙ [3, 4] = [3, 8]; see Chapter 5)
 
 **In plain words:** An adapter is a small squeeze-and-expand block with a shortcut, inserted inside each layer; only it is trained (Houlsby and others, 2019). (IA)^3 is even smaller: it learns three vectors per layer that turn individual channels up or down.
 
 **Tiny example:** An adapter with d = 4,096 and r = 64 trains 64 × 4,096 + 4,096 × 64 = 524,288 numbers per layer (plus small biases). (IA)^3 with 4,096-wide keys and values and an 11,008-wide feed-forward block trains 4,096 + 4,096 + 11,008 = 19,200 numbers per layer. Rescaling a key [1, 2] by l_k = [0.5, 2] gives [0.5, 4].
 
-**Where it is used:** Hugging Face PEFT; taught alongside LoRA as parameter-efficient fine-tuning in courses such as Stanford CS224n.
+**Where it is used:** Bottleneck adapters in the AdapterHub "adapters" library; (IA)^3 in Hugging Face PEFT. Both are standard members of the parameter-efficient fine-tuning family that LoRA belongs to.
 **In the book:** Only here (Chapter 30, The idea at real scale, names the wider parameter-efficient family).
 
 > **Definition — IA3 (Infused Adapter by Inhibiting and Amplifying Inner Activations):** A parameter-efficient fine-tuning method, written (IA)^3, that trains only three small vectors per layer which multiply a model's keys, values and feed-forward activations channel by channel.
-
-> **Definition — Element-wise multiplication:** Multiplying two same-length vectors entry by entry, so [1, 2] times [3, 4] gives [3, 8]. It is often written with the symbol ⊙.
-
 ### Prompt tuning and prefix tuning (soft prompts)
 
 **What it does:** Adapts a frozen model by learning a few "virtual token" vectors placed in front of the real input.
@@ -1642,7 +1708,7 @@ flowchart LR
 - **λ** (lambda): how strongly to add the task vectors
 - **p**: DARE's drop probability
 
-**In plain words:** Average the weights (a "soup"), or add up what each fine-tune changed (task arithmetic). TIES-merging trims small changes, picks one sign per weight and averages only the changes that agree; SLERP blends two models along a curve instead of a straight line.
+**In plain words:** Average the weights (a "soup"), or add up what each fine-tune changed (task arithmetic). TIES-merging trims small changes, picks one sign per weight and averages only the changes that agree; SLERP blends two models along a curve instead of a straight line (its formula is in the general-math section).
 
 **Tiny example:** One weight is 0.56 in model 1 and 0.47 in model 2: soup (0.56 + 0.47) ÷ 2 = 0.515. With base 0.50 and task vectors +0.06 and −0.03, λ = 1: 0.50 + 0.06 − 0.03 = 0.53. DARE with p = 0.5 that keeps the +0.06 doubles it to 0.12.
 
@@ -1669,7 +1735,7 @@ flowchart LR
 
 **In plain words:** A teacher's probabilities say not just "this answer" but "and these wrong answers are almost right". Softening with T > 1 makes that information visible, and the student is trained to match it, mixed with the usual loss on true labels (Hinton and others, 2015).
 
-**Tiny example:** Teacher logits [2, 1, 0], student logits [1.5, 1, 0.5], T = 2. Softened teacher: 0.506, 0.307, 0.186; softened student: 0.419, 0.326, 0.254. KL ≈ 0.0191, times T^2 = 4 gives 0.0764. The student's ordinary loss on the true token (the first) is −ln(0.506) ≈ 0.680. With λ = 0.5: 0.5 × 0.680 + 0.5 × 0.0764 ≈ 0.378.
+**Tiny example:** Teacher logits [2, 1, 0], student logits [1.5, 1, 0.5], T = 2. Softened teacher: 0.506, 0.307, 0.186; softened student: 0.419, 0.326, 0.254. KL ≈ 0.0191, times T^2 = 4 gives 0.0764. The student's ordinary loss uses its unsoftened (T = 1) probabilities: softmax of [1.5, 1, 0.5] gives the true token (the first) 0.506, the same number as above only because these logits are evenly spaced, so the loss is −ln(0.506) ≈ 0.680. With λ = 0.5: 0.5 × 0.680 + 0.5 × 0.0764 ≈ 0.378.
 
 **Where it is used:** Gemma 2 and 3 small models (Gemma 3 distilled on 256 sampled teacher logits per token), Llama 3.2 1B and 3B (logits from Llama 3.1 8B and 70B) and DistilBERT.
 **In the book:** Chapter 20 (Distillation: big teachers, small students) defines soft labels and logit distillation in words, and Chapter 6 defines KL divergence; the loss is only here.
@@ -1820,6 +1886,26 @@ flowchart LR
 **Where it is used:** RAG indexing pipelines: LangChain and LlamaIndex text splitters and managed RAG services.
 **In the book:** Chapter 27 (Chunking: cutting the book into index cards; What embeddings cost).
 
+### Text embedding from token vectors (mean, [CLS] and last-token pooling)
+
+**What it does:** Turns the many vectors a model produces for a text, one per token, into the single vector used as the text's embedding.
+
+`mean pooling: e = (sum over t of m_t × h_t) ÷ (sum over t of m_t); [CLS] pooling: e = h_1; last-token pooling: e = h_T; then normalize: e' = e ÷ length(e)`
+
+- **h_t**: the model's final hidden vector at token position t
+- **m_t**: the mask, 1 for real tokens and 0 for padding added to fill out a batch
+- **T**: the position of the last real token
+- **h_1**: the vector at the first position, where encoder models put a special [CLS] summary token
+- **e**: the pooled vector; **e'**: the same vector scaled to length 1
+- **length(e)**: the vector's length, the square root of the sum of its squared entries
+
+**In plain words:** An encoder reads text in both directions, so averaging all its token vectors, or reading its summary position, captures the whole text. A decoder-only model reads left to right, so only its last token has seen everything, which is why LLM-based embedders take the last position. Scaling to length 1 lets the dot product in the next entry act as cosine similarity.
+
+**Tiny example:** Three tokens with vectors [1, 2], [3, 0] and [2, 4], plus one padding position (m = 0) that is ignored. Mean pooling: [(1 + 3 + 2) ÷ 3, (2 + 0 + 4) ÷ 3] = [2, 2], length 2.83, normalized [0.707, 0.707]. Last-token pooling: [2, 4], length 4.47, normalized [0.447, 0.894].
+
+**Where it is used:** Sentence-Transformers models default to mean pooling; BGE embedding models read the [CLS] position; decoder-based embedders such as E5-Mistral and Qwen3-Embedding take the final end-of-text token. The models are trained so that matching pairs end up close, with the InfoNCE contrastive loss in the generative-models section.
+**In the book:** Only here (Chapter 27, From two dimensions to hundreds, explains what an embedding is in words).
+
 ### Embedding-similarity top-k retrieval (and hybrid score)
 
 **What it does:** Finds the passages whose meaning is closest to a question by comparing their embedding vectors.
@@ -1923,7 +2009,7 @@ flowchart LR
 
 **Tiny example:** Two passages with retriever weights 0.7 and 0.3; a two-token answer whose tokens get 0.9 and 0.8 from passage 1 and 0.5 and 0.9 from passage 2. RAG-Sequence: 0.7 × (0.9 × 0.8) + 0.3 × (0.5 × 0.9) = 0.504 + 0.135 = 0.639. RAG-Token: (0.7 × 0.9 + 0.3 × 0.5) × (0.7 × 0.8 + 0.3 × 0.9) = 0.78 × 0.83 ≈ 0.647.
 
-**Where it is used:** Trainable retrieval-augmented models (RAG, REALM, Atlas); taught in Stanford CS224n.
+**Where it is used:** Trainable retrieval-augmented models (RAG, REALM, Atlas). Today "RAG" usually means any system that retrieves first and then has a language model answer from what it found, with nothing trained jointly (Chapter 27), so this formula describes the original research line rather than everyday pipelines.
 **In the book:** Only here (Chapter 27, Where the idea came from, names the 2020 paper).
 
 > **Definition — RAG-Sequence and RAG-Token:** The two versions of the original retrieval-augmented generation model: RAG-Sequence lets each retrieved passage support a whole answer and averages over passages, while RAG-Token averages over passages separately for every token.
@@ -1960,7 +2046,7 @@ flowchart LR
 
 **What it does:** Asks the same question several times and returns the most common final answer.
 
-`â = argmax over a of sum over i = 1..N of 1[a_i = a]; weighted: â = argmax over a of sum over i of w_i × 1[a_i = a]`
+`â = argmax over a of sum over i = 1..N of 1[a_i = a]; weighted: â = argmax over a of sum over i of w_i × 1[a_i = a]; chance a majority of N independent votes is right (two possible answers, N odd) = sum over k = (N + 1) ÷ 2 .. N of C(N, k) × p^k × (1 − p)^(N − k)`
 
 - **â** (a-hat): the chosen answer
 - **a**: any candidate answer
@@ -1968,13 +2054,15 @@ flowchart LR
 - **a_i**: the final answer of sample i
 - **1[a_i = a]**: 1 if sample i gave answer a, else 0
 - **w_i**: a weight for sample i, such as a confidence or reward score
+- **p**: the chance that one sample is right
+- **C(N, k)**: the number of ways to choose which k of the N samples are right (for example C(5, 3) = 10)
 
-**In plain words:** Different reasoning paths make different mistakes but tend to agree on the right answer, so the majority is more reliable than any single sample (Wang and others, 2023). Weighting votes by confidence or a reward model is a common variant.
+**In plain words:** Different reasoning paths make different mistakes but tend to agree on the right answer, so the majority is more reliable than any single sample (Wang and others, 2023). Weighting votes by confidence or a reward model is a common variant. The last formula adds up the chances of every outcome in which more than half the votes are right; it is the textbook case where all wrong answers agree, and it shows that voting helps only when p is above one half.
 
-**Tiny example:** Five samples answer 12, 12, 15, 12, 9: the vote picks 12 (3 of 5). With weights 0.2, 0.2, 0.9, 0.1, 0.3, the totals are 12 → 0.5, 15 → 0.9, 9 → 0.3, so the weighted vote picks 15.
+**Tiny example:** Five samples answer 12, 12, 15, 12, 9: the vote picks 12 (3 of 5). With weights 0.2, 0.2, 0.9, 0.1, 0.3, the totals are 12 → 0.5, 15 → 0.9, 9 → 0.3, so the weighted vote picks 15. Majority of 5 with p = 0.7: 10 × `0.7^3` × `0.3^2` + 5 × `0.7^4` × 0.3 + `0.7^5` = 0.309 + 0.360 + 0.168 ≈ 0.837, better than one try's 0.7. With p = 0.4 the same sum is about 0.317, worse than one try's 0.4.
 
 **Where it is used:** Benchmark reporting (OpenAI o1's consensus of 64 samples, written cons@64; Gemini and DeepSeek evaluations) and production ensembles.
-**In the book:** Chapter 21 (Self-consistency: ask several times, take a vote); the weighted vote is only here.
+**In the book:** Chapter 21 (Self-consistency: ask several times, take a vote) gives the 31.7% case, and one of its exercises computes the 5-vote majority for p = 0.7; the weighted vote and the general sum are only here.
 
 > **Definition — maj@k (cons@k):** A benchmark score in which the model answers each question k times and its most common answer is graded, for example cons@64 for 64 samples.
 

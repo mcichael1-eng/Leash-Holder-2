@@ -134,8 +134,8 @@ flowchart TD
 
 **Tiny example:** 0.95^20 ≈ 0.358, so a 20-step agent task with 95%-reliable steps finishes only about a third of the time. To finish a 100-step task 90% of the time, each step needs 0.9^(1 ÷ 100) ≈ 0.99895, about 99.9%. An attack that works 20% of the time succeeds at least once in 10 tries with probability 1 − 0.8^10 ≈ 0.893.
 
-**Where it is used:** Planning agent reliability; it is why METR's 80% time horizon is several times shorter than its 50% horizon (below), and why jailbreak success rises with the number of attempts.
-**In the book:** Chapter 55 (From answers to actions: errors compound), Chapter 28, Chapter 31 (Evaluating agents), Chapter 57 (Why evaluations keep getting harder).
+**Where it is used:** Planning agent reliability; it is why METR's 80% time horizon is several times shorter than its 50% horizon (below), and why jailbreak success rises with the number of attempts. AI control turns it around in the defenders' favor: if each sabotage attempt by an untrusted model escapes the monitor with probability 0.4, a plan that needs five attempts escapes every time with probability 0.4^5 ≈ 0.01.
+**In the book:** Chapter 55 (From answers to actions: errors compound), Chapter 28, Chapter 31 (Evaluating agents), Chapter 57 (Why evaluations keep getting harder), Chapter 56 (AI control: safety even if the model is not trustworthy).
 
 ### Defense in depth (multiplying pass-through rates)
 
@@ -150,7 +150,7 @@ flowchart TD
 
 **In plain words:** Independent layers multiply small failure rates into a very small one. Layers that share a blind spot fail together, and the conditional form shows how that correlation eats the benefit. This is the arithmetic of the Swiss cheese model.
 
-**Tiny example:** Chapter 56's four layers catch 90%, 80%, 75% and 50%: 0.10 × 0.20 × 0.25 × 0.5 = 0.0025, or 2.5 in 1,000. If the two classifiers both miss 60% of what gets past training, the first three layers let through 0.10 × 0.60 = 0.06 instead.
+**Tiny example:** Chapter 56's four layers catch 90%, 80%, 75% and 50%: 0.10 × 0.20 × 0.25 × 0.5 = 0.0025, or 2.5 in 1,000. Now take an attack style that fools both classifiers for the same reason, so that together they let through 60% of what gets past training instead of 0.20 × 0.25 = 0.05: the first three layers let through 0.10 × 0.60 = 0.06 instead of 0.10 × 0.05 = 0.005, twelve times more.
 
 **Where it is used:** Layered safeguards around frontier models: trained refusals, input and output classifiers such as constitutional classifiers, account monitoring and access tiers, as in Anthropic's ASL-3 protections.
 **In the book:** Chapter 56 (Worked example: how layers multiply), Chapter 31 (Defense in depth).
@@ -174,6 +174,28 @@ flowchart TD
 
 **Where it is used:** Safety sections of system cards, HarmBench-style benchmarks and bug-bounty evaluations. Anthropic reported in February 2025 that automated jailbreaks succeeded 86% of the time against an unprotected model and 4.4% with constitutional classifiers.
 **In the book:** Chapter 31 (Red-teaming your own system), Chapter 56 (Classifiers and constitutional classifiers), Chapter 57 (Red-teaming: trying to break it), Chapter 20 (Refusal calibration).
+
+### Power-law scaling of repeated jailbreak attempts (Best-of-N jailbreaking)
+
+**What it does:** Predicts how an attacker's success grows with the number of tries, from a straight-line fit that can be extended to budgets nobody has tested yet.
+
+`−ln(ASR_N) = a × N^(−b), so ASR_N = exp(−a × N^(−b)); fitted as the straight line ln(−ln(ASR_N)) = ln(a) − b × ln(N)`
+
+- **ASR_N**: the share of harmful requests that get through at least once within N attempts each.
+- **N**: the number of attempts per request, each a small random variation such as shuffled capital letters or typos.
+- **a**, **b**: constants fitted to the data; a larger b means success grows faster with N.
+- **ln**: the natural logarithm; **exp(...)**: e raised to that power.
+
+**In plain words:** If every attempt were an independent coin flip, success would race toward 100% as 1 − (1 − p)^N (the attack success rate entry above). Real attempts are not independent: some requests resist almost every variation, so success climbs more slowly, and in experiments −ln(ASR) shrinks like a power of N. Fitting the line on small N lets defenders forecast what a determined attacker with thousands of tries would achieve. A related 2024 study of many-shot jailbreaking found that the likelihood of a harmful reply also follows power laws in the number of fake example dialogues packed into one long prompt.
+
+**Tiny example:** Illustrative constants a = 3 and b = 0.3, not a paper's fit. N = 1: −ln(ASR) = 3, so ASR = e^(−3) ≈ 0.050. N = 100: 100^(−0.3) ≈ 0.251, so −ln(ASR) ≈ 3 × 0.251 = 0.754 and ASR ≈ e^(−0.754) ≈ 0.47. N = 10,000: 10,000^(−0.3) ≈ 0.063, so −ln(ASR) ≈ 0.189 and ASR ≈ 0.83. Independent tries at 5% each would already have reached 1 − 0.95^100 ≈ 0.994 by N = 100.
+
+**Where it is used:** Hughes and colleagues ("Best-of-N Jailbreaking", Anthropic and collaborators, December 2024) reached 89% success on GPT-4o and 78% on Claude 3.5 Sonnet with 10,000 varied prompts, and forecast large-N success from power-law fits on smaller samples; Anil and colleagues (Anthropic, 2024) for many-shot jailbreaking; sizing red-team budgets and stress-testing safeguards.
+**In the book:** Only here (Chapter 56 and Chapter 57 cover jailbreaks and red-teaming in words).
+
+> **Definition — Best-of-N jailbreaking:** An automated attack that resubmits a harmful request many times with small random changes, such as shuffled capital letters, typos or altered audio and images, until one version gets through. Its success rate grows with the number of attempts in a predictable way.
+
+> **Definition — Many-shot jailbreaking:** An attack that fills a long prompt with many made-up dialogues in which an assistant complies with harmful requests, so that the model continues the pattern; it exploits long context windows.
 
 ### Private versus social expected loss (externality gap)
 
@@ -535,16 +557,17 @@ flowchart LR
 
 **What it does:** Updates a value estimate after every single step, using the next state's estimate in place of the rest of the future.
 
-`δ_t = r_(t+1) + γ × V(s_(t+1)) − V(s_t); V(s_t) ← V(s_t) + α × δ_t`
+`δ_t = r_(t+1) + γ × V(s_(t+1)) − V(s_t); V(s_t) ← V(s_t) + α × δ_t; with a network V_w instead of a table (semi-gradient TD): w ← w + α × δ_t × ∇_w V_w(s_t)`
 
 - **δ_t** (delta): the temporal-difference error, how much better or worse the step went than predicted.
 - **r_(t+1)**: the reward just received.
 - **V(s_t)**, **V(s_(t+1))**: the current estimates for this state and the next.
 - **γ**: the discount factor; **α**: the step size.
+- **w**: the weights of a value network V_w; **∇_w V_w(s_t)**: the gradient, which says how each weight changes the prediction for s_t. "Semi" because the target r + γ × V_w(s_(t+1)) is treated as a fixed number, not differentiated.
 
 **In plain words:** Before the step you predicted V(s_t). After one step you have a slightly better-informed guess: the reward you got plus the discounted estimate of where you landed. Nudge the old prediction a fraction α toward the new guess. Using your own estimate as part of the target is called bootstrapping; it lowers noise compared with Monte Carlo, at the price of some bias.
 
-**Tiny example:** V(A) = 5, V(B) = 8, moving from A to B pays 1, γ = 0.9 and α = 0.1. δ = 1 + 0.9 × 8 − 5 = 1 + 7.2 − 5 = 3.2, so V(A) becomes 5 + 0.1 × 3.2 = 5.32.
+**Tiny example:** V(A) = 5, V(B) = 8, moving from A to B pays 1, γ = 0.9 and α = 0.1. δ = 1 + 0.9 × 8 − 5 = 1 + 7.2 − 5 = 3.2, so V(A) becomes 5 + 0.1 × 3.2 = 5.32. Semi-gradient version with a linear value V_w(s) = w · x(s), features x(A) = [1, 2] and w = [1, 2] (so V(A) = 1 + 4 = 5): the gradient is x(A) = [1, 2], so w becomes [1 + 0.1 × 3.2 × 1, 2 + 0.1 × 3.2 × 2] = [1.32, 2.64] and V(A) becomes 1.32 + 5.28 = 6.6. Every other state that shares those features moves too, which is how a network generalizes.
 
 **Where it is used:** Every learned critic (A2C, PPO, SAC); TD-Gammon (1992); and neuroscience, where Schultz and colleagues (1997) found dopamine neurons firing like a TD error.
 **In the book:** Chapter 48 (Q-learning, worked by hand).
@@ -651,7 +674,7 @@ flowchart LR
 - **max over a' of Q(s', a')**: the best estimate in the next state.
 - **α**, **γ**: step size and discount. At a terminal state the target is just r.
 
-**In plain words:** Because the target uses the best next action rather than the one actually taken, Q-learning is off-policy: it learns optimal values while exploring. Watkins (1989) proved convergence for tables when every pair keeps being visited and α shrinks appropriately.
+**In plain words:** Because the target uses the best next action rather than the one actually taken, Q-learning is off-policy: it learns optimal values while exploring. Chris Watkins introduced it in 1989, and Watkins and Dayan (1992) proved that the table converges to the optimal values when every state-action pair keeps being visited and α shrinks appropriately.
 
 **Tiny example:** Chapter 48's corridor, episode 2, square B: 0 + 0.5 × (0 + 0.9 × 5 − 0) = 2.25.
 
@@ -776,15 +799,15 @@ flowchart LR
 
 **What it does:** Learns a model of the world from experience and uses it to imagine extra experience or to plan ahead.
 
-`model loss L_model = E[length(s' − f_ψ(s, a))^2 + (r − r_ψ(s, a))^2]; Dyna: after each real step, k extra Q-learning updates on simulated transitions (s, a, r_ψ(s, a), f_ψ(s, a)); MPC: a_t = first action of argmax over a_t, ..., a_(t+H) of sum over k from 0 to H of (γ^k × r_ψ(s_k, a_k))`
+`model loss L_model = E[length(s' − f_ψ(s, a))^2 + (r − r_ψ(s, a))^2]; Dyna: after each real step, k extra Q-learning updates on simulated transitions (s, a, r_ψ(s, a), f_ψ(s, a)); MPC: a_t = first action of argmax over a_t, ..., a_(t+H−1) of sum over k from 0 to H − 1 of (γ^k × r_ψ(s_k, a_k))`
 
 - **f_ψ(s, a)**: a learned dynamics model with weights ψ (psi) that predicts the next state.
 - **r_ψ(s, a)**: a learned reward model.
 - **length(...)^2**: the squared distance between predicted and actual next state.
 - **k**: the number of imagined updates per real step (Dyna).
-- **H**: the planning horizon in steps (MPC); **s_k**, **a_k**: imagined states and actions.
+- **H**: the planning horizon in steps (MPC); **s_k**, **a_k**: the imagined state and action k steps into the plan, starting from the real state s_0 = s_t.
 - **s**, **a**, **r**, **s'**: a real state, action, reward and next state; **γ**: the discount factor; **E[...]**: the average over real transitions.
-- **L_model**: the model's training loss; **a_t, ..., a_(t+H)**: the planned actions, of which only a_t is carried out.
+- **L_model**: the model's training loss; **a_t, ..., a_(t+H−1)**: the H planned actions, of which only a_t is carried out.
 
 **In plain words:** Fit a simulator to your own experience. Dyna (Sutton, 1990) mixes real and imagined transitions when learning; model-predictive control plans H steps ahead inside the model, executes only the first action, then replans. Imagined experience is cheap, but plans are only as good as the model. Variants: ensembles of models, latent world models such as Dreamer (its loss belongs to the generative section), and MuZero's value-equivalent model (below).
 
@@ -976,6 +999,30 @@ flowchart LR
 > **Definition — Regret matching:** A rule for updating a strategy that plays each action with probability proportional to how much better it would have done in the past than the actions actually played, ignoring actions with no positive regret.
 
 > **Definition — Information set:** In a game with hidden information, the group of situations a player cannot tell apart from what they know, such as all the deals consistent with the cards they hold. A strategy must choose the same way across an information set.
+
+### Exploitability and NashConv (distance from a Nash equilibrium)
+
+**What it does:** Measures how much a perfect opponent could win against a strategy; it is zero exactly when the strategy is part of a Nash equilibrium.
+
+`exploitability(σ_1) = max over σ_2' of u_2(σ_1, σ_2') − v_2; NashConv(σ) = sum over players i of (max over σ_i' of u_i(σ_i', σ_−i) − u_i(σ))`
+
+- **σ_1** (sigma): player 1's strategy, possibly random; **σ_2'**: any strategy player 2 might answer it with.
+- **u_i(...)**: player i's expected payoff when those strategies meet.
+- **max over σ_2' of u_2(σ_1, σ_2')**: the payoff of a best response, an opponent who knows σ_1 exactly and plays perfectly against it.
+- **v_2**: the value of the game to player 2, what it gets at equilibrium (0 in a fair symmetric game such as rock-paper-scissors).
+- **σ**: all players' strategies together; **σ_−i**: everyone's except player i's; **σ_i'**: an alternative strategy for player i.
+- **NashConv(σ)**: the gains all players together could make by each switching alone to a best response.
+
+**In plain words:** Beating human players does not prove a poker program is sound, because a weak opponent hides its flaws. Exploitability asks the harshest question: if an opponent knew your strategy, how much would they win per game? In a two-player zero-sum game a Nash equilibrium strategy has exploitability 0, and counterfactual regret minimization (previous entry) drives its average strategy's exploitability toward 0. Computing an exact best response is itself hard in big games, so researchers often use approximate, local best responses.
+
+**Tiny example:** Rock-paper-scissors (win +1, loss −1, tie 0) against a player who throws rock 50%, paper 25% and scissors 25%. Paper earns 0.5 × 1 + 0.25 × 0 + 0.25 × (−1) = 0.25 per game, rock 0.5 × 0 + 0.25 × (−1) + 0.25 × 1 = 0, and scissors 0.5 × (−1) + 0.25 × 1 + 0.25 × 0 = −0.25. The best response is paper, the game's value is 0, so the exploitability is 0.25 per game. The one-third mix gives every response 0, an exploitability of 0. If both players use the lopsided mix, each could gain 0.25 by switching, so NashConv = 0.25 + 0.25 = 0.5.
+
+**Where it is used:** The standard yardstick of game-solving research: Cepheus's 2015 heads-up limit hold'em strategy was reported as exploitable by less than one thousandth of a big blind per game, "essentially solved"; poker AIs are scored in milli-big-blinds per game; open-source libraries such as OpenSpiel report NashConv for multi-agent RL and population-based self-play methods.
+**In the book:** Only here (Chapter 48, A short course in game theory, explains Nash equilibria and exploitation in words).
+
+> **Definition — Best response:** The strategy that earns a player the most against a fixed, known strategy of the other players. A Nash equilibrium is a set of strategies in which each one is already a best response to the others.
+
+> **Definition — Exploitability (in games):** How much a perfect opponent who knew a strategy in advance could win against it, compared with the game's fair value. An exploitability of zero means the strategy cannot be beaten on average, as in a Nash equilibrium of a two-player zero-sum game.
 
 ### Importance sampling ratio for off-policy learning
 
@@ -1294,7 +1341,7 @@ flowchart LR
 
 **Tiny example:** The game was won (z = 1) and the network said v = 0.6: (1 − 0.6)^2 = 0.16. Search visited three moves 70, 20 and 10 times; with τ = 1, π = [0.7, 0.2, 0.1]. The network's p = [0.5, 0.3, 0.2]: −(0.7 × ln 0.5 + 0.2 × ln 0.3 + 0.1 × ln 0.2) ≈ 0.485 + 0.241 + 0.161 = 0.887. Ignoring weight decay, l ≈ 1.047. A lower τ = 0.5 squares the counts and sharpens π to about [0.91, 0.07, 0.02].
 
-**Where it is used:** AlphaGo Zero (2017) and AlphaZero (2018, chess, shogi and Go); the same recipe found faster sorting routines (AlphaDev, 2023) and matrix multiplication algorithms (AlphaTensor, 2022).
+**Where it is used:** AlphaGo Zero (2017) and AlphaZero (announced 2017, published 2018; chess, shogi and Go); the same recipe found faster sorting routines (AlphaDev, 2023) and matrix multiplication algorithms (AlphaTensor, 2022).
 **In the book:** Chapter 48 (AlphaGo Zero and AlphaZero; Why games matter, and the power of self-play), in words.
 
 > **Definition — AlphaZero:** DeepMind's 2017 game-playing system that learned chess, shogi and Go from the rules alone by self-play, using one network to suggest moves and judge positions and Monte Carlo tree search to improve on them.
@@ -1487,7 +1534,7 @@ flowchart LR
 - **r(x, y)**: a score (reward) for response y.
 - **sigmoid(z)**: 1 ÷ (1 + exp(−z)), which squashes any number into the range 0 to 1.
 
-**In plain words:** Only the difference between scores matters; a bigger gap means a more confident prediction. Elo ratings use the same curve with base 10 and a scale of 400 (that use belongs to the classical-ML section). Variant merged here: the Plackett-Luce model for a full ranking of K responses, P(ranking) = product over k of exp(r(y_k)) ÷ (sum over j ≥ k of exp(r(y_j))).
+**In plain words:** Only the difference between scores matters; a bigger gap means a more confident prediction. Elo ratings use the same curve with base 10 and a scale of 400 (that use belongs to the classical-ML section). Variant merged here: the Plackett-Luce model for a full ranking of K responses, P(ranking) = product over k of exp(r(y_k)) ÷ (sum over j ≥ k of exp(r(y_j))), where y_1 is the response ranked first, y_2 second, and so on.
 
 **Tiny example:** Chapter 20's gap of 1.5 gives sigmoid(1.5) ≈ 0.82. Plackett-Luce for three responses scored 2, 1 and 0, ranked in that order: e^2 ÷ (e^2 + e^1 + e^0) ≈ 0.665 for first place, then e^1 ÷ (e^1 + e^0) ≈ 0.731 for second, so 0.665 × 0.731 ≈ 0.486.
 
@@ -1512,7 +1559,7 @@ flowchart LR
 
 **Tiny example:** Chapter 20's gap of 1.5 gives a loss of −ln 0.82 ≈ 0.20 if the preferred answer is the higher-scored one and about 1.70 if not. With a margin m = 1 the first case becomes −ln sigmoid(0.5) ≈ −ln 0.622 ≈ 0.47: the model must win by more than 1 to get a small loss.
 
-**Where it is used:** Training reward models for RLHF at OpenAI, Meta (separate helpfulness and safety reward models for Llama 2), Anthropic and open-weight labs; benchmarked by RewardBench. In 2026 frontier labs still use learned reward models for qualities no program can check.
+**Where it is used:** Training reward models for RLHF at OpenAI, Meta (separate helpfulness and safety reward models for Llama 2), Anthropic and open-weight labs; benchmarked by RewardBench, which reports accuracy, the share of held-out pairs in which the chosen answer gets the higher score (equivalently, a Bradley-Terry probability above 0.5). In 2026 frontier labs still use learned reward models for qualities no program can check.
 **In the book:** Chapter 20 (Worked example: training the judge on one comparison).
 
 ### Constitutional AI and RLAIF preference labels
@@ -1550,7 +1597,7 @@ flowchart LR
 
 **In plain words:** Earn reward, pay a toll for drifting. β sets the leash length. The KL term limits reward hacking and keeps the model fluent, but cannot fix a flawed reward model. The optional pretraining term reduces the "alignment tax", the loss of general abilities.
 
-**Tiny example:** Chapter 20's toy after one round: average reward ≈ 2.115 and KL ≈ 0.109. With β = 2 the objective is 2.115 − 2 × 0.109 ≈ 1.897, up from 1.58 for the SFT model (whose KL is 0).
+**Tiny example:** Chapter 20's toy after one round, with unrounded probabilities (the chapter's table rounds them to 2.12 and 0.11): average reward ≈ 2.115 and KL ≈ 0.109. With β = 2 the objective is 2.115 − 2 × 0.109 ≈ 1.897, up from 1.58 for the SFT model (whose KL is 0). No other policy scores higher at β = 2, which is why the chapter says training stops there (see the optimal KL-regularized policy below).
 
 **Where it is used:** InstructGPT (2022), ChatGPT, Llama 2-Chat and Claude's RLHF; the same reward-minus-KL form appears in RL with verifiable rewards when a KL term is kept (GRPO).
 **In the book:** Chapter 20 (The KL leash).
@@ -1649,6 +1696,7 @@ flowchart LR
 - **r_hat(x, y)**: the implicit reward of answer y.
 - **π_θ**, **π_ref**: the trained policy and the reference.
 - **β**: the leash strength; **β × ln Z(x)**: a constant per prompt that cancels when two answers to the same prompt are compared.
+- **r(x, y)**, **π\***, **Z(x)**: the reward, the optimal policy and its normalizer from the previous entry; **x**, **y**: a prompt and an answer.
 
 **In plain words:** Turn the optimal-policy formula around: if a model was trained this way, how much more likely it makes an answer than the reference already encodes the reward. Token-level version: the sum over tokens of β × ln(π_θ(y_t) ÷ π_ref(y_t)), which can act as a dense step-by-step reward.
 
@@ -1671,7 +1719,7 @@ flowchart LR
 - **sigmoid**: 1 ÷ (1 + exp(−z)).
 - **L_DPO(θ)**: the loss; **x**: the prompt.
 
-**In plain words:** Plug the implicit reward into the Bradley-Terry loss: raise the chosen answer's probability and lower the rejected one's, both measured relative to the reference. The gradient weights each pair by sigmoid(r_hat_l − r_hat_w), so pairs the model still gets wrong count most. Variants merged here: conservative DPO (label smoothing for noisy labels), DPO plus a negative log-likelihood term on the chosen answer (used for Llama 3), and iterative or online DPO on fresh samples. Rafailov and colleagues (2023).
+**In plain words:** Plug the implicit reward into the Bradley-Terry loss: raise the chosen answer's probability and lower the rejected one's, both measured relative to the reference. The gradient weights each pair by sigmoid(r_hat_l − r_hat_w), so pairs the model still gets wrong count most. Variants merged here: conservative DPO (label smoothing for noisy labels), DPO plus a negative log-likelihood term on the chosen answer (used for Llama 3), length-normalized DPO, which divides each log-ratio by the answer's length in tokens (used in the Tülu 3 recipe), and iterative or online DPO on fresh samples. Rafailov and colleagues (2023).
 
 **Tiny example:** Chapter 20's pair: log-ratios +2.0 (chosen) and −1.0 (rejected), β = 0.1: margin 0.1 × 3.0 = 0.3, loss −ln sigmoid(0.3) ≈ −ln 0.574 ≈ 0.55, and this pair's gradient weight is sigmoid(−0.3) ≈ 0.43. With β = 0.5: margin 1.5, loss ≈ 0.20.
 
@@ -1813,7 +1861,7 @@ flowchart LR
 
 **Tiny example:** Illustrative coefficients, not the paper's. Best-of-N with α = 1, β = 0.2: d = 1 gives 0.8, d = 2.5 gives 2.5 × 0.5 = 1.25 (the peak, at d = α ÷ (2 × β)), and d = 5 gives 0. RL with α = 1, β = 0.5: d = 1 gives 1, d = e ≈ 2.718 gives 2.718 × 0.5 ≈ 1.359 (the peak), and d = e^2 ≈ 7.39 gives 0.
 
-**Where it is used:** Motivates the KL leash, early stopping, larger and ensembled reward models and fresh preference data in RLHF.
+**Where it is used:** Motivates the KL leash, early stopping, larger reward models and fresh preference data in RLHF, and reward-model ensembles, which score an answer by the worst member or by the members' mean minus a multiple of their spread, so the policy gains little from fooling only one of them (Coste and colleagues, 2023).
 **In the book:** Chapter 20 (Reward hacking and over-optimization), Chapter 55 (Objectives, proxies and Goodhart's law), in words.
 
 > **Definition — Gold reward model:** In over-optimization experiments, a large reward model treated as the "true" judge, used to measure how much a policy optimized against a smaller proxy reward model has really improved.
@@ -1848,12 +1896,13 @@ flowchart LR
 - **extract_answer(y)**: the final answer pulled out of the output.
 - **y\***: the reference answer.
 - **verify**: a checking program (math-answer matcher, unit tests, proof checker).
+- **r(x, y)**: the reward, 1 or 0, or a fraction when partial credit is given for tests passed.
 
 **In plain words:** Rule-based rewards are hard to flatter, but a sloppy checker is still a loophole, and coding agents have learned to edit the tests.
 
 **Tiny example:** A code answer passing 7 of 10 tests scores 0.7 under the partial rule and 0 under the all-or-nothing rule.
 
-**Where it is used:** Named RLVR in the Tülu 3 report (Allen Institute, November 2024); DeepSeek-R1-Zero and R1 (January 2025) used rule-based accuracy and format rewards; the training signal behind the o-series, Claude, Gemini and open reasoning models.
+**Where it is used:** Named RLVR in the Tülu 3 report (Allen Institute, November 2024); DeepSeek-R1-Zero and R1 (January 2025) used rule-based accuracy and format rewards; the standard signal in open reasoning-model recipes, and the kind of large-scale RL on checkable math and code tasks that OpenAI, Anthropic and Google DeepMind describe, without publishing details, for their reasoning models.
 **In the book:** Chapter 21 (Reinforcement learning with verifiable rewards; Worked example: a reward function, and how to break it).
 
 ### Rubric-based reward
@@ -1873,21 +1922,22 @@ flowchart LR
 **Where it is used:** Rubrics as Rewards (Scale AI, 2025); OpenAI's HealthBench (May 2025) scores answers as rubric points earned out of points possible; LLM-as-judge rewards in non-verifiable RL environments.
 **In the book:** Chapter 21 (Rubrics and AI judges for tasks no program can check).
 
-### Process reward aggregation (PRM versus ORM)
+### Process reward aggregation and automatic step labels (PRM versus ORM)
 
-**What it does:** Combines a process reward model's step-by-step scores into one score for a whole solution.
+**What it does:** Combines a process reward model's step-by-step scores into one score for a whole solution, and shows how step labels can be made without human graders.
 
-`solution score = product over steps k of P(step k correct) (Lightman and colleagues, 2023), or min over k of P(step k correct); outcome reward model: score = P(final answer correct)`
+`solution score = product over steps k of P(step k correct) (Lightman and colleagues, 2023), or min over k of P(step k correct); outcome reward model: score = P(final answer correct); automatic step labels from N completions: soft label = (completions reaching the right answer) ÷ N, hard label = 1 if at least one does, else 0`
 
 - **k**: one step of a solution.
 - **P(step k correct)**: the process reward model's probability that step k is correct.
 - **min over k**: the score of the weakest step.
+- **N**: the number of times a model is asked to finish the solution starting from the end of that step.
 
-**In plain words:** The product is the chance every step is right, if steps are judged independently; the minimum asks how bad the weakest step is. An outcome reward model only judges the final answer.
+**In plain words:** The product is the chance every step is right, if steps are judged independently; the minimum asks how bad the weakest step is. An outcome reward model only judges the final answer. Human step-by-step grading is expensive, so the labels for training a process reward model can come from rollouts instead: a step is good to the extent that finishing the solution from it still reaches the right answer.
 
-**Tiny example:** Step scores 0.9, 0.95 and 0.6: product 0.9 × 0.95 × 0.6 = 0.513; minimum 0.6. The third step is where the solution probably went wrong, which an outcome-only score cannot show.
+**Tiny example:** Step scores 0.9, 0.95 and 0.6: product 0.9 × 0.95 × 0.6 = 0.513; minimum 0.6. The third step is where the solution probably went wrong, which an outcome-only score cannot show. Labeling a step automatically: of N = 8 completions from it, 3 reach the right answer, so its soft label is 3 ÷ 8 = 0.375 and its hard label is 1; if none had, both labels would be 0.
 
-**Where it is used:** "Let's Verify Step by Step" (OpenAI, 2023) with the PRM800K dataset, for best-of-N reranking of math solutions; Math-Shepherd (minimum aggregation); test-time verification. Large 2024-2026 reasoning models were trained mostly with outcome rewards.
+**Where it is used:** "Let's Verify Step by Step" (OpenAI, 2023) with the PRM800K dataset of human step labels, for best-of-N reranking of math solutions; Math-Shepherd (Wang and colleagues, 2023: rollout labels with N = 8, minimum aggregation, also used as the reward in step-by-step PPO); test-time verification. Large 2024-2026 reasoning models were trained mostly with outcome rewards.
 **In the book:** Chapter 21 (Process versus outcome rewards), in words.
 
 ### Length-aware reward shaping (length penalty)
@@ -2215,23 +2265,24 @@ flowchart LR
 
 > **Definition — Unit vector:** A vector of length exactly 1, made by dividing a vector by its own length. Its dot product with another vector gives how far that vector extends in its direction.
 
-### Saliency maps and gradient times input
+### Saliency maps, gradient times input and Grad-CAM
 
 **What it does:** Estimates how much each input feature (a pixel, a token) matters to an output, from the gradient.
 
-`saliency S_i = |∂F(x) ÷ ∂x_i|; gradient × input attribution_i = x_i × ∂F(x) ÷ ∂x_i`
+`saliency S_i = |∂F(x) ÷ ∂x_i|; gradient × input attribution_i = x_i × ∂F(x) ÷ ∂x_i; Grad-CAM map = ReLU(sum over channels k of (α_k × M_k)), with α_k = the average over all positions of ∂F(x) ÷ ∂M_k`
 
 - **F(x)**: the model's score for one output class at input x.
 - **x_i**: one input feature.
 - **∂F(x) ÷ ∂x_i**: the partial derivative, how fast the score changes when that feature changes.
 - **|...|**: the absolute value.
 - **S_i**: the saliency of feature i; **attribution_i**: its gradient-times-input score.
+- **M_k**: channel k of the last convolutional layer, a small grid of numbers (a feature map, Chapter 14); **α_k**: that channel's importance weight, its average slope; **ReLU**: max(0, value), applied to each cell of the grid.
 
-**In plain words:** A big slope means the output is sensitive to that pixel or token. Multiplying by the input gives a first-order estimate of each feature's contribution. Both are known to be noisy and sometimes misleading; SmoothGrad averages gradients over noisy copies of the input.
+**In plain words:** A big slope means the output is sensitive to that pixel or token. Multiplying by the input gives a first-order estimate of each feature's contribution. Both are known to be noisy and sometimes misleading; SmoothGrad averages gradients over noisy copies of the input. Grad-CAM works one level up: it weights the last convolutional layer's feature maps by how much the class score depends on them, giving a coarse heat map that is then stretched over the image.
 
-**Tiny example:** F(x) = 3 × x_1 + 0.5 × x_2^2 at x = [2, 4]. Slopes: 3 for x_1 and x_2 = 4 for x_2, so saliency [3, 4]. Gradient × input: [6, 16], which adds to 22 although F(x) = 6 + 8 = 14, so these attributions do not add up to the output.
+**Tiny example:** F(x) = 3 × x_1 + 0.5 × x_2^2 at x = [2, 4]. Slopes: 3 for x_1 and x_2 = 4 for x_2, so saliency [3, 4]. Gradient × input: [6, 16], which adds to 22 although F(x) = 6 + 8 = 14, so these attributions do not add up to the output. Grad-CAM with two 2 × 2 feature maps M_1 = [[2, 0], [1, 3]] and M_2 = [[1, 4], [0, 1]] and weights α = [0.5, −0.2]: 0.5 × M_1 − 0.2 × M_2 = [[0.8, −0.8], [0.5, 1.3]], and ReLU gives the heat map [[0.8, 0], [0.5, 1.3]]: the bottom-right corner matters most.
 
-**Where it is used:** Simonyan and colleagues (2013) saliency maps; explanation libraries such as Captum; debugging shortcut learning in vision models.
+**Where it is used:** Simonyan and colleagues (2013) saliency maps; Grad-CAM (Selvaraju and colleagues, 2017) for vision models; explanation libraries such as Captum; debugging shortcut learning in vision models.
 **In the book:** Chapter 57 (The black-box problem), Chapter 14 (Looking inside a trained CNN), in words.
 
 > **Definition — Gradient × input:** An attribution method that scores each input feature by its value times the slope of the output with respect to it, a quick first-order estimate of the feature's contribution.
@@ -2258,6 +2309,29 @@ flowchart LR
 **In the book:** Only here.
 
 > **Definition — Integrated gradients:** An attribution method that credits each input feature with its change from a neutral baseline times the average gradient along the straight path between them, so all credits add up to the model's change in output.
+
+### Influence functions (which training examples shaped an answer)
+
+**What it does:** Estimates how much one training example changed a model's loss on a test input, without retraining the model.
+
+`I(z, z_test) = −∇_θ L(z_test)^T × H^(−1) × ∇_θ L(z); deleting z from n training examples changes the test loss by about −I(z, z_test) ÷ n`
+
+- **z**: one training example; **z_test**: the input whose behavior we want to explain.
+- **θ** (theta): the trained model's parameters.
+- **L(z)**: the loss on example z; **∇_θ L(z)**: its gradient, the direction in which training on z pushes the parameters.
+- **H**: the Hessian, the matrix of second derivatives (the curvature) of the average training loss; **H^(−1)**: its inverse.
+- **^T**: the transpose, which turns the first gradient into a row so that row × matrix × column gives one number.
+- **I(z, z_test)**: the influence; negative means giving z more weight lowers the test loss (z helped this answer), positive means it hurt.
+- **n**: the number of training examples.
+
+**In plain words:** Training on z pushes the parameters along its gradient. The inverse Hessian converts that push into how far the trained parameters actually settle once every other example pushes back, and the dot product with the test gradient says whether that shift helps or hurts the test answer. For billions of parameters the Hessian cannot even be stored, so practical methods approximate it, or drop it and add up gradient dot products over saved training checkpoints (TracIn).
+
+**Tiny example:** One parameter. The average training loss has curvature H = 4, the test example's gradient is 2 and the training example's gradient is 1: I = −2 × (1 ÷ 4) × 1 = −0.5, so z helped this test answer. With n = 100 training examples, deleting z would raise the test loss by about 0.5 ÷ 100 = 0.005. A training example with gradient −1 would get I = +0.5: it pulled the model the wrong way for this input.
+
+**Where it is used:** Koh and Liang (2017) brought influence functions from statistics into deep learning; Anthropic's "Studying Large Language Model Generalization with Influence Functions" (Grosse and colleagues, August 2023) scaled them to language models of up to 52 billion parameters with an approximation of the Hessian called EK-FAC and traced answers back to the pretraining documents behind them; training-data attribution for data cleaning and debugging.
+**In the book:** Only here.
+
+> **Definition — Influence function:** A formula that estimates how a model's prediction on one input would change if a particular training example were removed or given more weight, used to find which training data a behavior came from without retraining the model.
 
 ### Toy model of superposition
 
@@ -2292,7 +2366,7 @@ flowchart LR
 
 **In plain words:** The first term rewards faithful reconstruction, the second rewards using few features. Anthropic's 2024 variant weights each feature's penalty by its decoder column length; the earlier form fixed those lengths at 1 and used the plain sum of f_i.
 
-**Tiny example:** Chapter 57: 0.02 + 0.041 = 0.061 against 0.04. With the decoder-length weighting, features of strength 2, 0 and 1 with direction lengths 1, 1 and 0.5 and λ = 0.01 cost 0.01 × (2 × 1 + 1 × 0.5) = 0.025.
+**Tiny example:** Chapter 57's bridge example with λ = 0.01 and unit-length directions: a candidate code with squared reconstruction error 0.02 and feature strengths adding to 4.1 costs 0.02 + 0.01 × 4.1 = 0.061, while the exact code (error 0, strengths adding to 4) costs 0 + 0.01 × 4 = 0.04, so training prefers the exact, sparser code. With the decoder-length weighting, features of strength 2, 0 and 1 with direction lengths 1, 1 and 0.5 and λ = 0.01 cost 0.01 × (2 × 1 + 1 × 0.5) = 0.025.
 
 **Where it is used:** Anthropic's "Towards Monosemanticity" (2023) and "Scaling Monosemanticity" (May 2024: 1, 4 and 34 million features on Claude 3 Sonnet); widely used open SAE libraries.
 **In the book:** Chapter 57 (Sparse autoencoders: unpacking the suitcase).
@@ -2361,12 +2435,14 @@ flowchart LR
 - **s**, **t**: a source feature and a target feature or output.
 - **W_enc**, **b_enc**, **W_dec**, **b_dec**: encoder and decoder weights and biases; **ReLU**: max(0, value); **L**: the loss; **f_l'**: the features read at layer l'.
 
-**In plain words:** A transcoder imitates what one feed-forward block computes through sparse features; a cross-layer transcoder lets a feature read at one layer write to every later layer. With these in place the computation becomes locally linear, so each feature's contribution to another is an activation times a weight, and those edges form an attribution graph.
+**In plain words:** A transcoder imitates what one feed-forward block computes through sparse features; a cross-layer transcoder lets a feature read at one layer write to every later layer. With these in place the computation becomes locally linear, so each feature's contribution to another is an activation times a weight, and those edges form an attribution graph. Variant: crosscoders use the same reconstruction-plus-sparsity loss but read and rebuild several layers, or the same layer in two different models, with one shared set of features; comparing a model before and after fine-tuning this way is called model diffing.
 
 **Tiny example:** The block's real output [1, 2], the transcoder's [1.1, 1.8], features [0.5, 0, 1.5] and λ = 0.01: L = 0.01 + 0.04 + 0.01 × 2 = 0.07. A feature active at 2.0 whose linear weight to a target is 0.3 contributes an edge of 2.0 × 0.3 = 0.6.
 
-**Where it is used:** Dunefsky and colleagues (2024); Anthropic's "Circuit Tracing" and "On the Biology of a Large Language Model" (March 2025, on Claude 3.5 Haiku); open-source circuit-tracer tools with Neuronpedia (May 2025).
+**Where it is used:** Dunefsky and colleagues (2024); Anthropic's "Circuit Tracing" and "On the Biology of a Large Language Model" (March 2025, on Claude 3.5 Haiku); open-source circuit-tracer tools with Neuronpedia (May 2025); crosscoders for model diffing (Anthropic, from late 2024).
 **In the book:** Chapter 57 (Sparse autoencoders; Circuits and attribution graphs: tracing a thought), in words.
+
+> **Definition — Crosscoder:** A sparse autoencoder that learns one shared set of features across several layers of a model, or across two models, so researchers can see which features persist, which move between layers and which appear or vanish after fine-tuning (model diffing).
 
 ### Logit lens and direct logit attribution
 
@@ -2398,7 +2474,7 @@ flowchart LR
 
 **What it does:** Tests whether a component carries information by swapping its activation between two prompts, or approximates every such swap at once with a gradient.
 
-`patching effect = M(run on prompt A with activation a_c replaced by its value from prompt B) − M(clean run on A); normalized: (M_patched − M_corrupt) ÷ (M_clean − M_corrupt); attribution patching: ΔM ≈ (a_corrupt − a_clean) · (∂M ÷ ∂a evaluated on the clean run)`
+`patching effect = M(run on prompt A with activation a_c replaced by its value from prompt B) − M(unpatched run on A); normalized: (M_patched − M_corrupt) ÷ (M_clean − M_corrupt); attribution patching: ΔM ≈ (a_corrupt − a_clean) · (∂M ÷ ∂a evaluated on the clean run)`
 
 - **M**: a metric, such as the logit difference between the right and a wrong answer.
 - **a_c**: the activation of component c; **a_clean**, **a_corrupt**: its values on the clean and corrupted prompts.

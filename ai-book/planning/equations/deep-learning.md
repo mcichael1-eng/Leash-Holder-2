@@ -65,7 +65,7 @@ flowchart TD
 
 `h = f(W × x + b)`, with W of shape m × n
 
-`batched: H = f(X × Wᵀ + b)`
+`batched: H = f(X × W^T + b)`
 
 `multilayer perceptron: y = f_L(... f_2(f_1(x)))`
 
@@ -77,7 +77,7 @@ flowchart TD
 - **f**: the activation, applied to each entry separately
 - **h**: the layer's output, m numbers
 - **X**: a batch of B inputs stacked as rows (shape B × n)
-- **Wᵀ**: W transposed, so the shapes line up
+- **W^T**: W transposed (rows become columns, Chapter 5), so the shapes line up
 - **H**: the batch of outputs (shape B × m)
 - **f_1 ... f_L**: the L layers in order, each with its own weights, biases and activation
 - **m × n + m**: the weights plus the biases
@@ -88,8 +88,6 @@ flowchart TD
 
 **Where it is used:** Multilayer perceptrons, classifier heads and every projection inside a Transformer; it is why AI hardware is built around matrix multiplication.
 **In the book:** Chapter 12 (Layers, width and depth; Counting parameters; The forward pass: a layer is one matrix multiplication); Appendix B (One layer; Parameters in a dense layer).
-
-> **Definition — Transpose (ᵀ):** Flipping a matrix so that its rows become columns and its columns become rows; a 2 × 3 matrix becomes 3 × 2. It is written with a small raised T, as in Wᵀ.
 
 ### Step activation and the perceptron learning rule
 
@@ -157,9 +155,9 @@ flowchart TD
 **Where it is used:** Plain RNN updates and the candidate memory and output of LSTMs; the fast approximation of GELU; logit soft-capping (Gemma 2) and Dynamic Tanh (DyT) reuse it as a smooth limiter.
 **In the book:** Chapter 12 (The activation function gallery) and Chapter 14 (Recurrent neural networks) give its shape and values in words; the formula is only here.
 
-### ReLU and its variants (leaky ReLU, PReLU, ELU, squared ReLU)
+### ReLU and its variants (leaky ReLU, PReLU, ELU, SELU, squared ReLU, maxout)
 
-**What it does:** Passes positive numbers through and blocks negative ones, with variants that let a little negative signal through or curve smoothly.
+**What it does:** Passes positive numbers through and blocks negative ones, with variants that let a little negative signal through, curve smoothly or learn their own bend.
 
 `ReLU(z) = max(0, z)`, with slope 0 for z < 0 and 1 for z > 0
 
@@ -167,25 +165,35 @@ flowchart TD
 
 `ELU(z) = z if z > 0, else α × (exp(z) − 1)`
 
+`SELU(z) = λ × ELU(z)`, with fixed `α ≈ 1.6733` and `λ ≈ 1.0507`
+
 `ReLU²(z) = max(0, z)^2`
+
+`maxout(x) = max over j = 1 to k of (w_j · x + b_j)`
 
 - **z**: the input
 - **max(a, b)**: the larger of a and b
 - **α** (alpha): the small negative-side slope (fixed in leaky ReLU, learned in PReLU) or, in ELU, the depth of the negative curve (often 1)
 - **exp(z)**: e raised to the power z
+- **λ** (lambda): SELU's fixed output scale
+- **x**: the input vector of a maxout unit; **w_j, b_j**: the weights and bias of its piece j; **k**: how many pieces it has
 
-**In plain words:** ReLU is the cheapest possible bend, and it never flattens for positive inputs, so learning signals pass through active units at full strength. A unit whose sum is always negative outputs 0 forever and stops learning (a dead ReLU), so leaky ReLU and PReLU keep a small slope for negatives and ELU curves smoothly down to −α. Squared ReLU (from the 2021 Primer paper) squares the positive part.
+**In plain words:** ReLU is the cheapest possible bend, and it never flattens for positive inputs, so learning signals pass through active units at full strength. A unit whose sum is always negative outputs 0 forever and stops learning (a dead ReLU), so leaky ReLU and PReLU keep a small slope for negatives and ELU curves smoothly down to −α. Squared ReLU (from the 2021 Primer paper) squares the positive part. SELU scales ELU by constants chosen so that, with LeCun initialization, a stack of layers pulls its activations toward mean 0 and spread 1 on its own (self-normalizing networks, Klambauer and colleagues, 2017). Maxout (Goodfellow and colleagues, 2013) learns its own bend: it computes k straight-line pieces and keeps the largest, so ReLU is the two-piece case max(w · x + b, 0).
 
-**Tiny example:** At z = −2: ReLU gives 0, leaky ReLU gives max(−0.02, −2) = −0.02, and ELU with α = 1 gives exp(−2) − 1 = 0.135 − 1 = −0.865. At z = 3: ReLU gives 3 and squared ReLU gives 9.
+**Tiny example:** At z = −2: ReLU gives 0, leaky ReLU gives max(−0.02, −2) = −0.02, and ELU with α = 1 gives exp(−2) − 1 = 0.135 − 1 = −0.865. At z = 3: ReLU gives 3 and squared ReLU gives 9. SELU at z = −1 gives 1.0507 × 1.6733 × (0.368 − 1) = −1.111, and its floor for very negative inputs is −1.0507 × 1.6733 = −1.758. A maxout unit with three pieces on x = [1, 2], weights [1, 0], [0, 1] and [−1, 1] and biases 0, −1 and 0.5, computes 1, 1 and 1.5 and outputs 1.5.
 
-**Where it is used:** The default in CNNs from AlexNet (2012) through ResNet, and in the original Transformer's feed-forward block; leaky ReLU in GAN discriminators and graph attention networks; squared ReLU in NVIDIA's Nemotron-4 and the NanoGPT speedrun.
-**In the book:** Chapter 12 (Solving XOR with two bent neurons; The activation function gallery; the worked backpropagation through ReLU gates); Chapter 14 (ReLU definition); Appendix B (ReLU; derivative table). ELU, PReLU and squared ReLU are only here.
+**Where it is used:** The default in CNNs from AlexNet (2012) through ResNet, and in the original Transformer's feed-forward block; leaky ReLU in GAN discriminators and graph attention networks; squared ReLU in NVIDIA's Nemotron-4 and the NanoGPT speedrun; SELU in self-normalizing fully connected networks; maxout in 2013-era vision networks and as the textbook example of a learned activation (Goodfellow, Bengio and Courville, Deep Learning, section 6.3).
+**In the book:** Chapter 12 (Solving XOR with two bent neurons; The activation function gallery; the worked backpropagation through ReLU gates); Chapter 14 (ReLU definition); Appendix B (ReLU; derivative table). ELU, PReLU, SELU, squared ReLU and maxout are only here.
 
 > **Definition — ELU (Exponential Linear Unit):** A ReLU variant that keeps positive inputs unchanged but curves negative inputs smoothly down toward a floor of −α instead of cutting them to zero.
 
 > **Definition — PReLU (Parametric ReLU):** A leaky ReLU whose small negative-side slope is learned during training instead of being fixed in advance.
 
 > **Definition — Squared ReLU:** An activation that applies ReLU and then squares the result, giving zero for negative inputs and a parabola for positive ones.
+
+> **Definition — SELU (scaled exponential linear unit):** An ELU multiplied by fixed constants (about 1.0507, with a negative-side depth of about 1.6733) chosen so that a deep fully connected network keeps its activations near mean 0 and spread 1 without a normalization layer.
+
+> **Definition — Maxout unit:** A neuron that computes several separate weighted sums of the same inputs and outputs the largest one, so the shape of its bend is learned rather than fixed.
 
 > **Definition — Dead neuron (dead ReLU):** A ReLU unit whose weighted sum has become negative for every input, so it always outputs 0, receives zero gradient and stops learning.
 
@@ -279,7 +287,7 @@ flowchart TD
 - **x**: the input vector, written as a row
 - **W, V**: two learned weight matrices of the same shape
 - **b, c**: learned bias vectors (the modern variants drop them)
-- **⊙**: element-wise product, multiplying matching entries
+- **⊙**: element-wise product, multiplying matching entries, so [1, 2] ⊙ [3, 4] = [3, 8] (Chapter 5)
 - **sigmoid, SiLU, GELU, ReLU**: the activations above
 
 **In plain words:** One branch goes through an activation and becomes a gate; the other is a plain projection; multiplying them entry by entry lets each hidden unit decide how much of its signal to let through. Dauphin and colleagues introduced GLU in 2017, and Shazeer (2020) tested the variants and found SwiGLU and GEGLU worked best inside Transformers.
@@ -288,8 +296,6 @@ flowchart TD
 
 **Where it is used:** SwiGLU is the feed-forward non-linearity of Llama 1 to 4, Qwen, DeepSeek, Mistral, Kimi and gpt-oss models and the activation inside each mixture-of-experts expert; GEGLU is used in Gemma.
 **In the book:** Chapter 15 (Step 6: SwiGLU definition and worked unit); Chapter 12 (SiLU definition). GLU, ReGLU and GEGLU by name are only here.
-
-> **Definition — Element-wise product (⊙):** Multiplying two vectors or matrices of the same shape entry by entry, so [1, 2] ⊙ [3, 4] = [3, 8]. It is also called the Hadamard product.
 
 > **Definition — GLU (gated linear unit):** A layer that computes two projections of its input and multiplies them entry by entry, with one of them passed through an activation so that it acts as a gate. SwiGLU and GEGLU are GLUs whose gates use SiLU and GELU.
 
@@ -358,7 +364,7 @@ flowchart TD
 - **a**: one example's error
 - **δ** (delta): the threshold where Huber loss switches from squared growth to straight-line growth
 
-**In plain words:** MAE grows in a straight line with the error, so one wild example cannot dominate the average. Huber loss behaves like squared error for small errors, giving smooth, gentle slopes near zero, and like absolute error for big ones, which keeps it robust to outliers. Smooth L1 is Huber loss with δ = 1 (some libraries also divide by δ).
+**In plain words:** MAE grows in a straight line with the error, so one wild example cannot dominate the average. Huber loss behaves like squared error for small errors, giving smooth, gentle slopes near zero, and like absolute error for big ones, which keeps it robust to outliers. Smooth L1 is Huber loss with δ = 1 (some libraries also divide by δ). MAE as an evaluation score is in the classical-machine-learning section; here it appears as a training loss (the L1 loss).
 
 **Tiny example:** Errors [1, 0, −2, 10], the last one an outlier. MAE = (1 + 0 + 2 + 10) ÷ 4 = 3.25. MSE = (1 + 0 + 4 + 100) ÷ 4 = 26.25, dominated by the outlier. Huber with δ = 1 gives 0.5, 0, 1 × (2 − 0.5) = 1.5 and 1 × (10 − 0.5) = 9.5, an average of 11.5 ÷ 4 = 2.875.
 
@@ -513,9 +519,9 @@ flowchart TD
 
 `at the last layer N: δ_N = (∂L ÷ ∂a_N) ⊙ f'(z_N)`
 
-`each earlier layer: δ_l = (W_(l+1)ᵀ × δ_(l+1)) ⊙ f'(z_l)`
+`each earlier layer: δ_l = (W_(l+1)^T × δ_(l+1)) ⊙ f'(z_l)`
 
-`slopes: ∂L ÷ ∂W_l = δ_l × a_(l−1)ᵀ` and `∂L ÷ ∂b_l = δ_l`
+`slopes: ∂L ÷ ∂W_l = δ_l × a_(l−1)^T` and `∂L ÷ ∂b_l = δ_l`
 
 - **l**: the layer number, from 1 up to the last layer N
 - **a_l**: layer l's output; a_0 is the input x
@@ -524,13 +530,13 @@ flowchart TD
 - **f, f'**: the activation and its slope
 - **L**: the loss
 - **δ_l** (delta): the blame (error signal) at layer l's sums, the slope ∂L ÷ ∂z_l
-- **ᵀ**: transpose
+- **^T**: transpose
 - **⊙**: element-wise product
 - **∂L ÷ ∂W_l**: the slope of the loss for every weight in layer l, a matrix the same shape as W_l
 
 **In plain words:** Blame starts at the loss and flows backward. Each layer passes it back through its transposed weights and multiplies it by its activation's slope, and each weight's slope is its neuron's blame times the input that flowed along that weight. This is reverse-mode automatic differentiation, and one backward pass yields every gradient for about twice the cost of the forward pass.
 
-**Tiny example:** Chapter 12's ice-cream network predicts 1.0 for a target of 2 with loss 0.5 × (ŷ − y)^2, so the output blame is δ_2 = 1.0 − 2 = −1 (the output has no activation, slope 1). Back through the output weights [0.5, 1.0]: [0.5 × (−1), 1.0 × (−1)] = [−0.5, −1.0], and both ReLUs are open (slope 1), so δ_1 = [−0.5, −1.0]. The first layer's weight slopes are δ_1 × xᵀ with x = [1, 2]: rows [−0.5, −1.0] and [−1.0, −2.0], exactly Chapter 12's Step 6.
+**Tiny example:** Chapter 12's ice-cream network predicts 1.0 for a target of 2 with loss 0.5 × (ŷ − y)^2, so the output blame is δ_2 = 1.0 − 2 = −1 (the output has no activation, slope 1). Back through the output weights [0.5, 1.0]: [0.5 × (−1), 1.0 × (−1)] = [−0.5, −1.0], and both ReLUs are open (slope 1), so δ_1 = [−0.5, −1.0]. The first layer's weight slopes are δ_1 × x^T with x = [1, 2]: rows [−0.5, −1.0] and [−1.0, −2.0], exactly Chapter 12's Step 6.
 
 **Where it is used:** Training every neural network; it is implemented by autograd in PyTorch and JAX.
 **In the book:** Chapter 12 (Backpropagation: passing the blame backward; The chain rule as gears; The worked example: one complete forward and backward pass; Checking backpropagation by nudging); Appendix B (Chain rule; Cost of a training step). The layer-by-layer matrix form is only here.
@@ -541,18 +547,18 @@ flowchart TD
 
 For `Y = X × W + b`, with X of shape B × n and W of shape n × m:
 
-`∂L ÷ ∂W = Xᵀ × (∂L ÷ ∂Y)`
+`∂L ÷ ∂W = X^T × (∂L ÷ ∂Y)`
 
 `∂L ÷ ∂b = sum over the B rows of (∂L ÷ ∂Y)`
 
-`∂L ÷ ∂X = (∂L ÷ ∂Y) × Wᵀ`
+`∂L ÷ ∂X = (∂L ÷ ∂Y) × W^T`
 
 - **X**: a batch of B inputs as rows, n numbers each
 - **W**: the weights, n × m
 - **b**: the bias, m numbers added to every row
 - **Y**: the outputs, B × m
 - **∂L ÷ ∂Y**: the blame arriving from the layer above, the same shape as Y
-- **ᵀ**: transpose
+- **^T**: transpose
 
 **In plain words:** The weight slopes and the blame passed down to the previous layer are each one matrix multiplication the same size as the forward one. So a training step costs about three forward-sized multiplications per layer: one forward and two backward. That is where "2N forward plus 4N backward", 6N per token, comes from; the compute section works out the FLOP count and the large-language-model section gives the 6 × N × D training-compute estimate.
 
@@ -601,7 +607,7 @@ For `Y = X × W + b`, with X of shape B × n and W of shape n × m:
 
 **Tiny example:** The book's case, 512 inputs and 512 outputs: std = sqrt(2 ÷ 1,024) = 0.044. A GPT-2-small feed-forward layer, 768 in and 3,072 out: Xavier std = sqrt(2 ÷ 3,840) = 0.0228, uniform limit sqrt(6 ÷ 3,840) = 0.0395; LeCun std = sqrt(1 ÷ 768) = 0.0361.
 
-**Where it is used:** Keras's default (glorot_uniform); PyTorch's nn.Linear default draws from U(−1 ÷ sqrt(n_in), +1 ÷ sqrt(n_in)), a LeCun-style rule; many LLM configurations instead use a fixed bell-curve spread such as 0.02 (the initializer_range setting).
+**Where it is used:** Keras's default (glorot_uniform); PyTorch's nn.Linear default draws from U(−1 ÷ sqrt(n_in), +1 ÷ sqrt(n_in)), a fan-in-only rule whose variance, 1 ÷ (3 × n_in), is a third of LeCun's; many LLM configurations instead use a fixed bell-curve spread such as 0.02 (the initializer_range setting).
 **In the book:** Chapter 13 (Why the size of the random numbers matters); the uniform version and LeCun initialization are only here.
 
 > **Definition — Fan-in and fan-out:** A layer's fan-in is the number of inputs each of its neurons adds together; its fan-out is the number of outputs it produces. Initialization rules use them to size the random starting weights.
@@ -821,16 +827,16 @@ For `Y = X × W + b`, with X of shape B × n and W of shape n × m:
 
 `start: X_0 = M ÷ (sqrt(sum of all M_ij^2) + ε)`
 
-`repeat 5 times: A = X × Xᵀ, then X ← a × X + (b × A + c × A × A) × X`, with `(a, b, c) = (3.4445, −4.7750, 2.0315)`
+`repeat 5 times: A = X × X^T, then X ← a × X + (b × A + c × A × A) × X`, with `(a, b, c) = (3.4445, −4.7750, 2.0315)`
 
-`classic cubic form: X ← 1.5 × X − 0.5 × X × Xᵀ × X`
+`classic cubic form: X ← 1.5 × X − 0.5 × X × X^T × X`
 
 - **M**: the matrix to orthogonalize (in Muon, a momentum matrix)
 - **M_ij**: its entries; sqrt(sum of all M_ij^2) is its Frobenius norm
 - **ε**: a tiny constant
-- **X**: the current approximation; **A**: X × Xᵀ
+- **X**: the current approximation; **A**: X × X^T
 - **a, b, c**: tuned coefficients
-- **ᵀ**: transpose
+- **^T**: transpose
 
 **In plain words:** Any matrix stretches space by different amounts in different directions, its singular values. Dividing by the Frobenius norm puts every stretch at 1 or below; each round then maps a stretch s to a × s + b × s^3 + c × s^5, which drags small and large stretches toward 1 without the slow singular value decomposition. The tuned coefficients take every stretch that starts between about 0.02 and 1 into roughly 0.68 to 1.13 in five rounds, run in bfloat16: not exactly 1, but close enough and fast. A matrix with more rows than columns is transposed first. The classic cubic iteration and the polar decomposition it approximates are in the foundations section.
 
@@ -864,7 +870,7 @@ For `Y = X × W + b`, with X of shape B × n and W of shape n × m:
 - **rows, cols**: the shape of W
 - **η, λ**: learning rate and weight decay
 
-**In plain words:** If the momentum matrix is M = U × S × Vᵀ (directions U and V, strengths S), Muon replaces it by about U × Vᵀ: the same directions with all strengths equal, so neglected directions learn too. It then scales the result, adds decoupled weight decay and steps. Embeddings, the output head and 1-D parameters stay on AdamW.
+**In plain words:** If the momentum matrix is M = U × S × V^T (directions U and V, strengths S), Muon replaces it by about U × V^T: the same directions with all strengths equal, so neglected directions learn too. It then scales the result, adds decoupled weight decay and steps. Embeddings, the output head and 1-D parameters stay on AdamW.
 
 **Tiny example:** Chapter 13's toy: a momentum with stretches 3 and 0.1 becomes, approximately, the identity matrix, giving both directions the same push. For one entry of a 2 × 2 weight matrix equal to 0.5, with η = 0.02, Moonshot's s = 0.2 × sqrt(2) = 0.283, λ = 0.1 and an update entry of 1: 0.5 − 0.02 × (0.283 × 1 + 0.1 × 0.5) = 0.5 − 0.02 × 0.333 = 0.493. For a 4,096 × 1,024 matrix the original scale is sqrt(4) = 2 and Moonshot's is 0.2 × sqrt(4,096) = 12.8.
 
@@ -896,7 +902,7 @@ For an n × m gradient G:
 
 **In plain words:** Adam stores one squared-gradient average for every weight. Adafactor stores only row and column totals, n + m numbers instead of n × m, and rebuilds an approximate grid as their outer product. It also caps the update's root-mean-square size and, by default, keeps no momentum at all (Shazeer and Stern, 2018).
 
-**Tiny example:** G has rows [1, 2, 0] and [0, 1, 1]. At t = 1, β_2t = 1 − 1 = 0, so R and C are just the sums of G^2 (rows [1, 4, 0] and [0, 1, 1]): R = [5, 2], C = [1, 5, 1], and the sum of R is 7. V̂ has rows [5, 25, 5] ÷ 7 = [0.714, 3.571, 0.714] and [2, 10, 2] ÷ 7 = [0.286, 1.429, 0.286], built from 5 stored numbers instead of 6. The top-middle update is 2 ÷ sqrt(3.571) = 1.058. For a 4,096 × 4,096 matrix the saving is 8,192 numbers instead of 16.8 million.
+**Tiny example:** G has rows [1, 2, 0] and [0, 1, 1]. At t = 1, β_2t = 1 − 1 = 0, so R and C are just the sums of G^2 (rows [1, 4, 0] and [0, 1, 1]): R = [5, 2], C = [1, 5, 1], and the sum of R is 7. V̂ has rows [5, 25, 5] ÷ 7 = [0.714, 3.571, 0.714] and [2, 10, 2] ÷ 7 = [0.286, 1.429, 0.286], built from 5 stored numbers instead of 6. Before the cap, the top-middle update is 2 ÷ sqrt(3.571) = 1.058, and the whole of U has rows [1.183, 1.058, 0] and [0, 0.837, 1.871], whose root-mean-square is 1.058; since that is above d = 1, every entry is divided by 1.058, and the top-middle update becomes 1.000. For a 4,096 × 4,096 matrix the saving is 8,192 numbers instead of 16.8 million.
 
 **Where it is used:** T5 and other Google TPU training (T5X), PaLM (in an unfactored form), and memory-light fine-tuning.
 **In the book:** Only here.
@@ -909,13 +915,13 @@ For an n × m gradient G:
 
 **What it does:** Reshapes each weight matrix's gradient using left and right summaries of how its gradients vary, so steps are better aimed.
 
-`Shampoo: L ← L + G × Gᵀ` and `R ← R + Gᵀ × G`
+`Shampoo: L ← L + G × G^T` and `R ← R + G^T × G`
 
 `W ← W − η × L^(−1/4) × G × R^(−1/4)`
 
-`SOAP: Q_L, Q_R = the eigenvectors of L and R (refreshed every f steps); G' = Q_Lᵀ × G × Q_R; run an Adam step on G' to get U'; update with Q_L × U' × Q_Rᵀ`
+`SOAP: Q_L, Q_R = the eigenvectors of L and R (refreshed every f steps); G' = Q_L^T × G × Q_R; run an Adam step on G' to get U'; update with Q_L × U' × Q_R^T`
 
-`K-FAC: W ← W − η × S_out^(−1) × G × S_in^(−1)`, with `S_in = the average of a × aᵀ` over the layer's input vectors a and `S_out = the average of δ × δᵀ` over the blame vectors δ at its outputs (each plus a small multiple of the identity)
+`K-FAC: W ← W − η × S_out^(−1) × G × S_in^(−1)`, with `S_in = the average of a × a^T` over the layer's input vectors a and `S_out = the average of δ × δ^T` over the blame vectors δ at its outputs (each plus a small multiple of the identity)
 
 - **W, G**: a weight matrix and its gradient
 - **L**: the left summary (rows × rows) and **R** the right summary (columns × columns), both starting as a small multiple of the identity matrix
@@ -924,7 +930,7 @@ For an n × m gradient G:
 - **f**: how often the eigenvectors are recomputed
 - **G', U'**: the gradient and the Adam update in the rotated coordinates
 - **a, δ**: in K-FAC, one example's input to the layer and the blame at the layer's outputs (as in backpropagation); **S_in, S_out**: their averaged outer products
-- **η, ᵀ**: learning rate and transpose
+- **η, ^T**: learning rate and transpose
 
 **In plain words:** Shampoo (Gupta, Koren and Singer, 2018) preconditions the gradient from both sides, which approximates the much more expensive full-matrix AdaGrad: directions that have seen big gradients get damped and quiet ones get amplified. SOAP (Vyas and colleagues, 2024) rotates the gradient into Shampoo's natural axes, runs ordinary Adam there and rotates back. K-FAC is a related Kronecker-factored method, and Muon can be read as Shampoo without the running sums.
 
@@ -950,7 +956,7 @@ For an n × m gradient G:
 - **β** (beta): how much of the old average is kept each step
 - **K**: the number of saved checkpoints averaged; **θ_k**: checkpoint k's weights
 
-**In plain words:** Every step, the averaged copy moves a small fraction of the way toward the current weights, smoothing out step-to-step noise; it is the averaged copy, not the raw one, that is evaluated or released. It remembers roughly the last 1 ÷ (1 − β) steps. Stochastic weight averaging and model soups are uniform-average relatives; merging separately fine-tuned models and task arithmetic are in the large-language-model section.
+**In plain words:** Every step, the averaged copy moves a small fraction of the way toward the current weights, smoothing out step-to-step noise; it is the averaged copy, not the raw one, that is evaluated or released. It remembers roughly the last 1 ÷ (1 − β) steps. Stochastic weight averaging, which averages checkpoints from late in one run, is a uniform-average relative; model soups, which average separately fine-tuned models, and task arithmetic are in the large-language-model section.
 
 **Tiny example:** With β = 0.9 (small, to watch it move) and θ_EMA = 1.0, the raw weight jumps to 2.0 and stays there: the copy goes 0.9 × 1.0 + 0.1 × 2.0 = 1.1, then 1.19. With β = 0.999 the memory is about 1 ÷ 0.001 = 1,000 steps. Three checkpoints at 1.0, 1.2 and 1.4 average to 1.2.
 
@@ -960,8 +966,6 @@ For an n × m gradient G:
 > **Definition — Exponential moving average (of weights):** A running average that moves a fixed small fraction of the way toward each new value, so recent values count most and old ones fade gradually. Applied to weights, it gives a smoother copy for evaluation.
 
 > **Definition — Stochastic weight averaging (SWA):** Averaging the weights from several points late in a training run, with equal weight, to land in a flatter and often better spot than any single checkpoint.
-
-> **Definition — Model soup:** A model made by averaging the weights of several models fine-tuned from the same starting point, which often beats each of them alone.
 
 ### Linear learning-rate warmup
 
@@ -1189,7 +1193,7 @@ For an n × m gradient G:
 **Tiny example:** A gradient of 1 × 10^-8 stored in FP16 becomes 0. Scaled by 65,536 it is 0.000655, which FP16 stores without trouble; divided by 65,536 in 32-bit it is 1.0 × 10^-8 again, saved.
 
 **Where it is used:** FP16 mixed-precision training (Micikevicius and colleagues, 2018; NVIDIA Apex; torch.amp).
-**In the book:** Chapter 13 (Numbers on hardware: precision in brief) and Chapter 32 (FP16 definition) mention it in words; the rule is only here.
+**In the book:** Chapter 32 (FP16 definition) names loss scaling, and Chapter 13 (Numbers on hardware: precision in brief) explains mixed precision; the rule is only here.
 
 > **Definition — Loss scaling:** Multiplying the loss by a large factor before the backward pass, and dividing the gradients by the same factor afterwards, so that small gradients do not round to zero in 16-bit arithmetic.
 
@@ -1386,11 +1390,11 @@ For an n × m gradient G:
 
 **What it does:** Widens the residual stream into several parallel streams with learned mixing, and, in mHC, constrains the mixing so it can only blend.
 
-`x_(l+1) = H_res × x_l + H_postᵀ × F(H_pre × x_l)`, with n parallel streams x_l of shape n × C
+`x_(l+1) = H_res × x_l + H_post^T × F(H_pre × x_l)`, with n parallel streams x_l of shape n × C
 
 `mHC: H_pre = sigmoid(H̃_pre)`, `H_post = 2 × sigmoid(H̃_post)`, `H_res = SinkhornKnopp(H̃_res)`
 
-`SinkhornKnopp: M = exp(H̃_res), then alternately divide every row and every column by its sum, 20 rounds`
+`SinkhornKnopp: M = exp(H̃_res), then alternately divide every column and every row by its sum, 20 rounds`
 
 - **n**: the number of streams (4 in DeepSeek's experiments)
 - **C**: the width of each stream
@@ -1400,16 +1404,16 @@ For an n × m gradient G:
 - **H_post** (1 × n): how the layer's output is written back to each stream
 - **H_res** (n × n): how the streams mix with each other
 - **H̃**: the raw values before the constraints, computed from an RMSNorm of the input
-- **exp**: e raised to each entry; **ᵀ**: transpose; **sigmoid**: as above
+- **exp**: e raised to each entry; **^T**: transpose; **sigmoid**: as above
 
 **In plain words:** Hyper-connections (Zhu and colleagues, 2024) give the layers several residual streams to read from and write to, with learned mixing. Unconstrained mixing can amplify the signal a little at every layer, and that compounds: 1.1^60 ≈ 304. mHC (DeepSeek, arXiv 2512.24880, December 2025) forces H_res to be approximately doubly stochastic, with every row and every column summing to 1, so each mixed stream is a weighted average of the others, the total is preserved and nothing can blow up across many layers.
 
-**Tiny example:** Two streams with raw H̃_res = rows [1, 0] and [0, 0]. exp gives rows [2.718, 1] and [1, 1]. Dividing each row by its sum: [0.731, 0.269] and [0.5, 0.5]. Dividing each column by its sum (1.231 and 0.769): [0.594, 0.350] and [0.406, 0.650]. After 20 rounds: rows [0.622, 0.378] and [0.378, 0.622], whose rows and columns all sum to 1. Mixing streams holding 1 and 3 gives 1.755 and 2.245: the total is still 4.
+**Tiny example:** Two streams with raw H̃_res = rows [1, 0] and [0, 0]. exp gives rows [2.718, 1] and [1, 1]. Dividing each column by its sum (3.718 and 2): rows [0.731, 0.5] and [0.269, 0.5]. Dividing each row by its sum (1.231 and 0.769): [0.594, 0.406] and [0.350, 0.650]. After 20 rounds: rows [0.622, 0.378] and [0.378, 0.622], whose rows and columns all sum to 1. Mixing streams holding 1 and 3 gives 1.755 and 2.245: the total is still 4.
 
 **Where it is used:** DeepSeek V4 (2026).
 **In the book:** Chapter 13 (The residual stream in your chatbot) and Chapter 17 (Keeping giants stable) in words; the equations are only here.
 
-> **Definition — Sinkhorn-Knopp algorithm:** A simple procedure that turns a grid of positive numbers into one whose rows and columns each add up to 1, by repeatedly dividing every row by its sum and then every column by its sum.
+> **Definition — Sinkhorn-Knopp algorithm:** A simple procedure that turns a grid of positive numbers into one whose rows and columns each add up to 1, by repeatedly dividing every column by its sum and then every row by its sum.
 
 > **Definition — Doubly stochastic matrix:** A square grid of non-negative numbers in which every row and every column adds up to 1. Multiplying by it blends values without changing their total.
 
@@ -1428,7 +1432,7 @@ For an n × m gradient G:
 - **x_i**: one unit's output
 - **p**: the drop probability
 - **m_i**: a random mask, 1 (keep) with probability 1 − p and 0 (drop) otherwise
-- **Bernoulli(q)**: a weighted coin that gives 1 with probability q
+- **Bernoulli(q)**: a weighted coin that gives 1 with probability q and 0 otherwise (the Bernoulli distribution, Chapter 6)
 - **y_i**: the output after dropout
 - **F(x)**: a residual branch, in stochastic depth
 - **l, L**: a block's position and the number of blocks; **p_l**: block l's drop probability; **p_L**: the last block's
@@ -1439,8 +1443,6 @@ For an n × m gradient G:
 
 **Where it is used:** AlexNet, the original Transformer (p = 0.1) and BERT; dropout in LoRA fine-tuning; DropPath in ViT, DeiT and ConvNeXt; it is usually turned off in single-epoch LLM pretraining.
 **In the book:** Chapter 13 (The regularization toolkit). The 1 ÷ (1 − p) factor as a symbol and stochastic depth are only here.
-
-> **Definition — Bernoulli distribution:** The probability rule of a single weighted coin flip: the result is 1 with probability q and 0 with probability 1 − q.
 
 > **Definition — Stochastic depth (DropPath):** A regularizer that, during training, randomly skips entire residual branches for each example and scales up the kept ones, so a deep network learns not to depend on any one block.
 
@@ -1494,6 +1496,41 @@ For an n × m gradient G:
 > **Definition — CutMix:** A data-augmentation method that pastes a rectangle cut from one training image into another and mixes their labels in proportion to the pasted area.
 
 > **Definition — Beta distribution:** A family of probability distributions for random numbers between 0 and 1, whose shape is set by two settings; Mixup draws its blend amount from one.
+
+### Adversarial examples and adversarial training (FGSM and PGD)
+
+**What it does:** Builds a tiny, targeted change to an input that makes a trained network get it wrong, and trains the network on such changed inputs so that it resists them.
+
+`FGSM: x_adv = x + ε × sign(∇_x L(θ, x, y))`
+
+`PGD: repeat K times: x ← clip(x + α × sign(∇_x L(θ, x, y)), x_0 − ε, x_0 + ε)`, starting from `x = x_0` (often plus a small random offset)
+
+`adversarial training: minimize over θ the average over examples of (max over every δ with all |δ_i| ≤ ε of L(θ, x + δ, y))`
+
+- **x_0, x**: the original input (for example an image's pixel values) and the input being altered
+- **x_adv**: the altered, adversarial input
+- **y**: the correct label
+- **θ** (theta): the network's weights, held fixed while the input is attacked
+- **L**: the training loss, such as cross-entropy
+- **∇_x L**: the gradient of the loss with respect to the input rather than the weights; backpropagation computes it the same way
+- **sign()**: +1, −1 or 0 for each entry, as in Lion
+- **ε** (epsilon): the largest change allowed in any single input value
+- **α** (alpha): PGD's step size per round; **K**: its number of rounds
+- **clip(u, low, high)**: keep each entry of u between the matching entries of low and high
+- **δ** (delta): the change added to the input; **δ_i** is its entry for input value i
+
+**In plain words:** Training asks how to change the weights to lower the loss; an attack asks how to change the input to raise it. FGSM (Goodfellow, Shlens and Szegedy, 2014) takes one step that moves every input value by exactly ε in whichever direction raises the loss, the most damaging single step when no value may move more than ε. PGD (Madry and colleagues, 2018) takes several smaller steps and clips back into the allowed box after each. Adversarial training is a min-max game: for each example, find the worst input in the box, then train on it, which buys robustness at some cost in ordinary accuracy. The general projected-gradient step is in the foundations section.
+
+**Tiny example:** A logistic classifier reads a 1,000-pixel image (pixel values from 0 to 1) with every weight equal to +0.2 or −0.2, and says "yes" with z = 2, p = 0.881. For the true label y = 1, the loss's slope for pixel i is (p − 1) × w_i, whose sign is opposite to w_i's, so FGSM with ε = 0.02 nudges every pixel 0.02 against its weight. No pixel changes by more than 0.02, but z falls by 0.02 × 1,000 × 0.2 = 4, to −2, so p = 0.119 and the answer flips to "no". Many tiny, coordinated nudges add up, which is why inputs with many numbers, such as images, are easy to attack.
+
+**Where it is used:** Robustness testing and adversarial training of image classifiers, where PGD training (2018) is the standard baseline; FGSM made the famous panda-to-gibbon example (ε = 0.007, labeled "gibbon" with 99.3% confidence). The same gradient-with-respect-to-the-input idea drives automated attacks on chatbots, such as the GCG suffix search (Zou and colleagues, 2023), which uses token gradients to choose adversarial text.
+**In the book:** Chapter 45 (How vision systems fail; adversarial example definition) tells the panda and stop-sign stories in words; the formulas are only here.
+
+> **Definition — FGSM (fast gradient sign method):** A one-step attack that changes every input value by the same small amount in the direction that most increases the model's loss, using the sign of the loss's gradient with respect to the input.
+
+> **Definition — PGD attack (projected gradient descent attack):** A stronger, many-step version of FGSM that takes small sign-of-gradient steps and, after each, clips the input back to within a fixed distance of the original.
+
+> **Definition — Adversarial training:** Training a model on inputs deliberately altered to fool it, generated afresh during training, so that it learns to resist such attacks.
 
 ### Convolution layer (cross-correlation of an input with learned filters)
 
@@ -1670,6 +1707,7 @@ For an n × m gradient G:
 - **f'**: the activation's slope; **z_t**: the pre-activation sums at step t
 - **diag(f'(z_t))**: a matrix with these slopes on its diagonal, which multiplies each entry by its own slope
 - **W_hh**: the RNN's memory weights; **W**: any weight
+- **∂h_k ÷ ∂W**: how W changes step k's state directly, with the state coming in from step k − 1 held fixed
 - **k, i**: earlier steps
 
 **In plain words:** Each layer or step multiplies the blame by its own factor. If the factors are mostly below 1 the product shrinks toward zero (vanishing), and if above 1 it explodes. Backpropagation through time (BPTT) adds up, for every step's loss and every earlier step, the chain of factors linking the two; truncated BPTT only follows the chain a fixed number of steps back.
@@ -1745,7 +1783,7 @@ For an n × m gradient G:
 
 **What it does:** Turns a token or category ID into a learned vector by picking one row of a table.
 
-`e = E[id] = one_hot(id)ᵀ × E`, with E of shape V × d
+`e = E[id] = one_hot(id)^T × E`, with E of shape V × d
 
 `optional scaling: e × sqrt(d)`
 
@@ -1831,17 +1869,38 @@ For an n × m gradient G:
 
 > **Definition — Co-occurrence count:** How many times two words appear within a few positions of each other across a body of text.
 
+### Attention pooling as kernel regression (Nadaraya-Watson)
+
+**What it does:** Predicts a value for a new query by averaging stored values, weighting each one by how close its key is to the query; it is the oldest form of attention.
+
+`f(q) = sum over i of α(q, k_i) × v_i`, with `α(q, k_i) = softmax over i of (−(q − k_i)^2 ÷ 2)`
+
+- **q**: the query, the new input to make a prediction for
+- **k_i, v_i**: stored example i's input (its key) and output (its value)
+- **α(q, k_i)** (alpha): the attention weight on example i; the weights are positive and add up to 1
+- **softmax over i**: exponentiate every score and divide by their total, as in the softmax entry
+- **−(q − k_i)^2 ÷ 2**: the score, minus half the squared distance, which makes the weights a Gaussian (bell-curve) kernel
+
+**In plain words:** Stored examples whose key is close to the query get most of the weight and distant ones almost none, so the prediction follows the nearby examples. Nadaraya and Watson proposed this kernel regression in 1964. Adding a learned width w, as −(w × (q − k_i))^2 ÷ 2, makes it trainable, and replacing the distance with a learned score, such as a dot product of learned projections, gives the attention of the entries that follow. Dive into Deep Learning (d2l) introduces attention this way.
+
+**Tiny example:** Keys [1, 2, 4] with values [2, 4, 8], and a query of 2.5. The scores are −(1.5)^2 ÷ 2 = −1.125, −(0.5)^2 ÷ 2 = −0.125 and −1.125. Softmax gives weights 0.212, 0.576 and 0.212, so the prediction is 0.212 × 2 + 0.576 × 4 + 0.212 × 8 = 4.42, close to the 5 that the straight line through the examples would give.
+
+**Where it is used:** Kernel smoothing in statistics, and the standard teaching bridge from classical statistics to attention (d2l's attention chapter; Bishop's Pattern Recognition and Machine Learning, section 6.3); a Transformer's attention is the same weighted average with learned dot-product scores.
+**In the book:** Only here (Chapter 14, The birth of attention, describes attention as a softmax-weighted average in words).
+
+> **Definition — Kernel regression (Nadaraya-Watson estimator):** Predicting a value as a weighted average of known examples' values, with weights from a similarity function, the kernel, that favors examples close to the query.
+
 ### Additive (Bahdanau) and multiplicative (Luong) attention
 
 **What it does:** Lets a decoder score every encoder state, turn the scores into weights, and blend the states into a fresh context vector.
 
-`e_ij = v_aᵀ × tanh(W_a × s_(i−1) + U_a × h_j)`
+`e_ij = v_a^T × tanh(W_a × s_(i−1) + U_a × h_j)`
 
 `α_ij = exp(e_ij) ÷ (sum over k of exp(e_ik))`
 
 `c_i = sum over j of α_ij × h_j`
 
-`Luong scores: s_iᵀ × h_j (dot) or s_iᵀ × W_a × h_j (general)`
+`Luong scores: s_i^T × h_j (dot) or s_i^T × W_a × h_j (general)`
 
 - **h_j**: the encoder's state for input word j
 - **s_(i−1)**: the decoder's state just before writing output word i (Luong uses the current state s_i)
@@ -1850,7 +1909,7 @@ For an n × m gradient G:
 - **α_ij** (alpha): the attention weight, the softmax of the scores
 - **k**: runs over all the input words
 - **c_i**: the context vector for output word i
-- **ᵀ**: transpose, which turns v_a and s_i into rows for the dot product
+- **^T**: transpose, which turns v_a and s_i into rows for the dot product
 
 **In plain words:** Instead of squeezing a whole sentence into one fixed vector, the decoder builds a new, focused summary for every word it writes (Bahdanau, Cho and Bengio, 2014). Additive attention scores with a tiny one-layer network; Luong and colleagues (2015) showed a plain or weighted dot product works as well and is cheaper, which led straight to the Transformer.
 
@@ -1869,12 +1928,12 @@ For an n × m gradient G:
 
 `Q = X × W_Q`, `K = X × W_K`, `V = X × W_V`
 
-`Attention(Q, K, V) = softmax(Q × Kᵀ ÷ sqrt(d_k) + M) × V`, with the softmax taken along each row
+`Attention(Q, K, V) = softmax(Q × K^T ÷ sqrt(d_k) + M) × V`, with the softmax taken along each row
 
 - **X**: the token vectors, one row per token
 - **W_Q, W_K, W_V**: learned matrices that make queries, keys and values
 - **Q, K, V**: the queries, keys and values, one row per token
-- **Kᵀ**: the keys transposed, so Q × Kᵀ holds every query-key dot product
+- **K^T**: the keys transposed, so Q × K^T holds every query-key dot product
 - **d_k**: the length of each query and key
 - **M**: the mask (next entry), 0 where attention is allowed
 - **softmax**: as above, applied to each row separately
@@ -2133,10 +2192,10 @@ For an n × m gradient G:
 
 **What it does:** Reuses the input embedding table as the final layer that scores every vocabulary token.
 
-`logits = h_final × Eᵀ`
+`logits = h_final × E^T`
 
 - **h_final**: the last token's vector after the final normalization (d numbers)
-- **E**: the embedding table (V × d); **Eᵀ** is its transpose (d × V)
+- **E**: the embedding table (V × d); **E^T** is its transpose (d × V)
 - **logits**: one score per vocabulary token
 
 **In plain words:** The score for each token is the dot product of the final vector with that token's own embedding, so "reading" and "writing" a token share one learned vector (Press and Wolf, 2017). It saves V × d parameters, a large share in small models.
@@ -2165,7 +2224,7 @@ For an n × m gradient G:
 **Tiny example:** Query [10, 10] against keys A = [10, 10] and B = [10, 0], d_k = 2. Raw: 200 ÷ 1.414 = 141.4 and 100 ÷ 1.414 = 70.7, a softmax of about [1, 2 × 10^-31]. With RMSNorm: q = [1, 1], A = [1, 1], B = [1.414, 0]; scores 2 ÷ 1.414 = 1.414 and 1.414 ÷ 1.414 = 1.0; softmax [0.602, 0.398], and the learned gain sets how sharp it may become. Chapter 17 does the same with length-1 vectors and a scale of 10: scores 10 and 7.07, a 95% to 5% split.
 
 **Where it is used:** ViT-22B, OLMo 2, Chameleon, Qwen3, and Gemma 3, which replaced Gemma 2's attention soft-capping with QK-norm.
-**In the book:** Chapter 13 (Loss spikes); Chapter 17 (Keeping giants stable).
+**In the book:** Chapter 13 (Loss spikes) names attention scores that grow too large as one cause of spikes; Chapter 17 (Keeping giants stable) works QK-norm through in words.
 
 ### Attention with a learned sink logit (off-by-one softmax)
 
@@ -2534,16 +2593,16 @@ For an n × m gradient G:
 
 **What it does:** Shows that a state-space layer whose decay is a single number per head is the same thing as attention without softmax under a decaying causal mask.
 
-`h_t = a_t × h_(t−1) + B_t × x_tᵀ` and `y_t = h_tᵀ × C_t`, with a scalar `a_t = exp(Δ_t × A)` per head
+`h_t = a_t × h_(t−1) + B_t × x_t^T` and `y_t = h_t^T × C_t`, with a scalar `a_t = exp(Δ_t × A)` per head
 
-`matrix form: y = (L ⊙ (C × Bᵀ)) × x`, where `L_ij = a_i × a_(i−1) × ... × a_(j+1)` for i ≥ j, and 0 otherwise
+`matrix form: y = (L ⊙ (C × B^T)) × x`, where `L_ij = a_i × a_(i−1) × ... × a_(j+1)` for i ≥ j, and 0 otherwise
 
 - **a_t**: the scalar decay at step t (between 0 and 1)
 - **B_t, C_t**: the token's write and read vectors (they play the roles of keys and queries)
 - **x_t**: the input; **h_t**: the state, now a matrix
 - **L**: the causal decay mask, with L_ii = 1
-- **C × Bᵀ**: every read vector dotted with every write vector, like the query-key scores of attention
-- **⊙, ᵀ**: element-wise product and transpose
+- **C × B^T**: every read vector dotted with every write vector, like the query-key scores of attention
+- **⊙, ^T**: element-wise product and transpose
 
 **In plain words:** Unrolled, each output is a sum of past inputs weighted by (read · write) times the product of the decays in between, which is exactly a masked, softmax-free attention. Computing it chunk by chunk turns most of the work into matrix multiplications, which made training several times faster (Dao and Gu, 2024).
 
@@ -2558,18 +2617,18 @@ For an n × m gradient G:
 
 **What it does:** Replaces softmax attention with a form whose whole past folds into one fixed-size memory matrix.
 
-`o_i = (φ(q_i)ᵀ × sum over j ≤ i of φ(k_j) × v_jᵀ) ÷ (φ(q_i)ᵀ × sum over j ≤ i of φ(k_j))`
+`o_i = (φ(q_i)^T × sum over j ≤ i of φ(k_j) × v_j^T) ÷ (φ(q_i)^T × sum over j ≤ i of φ(k_j))`
 
-`recurrent form: S_t = S_(t−1) + v_t × φ(k_t)ᵀ` and `o_t = S_t × φ(q_t)`
+`recurrent form: S_t = S_(t−1) + v_t × φ(k_t)^T` and `o_t = S_t × φ(q_t)`
 
-`with decay: S_t = γ × S_(t−1) + v_t × k_tᵀ` (RetNet); with a data-dependent gate: `S_t = G_t ⊙ S_(t−1) + v_t × k_tᵀ` (GLA)
+`with decay: S_t = γ × S_(t−1) + v_t × k_t^T` (RetNet); with a data-dependent gate: `S_t = G_t ⊙ S_(t−1) + v_t × k_t^T` (GLA)
 
-`xLSTM's mLSTM: S_t = f_t × S_(t−1) + i_t × v_t × k_tᵀ` and `n_t = f_t × n_(t−1) + i_t × k_t`, read out as `o_t = (S_t × q_t) ÷ max(|n_tᵀ × q_t|, 1)`, with `i_t = exp(ĩ_t)`
+`xLSTM's mLSTM: S_t = f_t × S_(t−1) + i_t × v_t × k_t^T` and `n_t = f_t × n_(t−1) + i_t × k_t`, read out as `o_t = (S_t × q_t) ÷ max(|n_t^T × q_t|, 1)`, with `i_t = exp(ĩ_t)`
 
 - **q, k, v**: queries, keys and values, as in attention
 - **φ** (phi): a feature map applied to queries and keys, for example elu(x) + 1 (Katharopoulos and colleagues, 2020)
 - **S_t**: the memory matrix after token t
-- **v_t × k_tᵀ**: the outer product that writes token t into the memory
+- **v_t × k_t^T**: the outer product that writes token t into the memory
 - **o_t**: the output for token t
 - **γ** (gamma): a fixed decay between 0 and 1
 - **G_t**: a learned, input-dependent gate matrix; **⊙**: element-wise product
@@ -2578,7 +2637,7 @@ For an n × m gradient G:
 
 **In plain words:** Without softmax, the sum over the past can be computed once and updated, so each new token costs the same no matter how long the text is. Many modern versions drop the normalizing denominator. A decay γ, or a learned gate G_t, lets old memories fade; Mamba-2 is the case of one scalar gate per head, and xLSTM's mLSTM adds an exponential input gate and the normalizer back.
 
-**Tiny example:** Write k_1 = [1, 0] with v_1 = [3, 1], then k_2 = [0, 1] with v_2 = [−1, 2] (taking φ as the identity and no normalizer): S = v_1 × k_1ᵀ + v_2 × k_2ᵀ has rows [3, −1] and [1, 2]. Reading with q = [1, 0] gives [3, 1]; reading with q = [0.5, 0.5] gives [1, 1.5]. With a decay γ = 0.9 applied before the second write, reading with [1, 0] gives [2.7, 0.9].
+**Tiny example:** Write k_1 = [1, 0] with v_1 = [3, 1], then k_2 = [0, 1] with v_2 = [−1, 2] (taking φ as the identity and no normalizer): S = v_1 × k_1^T + v_2 × k_2^T has rows [3, −1] and [1, 2]. Reading with q = [1, 0] gives [3, 1]; reading with q = [0.5, 0.5] gives [1, 1.5]. With a decay γ = 0.9 applied before the second write, reading with [1, 0] gives [2.7, 0.9].
 
 **Where it is used:** MiniMax-01's lightning attention (seven linear layers per softmax layer), RetNet and RWKV-style models, and the mLSTM layers of xLSTM 7B (2025); the base of the delta-rule layers.
 **In the book:** Chapter 17 (Linear attention and the delta rule); Chapter 15 (Making attention cheaper). The normalizer, the feature map, the decay gates and the mLSTM form are only here.
@@ -2593,16 +2652,16 @@ For an n × m gradient G:
 
 **What it does:** Writes into a memory matrix only the difference between the new value and what the memory already returns, so outdated facts are overwritten instead of blurred.
 
-`DeltaNet: S_t = S_(t−1) − β_t × (S_(t−1) × k_t − v_t) × k_tᵀ = S_(t−1) × (I − β_t × k_t × k_tᵀ) + β_t × v_t × k_tᵀ`
+`DeltaNet: S_t = S_(t−1) + β_t × (v_t − S_(t−1) × k_t) × k_t^T = S_(t−1) × (I − β_t × k_t × k_t^T) + β_t × v_t × k_t^T`
 
-`Gated DeltaNet: S_t = α_t × S_(t−1) × (I − β_t × k_t × k_tᵀ) + β_t × v_t × k_tᵀ`
+`Gated DeltaNet: S_t = α_t × S_(t−1) × (I − β_t × k_t × k_t^T) + β_t × v_t × k_t^T`
 
-`Kimi Delta Attention: S_t = S_(t−1) × Diag(α_t) × (I − β_t × k_t × k_tᵀ) + β_t × v_t × k_tᵀ`
+`Kimi Delta Attention: S_t = S_(t−1) × Diag(α_t) × (I − β_t × k_t × k_t^T) + β_t × v_t × k_t^T`
 
 `read-out: o_t = S_t × q_t`
 
 - **S_t**: the memory matrix; **k_t, v_t, q_t**: the key, value and query of token t (keys are scaled to length 1)
-- **S_(t−1) × k_t**: what the memory currently returns for this key
+- **S_(t−1) × k_t**: what the memory currently returns for this key; **v_t − S_(t−1) × k_t** is the error, new value minus old answer
 - **β_t** (beta): the write strength, between 0 and 1
 - **I**: the identity matrix
 - **α_t** (alpha): a forget gate between 0 and 1, one number (Gated DeltaNet) or one per key channel, placed on a diagonal by Diag (KDA)
@@ -2628,7 +2687,7 @@ flowchart LR
 ```
 *Figure G.X: How the fixed-memory sequence layers in this section relate. Each step adds a way for the token itself to decide what to keep, what to forget and what to overwrite.*
 
-### Graph neural network message passing (GCN and GAT)
+### Graph neural network message passing (GCN, GraphSAGE and GAT)
 
 **What it does:** Updates each node of a graph from its neighbors' vectors, round after round.
 
@@ -2636,7 +2695,9 @@ flowchart LR
 
 `GCN: H^(l+1) = σ(D̃^(−1/2) × Ã × D̃^(−1/2) × H^(l) × W^(l))`, with `Ã = A + I`
 
-`GAT: α_vu = softmax over the neighbors u of LeakyReLU(aᵀ × [W × h_v, W × h_u])`, and `h_v' = σ(sum over u of α_vu × W × h_u)`
+`GraphSAGE: h_v' = σ(W × [h_v, mean over sampled neighbors u of h_u])`
+
+`GAT: α_vu = softmax over the neighbors u of LeakyReLU(a^T × [W × h_v, W × h_u])`, and `h_v' = σ(sum over u of α_vu × W × h_u)`
 
 - **v, u**: nodes; **h_v^(l)**: node v's vector after round l
 - **UPDATE, AGGREGATE**: learned functions that combine a node's own vector with its neighbors'
@@ -2645,17 +2706,20 @@ flowchart LR
 - **D̃**: the diagonal degree matrix of Ã; D̃^(−1/2) divides by the square root of each node's degree
 - **W^(l), W**: learned weights; **σ** (sigma): an activation
 - **a**: learned attention weights; **[ , ]**: concatenation
+- **mean over sampled neighbors u of h_u**: the average vector of a random sample of v's neighbors (all of them, if there are few)
 - **α_vu**: how much node v attends to neighbor u
 
-**In plain words:** Each round, every node gathers messages from the nodes it is connected to and updates itself, so after several rounds information has traveled several hops. The GCN (Kipf and Welling) uses a degree-normalized average that includes the node itself; the graph attention network (GAT) learns how much to weight each neighbor. Self-attention is message passing on a fully connected graph.
+**In plain words:** Each round, every node gathers messages from the nodes it is connected to and updates itself, so after several rounds information has traveled several hops. The GCN (Kipf and Welling) uses a degree-normalized average that includes the node itself; GraphSAGE (Hamilton, Ying and Leskovec, 2017) keeps a node's own vector separate from the average of a random sample of its neighbors and joins the two before a learned layer, which lets it embed nodes it never saw in training; the graph attention network (GAT) learns how much to weight each neighbor. Self-attention is message passing on a fully connected graph.
 
-**Tiny example:** Chapter 17's jazz scores: Ana 9, Ben 3, Cal 6, Dee 0, with Ana-Ben, Ana-Cal, Ben-Cal and Cal-Dee friendships. A plain average with oneself gives Dee (0 + 6) ÷ 2 = 3 after round 1. The GCN normalization (with W = 1 and no activation) counts degrees including oneself (Ana 3, Ben 3, Cal 4, Dee 2) and weights each link by 1 ÷ sqrt(degree × degree): Dee = 0 ÷ 2 + 6 ÷ sqrt(4 × 2) = 2.121, and Ana = 9 ÷ 3 + 3 ÷ sqrt(9) + 6 ÷ sqrt(12) = 5.732.
+**Tiny example:** Chapter 17's jazz scores: Ana 9, Ben 3, Cal 6, Dee 0, with Ana-Ben, Ana-Cal, Ben-Cal and Cal-Dee friendships. A plain average with oneself gives Dee (0 + 6) ÷ 2 = 3 after round 1. The GCN normalization (with W = 1 and no activation) counts degrees including oneself (Ana 3, Ben 3, Cal 4, Dee 2) and weights each link by 1 ÷ sqrt(degree × degree): Dee = 0 ÷ 2 + 6 ÷ sqrt(4 × 2) = 2.121, and Ana = 9 ÷ 3 + 3 ÷ sqrt(9) + 6 ÷ sqrt(12) = 5.732. GraphSAGE with W = [0.5, 0.5] (half own score, half neighbor average) and no activation: Dee = 0.5 × 0 + 0.5 × 6 = 3, and Ana = 0.5 × 9 + 0.5 × ((3 + 6) ÷ 2) = 4.5 + 2.25 = 6.75.
 
-**Where it is used:** GraphCast weather forecasting (Google DeepMind, 2023), GNoME materials discovery (2023), molecule and drug models, travel-time prediction in Google Maps, and recommendation graphs (PinSage).
-**In the book:** Chapter 17 (Graph neural networks: when data is a web, not a line). The learned GCN formula with its normalized adjacency matrix, and GAT, are only here.
+**Where it is used:** GraphCast weather forecasting (Google DeepMind, 2023), GNoME materials discovery (2023), molecule and drug models, travel-time prediction in Google Maps, and recommendation graphs (PinSage, which is built on GraphSAGE).
+**In the book:** Chapter 17 (Graph neural networks: when data is a web, not a line). The learned GCN formula with its normalized adjacency matrix, GraphSAGE and GAT are only here.
 
 > **Definition — Adjacency matrix:** A square grid describing a graph, with a 1 in row i, column j when nodes i and j are connected and 0 otherwise.
 
 > **Definition — Degree matrix:** A diagonal matrix listing how many connections each node of a graph has, used to normalize sums over neighbors.
+
+> **Definition — GraphSAGE:** A 2017 graph neural network that updates each node from its own vector joined with an average over a random sample of its neighbors, so it can produce vectors for new nodes without retraining.
 
 > **Definition — Graph attention network (GAT):** A graph neural network that learns attention weights over each node's neighbors, so more relevant neighbors contribute more to the node's update.

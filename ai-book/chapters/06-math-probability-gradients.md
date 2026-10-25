@@ -188,6 +188,12 @@ The same arithmetic tells you whether a bet is worth it. A $2 lottery ticket wit
 
 Flip a coin 10 times and you might get 7 heads. Flip it 10,000 times and you will almost certainly get very close to 5,000. The more you repeat a random process, the closer the average gets to the expected value.
 
+In symbols:
+
+`x_bar_n = (X_1 + X_2 + ... + X_n) ÷ n → μ` as n grows
+
+Here X_1, X_2 and so on are the results of independent repeats of the same random process (for a coin, 1 for heads and 0 for tails), n is the number of repeats, x_bar_n (read "x-bar") is their average, μ (the Greek letter mu) is the expected value, and the arrow → means "gets closer and closer to". For a fair coin μ = 0.5: 7 heads in 10 flips gives an average of 7 ÷ 10 = 0.7, while a typical run of 10,000 flips gives something like 5,030 heads, an average of 5,030 ÷ 10,000 = 0.503.
+
 > **Definition — Law of large numbers:** The principle that the average of many repeated random trials gets closer and closer to the expected value as the number of trials grows.
 
 This is why a single surprising chatbot answer tells you little, while a test over 1,000 questions tells you a lot. It is also why AI companies can predict their costs and error rates well, even though each single response is random.
@@ -220,6 +226,14 @@ Two things in that picture are worth noticing. First, "Paris" is not certain, ev
 Statisticians have a name for a quantity whose value is settled by chance: a random variable. The roll of a die is one (its possible values are 1 to 6), the next token your chatbot writes is another, and tomorrow's high temperature is a third. A probability distribution describes a random variable completely.
 
 > **Definition — Random variable:** A quantity whose value is set by chance, such as a die roll or the next token a chatbot will write. Its probability distribution says how likely each possible value is.
+
+The simplest random variable has only two values: 1 for yes (heads, a correct answer, a click) and 0 for no. If yes has probability p, it follows the Bernoulli distribution:
+
+`P(X = 1) = p`, `P(X = 0) = 1 − p`, and its expected value is `E[X] = p`
+
+Here X is the random variable, p is the chance of a yes (a number from 0 to 1), 1 − p is the chance of a no, and E[X] is X's expected value, found as before by multiplying each outcome by its probability: 1 × p + 0 × (1 − p) = p. A chatbot that gets a certain kind of question right 80% of the time is a Bernoulli variable with p = 0.8 on each such question, and its expected score per question is 1 × 0.8 + 0 × 0.2 = 0.8.
+
+> **Definition — Bernoulli distribution:** The distribution of a single yes-or-no trial that comes out 1 (yes) with probability p and 0 (no) with probability 1 − p, such as one coin flip or one benchmark question passed or failed. Its average is p.
 
 Often you track two random variables at once. Suppose 100 emails are sorted two ways: spam or not, and whether they contain the word "free".
 
@@ -519,6 +533,8 @@ A sturdier measure uses every value. The standard one is computed in four steps.
 
 So these numbers typically sit about 2 away from their mean of 5. (Spreadsheets compute these with `=VAR.P()` and `=STDEV.P()`.) For the bar salaries, the standard deviation is about $12,000 before the billionaire arrives and about $300 million after: one outlier wrecks the spread, too.
 
+The same recipe works for a random variable, with each squared distance weighted by its probability. For a Bernoulli yes/no variable (from earlier in this chapter) it gives `Var(X) = p × (1 − p)`, where Var(X) is the variance of X and p the chance of a yes. With p = 0.8, the value 1 sits 0.2 from the mean and the value 0 sits 0.8 from it, so the variance is 0.8 × 0.2^2 + 0.2 × 0.8^2 = 0.032 + 0.128 = 0.16 = 0.8 × 0.2, a standard deviation of 0.4. This little formula sets the error bars on benchmark scores (Chapter 9).
+
 > **Definition — Variance:** A measure of spread: the average of the squared distances of the values from their mean. Bigger variance means the values are more scattered.
 
 > **Definition — Standard deviation:** The square root of the variance, which puts the spread back into the original units. Roughly, it is how far a typical value sits from the mean.
@@ -761,6 +777,14 @@ Why cross-entropy, and not some other score? Because minimizing it is the same a
 
 > **Definition — Maximum likelihood estimation (MLE):** Choosing a model's parameters to make the observed data as probable as possible under the model. For a language model it is exactly the same as minimizing the average cross-entropy loss.
 
+Written as a formula:
+
+`θ_MLE = argmax over θ of P(data given θ) = argmin over θ of (−sum over i of ln P(x_i given θ))`
+
+Here θ (the Greek letter theta) stands for all of the model's knobs, P(data given θ) is the likelihood, x_i is the i-th observation (a token, a coin flip) and P(x_i given θ) is the probability the model gives it, ln is the natural logarithm, "sum over i" adds up the terms for every observation, "argmax over θ" means "the setting of θ that makes what follows as large as possible" (argmin means as small as possible), and θ_MLE is the winning setting. For a coin that landed heads 7 times in 10 flips, the likelihood of a heads-probability p is p^7 × (1 − p)^3: at p = 0.5 it is about 0.00098, at p = 0.7 about 0.00222, and no other p does better, so the maximum-likelihood estimate is 7 ÷ 10 = 0.7, simply the observed share.
+
+> **Definition — Argmax:** The input that makes a function as large as possible, as opposed to that largest value itself. For p^7 × (1 − p)^3 the argmax is p = 0.7, while the largest value is about 0.0022. Argmin is the same idea for the smallest value.
+
 Two more quantities from information theory complete the picture. **Entropy** is the average surprise of the truth itself: how unpredictable the data is even to a perfect model. A fair coin has an entropy of ln 2 ≈ 0.693 (exactly 1 bit). No model can average less surprise than that on fair coin flips, and the same logic explains why a language model's loss never reaches zero: some of what comes next in real text is genuinely unpredictable.
 
 > **Definition — Entropy:** The average surprise of outcomes drawn from a probability distribution: the average of minus the log of each outcome's probability. It is the lowest average loss any model can achieve on that kind of data.
@@ -982,7 +1006,7 @@ Learning works by slopes. A loss function gives one number for how wrong the mod
 
 ## Key terms
 
-Exponent, Exponential growth, Doubling time, Compound interest, Exponential decay, Euler's number (e), Logarithm, Natural logarithm (ln), Log scale, Power law, Scaling laws, Probability, Complement, Independence, Expected value, Law of large numbers, Probability distribution, Random variable, Joint probability, Marginal probability, Logit, Softmax, Greedy decoding, Sampling, Temperature, Top-p sampling, Conditional probability, Language model, Log-probability, N-gram model, Smoothing, Backoff, Base rate, False positive, Bayes' rule, Prior and posterior, Calibration, Mean, Median, Outlier, Range (statistics), Variance, Standard deviation, Percentile, Normal distribution, Probability density, Integral, Noise, Random initialization, Correlation, Confounder, Sampling bias, Training, validation and test sets, Overfitting, Generalization, Derivative, Partial derivative, Gradient, Loss landscape, Chain rule, Backpropagation, Automatic differentiation, Loss function, Cross-entropy, Perplexity, Maximum likelihood estimation (MLE), Entropy, KL divergence (Kullback–Leibler divergence), Surrogate loss, Empirical risk, Gradient descent, Learning rate, Local minimum, Convex function, Stochastic gradient descent (SGD), Mini-batch, Optimizer, Training loop, Epoch
+Exponent, Exponential growth, Doubling time, Compound interest, Exponential decay, Euler's number (e), Logarithm, Natural logarithm (ln), Log scale, Power law, Scaling laws, Probability, Complement, Independence, Expected value, Law of large numbers, Probability distribution, Random variable, Bernoulli distribution, Joint probability, Marginal probability, Logit, Softmax, Greedy decoding, Sampling, Temperature, Top-p sampling, Conditional probability, Language model, Log-probability, N-gram model, Smoothing, Backoff, Base rate, False positive, Bayes' rule, Prior and posterior, Calibration, Mean, Median, Outlier, Range (statistics), Variance, Standard deviation, Percentile, Normal distribution, Probability density, Integral, Noise, Random initialization, Correlation, Confounder, Sampling bias, Training, validation and test sets, Overfitting, Generalization, Derivative, Partial derivative, Gradient, Loss landscape, Chain rule, Backpropagation, Automatic differentiation, Loss function, Cross-entropy, Perplexity, Maximum likelihood estimation (MLE), Argmax, Entropy, KL divergence (Kullback–Leibler divergence), Surrogate loss, Empirical risk, Gradient descent, Learning rate, Local minimum, Convex function, Stochastic gradient descent (SGD), Mini-batch, Optimizer, Training loop, Epoch
 
 ## Exercises
 

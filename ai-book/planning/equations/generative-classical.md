@@ -1,6 +1,6 @@
 ## Generative models and classical AI
 
-This family holds two traditions that meet in the middle. Classical AI is the older one: equations for searching through possibilities (A*, minimax, Monte Carlo tree search), for reasoning with logic and with uncertainty (Bayesian networks, hidden Markov models, Kalman and particle filters), and for acting in the physical world (filters, kinematics, PID and model predictive control). Decision theory and planning with a known model (expected utility, the value of information, value iteration, policy iteration and AlphaZero's PUCT rule) live in the reinforcement-learning section, which they share with learning by trial and error. Generative models are the newer one: the equations that let a network turn random numbers into images, audio and video (VAEs, GANs, normalizing flows, diffusion, flow matching), plus the contrastive losses such as CLIP that connect pictures to words and the scores used to grade generators. Between them sit the image and audio formulas (camera projection, image-quality scores, spectrograms, μ-law, the CTC loss) that every perception and generation system relies on. The two halves share more than it seems: the forward–backward dynamic program of hidden Markov models is the same machinery as the CTC loss of speech recognizers, the partition function of energy-based models is the normalizer in Bayesian networks and Markov random fields, Langevin sampling is a Markov chain Monte Carlo method, and the "mean plus spread times noise" of the reparameterization trick is the diffusion forward jump in disguise. The entries run from the simplest (adding up path costs) to the most involved (diffusion and flow samplers), so each one only needs those before it.
+This family holds two traditions that meet in the middle. Classical AI is the older one: equations for searching through possibilities (A*, minimax, Monte Carlo tree search), for reasoning with logic and with uncertainty (Bayesian networks, hidden Markov models, Kalman and particle filters), and for acting in the physical world (filters, kinematics and dynamics, PID, LQR and model predictive control). Decision theory and planning with a known model (expected utility, the value of information, value iteration, policy iteration and AlphaZero's PUCT rule) live in the reinforcement-learning section, which they share with learning by trial and error. Generative models are the newer one: the equations that let a network turn random numbers into images, audio and video (VAEs, GANs, normalizing flows, diffusion, flow matching), plus the contrastive losses such as CLIP that connect pictures to words and the scores used to grade generators. Between them sit the image and audio formulas (camera projection and multi-view geometry, optical flow, detection losses, image-quality scores, spectrograms, μ-law, the CTC and transducer losses) that every perception and generation system relies on. The two halves share more than it seems: the forward–backward dynamic program of hidden Markov models is the same machinery as the CTC loss of speech recognizers, the partition function of energy-based models is the normalizer in Bayesian networks and Markov random fields, Langevin sampling is a Markov chain Monte Carlo method, and the "mean plus spread times noise" of the reparameterization trick is the diffusion forward jump in disguise. The entries run from the simplest (adding up path costs) to the most involved (diffusion and flow samplers), so each one only needs those before it.
 
 ```mermaid
 flowchart LR
@@ -43,17 +43,18 @@ flowchart TD
 
 **What it does:** Adds up the cost of a route and counts how many possibilities a blind search must look at.
 
-`g(n) = sum of step costs c(s, a, s') along the path to n`; `nodes to depth d = 1 + b + b^2 + ... + b^d = (b^(d+1) − 1) ÷ (b − 1)`; iterative deepening generates `d × b + (d − 1) × b^2 + ... + 1 × b^d` nodes; bidirectional search needs about `2 × b^(d/2)`
+`g(n) = sum of step costs c(s, a, s') along the path to n`; when uniform-cost search expands n it updates each neighbor n' with `g(n') ← min(g(n'), g(n) + c(n, a, n'))`; `nodes to depth d = 1 + b + b^2 + ... + b^d = (b^(d+1) − 1) ÷ (b − 1)`; iterative deepening generates `d × b + (d − 1) × b^2 + ... + 1 × b^d` nodes; bidirectional search needs about `2 × b^(d/2)`
 
-- **n**: a search node, meaning a state plus the path that reached it
+- **n**: a search node, meaning a state plus the path that reached it; **n'**: a neighbor of n
 - **g(n)**: the total cost already paid to reach n
 - **c(s, a, s')**: the cost of taking action a in state s and landing in state s'
+- **←**: "is replaced by"; **min**: the smaller of the two
 - **b**: the branching factor, the average number of next moves from each state
 - **d**: the depth (number of steps) of the shallowest goal
 
-**In plain words:** The cost of a route is just the sum of its steps, and uniform-cost search (Dijkstra's algorithm) always extends the cheapest route found so far. The tree-size formula shows the problem: each extra level multiplies the work by b, so the count grows like b^d. Most of the nodes sit in the deepest level, which is why iterative deepening, which re-searches the shallow levels again and again, costs only a little more than one breadth-first pass.
+**In plain words:** The cost of a route is just the sum of its steps, and uniform-cost search (Dijkstra's algorithm) always extends the cheapest route found so far, lowering a neighbor's cost whenever it finds a cheaper way in (this update is called relaxation). The tree-size formula shows the problem: each extra level multiplies the work by b, so the count grows like b^d. Most of the nodes sit in the deepest level, which is why iterative deepening, which re-searches the shallow levels again and again, costs only a little more than one breadth-first pass.
 
-**Tiny example:** A route with steps costing 2, 3 and 1 has g = 2 + 3 + 1 = 6. A tree with b = 3 down to depth d = 4 has (3^5 − 1) ÷ (3 − 1) = (243 − 1) ÷ 2 = 121 nodes. With b = 10 and d = 5, iterative deepening generates 5 × 10 + 4 × 100 + 3 × 1,000 + 2 × 10,000 + 1 × 100,000 = 123,450 nodes, against 10 + 100 + 1,000 + 10,000 + 100,000 = 111,110 for one breadth-first pass: only about 11% more. Bidirectional search with b = 10 and d = 6 meets in the middle after about 2 × 10^3 = 2,000 nodes instead of 10^6.
+**Tiny example:** A route with steps costing 2, 3 and 1 has g = 2 + 3 + 1 = 6. If a neighbor was already reached for 9 and a step from here costs 2, its cost drops to min(9, 6 + 2) = 8. A tree with b = 3 down to depth d = 4 has (3^5 − 1) ÷ (3 − 1) = (243 − 1) ÷ 2 = 121 nodes. With b = 10 and d = 5, iterative deepening generates 5 × 10 + 4 × 100 + 3 × 1,000 + 2 × 10,000 + 1 × 100,000 = 123,450 nodes, against 10 + 100 + 1,000 + 10,000 + 100,000 = 111,110 for one breadth-first pass: only about 11% more. Bidirectional search with b = 10 and d = 6 meets in the middle after about 2 × 10^3 = 2,000 nodes instead of 10^6.
 
 **Where it is used:** Route planning, puzzle solving, game AI and robot grid planning; the b^d growth is the "combinatorial explosion" that sank early search-only AI, and it is why robot arms need sampling planners (100 settings for each of 7 joints is 100^7 = 10^14 cells).
 **In the book:** Chapter 48 (Blind search: breadth-first and depth-first), which works the same bidirectional example; Chapter 7 (Combinatorial explosion and the Lighthill report (1973)); the general formulas are only here.
@@ -236,17 +237,18 @@ chance node: `value(s) = sum over outcomes r of P(r) × value(RESULT(s, r))`; MA
 
 **What it does:** Chooses which move to explore next in Monte Carlo tree search, balancing proven moves against untried ones.
 
-`UCT(n) = U(n) ÷ N(n) + C × sqrt(ln(N(parent(n))) ÷ N(n))`; select the child with the largest UCT
+`UCT(n) = U(n) ÷ N(n) + C × sqrt(ln(N(parent(n))) ÷ N(n))`; select the child with the largest UCT; after a playout with result r, back up along the path: `N(n) ← N(n) + 1` and `U(n) ← U(n) + r` for every node n on it
 
 - **n**: a child node (a move) in the search tree
 - **U(n)**: the total reward (for example wins) from playouts through n
 - **N(n)**: the number of playouts through n
 - **N(parent(n))**: the number of playouts through n's parent
 - **C**: an exploration constant (sqrt(2) in theory, tuned in practice)
+- **r**: the playout's result (1 for a win, 0 for a loss, judged from the point of view of the player choosing at that node)
 
-**In plain words:** The first term is the win rate, which favors moves that have done well. The second is an exploration bonus that grows for moves tried only a few times. Each round of MCTS selects down the tree with this rule, expands a new node, plays a random game to the end and passes the result back up.
+**In plain words:** The first term is the win rate, which favors moves that have done well. The second is an exploration bonus that grows for moves tried only a few times. Each round of MCTS selects down the tree with this rule, expands a new node, plays a random game to the end and passes the result back up by adding to the counts.
 
-**Tiny example:** Chapter 48: after 12 playouts, ln(12) ≈ 2.48. Move A (win rate 0.6, 10 visits) scores 0.6 + 1.4 × sqrt(2.48 ÷ 10) ≈ 1.30; move B (win rate 0.5, 2 visits) scores 0.5 + 1.4 × sqrt(2.48 ÷ 2) ≈ 2.06, so B is explored next.
+**Tiny example:** Chapter 48: after 12 playouts, ln(12) ≈ 2.48. Move A (win rate 0.6, 10 visits) scores 0.6 + 1.4 × sqrt(2.48 ÷ 10) ≈ 1.30; move B (win rate 0.5, 2 visits) scores 0.5 + 1.4 × sqrt(2.48 ÷ 2) ≈ 2.06, so B is explored next. If that playout is a win, B goes from 1 win in 2 to 2 wins in 3 (win rate 0.67).
 
 **Where it is used:** Computer Go before AlphaGo (MoGo, Crazy Stone), general game playing and planning under uncertainty; it applies the UCB1 bandit formula (in the reinforcement-learning section) at every node. Its neural-network-guided successor, PUCT, and the AlphaZero training loss are also in the reinforcement-learning section.
 **In the book:** Chapter 48 (Monte Carlo tree search).
@@ -304,7 +306,7 @@ resolution: from `(A ∨ B)` and `(¬B ∨ C)` infer `(A ∨ C)`; modus ponens: 
 
 **In plain words:** Resolution cancels a symbol that appears plain in one clause and negated in another and keeps everything else. To prove α, add "not α" to your facts and resolve; if you reach the empty clause, "not α" was impossible, so α must follow. Every formula can be rewritten as an AND of clauses (conjunctive normal form), so this one rule suffices.
 
-**Tiny example:** Facts: (A ∨ B) and ¬B. Query: A. Add ¬A. Resolve (A ∨ B) with ¬B to get A; resolve A with ¬A to get the empty clause. So the facts entail A. Modus ponens: from "alarm" and "alarm ⇒ locked", infer "locked" (Chapter 54's example).
+**Tiny example:** Facts: (A ∨ B) and ¬B. Query: A. Add ¬A. Resolve (A ∨ B) with ¬B to get A; resolve A with ¬A to get the empty clause. So the facts entail A. Modus ponens: from "alarm" and "alarm ⇒ locked", infer "locked" (Chapter 54's alarm example, which reaches the same conclusion by resolution).
 
 **Where it is used:** Automated theorem provers (Vampire, E), Prolog's resolution, clause learning in CDCL SAT solvers, expert-system inference engines and Datalog.
 **In the book:** Chapter 54 (Logic: the mathematics underneath the rules; A tiny expert system, worked by hand); refutation is only here.
@@ -659,13 +661,13 @@ start `δ_1(j) = P(x_1 = j) × B_j(e_1)`; then `δ_t(j) = B_j(e_t) × max over i
 **Tiny example:** A car believed at 10 m moving 2 m per second; after 1 second the prediction is 10 + 2 × 1 = 12 m. If the position variance was P = 4 and the motion adds Q = 1, the predicted variance is P⁻ = 4 + 1 = 5.
 
 **Where it is used:** GPS and inertial navigation, the Apollo guidance computer, object tracking in self-driving perception, robot localization and EKF-SLAM, and multi-object trackers in computer vision (SORT, ByteTrack).
-**In the book:** Chapter 54 (Reasoning over time: hidden states and filters) and Chapter 50 (Localization: where exactly am I?; Prediction: what will everyone else do?) in words; the equations are only here.
+**In the book:** Chapter 54 (Reasoning over time: hidden states and filters) in words; Chapter 50 (Localization: where exactly am I?; Perception: what is around me?) describes the GPS-and-IMU blending and object tracking it performs, without naming it; the equations are only here.
 
 ### Kalman filter update step (Kalman gain)
 
 **What it does:** Blends a prediction with a noisy measurement in the statistically best proportion.
 
-`K_t = P⁻_t × H^T × (H × P⁻_t × H^T + R)^(−1)`; `x̂_t = x̂⁻_t + K_t × (z_t − H × x̂⁻_t)`; `P_t = (I − K_t × H) × P⁻_t`; one-dimensional `K = P⁻ ÷ (P⁻ + R)`, `x̂ = x̂⁻ + K × (z − x̂⁻)`, `P = (1 − K) × P⁻`
+`K_t = P⁻_t × H^T × (H × P⁻_t × H^T + R)^(−1)`; `x̂_t = x̂⁻_t + K_t × (z_t − H × x̂⁻_t)`; `P_t = (I − K_t × H) × P⁻_t`; one-dimensional `K = P⁻ ÷ (P⁻ + R)`, `x̂ = x̂⁻ + K × (z − x̂⁻)`, `P = (1 − K) × P⁻`; extended Kalman filter (EKF) for curved models `x_t = f(x_(t−1), u_t)` and `z_t = h(x_t)`: predict with `x̂⁻_t = f(x̂_(t−1), u_t)`, compare with `z_t − h(x̂⁻_t)`, and use the Jacobians `F_t = ∂f ÷ ∂x` and `H_t = ∂h ÷ ∂x` at the current estimate in place of F and H
 
 - **z_t**: the measurement
 - **H**: maps a state to the reading it should produce
@@ -674,15 +676,18 @@ start `δ_1(j) = P(x_1 = j) × B_j(e_1)`; then `δ_t(j) = B_j(e_t) × max over i
 - **z_t − H × x̂⁻_t**: the innovation, the surprise in the measurement
 - **(·)^(−1)**: the matrix inverse (division, for matrices); **I**: the identity matrix
 - **x̂⁻_t**, **P⁻_t**: the predicted estimate and covariance from the predict step
+- **f**, **h**: curved (nonlinear) motion and measurement models; **∂f ÷ ∂x**, **∂h ÷ ∂x**: their Jacobians, the tables of how each output changes with each state number, which act as the local straight-line versions of f and h
 
-**In plain words:** The gain compares how unsure the prediction is with how noisy the sensor is, and moves the estimate that share of the way toward the measurement. The uncertainty always shrinks after a measurement. For linear motion and bell-shaped noise this is the best possible estimate; the extended and unscented Kalman filters handle curved models.
+**In plain words:** The gain compares how unsure the prediction is with how noisy the sensor is, and moves the estimate that share of the way toward the measurement. The uncertainty always shrinks after a measurement. For linear motion and bell-shaped noise this is the best possible estimate. The extended Kalman filter handles curved models by treating them as straight lines near the current estimate; the unscented Kalman filter instead pushes a few sample points through the curve.
 
-**Tiny example:** Prediction 12 m with P⁻ = 5; the GPS reads z = 13 m with R = 5. Then K = 5 ÷ (5 + 5) = 0.5, the estimate becomes 12 + 0.5 × (13 − 12) = 12.5 m, and the variance becomes (1 − 0.5) × 5 = 2.5.
+**Tiny example:** Prediction 12 m with P⁻ = 5; the GPS reads z = 13 m with R = 5. Then K = 5 ÷ (5 + 5) = 0.5, the estimate becomes 12 + 0.5 × (13 − 12) = 12.5 m, and the variance becomes (1 − 0.5) × 5 = 2.5. EKF: a sensor measures the straight-line distance to a beacon 3 m to the side of the road, h(x) = sqrt(x^2 + 9). At the estimate x = 4 it expects sqrt(16 + 9) = 5 m, and its slope there is H = x ÷ sqrt(x^2 + 9) = 4 ÷ 5 = 0.8, which then plays the role of H in the gain.
 
-**Where it is used:** The same systems as the predict step: navigation, tracking, localization and sensor fusion.
+**Where it is used:** The same systems as the predict step: navigation, tracking, localization and sensor fusion; EKFs run the state estimators of the open-source drone autopilots PX4 and ArduPilot, and EKF-SLAM.
 **In the book:** Chapter 54 (Reasoning over time: hidden states and filters) defines the Kalman filter; the gain and update equations are only here.
 
 > **Definition — Kalman gain:** The number (or matrix) in a Kalman filter that says how far to move the predicted estimate toward a new measurement, large when the prediction is uncertain and the sensor precise, small in the opposite case.
+
+> **Definition — Extended Kalman filter (EKF):** A Kalman filter for curved (nonlinear) motion or sensor models that, at each step, replaces the curve with its straight-line approximation around the current estimate and then applies the ordinary Kalman equations.
 
 ### Particle filter (sequential importance resampling)
 
@@ -744,6 +749,30 @@ two-link planar arm `x = l_1 × cos(θ_1) + l_2 × cos(θ_1 + θ_2)`, `y = l_1 �
 **Where it is used:** Robot arms and humanoids and animation rigs; robot foundation models that output hand poses rely on inverse kinematics to turn them into joint commands.
 **In the book:** Chapter 49 (From "go there" to motor commands: the classic toolkit) in words; the formulas are only here.
 
+### Rigid-body dynamics (the manipulator equation) and a physics-simulator step
+
+**What it does:** Says how motor torques, gravity and the robot's own motion make its joints speed up, and how a simulator steps that motion forward in time.
+
+`M(q) × q̈ + C(q, q̇) × q̇ + G(q) = τ`; one link with its mass at the end (a pendulum): `m × l^2 × θ̈ + m × g_0 × l × sin(θ) = τ`; one simulator step (semi-implicit Euler): `q̇_(k+1) = q̇_k + Δt × q̈_k`, then `q_(k+1) = q_k + Δt × q̇_(k+1)`
+
+- **q**: the joint angles, one number per joint; **q̇** ("q dot"): the joint speeds; **q̈** ("q double dot"): the joint accelerations
+- **M(q)**: the mass (inertia) matrix, how hard each joint is to accelerate in the current pose
+- **C(q, q̇) × q̇**: the Coriolis and centrifugal effects, extra forces that appear because other joints are moving
+- **G(q)**: the torques that gravity applies in the current pose
+- **τ** (tau): the motor torques, the twisting forces the motors apply
+- **m**, **l**: the mass and length of a one-link arm; **θ** (theta): its angle measured from hanging straight down; **θ̈**: its angular acceleration
+- **g_0**: gravity's acceleration, about 9.81 meters per second squared
+- **Δt**: the simulator's time step; **k**: the step number
+
+**In plain words:** This is Newton's "force equals mass times acceleration" written for a chain of rotating links: motor torque, minus what gravity and the motion itself use up, divided by the inertia, gives the acceleration. A physics simulator solves it, together with contact forces, thousands of times per simulated second, updating speeds first and then positions. Controllers can also run it backward ("computed torque"): choose the acceleration you want and the equation says which torques produce it.
+
+**Tiny example:** A 1 kg mass on a 0.5 m link held out horizontally (θ = 90°, so sin θ = 1). Gravity's torque is 1 × 9.81 × 0.5 × 1 = 4.905 N·m (newton-meters, the unit of torque). A motor torque of 6 N·m leaves 6 − 4.905 = 1.095, and the inertia is 1 × 0.5^2 = 0.25, so θ̈ = 1.095 ÷ 0.25 = 4.38 radians per second squared. One 0.002-second simulator step from rest gives a speed of 0.002 × 4.38 ≈ 0.0088 radians per second; the angle barely changes in 2 milliseconds, which is why simulators take so many steps.
+
+**Where it is used:** Physics simulators that train robot policies by reinforcement learning before transfer to real machines (MuJoCo, whose default time step is 0.002 seconds, and NVIDIA Isaac Sim and Isaac Lab), model-based controllers for arms and humanoids, and the dynamics model inside model predictive control.
+**In the book:** Chapter 49 (From "go there" to motor commands: the classic toolkit) defines dynamics in words; the equation is only here.
+
+> **Definition — Manipulator equation:** The standard equation of robot dynamics, which says that the motor torques equal the inertia times the joint accelerations plus the torques used up by motion effects and by gravity. Simulators solve it forward to predict motion, and controllers solve it backward to choose torques.
+
 ### PID controller
 
 **What it does:** Sets a motor command from the current error, its accumulated history and its rate of change.
@@ -759,7 +788,7 @@ two-link planar arm `x = l_1 × cos(θ_1) + l_2 × cos(θ_1 + θ_2)`, `y = l_1 �
 
 **In plain words:** Push in proportion to the error, add a push that grows while an error persists (removing steady offsets such as an arm sagging under gravity), and brake according to how fast the error is shrinking (avoiding overshoot).
 
-**Tiny example:** Chapter 49: error 10 with K_p = 0.5 gives 5; the error is shrinking 4 per step, so with K_d = 0.5 the D term is −2, net 3. Adding K_i = 0.1 with past errors 10, 12 and 14 (Δt = 1) adds 0.1 × 36 = 3.6.
+**Tiny example:** Chapter 49: error 10 with K_p = 0.5 gives 5; the error is shrinking 4 per step, so with K_d = 0.5 the D term is 0.5 × (−4) = −2, net 3. Adding K_i = 0.1, with the errors so far 18, 14 and 10 (shrinking 4 per step, Δt = 1), adds 0.1 × (18 + 14 + 10) = 4.2.
 
 **Where it is used:** Low-level joint control underneath learned robot policies, drones, cruise control and industrial process control.
 **In the book:** Chapter 49 (From "go there" to motor commands: the classic toolkit), with the P and D terms worked.
@@ -782,6 +811,28 @@ at each step solve `min over u_0, ..., u_(H−1) of sum over k = 0..H−1 of (||
 
 **Where it is used:** Legged robots, self-driving planning and control and process control; sampling versions (MPPI, the cross-entropy method) plan in learned world models, as V-JEPA 2-AC (2025) does by minimizing the distance between predicted and goal embeddings. The reinforcement-learning section shows the same receding-horizon idea with a learned reward model.
 **In the book:** Chapter 49 (From "go there" to motor commands: the classic toolkit) defines MPC; the cost function is only here.
+
+### Linear-quadratic regulator (LQR) and the Riccati equation
+
+**What it does:** Gives the best feedback rule, in closed form, for a system that responds in proportion to its inputs when errors and effort are penalized by their squares.
+
+dynamics `x_(k+1) = A × x_k + B × u_k`; cost `sum over k of (x_k^T × Q × x_k + u_k^T × R × u_k)`; best rule `u_k = −K × x_k`, with `K = (R + B^T × P × B)^(−1) × B^T × P × A`, where P solves the Riccati equation `P = Q + A^T × P × A − A^T × P × B × (R + B^T × P × B)^(−1) × B^T × P × A`; one-dimensional version `P = Q + a^2 × P − (a × b × P)^2 ÷ (R + b^2 × P)`, `K = a × b × P ÷ (R + b^2 × P)`
+
+- **x_k**: the state at step k, measured as the error from the target (0 means on target)
+- **u_k**: the command at step k
+- **A**, **B**: the linear dynamics, how the current state and command produce the next state (**a**, **b** in one dimension)
+- **Q**, **R**: the weights on state error and on command effort, as in the MPC entry
+- **K**: the feedback gain; **P**: the cost-to-go, how much future cost each state implies
+- **^T**: transpose; **(·)^(−1)**: matrix inverse
+
+**In plain words:** When the dynamics are linear and the costs are squares, the best command is always the current error times a fixed gain, so the controller is one multiplication. The gain is computed once, offline, by repeating the Riccati equation until P stops changing. MPC can be seen as LQR with limits and a curved model, re-solved at every step; pairing LQR with a Kalman filter gives LQG control.
+
+**Tiny example:** The one-dimensional robot of the MPC entry: a = 1, b = 1, Q = 1, R = 0.1. Repeating P ← 1 + P − P^2 ÷ (0.1 + P) settles at P ≈ 1.092 (the solution of P^2 = P + 0.1), so K = 1.092 ÷ 1.192 ≈ 0.916. One unit away from the target, the command is u = −0.916, which leaves an error of only 1 − 0.916 = 0.084 after one step.
+
+**Where it is used:** Balance and hover controllers (inverted pendulums, quadrotors, legged-robot balance), the inner step of iterative LQR (iLQR) trajectory optimization, and a standard baseline in control and model-based reinforcement learning.
+**In the book:** Appendix F (Optimal control: LQR, DDP and LQG) in words; the formulas are only here.
+
+> **Definition — Riccati equation:** The equation whose solution gives the cost-to-go of a linear system with squared costs; solving it once yields the fixed feedback gain of the linear-quadratic regulator.
 
 ### RRT extension step (sampling-based motion planning)
 
@@ -827,6 +878,92 @@ camera frame `X_c = R × X_w + t`; projection `u = f_x × X_c ÷ Z_c + c_x`, `v 
 
 > **Definition — Disparity:** In stereo vision, how far the same point appears to shift between the left and right camera images, measured in pixels. Nearby objects have large disparity and distant ones small, which is how depth is computed.
 
+### Epipolar constraint, bundle adjustment and pose-graph optimization
+
+**What it does:** Ties together two views of the same point, then finds the camera positions and 3D points that best explain every photo of a scene (or every step of a robot's trip).
+
+epipolar constraint `x'^T × F × x = 0`, and for calibrated cameras `E = [t]_× × R` with `x'^T × E × x = 0`; bundle adjustment `min over camera poses (R_i, t_i) and points X_j of sum over observations (i, j) of ||u_ij − π(K, R_i, t_i, X_j)||^2`; pose-graph optimization `min over poses of sum over constraints (i, j) of e_ij^T × Ω_ij × e_ij`
+
+- **x**, **x'**: the same point's position in two images, written as [u, v, 1]
+- **F**: the fundamental matrix (3 × 3), which encodes how the two cameras sit relative to each other
+- **E**: the essential matrix, the same idea for cameras whose intrinsics are known; **R**, **t**: the rotation and shift from one camera to the other; **[t]_×**: the 3 × 3 matrix that multiplies like "t cross product"
+- **u_ij**: the pixel where point j was actually seen in image i
+- **π(K, R_i, t_i, X_j)**: the pinhole projection of 3D point X_j into camera i (previous entry)
+- **e_ij**: the mismatch between where poses i and j are and where a measurement (wheel odometry, a recognized place) says they should be relative to each other
+- **Ω_ij** (omega): the confidence in that measurement (the inverse of its covariance)
+
+**In plain words:** A point seen in one image must appear somewhere along one particular line in the other image, the epipolar line; for two cameras side by side, that line is simply the same pixel row, which is why stereo matching only searches along rows. Bundle adjustment then adjusts all cameras and all 3D points at once so that projecting each point lands as close as possible to where it was actually seen. Pose-graph SLAM does the same for a robot's path, so that a loop closure ("I am back at the door") pulls the whole trajectory into agreement.
+
+**Tiny example:** The pinhole entry's point appears at pixel (370, 265) in the left image. With the right camera 0.1 m to the side, the epipolar constraint says its match lies on row 265; finding it at (345, 265) gives a disparity of 25 pixels and a depth of 500 × 0.1 ÷ 25 = 2 m. If a later estimate of the scene projects that point to (372, 262) instead of the observed (370, 265), it adds (370 − 372)^2 + (265 − 262)^2 = 4 + 9 = 13 to the bundle-adjustment total that the solver drives down.
+
+**Where it is used:** COLMAP structure-from-motion, which computes the camera poses that NeRF and Gaussian-splatting training start from; visual SLAM in AR headsets, phones, drones and robots (ORB-SLAM); factor-graph back ends such as GTSAM; feed-forward 3D networks of 2024-2025 such as DUSt3R and VGGT predict poses directly and are often refined with bundle adjustment.
+**In the book:** Chapter 45 (Seeing in 3D) defines SLAM and photogrammetry ("working out where each camera was") in words; the formulas are only here.
+
+> **Definition — Epipolar constraint:** The rule that a point seen in one camera image must appear along one specific line (the epipolar line) in a second camera's image, set by how the two cameras are placed; it reduces stereo matching to a one-dimensional search.
+
+> **Definition — Bundle adjustment:** Jointly refining all camera positions and all 3D points of a scene so that the points, projected back into every photo, land as close as possible to where they were actually observed.
+
+### Bilinear interpolation (image resizing and sampling)
+
+**What it does:** Estimates an image's value between pixel centers by blending the four nearest pixels.
+
+`f(x, y) ≈ (1 − a) × (1 − b) × f_00 + a × (1 − b) × f_10 + (1 − a) × b × f_01 + a × b × f_11`, with `a = x − x_0` and `b = y − y_0`
+
+- **(x, y)**: the position to sample, which can fall between pixel centers
+- **(x_0, y_0)**: the nearest pixel up and to the left
+- **f_00**, **f_10**, **f_01**, **f_11**: the values of the four surrounding pixels (top-left, top-right, bottom-left, bottom-right)
+- **a**, **b**: how far the position lies across the gap, from 0 to 1, horizontally and vertically
+
+**In plain words:** Each of the four neighbors gets a weight that grows the closer the sample point is to it, and the four weights add to 1. Bicubic interpolation does the same with 16 neighbors and smoother weights; nearest-neighbor simply copies the closest pixel.
+
+**Tiny example:** Neighbors 10 (top-left), 20 (top-right), 30 (bottom-left) and 40 (bottom-right), sampled a quarter of the way across and halfway down (a = 0.25, b = 0.5): 0.75 × 0.5 × 10 + 0.25 × 0.5 × 20 + 0.75 × 0.5 × 30 + 0.25 × 0.5 × 40 = 3.75 + 2.5 + 11.25 + 5 = 22.5.
+
+**Where it is used:** Resizing every image to a model's input size; sampling features at fractional positions (RoIAlign in Mask R-CNN, deformable attention, warping one video frame onto another with optical flow); upsampling segmentation and depth maps; and stretching a Vision Transformer's position embeddings when it runs at a new resolution (often bicubic).
+**In the book:** Only here.
+
+> **Definition — Bilinear interpolation:** Estimating a value between grid points by blending the four nearest grid values, each weighted by how close it is; it is the standard way to resize images and to sample them at fractional positions.
+
+### Optical flow: brightness constancy and endpoint error
+
+**What it does:** Estimates how far each pixel moved between two video frames, and scores such estimates.
+
+brightness constancy `I(x + u, y + v, t + 1) = I(x, y, t)`; its small-motion form `I_x × u + I_y × v + I_t = 0`; Lucas–Kanade `(u, v) = argmin over (u, v) of sum over a small window of (I_x × u + I_y × v + I_t)^2`; endpoint error `EPE = sqrt((u − u_gt)^2 + (v − v_gt)^2)`, averaged over pixels
+
+- **I(x, y, t)**: the brightness at pixel (x, y) in frame t
+- **(u, v)**: the flow, how many pixels the point moves right and down by the next frame
+- **I_x**, **I_y**, **I_t**: how fast the brightness changes moving right, moving down and from one frame to the next
+- **(u_gt, v_gt)**: the true flow (ground truth)
+
+**In plain words:** Assume a point keeps its brightness as it moves; then any brightness change at a fixed pixel must come from motion. That gives one equation per pixel for two unknowns, so motion along an edge cannot be pinned down from one pixel alone (the aperture problem). Lucas–Kanade solves it by assuming a small window moves together; Horn–Schunck adds a smoothness penalty; modern networks such as RAFT predict flow directly and are trained and graded by endpoint error.
+
+**Tiny example:** At a pixel where brightness rises 2 units per pixel to the right (I_x = 2), does not change vertically (I_y = 0) and drops 4 units between frames (I_t = −4), the constraint 2 × u + 0 × v − 4 = 0 gives u = 2 pixels to the right, while v stays unknown. A prediction of (2.5, 1) against a true flow of (2, 0) has EPE = sqrt(0.25 + 1) ≈ 1.12 pixels.
+
+**Where it is used:** Video stabilization, frame interpolation, tracking and drone navigation; flow networks (RAFT, 2020, and successors) with EPE as the standard benchmark score; Stable Video Diffusion (2023) used optical-flow scores to filter nearly static clips out of its training data.
+**In the book:** Chapter 45 (Following things through time: tracking, action and video) defines optical flow in words; the equations are only here.
+
+> **Definition — Aperture problem:** The fact that, seen through a small window, the motion of a straight edge along its own length is invisible, so local brightness changes reveal only the part of the motion across the edge.
+
+### Monocular depth losses (scale-and-shift-invariant and scale-invariant log)
+
+**What it does:** Trains a network to predict depth from a single photo even when its training datasets measure depth on different scales.
+
+affine-invariant: `(s, t) = argmin over s, t of sum over pixels i of (s × d_i + t − d*_i)^2`, then `L = (1 ÷ n) × sum over i of |s × d_i + t − d*_i|`; scale-invariant log: `g_i = ln(d_i) − ln(d*_i)`, `L = (1 ÷ n) × sum over i of g_i^2 − (λ ÷ n^2) × (sum over i of g_i)^2`
+
+- **d_i**: the predicted depth (or inverse depth) at pixel i; **d*_i**: the true value
+- **s**, **t**: the best scale and shift lining the prediction up with the truth, found by least squares
+- **n**: the number of pixels
+- **g_i**: the log-ratio between predicted and true depth
+- **λ** (lambda): how much an overall scale error is forgiven (1 = fully, 0 = not at all; 0.5 and 0.85 are common)
+
+**In plain words:** One photo cannot say whether a scene is a dollhouse up close or a real house far away, and datasets record depth in different units, so these losses first remove what cannot be known. The affine-invariant loss lines the prediction up with the truth using the best scale and shift and then scores what is left. The scale-invariant log loss scores errors in ratios and subtracts the part explained by a single overall scale.
+
+**Tiny example:** Predictions (1, 2, 3) against true depths (2.2, 3.8, 6.1): least squares gives s = 1.95 and t ≈ 0.133, the aligned prediction is about (2.08, 4.03, 5.98), and the loss is the mean of 0.117, 0.233 and 0.117 ≈ 0.156. Against true depths (2, 4, 6), exactly twice the prediction, every g_i = ln(0.5) ≈ −0.693; with λ = 1 the loss is 0.480 − 0.480 = 0 (a pure scale error is forgiven), and with λ = 0.5 it is 0.480 − 0.240 = 0.240.
+
+**Where it is used:** MiDaS and Depth Anything (2024) and Depth Anything V2 (affine-invariant losses on mixed datasets), whose depth maps feed depth-conditioned image generation, robotics and AR; the scale-invariant log loss (Eigen et al. 2014) in metric-depth models such as ZoeDepth.
+**In the book:** Chapter 45 (Seeing in 3D) defines depth estimation; the losses are only here.
+
+> **Definition — Affine-invariant depth loss:** A training loss for single-image depth that first rescales and shifts the prediction to best match the true depth map and then measures the remaining error, so that datasets recorded on different depth scales can be mixed.
+
 ### Object-detection box encoding and non-maximum suppression (NMS)
 
 **What it does:** Describes a predicted box as small adjustments to a reference box, and removes duplicate detections.
@@ -845,6 +982,30 @@ camera frame `X_c = R × X_w + t`; projection `u = f_x × X_c ÷ Z_c + c_x`, `v 
 
 **Where it is used:** Faster R-CNN, SSD, the YOLO family and detection heads in self-driving and robot perception; DETR-style detectors replace NMS with one-to-one matching during training.
 **In the book:** Chapter 45 (How a one-stage detector works) and Appendix F (ResNeXt, RegNet and anchor boxes) in words; the offset formulas and the NMS loop are only here.
+
+### DETR set-prediction loss (Hungarian matching and the GIoU box loss)
+
+**What it does:** Trains a detector that outputs a fixed-size set of boxes by first pairing each prediction with at most one real object, so no duplicate cleanup is needed.
+
+matching `σ̂ = argmin over one-to-one pairings σ of sum over i of cost(y_i, ŷ_σ(i))`, with `cost = −p̂_σ(i)(c_i) + L_box(b_i, b̂_σ(i))` for real objects; loss `sum over i of (−ln p̂_σ̂(i)(c_i) + [c_i ≠ ∅] × L_box(b_i, b̂_σ̂(i)))`; `L_box = 5 × ||b − b̂||_1 + 2 × (1 − GIoU(b, b̂))`; `GIoU(A, B) = IoU(A, B) − (area(C) − area(A ∪ B)) ÷ area(C)`
+
+- **y_i = (c_i, b_i)**: the i-th real object, its class c_i and box b_i; predictions left over are paired with "no object" (∅)
+- **ŷ_σ(i)**: the prediction that pairing σ assigns to object i; **p̂(c)**: its predicted probability for class c; **b̂**: its box
+- **σ̂**: the cheapest pairing, found by the Hungarian algorithm
+- **[c_i ≠ ∅]**: 1 for real objects, 0 for "no object" (no box loss for empty slots)
+- **||b − b̂||_1**: the sum of absolute differences of the four box numbers
+- **IoU**: intersection over union (in the classical-ML section); **A ∪ B**: the area covered by either box; **C**: the smallest box enclosing both
+
+**In plain words:** The network proposes, say, 100 boxes at once. Before scoring, the loss finds the best one-to-one pairing between proposals and real objects; each real object then trains exactly one proposal, and the rest learn to say "nothing here". Because only one proposal is rewarded per object, the model learns not to produce duplicates. GIoU fixes a weakness of IoU as a loss: two boxes that do not touch all have IoU 0, but GIoU still says how far apart they are.
+
+**Tiny example:** Two objects, two proposals, with pairing costs 0.2 and 0.9 for object 1 and 0.8 and 0.3 for object 2: the straight pairing costs 0.2 + 0.3 = 0.5 and the crossed one 0.9 + 0.8 = 1.7, so the Hungarian algorithm keeps the straight one. Boxes from (0, 0) to (2, 2) and from (1, 1) to (3, 3) overlap in 1 unit of area out of 7 covered, so IoU = 1 ÷ 7 ≈ 0.143; the enclosing box is 3 × 3 = 9, so GIoU = 0.143 − (9 − 7) ÷ 9 ≈ −0.079 and the GIoU loss is about 1.079. Two separate unit boxes with a 1-unit gap have IoU 0 but GIoU = 0 − (3 − 2) ÷ 3 ≈ −0.333.
+
+**Where it is used:** DETR (2020), Deformable DETR, RT-DETR and other real-time Transformer detectors, and open-vocabulary detectors such as Grounding DINO; GIoU and its variants (DIoU, CIoU) are the standard box losses, with CIoU in the YOLO family.
+**In the book:** Chapter 45 (How a one-stage detector works) says DETR outputs a set of boxes with no duplicate cleanup; the matching and losses are only here.
+
+> **Definition — Hungarian algorithm:** A classic method (1955) that finds the cheapest one-to-one pairing between two equal-sized lists given the cost of every possible pair, without trying every pairing.
+
+> **Definition — GIoU (generalized intersection over union):** A box-overlap score that subtracts from IoU the share of the smallest enclosing box left empty by the two boxes, so it still measures how far apart boxes are when they do not overlap; 1 minus GIoU is a common box loss.
 
 ### Peak signal-to-noise ratio (PSNR)
 
@@ -1085,6 +1246,27 @@ STFT `X[m, k] = sum over n = 0..N−1 of x[n + m × H] × w[n] × exp(−2π × 
 **Where it is used:** Budgeting audio inside multimodal LLM context windows and latency planning for speech-to-speech agents (Gemini, Moshi).
 **In the book:** Chapter 22 (Hearing: how sound becomes tokens) and Chapter 46 (Spectrograms: a picture of sound).
 
+### Scale-invariant signal-to-distortion ratio (SI-SDR)
+
+**What it does:** Scores how cleanly a separated or enhanced audio signal matches the true source, in decibels, ignoring overall volume.
+
+`s_target = ((ŝ · s) ÷ ||s||^2) × s`; `e = ŝ − s_target`; `SI-SDR = 10 × log10(||s_target||^2 ÷ ||e||^2)`; as a training loss, `L = −SI-SDR`
+
+- **s**: the clean reference signal, a list of samples; **ŝ**: the estimate (the model's output)
+- **ŝ · s**: the dot product, the sum of sample-by-sample products
+- **||s||^2**: the energy of s, the sum of its squared samples
+- **s_target**: the part of the estimate that is a scaled copy of the reference
+- **e**: everything else in the estimate (leftover noise, other voices, distortion)
+
+**In plain words:** Find how much of the reference, at the best volume, is inside the estimate; call the rest error; compare the two energies on the decibel scale. Higher is better, and turning the estimate up or down does not change the score, so a model cannot game it with loudness. Separation networks are trained by maximizing it directly.
+
+**Tiny example:** Reference s = (1, 2, −1, 0) and estimate ŝ = (2, 3, −2, 1). ŝ · s = 2 + 6 + 2 + 0 = 10 and ||s||^2 = 6, so s_target = (10 ÷ 6) × s ≈ (1.667, 3.333, −1.667, 0), with energy 16.67. The error is ŝ − s_target ≈ (0.333, −0.333, −0.333, 1), with energy 1.333. SI-SDR = 10 × log10(16.67 ÷ 1.333) = 10 × log10(12.5) ≈ 11.0 dB; doubling the estimate gives the same 11.0 dB.
+
+**Where it is used:** Training and scoring speech separation and enhancement (Conv-TasNet trains on SI-SNR, the same quantity), and the closely related SDR reported for music stem separation (Demucs).
+**In the book:** Chapter 46 (Tools musicians actually use; Hearing aids, captions and accessibility) defines stem separation and the cocktail party problem; the formula is only here.
+
+> **Definition — SI-SDR (scale-invariant signal-to-distortion ratio):** A decibel score for separated or cleaned-up audio that compares the energy of the part matching the true source, at its best volume, with the energy of everything else; higher is better and loudness does not affect it.
+
 ### Connectionist temporal classification (CTC) loss
 
 **What it does:** Trains a speech recognizer from audio and its transcript without knowing which frame matches which letter.
@@ -1106,6 +1288,29 @@ STFT `X[m, k] = sum over n = 0..N−1 of x[n + m × H] × w[n] × exp(−2π × 
 **In the book:** Only here (Chapter 46, The deep learning turn, describes end-to-end recognition in words).
 
 > **Definition — CTC (connectionist temporal classification):** A training loss for sequence models whose input is much longer than their output, such as audio frames versus letters; it sums the probability of every frame-by-frame labeling (with a "blank" symbol) that collapses to the correct transcript.
+
+### RNN-Transducer (RNN-T) loss
+
+**What it does:** Trains a streaming speech recognizer whose next output depends both on the audio and on the words it has already written.
+
+`P(k | t, u) = softmax(W × tanh(f_t + g_u))`; lattice recursion `α(t, u) = α(t − 1, u) × ∅(t − 1, u) + α(t, u − 1) × y(t, u − 1)`, with `α(1, 0) = 1`; `p(y | x) = α(T, U) × ∅(T, U)`; `loss = −ln p(y | x)`
+
+- **t**: the audio frame, 1 to T; **u**: how many labels have been written so far, 0 to U (U is the transcript length)
+- **f_t**: the encoder's output for frame t (the acoustic model)
+- **g_u**: the prediction network's output given the first u labels (a small language model over the transcript so far)
+- **W**, **tanh**: the joint network that combines the two; **P(k | t, u)**: its probability for each label k, including blank
+- **∅(t, u)**: the probability of blank at (t, u), meaning "nothing more for this frame, move to the next one"
+- **y(t, u)**: the probability of emitting the next correct label at (t, u)
+- **α(t, u)**: the total probability of all paths that reach frame t having written u labels
+
+**In plain words:** Picture a grid with frames across and transcript positions down. Every path from the top-left to the bottom-right corner is one way of lining up the audio with the words: blank steps right to the next frame, a label steps down. As with CTC, the loss adds up every path with a dynamic program instead of listing them, but unlike CTC each output also sees the words already written, so the model can use language context while still running live. Token-and-duration transducers (TDT) also predict how many frames to skip.
+
+**Tiny example:** Two frames, target "a" (T = 2, U = 1), with blank probability 0.4 and "a" probability 0.6 everywhere. α(2, 0) = 1 × 0.4 = 0.4 and α(1, 1) = 1 × 0.6 = 0.6, so α(2, 1) = 0.6 × 0.4 + 0.4 × 0.6 = 0.48. A final blank gives p = 0.48 × 0.4 = 0.192, and the loss is −ln(0.192) ≈ 1.65.
+
+**Where it is used:** Streaming on-device recognition (Google's all-neural on-device recognizer, 2019), NVIDIA's Parakeet RNN-T and TDT models, and live captioning and voice-assistant front ends.
+**In the book:** Only here (Chapter 46, The deep learning turn, describes end-to-end recognition in words).
+
+> **Definition — RNN-T (recurrent neural network transducer):** A speech-recognition model and training loss that combines an audio encoder with a small network that tracks the words written so far, so it can transcribe live while using language context; the loss sums over every way of aligning the audio with the transcript.
 
 ### Autoregressive likelihood for images and audio (PixelCNN, WaveNet, image-token models)
 
@@ -1145,7 +1350,7 @@ STFT `X[m, k] = sum over n = 0..N−1 of x[n + m × H] × w[n] × exp(−2π × 
 **Tiny example:** cos θ_y = 0.8, so θ_y ≈ 0.644 radians, and cos(0.644 + 0.5) ≈ 0.414: the true-identity logit is 64 × 0.414 ≈ 26.5. One other identity at cosine 0.3 gives 64 × 0.3 = 19.2. L = −ln(e^26.5 ÷ (e^26.5 + e^19.2)) ≈ 0.0007. Without the margin the true logit would be 64 × 0.8 = 51.2 and the loss about 10^−14, so the margin keeps the network learning from faces it already gets right.
 
 **Where it is used:** ArcFace (2019) face recognition, person re-identification, speaker verification and image retrieval; FaceNet (Google 2015) used the triplet loss with margin 0.2.
-**In the book:** Chapter 45 (Faces: the most personal kind of vision) and Chapter 46 (speaker embeddings) describe face and speaker embeddings in words; the formula is only here.
+**In the book:** Chapter 45 (Faces: the most personal kind of vision) and Chapter 46 (Who spoke when: diarization and voice biometrics) describe face and speaker embeddings in words; the formula is only here.
 
 > **Definition — ArcFace:** A 2019 training loss for face recognition that adds an angular margin to the correct identity inside a softmax over all identities, forcing the embeddings of different people to sit clearly apart.
 
@@ -1208,7 +1413,7 @@ for N images, two augmented views each give 2N embeddings; `ℓ(i, j) = −ln(ex
 **Tiny example:** Figure 16.2's 3 × 3 batch times 14.3: the three row losses are about 0.039, 0.045 and 0.034 (average 0.040) and the column losses 0.039, 0.057 and 0.028 (average 0.041), so L = 0.5 × (0.040 + 0.041) ≈ 0.040. Zero-shot: cosines 0.31, 0.27 and 0.19 with three class prompts pick the first class.
 
 **Where it is used:** CLIP (OpenAI 2021, about 400 million pairs), OpenCLIP and ALIGN; CLIP text encoders condition Stable Diffusion 1.x and SDXL, and CLIP-style vision encoders feed many multimodal LLMs.
-**In the book:** Chapter 16 (Contrastive learning and CLIP), which shows this formula; Chapter 45 (Image classification: "what is in this picture?") works zero-shot picking; Chapter 22.
+**In the book:** Chapter 16 (Contrastive learning and CLIP), which shows this formula; Chapter 45 (Image classification: "what is in this picture?") works zero-shot picking; Chapter 22 (Step 3: a vision encoder learns what the patches mean) describes CLIP-style vision encoders.
 
 ### SigLIP pairwise sigmoid loss
 
@@ -1227,15 +1432,16 @@ for N images, two augmented views each give 2N embeddings; `ℓ(i, j) = −ln(ex
 **Tiny example:** At the starting values t' = 10 and b = −10, the true dog pair (similarity 0.31) scores 10 × 0.31 − 10 = −6.9, so its loss term is −ln(sigmoid(−6.9)) ≈ 6.9; a mismatched pair at 0.02 scores −9.8, and with z = −1 its term is −ln(sigmoid(9.8)) ≈ 0.00006. At first the mismatches cost almost nothing, so learning is driven by pulling true pairs up.
 
 **Where it is used:** SigLIP (Google 2023) and SigLIP 2 (February 2025, which adds captioning, self-distillation and masked-prediction losses); Gemma 3 uses a 400-million-parameter SigLIP vision encoder (256 tokens per image), as does PaliGemma.
-**In the book:** Chapter 16 (Contrastive learning and CLIP) and Chapter 22 (Step 3: a vision encoder learns what the patches mean) in words; the formula is only here.
+**In the book:** Chapter 16 (Contrastive learning and CLIP) defines SigLIP in words; the formula is only here.
 
 ### Self-distillation without labels (DINO, BYOL-style EMA teacher)
 
 **What it does:** Learns image features by having a student network match a slowly moving teacher on different crops of the same image.
 
-`P_t(x) = softmax((g_t(x) − c) ÷ τ_t)`; `P_s(x') = softmax(g_s(x') ÷ τ_s)`; `L = −sum over view pairs of sum over k of P_t(x)_k × ln(P_s(x')_k)`; teacher `θ_t ← λ × θ_t + (1 − λ) × θ_s`; center `c ← m × c + (1 − m) × (batch mean of g_t)`
+`P_t(x) = softmax((g_t(x) − c) ÷ τ_t)`; `P_s(x') = softmax(g_s(x') ÷ τ_s)`; `L = −sum over view pairs of sum over k of P_t(x)_k × ln(P_s(x')_k)`; teacher `θ_t ← λ × θ_t + (1 − λ) × θ_s`; center `c ← m × c + (1 − m) × (batch mean of g_t)`; BYOL `L = ||q̄ − z̄'||^2 = 2 − 2 × cos(q, z')`
 
 - **g_s**, **g_t**: the student and teacher networks; **θ_s**, **θ_t**: their weights
+- **q**: BYOL's student prediction for one view; **z'**: the teacher's output for the other view; **q̄**, **z̄'**: the same scaled to length 1
 - **x**: a large crop for the teacher; **x'**: any crop for the student
 - **τ_s ≈ 0.1**, **τ_t ≈ 0.04 to 0.07**: temperatures (the teacher is sharper)
 - **c**: a running center subtracted from the teacher's outputs; **m**: its momentum
@@ -1244,10 +1450,32 @@ for N images, two augmented views each give 2N embeddings; `ℓ(i, j) = −ln(ex
 
 **In plain words:** The teacher is an exponential moving average of the student (weight averaging is in the deep-learning section), so it is a slightly older, steadier version of it. The student is trained to give the same answer on a small crop that the teacher gives on a big one. Centering and sharpening stop both from collapsing to one constant answer. BYOL does the same with a squared-error target and no softmax.
 
-**Tiny example:** A toy two-output case: teacher scores (1, 0) with temperature 0.5 give softmax(2, 0) = (0.881, 0.119); student scores (1, 0) with temperature 1 give (0.731, 0.269). L = −(0.881 × ln(0.731) + 0.119 × ln(0.269)) ≈ 0.276 + 0.156 = 0.43. A teacher weight of 1.0 and student weight of 1.5 with λ = 0.996 update the teacher to 0.996 × 1.0 + 0.004 × 1.5 = 1.002.
+**Tiny example:** A toy two-output case: teacher scores (1, 0) with temperature 0.5 give softmax(2, 0) = (0.881, 0.119); student scores (1, 0) with temperature 1 give (0.731, 0.269). L = −(0.881 × ln(0.731) + 0.119 × ln(0.269)) ≈ 0.276 + 0.156 = 0.43. A teacher weight of 1.0 and student weight of 1.5 with λ = 0.996 update the teacher to 0.996 × 1.0 + 0.004 × 1.5 = 1.002. In BYOL, a student prediction at cosine 0.9 to the teacher's output costs 2 − 2 × 0.9 = 0.2.
 
 **Where it is used:** DINO (2021), DINOv2 (2023) and DINOv3 (Meta, August 2025, which adds Gram anchoring) vision backbones for segmentation, depth, robotics and satellite imagery; SigLIP 2's self-distillation term.
 **In the book:** Chapter 45 (A quick recap: the networks that see) names the DINO family; the losses are only here.
+
+### Redundancy-reduction losses (Barlow Twins and VICReg)
+
+**What it does:** Learns image features without labels or negatives by making two views agree while forcing the feature dimensions to stay varied and non-redundant.
+
+Barlow Twins: `C_ij = (sum over b of z^A_(b,i) × z^B_(b,j)) ÷ (sqrt(sum over b of (z^A_(b,i))^2) × sqrt(sum over b of (z^B_(b,j))^2))`, `L = sum over i of (1 − C_ii)^2 + λ × sum over i, j ≠ i of C_ij^2` (λ = 0.005); VICReg: `L = 25 × s(Z, Z') + 25 × (v(Z) + v(Z')) + 1 × (c(Z) + c(Z'))`, with `s = mean of ||z_b − z'_b||^2`, `v(Z) = (1 ÷ d) × sum over j of max(0, 1 − sqrt(Var(z_j) + ε))`, `c(Z) = (1 ÷ d) × sum over i ≠ j of Cov(Z)_ij^2`
+
+- **z^A_(b,i)**, **z^B_(b,j)**: feature i (or j) of image b in the batch, for view A and view B, each feature first centered to mean 0 over the batch
+- **C_ij**: the correlation between feature i of view A and feature j of view B across the batch (C is a d × d table)
+- **λ** (lambda): the weight on the off-diagonal (redundancy) term
+- **Z**, **Z'**: the batch of embeddings for the two views; **z_b**, **z'_b**: one image's pair
+- **s**: invariance, how far the two views' embeddings are apart; **v**: variance, a penalty when any feature's spread across the batch falls below 1; **c**: covariance, a penalty on features that move together
+- **d**: the number of features; **ε** (epsilon): a tiny constant for numerical safety
+
+**In plain words:** The easy cheat in self-supervised learning is collapse: output the same vector for every image, and every pair of views agrees perfectly. Barlow Twins blocks it by asking the cross-correlation table to be the identity: each feature agrees with itself across views (diagonal 1) and is unrelated to every other feature (off-diagonal 0). VICReg splits the same idea into three explicit terms: agree, keep each feature spread out, and keep features uncorrelated.
+
+**Tiny example:** A two-feature Barlow table C = [[0.9, 0.2], [0.1, 0.8]]: the invariance part is (1 − 0.9)^2 + (1 − 0.8)^2 = 0.01 + 0.04 = 0.05 and the redundancy part 0.005 × (0.2^2 + 0.1^2) = 0.005 × 0.05 = 0.00025, so L ≈ 0.050. In VICReg, a feature whose spread across the batch is 0.6 adds max(0, 1 − 0.6) = 0.4 to the variance sum; one with spread 1.2 adds 0.
+
+**Where it is used:** Barlow Twins (2021) and VICReg (2022), both from Meta AI researchers; non-contrastive self-supervised pretraining, and variance–covariance terms as anti-collapse regularizers in later joint-embedding (JEPA-style) work.
+**In the book:** Only here (Chapter 16, Self-supervised learning, covers the idea in words).
+
+> **Definition — Representation collapse:** A failure of self-supervised training in which the network gives (nearly) the same output for every input, which trivially makes all views agree but carries no information; contrastive negatives, teacher tricks and variance penalties exist to prevent it.
 
 ### Autoencoder reconstruction loss and compression ratio
 
@@ -1349,9 +1577,10 @@ encoder `q_φ(z | x) = N(z; μ_φ(x), diag(σ_φ(x)^2))`; prior `p(z) = N(0, I)`
 
 **What it does:** Gives a computable lower bound on how probable the data is under a latent-variable model, and is the VAE's training objective.
 
-`ln p(x) ≥ ELBO = E_(z ~ q_φ(z | x))[ln p_θ(x | z)] − KL(q_φ(z | x) || p(z))`; exact gap `ln p(x) − ELBO = KL(q_φ(z | x) || p(z | x))`; β-VAE loss `= −E[ln p_θ(x | z)] + β × KL(q_φ(z | x) || p(z))`
+`ln p(x) ≥ ELBO = E_(z ~ q_φ(z | x))[ln p_θ(x | z)] − KL(q_φ(z | x) || p(z))`; exact gap `ln p(x) − ELBO = KL(q_φ(z | x) || p(z | x))`; β-VAE loss `= −E[ln p_θ(x | z)] + β × KL(q_φ(z | x) || p(z))`; importance-weighted bound (IWAE) `ln p(x) ≥ E[ln((1 ÷ K) × sum over k of w_k)]`, with `w_k = p_θ(x | z_k) × p(z_k) ÷ q_φ(z_k | x)` and `z_1, ..., z_K` drawn from the encoder
 
 - **ln p(x)**: the log-likelihood of the data, the "evidence"
+- **K**, **w_k**: the number of codes drawn and each code's importance weight (how much more probable the model finds it than the encoder does)
 - **E_(z ~ q)[·]**: an average over codes drawn from the encoder (usually one reparameterized sample)
 - **ln p_θ(x | z)**: the reconstruction term, how probable the decoder makes the original input
 - **KL(q_φ(z | x) || p(z))**: how far the encoder's bell curve is from the prior
@@ -1360,9 +1589,9 @@ encoder `q_φ(z | x) = N(z; μ_φ(x), diag(σ_φ(x)^2))`; prior `p(z) = N(0, I)`
 
 **In plain words:** The true probability of an image would need a sum over every possible code, which is impossible. The ELBO swaps it for "how well can I rebuild x from a code the encoder suggests, minus a penalty for straying from the prior", and it is never above the true value; the gap is how wrong the encoder's guess about codes is. Training maximizes the ELBO, which means minimizing the loss reconstruction error plus KL. β above 1 encourages disentangled codes; latent-diffusion autoencoders use a tiny β plus perceptual and adversarial losses.
 
-**Tiny example:** Suppose the reconstruction term is ln p(x | z) = −3.0 and the KL term for the smile number is about 2.25 (previous entry). Then ELBO = −3.0 − 2.25 = −5.25, so ln p(x) is at least −5.25, and the loss is 5.25. A β-VAE with β = 4 has loss 3.0 + 4 × 2.25 ≈ 12.0; Stable Diffusion's KL autoencoder configuration uses β = 10^−6, making the KL part only about 0.0000023.
+**Tiny example:** Suppose the reconstruction term is ln p(x | z) = −3.0 and the KL term for the smile number is about 2.25 (previous entry). Then ELBO = −3.0 − 2.25 = −5.25, so ln p(x) is at least −5.25, and the loss is 5.25. A β-VAE with β = 4 has loss 3.0 + 4 × 2.25 ≈ 12.0; Stable Diffusion's KL autoencoder configuration uses β = 10^−6, making the KL part only about 0.0000023. IWAE with two codes of weight 0.5 and 1.5: the average of the logs (the ELBO's way) is (ln 0.5 + ln 1.5) ÷ 2 ≈ −0.144, while the log of the average is ln(1.0) = 0, a tighter (higher) bound.
 
-**Where it is used:** Training VAEs; the theory behind diffusion's loss (the same bound over many noise steps); variational inference in Bayesian models and EM. The IWAE variant averages K importance weights inside the log for a tighter bound.
+**Where it is used:** Training VAEs; the theory behind diffusion's loss (the same bound over many noise steps); variational inference in Bayesian models and EM. The IWAE variant (K = 1 gives back the ELBO) is used for tighter likelihood estimates.
 **In the book:** Chapter 16 (The variational autoencoder (VAE)), which shows this formula; Appendix F (The ELBO, MAP inference and wake-sleep); Chapter 54 (A Bayesian network, worked by hand) for variational inference.
 
 ### Gumbel-softmax (concrete) relaxation
@@ -1526,9 +1755,10 @@ FSQ `ẑ_i = round(floor(L_i ÷ 2) × tanh(z_i))` for each channel i (with a str
 
 **What it does:** Trains the generator on the earth-mover distance between real and fake data, which keeps giving slope even when they do not overlap.
 
-`W(p_data, p_g) = max over 1-Lipschitz f of (E_(x ~ p_data)[f(x)] − E_z[f(G(z))])`; critic loss `L = E_z[f(G(z))] − E_x[f(x)] + λ × E_x̂[(||∇_x̂ f(x̂)|| − 1)^2]`, with `x̂ = u × x + (1 − u) × G(z)`, `u ~ Uniform(0, 1)`, `λ = 10`; generator loss `= −E_z[f(G(z))]`
+`W(p_data, p_g) = max over 1-Lipschitz f of (E_(x ~ p_data)[f(x)] − E_z[f(G(z))])`; critic loss `L = E_z[f(G(z))] − E_x[f(x)] + λ × E_x̂[(||∇_x̂ f(x̂)|| − 1)^2]`, with `x̂ = u × x + (1 − u) × G(z)`, `u ~ Uniform(0, 1)`, `λ = 10`; generator loss `= −E_z[f(G(z))]`; spectral normalization `W_SN = W_layer ÷ σ_max(W_layer)` for each layer
 
 - **W**: the Wasserstein-1 (earth-mover) distance, the least "mass times distance" needed to reshape one distribution into the other
+- **W_layer**: one layer's weight matrix; **σ_max**: its largest singular value, the most it can stretch any input (estimated with one step of power iteration per training step); **W_SN**: the normalized matrix, which stretches by at most 1
 - **f**: the critic, which outputs an unbounded score, not a probability
 - **1-Lipschitz**: f's slope never exceeds 1 anywhere
 - **∇_x̂ f(x̂)**: the critic's gradient at x̂; **||·||**: its length
@@ -1537,7 +1767,7 @@ FSQ `ẑ_i = round(floor(L_i ÷ 2) × tanh(z_i))` for each channel i (with a str
 
 **In plain words:** The critic tries to score real data high and fakes low, but its slope is limited, so the score gap measures how far the fakes must move. The gradient penalty enforces the slope limit softly; the original WGAN clipped weights to ±0.01, and spectral normalization divides each weight matrix by its largest stretch factor.
 
-**Tiny example:** Average critic scores 1.5 on real data and −0.5 on fakes estimate W ≈ 2.0. If the critic's gradient length at a mixed point is 1.3, the penalty is 10 × (1.3 − 1)^2 = 0.9, so L = −0.5 − 1.5 + 0.9 = −1.1. The generator's loss is −(−0.5) = 0.5.
+**Tiny example:** Average critic scores 1.5 on real data and −0.5 on fakes estimate W ≈ 2.0. If the critic's gradient length at a mixed point is 1.3, the penalty is 10 × (1.3 − 1)^2 = 0.9, so L = −0.5 − 1.5 + 0.9 = −1.1. The generator's loss is −(−0.5) = 0.5. Spectral normalization of the weight matrix [[3, 0], [0, 1]], whose largest stretch is 3, gives [[1, 0], [0, 0.333]].
 
 **Where it is used:** Stable GAN training around 2017-2019; spectral normalization in SAGAN and BigGAN discriminators.
 **In the book:** Only here.
@@ -1545,6 +1775,8 @@ FSQ `ẑ_i = round(floor(L_i ÷ 2) × tanh(z_i))` for each channel i (with a str
 > **Definition — Wasserstein distance (earth mover's distance):** A distance between two probability distributions equal to the least total work, mass times distance moved, needed to reshape one pile of probability into the other.
 
 > **Definition — Lipschitz constraint:** A limit on how steep a function can be: a 1-Lipschitz function never changes its output by more than the change in its input. Wasserstein GANs impose it on their critic.
+
+> **Definition — Spectral normalization:** Dividing each layer's weight matrix by its largest singular value (the most it can stretch an input), so the layer can never amplify changes; it keeps GAN discriminators smooth and stable.
 
 ### Hinge and least-squares GAN losses and the R1 gradient penalty
 
@@ -1563,6 +1795,28 @@ hinge: `loss_D = E_x[max(0, 1 − D(x))] + E_z[max(0, 1 + D(G(z)))]`, `loss_G = 
 
 **Where it is used:** Hinge in SAGAN, BigGAN, VQGAN tokenizers and adversarial diffusion distillation (SDXL-Turbo); LSGAN in HiFi-GAN vocoders and many neural audio codecs; R1 in StyleGAN2 and StyleGAN3.
 **In the book:** Only here (Appendix F's hinge loss is the support-vector-machine one).
+
+### Vocoder and codec losses (mel, multi-resolution STFT and feature matching)
+
+**What it does:** Trains audio generators such as vocoders and neural codecs to sound right, by comparing spectrograms and the discriminator's inner features instead of raw samples.
+
+mel loss `L_mel = ||M(x) − M(x̂)||_1`; spectral convergence `L_sc = || |S| − |Ŝ| ||_F ÷ || |S| ||_F`; log-magnitude `L_mag = (1 ÷ N) × || ln|S| − ln|Ŝ| ||_1`; multi-resolution STFT loss = the average of `L_sc + L_mag` over several window sizes (for example 512, 1,024 and 2,048 samples); feature matching `L_FM = sum over discriminator layers l of (1 ÷ N_l) × ||D_l(x) − D_l(x̂)||_1`; HiFi-GAN generator total `L_G = L_adv + 2 × L_FM + 45 × L_mel`
+
+- **x**: real audio; **x̂**: generated audio
+- **M(·)**: the log-mel spectrogram (mel entry); **|S|**, **|Ŝ|**: STFT magnitudes of real and generated audio (STFT entry)
+- **||·||_1**: the sum of absolute values; **||·||_F**: the square root of the sum of squares over the whole spectrogram
+- **N**: the number of spectrogram entries
+- **D_l(x)**: the outputs of layer l of the discriminator; **N_l**: how many numbers that layer outputs
+- **L_adv**: the adversarial (GAN) loss, least-squares in HiFi-GAN
+
+**In plain words:** Two waveforms can sound identical yet differ sample by sample (shift the phase slightly), so comparing samples directly is a poor teacher. Spectrogram losses check that the right frequencies have the right loudness, and using several window sizes checks both fine timing and fine pitch. Feature matching asks the generator to make the discriminator's internal view of fake audio match its view of real audio, which steadies GAN training.
+
+**Tiny example:** Magnitudes |S| = (3, 4) and |Ŝ| = (3, 2): L_sc = sqrt(0^2 + 2^2) ÷ sqrt(3^2 + 4^2) = 2 ÷ 5 = 0.4 and L_mag = (|ln 3 − ln 3| + |ln 4 − ln 2|) ÷ 2 = 0.693 ÷ 2 ≈ 0.35. With L_adv = 1.0, L_FM = 0.5 and L_mel = 0.1, HiFi-GAN's total is 1.0 + 2 × 0.5 + 45 × 0.1 = 6.5.
+
+**Where it is used:** HiFi-GAN (2020) and BigVGAN vocoders inside text-to-speech systems; Parallel WaveGAN, which introduced the multi-resolution STFT loss; and neural audio codecs such as SoundStream, EnCodec and DAC, which combine spectral, adversarial and feature-matching losses.
+**In the book:** Only here (Chapter 46, Teaching machines to speak: text-to-speech, defines vocoders).
+
+> **Definition — Feature-matching loss:** A GAN training loss that asks the generator to make the discriminator's internal features for fake samples match its features for real samples, which gives steadier training than the real-or-fake verdict alone.
 
 ### Change of variables for normalizing flows (log-determinant of the Jacobian)
 
@@ -1587,16 +1841,17 @@ hinge: `loss_D = E_x[max(0, 1 − D(x))] + E_z[max(0, 1 + D(G(z)))]`, `loss_G = 
 
 **What it does:** Builds an invertible layer whose Jacobian determinant is cheap to compute.
 
-split x into `(x_a, x_b)`: `y_a = x_a`; `y_b = x_b × exp(s(x_a)) + t(x_a)`; `ln |det J| = sum over j of s(x_a)_j`; inverse `x_b = (y_b − t(y_a)) × exp(−s(y_a))`
+split x into `(x_a, x_b)`: `y_a = x_a`; `y_b = x_b × exp(s(x_a)) + t(x_a)`; `ln |det J| = sum over j of s(x_a)_j`; inverse `x_b = (y_b − t(y_a)) × exp(−s(y_a))`; Glow's invertible 1 × 1 convolution on an h × w × c tensor: `ln |det| = h × w × ln |det(W)|`
 
 - **x_a**, **x_b**: the two halves of the input
 - **s**, **t**: any neural networks giving a log-scale and a shift
 - **y_a**, **y_b**: the output halves
 - **j**: the entries of x_b
+- **W**: the learned c × c channel-mixing matrix of a 1 × 1 convolution, applied at each of the h × w positions
 
 **In plain words:** Half the numbers pass through untouched and decide how to stretch and shift the other half. Because the first half is copied, the transformation is easy to undo and its stretch factor is just exp of the sum of the log-scales. Stacking layers with alternating halves makes a powerful flow. Glow adds invertible 1 × 1 convolutions; autoregressive flows (MAF, IAF, TARFlow) let each number depend on all earlier ones.
 
-**Tiny example:** x = (1.0, 2.0) with s(1.0) = 0.5 and t(1.0) = 0.3: y = (1.0, 2 × e^0.5 + 0.3) = (1.0, 3.597), and ln |det J| = 0.5. Undoing it: (3.597 − 0.3) × e^(−0.5) = 2.0.
+**Tiny example:** x = (1.0, 2.0) with s(1.0) = 0.5 and t(1.0) = 0.3: y = (1.0, 2 × e^0.5 + 0.3) = (1.0, 3.597), and ln |det J| = 0.5. Undoing it: (3.597 − 0.3) × e^(−0.5) = 2.0. A 1 × 1 convolution with W = [[2, 1], [0, 1]] (determinant 2) on a 4 × 4 grid adds 16 × ln(2) ≈ 11.09 to the log-determinant.
 
 **Where it is used:** RealNVP, Glow and WaveGlow; TARFlow and STARFlow (Apple, 2024-2025).
 **In the book:** Only here.
@@ -1643,6 +1898,26 @@ split x into `(x_a, x_b)`: `y_a = x_a`; `y_b = x_b × exp(s(x_a)) + t(x_a)`; `ln
 
 **Where it is used:** Training RBMs and deep belief networks (Hinton 2002, 2006) and modern energy-based models.
 **In the book:** Only here (Appendix F, The partition function and the ways around it, defines contrastive divergence).
+
+### Noise-contrastive estimation (NCE)
+
+**What it does:** Trains an unnormalized probability model by turning density estimation into a real-versus-noise classification task, so the partition function never has to be summed.
+
+`G(x) = ln p_θ(x) − ln(ν × p_n(x))`; `L = −E_(x ~ data)[ln sigmoid(G(x))] − ν × E_(y ~ noise)[ln(1 − sigmoid(G(y)))]`; the model is `ln p_θ(x) = −E_θ(x) − c`, with c (standing in for ln Z) learned as one extra number
+
+- **p_θ(x)**: the model's probability for x; **E_θ(x)**: its energy (energy-based model entry)
+- **p_n(x)**: a known, easy-to-sample noise distribution
+- **ν** (nu): the number of noise samples drawn per real sample
+- **G(x)**: the classifier's score, how much likelier x is under the model than under the noise
+- **sigmoid**: squeezes a score into a probability between 0 and 1
+- **c**: a learned constant that plays the role of the log partition function
+
+**In plain words:** Mix real data with samples from a noise distribution you understand, and train the model to tell them apart with a logistic classifier whose score is "model log-probability minus noise log-probability". The only way to win is for the model to learn the data's true density, including the right normalizing constant, which becomes a single learned number instead of an impossible sum. InfoNCE (earlier entry) is the multi-way version, with one real item among K noise items and a softmax; word2vec's negative sampling (in the deep-learning section) is a simplified NCE.
+
+**Tiny example:** With ν = 1 and noise density 0.2: a real point that the model gives ln p_θ = −1.0 scores G = −1.0 − ln(0.2) = −1.0 + 1.609 = 0.609, sigmoid(0.609) ≈ 0.648, costing −ln(0.648) ≈ 0.43. A noise point the model gives ln p_θ = −3.0 scores G ≈ −1.391, sigmoid ≈ 0.199, costing −ln(1 − 0.199) ≈ 0.22.
+
+**Where it is used:** Training energy-based and other unnormalized models (Gutmann and Hyvärinen 2010), early neural language models with large vocabularies (Mnih and Teh 2012), word2vec's negative sampling, and the root of the InfoNCE loss used by CPC, CLIP and embedding models.
+**In the book:** Appendix F (The partition function and the ways around it) defines NCE in words; Chapter 16 (Contrastive learning and CLIP) spells out the name; the formula is only here.
 
 ### Langevin dynamics sampling (and annealed Langevin)
 
@@ -1752,7 +2027,7 @@ linear: β_t evenly spaced from `10^−4` to `0.02` over T = 1,000; cosine: `ᾱ
 - **λ_t** (lambda): the log of the SNR
 - **γ** (gamma): the cap in min-SNR weighting; **w_t**: the loss weight for step t
 
-**In plain words:** The linear schedule destroys most of the image early; the cosine schedule fades it more evenly, so fewer steps are wasted on pure noise. SNR summarizes a step's difficulty, and Kingma and colleagues' VDM showed the loss depends on the schedule mainly through it. Min-SNR weighting stops nearly clean steps, which are easy, from dominating training. Stable Diffusion uses a "scaled linear" schedule, and zero-terminal-SNR rescaling makes the last step pure noise.
+**In plain words:** The linear schedule destroys most of the image early; the cosine schedule fades it more evenly, so fewer steps are wasted on pure noise. SNR summarizes a step's difficulty, and Kingma and colleagues' VDM (2021) showed that in continuous time the likelihood bound depends on the schedule only through the SNR at its two ends; the schedule in between mainly affects how noisy training is. Min-SNR weighting stops nearly clean steps, which are easy, from dominating training. Stable Diffusion uses a "scaled linear" schedule, and zero-terminal-SNR rescaling makes the last step pure noise.
 
 **Tiny example:** Halfway through 1,000 steps, the linear schedule leaves ᾱ ≈ 0.079 of the signal and the cosine schedule ≈ 0.494. At ᾱ = 0.81, SNR = 0.81 ÷ 0.19 ≈ 4.26 (log-SNR ≈ 1.45), below γ = 5, so the weight is 1. At ᾱ = 0.99, SNR = 99 and the weight is 5 ÷ 99 ≈ 0.05.
 
@@ -1915,16 +2190,17 @@ for `x_t = sqrt(ᾱ_t) × x_0 + sqrt(1 − ᾱ_t) × ε`: `∇_(x_t) ln q(x_t | 
 
 **What it does:** Makes a generator follow its prompt more closely by exaggerating the difference between prompted and unprompted predictions.
 
-`ε̃ = ε_θ(x_t, ∅) + w × (ε_θ(x_t, c) − ε_θ(x_t, ∅))`, equivalently `(1 + w') × ε_cond − w' × ε_uncond` with `w = 1 + w'`; for velocities `ṽ = v_uncond + w × (v_cond − v_uncond)`
+`ε̃ = ε_θ(x_t, ∅) + w × (ε_θ(x_t, c) − ε_θ(x_t, ∅))`, equivalently `(1 + w') × ε_cond − w' × ε_uncond` with `w = 1 + w'`; for velocities `ṽ = v_uncond + w × (v_cond − v_uncond)`; guidance rescale `ε_final = φ × (ε̃ × std(ε_cond) ÷ std(ε̃)) + (1 − φ) × ε̃`, with `φ ≈ 0.7`
 
 - **ε_θ(x_t, ∅)**: the unconditional prediction (empty or negative prompt, ∅)
 - **ε_θ(x_t, c)**: the prediction with prompt c
 - **w**: the guidance scale (w = 1 means no guidance); **w'**: the same scale counted from 0
 - **ε̃**, **ṽ**: the guided noise or velocity
+- **std(·)**: the standard deviation (spread) over all the numbers of a prediction; **φ** (phi): how much of the rescaled version to use
 
 **In plain words:** Training drops the prompt about 10 to 20% of the time so one network learns both predictions; at sampling time the difference between them points "toward the prompt" and is stretched. Each step costs two network passes. Variants include negative prompts, guidance rescale, guidance only over part of the noise range, guidance distillation (FLUX.1 [dev] takes the scale as an input) and autoguidance (Karras et al. 2024).
 
-**Tiny example:** Chapter 16: u = 0.10 and c = 0.30; with w = 7.5, 0.10 + 7.5 × 0.20 = 1.60.
+**Tiny example:** Chapter 16: u = 0.10 and c = 0.30; with w = 7.5, 0.10 + 7.5 × 0.20 = 1.60. Guidance rescale: if the guided prediction's spread is 2.0 but the conditional one's is 1.0, the rescaled version is the guided one times 0.5, and with φ = 0.7 the final prediction is 0.7 × 0.5 + 0.3 = 0.65 times the guided one, taming the over-saturated colors of high guidance.
 
 **Where it is used:** Virtually every text-to-image, video and audio diffusion or flow model (Stable Diffusion, SDXL, SD3, FLUX, Imagen, Wan, Stable Audio), and on the logits of autoregressive image models (Parti, LlamaGen).
 **In the book:** Chapter 16 (Classifier-free guidance: the "follow the prompt" knob), with Exercise 5.
@@ -1952,20 +2228,44 @@ for `x_t = sqrt(ᾱ_t) × x_0 + sqrt(1 − ᾱ_t) × ε`: `∇_(x_t) ln q(x_t | 
 
 **What it does:** Counts the tokens a Transformer denoiser sees and shows how the timestep and prompt steer each block.
 
-tokens `N = (h ÷ p) × (w ÷ p)` for an `h × w × c` latent with patch size p; video `N = t' × (h ÷ p) × (w ÷ p)`; adaLN `y = (1 + γ(c)) × LayerNorm(x) + β(c)`; residual `x + α(c) × Block(y)`, with α starting at 0
+tokens `N = (h ÷ p) × (w ÷ p)` for an `h × w × c` latent with patch size p; video `N = t' × (h ÷ p) × (w ÷ p)`; adaLN `y = (1 + γ(c)) × LayerNorm(x) + β(c)`; residual `x + α(c) × Block(y)`, with α starting at 0; its ancestor AdaIN (style transfer and StyleGAN) `AdaIN(x, s) = s_scale × (x − μ(x)) ÷ σ(x) + s_shift`
 
 - **h**, **w**, **c**: latent height, width and channels; **p**: the patch size (2 is typical)
 - **t'**: the number of latent frames
 - **c** in γ(c), β(c), α(c): the conditioning (timestep embedding plus class or pooled text)
 - **γ**, **β**, **α**: predicted scale, shift and gate vectors
 - **LayerNorm**: rescaling each token's numbers to mean 0 and spread 1 (in the deep-learning section)
+- **μ(x)**, **σ(x)**: the mean and spread of one feature channel over all positions of an image; **s_scale**, **s_shift**: a scale and shift computed from the style input s
 
-**In plain words:** Cut the latent into patches and treat each as a token. The conditioning does not enter as a token here; instead it sets how each block rescales and shifts its inputs, and a zero-initialized gate makes every block start as "do nothing", which stabilizes training. Attention cost grows with N^2.
+**In plain words:** Cut the latent into patches and treat each as a token. The conditioning does not enter as a token here; instead it sets how each block rescales and shifts its inputs, and a zero-initialized gate makes every block start as "do nothing", which stabilizes training. Attention cost grows with N^2. The same "normalize, then let the condition choose scale and shift" trick first appeared as AdaIN, which transfers a style by giving each channel the style image's mean and spread.
 
-**Tiny example:** Chapter 16: a 64 × 64 × 4 latent in 2 × 2 patches gives 32 × 32 = 1,024 tokens; a 1,024 × 1,024 image (f = 8) gives a 128 × 128 × 16 latent and 64 × 64 = 4,096 tokens. adaLN with LayerNorm output 0.5, γ = 0.2 and β = −0.1: y = 1.2 × 0.5 − 0.1 = 0.5; at the start α = 0, so the block leaves x unchanged.
+**Tiny example:** Chapter 16: a 64 × 64 × 4 latent in 2 × 2 patches gives 32 × 32 = 1,024 tokens; a 1,024 × 1,024 image (f = 8) gives a 128 × 128 × 16 latent and 64 × 64 = 4,096 tokens. adaLN with LayerNorm output 0.5, γ = 0.2 and β = −0.1: y = 1.2 × 0.5 − 0.1 = 0.5; at the start α = 0, so the block leaves x unchanged. AdaIN: a feature value 3 in a channel with mean 1 and spread 0.5 is 4 spreads above average; with style scale 2.0 and shift 0.5 it becomes 2.0 × (3 − 1) ÷ 0.5 + 0.5 = 8.5.
 
 **Where it is used:** DiT (Peebles and Xie 2023), Sora, SD3, FLUX, Wan, HunyuanVideo and Movie Gen; nearly all 2025-2026 image and video generators use a Transformer denoiser (MM-DiT in SD3 and FLUX attends jointly over text and image tokens).
 **In the book:** Chapter 16 (The Diffusion Transformer (DiT); Video generation), with Exercise 7; adaLN-Zero is only here.
+
+> **Definition — AdaIN (adaptive instance normalization):** A layer that normalizes each feature channel of an image to mean 0 and spread 1 and then applies a scale and shift computed from a style or condition; it powered fast style transfer and StyleGAN, and survives as the adaptive layer norm of diffusion Transformers.
+
+### Representation alignment (REPA) for diffusion Transformers
+
+**What it does:** Speeds up training of a diffusion or flow Transformer by making its inner features on noisy inputs resemble a pretrained vision encoder's features on the clean image.
+
+`L = L_denoise + λ × L_REPA`; `L_REPA = −E[(1 ÷ N) × sum over patches n of sim(y*_n, h_φ(h_t[n]))]`, with `λ = 0.5`
+
+- **L_denoise**: the usual noise-prediction or flow-matching loss
+- **y*_n**: a frozen pretrained encoder's (such as DINOv2's) feature for patch n of the clean image
+- **h_t[n]**: the denoiser's hidden state for patch n at an early block (for example block 8), given the noisy input at time t
+- **h_φ**: a small trainable network (an MLP) that maps hidden states into the encoder's feature space
+- **sim**: cosine similarity; **N**: the number of patches; **λ** (lambda): the weight of the alignment term
+
+**In plain words:** A diffusion Transformer must learn what is in an image before it can denoise well, and learning that from scratch is slow. REPA gives it a shortcut: an extra loss rewards early layers for agreeing, patch by patch, with the features of a strong self-supervised encoder. The denoiser still learns to generate; it just starts from better internal "understanding".
+
+**Tiny example:** Two patches whose projected hidden states have cosine similarity 0.6 and 0.8 with DINOv2's features give L_REPA = −(0.6 + 0.8) ÷ 2 = −0.7; with λ = 0.5 this adds −0.35 to the loss, and training lowers it further by raising the similarities.
+
+**Where it is used:** REPA (Yu et al., October 2024), which reported over 17.5 times faster training of SiT-XL and FID 1.42 on ImageNet 256 × 256 with guidance; REPA-E (2025) extends it to training the VAE and the diffusion model together.
+**In the book:** Only here.
+
+> **Definition — REPA (representation alignment):** A training aid for diffusion and flow Transformers that adds a loss pulling the model's early-layer features on noisy images toward a pretrained vision encoder's features on the clean images, which makes training many times faster.
 
 ### Image-to-image strength (SDEdit) and inpainting by re-noising
 
@@ -2147,11 +2447,30 @@ Euler `x_(t + Δt) = x_t + Δt × v_θ(x_t, t)`; Heun `x' = x_t + Δt × v_θ(x_
 
 > **Definition — Heun's method:** A way of solving a differential equation step by step that takes a trial step, measures the direction at its end, and then steps using the average of the starting and ending directions; it is more accurate than a plain Euler step for twice the work.
 
+### DPM-Solver++ step (exponential-integrator sampler)
+
+**What it does:** Solves the probability-flow ODE in large, accurate steps by handling the linear part exactly and approximating only the network's clean-image prediction.
+
+with `α_t = sqrt(ᾱ_t)`, `σ_t = sqrt(1 − ᾱ_t)`, `λ_t = ln(α_t ÷ σ_t)` and `h = λ_t − λ_s` for a step from s to t: first order `x_t = (σ_t ÷ σ_s) × x_s + α_t × (1 − e^(−h)) × x̂_0(x_s, s)`; second-order multistep (2M) `x_t = (σ_t ÷ σ_s) × x_s + α_t × (1 − e^(−h)) × D`, with `D = (1 + 1 ÷ (2r)) × x̂_0(current) − (1 ÷ (2r)) × x̂_0(previous)` and `r = h_previous ÷ h`
+
+- **s**, **t**: the current (noisier) step and the target (cleaner) step
+- **α_t**, **σ_t**: the signal and noise scales at step t; **λ_t** (lambda): the log signal-to-noise ratio of the amplitudes, half the log-SNR of the schedules entry
+- **h**: how much the log-SNR rises over the step
+- **x̂_0(x_s, s)**: the model's clean-image estimate at the current point (clean-image entry)
+- **D**: a blend of the current and previous clean-image estimates that extrapolates their trend; **r**: the ratio of the previous step size to this one
+
+**In plain words:** The path from noise to image is part simple shrinking, which can be computed exactly, and part network prediction, which is what costs accuracy. DPM-Solver++ integrates the simple part exactly and treats the clean-image estimate as nearly constant (first order, which turns out to be exactly DDIM) or as changing in a straight line estimated from the last two steps (2M, which reuses the previous network call, so it costs one call per step). That is why 15 to 25 steps are often enough, even with strong guidance.
+
+**Tiny example:** Chapter 16's pixel at ᾱ = 0.81 (α = 0.9, σ ≈ 0.436), stepping to ᾱ = 0.9 (α ≈ 0.949, σ ≈ 0.316): λ_s = ln(0.9 ÷ 0.436) ≈ 0.725 and λ_t = ln(3) ≈ 1.099, so h ≈ 0.374 and 1 − e^(−h) ≈ 0.312. First order with x̂_0 ≈ 0.776: x_t = (0.316 ÷ 0.436) × 0.502 + 0.949 × 0.312 × 0.776 ≈ 0.364 + 0.230 = 0.594, the same as the DDIM entry. 2M with a previous estimate of 0.70 and equal step sizes (r = 1): D = 1.5 × 0.776 − 0.5 × 0.70 ≈ 0.814, giving x_t ≈ 0.364 + 0.296 × 0.814 ≈ 0.605.
+
+**Where it is used:** DPM-Solver and DPM-Solver++ (Lu et al. 2022), whose authors report good guided samples in about 15 to 20 steps where DDIM typically needed 100 to 250; "DPM++ 2M" with Karras step spacing is a common sampler setting in Stable Diffusion tools, and diffusers implements it as DPMSolverMultistepScheduler; UniPC builds on the same idea.
+**In the book:** Chapter 16 (Samplers and step counts) names DPM-Solver in words; the update is only here.
+
 ### Continuous normalizing flow (instantaneous change of variables)
 
 **What it does:** Tracks exact log-probability along a smooth flow by integrating the velocity field's divergence.
 
-`dx ÷ dt = v_θ(x, t)`; `d ln p(x(t)) ÷ dt = −trace(∂v_θ ÷ ∂x)`; so `ln p_1(x(1)) = ln p_0(x(0)) − integral from 0 to 1 of trace(∂v_θ ÷ ∂x) dt`; Hutchinson estimate `trace(A) ≈ ε^T × A × ε` with `ε ~ N(0, I)`
+`dx ÷ dt = v_θ(x, t)`; `d ln p(x(t)) ÷ dt = −trace(∂v_θ ÷ ∂x)`; so `ln p_1(x(1)) = ln p_0(x(0)) − integral from 0 to 1 of trace(∂v_θ ÷ ∂x) dt`; Hutchinson estimate `trace(A) ≈ ε^T × A × ε`, averaged over random vectors ε with `ε ~ N(0, I)` or with random ±1 entries
 
 - **v_θ(x, t)**: a velocity-field network
 - **∂v_θ ÷ ∂x**: its Jacobian; **trace**: the sum of the diagonal, here the divergence (how much the flow spreads out)
