@@ -2,7 +2,121 @@
 
 *Every equation used to build today's AI, from the dot product to the reinforcement-learning objectives behind reasoning models, each with every symbol explained and a tiny worked example.*
 
-<!-- INTRO -->
+This appendix is a catalog of 814 equations. It aims to hold every equation that is standard in the textbooks and courses the field teaches from, and every equation in active use at the frontier labs as of late 2026. The textbooks include Russell and Norvig's *Artificial Intelligence: A Modern Approach*, Goodfellow, Bengio and Courville's *Deep Learning*, *Dive into Deep Learning*, Bishop's and Murphy's books on machine learning and Sutton and Barto's *Reinforcement Learning: An Introduction*; the courses include Stanford's CS229, CS231n, CS224n and CS336; and the hardware entries follow standard references such as Hennessy and Patterson's books on computer architecture and *The Datacenter as a Computer*. Frontier practice comes from the labs' own papers, model cards and documentation. Every entry is written for a reader with no computer-science background: each symbol is explained in every entry that uses it, the equation is read out in plain English, and a tiny worked example shows every step with small numbers you can check on a calculator.
+
+It is not a list of every formula ever published. Papers add new variants every week, most of them an existing equation with one term added or one constant changed, and a list of all of them would never be finished. When a variant differs only trivially from a standard equation, it is folded into the nearest entry, named in that entry's heading or in a note inside it, rather than given an entry of its own. So when a paper uses an equation you cannot find here by name, look for the one it builds on: most new equations are an old one with a twist.
+
+Two other appendices sit beside this one. Appendix B, the Math Cheat Sheet, gives the formulas the chapters use, one line each, and is the quicker place to look one up. This appendix is the full catalog: it adds the equations the chapters describe only in words and the ones no chapter needs, and gives each one room for every symbol and a worked example. Appendix F, the Advanced Shelf, works the other way round: it explains specialist and graduate-level topics in plain words, with no math. Read F to learn what a method is for and why specialists care about it; come here to see its equation. The last line of every entry here, "In the book", names the chapter and section that teach the idea, or says "Only here" when no chapter shows it.
+
+You do not need to read this appendix in order, and nothing in the chapters depends on it. Each of its seven sections, listed in Table G.1 below, runs from its simplest entry to its most advanced, and each entry uses only ideas from the entries above it, from earlier sections or from Appendix B. If the math is new to you, read the first nine entries of the foundations section (from the exponent and logarithm rules to the transpose), then the "Start with" entry of whichever section you are curious about.
+
+**How to read an equation here.** This book does not use the special typesetting of math textbooks. Each equation is written on one line, in a code span, in the same plain notation as Appendix B: the way you might type it into a calculator or a spreadsheet. Where a textbook would use a symbol you may not know, such as a large Σ for adding things up, this appendix uses words: "sum over i of". The first table below lists the notation and the second the Greek letters. You do not need to memorize either, because every entry explains its own symbols.
+
+| Notation | Read it as | Example |
+|---|---|---|
+| `a × b`, `a ÷ b` | a times b, a divided by b | 3 × 4 = 12; 12 ÷ 4 = 3 |
+| `x^2`, `a^n` | x squared, a to the n-th power | `2^5` = 32 |
+| `sqrt(x)` | square root of x | sqrt(25) = 5 |
+| `e`, `exp(x)` | Euler's number (about 2.718), e to the power x | exp(1) ≈ 2.718 |
+| `ln(x)`, `log10(x)`, `log2(x)` | natural log, base-10 log, base-2 log | log10(1,000) = 3 |
+| `≈`, `∝` | is about; is proportional to (equal up to a fixed multiplier) | 1 ÷ 3 ≈ 0.333; if y ∝ x^2, doubling x multiplies y by 4 |
+| `≤`, `≥`, `≠` | is at most, is at least, is not equal to | 3 ≤ 3 and 3 ≠ 4 |
+| `x_i`, `W_q`, `r_(t+1)` | x sub i: a label written after an underscore, with parentheses around a longer label | if x = [2, 5, 1], then x_2 = 5 |
+| `[a_1, a_2, a_3]` | a vector: an ordered list of numbers, usually named by a small letter (a, x, w) | [3, 120, 15] |
+| `A`, `m × n` (shape) | a matrix: a grid of numbers, usually named by a capital letter, with m rows and n columns | a 3 × 4 matrix holds 12 numbers |
+| `a · b` | dot product of vectors a and b | [1, 2] · [3, 4] = 1 × 3 + 2 × 4 = 11 |
+| `A × B` | matrix multiplication, when A and B are matrices | a 2 × 3 matrix times a 3 × 4 matrix gives a 2 × 4 matrix |
+| `a ⊙ b` | element-wise product: multiply position by position | [1, 2] ⊙ [3, 4] = [3, 8] |
+| `A^T`, `x^T` | A transposed: rows become columns | A with rows [1, 2] and [3, 4] gives A^T with rows [1, 3] and [2, 4] |
+| `A^-1` | the inverse of matrix A, which undoes it | A × A^-1 = I, the identity matrix |
+| `\|x\|`, `\|\|x\|\|` | the absolute value of a number (its size without its sign); the length (norm) of a vector | \|−3\| = 3; \|\|[3, 4]\|\| = 5 |
+| `sum over i of (x_i)` | add up x_i for every i | for x = [2, 5, 1]: 2 + 5 + 1 = 8 |
+| `product over i of (x_i)` | multiply x_i together for every i | for x = [2, 5, 1]: 2 × 5 × 1 = 10 |
+| `max over i of`, `argmax over i of` | the largest value; the position or choice that gives it (`min` and `argmin` do the same for the smallest) | for x = [2, 5, 1]: max = 5, argmax = 2 |
+| `P(A)`, `P(A given B)`, `P(A \| B)` | probability of A; probability of A when B is known to be true (the vertical bar means "given") | P(heads) = 0.5 |
+| `E[X]`, `E_x[...]` | expected value: the average of X over many random draws, each value weighted by its probability; a subscript names what is drawn at random | a fair die: E[X] = (1 + 2 + 3 + 4 + 5 + 6) ÷ 6 = 3.5 |
+| `x ~ N(μ, σ^2)` | x is drawn at random from a normal (bell-curve) distribution with mean μ and variance σ^2 | `z ~ N(0, 1)` gives numbers such as 0.3 or −1.2 |
+| `∂f/∂x`, `∇f` | partial derivative: how fast f changes when x alone is nudged; gradient: the list of all of f's partial derivatives | f = x^2 + 3 × y: ∂f/∂x = 2 × x and ∂f/∂y = 3, so at x = 1, ∇f = [2, 3] |
+| `w ← w − η × g` | becomes: replace w by the value on the right (one update step) | w = 1, η = 0.1, g = 2: w ← 1 − 0.2 = 0.8 |
+| `1[condition]` | indicator: 1 if the condition is true, 0 if it is false | 1[5 > 3] = 1; 1[2 > 3] = 0 |
+| `floor(x)`, `ceil(x)` | round down, round up to a whole number | floor(2.7) = 2; ceil(2.1) = 3 |
+| `ŷ`, `x̄`, `x'`, `V*` | marks that make a related symbol: a hat usually means a prediction or estimate (y-hat), a bar often an average (x-bar), a prime a new or next version (x-prime), a star the best possible value | ŷ = 3.1 is a model's guess at the true y |
+| N, D, C | parameters, training tokens, training compute in FLOPs | N = 70 billion |
+
+Greek letters appear as themselves, usually with their name in parentheses the first time an entry uses them, as in "θ (theta)". The same letter does different jobs in different fields, so the entry's own symbol list always wins over this table.
+
+| Letter | Say it | Its usual jobs in this appendix |
+|---|---|---|
+| α | alpha | a step size or mixing weight; in diffusion models, how much of the original signal is kept at a step |
+| β | beta | a decay rate (Adam's β_1 and β_2); the strength of the "KL leash" in RLHF and DPO; a learned shift in normalization layers; a noise amount in diffusion |
+| γ | gamma | the discount factor in reinforcement learning; a learned scale in normalization layers |
+| δ, Δ | delta (small and capital) | δ is an error signal, such as the TD error δ_t; Δ is a change, so Δx is "the change in x" |
+| ε | epsilon | a tiny constant that prevents dividing by zero; a random noise sample; PPO's clip range |
+| η | eta | the learning rate (step size) |
+| θ | theta | all of a model's adjustable parameters (weights) at once; sometimes an angle |
+| κ | kappa | a condition number; an agreement score |
+| λ | lambda | the strength of a penalty such as weight decay; an eigenvalue |
+| μ | mu | a mean (average) |
+| π | pi | the number 3.14159...; in reinforcement learning, a policy, the rule that picks actions (π_θ is a model's policy) |
+| ρ | rho | a ratio of two probabilities; a correlation |
+| σ, Σ | sigma (small and capital) | σ is a standard deviation (spread) or the sigmoid function σ(z); Σ is a covariance matrix or, in the SVD, the matrix of singular values. Adding up is always written "sum over", never with Σ |
+| τ | tau | a temperature, a threshold or a time constant |
+| φ, ψ | phi, psi | a second set of weights (an encoder's or a critic's); a fixed function that turns inputs into features |
+| Φ | capital phi | the share of a standard bell curve that lies below a value z |
+| Γ, Λ | capital gamma, capital lambda | the gamma function, which extends factorials to numbers that are not whole; a diagonal matrix of eigenvalues |
+| ν, ξ, χ, ω, Θ, Ψ, Ω | nu, xi, chi, omega, capital theta, capital psi, capital omega | each used in only a few entries, which explain it |
+
+Every entry has the same parts, in the same order:
+
+1. The heading: the equation's name, with other names and folded-in variants in parentheses.
+2. **What it does:** one sentence on the equation's job.
+3. The equation itself, in a code span. Some entries give two or three related lines.
+4. The symbol list: every symbol in the equation and what it means, with its units or range where that helps.
+5. **In plain words:** the equation read out in everyday English, with why it has the shape it has.
+6. **Tiny example:** small numbers worked through step by step, every step shown.
+7. **Where it is used:** which systems use it and how, including 2025-2026 practice where it matters.
+8. **In the book:** the chapter and section that teach the idea, or "Only here".
+
+When an entry uses a term the chapters do not define, a definition callout follows the entry, and the term goes into the glossary.
+
+The 814 entries fall into seven families, one section each:
+
+| Section | What these equations do | Number of entries | Start with |
+|---|---|---|---|
+| Foundations: linear algebra, calculus, probability, statistics and information | Store a model's numbers as vectors and matrices, measure change with derivatives and gradients, describe uncertainty, turn probabilities into the losses that training minimizes, and store every number in bits | 135 | Dot product (inner product) |
+| Classical machine learning, evaluation and retrieval | Fit models to tables of data, find structure in data without answers, measure whether any model is good with honest error bars, and rank search results and recommendations | 144 | Linear regression model |
+| Neural networks and deep learning | Turn random numbers into a trained network (neurons, activations, losses, backpropagation, optimizers, normalization) and build the layers of 2026's models: attention, mixture of experts and state-space layers | 103 | Artificial neuron (weighted sum plus bias) |
+| Large language models: training, scaling and inference | Cut text into tokens, train on the next token, decide how big a model to build and how much text to feed it, then run it: memory, decoding, speed-ups, fine-tuning, long context, retrieval and thinking time | 100 | Temperature-scaled softmax sampling |
+| Reinforcement learning, alignment and safety | Choose well under uncertainty and over time, learn from rewards, steer chatbots with human preferences (RLHF, DPO, GRPO), and measure risks and look inside models | 113 | Discounted return (G) |
+| Generative models and classical AI | Search, play games, reason with logic and probability, control robots, and generate images, audio and video (VAEs, GANs, diffusion, flow matching) | 129 | A* evaluation function (and greedy best-first search) |
+| Compute, chips and data centers | Count the arithmetic a model needs, find the limits of chips, memory and networks, and follow the job into the building: failures, power, cooling, water and the cost of each token | 90 | Training time, GPU count and GPU-hours from a compute budget |
+
+*Table G.1: The seven families of equations, with the number of entries in each section and a good first entry for a beginner.*
+
+The families are not separate subjects. Building a system such as your chatbot draws on all seven, and each one feeds the others:
+
+```mermaid
+flowchart TD
+  F["Foundations<br/>vectors, gradients,<br/>probability, losses"] --> M["Classical machine learning,<br/>evaluation and retrieval"]
+  F --> N["Neural networks<br/>and deep learning"]
+  F --> R["Reinforcement learning,<br/>alignment and safety"]
+  F --> G["Generative models<br/>and classical AI"]
+  F --> H["Compute, chips<br/>and data centers"]
+  M -->|"regression, losses"| N
+  N -->|"Transformer layers"| L["Large language models<br/>training, scaling, inference"]
+  N -->|"denoising networks"| G
+  M -->|"search and ranking"| L
+  L -->|"pretrained model"| R
+  R -->|"post-training"| S["A working AI system<br/>such as your chatbot"]
+  L -->|"decoding and serving"| S
+  G -->|"images, audio, video"| S
+  M -->|"evaluation"| S
+  H -->|"chips, power, cost"| L
+  H -->|"runs everything"| S
+```
+*Figure G.0: How the seven families of equations feed one another in building an AI system. The foundations feed every family; neural networks grow into large language models, reinforcement learning turns a pretrained model into an assistant, and compute sets what all of it costs.*
+
+To find a symbol or a term anywhere in the book, use the search box on the Glossary page ("Find a term"): it searches every term and every definition, including the ones defined in this appendix, so you can type a symbol's name, such as "learning rate" or "KL divergence", as well as a term.
 
 ## Foundations: linear algebra, calculus, probability, statistics and information
 
