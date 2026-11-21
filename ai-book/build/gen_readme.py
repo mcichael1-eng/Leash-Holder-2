@@ -108,6 +108,12 @@ lines += [
     "arithmetic and once for clarity and integrity, by reviewers told to assume each passage was wrong until "
     "checked: about 3,000 passages, about 260 problems fixed (`planning/coverage/adversarial-review.md`). A final "
     "completeness critic re-read every report and closed what was still open.",
+    "13. **The equations.** Seven teams inventoried the equations in the standard textbooks and courses and in the "
+    "frontier labs' recent papers, checked each against what the book already taught, and wrote every missing one for "
+    "this reader: every symbol explained, read out in plain words, with a tiny worked example. Reviewers told to assume "
+    "each entry was wrong rechecked the symbols and the arithmetic. Four critics (textbooks, frontier papers, courses "
+    "and systems, applied branches) then hunted for anything still missing and added 97 more, each verified the same "
+    "way. The result is Appendix G (`planning/equations/`).",
     "",
     "Facts about fast-moving areas (models, chips, data centers, prices, law) reflect sources available on October 23, 2026 "
     "and will date. Figures from secondary sources are marked as reported; check the Going deeper lists for primary sources.",
