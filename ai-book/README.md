@@ -4,11 +4,11 @@
 
 A complete book for someone with almost no computer-science background who uses AI chatbots every day and wants to understand all of it: how computers work, the math, how machines learn, neural networks and Transformers, how frontier labs build large language models, how to build with AI, chips and compute, data centers and energy, every major branch of AI, safety, law and society, and the skills, careers and opportunities that come with it.
 
-- **10 parts, 66 chapters, 6 appendices**
-- **3,959 terms** in a searchable glossary (every term is defined where it first appears)
-- **533 diagrams**, plus tables and hand-worked numeric examples
+- **10 parts, 66 chapters, 7 appendices**
+- **4,807 terms** in a searchable glossary (every term is defined where it first appears)
+- **554 diagrams**, plus tables and hand-worked numeric examples
 - **659 exercises** from Easy to Challenge, none of which require prior coding experience
-- About **1,040,000 words**
+- About **1,360,000 words**
 
 ## How to read it
 
@@ -144,6 +144,7 @@ A complete book for someone with almost no computer-science background who uses 
 - Appendix D: [Who's Who: Companies, Labs, Products and People](appendices/D-whos-who.md)
 - Appendix E: [Resources: Courses, Books, Newsletters, Podcasts and Communities](appendices/E-resources.md)
 - Appendix F: [The Advanced Shelf](appendices/F-advanced-shelf.md)
+- Appendix G: [The Equations of AI](appendices/G-equations-of-ai.md)
 - [Glossary](GLOSSARY.md) (generated)
 
 ## How it was made
@@ -160,6 +161,7 @@ A complete book for someone with almost no computer-science background who uses 
 10. **Real readers' questions.** 528 questions that people actually ask online (help centers, forums, Hacker News, Stack Exchange, Quora) were checked against the book. It fully answered 421 before and 506 after; the rest are partly answered or depend on facts no primary source settles (`planning/coverage/questions-*.md`).
 11. **Every chapter read as a beginner.** Every chapter and appendix was read start to finish from the reader's point of view, fixing about 1,000 places where that reader would get lost, including defining every abbreviation and company name at first use, and testing the exercises (`planning/coverage/reader-test-*.md`, `earliest-use.md`, `code-tests.md`). Every term defined in more than one chapter was checked so the glossary never merges two different meanings (`definitions-*.md`).
 12. **Adversarial review.** Everything added in steps 8 to 11 was reviewed twice more, once for facts and arithmetic and once for clarity and integrity, by reviewers told to assume each passage was wrong until checked: about 3,000 passages, about 260 problems fixed (`planning/coverage/adversarial-review.md`). A final completeness critic re-read every report and closed what was still open.
+13. **The equations.** Seven teams inventoried the equations in the standard textbooks and courses and in the frontier labs' recent papers, checked each against what the book already taught, and wrote every missing one for this reader: every symbol explained, read out in plain words, with a tiny worked example. Reviewers told to assume each entry was wrong rechecked the symbols and the arithmetic. Four critics (textbooks, frontier papers, courses and systems, applied branches) then hunted for anything still missing and added 97 more, each verified the same way. The result is Appendix G (`planning/equations/`).
 
 Facts about fast-moving areas (models, chips, data centers, prices, law) reflect sources available on October 23, 2026 and will date. Figures from secondary sources are marked as reported; check the Going deeper lists for primary sources.
 
