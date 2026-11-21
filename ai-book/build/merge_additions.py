@@ -53,7 +53,7 @@ def renumber(m):
     return f"*Figure G.{n}:"
 
 
-doc = re.sub(r"\*Figure G\.(?:X|\d+):", renumber, doc)
+doc = re.sub(r"\*Figure G\.(?:X|[1-9]\d*):", renumber, doc)
 gp.write_text(doc)
 print(f"inserted {done}, failed {len(failed)}, figures {n}, entries {len(re.findall(r'^### ', doc, re.M))}")
 for f in failed:

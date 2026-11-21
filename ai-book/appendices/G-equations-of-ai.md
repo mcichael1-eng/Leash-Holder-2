@@ -2,7 +2,7 @@
 
 *Every equation used to build today's AI, from the dot product to the reinforcement-learning objectives behind reasoning models, each with every symbol explained and a tiny worked example.*
 
-This appendix is a catalog of 814 equations. It aims to hold every equation that is standard in the textbooks and courses the field teaches from, and every equation in active use at the frontier labs as of late 2026. The textbooks include Russell and Norvig's *Artificial Intelligence: A Modern Approach*, Goodfellow, Bengio and Courville's *Deep Learning*, *Dive into Deep Learning*, Bishop's and Murphy's books on machine learning and Sutton and Barto's *Reinforcement Learning: An Introduction*; the courses include Stanford's CS229, CS231n, CS224n and CS336; and the hardware entries follow standard references such as Hennessy and Patterson's books on computer architecture and *The Datacenter as a Computer*. Frontier practice comes from the labs' own papers, model cards and documentation. Every entry is written for a reader with no computer-science background: each symbol is explained in every entry that uses it, the equation is read out in plain English, and a tiny worked example shows every step with small numbers you can check on a calculator.
+This appendix is a catalog of 911 equations. It aims to hold every equation that is standard in the textbooks and courses the field teaches from, and every equation in active use at the frontier labs as of late 2026. The textbooks include Russell and Norvig's *Artificial Intelligence: A Modern Approach*, Goodfellow, Bengio and Courville's *Deep Learning*, *Dive into Deep Learning*, Bishop's and Murphy's books on machine learning and Sutton and Barto's *Reinforcement Learning: An Introduction*; the courses include Stanford's CS229, CS231n, CS224n and CS336; and the hardware entries follow standard references such as Hennessy and Patterson's books on computer architecture and *The Datacenter as a Computer*. Frontier practice comes from the labs' own papers, model cards and documentation. Every entry is written for a reader with no computer-science background: each symbol is explained in every entry that uses it, the equation is read out in plain English, and a tiny worked example shows every step with small numbers you can check on a calculator.
 
 It is not a list of every formula ever published. Papers add new variants every week, most of them an existing equation with one term added or one constant changed, and a list of all of them would never be finished. When a variant differs only trivially from a standard equation, it is folded into the nearest entry, named in that entry's heading or in a note inside it, rather than given an entry of its own. So when a paper uses an equation you cannot find here by name, look for the one it builds on: most new equations are an old one with a twist.
 
@@ -79,17 +79,17 @@ Every entry has the same parts, in the same order:
 
 When an entry uses a term the chapters do not define, a definition callout follows the entry, and the term goes into the glossary.
 
-The 814 entries fall into seven families, one section each:
+The 911 entries fall into seven families, one section each:
 
 | Section | What these equations do | Number of entries | Start with |
 |---|---|---|---|
-| Foundations: linear algebra, calculus, probability, statistics and information | Store a model's numbers as vectors and matrices, measure change with derivatives and gradients, describe uncertainty, turn probabilities into the losses that training minimizes, and store every number in bits | 135 | Dot product (inner product) |
-| Classical machine learning, evaluation and retrieval | Fit models to tables of data, find structure in data without answers, measure whether any model is good with honest error bars, and rank search results and recommendations | 144 | Linear regression model |
-| Neural networks and deep learning | Turn random numbers into a trained network (neurons, activations, losses, backpropagation, optimizers, normalization) and build the layers of 2026's models: attention, mixture of experts and state-space layers | 103 | Artificial neuron (weighted sum plus bias) |
-| Large language models: training, scaling and inference | Cut text into tokens, train on the next token, decide how big a model to build and how much text to feed it, then run it: memory, decoding, speed-ups, fine-tuning, long context, retrieval and thinking time | 100 | Temperature-scaled softmax sampling |
-| Reinforcement learning, alignment and safety | Choose well under uncertainty and over time, learn from rewards, steer chatbots with human preferences (RLHF, DPO, GRPO), and measure risks and look inside models | 113 | Discounted return (G) |
-| Generative models and classical AI | Search, play games, reason with logic and probability, control robots, and generate images, audio and video (VAEs, GANs, diffusion, flow matching) | 129 | A* evaluation function (and greedy best-first search) |
-| Compute, chips and data centers | Count the arithmetic a model needs, find the limits of chips, memory and networks, and follow the job into the building: failures, power, cooling, water and the cost of each token | 90 | Training time, GPU count and GPU-hours from a compute budget |
+| Foundations: linear algebra, calculus, probability, statistics and information | Store a model's numbers as vectors and matrices, measure change with derivatives and gradients, describe uncertainty, turn probabilities into the losses that training minimizes, and store every number in bits | 144 | Dot product (inner product) |
+| Classical machine learning, evaluation and retrieval | Fit models to tables of data, find structure in data without answers, measure whether any model is good with honest error bars, and rank search results and recommendations | 175 | Linear regression model |
+| Neural networks and deep learning | Turn random numbers into a trained network (neurons, activations, losses, backpropagation, optimizers, normalization) and build the layers of 2026's models: attention, mixture of experts and state-space layers | 117 | Artificial neuron (weighted sum plus bias) |
+| Large language models: training, scaling and inference | Cut text into tokens, train on the next token, decide how big a model to build and how much text to feed it, then run it: memory, decoding, speed-ups, fine-tuning, long context, retrieval and thinking time | 110 | Temperature-scaled softmax sampling |
+| Reinforcement learning, alignment and safety | Choose well under uncertainty and over time, learn from rewards, steer chatbots with human preferences (RLHF, DPO, GRPO), and measure risks and look inside models | 127 | Discounted return (G) |
+| Generative models and classical AI | Search, play games, reason with logic and probability, control robots, and generate images, audio and video (VAEs, GANs, diffusion, flow matching) | 145 | A* evaluation function (and greedy best-first search) |
+| Compute, chips and data centers | Count the arithmetic a model needs, find the limits of chips, memory and networks, and follow the job into the building: failures, power, cooling, water and the cost of each token | 93 | Training time, GPU count and GPU-hours from a compute budget |
 
 *Table G.1: The seven families of equations, with the number of entries in each section and a good first entry for a beginner.*
 
@@ -1794,6 +1794,27 @@ flowchart LR
 **Where it is used:** Diffusion forward processes and VAE latents (generative-models section); Gaussian processes and Bayesian optimization (classical-machine-learning section); Kalman filters for tracking in self-driving; Mahalanobis-distance out-of-distribution detection; the closed-form KL between Gaussians.
 **In the book:** Appendix F (Gaussian discriminant analysis: Multivariate normal distribution); Chapter 16 (diffusion adds Gaussian noise).
 
+### Conditioning and marginalizing a multivariate Gaussian (Schur complement)
+
+**What it does:** Gives the exact bell curve for some variables of a joint Gaussian once the others have been observed, and for any subset on its own.
+
+`x = [x_a, x_b] ~ N([μ_a, μ_b], Σ)` with Σ split into blocks `Σ_aa`, `Σ_ab`, `Σ_ba`, `Σ_bb`; marginal `x_a ~ N(μ_a, Σ_aa)`; conditional `x_a given x_b ~ N(μ_(a|b), Σ_(a|b))` with `μ_(a|b) = μ_a + Σ_ab × Σ_bb^-1 × (x_b − μ_b)` and `Σ_(a|b) = Σ_aa − Σ_ab × Σ_bb^-1 × Σ_ba`
+
+- **x_a**, **x_b**: two groups of variables in one jointly Gaussian vector (x_b is observed); **~ N(mean, covariance)**: is distributed as a Gaussian with that mean and covariance
+- **μ_a**, **μ_b**: their means
+- **Σ_aa**, **Σ_bb**: each group's own covariance matrix; **Σ_ab** (and its transpose **Σ_ba**): the cross-covariance between the groups
+- **Σ_bb^-1**: the inverse of Σ_bb
+- **μ_(a|b)**, **Σ_(a|b)**: the mean and covariance of x_a after seeing x_b
+
+**In plain words:** To forget some variables, just drop their rows and columns. To condition on them, shift the mean by how surprising the observation was, scaled by how strongly the two groups move together, and shrink the covariance by the part the observation explains. The shrunken covariance is the Schur complement; it does not depend on the value observed, only on the fact that something was observed.
+
+**Tiny example:** Two standardized measurements with correlation 0.8: μ = [0, 0] and Σ with rows [1, 0.8] and [0.8, 1]. Observing x_b = 2 gives μ_(a|b) = 0 + 0.8 × 1 × 2 = 1.6 and variance 1 − 0.8 × 0.8 = 0.36 (standard deviation 0.6, down from 1).
+
+**Where it is used:** Gaussian-process regression is this formula applied to the kernel matrix (classical-machine-learning section); the Kalman filter update (generative-models and classical-AI section); filling in missing values of correlated measurements; probabilistic PCA and factor analysis.
+**In the book:** Only here.
+
+> **Definition — Schur complement:** For a matrix split into blocks, the block Σ_aa − Σ_ab × Σ_bb^-1 × Σ_ba that remains after accounting for the other block; for a Gaussian it is the covariance of one group of variables once the other group is known.
+
 ### Poisson distribution
 
 **What it does:** Gives the chance of k events in a window when events happen independently at a steady average rate.
@@ -1879,6 +1900,28 @@ flowchart LR
 
 > **Definition — Gamma function:** The extension of the factorial to non-whole numbers, written Γ, with Γ(n) = (n − 1)! for whole numbers n. It appears in the normalizing constants of the Beta and Dirichlet distributions.
 
+### Bayesian update of a Gaussian mean (normal–normal conjugate prior)
+
+**What it does:** Combines a bell-curve prior belief about an unknown average with noisy measurements, giving a bell-curve posterior in closed form.
+
+`prior: μ ~ N(μ_0, τ_0^2)`; data `x_1, ..., x_n ~ N(μ, σ^2)` with known σ^2 and sample mean x̄; posterior `μ given data ~ N(μ_n, τ_n^2)` with `1 ÷ τ_n^2 = 1 ÷ τ_0^2 + n ÷ σ^2` and `μ_n = τ_n^2 × (μ_0 ÷ τ_0^2 + n × x̄ ÷ σ^2)`; predictive for one more measurement `N(μ_n, σ^2 + τ_n^2)`
+
+- **μ** (mu): the unknown true average; **~ N(m, v)**: is distributed as a Gaussian with mean m and variance v
+- **μ_0**, **τ_0^2** (tau): the prior guess for μ and its variance (how unsure the guess is)
+- **σ^2**: the noise variance of a single measurement
+- **n**, **x̄**: the number of measurements and their average
+- **μ_n**, **τ_n^2**: the posterior mean and variance after n measurements
+- **1 ÷ variance**: the precision, how much a source of information is worth
+
+**In plain words:** Precisions add: the prior counts as one piece of evidence worth 1 ÷ τ_0^2, and each measurement adds 1 ÷ σ^2. The posterior mean is the precision-weighted average of the prior guess and the data average, so a confident prior or a few noisy data keep the answer near the prior, and many data overwhelm it. Predicting a new measurement adds the remaining uncertainty about μ to the measurement noise.
+
+**Tiny example:** Prior μ_0 = 70 with τ_0^2 = 25 (standard deviation 5); noise σ^2 = 100; n = 4 measurements averaging 80. Precision 1 ÷ 25 + 4 ÷ 100 = 0.04 + 0.04 = 0.08, so τ_n^2 = 12.5. Mean μ_n = 12.5 × (70 ÷ 25 + 4 × 80 ÷ 100) = 12.5 × (2.8 + 3.2) = 75, exactly halfway, because the prior and the data carried equal precision. A fifth measurement is predicted as N(75, 112.5), a standard deviation of about 10.6.
+
+**Where it is used:** The one-dimensional Kalman filter update is exactly this formula, with the prediction as the prior and the sensor reading as the data (generative-models and classical-AI section); inverse-variance weighting when combining measurements or studies (meta-analysis); empirical-Bayes shrinkage of noisy averages, such as the ratings of items with few votes; Bayesian A/B testing with normal approximations.
+**In the book:** Only here.
+
+> **Definition — Precision of a distribution (inverse variance):** In statistics, one divided by the variance of a distribution: the higher the precision, the more concentrated the distribution and the more weight its information gets when combined with other sources. It is unrelated to the classification metric also called precision.
+
 ### Dirichlet distribution
 
 **What it does:** Describes uncertainty about a whole probability vector, the many-option version of the Beta.
@@ -1942,6 +1985,26 @@ flowchart LR
 **In the book:** Only here (Chapter 11, Privacy, describes calibrated noise in words).
 
 > **Definition — Laplace distribution:** A symmetric distribution whose density falls off with the absolute distance from its center rather than the squared distance, giving a sharper peak and heavier tails than the bell curve. It is the noise used by the Laplace mechanism of differential privacy.
+
+### Student's t distribution (and the Cauchy distribution)
+
+**What it does:** Gives a bell-shaped curve with heavier tails than the Gaussian, so rare large values are far less surprising.
+
+`p(x) = Γ((ν + 1) ÷ 2) ÷ (sqrt(ν × π) × Γ(ν ÷ 2)) × (1 + x^2 ÷ ν)^(−(ν + 1) ÷ 2)`; to shift and scale, use (x − μ) ÷ σ in place of x and divide p by σ; `ν = 1` gives the Cauchy distribution `p(x) = 1 ÷ (π × (1 + x^2))`; as ν grows the curve becomes the standard Gaussian; variance `ν ÷ (ν − 2)` for ν > 2
+
+- **x**: the value; **μ**, **σ**: the center and the scale
+- **ν** (nu): the degrees of freedom, which set how heavy the tails are (small ν, heavy tails)
+- **Γ**: the gamma function, which extends the factorial (Γ(n) = (n − 1)! for whole numbers n)
+- **π**: 3.14159...
+
+**In plain words:** The tails fall off like a power of x instead of like exp(−x^2 ÷ 2), so a value five scales away is unusual but not astronomically unlikely. The curve also arises as a Gaussian whose variance is itself uncertain, which is why it replaces the Gaussian when a standard deviation is estimated from a few samples. The Cauchy case is so heavy-tailed that it has no mean at all.
+
+**Tiny example:** At x = 0 the heights are 0.318 (Cauchy, ν = 1), 0.368 (ν = 3) and 0.399 (Gaussian). At x = 3 they are 0.0318, 0.0230 and 0.00443: the Cauchy curve is about 7 times, and the ν = 3 curve about 5 times, as high as the Gaussian there. The chance of landing more than 3 from the center is 0.205 (Cauchy), 0.058 (ν = 3) and 0.0027 (Gaussian).
+
+**Where it is used:** The t multiplier in small-sample confidence intervals and t-tests (the confidence-interval entry in this section and the paired t-test in the classical-machine-learning section); t-SNE's map similarity 1 ÷ (1 + d^2) is the Cauchy curve, which lets clusters separate (classical section); robust regression with heavy-tailed noise; heavy-tailed priors in Bayesian models.
+**In the book:** Only here (Chapter 10, Shrinking many columns into a few: PCA, t-SNE and UMAP, names the "t-distributed" in t-SNE without the formula).
+
+> **Definition — Cauchy distribution:** The Student's t distribution with one degree of freedom, a bell-shaped curve with tails so heavy that its average does not exist; t-SNE uses its shape to measure similarity in the map.
 
 ### Gumbel distribution and the Gumbel-max trick
 
@@ -2129,6 +2192,31 @@ flowchart LR
 **In the book:** Chapter 54 (Monte Carlo inference: Markov chain Monte Carlo); Appendix F (Gibbs sampling).
 
 > **Definition — Metropolis–Hastings algorithm:** An MCMC method that proposes a random move and accepts it with a probability based on how much more or less likely the new state is, so the walk ends up visiting states in proportion to a target distribution.
+
+### Hamiltonian Monte Carlo (leapfrog steps and the accept test)
+
+**What it does:** Draws samples from a complicated distribution by simulating a frictionless ball rolling over the landscape of its negative log-probability, which makes long, well-aimed jumps.
+
+`U(θ) = −ln p̃(θ)`; `H(θ, r) = U(θ) + (1 ÷ 2) × r · r`; one leapfrog step: `r ← r − (ε ÷ 2) × ∇U(θ)`, then `θ ← θ + ε × r`, then `r ← r − (ε ÷ 2) × ∇U(θ)`; after L steps accept the new point with probability `min(1, exp(H_old − H_new))`, then draw a fresh `r ~ N(0, I)`
+
+- **θ** (theta): the current sample (the ball's position)
+- **p̃(θ)**: the target probability, known only up to a constant factor
+- **U(θ)**: the potential energy, the negative log of the target
+- **r**: an auxiliary momentum vector, drawn fresh from a standard Gaussian for each proposal
+- **H**: the total energy (potential plus kinetic); **H_old**, **H_new**: its value before and after the L steps
+- **ε** (epsilon): the step size; **L**: the number of leapfrog steps per proposal
+- **∇U(θ)**: the gradient of U; **I**: the identity matrix
+
+**In plain words:** A random-walk sampler wanders by small blind steps. HMC uses the gradient: the ball speeds up downhill into high-probability regions and coasts uphill, so one proposal can cross the whole distribution. Exact physics would keep the total energy constant; the leapfrog steps keep it almost constant, and the Metropolis accept test corrects the small error, so the samples come from exactly the right distribution.
+
+**Tiny example:** Target a standard normal, so U = θ^2 ÷ 2 and ∇U = θ. Start at θ = 1 with momentum r = 0.5: H_old = 0.5 + 0.125 = 0.625. One leapfrog step with ε = 0.5: r = 0.5 − 0.25 × 1 = 0.25; θ = 1 + 0.5 × 0.25 = 1.125; r = 0.25 − 0.25 × 1.125 = −0.03125. H_new = 0.6328 + 0.0005 = 0.6333, so the acceptance probability is exp(0.625 − 0.6333) ≈ 0.992.
+
+**Where it is used:** The default sampler of Stan (its self-tuning No-U-Turn variant, Hoffman and Gelman 2014) and of PyMC and NumPyro for Bayesian statistics; reference posteriors in studies of Bayesian neural networks (Izmailov et al. 2021 ran full-batch HMC on ResNets); lattice physics simulations, where the method began (Duane et al. 1987).
+**In the book:** Only here (the simpler Metropolis–Hastings sampler is the entry above; Appendix F, Gibbs sampling and importance sampling, describes other samplers in words).
+
+> **Definition — Hamiltonian Monte Carlo (HMC):** A Markov chain Monte Carlo method that proposes new samples by simulating motion with momentum over the negative log-probability surface, using gradients to make long jumps that are still accepted with high probability. Its self-tuning variant NUTS (the No-U-Turn Sampler) is the default in Stan.
+
+> **Definition — Leapfrog integrator:** A simple step-by-step method for simulating motion that alternates half-steps of momentum with full steps of position; it nearly conserves energy and can be run backward exactly.
 
 ### Log-derivative trick (score-function gradient)
 
@@ -2327,6 +2415,30 @@ flowchart LR
 
 > **Definition — Pinsker's inequality:** The guarantee that the total variation distance between two distributions is at most the square root of half their KL divergence, so a small KL divergence means the two give nearly the same probability to every event.
 
+### Optimal transport and the Wasserstein distance (with Sinkhorn's entropic solver)
+
+**What it does:** Measures the cheapest way to move one pile of probability onto another, and finds which mass goes where.
+
+`OT(a, b) = min over plans T of sum over i, j of T_ij × C_ij`, subject to `T_ij ≥ 0`, `sum over j of T_ij = a_i` and `sum over i of T_ij = b_j`; `W_p = (min over couplings of E[||x − y||^p])^(1 ÷ p)`; in one dimension `W_1 = ∫ |F(t) − G(t)| dt`; entropic version (Sinkhorn): `K = exp(−C ÷ ε)`, repeat `u ← a ÷ (K × v)` and `v ← b ÷ (K^T × u)`, then `T = diag(u) × K × diag(v)`
+
+- **a**, **b**: the two distributions (the amounts of mass at each source point i and each target point j)
+- **C_ij**: the cost of moving one unit of mass from i to j, usually the distance or squared distance
+- **T**: the transport plan; **T_ij**: how much mass goes from i to j
+- **W_p**: the Wasserstein-p distance (p = 1 is the earth mover's distance); a **coupling** pairs points x and y so that each side keeps its own distribution
+- **||x − y||**: the distance between x and y; **E[...]**: the average over the coupling; **p**: the power the distance is raised to
+- **F**, **G**: the two cumulative distribution functions, in one dimension; **∫ ... dt**: the area under the gap between them
+- **ε** (epsilon): the entropy strength; **K**: the matrix exp(−C ÷ ε), taken entry by entry
+- **u**, **v**: scaling vectors (the divisions are entry by entry); **diag(u)**: the diagonal matrix with u on its diagonal
+
+**In plain words:** KL divergence compares heights point by point and becomes infinite when two piles do not overlap; optimal transport asks how far the mass must travel, so it still gives a useful, smoothly changing answer. The exact problem is a linear program. Adding a little entropy makes the plan blurrier but lets it be computed by alternately rescaling rows and columns, which is fast on GPUs.
+
+**Tiny example:** Pile a has half its mass at 0 and half at 1; pile b has half at 1 and half at 3. Matching in sorted order, 0 → 1 and 1 → 3, costs 0.5 × 1 + 0.5 × 2 = 1.5, so W_1 = 1.5. The gap between the cumulative curves gives the same: a gap of 0.5 over the stretch from 0 to 1, plus 0.5 over the stretch from 1 to 3, is 0.5 + 1.0 = 1.5.
+
+**Where it is used:** Wasserstein GANs (generative-models section); minibatch optimal-transport pairing of noise and data in flow matching, which straightens the learned paths (Tong et al. 2023; Pooladian et al. 2023); the Sinkhorn normalization inside DeepSeek's manifold-constrained hyper-connections (deep-learning section); domain adaptation and comparing cell populations in biology; the POT (Python Optimal Transport) library and scipy.stats.wasserstein_distance.
+**In the book:** Only here (the Wasserstein distance is defined at the WGAN entry in the generative-models section).
+
+> **Definition — Optimal transport:** The mathematics of moving one distribution of mass onto another at the least total cost; with distance as the cost, the minimum is the Wasserstein distance between the two distributions.
+
 ### Source coding bound (compression equals prediction)
 
 **What it does:** Says no lossless code can beat the entropy, and that a good predictor yields a code that nearly reaches it.
@@ -2511,6 +2623,29 @@ flowchart LR
 
 > **Definition — Student's t-distribution:** A bell-shaped distribution with heavier tails than the normal, used in place of it when a standard deviation is estimated from only a few values. It makes confidence intervals from small samples slightly wider.
 
+### Event rates, exact Poisson confidence intervals and the rule of three
+
+**What it does:** Turns a count of rare events over some exposure (miles driven, patient-days, device-hours) into a rate with honest error bars, even when nothing has happened yet.
+
+`rate = k ÷ E`; `reduction = 1 − rate ÷ rate_ref`; exact 95% interval for the expected count: `λ_L` solves `P(K ≥ k given λ_L) = 0.025` and `λ_U` solves `P(K ≤ k given λ_U) = 0.025` (shortcut: `λ_L = 0.5 × χ^2_0.025(2k)`, `λ_U = 0.5 × χ^2_0.975(2k + 2)`), so the rate lies in `[λ_L ÷ E, λ_U ÷ E]`; rule of three: with k = 0, `rate_upper ≈ −ln(0.05) ÷ E ≈ 3 ÷ E`, so showing a rate below r needs about `E = 3 ÷ r`
+
+- **k**: the number of events observed (crashes, adverse events, failures)
+- **E**: the exposure, how much opportunity there was for events (millions of miles, device-hours)
+- **rate_ref**: the comparison rate, such as a human-driver benchmark
+- **K**: the count a Poisson model with expected value λ would produce (the Poisson distribution is earlier in this section)
+- **λ_L**, **λ_U** (lambda): the lowest and highest expected counts still consistent with having seen k events
+- **χ^2_q(m)**: the q-quantile of a chi-squared distribution with m degrees of freedom, a table lookup that gives the same answer as solving the two Poisson equations
+- **r**: a target rate
+
+**In plain words:** Divide the count by the exposure to get a rate. With only a few events the count itself is noisy, so the honest interval comes from asking which expected counts would make the observed count unsurprising under the Poisson model for rare, independent events; this works even for 0, 1 or 2 events, where the bell-curve formula fails. When nothing has happened at all, the one-sided 95% upper limit on the expected count is about 3, which is the rule of three.
+
+**Tiny example:** Chapter 50's fictional RoboCab had k = 2 serious-injury crashes in E = 50 million miles: 2 ÷ 50 = 0.04 per million miles, or 1 − 0.04 ÷ 0.25 = 84% below a benchmark of 0.25. Solving the two equations gives λ_L ≈ 0.242 and λ_U ≈ 7.22, so the rate lies between 0.242 ÷ 50 ≈ 0.0048 and 7.22 ÷ 50 ≈ 0.144 per million miles: between 1 − 0.0048 ÷ 0.25 ≈ 98% and 1 − 0.144 ÷ 0.25 ≈ 42% fewer. With 30 events instead, the interval for the count is about 20.2 to 42.8, a much tighter 0.40 to 0.86 per million miles. Rule of three with no deaths at all: E = 3 ÷ (1.09 per 100 million miles) ≈ 275 million miles before a fleet is shown, with 95% confidence, to be no worse than human drivers (the exact constant is −ln(0.05) ≈ 2.996).
+
+**Where it is used:** Self-driving safety comparisons (RAND's 2016 report *Driving to Safety* used this reasoning, and Waymo's published crash-rate comparisons give 95% confidence intervals for each crash category); adverse-event rates for drugs and medical devices; hardware failure rates per device-hour (the failure entries of the compute section); red-team results such as "0 successful attacks in 300 attempts", whose 95% upper bound is 3 ÷ 300 = 1%.
+**In the book:** Chapter 50 (How to read a "% fewer crashes" claim, which gives the 0.24-to-7.2 interval and the 275-million-mile rule-of-three calculation in words).
+
+> **Definition — Exact Poisson confidence interval:** A range for the true rate of rare events built directly from the Poisson model of counts rather than from a bell-curve approximation, so it stays honest when only a handful of events, or none, have been seen.
+
 ### Hypothesis tests and p-values (z-test and t-test)
 
 **What it does:** Asks how surprising an observed result would be if there were really no effect.
@@ -2650,6 +2785,30 @@ flowchart LR
 **Where it is used:** Explains L2 penalties and weight decay (deep-learning section) and L1 sparsity (lasso, classical-machine-learning section); add-one smoothing of counts; priors in Bayesian optimization.
 **In the book:** Appendix F (The ELBO, MAP inference and wake-sleep); Chapter 9 (Regularization: L2 penalty worked).
 
+### Posterior predictive distribution and Bayesian model averaging
+
+**What it does:** Predicts new data by averaging the predictions of every plausible parameter setting (or model), each weighted by how believable the data made it, instead of trusting one best guess.
+
+`p(y_new given x_new, D) = ∫ p(y_new given x_new, θ) × p(θ given D) dθ ≈ (1 ÷ S) × sum over s of p(y_new given x_new, θ_s)`, with each `θ_s` drawn from `p(θ given D)`; across models `p(y given D) = sum over models m of p(y given m, D) × P(m given D)`
+
+- **y_new**, **x_new**: the new outcome and its input
+- **D**: the training data
+- **θ** (theta): the model's parameters; **p(θ given D)**: the posterior over them
+- **∫ ... dθ**: the integral, here an average over all parameter values
+- **θ_s**, **S**: S samples from the posterior (or S ensemble members) used to approximate the integral
+- **m**: one candidate model; **P(m given D)**: its posterior probability
+
+**In plain words:** A single fitted model is overconfident because it ignores that other parameters fit the data almost as well. Averaging over the posterior widens the predictions wherever the data leave the parameters uncertain. In practice the integral is approximated with a handful of samples: posterior samples from MCMC, the members of an ensemble, or forward passes with dropout left on.
+
+**Tiny example:** A coin lands heads 3 times in 3 flips. The single best estimate (maximum likelihood) says P(heads) = 1. With a flat Beta(1, 1) prior the posterior is Beta(4, 1), and the posterior predictive P(next flip is heads) is its mean, 4 ÷ 5 = 0.8 (Laplace's rule of succession). Model averaging: two models predict 0.9 and 0.4 and have posterior probabilities 0.7 and 0.3, so the averaged prediction is 0.7 × 0.9 + 0.3 × 0.4 = 0.63 + 0.12 = 0.75.
+
+**Where it is used:** Deep ensembles (Lakshminarayanan, Pritzel and Blundell 2017) and Monte Carlo dropout (Gal and Ghahramani 2016) approximate it for neural networks; the predictive variances of Gaussian processes and Bayesian linear regression (classical-machine-learning section); tabular foundation models such as TabPFN are trained to output it directly (classical section); forecasting in probabilistic-programming tools such as Stan and PyMC.
+**In the book:** Only here.
+
+> **Definition — Posterior predictive distribution:** The probability of a new observation after averaging the predictions of all parameter values, each weighted by its posterior probability given the data seen so far.
+
+> **Definition — Bayesian model averaging:** Combining the predictions of several candidate models, each weighted by its posterior probability, instead of choosing one model and ignoring the others.
+
 ### Fisher information and the Cramér–Rao bound
 
 **What it does:** Measures how much one observation tells you about a parameter, and sets the best precision any unbiased estimate can reach.
@@ -2674,6 +2833,28 @@ flowchart LR
 
 > **Definition — Cramér–Rao bound:** A lower limit on the variance of any unbiased estimate of a parameter: one divided by the number of observations times the Fisher information. No method can be more precise on average.
 
+### Laplace approximation (a Gaussian fitted at the peak of the posterior)
+
+**What it does:** Replaces a complicated posterior with a bell curve centered at its peak, whose width comes from how sharply the posterior curves there.
+
+`p(θ given D) ≈ N(θ_MAP, A^-1)`, with `A = the Hessian of −ln p(θ given D) at θ_MAP`; evidence `ln p(D) ≈ ln p(D given θ_MAP) + ln p(θ_MAP) + (d ÷ 2) × ln(2 × π) − (1 ÷ 2) × ln det(A)`
+
+- **θ** (theta): the parameters; **D**: the data
+- **θ_MAP**: the most probable parameter value (the MAP estimate, found by ordinary training with a prior)
+- **A**: the matrix of second derivatives of the negative log posterior at the peak (how sharply it curves)
+- **A^-1**: its inverse, used as the covariance of the approximating Gaussian
+- **d**: the number of parameters; **det**: the determinant; **π**: 3.14159...
+- **p(D)**: the model evidence (marginal likelihood), used to compare models
+
+**In plain words:** Near its peak any smooth log posterior looks like an upside-down parabola, and a parabola in log space is a Gaussian. A sharply curved peak means the data pin the parameters down (small variance); a flat peak means they do not. The same approximation estimates the evidence used to compare models, and dropping the terms that do not grow with the amount of data gives BIC.
+
+**Tiny example:** A coin lands heads 7 times in 10 with a flat prior. The negative log posterior is −7 × ln θ − 3 × ln(1 − θ), lowest at θ_MAP = 0.7. Its second derivative there is 7 ÷ 0.7^2 + 3 ÷ 0.3^2 = 14.29 + 33.33 = 47.62, so the Laplace standard deviation is 1 ÷ sqrt(47.62) ≈ 0.145. The exact posterior, Beta(8, 4), has mean 0.667 and standard deviation 0.131: close, but the approximation misses the skew.
+
+**Where it is used:** Uncertainty for already-trained neural networks (the laplace-torch library of Daxberger et al. 2021, often using only the last layer or a Kronecker-factored Hessian); elastic weight consolidation's penalty against forgetting is a Laplace approximation of the old task's posterior (Kirkpatrick et al. 2017); Gaussian-process classification; the derivation of BIC (classical-machine-learning section).
+**In the book:** Only here.
+
+> **Definition — Laplace approximation:** Approximating a probability distribution by a Gaussian centered at its most probable point, with a spread set by how sharply the log-probability curves there.
+
 ### Gradient descent update (and the minibatch gradient)
 
 **What it does:** Moves every parameter a small step against its slope, using a cheap noisy estimate of the slope.
@@ -2695,6 +2876,31 @@ flowchart LR
 
 **Where it is used:** The core of training every neural network, from a small classifier to a frontier language model.
 **In the book:** Chapter 6 (Gradient descent: walking downhill in fog; The training loop); Chapter 12; Chapter 13; Appendix B (Gradient descent step).
+
+### Robbins–Monro step-size conditions (stochastic approximation)
+
+**What it does:** States how fast the step size of a noisy update must shrink for the updates to settle exactly on the right answer instead of jittering around it forever.
+
+`θ_(k+1) = θ_k − η_k × g_k`, with `E[g_k] = ∇L(θ_k)`; under mild conditions this converges when `sum over k of η_k = ∞` and `sum over k of η_k^2 < ∞`; a schedule that meets both: `η_k = η_0 ÷ k^p` with `0.5 < p ≤ 1`
+
+- **θ_k** (theta): the parameter estimate after k updates
+- **η_k** (eta): the step size (learning rate) used at update k
+- **g_k**: a noisy gradient, for example from one minibatch, whose average is the true gradient
+- **∇L(θ_k)**: the true gradient of the loss L at θ_k
+- **E[...]**: the expected value (the average over the noise)
+- **η_0**, **p**: the starting step size and how fast it decays
+- **∞**: infinity (the sum keeps growing without limit)
+
+**In plain words:** The first condition says the steps must add up to infinity, so the estimate can travel as far as it needs to. The second says their squares must add up to a finite number, so the noise eventually averages out. A schedule like 1 ÷ k meets both; a constant step size fails the second and leaves the estimate bouncing in a noise band whose width grows with the step size.
+
+**Tiny example:** Estimating an average by moving a fraction η_k = 1 ÷ k of the way toward each new value gives exactly the running mean: values 4, 8 and 6 give 4, then 4 + 0.5 × (8 − 4) = 6, then 6 + (1 ÷ 3) × (6 − 6) = 6. The steps 1, 1/2, 1/3, ... add up without limit (the first 1,000 already sum to about 7.49), while their squares add up to only π^2 ÷ 6 ≈ 1.645. With a constant step 0.1 on values of variance σ^2, the estimate keeps a variance of 0.1 ÷ (2 − 0.1) × σ^2 ≈ 0.053 × σ^2 forever.
+
+**Where it is used:** The convergence proofs of stochastic gradient descent and of tabular Q-learning and TD learning (Watkins and Dayan 1992, the "α shrinks appropriately" of the Q-learning entry; Sutton and Barto state the two conditions in section 2.5; Goodfellow, Bengio and Courville in section 8.3.1); Polyak averaging of iterates. In deep-learning practice, schedules that decay the learning rate toward zero at the end of training (cosine decay and the decay phase of warmup-stable-decay, deep-learning section) play the same role: the final decay removes the noise band left by a large constant step.
+**In the book:** Chapter 13 (Muon: balance the whole matrix) names Robbins and Monro (1951) as the origin of the stochastic version of gradient descent; the conditions are only here.
+
+> **Definition — Stochastic approximation:** The family of methods, started by Herbert Robbins and Sutton Monro in 1951, that find a solution by repeated small updates using noisy measurements; stochastic gradient descent and temporal-difference learning are examples.
+
+> **Definition — Robbins–Monro conditions:** The two requirements on a decreasing step size, that the steps add up to infinity while their squares add up to a finite number, which guarantee that noisy updates converge.
 
 ### Optimality conditions (stationary points, minima and saddle points)
 
@@ -3269,6 +3475,22 @@ flowchart LR
 
 > **Definition — Min-max scaling:** Rescaling a feature so its smallest training value becomes 0 and its largest becomes 1, by subtracting the minimum and dividing by the range.
 
+### Normalized difference vegetation index (NDVI)
+
+**What it does:** Turns two reflectance measurements, near-infrared and red, into one number for how green and vigorous the plants in a pixel are.
+
+`NDVI = (NIR − Red) ÷ (NIR + Red)`, from −1 to 1
+
+- **NIR**: the share of near-infrared light (just beyond visible red, invisible to our eyes) that the surface reflects, from 0 to 1
+- **Red**: the share of red light it reflects, from 0 to 1
+
+**In plain words:** Healthy leaves absorb red light for photosynthesis and strongly reflect near-infrared, so the gap between the two is large over vigorous plants and small over stressed plants, bare soil or pavement; water reflects more red than near-infrared and comes out negative. Dividing by the sum cancels overall brightness, so images taken in strong and weak light can be compared.
+
+**Tiny example:** Chapter 53's healthy patch: (0.50 − 0.08) ÷ (0.50 + 0.08) = 0.42 ÷ 0.58 ≈ 0.72; its stressed patch: (0.30 − 0.15) ÷ (0.30 + 0.15) = 0.15 ÷ 0.45 ≈ 0.33. Bare soil reflecting 0.25 and 0.20: 0.05 ÷ 0.45 ≈ 0.11. Water reflecting 0.05 and 0.08: −0.03 ÷ 0.13 ≈ −0.23.
+
+**Where it is used:** Computed for every pixel of satellite images (Sentinel-2's bands 8 and 4, Landsat) and drone photos; NDVI time series are standard input features for crop-yield, crop-type and drought models alongside weather and soil data, and for vegetation maps in tools such as Google Earth Engine. First proposed by Rouse and colleagues in 1974.
+**In the book:** Chapter 53 (Worked example: reading plant health from light).
+
 ### Distance metrics (Minkowski family: Manhattan, Euclidean, Chebyshev; and Hamming)
 
 **What it does:** Measures how far apart two lists of numbers, or two strings of symbols, are.
@@ -3326,6 +3548,27 @@ flowchart LR
 
 **Where it is used:** Near-duplicate detection in pretraining-data pipelines (pairs above a threshold such as 0.8 are treated as duplicates), set-based recommendation similarity, IoU in object detection and segmentation.
 **In the book:** Chapter 19 (Cleaning the firehose: the curation pipeline, Jaccard 4 ÷ 6 = 0.67) and Chapter 45 (Scoring a detector, with a pencil: IoU 0.39).
+
+### Object keypoint similarity (OKS) and percentage of correct keypoints (PCK)
+
+**What it does:** Scores a predicted body pose against the true one, playing for keypoints the role that IoU plays for boxes.
+
+`OKS = (sum over labeled keypoints i of exp(−d_i^2 ÷ (2 × s^2 × k_i^2))) ÷ (number of labeled keypoints)`, with `k_i = 2 × σ_i`; `PCK@α = share of keypoints with d_i < α × r`
+
+- **d_i**: the distance in pixels between the predicted and the true position of keypoint i
+- **s**: the person's scale, the square root of their segmented area in pixels (s^2 is the area)
+- **σ_i** (sigma): a per-keypoint tolerance measured from how much human annotators disagree (in COCO, 0.026 for the nose, 0.079 for shoulders, 0.062 for wrists and 0.107 for hips)
+- **k_i**: the falloff constant for keypoint i
+- **α** (alpha): a fraction such as 0.5; **r**: a reference length such as the head size (PCKh) or the box size
+
+**In plain words:** Each keypoint earns a credit between 0 and 1 that decays like a bell curve with its error, measured relative to the person's size and to how precisely people can mark that joint (hips are fuzzier than eyes). Averaging the credits gives a similarity from 0 to 1, and detection-style average precision is then computed with OKS thresholds in place of IoU thresholds. PCK is simpler: the share of keypoints within a fixed fraction of a reference length.
+
+**Tiny example:** A person covering 10,000 pixels (s = 100). A shoulder (k = 0.158, so k^2 ≈ 0.025) off by 10 pixels earns exp(−100 ÷ (2 × 10,000 × 0.025)) = exp(−0.20) ≈ 0.818. A wrist (k = 0.124, k^2 ≈ 0.0154) off by 20 pixels earns exp(−400 ÷ (2 × 10,000 × 0.0154)) = exp(−1.30) ≈ 0.272. OKS = (0.818 + 0.272) ÷ 2 ≈ 0.545: correct at the 0.5 threshold, but not at 0.75.
+
+**Where it is used:** COCO keypoint benchmarks report average precision over OKS thresholds from 0.50 to 0.95, the headline score of pose models such as ViTPose and RTMPose; the MPII benchmark reports PCKh at 0.5; OKS also replaces IoU inside non-maximum suppression for poses.
+**In the book:** Chapter 45 (Pose estimation: the body as a stick figure), which describes COCO's 17 keypoints; the scores are only here.
+
+> **Definition — Object keypoint similarity (OKS):** COCO's score from 0 to 1 for how close a predicted body pose is to the true one, giving each keypoint a credit that falls off with its error relative to the person's size and to how precisely people can mark that joint.
 
 ### Mahalanobis distance
 
@@ -3421,6 +3664,32 @@ flowchart LR
 **Where it is used:** The classic illustration of overfitting; spline and Fourier features in forecasting (Prophet's seasonality) and in generalized additive models.
 **In the book:** Chapter 8 (More than one feature; feature expansion) and Chapter 9 (A worked example: iced drinks and temperature, degrees 0 to 7).
 
+### Regression splines and smoothing splines (piecewise polynomials joined at knots)
+
+**What it does:** Fits a flexible curve made of polynomial pieces that join smoothly at chosen points, with a penalty that keeps it from wiggling.
+
+`f(x) = β_0 + β_1 × x + β_2 × x^2 + β_3 × x^3 + sum over knots k of θ_k × (x − ξ_k)_+^3`, where `(u)_+ = max(u, 0)`; smoothing spline: `minimize over f of sum over i of (y_i − f(x_i))^2 + λ × ∫ f''(t)^2 dt`, whose solution is a natural cubic spline with a knot at every data point
+
+- **x**, **y_i**: the input and the observed values; **f**: the fitted curve
+- **β_0** to **β_3** (beta), **θ_k** (theta): coefficients learned by least squares
+- **ξ_k** (xi): the knots, where one cubic piece hands over to the next
+- **(x − ξ_k)_+^3**: a basis function that is zero to the left of the knot and grows like a cubic to its right
+- **f''**: the second derivative (how sharply the curve bends); **∫ ... dt**: summed over the whole range
+- **λ** (lambda): the smoothness penalty; λ = 0 passes through every point, a huge λ gives a straight line
+
+**In plain words:** One high-degree polynomial swings wildly at the edges; many low-degree pieces glued together stay well behaved. Each truncated-power term switches on at its knot and changes only the third derivative there, so the curve and its first two derivatives stay continuous. Because every term is a fixed basis function, fitting is still ordinary linear least squares. In practice the same curves are built from B-splines, bump-shaped basis functions that are numerically better behaved.
+
+**Tiny example:** A spline of straight pieces with one knot at 2: f(x) = 1 + 0.5 × x + 1.5 × (x − 2)_+. Then f(1) = 1.5, f(2) = 2 and f(4) = 1 + 2 + 1.5 × 2 = 6: the slope changes from 0.5 to 2 at the knot without a jump. For the cubic basis, (x − 2)_+^3 is 0 at x = 1, 1 at x = 3 and 8 at x = 4. The roughness penalty of f(x) = x^2 over the stretch from 0 to 1 is ∫ 2^2 dt = 4; any straight line scores 0.
+
+**Where it is used:** Generalized additive models (R's mgcv, pyGAM; GAM entry in this section) and scikit-learn's SplineTransformer features; Prophet's trend is a piecewise-linear spline with changepoints (Prophet entry, this section); Kolmogorov–Arnold networks (Liu et al. 2024) learn a B-spline curve on every connection instead of using a fixed activation; smooth curves in computer graphics and robot trajectories.
+**In the book:** Only here (Chapter 10, Forecasting time series, names Prophet).
+
+> **Definition — Spline:** A curve made of polynomial pieces joined smoothly at points called knots, so it can bend flexibly without the wild swings of a single high-degree polynomial.
+
+> **Definition — Smoothing spline:** A spline fitted by trading off closeness to the data against a penalty on its total curvature, with one setting that runs from passing through every point to a straight line.
+
+> **Definition — B-spline:** A bump-shaped spline basis function that is nonzero only over a few neighboring knots; sums of B-splines can form any spline with the same knots and are better behaved numerically.
+
 ### Ridge regression (L2 regularization)
 
 **What it does:** Fits a linear model while charging a price for large weights.
@@ -3438,6 +3707,32 @@ flowchart LR
 
 **Where it is used:** The default regularizer for linear and logistic models (scikit-learn Ridge; LogisticRegression's default penalty is L2), the λ term in XGBoost leaf weights, L2 penalties in matrix factorization.
 **In the book:** Chapter 9 (Regularization: keeping models simple on purpose); the closed form is only here. The prior view (MAP estimation, priors as regularizers) is in the foundations section of this appendix.
+
+### Ridge shrinkage, effective degrees of freedom and Mallows' Cp
+
+**What it does:** Shows how ridge regression shrinks each direction of the data by a different amount, counts how many parameters the shrunken model effectively uses, and turns that count into a cheap estimate of test error.
+
+`ŷ = H_λ × y` with `H_λ = X × (X^T × X + λ × I)^-1 × X^T`; along the j-th principal direction the fit is multiplied by `d_j^2 ÷ (d_j^2 + λ)`; `df(λ) = trace(H_λ) = sum over j of d_j^2 ÷ (d_j^2 + λ)`; `Cp = training MSE + 2 × df × σ̂^2 ÷ n`
+
+- **X**: the n × p feature matrix; **y**: the n targets; **ŷ**: the fitted values
+- **λ** (lambda): the ridge penalty strength; **I**: the identity matrix
+- **H_λ**: the hat matrix, which turns targets into fitted values; **H_ii**: its i-th diagonal entry, the leverage of row i; **^T**: transpose; **^-1**: matrix inverse
+- **d_j**: the j-th singular value of X (large for directions in which the data spread a lot)
+- **trace**: the sum of a matrix's diagonal entries
+- **df(λ)**: the effective degrees of freedom; **σ̂^2**: an estimate of the noise variance; **n**: the number of rows
+
+**In plain words:** Ridge barely touches directions in which the data vary a lot and squashes directions the data hardly determine. Adding up the fractions kept gives an effective number of parameters, between 0 (infinite penalty) and p (no penalty). Mallows' Cp adds an optimism charge proportional to that count to the training error, as AIC does. The diagonal of the same hat matrix holds each row's leverage, which the leave-one-out shortcut in the k-fold cross-validation entry uses to get the exact leave-one-out error without refitting.
+
+**Tiny example:** Singular values d = [3, 1] and λ = 1: the first direction keeps 9 ÷ 10 = 0.9 of its fit and the second 1 ÷ 2 = 0.5, so df = 1.4 instead of 2. With n = 50, training MSE 4.0 and σ̂^2 = 5, Cp = 4 + 2 × 1.4 × 5 ÷ 50 = 4.28.
+
+**Where it is used:** Choosing the penalty in ridge regression (scikit-learn's RidgeCV uses the leave-one-out shortcut by default) and the smoothness of splines and additive models (generalized cross-validation in R's mgcv); weight decay acts the same way along the curvature directions of a neural network's loss (Goodfellow, Bengio and Courville, section 7.1.1); the effective number of parameters in Bayesian evidence calculations (Bishop, section 3.5.3).
+**In the book:** Chapter 9 (Regularization: keeping models simple on purpose) in words; the formulas are only here.
+
+> **Definition — Effective degrees of freedom:** For a model that shrinks or smooths its fit, the number of free parameters it effectively uses, computed as the sum of the diagonal of the matrix that turns targets into fitted values.
+
+> **Definition — Mallows' Cp:** An estimate of test error equal to the training error plus two times the effective number of parameters times the noise variance, divided by the number of rows.
+
+> **Definition — Leverage:** How strongly one training row's own target pulls its fitted value, measured by the matching diagonal entry of the hat matrix; rows with unusual inputs have high leverage.
 
 ### Lasso (L1 regularization) and soft thresholding
 
@@ -3459,6 +3754,27 @@ flowchart LR
 **In the book:** Chapter 9 (Regularization: L1 and L2 regularization) in words; the formula and update are only here. Soft-thresholding as a general proximal step is also in the foundations section of this appendix.
 
 > **Definition — Soft thresholding:** The update that shrinks a number toward zero by a fixed amount and sets it to exactly zero if it would cross; it is how the lasso turns small weights off.
+
+### Sparse coding and dictionary learning
+
+**What it does:** Learns a dictionary of basic patterns such that each input is rebuilt from only a few of them.
+
+`minimize over D and h_1, ..., h_n of sum over i of (||x_i − D × h_i||^2 + λ × ||h_i||_1)`, with every dictionary column of length at most 1; for a fixed D each code is a lasso problem, solved for example by the iterative soft-thresholding algorithm (ISTA): `h ← soft_threshold(h + 2 × η × D^T × (x − D × h), η × λ)`
+
+- **x_i**: an input vector (an image patch, a sound frame or a network activation)
+- **D**: the dictionary, a matrix whose columns are the learned patterns (often more columns than input dimensions)
+- **h_i**: the sparse code: how much of each pattern rebuilds x_i
+- **λ** (lambda): the sparsity strength; **||h||_1**: the sum of absolute values
+- **η** (eta): the step size; **soft_threshold(v, t)**: shrinks each entry of v toward zero by t, and sets it to zero if it is smaller than t
+
+**In plain words:** The L1 penalty makes most code entries exactly zero, so each input is explained by a few active patterns. Learning alternates two steps: find the sparse codes for the current dictionary, then update the dictionary to rebuild the inputs better. A sparse autoencoder is sparse coding with a trained encoder that predicts the codes in one pass instead of solving an optimization for every input.
+
+**Tiny example:** With the identity matrix as the dictionary and λ = 1, the best code for x = [3, 0.4] is soft-thresholding by λ ÷ 2 = 0.5: h = [2.5, 0]. Its cost is (0.5^2 + 0.4^2) + 2.5 = 2.91, lower than copying x exactly (0 + 3.4 = 3.4) or keeping the small entry ([2.5, 0.4] costs 3.15): the weak component is dropped.
+
+**Where it is used:** Sparse autoencoders for interpretability, framed explicitly as dictionary learning (Bricken et al. 2023; Cunningham et al. 2023; safety section); image denoising and inpainting with learned dictionaries (K-SVD, Aharon, Elad and Bruckstein 2006); compressed sensing; scikit-learn's DictionaryLearning. Olshausen and Field (1996) found that a sparse code learned from natural images has oriented, edge-like patterns resembling the receptive fields of cells in the primary visual cortex.
+**In the book:** Appendix F (Sparse representations, sparse coding and slow features); Chapter 57 (Sparse autoencoders: unpacking the suitcase) calls the technique dictionary learning; the formula is only here.
+
+> **Definition — Dictionary learning:** Learning a set of basic patterns (the dictionary) from data together with sparse codes, so that each example is approximately a weighted sum of only a few patterns.
 
 ### Elastic net penalty
 
@@ -3589,6 +3905,29 @@ flowchart LR
 
 > **Definition — IRLS (iteratively reweighted least squares):** The standard way to fit generalized linear models: repeatedly solve a weighted least-squares problem whose weights and targets are updated from the current predictions; it is Newton's method applied to the model's likelihood.
 
+### Generalized additive model (GAM) and backfitting
+
+**What it does:** Predicts with a sum of one smooth curve per feature, so each feature's effect can be plotted and read, while still bending to fit the data.
+
+`g(E[y given x]) = β_0 + f_1(x_1) + f_2(x_2) + ... + f_d(x_d)`; backfitting: repeat for j = 1, ..., d: `f_j ← smooth of (y − β_0 − sum over k ≠ j of f_k(x_k)) against x_j`, then shift f_j so that it averages zero
+
+- **y**: the target; **x_1, ..., x_d**: the features
+- **E[y given x]**: the expected target for inputs x
+- **g**: the link function (identity for numbers, logit for yes/no, log for counts), as in generalized linear models
+- **β_0** (beta): the intercept; **f_j**: a smooth curve for feature j, often a spline
+- **smooth of ... against x_j**: any one-dimensional smoother (a spline or LOESS fit) of the partial residuals on x_j
+
+**In plain words:** A linear model gives each feature one slope; a GAM gives each feature a whole curve but still adds the contributions up, so there are no hidden interactions and every curve can be inspected. Backfitting fits the curves one at a time: take what the other curves have not explained (the partial residual), smooth it against the current feature, and cycle until nothing changes.
+
+**Tiny example:** House prices with the identity link: β_0 = 300, f_size(120 square meters) = +40 and f_age(30 years) = −15, so the prediction is 300 + 40 − 15 = 325. For a house that sold for 330, the partial residual used to update the size curve is 330 − 300 − (−15) = 45. With a log link for counts, 1.0 + 0.3 − 0.1 = 1.2 predicts exp(1.2) ≈ 3.32.
+
+**Where it is used:** Interpretable models in credit scoring and medicine: InterpretML's Explainable Boosting Machine is a GAM whose curves are fitted by boosting one feature at a time (Lou, Caruana and Gehrke 2012; Nori et al. 2019); R's mgcv and Python's pyGAM; Prophet is an additive model of this kind over time (Taylor and Letham 2017); Neural Additive Models learn one small network per feature (Agarwal et al. 2021).
+**In the book:** Only here (the Prophet entry in this section is an additive model over time).
+
+> **Definition — Generalized additive model (GAM):** A model that predicts by adding up one learned smooth curve per feature (passed through a link function such as the logit), keeping each feature's effect separately visible.
+
+> **Definition — Backfitting:** Fitting an additive model by repeatedly updating one feature's curve to explain whatever the other curves leave unexplained, cycling through the features until the fit stops changing.
+
 ### Perceptron learning rule
 
 **What it does:** Learns a linear yes/no classifier by nudging the weights only when it makes a mistake.
@@ -3628,6 +3967,27 @@ flowchart LR
 
 > **Definition — Fisher's linear discriminant:** The direction onto which two classes' projected averages are farthest apart relative to their projected spread; it is the basis of linear discriminant analysis.
 
+### Gaussian discriminant analysis (LDA and QDA classifiers)
+
+**What it does:** Classifies by modeling each class as a bell curve in feature space and asking which class most plausibly produced the point.
+
+`δ_k(x) = −(1 ÷ 2) × ln det(Σ_k) − (1 ÷ 2) × (x − μ_k)^T × Σ_k^-1 × (x − μ_k) + ln π_k`; predict `argmax over k of δ_k(x)`, with `P(k given x) = softmax over k of δ_k(x)`; with one shared covariance Σ (LDA) it becomes linear: `δ_k(x) = x^T × Σ^-1 × μ_k − (1 ÷ 2) × μ_k^T × Σ^-1 × μ_k + ln π_k`
+
+- **k**: a class; **x**: the feature vector
+- **μ_k**, **Σ_k**: the mean vector and covariance matrix of class k's training points
+- **π_k**: the share of training points in class k (the prior)
+- **det**, **Σ_k^-1**: the determinant and the inverse of the covariance
+- **δ_k(x)**: the discriminant score, the logarithm of π_k times class k's Gaussian density at x, without the constants all classes share
+
+**In plain words:** Fit a Gaussian to each class, then use Bayes' rule. With a separate covariance per class (QDA) the boundaries are curved, and a class with a wide spread wins far-away points on every side. Forcing one shared covariance (LDA) cancels the squared terms and leaves straight-line boundaries; the resulting probability is a logistic regression whose weights come from class averages instead of from gradient descent.
+
+**Tiny example:** One feature. Class A: mean 0, variance 1, prior 0.5. Class B: mean 2, variance 4, prior 0.5. At x = 1: δ_A = −0.5 × 1 − 0.693 = −1.193 and δ_B = −0.5 × ln 4 − 0.5 × (1 ÷ 4) − 0.693 = −1.511, so A wins with probability 1 ÷ (1 + exp(−0.318)) ≈ 0.58. At x = −3, far to the left and closer to A's mean: δ_A = −4.5 − 0.693 = −5.193 and δ_B = −0.693 − 3.125 − 0.693 = −4.511, so B wins, because B's wider bell curve reaches further out.
+
+**Where it is used:** scikit-learn's LinearDiscriminantAnalysis and QuadraticDiscriminantAnalysis; the Mahalanobis out-of-distribution detector for neural networks, which fits class Gaussians with a shared covariance to a network's features (Lee et al. 2018); classic baselines in biostatistics and the generative-versus-discriminative comparison in Stanford's CS229.
+**In the book:** Appendix F (Gaussian discriminant analysis) in words; Fisher's projection view of LDA is the entry above; the discriminant formulas are only here.
+
+> **Definition — Quadratic discriminant analysis (QDA):** A classifier that fits a separate Gaussian, with its own covariance, to each class and assigns a point to the class with the highest prior times density, giving curved boundaries; with one shared covariance it becomes linear discriminant analysis (LDA).
+
 ### Maximum-margin hyperplane (hard-margin SVM)
 
 **What it does:** Picks, among all lines that separate two classes, the one with the widest empty street around it.
@@ -3664,6 +4024,31 @@ flowchart LR
 **In the book:** Chapter 10 (Support vector machines: hyperparameter C) and Appendix F (SVM duality, SMO and the hinge loss) in words; the formulas are only here.
 
 > **Definition — Support vector regression (SVR):** The regression version of a support vector machine, which ignores prediction errors smaller than a set tolerance and charges linearly for larger ones.
+
+### Multiclass SVM loss (Weston-Watkins and Crammer-Singer hinge)
+
+**What it does:** Extends the hinge loss to many classes by demanding that the correct class's score beat every wrong class's score by a margin.
+
+`Weston-Watkins: L_i = sum over j ≠ y_i of max(0, s_j − s_(y_i) + Δ)`; `Crammer-Singer: L_i = max(0, Δ + (max over j ≠ y_i of s_j) − s_(y_i))`; full objective `L = (1 ÷ N) × sum over i of L_i + λ × sum of W^2`; slopes (Weston-Watkins) `dL_i ÷ ds_j = 1` for each wrong class j whose term is positive, and `dL_i ÷ ds_(y_i) = −(the number of such classes)`
+
+- **i**: one training example; **N**: the number of examples
+- **y_i**: the correct class of example i
+- **s_j**: the score the classifier gives class j, the j-th entry of `s = W × x_i + b`
+- **s_(y_i)**: the correct class's score
+- **Δ** (delta): the required margin, usually 1
+- **j ≠ y_i**: every class except the correct one
+- **max(0, ...)**: zero when the margin is met, otherwise the shortfall
+- **λ** (lambda): the regularization strength; **W**: the weight matrix, one row per class; **sum of W^2**: the sum of the squares of every entry of W; **b**: the biases; **x_i**: the input
+- **dL_i ÷ ds_j**: the slope of the loss with respect to score s_j
+
+**In plain words:** A wrong class does no harm as long as its score sits at least Δ below the correct class's score; any wrong class that comes closer adds its shortfall to the loss. Weston-Watkins adds up the shortfalls of every offending class, while Crammer-Singer charges only the worst one. Unlike cross-entropy, the loss reaches exactly zero once every margin is met and then stops pushing.
+
+**Tiny example:** Scores [2.0, 3.5, −1.0], class 0 correct, Δ = 1. Class 1 gives max(0, 3.5 − 2.0 + 1) = 2.5 and class 2 gives max(0, −1.0 − 2.0 + 1) = 0, so the Weston-Watkins loss is 2.5; Crammer-Singer is also 2.5. If class 2 had scored 1.8, Weston-Watkins would rise to 2.5 + 0.8 = 3.3 while Crammer-Singer would stay at 2.5. The slopes in the first case are −1 for s_0, +1 for s_1 and 0 for s_2. For comparison, softmax cross-entropy on the first scores is −ln(0.181) = 1.71. With every score near zero, as at initialization, the Weston-Watkins loss is (number of classes − 1) × Δ, so 9 for ten classes, a sanity check CS231n recommends.
+
+**Where it is used:** Stanford CS231n's linear-classification lecture and first assignment, which train it beside a softmax classifier on CIFAR-10 (Weston and Watkins, 1999; Crammer and Singer, 2001); PyTorch's nn.MultiMarginLoss (the Weston-Watkins sum divided by the number of classes); scikit-learn's LinearSVC(multi_class='crammer_singer') and LIBLINEAR.
+**In the book:** Chapter 10 (Support vector machines: the widest street) covers the two-class SVM; the multi-class losses are only here.
+
+> **Definition — Multiclass SVM loss:** A hinge loss for problems with many classes that is zero when the correct class's score beats every other class's score by a set margin, and grows in a straight line with each shortfall.
 
 ### SVM dual problem and the kernel trick
 
@@ -3704,6 +4089,26 @@ flowchart LR
 **In the book:** Only here (Chapter 10 explains kernels in words).
 
 > **Definition — RBF kernel (Gaussian kernel):** A similarity score between two inputs that equals 1 when they are identical and falls off like a bell curve as the distance between them grows; the default kernel of support vector machines.
+
+### Random Fourier features (approximating a kernel with random cosines)
+
+**What it does:** Replaces an expensive kernel such as the RBF kernel with an explicit, finite list of random cosine features whose dot products approximate it.
+
+`z(x) = sqrt(2 ÷ D) × [cos(w_1 · x + b_1), ..., cos(w_D · x + b_D)]`, with `w_j ~ N(0, I ÷ ℓ^2)` and `b_j ~ Uniform(0, 2π)`; then `z(x) · z(x') ≈ k(x, x') = exp(−||x − x'||^2 ÷ (2 × ℓ^2))`; paired form `z(x) = sqrt(1 ÷ D) × [cos(w_j · x), sin(w_j · x) for j = 1..D]`, which gives `z(x) · z(x') = (1 ÷ D) × sum over j of cos(w_j · (x − x'))`
+
+- **x**, **x'**: two inputs; **k**: the RBF (Gaussian) kernel with length scale **ℓ**
+- **D**: the number of random features (more features, better approximation)
+- **w_j**: random frequency vectors drawn from a Gaussian; **b_j**: random phase shifts; **I**: the identity matrix; **π**: 3.14159...
+- **z(x)**: the feature vector of x
+
+**In plain words:** Bochner's theorem says a smooth kernel that depends only on the difference x − x' is an average of cosines at random frequencies. Sampling D frequencies turns the kernel into ordinary features, so a linear model on z(x) behaves like a kernel machine but costs time proportional to the number of data points instead of its square or cube. The approximation error shrinks like 1 ÷ sqrt(D).
+
+**Tiny example:** One-dimensional inputs one unit apart with ℓ = 1: the exact kernel is exp(−0.5) = 0.607. With the four frequencies 0.5, −1.0, 1.5 and −0.3, the paired form gives (cos 0.5 + cos 1.0 + cos 1.5 + cos 0.3) ÷ 4 = (0.878 + 0.540 + 0.071 + 0.955) ÷ 4 = 0.611.
+
+**Where it is used:** Scaling kernel machines and Gaussian processes to large data (Rahimi and Recht 2007; scikit-learn's RBFSampler); the Performer's FAVOR+ linear attention approximates the softmax kernel with positive random features (Choromanski et al. 2021; linear attention is in the deep-learning section); Fourier-feature input encodings that let coordinate networks learn fine detail (Tancik et al. 2020).
+**In the book:** Appendix F (Random and unsupervised features) describes random features in general; this kernel construction is only here.
+
+> **Definition — Random Fourier features:** Cosine features with randomly drawn frequencies whose dot products approximate a kernel such as the RBF kernel, letting a fast linear model imitate a kernel method.
 
 ### Gaussian process regression posterior
 
@@ -3790,6 +4195,25 @@ flowchart LR
 **In the book:** Chapter 10 (k-nearest neighbors: you are like your neighbors); the weighted form and the edge formula are only here.
 
 > **Definition — Curse of dimensionality:** The collection of problems that appear as the number of features grows, chiefly that data become so spread out that every point is far from every other and distance-based methods lose their meaning.
+
+### Locally weighted regression (LOESS)
+
+**What it does:** Predicts at each query point by fitting a fresh straight line to the nearby training points only, weighting each by its closeness.
+
+`minimize over a, b of sum over i of w_i × (y_i − a − b × (x_i − x_0))^2`, with `w_i = K((x_i − x_0) ÷ h)` and tricube weights `K(u) = (1 − |u|^3)^3` for |u| < 1 (else 0); prediction `f(x_0) = a`; in matrix form `θ = (X^T × W × X)^-1 × X^T × W × y`
+
+- **x_0**: the query point; **x_i**, **y_i**: the training inputs and targets
+- **a**, **b**: the intercept and slope of the local line; the prediction is a
+- **K**: the weighting kernel; **h**: the bandwidth, how far "nearby" reaches (LOESS usually sets it to cover a fixed fraction of the data)
+- **w_i**: the weight of training point i; **W**: the diagonal matrix of these weights
+- **X**: the matrix of local features (a column of ones and the centered inputs); **θ** (theta): the vector [a, b]
+
+**In plain words:** A single global line is too rigid, and averaging the k nearest neighbors is jumpy and biased near the edges of the data. Fitting a small weighted line around every query point gives a smooth curve that follows local trends, at the price of solving a little least-squares problem for every prediction. Fitting a local constant instead of a line gives Nadaraya-Watson kernel regression (deep-learning section, attention pooling).
+
+**Tiny example:** Points (0, 1), (1, 3) and (2, 2), query x_0 = 1 and h = 2. The scaled distances are −0.5, 0 and 0.5, so the weights are (1 − 0.125)^3 = 0.670, 1 and 0.670. Because the weights are symmetric, the intercept is the weighted average (0.670 × 1 + 1 × 3 + 0.670 × 2) ÷ 2.340 = 2.14, and the slope is (0.670 × (−1) × 1 + 0.670 × 1 × 2) ÷ (0.670 + 0.670) = 0.5. The prediction at 1 is 2.14, pulled toward the point (1, 3) compared with the plain average 2.0.
+
+**Where it is used:** The trend curve in exploratory plots (statsmodels' lowess; ggplot2's default smoother for small data sets); STL seasonal-trend decomposition of time series (Cleveland et al. 1990); locally weighted linear regression in Stanford's CS229 and in robot learning of dynamics.
+**In the book:** Appendix F (Normal equations and locally weighted regression) describes the method in words; the formula is only here.
 
 ### Naive Bayes classifier
 
@@ -3999,6 +4423,27 @@ flowchart LR
 
 > **Definition — AdaBoost (adaptive boosting):** A boosting method that trains simple classifiers one after another, each on reweighted data that emphasizes the previous ones' mistakes, and combines them in a weighted vote.
 
+### Stacking (stacked generalization)
+
+**What it does:** Combines several different models by learning how much to trust each one, using predictions each model made on data it was not trained on.
+
+`ŷ(x) = g(f_1(x), ..., f_M(x))`, commonly `ŷ(x) = sum over m of w_m × f_m(x)`, with `w = argmin over w of sum over i of L(y_i, sum over m of w_m × f_m^(−k(i))(x_i))` (often with every w_m ≥ 0 and the weights summing to 1)
+
+- **f_1, ..., f_M**: the base models (for example a random forest, a boosted model and a neural network)
+- **g**: the combiner (meta-model), often a weighted sum or a logistic regression
+- **w_m**: the weight given to model m
+- **f_m^(−k(i))(x_i)**: model m's out-of-fold prediction for row i, from a copy trained without the fold k(i) that contains row i
+- **L**: the loss, such as squared error; **y_i**: the true target
+
+**In plain words:** Different kinds of models make different mistakes, so a blend can beat the best single model. The combiner must be trained on honest predictions: if it saw predictions on rows the base models had memorized, it would trust the most overfitted model. Cross-validation folds supply those honest, out-of-fold predictions.
+
+**Tiny example:** Targets [3, 5, 7]; out-of-fold predictions from model 1 are [2, 5, 8] and from model 2 are [4, 4, 6]. Sums of squared errors: model 1 alone 1 + 0 + 1 = 2, model 2 alone 1 + 1 + 1 = 3. The 50-50 blend predicts [3, 4.5, 7] for an error of only 0.25, and the best weight on model 1, 5 ÷ 9 ≈ 0.56, gives 0.22.
+
+**Where it is used:** AutoGluon-Tabular's multi-layer stack ensembles (Erickson et al. 2020) and other AutoML systems; scikit-learn's StackingClassifier and StackingRegressor; winning Kaggle solutions; the "super learner" in epidemiology.
+**In the book:** Chapter 10 (Gradient boosting: a relay of tutors) describes stacking in words; the formula is only here.
+
+> **Definition — Out-of-fold prediction:** A model's prediction for a training row made by a copy of the model trained on the other cross-validation folds, so it never saw that row; such predictions are honest inputs for a stacking combiner.
+
 ### Permutation feature importance (and mean decrease in impurity)
 
 **What it does:** Measures how much a model relies on a feature by scrambling it and watching the score drop.
@@ -4199,6 +4644,28 @@ flowchart LR
 
 > **Definition — Responsibility (in EM):** The probability, computed in the expectation step, that a given mixture component generated a given data point; it serves as a soft cluster membership.
 
+### Probabilistic PCA and factor analysis (linear-Gaussian latent factor models)
+
+**What it does:** Explains many correlated measurements as a few hidden factors mixed linearly plus noise, which gives PCA a probability model.
+
+`z ~ N(0, I_k)`; `x = W × z + μ + ε` with `ε ~ N(0, Ψ)`; so `x ~ N(μ, W × W^T + Ψ)`; probabilistic PCA: `Ψ = σ^2 × I`, with the closed-form fit `σ^2 = average of the d − k smallest eigenvalues of the data covariance` and `W = U_k × (Λ_k − σ^2 × I)^(1 ÷ 2)` (up to a rotation); factor analysis: Ψ diagonal, a separate noise level per feature, fitted by EM
+
+- **x**: an observed vector of d measurements; **μ**: their mean
+- **z**: k hidden factors (k much smaller than d), each a standard normal
+- **W**: the d × k matrix of loadings (how strongly each factor drives each measurement)
+- **ε** (epsilon): noise; **Ψ** (psi): its covariance; **σ^2**: one shared noise variance
+- **U_k**, **Λ_k**: the top k eigenvectors and eigenvalues of the data's covariance matrix
+- **I**, **I_k**: identity matrices
+
+**In plain words:** The covariance of the data is split into a low-rank part shared through the factors and a noise part. With equal noise everywhere the best W spans the ordinary principal components, and PCA is the limit of this model as the noise goes to zero. Factor analysis lets every measurement keep its own private noise, which suits survey and test data. Having a likelihood means the model can score new data, handle missing values and be fitted by EM, like the mixture model in the entry above.
+
+**Tiny example:** Covariance eigenvalues 5, 1 and 0.5, keeping k = 1 factor: σ^2 = (1 + 0.5) ÷ 2 = 0.75, and the loading vector has length sqrt(5 − 0.75) ≈ 2.06 along the top eigenvector, so the model reproduces variance 4.25 + 0.75 = 5 in that direction and 0.75 in the others. Factor analysis of three standardized test scores with one "ability" factor and loadings 0.9, 0.8 and 0.7 predicts a correlation of 0.9 × 0.8 = 0.72 between tests 1 and 2 and 0.63 between tests 1 and 3, with private noise variances 1 − 0.81 = 0.19, 0.36 and 0.51.
+
+**Where it is used:** Psychometrics and survey research (factor analysis); scikit-learn's FactorAnalysis, and the score method of its PCA, which returns the probabilistic-PCA log-likelihood; PCA with missing values; a VAE with a linear decoder learns probabilistic PCA (Lucas et al. 2019), which makes it the linear ancestor of VAEs (generative-models section).
+**In the book:** Appendix F (Factor analysis and probabilistic PCA) in words; the formulas are only here.
+
+> **Definition — Factor loading:** In factor analysis, the weight linking a hidden factor to one observed measurement; for a standardized measurement, its squared loadings added up give the share of its variance the factors explain.
+
 ### Kernel density estimation
 
 **What it does:** Estimates a smooth probability density by placing a small bump on every data point.
@@ -4238,6 +4705,28 @@ flowchart LR
 
 **Where it is used:** Compressing features, visualizing embeddings and activations, whitening and noise reduction; PCA of LLM activations and of weight updates in interpretability and fine-tuning analysis.
 **In the book:** Chapter 10 (Shrinking many columns into a few: PCA, t-SNE and UMAP; Exercise 8), Appendix B (Classical machine learning and search), Appendix F (Covariance and the covariance matrix). Eigenvectors and the SVD are also in the foundations section of this appendix.
+
+### Independent component analysis (ICA)
+
+**What it does:** Unmixes signals that were added together, such as several voices recorded by several microphones, by finding directions in which the data are as independent and non-Gaussian as possible.
+
+`x = A × s` (mixing); recover `ŝ = W × x` with `W ≈ A^-1`; FastICA, for one row w on whitened data: `w ← E[x × g(w · x)] − E[g'(w · x)] × w`, then `w ← w ÷ ||w||`, with `g(u) = tanh(u)`; likelihood view: `ln p(x) = sum over j of ln p_s(w_j · x) + ln |det(W)|`
+
+- **s**: the hidden independent source signals at one moment; **x**: the observed mixtures
+- **A**: the unknown mixing matrix; **W**: the unmixing matrix to be learned, with rows **w_j**
+- **g**, **g'**: a nonlinearity and its derivative (tanh and 1 − tanh^2)
+- **E[...]**: the average over all time points; **||w||**: the length of w
+- **p_s**: an assumed non-Gaussian density for each source
+- **det**: the determinant
+
+**In plain words:** By the central limit theorem, a sum of independent signals looks more Gaussian than the signals themselves, so the directions that look least Gaussian point to the original sources. PCA only makes signals uncorrelated, which leaves any rotation of them equally good; ICA uses the non-Gaussian shape to pick the one rotation that separates them. The sources come back in unknown order and scale.
+
+**Tiny example:** Two sources with values s = [1, −1] at one instant, mixed by A with rows [1, 0.5] and [0.5, 1], give x = [0.5, −0.5]. The unmixing matrix W = A^-1 has rows [1.333, −0.667] and [−0.667, 1.333], and W × x = [0.667 + 0.333, −0.333 − 0.667] = [1, −1]. Non-Gaussianity in numbers: a uniform signal has excess kurtosis −1.2, the sum of two independent uniform signals −0.6, and a Gaussian 0, so mixing moves the shape toward the Gaussian.
+
+**Where it is used:** Removing eye-blink and heartbeat artifacts from EEG and MEG brain recordings (EEGLAB, MNE-Python); finding brain networks in fMRI; blind source separation of audio and of financial time series; scikit-learn's FastICA (Hyvärinen and Oja 2000).
+**In the book:** Chapter 10 (Shrinking many columns into a few: PCA, t-SNE and UMAP) describes ICA in words; the formulas are only here.
+
+> **Definition — Blind source separation:** Recovering several original signals from recordings of their mixtures without knowing how they were mixed, as in picking out one speaker from several microphones at a noisy party.
 
 ### t-SNE (t-distributed stochastic neighbor embedding)
 
@@ -4281,6 +4770,31 @@ flowchart LR
 **Where it is used:** Visualizing embeddings and single-cell data (umap-learn, RAPIDS cuML) and as a reduction step before clustering embeddings (BERTopic).
 **In the book:** Chapter 10 (t-SNE and UMAP, in words), Chapter 14.
 
+### Classical multidimensional scaling, kernel PCA and Isomap
+
+**What it does:** Turns a table of distances or similarities between items into coordinates whose distances match the table, and, with a kernel or with distances measured along the data, unrolls curved data into a flat map.
+
+`classical MDS: B = −(1 ÷ 2) × J × D2 × J`, with `J = I − (1 ÷ n) × 1 × 1^T`; coordinates `Y = V_k × Λ_k^(1 ÷ 2)` from the top k eigenvectors and eigenvalues of B; kernel PCA: the same eigen-step on the centered kernel matrix `J × K × J`, giving point i the j-th coordinate `sqrt(λ_j) × v_j[i]`; Isomap: classical MDS on shortest-path distances through a k-nearest-neighbor graph
+
+- **D2**: the n × n table of squared distances between items; **n**: the number of items
+- **J**: the centering matrix; **I**: the identity matrix; **1**: a column of n ones; **^T**: transpose
+- **B**: the double-centered matrix of dot products (a Gram matrix)
+- **V_k**, **Λ_k**: the top k eigenvectors and eigenvalues; **λ_j**, **v_j**: one eigenvalue and its eigenvector; **v_j[i]**: its i-th entry
+- **K**: a kernel matrix of similarities k(x_i, x_j); **Y**: the n × k output coordinates
+
+**In plain words:** Squared distances can be turned back into dot products by subtracting row and column averages (double centering); the eigenvectors of that dot-product matrix then give coordinates, just as PCA does from a covariance matrix. Kernel PCA starts from a kernel instead, which amounts to PCA in an implicit feature space. Isomap measures distance along the data, by hopping between neighbors, so a rolled-up sheet is laid flat instead of being squashed.
+
+**Tiny example:** Three points on a line at 0, 1 and 3 have squared distances 1, 9 and 4. Double centering gives B with rows [1.778, 0.444, −2.222], [0.444, 0.111, −0.556] and [−2.222, −0.556, 2.778]. Its only nonzero eigenvalue is 4.667, and the coordinates come out as [1.333, 0.333, −1.667]: the original points centered on their mean 4 ÷ 3 and mirrored, which is just as good, since mirroring keeps every distance.
+
+**Where it is used:** Principal coordinates analysis (PCoA), the name classical MDS goes by in ecology and microbiome studies; perceptual maps in psychology and marketing built from dissimilarity ratings; scikit-learn's MDS, KernelPCA and Isomap (Tenenbaum, de Silva and Langford 2000); spectral methods such as Laplacian eigenmaps and UMAP's spectral starting layout use the same eigen-step on a graph matrix (graph Laplacian entry, foundations section).
+**In the book:** Only here (Chapter 10, Shrinking many columns into a few: PCA, t-SNE and UMAP, covers the related methods).
+
+> **Definition — Multidimensional scaling (MDS):** A method that places items as points in a few dimensions so that their distances match a given table of distances or dissimilarities as closely as possible.
+
+> **Definition — Kernel PCA:** Principal component analysis carried out on a kernel matrix of similarities instead of on the raw features, which finds curved directions of variation.
+
+> **Definition — Isomap:** A dimensionality-reduction method that measures distances along the data by chaining nearest neighbors and then applies multidimensional scaling, so curved surfaces are unrolled into flat maps.
+
 ### Isolation forest anomaly score
 
 **What it does:** Scores how easy a point is to isolate with random cuts; outliers are isolated quickly.
@@ -4299,6 +4813,52 @@ flowchart LR
 
 **Where it is used:** Fraud, intrusion and sensor-fault detection, screening logs and metrics (scikit-learn IsolationForest).
 **In the book:** Chapter 10 (Anomaly detection: spotting the odd one out, about 10 cuts for 1,000 points) in words; the score is only here.
+
+### Local outlier factor (LOF)
+
+**What it does:** Flags a point as an outlier when the region around it is much sparser than the regions around its neighbors.
+
+`reach-dist_k(p, o) = max(k-distance(o), d(p, o))`; `lrd_k(p) = 1 ÷ (average over o in N_k(p) of reach-dist_k(p, o))`; `LOF_k(p) = (average over o in N_k(p) of lrd_k(o)) ÷ lrd_k(p)`
+
+- **p**: the point being scored; **o**: one of its neighbors
+- **k**: how many nearest neighbors to use (often 10 to 50)
+- **N_k(p)**: the k nearest neighbors of p (ties included)
+- **d(p, o)**: the distance between p and o
+- **k-distance(o)**: the distance from o to its own k-th nearest neighbor
+- **reach-dist**: the reachability distance, a smoothed distance that never drops below the neighbor's own neighborhood size
+- **lrd**: the local reachability density, high in crowded regions and low in sparse ones
+- **LOF**: about 1 for a point as crowded as its neighbors, well above 1 for an outlier
+
+**In plain words:** A single global rule such as "far from everyone" fails when some clusters are naturally tight and others loose. LOF compares each point's local density with the densities of its own neighbors, so a point counts as odd only relative to its surroundings. Scores near 1 are normal; 2 or more usually deserves a look.
+
+**Tiny example:** Points on a line at 0, 1, 2 and 6, with k = 1. The k-distances are 1, 1, 1 and 4. Point 0's neighbor is 1, reach-dist = max(1, 1) = 1, so lrd(0) = 1, and likewise lrd(1) = lrd(2) = 1. Point 6's neighbor is 2, reach-dist = max(1, 4) = 4, so lrd(6) = 1 ÷ 4 = 0.25. Then LOF(0) = lrd(1) ÷ lrd(0) = 1 ÷ 1 = 1, but LOF(6) = lrd(2) ÷ lrd(6) = 1 ÷ 0.25 = 4: point 6 stands out.
+
+**Where it is used:** Fraud, intrusion and sensor-fault detection on tabular data; scikit-learn's LocalOutlierFactor and the PyOD library; a standard baseline next to isolation forests in anomaly-detection comparisons. Introduced by Breunig, Kriegel, Ng and Sander (2000).
+**In the book:** Chapter 10 (Anomaly detection: spotting the odd one out) covers isolation forests and z-scores; LOF is only here.
+
+> **Definition — Local outlier factor (LOF):** An anomaly score that compares how crowded the neighborhood of a point is with how crowded its neighbors' neighborhoods are; values well above 1 mark points sitting in unusually sparse spots.
+
+### Association rules: support, confidence and lift
+
+**What it does:** Finds "people who buy A also buy B" rules in shopping baskets and scores how common, how reliable and how surprising each rule is.
+
+`support(A) = (number of baskets containing all items in A) ÷ N`; `confidence(A → B) = support(A and B) ÷ support(A)`; `lift(A → B) = confidence(A → B) ÷ support(B) = support(A and B) ÷ (support(A) × support(B))`
+
+- **A**, **B**: sets of items (A is the "if" side of the rule, B the "then" side)
+- **N**: the number of baskets (transactions)
+- **support**: how common an item set is; **confidence**: the estimated P(B given A)
+- **lift**: how many times more often A and B occur together than they would if they were independent (1 means no association)
+
+**In plain words:** Support filters out rare combinations, confidence says how often the rule holds when it applies, and lift corrects for B simply being popular: a rule "anything → milk" can have high confidence because everyone buys milk, but its lift is near 1. Lift is the exponential of the pointwise mutual information between the two item sets (foundations section). The Apriori algorithm finds frequent sets efficiently because every subset of a frequent set must also be frequent.
+
+**Tiny example:** Chapter 51's five shoppers: the tent is in 3 baskets (support 0.6), the sleeping bag in 4 (0.8), both in 3 (0.6). Confidence(tent → sleeping bag) = 0.6 ÷ 0.6 = 1.0 and lift = 1.0 ÷ 0.8 = 1.25; the other way round, confidence(sleeping bag → tent) = 0.6 ÷ 0.8 = 0.75. The sleeping bag and the toaster share one basket in 5: confidence(sleeping bag → toaster) = 0.2 ÷ 0.8 = 0.25 against the toaster's support of 0.4, a lift of 0.625, so they go together less often than chance.
+
+**Where it is used:** Market-basket analysis and "frequently bought together" features in retail (the Apriori algorithm and the faster FP-growth, which Spark MLlib provides); co-occurrence signals in recommenders; mining patterns in medical records and web logs.
+**In the book:** Chapter 51 (Collaborative filtering: people like you) works the same purchase table with cosine similarity; the rule measures are only here.
+
+> **Definition — Association rule:** An if-then pattern mined from transaction data, such as "baskets with a tent usually also contain a sleeping bag", scored by its support, confidence and lift.
+
+> **Definition — Lift (association rules):** How many times more often two item sets appear together than they would if they were independent; above 1 means they attract, below 1 that they avoid each other. It differs from the lift of an A/B test, which is a relative improvement.
 
 ### MinHash and locality-sensitive hashing
 
@@ -4378,6 +4938,31 @@ flowchart LR
 
 > **Definition — BIC (Bayesian information criterion):** A model-comparison score like AIC but charging ln(n) per parameter instead of 2, so it favors simpler models when there are many data points.
 
+### Marginal likelihood (model evidence) and the Bayes factor
+
+**What it does:** Scores a whole model, rather than one fitted parameter setting, by how probable it made the observed data on average over its prior, and compares two models by the ratio of these scores.
+
+`p(D given m) = ∫ p(D given θ, m) × p(θ given m) dθ`; `Bayes factor BF_12 = p(D given m_1) ÷ p(D given m_2)`; `P(m_1 given D) ÷ P(m_2 given D) = BF_12 × P(m_1) ÷ P(m_2)`; for a Gaussian process `ln p(y) = −(1 ÷ 2) × y^T × K_y^-1 × y − (1 ÷ 2) × ln det(K_y) − (n ÷ 2) × ln(2 × π)`
+
+- **D**: the data; **m**, **m_1**, **m_2**: candidate models
+- **θ** (theta): a model's parameters; **p(θ given m)**: their prior
+- **p(D given m)**: the marginal likelihood, or evidence, of model m
+- **BF_12**: the Bayes factor of model 1 over model 2
+- **P(m)**: a model's prior probability; **P(m given D)**: its posterior probability
+- **y**, **K_y**, **n**: for a Gaussian process, the targets, the kernel matrix with the noise variance added on its diagonal, and the number of points
+- **∫ ... dθ**: the average over all parameter values; **det**: the determinant; **π**: 3.14159...
+
+**In plain words:** A flexible model spreads its prior over many possible data sets, so it gives each one, including the one observed, less probability. A simple model that predicted the data wins; a flexible one wins only when the data demand it. This automatic Occam's razor needs no held-out set. Multiplying the prior odds of two models by the Bayes factor gives their posterior odds.
+
+**Tiny example:** A coin lands heads 9 times in 10. Model 1, a fair coin, gives this sequence probability 0.5^10 = 0.00098. Model 2, an unknown bias with a flat prior, gives ∫ θ^9 × (1 − θ) dθ = 1 ÷ 110 = 0.0091. The Bayes factor is 9.3 in favor of a biased coin. With 5 heads in 10 instead, the fair coin still gives 0.00098 but the flexible model only 0.00036, a Bayes factor of 2.7 in favor of the fair coin.
+
+**Where it is used:** Fitting Gaussian-process kernel settings by maximizing the log marginal likelihood (scikit-learn's GaussianProcessRegressor, GPyTorch, Bayesian optimization in this section); choosing the penalty of Bayesian ridge regression by its evidence (scikit-learn's BayesianRidge); Bayesian hypothesis tests in the sciences; BIC and the Laplace approximation estimate it, and a VAE's ELBO is a lower bound on its logarithm (generative-models section).
+**In the book:** Only here.
+
+> **Definition — Marginal likelihood (model evidence):** The probability a model assigns to the observed data, averaged over all its parameter values weighted by the prior; it rewards models that predicted the data without needing extra flexibility.
+
+> **Definition — Bayes factor:** The ratio of two models' marginal likelihoods; it says how much the data should shift the odds between the two models.
+
 ### Hoeffding test-set bound and uniform convergence (finite class, VC dimension)
 
 **What it does:** Guarantees how close a measured error rate is to the true one, for one model on a test set and for the best of many models on training data.
@@ -4421,6 +5006,32 @@ flowchart LR
 
 > **Definition — SMOTE (synthetic minority over-sampling technique):** A way to balance a dataset by creating new examples of a rare class at random points between existing rare-class examples and their nearest rare-class neighbors.
 
+### Differential privacy: the ε-δ guarantee, randomized response and noise mechanisms
+
+**What it does:** Defines, mathematically, how little a published result may depend on any one person's data, and gives the standard ways of adding noise that meet the definition.
+
+guarantee: `P(M(D) in S) ≤ exp(ε) × P(M(D') in S) + δ` for every pair of datasets D and D' that differ in one person and every set of outcomes S; randomized response with two fair coins: `P(report yes given truth yes) = 0.75` and `P(report yes given truth no) = 0.25`, so `ε = ln(0.75 ÷ 0.25) = ln 3`, with estimate `p̂ = (share of yes − 0.25) ÷ 0.5`; Laplace mechanism `M(D) = f(D) + Laplace noise of scale b = Δf ÷ ε`; Gaussian mechanism `M(D) = f(D) + normal noise with σ = Δf × sqrt(2 × ln(1.25 ÷ δ)) ÷ ε` (valid for ε < 1)
+
+- **M**: the randomized procedure that produces the released result (a statistic, a trained model)
+- **D**, **D'**: two datasets identical except for one person's records
+- **S**: any set of possible outputs
+- **ε** (epsilon): the privacy budget; smaller means stronger privacy
+- **δ** (delta): a tiny probability that the guarantee fails, set far below 1 ÷ (number of people)
+- **f(D)**: the exact answer, such as a count; **Δf**: its sensitivity, the most it can change when one person is added or removed (1 for a count)
+- **b**: the scale of the Laplace noise (its standard deviation is sqrt(2) × b); **σ** (sigma): the standard deviation of the Gaussian noise
+- **p̂**: the estimated true share of "yes" recovered from the randomized answers
+
+**In plain words:** Whatever an attacker already knows, seeing the output should barely change their beliefs about you, because the output would have been almost as likely without your data; exp(ε) caps that ratio. Randomized response hides each answer behind a coin flip but still lets the average be recovered. For numbers computed from data, noise scaled to how far one person can move the answer gives the same kind of guarantee, and the budgets of repeated releases add up.
+
+**Tiny example:** Chapter 11's coin survey: a true "yes" is reported as yes 3 times in 4 and a true "no" 1 time in 4, so any single yes is only 3 times likelier to come from a cheater: ε = ln 3 ≈ 1.10. If 400 of 1,000 people report yes, p̂ = (0.40 − 0.25) ÷ 0.5 = 0.30. Releasing a count (Δf = 1) with ε = 0.5 adds Laplace noise of scale b = 1 ÷ 0.5 = 2, a typical error of sqrt(2) × 2 ≈ 2.8 people. With the same ε = 0.5 and δ = 10^(−5), the Gaussian mechanism uses σ = sqrt(2 × ln(125,000)) ÷ 0.5 ≈ 4.84 ÷ 0.5 ≈ 9.69.
+
+**Where it is used:** The US Census Bureau's 2020 census releases; Apple's and Google's collection of device statistics; private training of models with DP-SGD (deep-learning section), including Google's VaultGemma (September 2025), a 1-billion-parameter open model trained from scratch with ε ≤ 2.0 and δ ≤ 1.1 × 10^(−10) per 1,024-token sequence. The definition is due to Dwork, McSherry, Nissim and Smith (2006).
+**In the book:** Chapter 11 (Privacy), which works the coin survey, and Chapter 53 (Federated learning: learning without collecting) in words; the definition and the mechanisms are only here.
+
+> **Definition — Randomized response:** A survey technique in which each person answers truthfully or at random according to a private coin flip, so no single answer reveals anything for certain, while the true rate across the whole group can still be estimated.
+
+> **Definition — Privacy budget (ε):** The number in a differential-privacy guarantee that bounds how much any one person's data can change the probability of any result; smaller budgets mean stronger privacy, and the budgets of repeated releases add up.
+
 ### Uncertainty sampling for active learning
 
 **What it does:** Picks which unlabeled examples to send to a human, choosing those the model is least sure about.
@@ -4439,6 +5050,32 @@ flowchart LR
 **In the book:** Chapter 8 (Other ways to learn: active learning) and Chapter 10 (Retraining) in words; the criteria are only here.
 
 > **Definition — Uncertainty sampling:** An active-learning strategy that asks humans to label the examples on which the current model's predictions are least confident.
+
+### Total, aleatoric and epistemic uncertainty from ensembles (deep ensembles, MC dropout, BALD)
+
+**What it does:** Splits a model's uncertainty about an answer into the part that is inherent in the data and the part that comes from the model not knowing enough, using the disagreement between several models.
+
+`p̄(y given x) = (1 ÷ M) × sum over m of p_m(y given x)`; `total = H[p̄]`; `aleatoric = (1 ÷ M) × sum over m of H[p_m]`; `epistemic = total − aleatoric = I(y; θ given x)` (the BALD score); with `H[p] = −sum over y of p(y) × ln p(y)`
+
+- **M**: the number of models: members of a deep ensemble, or forward passes with dropout left on (Monte Carlo dropout)
+- **p_m(y given x)**: model m's predicted probabilities; **p̄**: their average
+- **H[...]**: entropy, in nats (natural logarithms)
+- **I(y; θ given x)**: the mutual information between the answer y and the model's parameters θ (theta)
+
+**In plain words:** If every member says "50-50", the question is genuinely ambiguous and more data will not help: that is aleatoric uncertainty. If each member is confident but they disagree, the uncertainty comes from limited knowledge and would shrink with more data: that is epistemic uncertainty, measured by how much more uncertain the average is than the members. Active learning should ask for labels where epistemic uncertainty is high.
+
+**Tiny example:** Two members predicting [0.9, 0.1] and [0.1, 0.9] average to [0.5, 0.5]: total uncertainty ln 2 = 0.693 nats, aleatoric 0.325 (each member's own entropy) and epistemic 0.368. Two members that both say [0.5, 0.5] have the same total of 0.693, all of it aleatoric and none epistemic.
+
+**Where it is used:** Deep ensembles (Lakshminarayanan, Pritzel and Blundell 2017) and Monte Carlo dropout (Gal and Ghahramani 2016) for uncertainty estimates in medicine, driving and weather models; BALD active learning (Houlsby et al. 2011; Gal, Islam and Ghahramani 2017); reward-model ensembles in RLHF (alignment section); semantic entropy for spotting LLM hallucinations measures total uncertainty over meanings (LLM section).
+**In the book:** Only here (uncertainty sampling for active learning is the entry above).
+
+> **Definition — Aleatoric and epistemic uncertainty:** Aleatoric uncertainty comes from randomness or ambiguity in the data itself and does not shrink with more data; epistemic uncertainty comes from the model's limited knowledge and shrinks as it sees more data.
+
+> **Definition — Deep ensemble:** Several copies of a neural network trained from different random starting points, whose averaged predictions are more accurate and better calibrated and whose disagreement measures uncertainty.
+
+> **Definition — Monte Carlo dropout:** Keeping dropout switched on at prediction time and averaging many randomized forward passes, as a cheap approximation to a Bayesian neural network's uncertainty.
+
+> **Definition — BALD (Bayesian active learning by disagreement):** An active-learning score that picks the examples on which models drawn from the posterior disagree most, measured as the mutual information between the answer and the model's parameters.
 
 ### Prior-data fitted network objective (tabular foundation models)
 
@@ -4674,6 +5311,29 @@ flowchart LR
 
 > **Definition — Cost-sensitive threshold:** The probability cutoff above which a classifier says yes, chosen to minimize the expected cost of mistakes when false alarms and misses cost different amounts.
 
+### Bayes estimators and minimum Bayes risk (MBR) decoding
+
+**What it does:** Turns a predicted distribution into a single answer by picking whatever minimizes the expected loss, which shows which summary (mean, median or most likely value) each loss calls for.
+
+`ŷ = argmin over candidates a of sum over y of L(a, y) × P(y given x)`; squared loss gives the mean `E[y given x]`; absolute loss gives the median; 0-1 loss gives the most probable value `argmax over y of P(y given x)`; reject option: abstain when `max over y of P(y given x) < 1 − c`; MBR decoding: `ŷ = argmax over candidates h of (1 ÷ N) × sum over samples s of utility(h, s)`
+
+- **x**: the input; **y**: a possible true answer; **P(y given x)**: the model's predicted distribution; **E[y given x]**: the average of y under it
+- **a**: a candidate answer; **L(a, y)**: the loss if a is given and y is true
+- **c**: the cost of abstaining, relative to a cost of 1 for an error
+- **h**: a candidate output (for example one generated sentence); **s**: one of N sampled outputs standing in for the distribution
+- **utility(h, s)**: how good h would be if s were the truth (for example a similarity score)
+
+**In plain words:** The same beliefs give different best answers under different penalties. Squared error is minimized by the average, absolute error by the middle value, and right-or-wrong scoring by the single most likely answer. If a wrong answer costs more than passing, abstain when even the best answer is not likely enough. MBR decoding applies the idea to text: instead of the single most probable sentence, choose the sample that agrees best, on average, with all the others.
+
+**Tiny example:** A forecast gives 1, 2 and 10 with probabilities 0.3, 0.4 and 0.3. Under squared loss the best answer is the mean, 0.3 + 0.8 + 3.0 = 4.1 (expected loss 15.1, against 19.5 for answering 2); under absolute loss it is the median, 2 (expected loss 2.7, against 3.54 for 4.1); under 0-1 loss it is the most likely value, also 2. With an abstention cost c = 0.2 the rule abstains, since 0.4 < 0.8. MBR with an exact-match utility over the samples "42", "42" and "41" scores "42" at 2 ÷ 3 and "41" at 1 ÷ 3, so it returns "42": the majority vote.
+
+**Where it is used:** Every classifier's argmax and every regression trained on squared error; selective prediction and abstention; MBR decoding in machine translation with neural utility metrics such as BLEURT (Freitag et al. 2022) and COMET and for LLM outputs, where self-consistency's majority vote is MBR with an exact-match utility (Bertsch et al. 2023, "It's MBR all the way down"); the pinball loss in this section is the loss whose Bayes estimator is a quantile.
+**In the book:** Chapter 48 (Deciding when you are not sure: expected utility) gives the general recipe of maximizing expected utility, which is also in the reinforcement-learning section; the estimators and MBR decoding are only here.
+
+> **Definition — Bayes estimator:** The answer that minimizes the expected loss under a probability distribution over the truth: the mean for squared error, the median for absolute error and the most probable value for right-or-wrong scoring.
+
+> **Definition — Minimum Bayes risk (MBR) decoding:** Choosing, among several generated outputs, the one with the highest average similarity to all the others, as a stand-in for the output with the lowest expected loss.
+
 ### Precision-recall curve, average precision and mean average precision
 
 **What it does:** Summarizes how precision holds up as recall rises, the more informative view when positives are rare.
@@ -4692,6 +5352,27 @@ flowchart LR
 **In the book:** Chapter 9 (When positives are rare: precision-recall curves) and Chapter 45 (mAP) in words; the formulas are only here.
 
 > **Definition — Average precision (AP):** A single-number summary of a precision-recall curve, equal to the average of the precision values at each point where a relevant item is retrieved.
+
+### Segmentation metrics: mean IoU and Hausdorff distance (HD95)
+
+**What it does:** Scores pixel-level predictions per class (mean IoU) and along the outline (Hausdorff distance).
+
+`IoU_c = TP_c ÷ (TP_c + FP_c + FN_c)`, `mIoU = (1 ÷ C) × sum over classes c of IoU_c`; `HD(A, B) = max(max over a in A of min over b in B of d(a, b), max over b in B of min over a in A of d(a, b))`, and HD95 replaces each outer max by the 95th percentile
+
+- **TP_c**, **FP_c**, **FN_c**: pixels correctly labeled as class c, wrongly labeled as c, and of class c but missed (counted over the whole test set)
+- **C**: the number of classes
+- **A**, **B**: the boundary points of the predicted and the true mask; **d**: the distance between two points
+
+**In plain words:** Mean IoU averages the Jaccard overlap of each class, so a rare class such as "bicycle" counts as much as "road". The Hausdorff distance reports the worst gap between two outlines, which matters when a surgeon needs a tumor's edge; HD95 ignores the worst 5% of points so that one stray pixel does not dominate.
+
+**Tiny example:** Road with 80 correct pixels, 10 false and 10 missed: IoU = 80 ÷ 100 = 0.8; person with 6, 2 and 4: IoU = 6 ÷ 12 = 0.5; mIoU = (0.8 + 0.5) ÷ 2 = 0.65. Outlines A = {(0, 0), (1, 0)} and B = {(0, 1), (3, 0)}: the points of A are 1 and 1.41 from B, but B's point (3, 0) is 2 from A, so HD = 2.
+
+**Where it is used:** Semantic-segmentation leaderboards (Cityscapes, ADE20K) report mIoU, including for universal models such as Mask2Former; medical-segmentation challenges such as BraTS report the Dice score and HD95; Segment Anything was evaluated by the mIoU of the masks it produced from single clicks.
+**In the book:** Chapter 45 (Segmentation: "which pixels?"), which defines semantic, instance and panoptic segmentation in words; the metrics are only here (the Dice score is with the Dice loss in the deep-learning section, and panoptic quality has its own entry in the generative-models section).
+
+> **Definition — Mean IoU (mIoU):** The standard score for semantic segmentation: the intersection over union of predicted and true pixels, computed for each class and then averaged over classes.
+
+> **Definition — Hausdorff distance:** The largest distance from a point on one shape to the nearest point on the other, taken in both directions; it measures the worst disagreement between two outlines.
 
 ### Brier score
 
@@ -4844,6 +5525,76 @@ flowchart LR
 **Where it is used:** Demand and sales forecasting reports, energy load forecasting, the M-competitions (M4 used sMAPE).
 **In the book:** Chapter 9 (Measuring models that predict numbers); sMAPE is only here.
 
+### Local distance difference test (lDDT) and AlphaFold's confidence scores (pLDDT and PAE)
+
+**What it does:** Scores a predicted protein structure residue by residue by checking whether nearby distances are preserved, with no global alignment; AlphaFold predicts this score for itself (pLDDT) and predicts its own positional errors (PAE).
+
+per residue `lDDT_i = (1 ÷ 4) × sum over τ in {0.5, 1, 2, 4} Å of (share of neighbors j with |d_ij^pred − d_ij^true| < τ)`, where the neighbors are the atoms within 15 Å of residue i in the true structure; whole structure: the average over residues (often × 100); `pLDDT_i = sum over bins b of p_i(b) × (center of bin b)`; `PAE_ij = sum over bins b of p_ij(b) × (center of bin b)`
+
+- **i**: a residue (one amino acid in the chain); **j**: a nearby atom or residue
+- **d_ij^pred**, **d_ij^true**: the distance between i and j in the predicted and the true structure
+- **τ** (tau): a tolerance; four tolerances are averaged
+- **15 Å**: the inclusion radius (1 Å, one ångström, is 10^(−10) meters)
+- **p_i(b)**: the network's predicted probability that residue i's lDDT falls in bin b (AlphaFold 2 uses 50 bins from 0 to 100)
+- **p_ij(b)**: the predicted probability that, with the structure aligned on residue i's local frame, residue j's position error falls in error bin b
+
+**In plain words:** Instead of superimposing the whole protein, lDDT asks each residue whether its distances to its neighbors are right, so a correct domain still scores well even if a hinge elsewhere is wrong. Averaging four tolerances gives partial credit for near misses. AlphaFold adds a small output head that predicts each residue's lDDT, giving pLDDT, and another that predicts the error in the relative position of every pair of residues, giving the PAE heat map.
+
+**Tiny example:** A residue with four neighbors whose predicted distances are off by 0.3, 0.8, 1.5 and 5.0 Å: under 0.5 Å, 1 of 4 pass; under 1 Å, 2 of 4; under 2 Å, 3 of 4; under 4 Å, 3 of 4. lDDT = (0.25 + 0.5 + 0.75 + 0.75) ÷ 4 = 0.5625, about 56. If the pLDDT head puts probability 0.7 on the bin centered at 91, 0.2 on 71 and 0.1 on 31, pLDDT = 63.7 + 14.2 + 3.1 = 81: "confident", but not "very high".
+
+**Where it is used:** CASP assessment (lDDT, Mariani et al. 2013, needs no superposition); AlphaFold 2 and 3, ESMFold and the AlphaFold Database color every residue by pLDDT (above 90 very high, 70 to 90 confident, 50 to 70 low, below 50 very low and often disordered) and show PAE maps of how confidently domains are placed relative to each other; AlphaFold 3 trains with a smooth version of lDDT as one of its losses.
+**In the book:** Chapter 52 (AlphaFold 2: how it works), which defines pLDDT and PAE in words; the formulas are only here.
+
+> **Definition — lDDT (local distance difference test):** A score from 0 to 100 for a predicted protein structure that checks, residue by residue, whether distances to nearby atoms match the true structure within several tolerances, without superimposing the whole molecule.
+
+### Global distance test (GDT_TS) and TM-score
+
+**What it does:** Gives one number for how much of a predicted protein structure has the right overall fold, without letting a few badly placed regions dominate.
+
+`GDT_TS = (P_1 + P_2 + P_4 + P_8) ÷ 4`, where `P_d` is the largest percentage of residues that can be superimposed within d Å of their true positions; `TM-score = max over superpositions of (1 ÷ L) × sum over residues i of 1 ÷ (1 + (d_i ÷ d_0)^2)`, with `d_0 = 1.24 × (L − 15)^(1/3) − 1.8`; AlphaFold-Multimer ranking score `0.8 × ipTM + 0.2 × pTM`
+
+- **P_d**: the percentage of residues within d ångströms (Å, 10^(−10) m) of their true positions after the best superposition for that cutoff, for d = 1, 2, 4 and 8
+- **L**: the length of the true protein in residues (amino acids)
+- **d_i**: the distance between residue i's predicted and true positions after superposition
+- **d_0**: a length-dependent distance scale, so TM-scores of small and large proteins are comparable
+- **pTM**: AlphaFold's predicted TM-score, computed from its predicted aligned errors; **ipTM**: the same, restricted to residue pairs across the interface between chains
+
+**In plain words:** RMSD punishes a few far-off atoms heavily; these scores instead count, softly, how many residues are close. GDT_TS averages the share of residues within four cutoffs; TM-score gives each residue a credit that falls smoothly with its error, scaled to the protein's size. A TM-score above about 0.5 means the same fold, while unrelated structures score about 0.17.
+
+**Tiny example:** A 100-residue protein where, after superposition, 60 residues sit 0.5 Å from the truth, 30 sit 3 Å away and 10 sit 10 Å away. GDT_TS: P_1 = 60, P_2 = 60, P_4 = 90 and P_8 = 90, so (60 + 60 + 90 + 90) ÷ 4 = 75. TM-score: d_0 = 1.24 × 85^(1/3) − 1.8 ≈ 3.65; the credits are 60 ÷ (1 + 0.019) ≈ 58.9, 30 ÷ (1 + 0.675) ≈ 17.9 and 10 ÷ (1 + 7.50) ≈ 1.2, so TM ≈ 78.0 ÷ 100 = 0.78. A predicted complex with ipTM = 0.85 and pTM = 0.90 gets a ranking score of 0.68 + 0.18 = 0.86.
+
+**Where it is used:** GDT_TS is CASP's main accuracy score (AlphaFold 2's median of about 92 at CASP14); TM-score (Zhang and Skolnick 2004) compares folds in structure-search tools such as Foldseek and US-align and benchmarks structure predictors; AlphaFold-Multimer ranks its predicted complexes by 0.8 × ipTM + 0.2 × pTM, and AlphaFold 3 reports pTM and ipTM with every prediction.
+**In the book:** Chapter 52 (Measuring shapes the slow way; AlphaFold 2: how it works, whose "median score of about 92 out of 100 on the competition's main accuracy measure" is GDT_TS); the formulas are only here.
+
+> **Definition — GDT_TS (global distance test, total score):** CASP's main accuracy score for a predicted protein structure: the average, over cutoffs of 1, 2, 4 and 8 ångströms, of the percentage of residues placed within that distance of their true positions; 100 is perfect.
+
+> **Definition — TM-score (template modeling score):** A score from 0 to 1 for how similar two protein structures are overall, giving each residue partial credit that shrinks with its distance error, scaled so proteins of different lengths compare fairly; above about 0.5 means the same fold.
+
+### Root-mean-square deviation after optimal superposition (RMSD and the Kabsch algorithm)
+
+**What it does:** Measures how far apart two 3D structures are, atom by atom, after sliding and rotating one onto the other as well as possible.
+
+`RMSD = min over rotations R and shifts t of sqrt((1 ÷ N) × sum over i of ||R × x_i + t − y_i||^2)`; Kabsch: center both sets, form `H = sum over i of x̃_i × ỹ_i^T`, take its SVD `H = U × S × V^T`, set `d = sign(det(V × U^T))` and `R = V × diag(1, 1, d) × U^T`
+
+- **x_i**, **y_i**: the positions of atom i in the predicted and the reference structure
+- **N**: the number of atoms compared (often only one backbone atom, Cα, per amino acid)
+- **R**: a 3 × 3 rotation; **t**: a shift
+- **x̃_i**, **ỹ_i**: the positions after subtracting each structure's center
+- **H**: a 3 × 3 cross-covariance matrix; **U**, **S**, **V**: its singular value decomposition (foundations section)
+- **d**: +1 or −1, which keeps R a true rotation rather than a mirror reflection; **det**: the determinant; **diag(1, 1, d)**: the 3 × 3 matrix with 1, 1 and d on its diagonal and zeros elsewhere
+- RMSD is reported in ångströms (Å), one ten-billionth of a meter, about the width of an atom
+
+**In plain words:** It is the root mean squared error of the atom positions, but only after removing differences in where the structure sits and which way it faces, which carry no meaning. The Kabsch algorithm finds the best rotation in one step from a singular value decomposition. Because one badly placed loop dominates a squared average, the RMSD of a whole protein can look poor even when most of it is right, which is why GDT, TM-score and lDDT (in this section) were introduced.
+
+**Tiny example:** A two-atom reference at (1, 0) and (−1, 0) and a model at (0, 1) and (0, −1), the same shape turned by 90°. As placed, each atom is sqrt(1 + 1) ≈ 1.41 Å off, so the raw RMSD is 1.41 Å; Kabsch finds the 90° rotation, after which RMSD = 0. A model whose three atoms end up 0.5, 1.0 and 1.5 Å from their targets after superposition has RMSD = sqrt((0.25 + 1 + 2.25) ÷ 3) = sqrt(1.167) ≈ 1.08 Å.
+
+**Where it is used:** Protein-structure prediction and docking: AlphaFold 2's CASP14 predictions had a median backbone error of 0.96 Å (Cα RMSD over the best-fitting 95% of residues) against 2.8 Å for the next best method (Jumper et al. 2021); a docked drug pose within 2 Å RMSD of the true pose counts as a success in benchmarks such as PoseBusters, used to evaluate AlphaFold 3; structural-biology software (PyMOL, Biopython) and molecular-dynamics analysis. It is also the superposition step inside GDT and TM-score.
+**In the book:** Chapter 52 (Measuring shapes the slow way; AlphaFold 2: how it works), where predictions are "scored against the real shapes"; the formula is only here.
+
+> **Definition — RMSD (root-mean-square deviation):** The typical distance between corresponding atoms of two 3D structures after they have been lined up as well as possible, reported in ångströms; lower is better.
+
+> **Definition — Kabsch algorithm:** A method (1976) that finds, in one step using a singular value decomposition, the rotation that best lines up one set of 3D points with another.
+
 ### Simple moving average
 
 **What it does:** Smooths a time series, or forecasts the next value, by averaging the last few values.
@@ -4978,6 +5729,29 @@ flowchart LR
 
 > **Definition — MASE (mean absolute scaled error):** A forecast error score equal to the forecast's mean absolute error divided by that of the naive "repeat the last value or season" forecast; below 1 beats the naive forecast.
 
+### Latitude-weighted RMSE and anomaly correlation coefficient (weather-forecast scores)
+
+**What it does:** Scores a gridded weather forecast fairly over the whole globe, and checks whether it gets the departures from normal weather right.
+
+`w_i = cos(lat_i) ÷ (average over grid points of cos(lat))`; `RMSE = sqrt((1 ÷ N) × sum over i of w_i × (f_i − o_i)^2)`; `ACC = sum over i of w_i × f'_i × o'_i ÷ sqrt((sum over i of w_i × f'_i^2) × (sum over i of w_i × o'_i^2))`, with `f'_i = f_i − c_i` and `o'_i = o_i − c_i`
+
+- **i**: a grid point; **N**: the number of grid points
+- **lat_i**: its latitude; **w_i**: its weight, proportional to the area its grid cell covers
+- **f_i**: the forecast value (for example temperature, or the height of the 500-hectopascal pressure surface); **o_i**: the verifying value (usually the ERA5 reanalysis or an analysis of observations)
+- **c_i**: the climatology, the long-term average for that place and time of year
+- **f'_i**, **o'_i**: the forecast and observed anomalies, their departures from climatology
+
+**In plain words:** On a latitude-longitude grid, cells near the poles are tiny but just as numerous as the large equatorial cells, so each squared error is weighted by the cosine of its latitude. Even a poor forecast gets the seasons right, so the ACC subtracts climatology and asks whether the predicted anomalies line up with the real ones: 1 is perfect and 0 is no better than climatology. Forecasters conventionally treat an ACC above about 0.6 as still useful.
+
+**Tiny example:** Two grid points, at the equator (cos 0° = 1) and at 60° latitude (cos 60° = 0.5): the average cosine is 0.75, so the weights are 1.33 and 0.67. Errors of 2 and 4 degrees give RMSE = sqrt((1.33 × 4 + 0.67 × 16) ÷ 2) = sqrt(8) ≈ 2.83, against 3.16 unweighted. With equal weights, forecast anomalies (1, 2, −1) against observed (2, 1, −1) give ACC = (2 + 2 + 1) ÷ sqrt(6 × 6) = 5 ÷ 6 ≈ 0.83.
+
+**Where it is used:** WeatherBench 2 (Rasp et al. 2024), the common benchmark for AI weather models, reports both scores; GraphCast was trained on a squared error weighted by latitude and pressure level and was compared with ECMWF's physics forecast on such RMSE scores, as were Pangu-Weather, FourCastNet and ECMWF's AIFS.
+**In the book:** Chapter 52 (The learned way), where GraphCast "was more accurate than ECMWF's flagship physics forecast on 90 percent of the 1,380 test targets"; the scores are only here.
+
+> **Definition — Climatology (weather):** The long-term average weather for a given place and time of year, used as the baseline that any useful forecast must beat.
+
+> **Definition — Anomaly correlation coefficient (ACC):** A forecast score that correlates the forecast's departures from climatology with the observed departures, so it rewards getting unusual weather right rather than the predictable seasonal pattern; 1 is perfect and 0 means no skill beyond climatology.
+
 ### Quantile (pinball) loss and weighted quantile loss
 
 **What it does:** Trains and scores forecasts of a chosen percentile, such as "90% of days will sell fewer than this".
@@ -5000,6 +5774,31 @@ flowchart LR
 > **Definition — Quantile loss (pinball loss):** A loss that charges under-predictions and over-predictions at different rates, set by a chosen quantile, so a model trained with it learns to predict that percentile of the outcome.
 
 > **Definition — CRPS (continuous ranked probability score):** A score for a probabilistic forecast that compares the whole predicted distribution with the value that happened, equal to twice the quantile loss averaged over all quantile levels; lower is better, and for a single-number forecast it equals the absolute error.
+
+### Ensemble CRPS (energy form and fair CRPS), spread-skill ratio and skill scores
+
+**What it does:** Scores a forecast given as an ensemble of possible futures, checks whether the ensemble's spread matches its errors, and expresses any score as an improvement over a reference.
+
+`CRPS = (1 ÷ M) × sum over m of |x_m − y| − (1 ÷ (2 × M^2)) × sum over m and m' of |x_m − x_m'|`; fair CRPS: replace `2 × M^2` by `2 × M × (M − 1)`; `spread-skill ratio = spread ÷ RMSE of the ensemble mean`, often multiplied by `sqrt((M + 1) ÷ M)` for a finite ensemble; `skill score = 1 − score ÷ score_ref`
+
+- **M**: the number of ensemble members; **x_m**: member m's forecast value; **m'**: a second member index
+- **y**: the value that actually happened
+- **|·|**: absolute difference
+- **spread**: the square root of the average (over places and times) of the variance across members
+- **RMSE of the ensemble mean**: the root mean squared error of the members' average
+- **sqrt((M + 1) ÷ M)**: a correction for ensemble size (Fortin et al. 2014), because even a perfect ensemble of M members has a mean whose error slightly exceeds its spread
+- **score_ref**: the same score for a reference forecast, such as climatology or the physics ensemble
+
+**In plain words:** The first term rewards members that land close to what happened; the second subtracts half the typical distance between members, so a well-spread ensemble is not punished for hedging. With a single member, CRPS is just the absolute error, and it equals the quantile form in the pinball-loss entry. The fair version scores the ensemble as if it had infinitely many members drawn the same way, so ensembles of 8 and of 50 members can be compared. An honest ensemble's spread matches its error (a ratio near 1); below 1 means overconfident.
+
+**Tiny example:** Two members, 1 and 3 degrees, and an outcome of 4: the first term is (3 + 1) ÷ 2 = 2; the ordered pairs (1, 3) and (3, 1) differ by 2 each, so the second term is 4 ÷ (2 × 4) = 0.5 and CRPS = 1.5; the fair CRPS is 2 − 4 ÷ (2 × 2 × 1) = 1.0. A single forecast of 3 scores |3 − 4| = 1. If a model's average CRPS is 1.2 and the physics ensemble's is 1.5, its skill score is 1 − 1.2 ÷ 1.5 = 0.20, a 20% improvement.
+
+**Where it is used:** GenCast (Google DeepMind, 2024) was judged against ECMWF's ensemble mainly by CRPS and beat it on about 97% of targets; ECMWF's AIFS-CRPS model is trained on an "almost fair" CRPS, and its ensemble, AIFS ENS, became operational with 51 members on 1 July 2025; WeatherBench 2 reports the fair CRPS and spread-skill ratios; probabilistic time-series forecasters report CRPS.
+**In the book:** Chapter 52 (The physics way, which defines ensemble forecasts; The learned way, on GenCast); the formulas are only here.
+
+> **Definition — Spread-skill ratio:** For an ensemble forecast, the typical disagreement between members divided by the typical error of their average; about 1 means the ensemble's uncertainty is honest, and below 1 means it is overconfident.
+
+> **Definition — Skill score:** A forecast score rescaled as the share of a reference forecast's error that is removed: 1 is perfect, 0 is no better than the reference, and negative is worse.
 
 ### BLEU score (machine translation)
 
@@ -5069,6 +5868,26 @@ flowchart LR
 
 **Where it is used:** Speech-recognition benchmarks and products (Whisper, cloud speech APIs, LibriSpeech and Open ASR leaderboards), OCR and handwriting recognition.
 **In the book:** Chapter 46 (Measuring speech recognition: word error rate; Exercise 2); character error rate is only named there.
+
+### Diarization error rate (DER)
+
+**What it does:** Scores a "who spoke when" system by the share of speaking time it gets wrong.
+
+`DER = (false alarm + missed speech + speaker confusion) ÷ total reference speech time`, after the best one-to-one mapping between the system's speaker labels and the true speakers; Jaccard error rate `JER = average over true speakers of (1 − (time both agree on that speaker) ÷ (time either assigns to that speaker))`
+
+- **false alarm**: time the system labels as speech when nobody was speaking
+- **missed speech**: time someone was speaking that the system left unlabeled
+- **speaker confusion**: speech time given to the wrong speaker
+- **total reference speech time**: the total talking time in the human-made reference, counted per speaker, so stretches where two people talk count twice
+- **mapping**: the system's labels ("speaker A") carry no names, so they are paired one-to-one with the true speakers in the way that maximizes total overlap, found with the Hungarian algorithm (DETR entry, generative-models section)
+- **JER**: the Jaccard error rate, the DIHARD challenge's second score, which counts every speaker equally however much they talk
+
+**In plain words:** Lay the system's timeline over the true one, pair up the anonymous labels, then add up every second that is wrong in one of three ways and divide by how much speech there was. Like word error rate, it can exceed 100% if the system invents a lot of speech. Older evaluations ignored a short collar (often 0.25 seconds) around each speaker change; recent benchmarks score every moment, overlapping speech included.
+
+**Tiny example:** A meeting with 600 seconds of speech. The system misses 18 seconds, labels 12 seconds of silence as speech and gives 30 seconds to the wrong person: DER = (18 + 12 + 30) ÷ 600 = 60 ÷ 600 = 10%.
+
+**Where it is used:** Diarization benchmarks (NIST Rich Transcription, DIHARD, AMI, VoxConverse) and toolkits such as pyannote.audio and NVIDIA NeMo, behind meeting transcripts, call-center analytics and ambient medical scribes.
+**In the book:** Chapter 46 (Who spoke when: diarization and voice biometrics), which defines DER in words; the formula is only here.
 
 ### Exact match and token-level F1 for question answering
 
@@ -5446,6 +6265,30 @@ flowchart LR
 **In the book:** Chapter 10 (Monitoring: what to watch and how to spot drift, PSI worked); the KS statistic is only named there.
 
 > **Definition — Kolmogorov-Smirnov statistic:** The largest gap between the cumulative distributions of two samples, used to test whether they come from the same distribution.
+
+### Correcting for covariate shift and label shift (importance weights)
+
+**What it does:** Reweights training examples, or adjusts a model's probabilities, so that a model trained on one data distribution works on a deployment distribution that differs in a known way.
+
+`covariate shift (P(x) changes, P(y given x) does not): minimize sum over training examples i of w(x_i) × loss_i`, with `w(x) = p_test(x) ÷ p_train(x) = (n_train ÷ n_test) × P(test given x) ÷ P(train given x)` from a domain classifier; `label shift (P(y) changes, P(x given y) does not): w(y) = p_test(y) ÷ p_train(y)`, with p_test(y) estimated by solving `C × q = μ̂` for q (black-box shift estimation), and `p_test(y given x) ∝ w(y) × p_train(y given x)`
+
+- **p_train**, **p_test**: the distributions of training and deployment data
+- **w(x)**, **w(y)**: importance weights
+- **P(test given x)**: the probability, from a classifier trained to tell deployment inputs from training inputs, that x came from deployment; **n_train**, **n_test**: the two sample sizes
+- **C**: the model's confusion matrix on held-out training-distribution data, normalized within each true label: C[i, j] = P(prediction i given true label j)
+- **q**: the unknown label shares in deployment; **μ̂** (mu hat): the share of deployment examples given each predicted label
+- **∝**: "proportional to"; divide by the sum over y so the probabilities add up to 1
+
+**In plain words:** If some kinds of input are three times as common in deployment as in training, count those training examples three times. When it is the mix of answers that changed (a disease became rarer), the model's picture of what each case looks like is still right, so only its built-in prior needs rescaling, and the new prior can be estimated from how often the model predicts each label in deployment.
+
+**Tiny example:** Covariate shift: with equal sample sizes, a domain classifier that gives an example a 0.75 chance of coming from deployment yields the weight 0.75 ÷ 0.25 = 3. Label shift: the training data were 50% positive but deployment has 10%. A model output of 0.8 positive is rescaled with w(positive) = 0.1 ÷ 0.5 = 0.2 and w(negative) = 0.9 ÷ 0.5 = 1.8: 0.8 × 0.2 = 0.16 against 0.2 × 1.8 = 0.36, so the corrected probability is 0.16 ÷ 0.52 ≈ 0.31.
+
+**Where it is used:** Dive into Deep Learning's section on environment and distribution shift; black-box shift estimation for label shift (Lipton, Wang and Smola 2018); adapting deployed classifiers when prevalence changes (fraud rates, disease rates); importance-weighted training and evaluation under covariate shift (Shimodaira 2000).
+**In the book:** Chapter 10 (Monitoring: what to watch and how to spot drift) defines covariate shift and label shift; Chapter 9 (When the world changes: distribution shift); the corrections are only here.
+
+> **Definition — Domain classifier:** A classifier trained to tell whether an example comes from the training data or from the deployment data; its probabilities give the importance weights for correcting covariate shift.
+
+> **Definition — Black-box shift estimation (BBSE):** A method for estimating the new mix of labels after label shift by combining a model's confusion matrix on old data with the distribution of its predictions on new data.
 
 ### A/B test: lift and two-proportion z-test
 
@@ -5864,6 +6707,47 @@ flowchart LR
 **Where it is used:** The Netflix Prize-winning family of models (Koren, Bell and Volinsky, 2009); the embedding tables of modern recommenders descend from it.
 **In the book:** Chapter 51 (Matrix factorization: discovering hidden tastes; How the factors are learned) and Chapter 10; the full biased objective is only here.
 
+### Bridging-based ranking (the Community Notes matrix factorization)
+
+**What it does:** Rates a fact-checking note as helpful only if people who usually disagree with each other both rate it helpful.
+
+`r̂_un = μ + i_u + i_n + f_u × f_n`, fitted by minimizing `sum over observed ratings of (r_un − r̂_un)^2 + λ_i × (i_u^2 + i_n^2 + μ^2) + λ_f × (f_u^2 + f_n^2)`, with `λ_i = 0.15` and `λ_f = 0.03`; a note is shown as helpful when `i_n ≥ 0.40` and `|f_n| < 0.5` (plus further safeguards)
+
+- **r_un**: rater u's rating of note n (1 helpful, 0.5 somewhat helpful, 0 not helpful); **r̂_un**: the model's prediction of it
+- **μ** (mu): the overall average rating
+- **i_u**: rater u's intercept, how generous they are; **i_n**: note n's intercept, the helpfulness not explained by viewpoint
+- **f_u**, **f_n**: one-number "viewpoint" factors for the rater and the note, learned from the data (in practice they line up with political leaning)
+- **λ_i**, **λ_f** (lambda): regularization strengths; intercepts are penalized 5 times more than factors
+
+**In plain words:** This is the matrix factorization with biases used for recommendations (in this section), but the decision uses the note's intercept, not its average rating. Any approval that can be explained by rater and note sharing a viewpoint is soaked up by f_u × f_n, and because intercepts cost more to grow, the model pushes as much as it can into the factors. Only approval left over, coming from both sides at once, raises the intercept.
+
+**Tiny example:** With μ = 0.1, a note with i_n = 0.45 and a small factor f_n = 0.1 is predicted at 0.1 + 0.05 + 0.45 − 0.1 = 0.50 for a rater with i_u = 0.05 and f_u = −1, and at 0.70 for the same rater type with f_u = +1: liked on both sides, it passes both tests (0.45 ≥ 0.40 and 0.1 < 0.5). A note with i_n = 0.1 and f_n = 0.9 is predicted at 1.1 by raters with f_u = +1 (and i_u = 0) and at −0.7 by raters with f_u = −1: very popular with one side, but its intercept is far below 0.40, so it is not shown.
+
+**Where it is used:** X's Community Notes (launched as Birdwatch in 2021, with open-source code and data), whose algorithm Meta adopted as the basis of its own Community Notes in 2025; proposed more broadly as "bridging" ranking for social feeds.
+**In the book:** Chapter 51 (Feedback loops and popularity bias), whose At the frontier box describes bridging ranking in X's Community Notes in words; the model is only here.
+
+> **Definition — Bridging-based ranking:** Ranking content by how much it is approved across groups that usually disagree, rather than by total approval, so that items liked by only one side do not rise to the top.
+
+### Non-negative matrix factorization (NMF) and its multiplicative updates
+
+**What it does:** Splits a table of non-negative numbers into two smaller non-negative tables, so the data become sums of parts that can only add, never cancel.
+
+`X ≈ W × H` with every entry of W and H at least 0; for squared error, alternate `H ← H ⊙ (W^T × X) ÷ (W^T × W × H)` and `W ← W ⊙ (X × H^T) ÷ (W × H × H^T)`, with ⊙ and ÷ taken entry by entry
+
+- **X**: an n × d data matrix with no negative entries (word counts, pixel intensities, spectrogram magnitudes)
+- **W**: n × k, how much of each of k parts every row uses; **H**: k × d, what each part looks like
+- **k**: the number of parts, much smaller than n and d
+- **⊙**: entry-by-entry multiplication; **T**: transpose
+
+**In plain words:** PCA's components have positive and negative entries that cancel, which makes them hard to read. Requiring every number to be zero or more forces an additive, parts-based description: a document is a mix of topics, a face a sum of features, a sound a sum of notes. The multiplicative updates of Lee and Seung never let an entry turn negative and never increase the error.
+
+**Tiny example:** X with rows [2, 1] and [4, 2], k = 1, starting from W = [1, 1] (a column) and H = [1, 1] (a row). Update H: W^T × X = [6, 3] and W^T × W × H = [2, 2], so H = [3, 1.5]. Update W: X × H^T = [7.5, 15] and W × (H × H^T) = [11.25, 11.25], so W = [0.667, 1.333]. Now W × H has rows [2, 1] and [4, 2]: exact after one round.
+
+**Where it is used:** Topic models on TF-IDF matrices (scikit-learn's NMF); separating instruments or speakers in magnitude spectrograms; extracting mutational signatures from cancer genomes (Alexandrov et al. 2013); interpretability, where factorizing a network's activations with NMF finds groups of neurons that act together (Olah et al. 2018, "The Building Blocks of Interpretability").
+**In the book:** Only here (matrix factorization for recommendations, without the non-negativity rule, is the entry above).
+
+> **Definition — Non-negative matrix factorization (NMF):** Approximating a table of non-negative numbers as the product of two smaller non-negative tables, so each row is described as an additive mix of a few parts.
+
 ### Alternating least squares (explicit and implicit feedback)
 
 **What it does:** Fits matrix factorization by solving for all user vectors exactly, then all item vectors, and repeating.
@@ -6014,6 +6898,28 @@ flowchart LR
 
 **Where it is used:** Feed ranking at large platforms: X open-sourced a ranker in 2023 that combines predicted engagement probabilities with fixed weights, and YouTube's multi-task ranking (Zhao et al., 2019) combines several predicted objectives the same way.
 **In the book:** Chapter 51 (Stage 2: ranking, a model that predicts many things at once).
+
+### Catalog coverage, novelty and the Gini coefficient of exposure (beyond-accuracy recommender metrics)
+
+**What it does:** Measures whether a recommender spreads attention across its catalog or keeps showing the same popular items.
+
+`coverage = |union over users u of R_u| ÷ |I|`; `novelty = average over recommended items i of −log2(pop(i))`; `Gini = (sum over k = 1..n of (2 × k − n − 1) × e_(k)) ÷ (n × sum over k of e_(k))`, with the exposures sorted from smallest to largest
+
+- **R_u**: the set of items recommended to user u; **I**: the whole catalog; **|·|**: the number of items in a set
+- **pop(i)**: the share of users who have interacted with item i
+- **e_(k)**: the k-th smallest exposure count (how often an item was shown); **n**: the number of items
+- **Gini**: 0 when every item is shown equally often, approaching 1 when one item gets everything
+
+**In plain words:** Accuracy metrics reward recommending what people already like, which is often what is already popular. Coverage asks what share of the catalog is ever recommended; novelty scores a list by how surprising its items are, in bits (an item everyone knows carries no information); the Gini coefficient, borrowed from income-inequality statistics, summarizes how unequally exposure is shared. Intra-list diversity is in the maximal-marginal-relevance entry.
+
+**Tiny example:** Two users are shown {A, B} and {A, C} from a 10-item catalog: coverage = 3 ÷ 10 = 30%. An item known to half of users adds −log2(0.5) = 1 bit of novelty; one known to 1 user in 8 adds 3 bits. Four items shown 1, 1, 2 and 6 times: Gini = (−3 × 1 − 1 × 1 + 1 × 2 + 3 × 6) ÷ (4 × 10) = 16 ÷ 40 = 0.40.
+
+**Where it is used:** Offline evaluation of recommenders for popularity bias and long-tail exposure (Microsoft's open-source Recommenders library reports catalog coverage, novelty and diversity next to accuracy); exposure-fairness audits for creators and sellers on feeds and marketplaces; checking that an exploration budget actually reaches new items.
+**In the book:** Chapter 51 (Stage 3: re-ranking; Feedback loops and popularity bias), which describes variety and popularity bias in words; the metrics are only here.
+
+> **Definition — Catalog coverage:** The share of all available items that a recommender ever recommends to anyone.
+
+> **Definition — Gini coefficient:** A number from 0 to 1 that measures how unequally something is shared: 0 for perfectly equal shares, near 1 when one member gets almost everything. First used for income, it is applied in AI to how exposure is spread across items or creators.
 
 ### Ad ranking by expected value and generalized second-price pricing
 
@@ -6412,6 +7318,28 @@ flowchart TD
 
 > **Definition — Huber loss (smooth L1 loss):** A loss that is squared for small errors and grows in a straight line for large ones, combining smooth training with resistance to outliers.
 
+### Gaussian negative log-likelihood and mixture density networks
+
+**What it does:** Trains a network to predict a whole distribution for a number (a mean and a spread, or a mix of several bell curves) instead of a single value.
+
+`Gaussian negative log-likelihood: loss = (1 ÷ 2) × ln(2 × π × σ(x)^2) + (y − μ(x))^2 ÷ (2 × σ(x)^2)`; `mixture density network: p(y given x) = sum over k of π_k(x) × N(y; μ_k(x), σ_k(x)^2)` and `loss = −ln p(y given x)`, with `π(x) = softmax(network outputs)` and `σ_k(x) = exp(network output)`
+
+- **x**, **y**: the input and the true target
+- **μ(x)**, **σ(x)**: the predicted mean and standard deviation (both outputs of the network)
+- **k**: one of K mixture components; **π_k(x)** (pi): the mixing weights, which add up to 1
+- **N(y; μ, σ^2)**: the Gaussian density at y; **π** inside ln(2 × π × ...): the number 3.14159...
+
+**In plain words:** With σ held fixed, the Gaussian loss is just mean squared error. Letting the network output σ too lets it say "I am unsure here", and the loss balances the two terms: claiming a small σ is rewarded when right and punished hard when wrong. When several answers are plausible, as for a robot that can pass an obstacle on the left or on the right, a single Gaussian puts its peak in the useless middle; a mixture puts one bump on each option.
+
+**Tiny example:** Prediction μ = 2 for a true y = 3: with σ = 1 the loss is 0.919 + 0.5 = 1.419, and with σ = 2 it is 1.612 + 0.125 = 1.737, so claiming confidence pays. For y = 6 the losses are 0.919 + 8 = 8.919 with σ = 1 and 1.612 + 2 = 3.612 with σ = 2: admitting uncertainty pays when the error is big. A two-bump mixture with weights 0.5 and 0.5, means −1 and 1 and σ = 0.5 gives y = 1 a density of 0.399 (loss 0.919); a single Gaussian with mean 0 and σ = 1 gives 0.242 (loss 1.419) and puts its peak at 0, where no data lie.
+
+**Where it is used:** PyTorch's GaussianNLLLoss; probabilistic forecasting such as DeepAR (Salinas et al. 2020); each member of a deep ensemble is trained with the Gaussian loss (Lakshminarayanan et al. 2017); mixture density networks for handwriting generation (Graves 2013), the world model of Ha and Schmidhuber (2018) and Gaussian-mixture policy heads in robot imitation learning (robomimic, Mandlekar et al. 2021).
+**In the book:** Only here.
+
+> **Definition — Heteroscedastic:** Having noise whose size changes from input to input; a heteroscedastic regression model predicts a separate uncertainty for each input.
+
+> **Definition — Mixture density network (MDN):** A neural network whose outputs are the weights, means and spreads of a mixture of Gaussians, so it can predict a distribution with several separate peaks.
+
 ### Cross-entropy loss for classification (negative log-likelihood)
 
 **What it does:** Measures how surprised a classifier is by the correct answer.
@@ -6434,6 +7362,24 @@ flowchart TD
 
 **Where it is used:** Image classifiers and every LLM's next-token pretraining and fine-tuning loss.
 **In the book:** Chapter 12 (Cross-entropy, for choosing between options); Chapter 19 (Measuring surprise: the loss); Appendix B (Cross-entropy, one token and whole text). The logsumexp form is only here.
+
+### Loss at initialization (the ln K sanity check)
+
+**What it does:** Predicts the cross-entropy an untrained classifier or language model should start at, so a wrong starting loss exposes a bug before training time is wasted.
+
+`uniform predictions: L_0 = −ln(1 ÷ K) = ln(K)`, so the starting perplexity is K; with independent random logits of spread σ and many classes: `L_0 ≈ ln(K) + σ^2 ÷ 2`
+
+- **L_0**: the average cross-entropy loss before the first training step
+- **K**: the number of classes (for a language model, the vocabulary size)
+- **ln**: the natural logarithm
+- **σ** (sigma): the standard deviation of the starting logits, the raw scores fed to softmax
+
+**In plain words:** A freshly initialized network has no idea which answer is right, so it should spread its probability evenly, giving the true class 1 ÷ K and a loss of ln K. If the output layer starts with large random logits, the model is confidently wrong at random and the loss starts higher, by roughly σ^2 ÷ 2; this is why output layers are initialized small or at zero. A first loss far above ln K points to a bug or a bad initialization.
+
+**Tiny example:** 10 classes: ln 10 = 2.303. A character model over 27 symbols: ln 27 = 3.296. GPT-2's 50,257-token vocabulary: ln 50,257 = 10.825, a perplexity of 50,257. With random logits of σ = 1 on that vocabulary: about 10.825 + 0.5 = 11.325 (a simulation gives 11.33). A yes-or-no classifier: ln 2 = 0.693.
+
+**Where it is used:** The "verify loss at init" step of Karpathy's "A Recipe for Training Neural Networks" (2019) and his Zero to Hero lectures (makemore and the GPT-2 reproduction), and Stanford CS231n's sanity checks ("expect an initial loss of 2.302" for 10-class CIFAR-10); it is a routine first check on language-model pretraining runs, where the first logged loss should sit near ln(vocabulary size).
+**In the book:** Chapter 13 (When a network will not learn: a debugging checklist), step 3, works the ln 10 = 2.30 case; the σ correction is only here.
 
 ### Binary cross-entropy (log loss) from a logit
 
@@ -6549,6 +7495,31 @@ flowchart TD
 > **Definition — Triplet loss:** A metric-learning loss on groups of three: it is zero once an anchor is closer to a matching example than to a non-matching one by a set margin, and positive otherwise.
 
 > **Definition — Siamese network:** Two copies of the same network with shared weights that embed two inputs, so their outputs can be compared, as in face verification ("are these the same person?").
+
+### Few-shot meta-learning: prototypical networks and MAML
+
+**What it does:** Trains a model across many small tasks so it can learn a new task from a handful of examples, either by comparing inputs with class averages in an embedding space or by finding starting weights that adapt in one gradient step.
+
+`prototypical networks: c_k = (1 ÷ |S_k|) × sum over x in S_k of f(x)` and `P(y = k given x) = softmax over k of (−||f(x) − c_k||^2)`; `MAML inner step: θ'_i = θ − α × ∇_θ L_i^support(θ)`; `MAML outer step: θ ← θ − β × ∇_θ (sum over tasks i of L_i^query(θ'_i))`
+
+- **S_k**: the few labeled support examples of class k in the current task; **|S_k|**: how many there are
+- **f**: the learned embedding network; **c_k**: the prototype (average embedding) of class k
+- **θ** (theta): the shared starting weights; **θ'_i**: the weights after adapting to task i
+- **L_i^support**, **L_i^query**: task i's loss on its support examples and on its held-out query examples
+- **α**, **β** (alpha, beta): the inner and outer learning rates; **∇_θ**: the gradient with respect to θ
+
+**In plain words:** Training happens in episodes that imitate the test: "here are 5 classes with 1 to 5 examples each; now classify these new ones". Prototypical networks learn an embedding in which a class is summed up by the average of its few examples, so a new class needs no training at all. MAML instead learns starting weights from which one or a few gradient steps on a new task already work well, which requires differentiating through the inner step.
+
+**Tiny example:** A 2-way, 2-shot task: class A's examples embed at [1, 0] and [3, 0], so c_A = [2, 0]; class B's at [0, 2] and [0, 4], so c_B = [0, 3]. A query at [2, 1] has squared distances 1 to A and 8 to B, so P(A) = 1 ÷ (1 + exp(−7)) ≈ 0.999. MAML in one dimension: two tasks with losses (θ − 1)^2 and (θ − 3)^2, θ = 0 and α = 0.25. The inner steps give θ' = 0.5 and 1.5; the outer gradient adds each task's slope at its adapted point, 2 × (θ' − target), times the inner step's own derivative 1 − 2 × α = 0.5: (0.5 − 1) + (1.5 − 3) = −2, so with β = 0.5 the shared start moves to θ = 1, toward the middle of the tasks.
+
+**Where it is used:** Few-shot image classification (the Omniglot and miniImageNet benchmarks) and prototype classifiers on top of pretrained embeddings; MAML (Finn, Abbeel and Levine 2017) for fast adaptation in robotics and reinforcement learning; prototypical networks (Snell, Swersky and Zemel 2017). The GPT-3 paper (Brown et al. 2020) describes in-context learning as meta-learning, with pretraining as the outer loop and the prompt as the inner one.
+**In the book:** Chapter 8 (Other ways to learn: few-shot learning and in-context learning) in words; the formulas are only here.
+
+> **Definition — Meta-learning:** "Learning to learn": training a model across many small tasks so that it can pick up a new task quickly from very few examples.
+
+> **Definition — Prototypical network:** A few-shot classifier that represents each class by the average embedding of its few examples and labels a new input by its nearest class average.
+
+> **Definition — MAML (model-agnostic meta-learning):** A meta-learning method that learns starting weights from which one or a few gradient steps on a new task's handful of examples already give a good model.
 
 ### Backpropagation (the chain rule through layers)
 
@@ -7006,6 +7977,26 @@ For an n × m gradient G:
 
 > **Definition — Stochastic weight averaging (SWA):** Averaging the weights from several points late in a training run, with equal weight, to land in a flatter and often better spot than any single checkpoint.
 
+### Federated averaging (FedAvg)
+
+**What it does:** Trains one shared model across many devices or organizations that each run several training steps on their own data and then send only their updated weights, which a server averages.
+
+round t: each client k taking part starts from `w_t` and runs E local epochs of SGD on its own data, giving `w_(t+1)^k`; server: `w_(t+1) = sum over k of (n_k ÷ n) × w_(t+1)^k`, equivalently `w_(t+1) = w_t + sum over k of (n_k ÷ n) × Δ_k` with `Δ_k = w_(t+1)^k − w_t`
+
+- **w_t**: the shared model's weights at round t
+- **k**: one client taking part in the round (a phone, a hospital); **n_k**: how many training examples it holds; **n**: the sum of n_k over the clients in the round
+- **E**: the number of local epochs, passes over its own data, each client runs before reporting back
+- **Δ_k**: client k's update, the change its local training made
+
+**In plain words:** Instead of exchanging gradients after every step, each participant trains on its own for a while and only the results are averaged, weighted by how much data each holds. That cuts communication and keeps raw data where it is. Because the participants' data differ, their updates pull in different directions, so too many local steps slow learning. The same averaging between data centers, with a momentum optimizer on the averaged change, is DiLoCo (low-communication data parallelism, compute section).
+
+**Tiny example:** Chapter 53: phones A, B and C hold 100, 50 and 50 examples and propose changes of +0.03, −0.01 and +0.02 to one weight. The server computes (0.03 × 100 − 0.01 × 50 + 0.02 × 50) ÷ 200 = (3 − 0.5 + 1) ÷ 200 = 0.0175, so a shared weight of 0.5 becomes 0.5175.
+
+**Where it is used:** Google's Gboard keyboard (since 2017, later with differential privacy) and other on-device learning; models trained across hospitals that cannot pool patient data; open-source frameworks such as Flower and TensorFlow Federated. FedAvg was introduced by McMahan and colleagues (2017); local SGD and DiLoCo apply the same averaging to training across data centers (compute section).
+**In the book:** Chapter 53 (Federated learning: learning without collecting), which works the weighted average, and Chapter 11 (Privacy), which defines federated learning; the formula is only here.
+
+> **Definition — Federated averaging (FedAvg):** The basic federated-learning algorithm: each device trains the current model on its own data for a few steps, and the server averages the resulting models, weighting each by how much data it used.
+
 ### Linear learning-rate warmup
 
 **What it does:** Raises the learning rate from near zero to its peak in a straight line at the start of training.
@@ -7211,6 +8202,29 @@ For an n × m gradient G:
 
 > **Definition — Adaptive gradient clipping:** Clipping each weight matrix's gradient according to how large it is compared with the weights themselves, rather than with one fixed threshold for the whole network.
 
+### Differentially private SGD (DP-SGD): per-example clipping plus Gaussian noise
+
+**What it does:** Trains a neural network with a provable differential-privacy guarantee by limiting each example's influence on every update and hiding it under noise.
+
+`ḡ_i = g_i × min(1, C ÷ ||g_i||)`; `g̃ = (1 ÷ B) × (sum over i in the batch of ḡ_i + N(0, σ^2 × C^2 × I))`; `θ ← θ − η × g̃`; a privacy accountant turns σ, the sampling rate `q = B ÷ n` and the number of steps T into the overall (ε, δ)
+
+- **g_i**: the gradient of the loss on example i alone; **||g_i||**: its length
+- **C**: the clipping norm, the most any one example may contribute
+- **ḡ_i**: the clipped per-example gradient
+- **B**: the batch size; **n**: the dataset size; **q**: the chance that each example is sampled into a batch
+- **σ** (sigma): the noise multiplier; **N(0, σ^2 × C^2 × I)**: Gaussian noise with standard deviation σ × C in every coordinate
+- **θ** (theta): the weights; **η** (eta): the learning rate; **T**: the number of training steps
+- **ε**, **δ**: the privacy guarantee (differential-privacy entry, classical-machine-learning section)
+
+**In plain words:** Ordinary gradient clipping bounds the whole batch's gradient; DP-SGD clips every example separately, so no single person can move the model by more than C, then adds noise large enough to mask that contribution, which is the Gaussian mechanism applied at every step. Sampling batches at random strengthens the guarantee, and the accountant adds up the privacy cost over all steps. The price is extra compute for per-example gradients and some loss of accuracy, which shrinks with larger batches and more data.
+
+**Tiny example:** C = 1. Per-example gradients (3, 4), of length 5, and (0.3, 0.4), of length 0.5: the first is scaled by 1 ÷ 5 to (0.6, 0.8), the second is left alone. Adding one noise draw of (0.5, −0.2) (σ = 1) gives (1.4, 1.0), and dividing by B = 2 gives the update direction (0.7, 0.5).
+
+**Where it is used:** Introduced by Abadi et al. (2016); the Opacus (PyTorch) and TensorFlow Privacy libraries; Google's VaultGemma (September 2025), a 1-billion-parameter model trained from scratch with DP-SGD to ε ≤ 2.0 and δ ≤ 1.1 × 10^(−10) per 1,024-token sequence; private fine-tuning on sensitive text and medical records, and differentially private federated learning for phone keyboards.
+**In the book:** Chapter 11 (Privacy) and Chapter 53 (Federated learning: learning without collecting) mention differential privacy in words; DP-SGD is only here.
+
+> **Definition — DP-SGD (differentially private stochastic gradient descent):** A training method that clips each example's gradient to a fixed size and adds random noise to every update, so the finished model provably reveals little about any single training example.
+
 ### Loss scaling for 16-bit mixed-precision training
 
 **What it does:** Multiplies the loss by a large number before backpropagation so tiny gradients survive 16-bit arithmetic, then divides it back out.
@@ -7272,6 +8286,25 @@ For an n × m gradient G:
 **In the book:** Chapter 13 (The family of normalizations) in words; the formula is only here.
 
 > **Definition — Batch-norm folding:** Merging a trained batch-normalization layer's fixed scale and shift into the weights and bias of the layer before it, so inference skips the normalization step entirely.
+
+### Batch normalization backward pass
+
+**What it does:** Gives the gradient that flows back through a batch-normalization layer, where every example's output depends on every other example in the batch.
+
+`dβ = sum over i of dy_i`; `dγ = sum over i of (dy_i × x̂_i)`; `dx_i = (γ ÷ (m × sqrt(σ_B^2 + ε))) × (m × dy_i − sum over j of dy_j − x̂_i × sum over j of (dy_j × x̂_j))`
+
+- **dy_i**: the gradient of the loss with respect to output y_i, arriving from the layer above
+- **dx_i**: the gradient with respect to input x_i, sent to the layer below
+- **dγ**, **dβ**: the gradients for the learned scale γ (gamma) and shift β (beta)
+- **x̂_i**, **σ_B^2**, **ε**, **m**: the normalized value, the batch variance, the tiny constant and the batch size, as in the batch-normalization entry
+- **j**: runs over all examples in the batch
+
+**In plain words:** Each output depends on the batch's mean and spread, which depend on every input, so the gradient for one input has three parts: its own term, minus the average upstream gradient (the mean's share), minus a part along x̂ (the spread's share). As a result a feature's input gradients always add up to zero and have no component along x̂: shifting or stretching a whole batch cannot change the normalized output. Deriving this by hand and checking it against automatic differentiation is a classic exercise.
+
+**Tiny example:** The batch-normalization entry's inputs [1, 3, 5, 7], so x̂ = [−1.342, −0.447, 0.447, 1.342] and sqrt(σ_B^2) = 2.236, with γ = 1, ε = 0 and an upstream gradient dy = [1, 0, 0, 0]. Then sum of dy = 1, sum of dy × x̂ = −1.342 and the prefactor is 1 ÷ (4 × 2.236) = 1 ÷ 8.944. dx_1 = (4 − 1 − 1.8) ÷ 8.944 = 0.134; dx_2 = (0 − 1 − 0.6) ÷ 8.944 = −0.179; dx_3 = (0 − 1 + 0.6) ÷ 8.944 = −0.045; dx_4 = (0 − 1 + 1.8) ÷ 8.944 = 0.089. They add up to 0, and nudging each input by a millionth (finite differences) gives the same four numbers. dγ = −1.342 and dβ = 1.
+
+**Where it is used:** Every framework's batch-normalization backward kernel (PyTorch, cuDNN); Stanford CS231n's second assignment and Karpathy's "Becoming a Backprop Ninja" lecture (makemore part 4), which derive it by hand. Layer normalization has the same backward formula with the sums taken over a token's features instead of over the batch; RMSNorm, which subtracts no mean, drops the middle term.
+**In the book:** Chapter 13 (The family of normalizations) describes batch normalization in words; the backward formula is only here.
 
 ### Layer normalization (with group and instance normalization)
 
@@ -7535,6 +8568,30 @@ For an n × m gradient G:
 > **Definition — CutMix:** A data-augmentation method that pastes a rectangle cut from one training image into another and mixes their labels in proportion to the pasted area.
 
 > **Definition — Beta distribution:** A family of probability distributions for random numbers between 0 and 1, whose shape is set by two settings; Mixup draws its blend amount from one.
+
+### Semi-supervised losses: confident pseudo-labels, consistency and entropy minimization (FixMatch)
+
+**What it does:** Lets a model learn from unlabeled examples by training on its own confident guesses and by demanding the same answer for two versions of the same input.
+
+`FixMatch: loss = (1 ÷ B) × sum over labeled b of CE(y_b, p(weak(x_b))) + λ_u × (1 ÷ (μ × B)) × sum over unlabeled b of 1[max(q_b) ≥ τ] × CE(argmax(q_b), p(strong(u_b)))`, with `q_b = p(weak(u_b))`; `consistency regularization: ||p(aug_1(u)) − p(aug_2(u))||^2`; `entropy minimization: λ × H(p(u))`
+
+- **x_b**, **y_b**: a labeled example and its label; **u_b**, **u**: an unlabeled example
+- **B**: the labeled batch size; **μ** (mu): how many times more unlabeled than labeled examples a batch holds; **λ_u**, **λ** (lambda): the weights of the unlabeled terms
+- **p(...)**: the model's predicted class probabilities; **CE**: cross-entropy
+- **weak**, **strong**, **aug_1**, **aug_2**: random augmentations (for example a flip and shift, or heavy color and shape distortion)
+- **q_b**: the prediction on the weakly augmented copy; **argmax(q_b)**: its most probable class, used as the pseudo-label; **τ** (tau): the confidence threshold (0.95 in FixMatch)
+- **1[...]**: 1 if the condition holds, else 0; **H**: entropy
+
+**In plain words:** The model labels each unlabeled example from an easy view of it, keeps the label only if it is very sure, and then trains itself to give that label on a hard, heavily distorted view. Confident guesses carry information, and the distortion forces the model to recognize the same thing in many forms. The threshold limits the risk of the model teaching itself its own mistakes; entropy minimization is a softer version that simply rewards confident predictions on unlabeled data.
+
+**Tiny example:** An unlabeled image's weak view gets [0.97, 0.02, 0.01], above τ = 0.95, so its pseudo-label is class 1; the strong view gets [0.6, 0.3, 0.1], which adds −ln 0.6 = 0.51 to the unlabeled sum (before the λ_u ÷ (μ × B) scaling). Another image's weak view gets [0.7, 0.2, 0.1], below the threshold, so it adds nothing this round.
+
+**Where it is used:** FixMatch (Sohn et al. 2020) and its descendants for image classification with few labels; Noisy Student self-training on ImageNet (Xie et al. 2020); pseudo-labeling in speech recognition, including Distil-Whisper, trained on Whisper's own transcriptions (Gandhi et al. 2023); Mean Teacher consistency with a weight-averaged teacher (Tarvainen and Valpola 2017), the same idea as the EMA teacher in DINO (generative-models section).
+**In the book:** Chapter 8 (Semi-supervised learning: a few labels go a long way) tells the pseudo-labeling story in words; the losses are only here.
+
+> **Definition — Pseudo-labeling:** Using a model's own confident predictions on unlabeled data as if they were true labels, and training on them.
+
+> **Definition — Consistency regularization:** A training penalty that makes a model give the same prediction for differently augmented or perturbed copies of the same unlabeled input.
 
 ### Adversarial examples and adversarial training (FGSM and PGD)
 
@@ -7839,6 +8896,30 @@ For an n × m gradient G:
 **Where it is used:** The first layer of every LLM (vocabularies of about 100,000 to 260,000 tokens), ID embeddings in recommenders, and categorical features.
 **In the book:** Chapter 14 (One-hot vectors: numbers with no meaning; Dense embeddings: similar words, nearby points); Chapter 15 (Step 2: Token embeddings); Appendix B (Embedding table size).
 
+### Neural probabilistic language model (Bengio's MLP language model)
+
+**What it does:** Predicts the next word from a fixed window of previous words by looking up a learned vector for each, joining them end to end and passing them through a small neural network.
+
+`x = [C(w_(t−1)), C(w_(t−2)), ..., C(w_(t−n+1))]` (the vectors joined end to end); `y = b + W × x + U × tanh(d + H × x)`; `P(w_t = word k given the window) = softmax(y)_k`; parameters without W: `|V| × m + h × (n − 1) × m + h + h × |V| + |V|` (W adds `|V| × (n − 1) × m`)
+
+- **w_t**: the word at position t; **n − 1**: how many previous words the model sees
+- **C(w)**: word w's row in the embedding table C, a vector of m numbers
+- **x**: the window's (n − 1) × m numbers placed side by side
+- **H**, **d**: the hidden layer's weights and biases (h hidden units)
+- **tanh**: the hyperbolic-tangent activation
+- **U**: the output weights from the hidden units to the vocabulary scores
+- **W**: optional direct weights from x to the scores; **b**: the output biases
+- **y**: one score (logit) per vocabulary word; **|V|**: the vocabulary size; **softmax(y)_k**: the probability softmax gives word k
+
+**In plain words:** Instead of counting how often each exact window occurred, as an n-gram model does, the model learns a vector for every word and a small network on top, all trained together by minimizing next-word cross-entropy. Similar words end up with similar vectors, so a window never seen in training still gets sensible predictions. Its embedding table is the ancestor of word2vec and of every Transformer's embedding layer; later models replaced only the fixed window, first with recurrence and then with attention.
+
+**Tiny example:** Vocabulary {a, b, c} with 2-number vectors C(a) = [1, 0] and C(b) = [0, 1]; if the previous word is a and the one before it is b, then x = [C(a), C(b)] = [1, 0, 0, 1]. With H rows [1, 0, 0, 1] and [0, 1, 1, 0] and d = 0, H × x = [2, 0] and tanh gives [0.964, 0]. With U rows [1, 0], [0, 1] and [−1, 0], b = 0 and no W, y = [0.964, 0, −0.964] and softmax gives [0.655, 0.250, 0.095], so "a" comes next with probability 0.655. Karpathy's makemore version (27 characters, m = 10, a window of 3, h = 200, no W) has 270 + 6,000 + 200 + 5,400 + 27 = 11,897 parameters.
+
+**Where it is used:** Bengio, Ducharme, Vincent and Jauvin (2003); rebuilt step by step in Karpathy's "Building makemore Part 2: MLP" lecture and taught in Stanford CS224n as the fixed-window neural language model. Today's LLMs keep its three parts: an embedding lookup, a learned network and a softmax over the vocabulary.
+**In the book:** Only here (Chapter 14, word2vec: learning meaning from neighbors, covers the word vectors that grew out of it).
+
+> **Definition — Neural probabilistic language model:** Bengio and colleagues' 2003 language model, which learns a vector for every word and predicts the next word from a fixed window of previous words' vectors with a small neural network; it was an early and influential neural language model.
+
 ### word2vec skip-gram (softmax and negative sampling)
 
 **What it does:** Learns word vectors by training each word to predict the words that appear near it.
@@ -7907,6 +8988,27 @@ For an n × m gradient G:
 > **Definition — GloVe (Global Vectors):** A 2014 method from Stanford that learns word vectors by making each pair's dot product match the logarithm of how often the two words appear near each other in a large corpus.
 
 > **Definition — Co-occurrence count:** How many times two words appear within a few positions of each other across a body of text.
+
+### Word-vector analogies (3CosAdd and 3CosMul)
+
+**What it does:** Answers "a is to b as c is to what?" with word vectors, the standard built-in test of word embeddings.
+
+`3CosAdd: d* = argmax over words d not in {a, b, c} of cos(v_d, v_b − v_a + v_c)`; `3CosMul: d* = argmax over d not in {a, b, c} of cos(v_d, v_b) × cos(v_d, v_c) ÷ (cos(v_d, v_a) + ε)`, with each cosine first shifted to (cos + 1) ÷ 2 so it lies between 0 and 1
+
+- **a**, **b**, **c**: the three given words ("man is to king as woman is to ?" has a = man, b = king, c = woman)
+- **v_w**: the embedding vector of word w
+- **cos(u, v)**: cosine similarity, `(u · v) ÷ (length(u) × length(v))`
+- **d***: the answer word; **argmax over d**: the word that makes the score largest
+- **ε** (epsilon): a tiny number, such as 0.001, that prevents division by zero
+
+**In plain words:** If the step from "man" to "king" means "add royalty", the same step taken from "woman" should land near "queen". 3CosAdd picks the word whose direction is closest to that landing point. 3CosMul (Levy and Goldberg, 2014) instead rewards words similar to b and c and dissimilar to a, which stops one large similarity from dominating. The three input words must be excluded, because in real embeddings the landing point is often nearest to b itself; a benchmark's score is the share of questions answered exactly.
+
+**Tiny example:** Three-number vectors king [1, 1, 0.2], queen [1, −1, 0.2], man [0, 1, 0], woman [0, −1, 0] and princess [0.8, −1, −0.5]. king − man + woman = [1, −1, 0.2]. Cosines with it: queen 1.000, princess 0.866, woman 0.700 (excluded), king 0.020 (excluded). 3CosAdd answers queen. 3CosMul scores queen 2.87 and princess 2.66, so it also answers queen.
+
+**Where it is used:** The Google analogy test set (Mikolov and colleagues, 2013, 19,544 questions) and BATS, used to evaluate word2vec, GloVe and fastText vectors; Stanford CS224n's first lectures and assignment; and today's studies of linear directions inside LLM activations, which look for the same kind of offsets.
+**In the book:** Chapter 5 (Words as points on a map) works king − man + woman by hand, and Chapter 14 (word2vec: learning meaning from neighbors) warns that it holds only approximately; the argmax rules are only here.
+
+> **Definition — 3CosAdd (vector-offset analogy method):** Solving "a is to b as c is to ?" by computing b − a + c from word vectors and picking the nearest remaining word by cosine similarity.
 
 ### Attention pooling as kernel regression (Nadaraya-Watson)
 
@@ -8198,6 +9300,28 @@ For an n × m gradient G:
 **Where it is used:** Every Transformer layer, holding roughly two-thirds of a dense model's parameters; replaced by mixture-of-experts layers in most 2026 frontier models.
 **In the book:** Chapter 15 (Step 6: The feed-forward block, where each token thinks alone; Step 7).
 
+### Nested feed-forward widths (MatFormer)
+
+**What it does:** Trains one Transformer whose feed-forward blocks contain smaller blocks nested inside them, so models of several sizes can be cut from a single set of weights.
+
+`FFN_i(x) = σ(x × W_1[0:m_i]^T) × W_2[0:m_i], with m_1 < m_2 < ... < m_g = d_ff; each training step samples one granularity i and uses L = loss(M_i(x), y)`
+
+- **x**: a token's vector entering the block (length d_model).
+- **W_1**, **W_2**: the block's two weight matrices, each with d_ff rows of length d_model; **W[0:m]**: the first m rows; **^T**: transpose.
+- **σ** (sigma): the activation function (GELU or squared ReLU in the paper; gated versions nest the same way).
+- **m_i**: the hidden width of granularity i; MatFormer used d_ff ÷ 8, d_ff ÷ 4, d_ff ÷ 2 and d_ff.
+- **d_ff**: the full hidden width; **g**: the number of granularities.
+- **M_i**: the whole model run at granularity i; **y**: the training target; **L**: the loss for that step.
+
+**In plain words:** The hidden neurons are ordered: the first m_1 must work on their own, the first m_2 must work as a bigger model, and so on, like Russian dolls. Sampling a different width at each training step teaches every nested model. Afterwards you can extract any of them, or mix widths layer by layer ("Mix'n'Match") to fit a memory or speed budget, without further training.
+
+**Tiny example:** d_model = 2 and d_ff = 4, with ReLU. W_1's rows are [1, 0], [0, 1], [1, −1] and [−1, 1]; W_2's rows are [1, 0], [0, 1], [1, 1] and [2, −1]. For x = [1, 2] the hidden values are ReLU(1, 2, −1, 1) = [1, 2, 0, 1]. The full block outputs 1 × [1, 0] + 2 × [0, 1] + 0 × [1, 1] + 1 × [2, −1] = [3, 1]. The half-width model (m = 2) uses only the first two neurons and outputs 1 × [1, 0] + 2 × [0, 1] = [1, 2], with half of the block's parameters.
+
+**Where it is used:** MatFormer (Devvrit, Kudugunta and colleagues, Google, 2023; NeurIPS 2024); Google's Gemma 3n (June 2025), whose E4B model contains the E2B model inside it and whose Mix-n-Match recipe sets each layer's feed-forward width between 8,192 and 16,384 and can skip layers.
+**In the book:** Only here (Matryoshka embeddings, in the large-language-model section, apply the same nesting to embedding dimensions).
+
+> **Definition — MatFormer (Matryoshka Transformer):** A Transformer trained so that the first part of each feed-forward block's hidden neurons forms a working smaller model, letting several model sizes be extracted from one set of weights; Google's Gemma 3n uses it.
+
 ### Pre-norm Transformer block (with post-norm, sandwich and parallel variants)
 
 **What it does:** Defines one repeating layer of a Transformer: normalize, attend, add back; normalize, feed forward, add back.
@@ -8310,6 +9434,38 @@ For an n × m gradient G:
 
 > **Definition — Massive activations:** A few hidden values, at specific positions such as the first token, that grow far larger than all the others inside a trained Transformer; they are tied to attention sinks and can hurt numerical stability.
 
+### Native Sparse Attention and block-sparse attention (NSA, MoBA)
+
+**What it does:** Cuts the cost of long-context attention by letting each query read a compressed summary of all earlier text, a few relevant blocks in full and a local window, blended by learned gates.
+
+`o_t = g_(t,cmp) × Attn(q_t, K_(t,cmp), V_(t,cmp)) + g_(t,slc) × Attn(q_t, K_(t,slc), V_(t,slc)) + g_(t,win) × Attn(q_t, K_(t,win), V_(t,win))`
+
+`compressed keys: K_(t,cmp) = {φ(k_(i×d+1), ..., k_(i×d+l)) for i = 0, 1, ..., floor((t − l) ÷ d)}; block scores p_(t,cmp) = softmax(q_t · K_(t,cmp)); selected: the top n blocks of l' tokens ranked by their summed block scores; window: the last w tokens`
+
+`MoBA: s_i = q · mean(keys of block i); attend in full to the k blocks with the highest s_i, the query's own block always among them (read with a causal mask)`
+
+- **t**: the current position; **q_t**: its query vector; **o_t**: the attention output.
+- **cmp**, **slc**, **win**: the compressed, selected and sliding-window branches; **K_(t,c)**, **V_(t,c)**: the keys and values branch c reads for position t.
+- **g_(t,c)**: a gate between 0 and 1 for branch c, computed from the token by a small network ending in a sigmoid.
+- **Attn(q, K, V)**: ordinary scaled dot-product attention over keys K and values V.
+- **k_j**: the key of token j; **φ** (phi): a small learned network that compresses a block of l keys into one key (values are compressed the same way).
+- **l**, **d**: the compression block length and stride (32 and 16 in NSA's experiments).
+- **l'**, **n**: the length of a selected block and how many blocks are selected (64 and 16, counting one initial and two local blocks).
+- **w**: the sliding-window length (512).
+- **p_(t,cmp)**: the compressed branch's attention weights, reused to rank blocks for selection; **floor(...)**: round down to a whole number; **softmax**: turns scores into weights that add up to 1.
+- **s_i**: MoBA's score for block i; **mean(...)**: the average of the block's key vectors; **k**: the number of blocks MoBA reads in full, the query's own block included (its paper's top-3 setting means two earlier blocks plus the current one).
+
+**In plain words:** The compressed branch is a cheap, low-resolution view of everything; its scores also tell the selection branch which blocks deserve a full-resolution read; and the window keeps nearby text sharp. Working in contiguous blocks keeps memory reads GPU-friendly, and because the sparsity is built in during pretraining ("native"), the model learns to use it. MoBA is a simpler cousin that scores whole blocks by their average key, the way a mixture-of-experts router picks experts. DeepSeek Sparse Attention (next entry), which DeepSeek shipped later in 2025, picks individual tokens with a small indexer instead of whole blocks.
+
+**Tiny example:** NSA at position 65,536 with the settings above reads (65,536 − 32) ÷ 16 + 1 = 4,095 compressed keys, 16 × 64 = 1,024 selected tokens and 512 window tokens: 5,631 in all, about 8.6% of the 65,536 that full attention reads. If, for one number of the output, the branches give 1.0, 2.0 and −1.0 with gates 0.7, 0.2 and 0.9, then o = 0.7 + 0.4 − 0.9 = 0.2. MoBA: a query [1, 0] and four earlier blocks with mean keys [0.2, 1], [0.9, 0.1], [−0.5, 0.3] and [0.6, 0.6] score 0.2, 0.9, −0.5 and 0.6, so with k = 3 the query reads its own block plus blocks 2 and 4, the two best-scoring earlier blocks.
+
+**Where it is used:** NSA (DeepSeek with researchers from Peking University and the University of Washington, February 2025, arXiv 2502.11089), tested on a 27-billion-parameter mixture-of-experts model with 3 billion active parameters; MoBA (Moonshot AI, February 2025, arXiv 2502.13189), which "has already been deployed to support Kimi's long-context requests". DeepSeek's production models later shipped a token-level design instead, DeepSeek Sparse Attention (next entry).
+**In the book:** Chapter 15 (Making attention cheaper) defines sparse attention in words; NSA and MoBA are only here.
+
+> **Definition — Native Sparse Attention (NSA):** DeepSeek's 2025 sparse-attention design that combines a compressed view of all earlier text, a full read of the few most relevant blocks and a local window, and is trained into the model from the start rather than added afterwards.
+
+> **Definition — MoBA (Mixture of Block Attention):** Moonshot AI's 2025 sparse attention that splits the context into blocks and lets each query attend only to its own block and the few earlier blocks whose average key best matches it, much as a mixture-of-experts router picks experts.
+
 ### Top-k sparse attention with a lightning indexer (DeepSeek Sparse Attention)
 
 **What it does:** Uses a tiny, cheap scorer to pick the most relevant earlier tokens, then runs full attention only over those.
@@ -8335,6 +9491,28 @@ For an n × m gradient G:
 **In the book:** Chapter 15 (Making attention cheaper: sparse attention definition); Chapter 17 (The memory problem) in words; the formula is only here.
 
 > **Definition — Lightning indexer:** DeepSeek's small, fast scoring module that rates every earlier token's relevance to the current one, so that full attention can be run on only the top-scoring few thousand.
+
+### Lightning-indexer training loss (DeepSeek Sparse Attention warm-up)
+
+**What it does:** Teaches DeepSeek's cheap indexer to rank earlier tokens the way the model's full attention already does, by matching the two distributions with a KL loss.
+
+`dense warm-up: L_I = sum over t of KL(p_t || softmax(I_t)); sparse stage: L_I = sum over t of KL(p_(t,S_t) || softmax(I_(t,S_t))), with S_t = the tokens s whose I_(t,s) is among the top k`
+
+`p_t = the main attention's weights for query t, summed over all heads and divided by their total so that they add up to 1`
+
+- **t**: a query position; **s**: an earlier token.
+- **I_t**: the indexer's scores I_(t,s) for all earlier tokens (previous entry); **softmax(I_t)**: those scores turned into a distribution.
+- **p_t**: the target distribution, taken from the main attention.
+- **KL(p || q)**: the Kullback-Leibler divergence, how poorly the distribution q matches p (foundations section).
+- **S_t**: the selected tokens, k = 2,048 of them; **p_(t,S_t)**, **I_(t,S_t)**: the same quantities restricted to S_t.
+- **L_I**: the indexer's loss.
+
+**In plain words:** First the main model keeps dense attention and is frozen while only the indexer learns, imitating where attention actually goes. Then sparse attention is switched on and everything trains, the indexer still by this loss but only over the tokens it selected. The indexer's input is detached, so the indexer learns only from L_I and the rest of the model only from the ordinary language-modeling loss.
+
+**Tiny example:** The previous entry's index scores 0.7, 1.0, 1.5 and 2.25 give softmax(I) ≈ 0.108, 0.145, 0.240 and 0.507. Two attention heads with weights [0.1, 0.2, 0.3, 0.4] and [0.0, 0.1, 0.3, 0.6] sum to [0.1, 0.3, 0.6, 1.0], which divided by 2 gives p = [0.05, 0.15, 0.30, 0.50]. KL(p || softmax(I)) = 0.05 × ln(0.05 ÷ 0.108) + 0.15 × ln(0.15 ÷ 0.145) + 0.30 × ln(0.30 ÷ 0.240) + 0.50 × ln(0.50 ÷ 0.507) ≈ −0.0384 + 0.0047 + 0.0674 − 0.0073 ≈ 0.026: the indexer already ranks the tokens in the right order and needs only a small nudge.
+
+**Where it is used:** DeepSeek-V3.2-Exp (September 2025) and DeepSeek-V3.2 (arXiv 2512.02556), trained from a DeepSeek-V3.1-Terminus base checkpoint already extended to 128,000 tokens: a dense warm-up of 1,000 steps (about 2.1 billion tokens, learning rate 10^−3), then 15,000 sparse steps (about 943.7 billion tokens, learning rate 7.3 × 10^−6).
+**In the book:** Only here (Chapter 15, Making attention cheaper, defines sparse attention; Chapter 17, The counter-trend: going back to full attention, Table 17.4 gives the share of models that use DeepSeek Sparse Attention).
 
 ### Output z-loss
 
@@ -8425,6 +9603,25 @@ For an n × m gradient G:
 
 **Where it is used:** Hyperparameter transfer for large runs, publicly in Cerebras-GPT, MiniCPM and Microsoft research models.
 **In the book:** Chapter 19 (The settings: μP definition) in words; the rules are only here.
+
+### Neural tangent kernel and the linearized network
+
+**What it does:** Describes how training on one example changes a network's output on another, and shows that very wide networks train like a fixed kernel method.
+
+`Θ(x, x') = ∇_θ f(x; θ) · ∇_θ f(x'; θ)`; linearization `f(x; θ) ≈ f(x; θ_0) + ∇_θ f(x; θ_0) · (θ − θ_0)`; one small gradient-descent step on the squared loss `(1 ÷ 2) × sum of (f_train − y)^2` changes the training outputs by about `−η × Θ_train × (f_train − y)`, so in the infinitely wide limit, with small steps, `f_train(t) = y + exp(−η × Θ_train × t) × (f_train(0) − y)`
+
+- **f(x; θ)**: the network's output for input x with weights θ (theta); **θ_0**: the starting weights
+- **∇_θ f**: the gradient of the output with respect to every weight, one long vector
+- **Θ(x, x')** (capital theta): the neural tangent kernel, the dot product of two such gradients
+- **Θ_train**: the kernel matrix between all training inputs; **f_train**: the outputs on them; **y**: the targets
+- **η** (eta): the learning rate; **t**: training time counted in steps (the formula treats small steps as a smooth flow); **exp** of a matrix: the matrix exponential
+
+**In plain words:** A gradient step on example x' moves the output on x by the learning rate times Θ(x, x') times the error on x'. As networks get wider, each weight moves less, Θ stays almost fixed during training, and the network behaves like its first-order Taylor expansion: kernel regression with the NTK. This "lazy" regime makes training provably converge but means the features never change, which is why practice, and μP, aim for the feature-learning regime instead.
+
+**Tiny example:** A model f(x) = θ_1 × x + θ_2 × x^2 has gradient [x, x^2], so Θ(1, 2) = 1 × 2 + 1 × 4 = 6, Θ(1, 1) = 2 and Θ(2, 2) = 4 + 16 = 20. With a single training input x = 1 and η = 0.1, each step multiplies the error at that input by 1 − 0.1 × 2 = 0.8, and moves the output at x = 2 by −0.1 × 6 = −0.6 times the error at x = 1 (the same direction that shrinks that error).
+
+**Where it is used:** The theory of very wide networks (Jacot, Gabriel and Hongler 2018) and Google's neural-tangents library; the motivation for μP, which was designed to keep feature learning alive as width grows (Yang and Hu 2021; entry above); training-data attribution with the linearized network's gradients (TRAK, Park et al. 2023); a kernel view of language-model fine-tuning, which often stays close to the linear regime (Malladi et al. 2023).
+**In the book:** Appendix F (The neural tangent kernel) in words; the formulas are only here.
 
 ### Mixture-of-experts router, top-k gating and layer output (with shared experts)
 
@@ -8763,6 +9960,29 @@ flowchart LR
 
 > **Definition — Graph attention network (GAT):** A graph neural network that learns attention weights over each node's neighbors, so more relevant neighbors contribute more to the node's update.
 
+### Frame aligned point error (FAPE), AlphaFold 2's structure loss
+
+**What it does:** Scores a predicted protein structure by viewing every atom from the local frame of every residue, in both the predicted and the true structure, and comparing the two views.
+
+`x_ik = T_k^(−1) ∘ x_i` and `x_ik^true = (T_k^true)^(−1) ∘ x_i^true`; `d_ik = sqrt(||x_ik − x_ik^true||^2 + ε)`; `FAPE = (1 ÷ Z) × average over frames k and atoms i of min(d_clamp, d_ik)`, with `Z = 10 Å`, `d_clamp = 10 Å` and `ε = 10^(−4) Å^2`
+
+- **T_k = (R_k, t_k)**: the local frame of residue k, a rotation and a position built from its backbone atoms (AlphaFold's structure module moves these frames)
+- **T_k^(−1) ∘ x**: a point x expressed in frame k's own coordinates, "as seen from residue k"
+- **x_i**, **x_i^true**: the predicted and true positions of atom i
+- **d_ik**: atom i's error as seen from frame k; **ε** (epsilon): a tiny constant that keeps the square root smooth
+- **d_clamp**: errors above this are capped, so wildly wrong regions do not dominate
+- **Z**: a length scale that makes the loss unitless
+- **Å**: the ångström, 10^(−10) meters
+
+**In plain words:** Each amino acid is treated as a small rigid piece with its own orientation; FAPE asks, for every piece, whether the other atoms sit where they should relative to it, and averages the answers. Because it works in local frames, no global superposition is needed, and unlike losses built only from pairwise distances it penalizes a mirror-image structure. Capping each error at 10 Å keeps training stable.
+
+**Tiny example:** Two frames and two atoms give four errors of 0.5, 1.0, 3.0 and 25.0 Å (ε changes 0.5 only to 0.5001). Clamping caps 25 at 10, the average is (0.5 + 1.0 + 3.0 + 10) ÷ 4 = 3.625 Å, and dividing by Z = 10 Å gives FAPE ≈ 0.36.
+
+**Where it is used:** AlphaFold 2 (Jumper et al. 2021), applied after every layer of its structure module, and models that reuse that module, such as OpenFold and ESMFold; AlphaFold 3 replaced it with a diffusion loss on atom positions plus a smooth lDDT term.
+**In the book:** Chapter 52 (AlphaFold 2: how it works), which describes the structure module "treating each amino acid as a small rigid piece that it rotates and moves into place"; the loss is only here.
+
+> **Definition — FAPE (frame aligned point error):** AlphaFold 2's training loss for 3D structure: the average error of every atom as seen from the local frame of every amino acid, with large errors capped, so the structure is judged without any global alignment.
+
 ## Large language models: training, scaling and inference
 
 These are the equations that turn a Transformer into a chatbot. They cut text into tokens, score how likely a piece of text is, measure how wrong the model is while it learns, decide how big a model to build and how much text to feed it, and then run it: how much memory a conversation takes, how the next token is picked, how answers are made faster, smaller and cheaper, how a model is adapted to a new job, how its context is stretched, how it looks up documents and how it spends extra thinking at answer time. A handful of quantities tie them all together: the token, the probability the model gives the next token, the loss built from those probabilities, the parameter count N, the number of training tokens D and the compute C. The entries run from simplest to most advanced, and each one uses only ideas from entries above it or from the general-math and deep-learning sections of this appendix.
@@ -8884,6 +10104,28 @@ flowchart TD
 **Where it is used:** Every decoder-only language model, including GPT, Claude, Gemini, Llama, DeepSeek and Qwen.
 **In the book:** Chapter 6 (Chaining probabilities for a whole sentence), Chapter 18 (The one trick: predicting the next token) and Appendix B (Sentence probability; Log-probability).
 
+### Noisy-channel model (Bayes' rule for decoding)
+
+**What it does:** Picks the most likely intended text behind an observed input by multiplying a language model by a model of how that text gets garbled into the input.
+
+`ŷ = argmax over y of P(y given x) = argmax over y of P(x given y) × P(y)`; in logs `argmax over y of (ln P(x given y) + ln P(y))`; log-linear extension `argmax over y of sum over k of λ_k × h_k(x, y)`
+
+- **x**: the observed input (a misspelled word, a foreign sentence, an audio clip)
+- **y**: a candidate for the intended output (the right word, the English sentence, the transcript)
+- **ŷ** (y-hat): the chosen output
+- **P(y)**: the language model, how likely y is as text on its own
+- **P(x given y)**: the channel model, how likely y is to come out as x (a typo model, a translation model, an acoustic model)
+- **h_k(x, y)**: feature scores such as the two log-probabilities above, a length bonus or a phrase count; **λ_k** (lambda): their tuned weights
+
+**In plain words:** Imagine the intended message passed through a noisy channel that garbled it. Bayes' rule splits the job of recovering it into two simpler models: one for what people tend to write and one for how writing gets garbled. P(x) is the same for every candidate, so it drops out of the argmax. Statistical translation later replaced the plain product with a weighted sum of many log-scores whose weights were tuned on held-out data.
+
+**Tiny example:** The typo "teh". "the" has P(y) = 0.05 and P(teh given the) = 0.01, product 0.0005; "ten" has 0.001 and 0.02, product 0.00002; "tea" has 0.0005 and 0.02, product 0.00001. "ten" and "tea" explain the typo twice as well, but "the" is so much more common that it wins by 25 times.
+
+**Where it is used:** Spelling correction (Kernighan, Church and Gale, 1990; Peter Norvig's well-known corrector), the IBM statistical translation models (Brown and colleagues, 1990 and 1993), hidden-Markov-model speech recognition (acoustic model times language model) and Stanford CS224n's machine-translation lecture. Neural systems keep it as noisy-channel reranking (Facebook's WMT 2019 translation systems) and as language-model fusion in speech recognizers.
+**In the book:** Chapter 54 (The four eras) describes IBM's statistical translation in words; the formula is only here.
+
+> **Definition — Noisy-channel model:** A way to decode a garbled or foreign input by choosing the output that maximizes its own probability as text times the probability that it would turn into the observed input.
+
 ### N-gram language model with smoothing (add-one and Kneser-Ney)
 
 **What it does:** Estimates next-word probabilities by counting, looking back only a few words, and moves a little probability onto word pairs never seen in training.
@@ -8909,6 +10151,27 @@ flowchart TD
 **In the book:** Chapter 6 (A language model you can build by counting) builds this bigram model and computes P("I like tea") = 1/3; the smoothing formulas are only here.
 
 > **Definition — Kneser-Ney smoothing:** A way of fixing the zero probabilities of an n-gram language model that subtracts a small discount from every seen word pair and gives the freed probability to unseen pairs, favoring words that appear after many different words.
+
+### Probabilistic context-free grammar (PCFG) and CYK parsing
+
+**What it does:** Gives every parse tree of a sentence a probability, the product of the probabilities of the grammar rules it uses, and finds the most likely tree efficiently.
+
+`P(tree) = product over the rule uses in the tree of P(rule)`, where the probabilities of all rules with the same left-hand side add up to 1; `P(sentence) = sum over its trees of P(tree)`; CYK, for rules of the form `A → B C` or `A → word`: `best[i, j, A] = max over rules A → B C and split points k of P(A → B C) × best[i, k, B] × best[k, j, C]` (the inside algorithm replaces max with sum)
+
+- **rule**: a rewriting step such as S → NP VP ("a sentence is a noun phrase followed by a verb phrase") or NP → "stars"
+- **P(rule)**: how often a left-hand symbol expands this way rather than another way
+- **A**, **B**, **C**: grammar symbols (S for sentence, NP for noun phrase, VP for verb phrase, V for verb)
+- **best[i, j, A]**: the probability of the most likely way for symbol A to produce words i + 1 to j
+- **k**: where the stretch of words is split between B and C
+
+**In plain words:** A context-free grammar says which trees are allowed; adding probabilities says which are likely, so the ambiguous "I saw the man with the telescope" gets two scored readings and the parser can pick one. CYK fills a table from short stretches of words up to the whole sentence, reusing every sub-result, so parsing takes time proportional to the cube of the sentence length instead of growing with the huge number of possible trees.
+
+**Tiny example:** "I saw stars" with the rules S → NP VP (1.0), NP → "I" (0.4), VP → V NP (0.7), V → "saw" (1.0) and NP → "stars" (0.2): P(tree) = 1.0 × 0.4 × 0.7 × 1.0 × 0.2 = 0.056.
+
+**Where it is used:** Statistical parsers before neural networks (the Stanford Parser's PCFG model, Klein and Manning 2003); grammar induction with the inside-outside training algorithm; RNA secondary-structure prediction with stochastic grammars; probing whether language models represent syntax; grammar-constrained decoding uses the same kind of grammar, without probabilities, to restrict an LLM's output (decoding entries later in this section).
+**In the book:** Chapter 54 (Grammar, parsing and ambiguity) shows parse trees and the telescope example; Appendix F (Augmented grammars, semantic interpretation and chart parsing) describes the CYK algorithm in words; the formulas are only here.
+
+> **Definition — Probabilistic context-free grammar (PCFG):** A grammar whose rewriting rules each carry a probability, so that every parse tree of a sentence gets a probability equal to the product of the probabilities of the rules it uses.
 
 ### Next-token distribution from the final hidden state (LM head)
 
@@ -9076,6 +10339,47 @@ flowchart TD
 **In the book:** Only here (Chapter 24 discusses benchmarks and evaluation harnesses in words).
 
 > **Definition — Length normalization:** Dividing a text's total log-probability by its length (in tokens, characters or bytes) before comparing it with other texts, so longer answers are not penalized just for having more parts.
+
+### Zero-shot variant-effect score (log-likelihood ratio from a sequence model)
+
+**What it does:** Predicts whether a mutation damages a protein or gene by asking a model trained on natural sequences how much less plausible the mutant looks than the original.
+
+masked marginal (protein language models): `score = ln P(x_i = mutant given the sequence with position i masked) − ln P(x_i = wild type given the same)`; whole sequence (autoregressive DNA or protein models): `score = ln P(mutant sequence) − ln P(reference sequence)`, each the sum of next-token log-probabilities; several mutations: add the single-site scores
+
+- **x_i**: the amino acid (or DNA letter) at position i
+- **wild type**: the version in the reference sequence; **mutant**: the changed letter
+- **P(...)**: the model's predicted probability
+- **score**: negative means the mutant looks less natural; the more negative, the more likely it is damaging
+
+**In plain words:** Evolution has weeded most harmful mutations out of the sequences the model learned from, so a letter the model finds very unlikely at a position is often one that breaks the protein. No labeled examples of harmful variants are needed, which is why the score is called zero-shot. It is the same log-likelihood scoring used to grade multiple-choice questions, applied to biology.
+
+**Tiny example:** At one position the model gives the original amino acid probability 0.6. A mutant it gives 0.03 scores ln(0.03 ÷ 0.6) = ln(0.05) ≈ −3.0, a likely damaging change; a mutant it gives 0.3 scores ln(0.5) ≈ −0.69, much closer to neutral.
+
+**Where it is used:** ESM-1v (Meier et al. 2021), which introduced the masked-marginal score; the ProteinGym benchmark, which ranks models by how well such scores correlate with lab measurements of thousands of mutants; Evo 2 (Arc Institute and NVIDIA, 2025), which scores DNA variants, for example in the breast-cancer gene BRCA1, by the change in sequence likelihood. AlphaMissense instead adds training on population data to output a probability that a variant is harmful.
+**In the book:** Chapter 52 (Protein language models; Three kinds of genome AI, which says Evo 2 "can score whether a mutation looks damaging"); the formula is only here.
+
+### Extractive question-answering span scores (start and end pointers)
+
+**What it does:** Finds the answer to a question as a stretch of a given passage, by scoring every token as a possible start and a possible end.
+
+`P_start(i) = softmax over i of (S · T_i)`; `P_end(j) = softmax over j of (E · T_j)`; answer `(i*, j*) = argmax over pairs with j ≥ i (and j − i under a length cap) of (S · T_i + E · T_j)`; training loss `L = −(ln P_start(s) + ln P_end(e)) ÷ 2`
+
+- **T_i**: the encoder's final vector for passage token i (the question and passage are read together)
+- **S**, **E**: two learned vectors, one scoring starts and one scoring ends
+- **S · T_i**, **E · T_j**: the start logit of token i and the end logit of token j
+- **i**, **j**: start and end positions; **j ≥ i**: the end may not come before the start
+- **i***, **j***: the chosen start and end
+- **s**, **e**: the true start and end positions in a training example (the BERT paper describes the sum of the two log-likelihoods; its released code and Hugging Face average them, as here)
+- **softmax over i**: turns the start logits of all passage tokens into probabilities that add up to 1
+
+**In plain words:** The model points at where the answer begins and where it ends. Training is two ordinary classification problems, one over start positions and one over end positions. At prediction time the best valid pair is the one with the highest summed logits; when "no answer" is allowed, it is scored as a span sitting on the special [CLS] token and chosen if it beats the best real span.
+
+**Tiny example:** A four-token passage with start logits [2, 0.5, −1, 0] and end logits [−1, 1.5, 2, 0]. The best pair with j ≥ i is start 0 and end 2, scoring 2 + 2 = 4. P_start = [0.710, 0.158, 0.035, 0.096] and P_end = [0.028, 0.339, 0.558, 0.076]; if the true answer spans tokens 0 to 2, the loss is −(ln 0.710 + ln 0.558) ÷ 2 = 0.463; if it spans tokens 1 to 2, the loss is 1.213.
+
+**Where it is used:** BERT on SQuAD (Devlin and colleagues, 2019) and earlier readers such as BiDAF, the baseline of Stanford CS224n's SQuAD default final project; Hugging Face's question-answering pipeline; extractive readers in retrieve-then-read systems; and start-and-end pointer heads for tagging spans in information extraction.
+**In the book:** Only here.
+
+> **Definition — Extractive question answering:** Answering a question by copying a stretch of text out of a given passage, rather than writing a new answer, so the model only has to predict where the answer starts and where it ends.
 
 ### Transformer parameter count
 
@@ -9430,6 +10734,28 @@ flowchart TD
 
 > **Definition — LSH (locality-sensitive hashing):** A family of tricks that give similar items the same short code with high probability, so near-duplicates land in the same bucket and only items sharing a bucket need to be compared.
 
+### Bloom filter false-positive rate (exact deduplication at scale)
+
+**What it does:** Tells how much memory a Bloom filter needs to remember billions of items, such as paragraphs already seen, with a chosen chance of false alarms.
+
+`after n insertions into m bits with k hash functions: P(false positive) ≈ (1 − exp(−k × n ÷ m))^k`; best `k = (m ÷ n) × ln(2)`; bits needed for a target rate p: `m = −n × ln(p) ÷ (ln 2)^2`, about `1.44 × log2(1 ÷ p)` bits per item
+
+- **m**: the number of bits in the filter, all starting at 0
+- **n**: the number of items inserted so far
+- **k**: the number of hash functions; each item sets the k bits its hashes point to
+- **exp(−k × n ÷ m)**: the chance that a given bit is still 0
+- **p**: the target false-positive rate
+- **ln**, **log2**: the natural and the base-2 logarithm
+
+**In plain words:** To insert an item, hash it k different ways and set those k bits to 1. To ask "seen before?", check its k bits: if any is 0 the answer is a certain no; if all are 1 it is probably yes, because other items may have set them. The formula is the chance that all k bits were set by other items. The filter never stores the items themselves, so a few bits per item suffice however long the items are.
+
+**Tiny example:** One billion paragraphs in 10 billion bits (1.25 GB, 10 bits each): the best k is 10 × 0.693 ≈ 7, and P ≈ (1 − exp(−0.7))^7 = 0.0082, under 1%. With k = 1 it would be 9.5%, and with k = 3, 1.7%. A 1% target needs 9.6 bits per item; 0.1% needs 14.4.
+
+**Where it is used:** Exact-duplicate removal in pretraining pipelines: AI2's Dolma toolkit deduplicates documents and paragraphs with a Bloom filter sized from an expected item count and a target false-positive rate, and LSHBloom (2024) swaps the MinHash index for Bloom filters to save memory. Stanford CS336's data lectures teach it beside MinHash; databases and key-value stores (Bigtable, Cassandra, RocksDB) use it to skip needless disk reads.
+**In the book:** Chapter 19 (Most of the web is not worth reading) and Chapter 11 (Cleaning data) describe deduplication in words; the filter is only here.
+
+> **Definition — Bloom filter:** A compact array of bits that answers "have I seen this item before?" by checking a few hashed bit positions: its "no" answers are always right, while its "yes" answers are occasionally wrong, at a rate set by the filter's size.
+
 ### Perplexity and classifier quality filtering
 
 **What it does:** Scores each web page with a small model and keeps only the pages that look like good writing.
@@ -9450,6 +10776,29 @@ flowchart TD
 **In the book:** Chapter 19 (Cleaning the firehose: the curation pipeline) describes model-based quality filters in words; perplexity filtering with a reference model is only here.
 
 > **Definition — Perplexity filtering:** Removing training documents that a small reference language model finds very surprising (high perplexity), on the theory that text unlike clean reference writing is likely to be junk.
+
+### Importance resampling for data selection (DSIR)
+
+**What it does:** Picks the documents in a huge raw corpus that look most like a small target set, by weighting each one with how much more likely it is under a target model than under a raw-data model.
+
+`ln w_i = ln p_target(z_i) − ln p_raw(z_i) = sum over b of z_(i,b) × ln(γ_target[b] ÷ γ_raw[b])`; keep the k documents with the largest `ln w_i + G_i`, which samples k documents without replacement with probability proportional to w_i
+
+- **z_i**: document i's features: each word and pair of words is hashed into one of B buckets (10,000 in the paper) and counted
+- **z_(i,b)**: how many of document i's words and word pairs fell into bucket b
+- **γ_target[b]**, **γ_raw[b]**: the share of all words and word pairs that land in bucket b in the target set and in the raw corpus, found by counting
+- **p_target**, **p_raw**: the two bag-of-words models built from those shares, `p(z) = product over b of γ[b]^(z_b)`
+- **w_i**: the importance weight, how much more target-like than typical document i is
+- **G_i**: random Gumbel noise; adding it and keeping the top k is the Gumbel-max trick applied k times
+- **k**: how many documents to keep
+
+**In plain words:** A quality classifier only asks "is this good?", so it tends to keep many pages of the same kind. Importance resampling instead tries to make the whole selected set's mix of words match the target's: documents rich in target-like words get large weights, while random resampling still keeps some variety. Hashed word counts make it cheap enough for billions of documents.
+
+**Tiny example:** Three buckets with target shares [0.6, 0.3, 0.1] and raw shares [0.2, 0.3, 0.5]. Document A has counts [2, 1, 0]: ln w = 2 × ln 3 + 1 × ln 1 = 2.197, so w = 9. Document B has counts [0, 1, 2]: ln w = 2 × ln(0.2) = −3.219, so w = 0.04. Sampling one of the two in proportion to w picks A with probability 9 ÷ 9.04 = 99.6%.
+
+**Where it is used:** Xie, Santurkar, Ma and Liang (2023) selected 100 million documents from the Pile in 4.5 hours on one 96-core CPU node and, with Wikipedia and books as the target, beat random selection and heuristic filtering by 2 to 2.5 points on GLUE; taught in Stanford CS336's data lectures beside fastText quality classifiers. Its "KL reduction" score, how much closer the selected set's word counts are to the target's, is a cheap check on any data filter.
+**In the book:** Chapter 19 (Most of the web is not worth reading) describes filtering with a model in words; importance resampling is only here.
+
+> **Definition — DSIR (data selection with importance resampling):** A method that chooses pretraining documents resembling a target dataset by weighting each document with the ratio of two simple word-count models, one fit to the target and one to the raw data, and sampling in proportion to those weights.
 
 ### Temperature-scaled data-mixture sampling
 
@@ -9877,6 +11226,26 @@ flowchart LR
 
 > **Definition — Online softmax:** A way to compute softmax over a long list in pieces, keeping a running maximum and running total and rescaling them whenever a larger value appears, so the whole list never has to be stored at once.
 
+### Attention backward pass (the gradients FlashAttention recomputes)
+
+**What it does:** Gives the gradients of scaled dot-product attention with respect to its queries, keys and values, in the form that fused kernels compute without storing the table of scores.
+
+forward: `S = Q × K^T ÷ sqrt(d)`, `P = softmax of each row of S`, `O = P × V`; backward: `dV = P^T × dO`; `dP = dO × V^T`; `D_i = sum over j of (P[i, j] × dP[i, j]) = sum over c of (dO[i, c] × O[i, c])`; `dS[i, j] = P[i, j] × (dP[i, j] − D_i)`; `dQ = dS × K ÷ sqrt(d)`; `dK = dS^T × Q ÷ sqrt(d)`
+
+- **Q**, **K**, **V**: the query, key and value matrices, one row per token
+- **d**: the head size; **S**: the scores; **P**: the attention weights; **O**: the output
+- **dO**: the gradient of the loss with respect to O, arriving from the layer above; likewise **dV**, **dP**, **dS**, **dQ** and **dK** are the gradients with respect to V, P, S, Q and K
+- **D_i**: one number per query row i, the row sum of dO ⊙ O (⊙ multiplies entry by entry)
+- **P^T**, **V^T**, **K^T**, **dS^T**: transposes
+- **i**, **j**: query and key positions; **c**: a position along the head's vector
+
+**In plain words:** The value and score gradients follow the ordinary rules for matrix multiplication. The softmax is the subtle step: each score's gradient is its weight times how much its own upstream gradient exceeds the weighted average D_i. Because D_i equals the row sum of dO ⊙ O, it comes straight from the saved output, so the full table never has to exist. FlashAttention saves only O and each row's log-sum-exp, rebuilds P tile by tile from Q and K, and applies these rules one tile at a time, trading extra arithmetic for far less memory traffic.
+
+**Tiny example:** Two tokens with d = 1 (so the scale is 1): queries [1, 2], keys [1, 0], values [1, 3]. S has rows [1, 0] and [2, 0]; P has rows [0.731, 0.269] and [0.881, 0.119]; O = [1.538, 1.238]. Let the loss be the first token's output, so dO = [1, 0]. dV = [0.731, 0.269]; dP has rows [1, 3] and [0, 0]; D = [1.538, 0]; dS has rows [0.731 × (1 − 1.538), 0.269 × (3 − 1.538)] = [−0.393, 0.393] and [0, 0]; dQ = [−0.393, 0] and dK = [−0.393, 0.393]. Nudging each input by a millionth and rerunning the forward pass gives the same gradients.
+
+**Where it is used:** The backward kernels of FlashAttention 1 to 3 (Dao and others, 2022 to 2024), PyTorch's scaled_dot_product_attention and cuDNN; Stanford CS336's systems assignment has students implement FlashAttention-2, including this backward pass. Rebuilding P adds a fifth matrix multiplication to the backward pass, so it costs about 2.5 times the forward pass's FLOPs.
+**In the book:** Chapter 15 (Making attention cheaper) describes FlashAttention in words; the backward pass is only here.
+
 ### Latency decomposition: time to first token and time per output token
 
 **What it does:** Splits how long you wait for an answer into the wait for the first word and the pace of the rest.
@@ -9959,6 +11328,34 @@ flowchart LR
 
 **Where it is used:** Picking a draft model and γ in serving systems.
 **In the book:** Chapter 23 (Speculative decoding: guess ahead, check in one pass).
+
+### Draft heads for speculative decoding (Medusa, typical acceptance and EAGLE)
+
+**What it does:** Adds small extra heads to the big model itself so it can guess several future tokens at once, and gives the looser acceptance test that some of these systems use.
+
+Medusa head k: `p_t^(k) = softmax(W_2^(k) × (SiLU(W_1^(k) × h_t) + h_t))`, a guess for token t + k + 1, trained with `L = sum over k of (−λ_k × ln p_t^(k)(y_(t+k+1)))`; typical acceptance: keep a drafted token x if `p_original(x) > min(ε, δ × exp(−H(p_original)))`; EAGLE: `f̂_(t+1) = g(f_≤t, e(x_≤(t+1)))`, trained with `L = SmoothL1(f_(t+1), f̂_(t+1)) + w_cls × CrossEntropy(p_(t+2), p̂_(t+2))`
+
+- **h_t**: the big model's last hidden state at position t
+- **W_1^(k)**, **W_2^(k)**: head k's two weight matrices (W_2 starts as a copy of the output layer and W_1 at zero, so each head starts as the ordinary next-token predictor)
+- **SiLU**: the sigmoid-weighted linear unit activation
+- **p_t^(k)**: head k's predicted distribution for the token k + 1 steps ahead; **y_(t+k+1)**: the true token there
+- **λ_k** (lambda): the weight of head k's loss, smaller for farther heads (for example 0.8^k)
+- **p_original**: the big model's distribution at the drafted position; **H(...)**: its entropy in nats
+- **ε**, **δ** (epsilon, delta): a fixed probability bar and an entropy-scaled one
+- **f_t**: the big model's top-layer feature vector at position t; **f̂_(t+1)**: the draft's prediction of the next one; **f_≤t**: all features up to t
+- **e(x)**: the embedding of token x; **x_≤(t+1)**: the tokens up to t + 1; **g**: EAGLE's small one-layer draft Transformer
+- **SmoothL1**: the Huber-style regression loss; **w_cls**: the weight on the token loss (0.1 in EAGLE); **p̂_(t+2)**: the draft's token distribution, from f̂_(t+1) through the big model's frozen output layer; **p_(t+2)**: the big model's own distribution
+
+**In plain words:** Medusa bolts k small residual heads onto the last hidden state; each guesses one token further ahead, and their top candidates are combined into a tree of continuations that the big model checks in a single pass with a tree-shaped attention mask. Typical acceptance replaces the exact rejection rule of speculative sampling: it keeps any guess the big model finds reasonably likely, with a bar that drops when the big model itself is unsure (high entropy), so it is faster but no longer reproduces the big model's distribution exactly. EAGLE drafts the next feature vector instead of the next token, feeding in the token already sampled, which makes its guesses more accurate; EAGLE-3 (2025) drops the feature loss, fuses features from several layers and trains on its own multi-step drafts.
+
+**Tiny example:** Typical acceptance with ε = 0.09 and δ = 0.3. A confident big model with probabilities [0.7, 0.2, 0.1] has entropy 0.802 nats; 0.3 × exp(−0.802) = 0.135, so the bar is min(0.09, 0.135) = 0.09: a guess the big model gives 0.2 is kept and one it gives 0.05 is rejected. A big model spread evenly over 20 tokens has entropy ln 20 = 3.0, the bar falls to 0.3 ÷ 20 = 0.015, and the 0.05 guess is now kept.
+
+**Where it is used:** Medusa (Cai and others, 2024) reports over 2.2 times faster decoding with heads on a frozen model and 2.3 to 3.6 times when trained jointly; EAGLE-3 (Li and others, 2025) reports up to 6.5 times, and EAGLE-style drafts are built into vLLM, SGLang and TensorRT-LLM. DeepSeek-V3's multi-token-prediction module plays the same role.
+**In the book:** Chapter 23 (Speculative decoding: guess ahead, check in one pass) names Medusa and EAGLE as draft heads; the formulas are only here.
+
+> **Definition — Medusa heads:** Small extra output layers attached to a language model's last hidden state, each trained to guess a token one more step ahead, so the model can draft several tokens per pass for speculative decoding without a separate draft model.
+
+> **Definition — Typical acceptance:** A looser rule for accepting drafted tokens in speculative decoding that keeps any guess the big model rates above a bar that falls as the big model's uncertainty rises; it raises acceptance rates but no longer reproduces the big model's output distribution exactly.
 
 ### Request cost with prompt caching, batch discounts and reasoning tokens
 
@@ -10099,6 +11496,32 @@ flowchart LR
 **In the book:** Chapter 30 (Quantization and GGUF; Will it fit? The memory rule of thumb), Chapter 17 and Appendix B (Memory math); the b + scale bits ÷ g count is only here.
 
 > **Definition — Quantization group (group size):** A run of consecutive weights that share one scale (and sometimes one zero-point). The group size, often 32 to 128, trades accuracy against the overhead of storing scales.
+
+### LLM.int8() (vector-wise 8-bit quantization with outlier decomposition)
+
+**What it does:** Runs a layer's matrix multiplication in 8-bit integers while sending the few "outlier" feature dimensions through 16-bit arithmetic, so even very large models lose no accuracy.
+
+`O = {feature dimensions h where some |X[i, h]| ≥ α}`, with α = 6; `X × W ≈ X_O × W_O + (c_x × c_w^T ÷ 127^2) ⊙ (X_int8 × W_int8)`, where `X_int8[i, h] = round(127 × X[i, h] ÷ c_x[i])` with `c_x[i] = max over h not in O of |X[i, h]|`, and `W_int8[h, j] = round(127 × W[h, j] ÷ c_w[j])` with `c_w[j] = max over h not in O of |W[h, j]|`
+
+- **X**: the layer's input activations, one row i per token and one column h per feature dimension
+- **W**: the weight matrix, one row per input feature h and one column j per output
+- **O**: the set of outlier dimensions; **α** (alpha): the outlier threshold
+- **X_O**, **W_O**: the columns of X and rows of W for the outlier dimensions, multiplied in 16-bit
+- **c_x[i]**: row i's largest absolute activation (one scale per token); **c_w[j]**: column j's largest absolute weight (one scale per output)
+- **X_int8**, **W_int8**: the 8-bit integer versions of the non-outlier parts (outlier dimensions left out)
+- **c_x × c_w^T**: the table of every product c_x[i] × c_w[j]; **⊙**: multiply entry by entry
+- **round**: round to the nearest whole number; **127**: the largest 8-bit integer used; **|...|**: absolute value
+
+**In plain words:** From about 6.7 billion parameters on, a handful of feature dimensions carry activations far larger than all the others, in every layer and most tokens. With one shared scale per token, those giants would squash every other value into a few integer steps or to zero. LLM.int8() pulls those dimensions out and multiplies them in 16-bit, which involves under 0.1% of the values, and quantizes the rest with one scale per row of X and one per column of W, multiplying the two scales back in at the end.
+
+**Tiny example:** One token x = [0.03, −0.02, 8.0] and weights w = [1, 1, 1]; the exact answer is 8.01. Plain absmax int8 uses the scale 8 ÷ 127 = 0.063, so 0.03 and −0.02 both round to 0 and the answer is 8.00: their contribution vanishes. With the decomposition, feature 3 (8.0 ≥ 6) goes to 16-bit and gives 8.0; the rest uses the scale 0.03 ÷ 127, so x becomes [127, −85] and w becomes [127, 127], and (127 × 127 − 85 × 127) × (0.03 ÷ 127) × (1 ÷ 127) = 0.00992, for a total of 8.00992. Across thousands of features such small losses add up.
+
+**Where it is used:** Dettmers, Lewis, Belkada and Zettlemoyer (2022), who ran models up to 175 billion parameters (OPT-175B, BLOOM) in 8-bit with no measured degradation; the bitsandbytes library behind Hugging Face's load_in_8bit option. Its outlier finding motivated SmoothQuant, AWQ and the rotation methods QuaRot and SpinQuant (entries below).
+**In the book:** Chapter 23 (Worked example: rounding four weights to 4 bits) shows how one outlier wrecks a shared scale; the decomposition is only here.
+
+> **Definition — LLM.int8():** A 2022 method for running large language models with 8-bit integer matrix multiplications that keeps the rare outlier feature dimensions in 16-bit, so accuracy is not lost.
+
+> **Definition — Outlier features:** A few hidden dimensions in large Transformers whose activations are far larger than all the others, in almost every layer and token; they make naive low-bit quantization of activations fail.
 
 ### Microscaling (MX) block formats
 
@@ -10631,6 +12054,30 @@ flowchart LR
 **In the book:** Chapter 15 (Stretching the context window) and Chapter 23 (Long context: making a million tokens affordable) name YaRN; the formulas are only here.
 
 > **Definition — YaRN (Yet another RoPE extensioN):** A widely used recipe for stretching a RoPE model's context window that slows only the slow-rotating dimensions, blends the in-between ones and slightly sharpens attention, needing only brief fine-tuning.
+
+### Position-dependent attention temperature (Llama 4 temperature tuning and Scalable-Softmax)
+
+**What it does:** Sharpens attention as the context grows, so the right token can still stand out among hundreds of thousands of candidates.
+
+`Llama 4, in the layers without RoPE: q' = q × (1 + 0.1 × ln(floor((p + 1) ÷ 8,192) + 1))`
+
+`Scalable-Softmax: a_i = exp(s × ln(n) × z_i) ÷ sum over j of exp(s × ln(n) × z_j) = n^(s × z_i) ÷ sum over j of n^(s × z_j)`
+
+- **q**, **q'**: a query vector before and after scaling; every score q · k grows by the same factor, which therefore acts as an inverse temperature.
+- **p**: the query's position in the context, counting from 0.
+- **8,192**, **0.1**: Llama 4's step length in tokens (floor_scale in the code) and strength (attn_scale).
+- **floor(...)**: round down to a whole number; **ln**: the natural logarithm; **exp**: e raised to a power.
+- **n**: the number of tokens attended over; **z_i**, **z_j**: attention scores; **a_i**: token i's attention weight.
+- **s**: a learned scale, one per layer and head.
+
+**In plain words:** Softmax divides by a sum over all tokens, so with the same scores the winner's share shrinks as the context grows, and attention fades toward a flat average. Multiplying the scores by a factor that grows like the logarithm of the length cancels this. Llama 4 raises the factor in steps of 8,192 tokens, and only in the layers that carry no position signal; Scalable-Softmax ties it to ln(n) and learns its strength. YaRN's temperature and the earlier log-n scaling (previous entry) apply the same idea through the stretch factor or the training length.
+
+**Tiny example:** Llama 4: up to position 8,190 the factor is 1 (the floor is 0 and ln 1 = 0); at position 8,191 it is 1 + 0.1 × ln 2 ≈ 1.069; at position 1,000,000, floor(1,000,001 ÷ 8,192) = 122, so the factor is 1 + 0.1 × ln 123 ≈ 1.481. Scalable-Softmax with s = 1, where one token scores 1 and all others 0: plain softmax gives that token e ÷ (e + 999) ≈ 0.0027 of the attention among 1,000 tokens and about 0.000027 among 100,000, while Scalable-Softmax gives it n ÷ (n + n − 1) ≈ 0.50 at both lengths.
+
+**Where it is used:** Meta's Llama 4 models (April 2025), which Meta said "employ inference time temperature scaling of attention to enhance length generalization"; the Hugging Face transformers implementation applies it to every fourth layer, the layers without RoPE in Llama 4's interleaved (iRoPE) design, and cites Scalable-Softmax (Nakanishi, January 2025, arXiv 2501.19399).
+**In the book:** Chapter 15 (Step 3: Telling the model about word order) describes Llama 4's layers without position information; the formulas are only here.
+
+> **Definition — Scalable-Softmax (SSMax):** A replacement for softmax in attention that multiplies the scores by s × ln(n), where n is the number of tokens attended over and s is learned, so attention does not flatten out as the context gets longer.
 
 ### Chunk count with overlap
 
@@ -11212,6 +12659,29 @@ flowchart TD
 
 > **Definition — Truthful mechanism (incentive compatible):** A set of rules, such as an auction format, under which each participant's best strategy is to report their true value or preference, so nobody gains by lying.
 
+### Voting rules: plurality, Borda count and the Condorcet winner
+
+**What it does:** Combines many individuals' rankings of options into one group choice, and shows that different reasonable rules can pick different winners.
+
+`plurality: winner = argmax over options c of (number of voters ranking c first)`; `Borda: score(c) = sum over voters v of (m − rank_v(c))`, and the highest score wins; `Condorcet winner: an option c such that, for every other option d, more than half of the voters rank c above d`
+
+- **c**, **d**: options (candidates); **m**: the number of options
+- **v**: a voter; **rank_v(c)**: the position of c in voter v's ranking (1 = favorite), so a favorite gets m − 1 points and the last choice 0
+- **argmax over c**: the option with the largest count
+
+**In plain words:** Plurality looks only at first choices, Borda rewards being ranked high on average, and a Condorcet winner beats every rival head to head. They can disagree, a Condorcet winner may not exist (majority preferences can go round in a cycle), and Arrow's theorem shows that no ranking rule satisfies every fairness property at once. Choosing how to aggregate is therefore a decision with consequences, not a technicality.
+
+**Tiny example:** Nine voters: 4 rank A > B > C, 3 rank B > C > A and 2 rank C > B > A. Plurality: A 4, B 3, C 2, so A wins. Borda (2, 1 and 0 points): A = 4 × 2 = 8, B = 4 × 1 + 3 × 2 + 2 × 1 = 12, C = 3 × 1 + 2 × 2 = 7, so B wins. Head to head, B beats A 5 to 4 and C 7 to 2, so B is the Condorcet winner; plurality chose A, whom 5 of the 9 voters rank last.
+
+**Where it is used:** Aggregating annotators' preferences in RLHF: standard preference learning implicitly aggregates the hidden differences between annotators by the Borda count (Siththaranjan, Laidlaw and Hadfield-Menell 2024), and a 2024 position paper argues that social choice theory should guide alignment to diverse human feedback (Conitzer et al.); combining rankings from several benchmarks or judges into one leaderboard; majority voting over sampled answers (self-consistency, LLM section) and in classifier ensembles.
+**In the book:** Appendix F (Voting and social choice) tells the Condorcet paradox in words; the rules are only here.
+
+> **Definition — Plurality vote:** A voting rule that elects the option ranked first by the most voters, ignoring the rest of each ranking.
+
+> **Definition — Borda count:** A voting rule in which each voter gives each option points according to its position in their ranking (m − 1 for first place down to 0 for last) and the option with the most points wins.
+
+> **Definition — Condorcet winner:** An option that a majority of voters prefers to each of the other options in head-to-head comparisons; it does not always exist.
+
 ### Markov decision process and the Markov property (MDP)
 
 **What it does:** Writes any problem of repeated decisions as five ingredients, the common language of planning and reinforcement learning.
@@ -11253,6 +12723,30 @@ flowchart TD
 **In the book:** Chapter 48 (Rewards, returns and discounting).
 
 > **Definition — Effective horizon:** Roughly how many steps ahead an agent with discount factor γ cares about, about 1 ÷ (1 − γ). With γ = 0.9 rewards beyond about 10 steps barely count; with γ = 0.99, about 100.
+
+### Average-reward criterion and the differential TD error
+
+**What it does:** Scores a policy in a task that never ends by its long-run reward per step, instead of discounting the future, and learns state values relative to that average.
+
+`r(π) = limit as h → ∞ of (1 ÷ h) × sum over t = 1..h of E[R_t]`; differential return `G_t = (R_(t+1) − r(π)) + (R_(t+2) − r(π)) + (R_(t+3) − r(π)) + ...`; differential TD error `δ_t = R_(t+1) − R̄ + v̂(S_(t+1)) − v̂(S_t)`; updates `R̄ ← R̄ + β × δ_t` and `v̂(S_t) ← v̂(S_t) + α × δ_t`
+
+- **π** (pi): the policy; **r(π)**: its average reward per step
+- **R_t**: the reward at step t; **E[...]**: the expected value; **h**: the number of steps averaged
+- **G_t**: the differential return, the running total of rewards above or below the average
+- **R̄** (R bar): the running estimate of r(π)
+- **v̂(S)**: the differential value of state S; **S_t**: the state at step t
+- **δ_t** (delta): the differential TD error; **α**, **β** (alpha, beta): step sizes
+
+**In plain words:** In a continuing task, such as a server answering requests forever, any discount factor is an arbitrary choice. Instead, measure how much reward per step the policy earns in the long run, and call a state valuable if starting there earns more than the average for a while. The TD error compares each reward with the running average rather than with zero, and the same error also nudges the average itself.
+
+**Tiny example:** A loop A → B → A paying 2 and then 0 averages 1 per step. The differential values satisfy v(A) = (2 − 1) + v(B) and v(B) = (0 − 1) + v(A); setting v(B) = 0 gives v(A) = 1. A learning step from the estimates R̄ = 0.8, v̂(A) = 0.5 and v̂(B) = 0 on the transition A → B with reward 2: δ = 2 − 0.8 + 0 − 0.5 = 0.7, so with β = 0.1 the average estimate rises to 0.87.
+
+**Where it is used:** Continuing control problems such as queue and access-control management (Sutton and Barto, chapter 10); R-learning and differential Q-learning; the argument that discounting is a poor objective for continuing tasks with function approximation (Sutton and Barto, section 10.4).
+**In the book:** Only here.
+
+> **Definition — Continuing task:** A reinforcement-learning task that goes on forever without episodes or a final state, such as controlling a server or a power grid.
+
+> **Definition — Average-reward setting:** Judging a policy in a continuing task by its long-run average reward per step, and valuing states by how much more than that average they earn, instead of using a discount factor.
 
 ### State-value and action-value functions (V and Q)
 
@@ -11479,6 +12973,30 @@ flowchart LR
 **Where it is used:** It weights the update in A2C, PPO and RLHF; GRPO replaces the learned V with a group mean and divides by the group's spread.
 **In the book:** Chapter 48 (Policy gradients and actor-critic methods), Chapter 20 (Worked toy example: one prompt, three replies), Chapter 21.
 
+### Performance difference lemma
+
+**What it does:** Gives the exact gap between two policies' returns as the old policy's advantages, averaged over the states and actions the new policy visits.
+
+`J(π') − J(π) = (1 ÷ (1 − γ)) × E over s from d_π' and a from π'(· given s) of [A_π(s, a)] = E over trajectories of π' of [sum over t of γ^t × A_π(s_t, a_t)]`, where `d_π'(s) = (1 − γ) × sum over t of γ^t × P(s_t = s when following π')`
+
+- **π**, **π'** (pi, pi-prime): the old and the new policy
+- **J(π)**: a policy's expected discounted return from the start
+- **γ** (gamma): the discount factor
+- **A_π(s, a) = Q_π(s, a) − V_π(s)**: the old policy's advantage
+- **d_π'(s)**: the new policy's discounted state distribution, how often it visits state s, with early visits weighted more; the factor 1 − γ makes it add up to 1
+- **E over ...**: the average over the named distributions; **s_t**, **a_t**: the state and action at step t; **P(...)**: probability
+
+**In plain words:** Run the new policy, and at every step ask the old policy's critic how much better the chosen action was than the old policy's usual. Adding up those advantages, with discounting, gives exactly how much better the new policy is. The catch is that the states must come from the new policy, which has not been run yet; TRPO and PPO substitute the old policy's states and correct the actions with probability ratios, which is accurate only while the two policies stay close, hence their KL limits and clipping.
+
+**Tiny example:** One state that repeats forever, γ = 0.5, action a pays 1 and action b pays 0. The old policy picks a half the time: V_π = 0.5 ÷ (1 − 0.5) = 1, Q_π(a) = 1 + 0.5 × 1 = 1.5 and Q_π(b) = 0 + 0.5 × 1 = 0.5, so A_π(a) = 0.5 and A_π(b) = −0.5. The new policy picks a 90% of the time, so J(π') = 0.9 ÷ 0.5 = 1.8. The lemma gives (1 ÷ 0.5) × (0.9 × 0.5 + 0.1 × (−0.5)) = 2 × 0.4 = 0.8, exactly 1.8 − 1.0.
+
+**Where it is used:** Kakade and Langford (2002), whose conservative policy iteration rests on it; the derivation of the surrogate objectives of TRPO and PPO, and through them of the probability-ratio objectives (GRPO, GSPO, CISPO) used to train reasoning LLMs; a standard result in UC Berkeley's CS285 and Stanford's CS234.
+**In the book:** Only here (Chapter 48, Policy gradients and actor-critic methods, introduces advantages in words).
+
+> **Definition — Performance difference lemma:** The identity that a new policy's improvement over an old one equals the old policy's advantages, added up with discounting along the new policy's own trajectories.
+
+> **Definition — Discounted state distribution:** How often a policy visits each state, with visits early in an episode weighted more heavily by powers of the discount factor and scaled so the total is 1.
+
 ### n-step return
 
 **What it does:** Uses n real rewards and then bootstraps from the value estimate n steps ahead.
@@ -11564,6 +13082,33 @@ flowchart LR
 
 **Where it is used:** Tabular control, and the update that DQN turns into a neural-network loss.
 **In the book:** Chapter 48 (Q-learning, worked by hand).
+
+### Linear value-function approximation: tile coding, the TD fixed point and LSTD
+
+**What it does:** Learns state values as a weighted sum of features, shows where semi-gradient TD learning ends up, and jumps there directly by solving a small linear system.
+
+`v̂(s, w) = w · x(s)`; semi-gradient TD: `w ← w + α × (r + γ × w · x(s') − w · x(s)) × x(s)`; TD fixed point `w_TD = A^-1 × b`, with `A = E[x(s) × (x(s) − γ × x(s'))^T]` and `b = E[r × x(s)]`; LSTD estimates both from data: `Â = sum over t of x_t × (x_t − γ × x_(t+1))^T`, `b̂ = sum over t of r_(t+1) × x_t`, `w = Â^-1 × b̂`
+
+- **s**, **s'**: a state and the next state; **r**: the reward between them
+- **x(s)**: the feature vector of state s; with tile coding, a long vector of 0s and 1s with one 1 per tiling, marking which tile of each of several offset grids the state falls in
+- **w**: the weight vector; **v̂(s, w)**: the estimated value
+- **α** (alpha): the step size; **γ** (gamma): the discount factor
+- **E[...]**: the average over transitions experienced while following the policy
+- **A**, **b**: the matrix and vector that define the TD fixed point **w_TD**; **Â**, **b̂**: their estimates from data; **^T**: transpose (x × y^T is a matrix); **^-1**: matrix inverse
+- **x_t**, **r_(t+1)**: the features at step t and the reward that followed
+
+**In plain words:** With linear features, TD learning does not reach the best least-squares fit of the true values; it converges, when it learns from the policy's own experience, to the TD fixed point, where the expected update is zero. LSTD writes "the expected update is zero" as A × w = b and solves it at once, using every sample and no step size. Combining function approximation, bootstrapping and off-policy data can make TD diverge: the deadly triad that motivates the target network in deep Q-learning.
+
+**Tiny example:** Two states with one feature each, x(A) = 1 and x(B) = 2; A → B pays 1 and B → A pays 0; γ = 0.5. From one trip round the loop: Â = 1 × (1 − 0.5 × 2) + 2 × (2 − 0.5 × 1) = 0 + 3 = 3 and b̂ = 1 × 1 + 0 × 2 = 1, so w = 1 ÷ 3 and the estimated values are 0.333 for A and 0.667 for B. The true values are 1.333 and 0.667, which no single weight can represent; semi-gradient TD with small steps settles at the same w ≈ 0.333.
+
+**Where it is used:** Classic control benchmarks such as Mountain Car with tile coding (Sutton and Barto, chapter 9); least-squares policy iteration (LSPI, Lagoudakis and Parr 2003); linear value heads on top of frozen learned features; the theory of the deadly triad behind deep Q-network design (the DQN entry below).
+**In the book:** Only here (the semi-gradient TD update with a network is in the TD(0) entry above).
+
+> **Definition — Tile coding:** A way to turn a continuous state into features by laying several offset grids over the state space and marking which cell of each grid the state falls in; it gives a coarse but fast linear representation.
+
+> **Definition — LSTD (least-squares temporal difference):** A method that computes the TD solution for a linear value function directly, by solving a small system of linear equations built from experience, instead of taking many small update steps.
+
+> **Definition — Deadly triad:** Sutton and Barto's name for the combination of function approximation, bootstrapping (learning from one's own estimates) and off-policy data, which together can make value learning diverge.
 
 ### Deep Q-network loss with target network and experience replay (DQN)
 
@@ -11674,6 +13219,29 @@ flowchart LR
 **In the book:** Only here.
 
 > **Definition — Distributional reinforcement learning:** Reinforcement learning that predicts the full probability distribution of future returns rather than only their average, for example as probabilities on a fixed grid of values (C51) or as a set of quantiles (QR-DQN).
+
+### Value rescaling and two-hot targets (MuZero's h-transform and DreamerV3's symlog)
+
+**What it does:** Squashes rewards and values that span many orders of magnitude so one network can learn them, and turns a single number into a probability target over fixed bins.
+
+`h(x) = sign(x) × (sqrt(|x| + 1) − 1) + ε × x`; `symlog(x) = sign(x) × ln(|x| + 1)`, undone by `symexp(y) = sign(y) × (exp(|y|) − 1)`; two-hot: for a target y with neighboring bins b_k ≤ y ≤ b_(k+1), weight `(b_(k+1) − y) ÷ (b_(k+1) − b_k)` on b_k and the rest on b_(k+1); the network's prediction is `sum over k of p_k × b_k`, mapped back with the inverse transform
+
+- **x**: a raw return, reward or value; **sign(x)**: +1, 0 or −1; **|x|**: its absolute value
+- **ε** (epsilon): a small linear term (0.001 in MuZero) that keeps h invertible and growing for large x
+- **h**, **symlog**: the squashing transforms; **symexp** and the inverse of h undo them
+- **b_k**: fixed bin positions, for example 255 bins evenly spaced in symlog space in DreamerV3
+- **p_k**: the network's predicted probability for bin k, trained with cross-entropy against the two-hot target
+
+**In plain words:** A game's score can be 1 in one task and 100,000 in another; regressing such numbers with squared error lets the big ones swamp every gradient. Squashing them first, almost unchanged near zero and like a square root or logarithm far away, puts every task on a similar scale without clipping information away. Predicting a distribution over bins with cross-entropy, instead of one number with squared error, is more stable still; the two-hot target sits exactly between its two neighboring bins, so the bins' weighted average recovers it.
+
+**Tiny example:** symlog(1,000) = ln(1,001) = 6.909 and symlog(1) = 0.693; h(1,000) = sqrt(1,001) − 1 + 0.001 × 1,000 = 31.64, h(1) = 0.415 and h(−50) = −6.19. Applying the inverses returns 1,000, 1 and −50. Two-hot with bins at the whole numbers: y = 2.3 puts weight 0.7 on bin 2 and 0.3 on bin 3, and 0.7 × 2 + 0.3 × 3 = 2.3.
+
+**Where it is used:** Pohlen and colleagues (2018) introduced h for Atari agents; R2D2, Agent57 and MuZero use it, MuZero also predicting values and rewards as two-hot distributions over 601 bins; DreamerV3 (Hafner and others, published in Nature in 2025) uses symlog and two-hot targets to master over 150 tasks with one fixed configuration.
+**In the book:** Only here (Chapter 48, MuZero (2020): not even told the rules, tells MuZero's story).
+
+> **Definition — Symlog transform:** The function sign(x) × ln(|x| + 1), which leaves small numbers almost unchanged and compresses large positive and negative numbers logarithmically, so a network can learn targets of very different sizes.
+
+> **Definition — Two-hot encoding:** Representing a number as a probability target over fixed bins by splitting a total weight of 1 between the two bins on either side of it, in proportion to how close it is to each.
 
 ### Model-based RL: learned dynamics, Dyna planning and model-predictive control
 
@@ -11987,6 +13555,27 @@ flowchart LR
 **Where it is used:** Language-model RL recipes are REINFORCE at heart: RLOO, REINFORCE++, ReMax and CISPO use it directly, and GRPO adds PPO clipping on top.
 **In the book:** Chapter 48 (Policy gradients and actor-critic methods).
 
+### Gaussian policy for continuous actions (and its score function)
+
+**What it does:** Lets a policy choose real-valued actions, such as joint torques or steering angles, by sampling from a bell curve whose center and width a network predicts, and gives the gradient used to train it.
+
+`π(a given s) = N(a; μ_θ(s), σ_θ(s)^2)`; `ln π(a given s) = −(a − μ)^2 ÷ (2 × σ^2) − ln σ − (1 ÷ 2) × ln(2π)`; score functions `∂ ln π ÷ ∂μ = (a − μ) ÷ σ^2` and `∂ ln π ÷ ∂(ln σ) = (a − μ)^2 ÷ σ^2 − 1`; with several action dimensions (a diagonal Gaussian) the log-probabilities add up
+
+- **s**: the state; **a**: the action actually taken (one real number per action dimension)
+- **μ_θ(s)**, **σ_θ(s)**: the mean and standard deviation output by the policy network with weights θ (theta)
+- **π(a given s)**: the probability density of taking a in s; **N(a; μ, σ^2)**: the Gaussian density at a with mean μ and variance σ^2
+- **∂ ln π ÷ ∂μ**: the slope of the log-probability with respect to μ (the score)
+- **π** inside ln(2π): the number 3.14159...
+
+**In plain words:** Multiplying the score by the advantage, as REINFORCE and PPO do, moves the mean toward actions that did better than expected and away from those that did worse. The width learns too: if a good action lay more than one standard deviation from the mean, the search widens; if good actions sit closer, it narrows. Exploration then fades on its own as σ shrinks.
+
+**Tiny example:** μ = 0.2 and σ = 0.5; the sampled action a = 0.7 earned an advantage of +2. The score for μ is 0.5 ÷ 0.25 = 2, so the update raises μ by the learning rate × 2 × 2. Since a lies exactly one σ away, the score for ln σ is 1 − 1 = 0: the width stays. Had a = 1.2 (two σ away) done well, the ln σ score would be 4 − 1 = 3: widen.
+
+**Where it is used:** PPO and SAC on continuous control (MuJoCo locomotion; Stable-Baselines3 uses a diagonal Gaussian for continuous action spaces); legged-robot policies trained in simulation with PPO and transferred to real robots; SAC squashes the Gaussian with tanh to keep actions in range (soft actor-critic entry below).
+**In the book:** Only here (the policy gradient theorem and REINFORCE entries above give the general update).
+
+> **Definition — Diagonal Gaussian policy:** A policy for continuous actions that, in each state, samples every action dimension from its own bell curve, whose mean and spread are outputs of the policy network.
+
 ### Policy entropy and entropy regularization
 
 **What it does:** Measures how spread out a policy's choices are, and rewards keeping them spread out so the agent keeps exploring.
@@ -12052,6 +13641,27 @@ flowchart LR
 **In the book:** Only here (Chapter 20 describes the value model and advantage in words).
 
 > **Definition — Generalized advantage estimation (GAE):** A way to estimate how much better an action was than expected by adding up the TD errors that follow it, with weights shrinking by a factor γ × λ per step, so one setting λ trades noise against bias.
+
+### Decoupled and length-adaptive GAE (VC-PPO and VAPO)
+
+**What it does:** Gives the value model and the policy separate GAE settings, and stretches the policy's horizon with the length of each answer, so PPO with a critic works on long chains of thought.
+
+`value-model targets: λ_critic = 1; policy advantages: λ_policy = 0.95 (decoupled GAE) or λ_policy = 1 − 1 ÷ (α × l) (length-adaptive GAE); γ = 1 throughout`
+
+- **λ_critic**, **λ_policy**: the GAE λ (previous entry) used to build the value model's training targets and the policy's advantages.
+- **α** (alpha): a constant (0.05 in VAPO).
+- **l**: the length of the answer in tokens.
+- **γ** (gamma): the discount, here 1, so the final reward is not shrunk.
+- **1 ÷ (1 − λ)**: the effective horizon, roughly how many tokens ahead GAE looks (the sum of λ^t over all t).
+
+**In plain words:** A reasoning answer earns one reward at its very end. With λ = 0.95 that reward's weight fades by 0.95 per token, so tokens a thousand steps earlier hear almost nothing of it, and the value model's own guesses, which start out poor, take over; this bias made PPO collapse on long chains of thought. Training the value model with λ = 1 gives it unbiased targets: the actual final reward. Length-adaptive GAE then sets the policy's λ per answer so the effective horizon, 1 ÷ (1 − λ) = α × l, grows in proportion to the answer's length: short answers get lower-noise estimates and long ones still pass the reward back.
+
+**Tiny example:** With λ = 0.95, the final reward reaches a token 1,000 steps earlier with weight 0.95^1000 ≈ 5 × 10^−23, effectively zero, and the effective horizon is only 20 tokens. Length-adaptive GAE with α = 0.05: a 100-token answer gets λ = 1 − 1 ÷ 5 = 0.8 (horizon 5 tokens); a 1,000-token answer gets 1 − 1 ÷ 50 = 0.98 (horizon 50); a 10,000-token answer gets 0.998 (horizon 500).
+
+**Where it is used:** ByteDance Seed's VC-PPO (Value-Calibrated PPO, March 2025, arXiv 2503.01491; decoupled GAE plus value-model pretraining) and VAPO (April 2025, arXiv 2504.05118), which reported 60.4 on AIME 2024 from the Qwen2.5-32B base model; the Seed1.5-Thinking report (April 2025) lists decoupled GAE (λ_value = 1.0, λ_policy = 0.95) and length-adaptive GAE in its actor-critic recipe.
+**In the book:** Chapter 20 (The RLHF loop) introduces the value model and Chapter 21 (A quick refresher: how RL nudges a model) explains why a critic is hard to train for long reasoning; the formulas are only here.
+
+> **Definition — VAPO (Value-model-based Augmented Proximal Policy Optimization):** ByteDance Seed's 2025 recipe for PPO with a value model on long reasoning tasks, combining value-model pretraining, decoupled and length-adaptive GAE, clip-higher and other fixes.
 
 ### Trust-region policy optimization and the natural policy gradient (TRPO)
 
@@ -12261,6 +13871,29 @@ flowchart LR
 **In the book:** Chapter 49 (The robot data problem), Chapter 48 (When rewards go wrong), Chapter 50, Chapter 20 (Stage 1: Supervised fine-tuning, or learning by example), in words.
 
 > **Definition — Decision Transformer:** A 2021 approach that treats reinforcement learning as sequence prediction: a Transformer reads past states, actions and the return still desired, and predicts the next action, so asking for a high return produces good behavior.
+
+### Action tokenization and action chunking (binning, FAST and temporal ensembling)
+
+**What it does:** Turns continuous robot motions into tokens a language-model-style policy can output, and smooths the overlapping short plans ("chunks") that such policies predict.
+
+uniform binning `b = min(N − 1, floor((a − a_low) ÷ (a_high − a_low) × N))`, decoded as `â = a_low + (b + 0.5) × (a_high − a_low) ÷ N`; chunking: the policy outputs `A_t = (a_t, a_(t+1), ..., a_(t+H−1))` and the robot keeps executing while the next chunk is computed, `steps executed per model pass = latency × control rate`; temporal ensembling `â_t = (sum over i of w_i × A^(i)[t]) ÷ (sum over i of w_i)`, with `w_i = exp(−m × i)` and i = 0 for the oldest chunk
+
+- **a**: one action dimension (a joint-angle change, a gripper opening); **a_low**, **a_high**: its range (RT-2 used the full range, OpenVLA the 1st and 99th percentiles of the training data)
+- **N**: the number of bins (256 in RT-2 and OpenVLA); **b**: the bin index, which becomes one token; **floor**: round down to a whole number; **â**: the decoded action
+- **H**: the chunk length (for example 50 steps, one second at 50 commands per second)
+- **A^(i)[t]**: chunk i's prediction for time t, since several overlapping chunks predict the same moment
+- **w_i**: the weight on chunk i; **m**: how quickly the weights fall off
+
+**In plain words:** Chopping each motion dimension into 256 equal bins lets a vision-language model "write" actions like words, one token per dimension per step. FAST instead compresses a whole chunk with a discrete cosine transform (the frequency trick behind JPEG images) and byte-pair-encodes the rounded coefficients, so smooth motions need few tokens. Predicting chunks lets a slow model drive a fast controller, and averaging the overlapping predictions for each moment smooths the seams between chunks.
+
+**Tiny example:** a = 0.3 in the range −1 to 1 with N = 256: (1.3 ÷ 2) × 256 = 166.4, so b = 166, which decodes to −1 + 166.5 × 2 ÷ 256 ≈ 0.3008, an error well under one bin width (0.0078). Chapter 49's chunk: 50 steps at 50 per second with a 0.1-second model pass means 0.1 × 50 = 5 steps run during each pass, leaving 45 steps of slack. Three chunks predicting 0.30 (oldest), 0.34 and 0.40 for the same moment, with m = 0.5: weights 1, 0.61 and 0.37, so â = (0.30 + 0.206 + 0.147) ÷ 1.97 ≈ 0.33.
+
+**Where it is used:** Google's RT-2 (2023) and OpenVLA (2024) output 256-bin action tokens; Physical Intelligence's π0-FAST (2025) uses FAST tokens, while π0 outputs 50-step chunks from a flow-matching action expert; ACT (Zhao et al. 2023) introduced temporal ensembling for chunked policies, and Physical Intelligence's real-time chunking (June 2025) blends consecutive chunks by inpainting instead.
+**In the book:** Chapter 49 (Two ways to output actions; Action chunks: thinking ahead, which works the 50-step chunk); the formulas are only here.
+
+> **Definition — FAST (frequency-space action sequence tokenization):** A 2025 way of turning a chunk of robot motion into a few tokens by describing it as a sum of smooth waves (a discrete cosine transform), rounding the wave strengths and compressing them with byte-pair encoding.
+
+> **Definition — Temporal ensembling:** Averaging the actions that several overlapping chunk predictions propose for the same moment, with weights that favor some predictions over others, so that a chunked robot policy moves smoothly.
 
 ### Compounding error of behavior cloning versus DAgger
 
@@ -12541,6 +14174,25 @@ flowchart LR
 
 > **Definition — Unbiased estimator:** A way of estimating a quantity from random samples whose average over many tries equals the true value, even if any single estimate is off.
 
+### Importance-weighted k3 KL estimate (DeepSeek-V3.2's unbiased KL)
+
+**What it does:** Corrects GRPO's per-token KL penalty for the fact that the tokens were sampled by the old policy, not by the one being trained.
+
+`D_KL,(i,t) = (π_θ(o_(i,t)) ÷ π_old(o_(i,t))) × (π_ref(o_(i,t)) ÷ π_θ(o_(i,t)) − ln(π_ref(o_(i,t)) ÷ π_θ(o_(i,t))) − 1)`, with every probability conditioned on the prompt q and the earlier tokens o_(i,<t)
+
+- **o_(i,t)**: token t of sampled answer i.
+- **π_θ**, **π_old**, **π_ref**: the token's probability under the policy being trained (weights θ), under the policy that sampled it, and under the frozen reference model.
+- **π_θ ÷ π_old**: the importance weight, which reweights a token drawn from π_old as if it had been drawn from π_θ.
+- **the bracket**: the k3 estimator of the previous entry.
+- **D_KL,(i,t)**: the per-token KL term that enters the GRPO loss, multiplied by β.
+
+**In plain words:** k3 is unbiased only for tokens drawn from π_θ itself. In GRPO the tokens come from π_old, and once a batch has been used for one update the two policies differ, so the plain k3 average, and its gradient, aim at the wrong quantity. Multiplying by π_θ ÷ π_old fixes this, so the estimate and its gradient target the true KL(π_θ || π_ref). DeepSeek notes that the plain version's gradient gives very large, unbounded weights to sampled tokens that π_θ finds much less likely than π_ref does, which can destabilize training.
+
+**Tiny example:** The previous entry's case: π_θ gives two tokens 0.4 and 0.6 and the reference 0.1 and 0.9, so the true KL ≈ 0.311 and the k3 values are 0.636 and 0.095. Now let an old policy that gives 0.5 and 0.5 do the sampling. Plain k3 averages 0.5 × 0.636 + 0.5 × 0.095 ≈ 0.365, which is wrong. The weights are 0.4 ÷ 0.5 = 0.8 and 0.6 ÷ 0.5 = 1.2, giving 0.509 and 0.113, and 0.5 × 0.509 + 0.5 × 0.113 ≈ 0.311, the true value.
+
+**Where it is used:** DeepSeek-V3.2 (arXiv 2512.02556, December 2025) in its scaled-up GRPO; the same report notes that some domains, such as mathematics, do better with a weak KL penalty or none.
+**In the book:** Only here (Chapter 20, The KL leash, shows the exact KL sum).
+
 ### Optimal KL-regularized policy (exponential tilt of the reference)
 
 **What it does:** Gives the exact policy that maximizes the RLHF objective.
@@ -12775,6 +14427,26 @@ flowchart LR
 **Where it is used:** Named RLVR in the Tülu 3 report (Allen Institute, November 2024); DeepSeek-R1-Zero and R1 (January 2025) used rule-based accuracy and format rewards; the standard signal in open reasoning-model recipes, and the kind of large-scale RL on checkable math and code tasks that OpenAI, Anthropic and Google DeepMind describe, without publishing details, for their reasoning models.
 **In the book:** Chapter 21 (Reinforcement learning with verifiable rewards; Worked example: a reward function, and how to break it).
 
+### Language-consistency reward (DeepSeek-R1)
+
+**What it does:** Rewards a reasoning model for writing its chain of thought in the language of the question.
+
+`r_lang = (words in the chain of thought that are in the target language) ÷ (all words in the chain of thought); r = r_accuracy + r_lang`
+
+- **target language**: the language of the user's prompt.
+- **r_lang**: the language-consistency reward, between 0 and 1.
+- **r_accuracy**: the rule-based correctness reward (previous entry), 1 or 0.
+- **r**: the total reward used in RL; DeepSeek simply added the two.
+
+**In plain words:** Pure-RL training (R1-Zero) paid only for correct, properly formatted final answers, and the model drifted into mixing English and Chinese mid-thought. Adding the share of on-language words as a second reward makes readable, single-language thinking pay. DeepSeek reported that it slightly lowered benchmark scores but kept it because the reasoning became more readable.
+
+**Tiny example:** An English prompt. A correct answer whose 200-word chain of thought has 170 English words scores 1 + 170 ÷ 200 = 1.85; a correct answer with only 120 English words scores 1 + 0.6 = 1.6. A wrong answer with the tidy 170-word chain earns just 0.85.
+
+**Where it is used:** DeepSeek-R1 (January 2025, arXiv 2501.12948) in its reasoning-RL stage, alongside accuracy and format rewards.
+**In the book:** Chapter 21 (The DeepSeek-R1 story: R1-Zero: reasoning from pure RL defines language mixing; R1: adding a cold start, Figure 21.4, names the language-consistency reward).
+
+> **Definition — Language-consistency reward:** An extra RL reward equal to the share of a chain of thought written in the prompt's language, used by DeepSeek-R1 to stop its reasoning from switching languages midway.
+
 ### Rubric-based reward
 
 **What it does:** Scores answers no program can check by having an AI judge tick weighted criteria.
@@ -12791,6 +14463,32 @@ flowchart LR
 
 **Where it is used:** Rubrics as Rewards (Scale AI, 2025); OpenAI's HealthBench (May 2025) scores answers as rubric points earned out of points possible; LLM-as-judge rewards in non-verifiable RL environments.
 **In the book:** Chapter 21 (Rubrics and AI judges for tasks no program can check).
+
+### Generative verifier score (reward as the probability of "Yes")
+
+**What it does:** Turns a language model into a grader by reading the probability it gives to "Yes" when asked whether a solution is correct, optionally after it writes out its own check.
+
+`direct: r(x, y) = p_θ("Yes" given x, y, I)`
+
+`with reasoning: r(x, y) = (1 ÷ K) × sum over i of p_θ("Yes" given x, y, I_CoT, v_i, I), where each rationale v_i is sampled from p_θ(· given x, y, I_CoT)`
+
+`probability-weighted judge score (G-Eval): score = sum over s of p("s") × s`
+
+- **x**: the problem; **y**: the candidate solution.
+- **I**: the question appended to them, such as "Is the answer correct (Yes/No)?"; **I_CoT**: an instruction to verify step by step first.
+- **p_θ("Yes" given ...)**: the grader model's probability that its next token is "Yes"; **θ**: the grader's weights.
+- **K**: the number of rationales sampled (32 by default in the GenRM paper); **v_i**: the i-th written check.
+- **s**: a possible grade on a scale such as 1 to 5; **p("s")**: the judge's probability for the token that writes grade s.
+- **r(x, y)**, **score**: the resulting reward or grade.
+
+**In plain words:** A classic reward model bolts a number-output head onto a model. A generative verifier keeps the model's ordinary next-token output and reads the grade off the probability of "Yes", so it can reason before grading, and averaging over several sampled checks is a vote that spends more compute on grading. The weighted judge score uses the whole distribution over grades instead of only the most likely one, which gives finer and steadier scores.
+
+**Tiny example:** The grader gives "Yes" a probability of 0.82, so r = 0.82. With three sampled checks ending in "Yes" probabilities of 0.9, 0.2 and 0.7, r = (0.9 + 0.2 + 0.7) ÷ 3 = 0.6. A judge on a 1-to-5 scale puts 0.05, 0.10, 0.20, 0.40 and 0.25 on the tokens "1" to "5": the weighted score is 0.05 + 0.20 + 0.60 + 1.60 + 1.25 = 3.7, where reading off only the most likely token would give 4.
+
+**Where it is used:** GenRM (Zhang and colleagues, Google DeepMind and universities, 2024, arXiv 2408.15240), trained with next-token loss on verification data plus correct solutions; G-Eval (Liu and colleagues, Microsoft, EMNLP 2023) for probability-weighted judge scores; DeepSeek-GRM (DeepSeek and Tsinghua University, April 2025, arXiv 2504.02495) samples several critiques in parallel and sums their scores, optionally keeping only the samples a second "meta" reward model rates best; LLM judges and verifier models supply rewards in 2025-2026 RL for tasks no program can check.
+**In the book:** Chapter 21 (Rubrics and AI judges for tasks no program can check) and Chapter 31 (Step 3: Choose graders) describe LLM-as-judge in words; the formulas are only here.
+
+> **Definition — Generative verifier (generative reward model):** A language model used as a grader through its ordinary text output, scoring an answer by the probability it gives to "Yes" (or to a grade), optionally after writing out its own reasoning, instead of through a separate number-output head.
 
 ### Process reward aggregation and automatic step labels (PRM versus ORM)
 
@@ -12931,6 +14629,34 @@ flowchart LR
 
 > **Definition — Dynamic sampling (in RL training):** Discarding prompts whose sampled answers were all right or all wrong, which give no learning signal under a group baseline, and sampling more until the batch is full of informative groups.
 
+### Entropy dynamics of policy-gradient RL (the covariance rule, Clip-Cov and KL-Cov)
+
+**What it does:** Predicts how much one RL step will shrink a policy's entropy, and uses that to pick the few tokens whose updates should be held back.
+
+`entropy change in one step ≈ −η × Cov over a drawn from π of (ln π(a given s), A(s, a))` (natural policy gradient; for the plain softmax policy gradient the second argument is π(a given s) × A(s, a))
+
+`per-token score: Cov(y_i) = (ln π_θ(y_i) − mean over j of ln π_θ(y_j)) × (A(y_i) − mean over j of A(y_j))`
+
+`Clip-Cov: pick floor(r × N) tokens at random among those with ω_low ≤ Cov(y_i) ≤ ω_high and drop their gradient; KL-Cov: add β × KL(π_old || π_θ) on the k × N tokens with the highest Cov(y_i)`
+
+- **η** (eta): the learning rate.
+- **s**: a state, here the text so far; **a**: an action, here the next token; **π(a given s)**: its probability; **A(s, a)**: its advantage.
+- **Cov over a drawn from π (X, Y)**: the covariance of X and Y when a is drawn from the policy, E[X × Y] − E[X] × E[Y].
+- **y_i**, **y_j**: tokens in a batch of N rollout tokens; **ln π_θ(y_i)**: a token's log-probability; **A(y_i)**: its advantage.
+- **floor(...)**: round down; **r**: the share of tokens clipped (2 × 10^−4 in the paper); **ω_low**, **ω_high**: the covariance band (1 and 5).
+- **k**: the share of tokens penalized (2 × 10^−3 for a 7-billion-parameter model); **β**: the KL weight (1); **π_old**, **π_θ**: the policy that sampled the batch and the one being trained.
+
+**In plain words:** A policy-gradient step raises the probability of actions with positive advantage. If those were already the likely ones, probability piles onto them and entropy falls; raising an unlikely good action spreads probability out and raises entropy. The covariance measures which case dominates. In reasoning RL it stays mostly positive, so entropy keeps falling and exploration dries up (entropy collapse); the same study fitted validation reward as R = −a × exp(H) + b, so reward stops rising once entropy H is spent. Clip-Cov and KL-Cov act only on the tiny share of tokens with the highest covariance. A related finding from Qwen's team: restricting the update to the 20% of tokens with the highest entropy, the "forking" points where reasoning branches, matched full updates on Qwen3-8B and beat them on Qwen3-14B and Qwen3-32B.
+
+**Tiny example:** Three tokens with probabilities 0.6, 0.3 and 0.1 and advantages +1, −1 and 0. Under the policy, E[ln π × A] ≈ 0.055, E[ln π] ≈ −0.898 and E[A] = 0.3, so the covariance is 0.055 + 0.898 × 0.3 ≈ 0.324. With η = 0.1 the rule predicts an entropy change of about −0.032. Actually adding 0.1 × A to the logits moves the probabilities to 0.641, 0.262 and 0.097 and the entropy from 0.898 to 0.862, a change of −0.036. Token scores: log-probabilities −0.1, −2.0, −0.5 and −3.0 (mean −1.4) with advantages +1, +1, −1 and −1 (mean 0) give 1.3, −0.6, −0.9 and 1.6, so with the band from 1 to 5 Clip-Cov may hold back the first and the last token.
+
+**Where it is used:** Cui and colleagues (May 2025, arXiv 2505.22617), tested on Qwen2.5 models; Wang and colleagues (Qwen team, Alibaba, with Tsinghua University, June 2025, arXiv 2506.01939, NeurIPS 2025) for forking tokens; DAPO's clip-higher (previous entry) is a coarser fix for the same problem.
+**In the book:** Chapter 21 (The GRPO family: DAPO, Dr. GRPO and GSPO) names entropy collapse; the formulas are only here.
+
+> **Definition — Forking token:** A token at which a reasoning model's next-token distribution is unusually uncertain (high entropy), marking a point where its chain of thought can branch; most tokens, by contrast, are nearly certain continuations.
+
+> **Definition — Clip-Cov and KL-Cov:** Two 2025 fixes for entropy collapse in language-model RL that find the rare tokens whose log-probability and advantage are most strongly correlated and either drop their gradient (Clip-Cov) or tie them to the old policy with a KL penalty (KL-Cov).
+
 ### GSPO sequence-level importance ratio
 
 **What it does:** Computes one probability ratio and one clip per whole answer instead of per token.
@@ -12951,6 +14677,28 @@ flowchart LR
 **In the book:** Chapter 21 (The GRPO family: DAPO, Dr. GRPO and GSPO), in words.
 
 > **Definition — Geometric mean:** The n-th root of the product of n numbers, equivalently e raised to the average of their natural logs. The geometric mean of 2 and 8 is 4.
+
+### Kimi squared-loss policy update (policy mirror descent)
+
+**What it does:** Trains a reasoning model with RL by regressing each answer's change in log-probability onto how much better than its group's average it scored, with no value model and no clipping.
+
+`L(θ) = E over x of [(1 ÷ K) × sum over i of (r(x, y_i) − r̄(x) − τ × ln(π_θ(y_i given x) ÷ π_old(y_i given x)))^2], with r̄(x) = mean(r(x, y_1), ..., r(x, y_K))`
+
+- **x**: a problem from the training set; **E over x of [...]**: the average over problems.
+- **K**: the number of answers sampled for each problem; **y_i**: the i-th answer.
+- **r(x, y_i)**: answer i's reward, such as 1 for a correct final answer and 0 otherwise.
+- **r̄(x)** (r-bar): the average reward of the K answers, the baseline.
+- **π_θ**, **π_old**: the policy being trained (weights θ) and the policy that sampled the answers (the previous iteration's model).
+- **ln(π_θ ÷ π_old)**: how much more likely (positive) or less likely (negative) the new policy makes the whole answer, as a log ratio.
+- **τ** (tau): the regularization strength, which limits how far one round of updates moves the policy (τ > 0).
+- **L(θ)**: the loss to minimize.
+
+**In plain words:** The method starts from "maximize reward minus τ × KL from the previous model", whose exact solution is the exponential tilt of the RLHF entries above, and turns it into a regression: each answer's log ratio, times τ, should equal how much better than average it scored. In a half-right group, a correct answer should become e^(0.5 ÷ τ) times as likely and a wrong one e^(−0.5 ÷ τ) times. At the first step, where π_θ = π_old, the gradient is, up to a constant factor, REINFORCE with the group's mean reward as baseline; after that the squared log ratio acts as a brake that pulls the policy back toward π_old, the role clipping plays in PPO.
+
+**Tiny example:** K = 4 answers with rewards 1, 0, 1 and 0, so r̄ = 0.5, and τ = 1. Before any update every log ratio is 0, each term is (±0.5)^2 = 0.25 and L = 0.25. After a step that moves the log ratios to +0.2, −0.2, +0.2 and −0.2, each term is (0.5 − 0.2)^2 = 0.09, so L = 0.09. The loss reaches 0 at log ratios of ±0.5: the correct answers become e^0.5 ≈ 1.65 times as likely and the wrong ones e^(−0.5) ≈ 0.61 times.
+
+**Where it is used:** Kimi k1.5 (Moonshot AI, January 2025, arXiv 2501.12599), which derived it as online policy mirror descent, replaced the exact normalizer τ × ln Z by the mean reward and dropped the value network; Kimi K2 (July 2025, arXiv 2507.20534) kept the same loss and added a per-sample token budget, an extra next-token loss on curated high-quality data (a PTX loss, against forgetting) and a temperature-decay schedule.
+**In the book:** Only here (Chapter 21, GRPO: grading on a curve, explains the group-average baseline it shares with GRPO).
 
 ### Clipped importance-sampling REINFORCE (CISPO) and truncated importance sampling (TIS)
 
@@ -12977,6 +14725,35 @@ flowchart LR
 > **Definition — Stop-gradient:** An instruction to treat a value as a fixed number during training, so the learning algorithm does not try to change it by following its gradient.
 
 > **Definition — Truncated importance sampling (TIS):** Correcting for the small differences between the probabilities computed by the fast engine that generated training rollouts and by the trainer, by weighting each token with their ratio capped at a maximum.
+
+### Masking off-policy tokens and answers (IcePop and DeepSeek-V3.2 sequence masking)
+
+**What it does:** Removes from the RL gradient the tokens, or whole answers, whose probabilities have drifted too far between the engine that generated them and the trainer, instead of only capping their weights.
+
+`IcePop: k = π_train(y_t; θ_old) ÷ π_infer(y_t; θ_old); M(k) = k if α ≤ k ≤ β, else 0; each token's clipped PPO term is multiplied by M(k)`
+
+`DeepSeek-V3.2: M_i = 0 if A_i < 0 and (1 ÷ |o_i|) × sum over t of ln(π_old(o_(i,t)) ÷ π_θ(o_(i,t))) > δ, otherwise M_i = 1; the clipped policy term of every token of answer i is multiplied by M_i (the KL term is not masked)`
+
+- **y_t**, **o_(i,t)**: a sampled token; **o_i**: answer i; **|o_i|**: its length in tokens.
+- **θ_old**: the weights that generated the rollouts.
+- **π_train(...; θ_old)**, **π_infer(...; θ_old)**: those same weights' probability for the token as computed by the training code and by the fast inference engine that generated it.
+- **k**: their ratio, 1 when the two engines agree exactly.
+- **M(k)**: IcePop's mask: inside the band the token keeps weight k; outside it the token is dropped.
+- **α**, **β**: the band's ends (0.5 and 5 in IcePop's paper).
+- **A_i**: answer i's advantage; **π_old**: the sampling probability the inference engine reported; **π_θ**: the policy being trained.
+- **δ** (delta): a threshold on the answer's average drop in log-probability.
+- **M_i**: the mask applied to every token of answer i.
+
+**In plain words:** Truncated importance sampling (previous entry) keeps every token but caps its weight. IcePop removes the tokens on which the two engines disagree by more than the band allows, since they carry mostly noise, and that noise compounds over long mixture-of-experts runs. DeepSeek's rule removes whole wrong answers (negative advantage) that the current policy has already moved far away from; pushing such an answer down further mostly adds instability. Two companion fixes need no formula: replaying in training the experts the inference engine chose ("Keep Routing") and applying the sampler's top-p or top-k cut-off to π_θ as well ("Keep Sampling Mask").
+
+**Tiny example:** IcePop with α = 0.5 and β = 5: a token at 0.10 in inference and 0.30 in training has k = 3, inside the band, so it keeps weight 3 (truncated importance sampling with a cap of 2 would give 2). Tokens with k = 0.25 ÷ 0.02 = 12.5 or k = 0.2 ÷ 0.5 = 0.4 fall outside the band and are dropped. DeepSeek's rule: a wrong answer whose three tokens had probabilities 0.5, 0.4 and 0.3 when sampled and now have 0.3, 0.2 and 0.25 shows log drops of 0.511, 0.693 and 0.182, an average of 0.462; with an illustrative δ = 0.3 the whole answer is masked. A correct answer with the same drift would be kept.
+
+**Where it is used:** IcePop in Ring-1T, a one-trillion-parameter thinking model from Ant Group's Ling team (inclusionAI, arXiv 2510.18855, October 2025); Zhipu AI's GLM-5 (arXiv 2602.15763, February 2026) adopts it with the band from 1 ÷ 2 to 2 and no KL term, and notes that mixture-of-experts RL commonly uses routing replay to keep training and inference consistent. DeepSeek-V3.2 (December 2025) masks off-policy negative answers, leaving δ as a tuned hyperparameter, and has kept routing since DeepSeek-V3-0324.
+**In the book:** Only here (Chapter 20, What SFT can and cannot do, defines on-policy and off-policy data).
+
+> **Definition — Training-inference mismatch:** The small differences between the token probabilities computed by the fast inference engine that generates RL rollouts and by the training code for the same weights, caused by different kernels, number formats and expert routing; left uncorrected, they bias and destabilize RL.
+
+> **Definition — Routing replay (Keep Routing):** Recording which experts a mixture-of-experts model used for each token while generating RL rollouts and forcing the trainer to use the same experts, so the probabilities being compared come from the same sub-network.
 
 ### Sigmoidal compute-performance curve for RL (ScaleRL)
 
@@ -13523,6 +15300,32 @@ admissible: `h(n) ≤ h*(n)` for every n; consistent: `h(n) ≤ c(n, a, n') + h(
 
 **Where it is used:** Design optimization (NASA's evolved antenna, 2006), neural architecture search, evolution strategies such as CMA-ES; DeepMind's FunSearch (2023) and AlphaEvolve (2025) evolve programs with a language model as the mutation operator.
 **In the book:** Chapter 54 (One generation, worked by hand), with Exercises 5 and 6.
+
+### Evolution strategies and the cross-entropy method (black-box search with a distribution)
+
+**What it does:** Optimizes something whose gradient is unavailable, using only evaluations: by estimating the gradient from random perturbations (evolution strategies), or by repeatedly refitting a sampling distribution to the best candidates (the cross-entropy method).
+
+`ES: ∇_θ E_(ε ~ N(0, I))[F(θ + σ × ε)] ≈ (1 ÷ (n × σ)) × sum over i of F(θ + σ × ε_i) × ε_i`; antithetic form `(1 ÷ n) × sum over i of ((F(θ + σ × ε_i) − F(θ − σ × ε_i)) ÷ (2 × σ)) × ε_i`; update `θ ← θ + α × estimate`; `CEM: sample n candidates from N(μ, σ^2), keep the best few (the elites), set μ and σ to the elites' mean and standard deviation, repeat`
+
+- **F**: the score to maximize (a reward, an accuracy), which can only be evaluated
+- **θ** (theta): the current parameters; **σ** (sigma): the size of the random perturbations
+- **ε_i** (epsilon): a random direction drawn from a standard Gaussian; **I**: the identity matrix; **n**: the number of samples
+- **E_(ε ~ N(0, I))[...]**: the average over random directions ε; **∇_θ**: the gradient with respect to θ
+- **α** (alpha): the step size
+- **μ**, **σ^2**: in CEM, the mean and variance of the sampling distribution
+
+**In plain words:** Try many random nudges of the parameters, see which score better and move toward them: on average this follows the gradient of a blurred version of F. It needs no backpropagation, only forward evaluations that run in parallel, and it does not care whether F is smooth or delayed. CEM is the "keep the best, refit, resample" version; CMA-ES also adapts the shape of the sampling distribution.
+
+**Tiny example:** Maximize F(θ) = −(θ − 3)^2 from θ = 0 with σ = 1 and two antithetic pairs, ε = 1 and ε = 0.5. Pair 1: (F(1) − F(−1)) ÷ 2 × 1 = (−4 + 16) ÷ 2 = 6. Pair 2: (F(0.5) − F(−0.5)) ÷ 2 × 0.5 = (−6.25 + 12.25) ÷ 2 × 0.5 = 1.5. The estimate is their average, 3.75; the true slope is 6, which the estimate matches on average over random draws. CEM: candidates 0, 1, 2, 4 and 5 score −9, −4, −1, −1 and −4; the two elites, 2 and 4, give μ = 3 and σ = 1, centered on the optimum.
+
+**Where it is used:** Evolution strategies as a scalable alternative to reinforcement learning (Salimans et al. 2017), and, from 2025, for fine-tuning all the parameters of language models with billions of weights (Qiu et al., "Evolution Strategies at Scale", ICML 2026); CMA-ES for hyperparameter and black-box tuning (Optuna's CmaEsSampler); CEM for planning inside learned models in model-based RL (PETS, Chua et al. 2018) and in robot world models (model predictive control entry, this section).
+**In the book:** Only here (the genetic algorithm, a cousin, is the entry above).
+
+> **Definition — Evolution strategies (ES):** A family of black-box optimization methods that perturb the parameters with random noise, evaluate each perturbed copy and move toward the better ones, without computing gradients by backpropagation.
+
+> **Definition — Cross-entropy method (CEM):** An optimization and planning method that samples candidates from a distribution, keeps the best few and refits the distribution to them, repeating until it concentrates on a good solution.
+
+> **Definition — CMA-ES (covariance matrix adaptation evolution strategy):** An evolution strategy that adapts the full shape of its sampling distribution, stretching it along directions where improvements have been found; a standard tool for tuning a few dozen continuous settings.
 
 ### Minimax value of a game tree
 
@@ -14094,6 +15897,27 @@ move each particle `x_t^(i) ~ P(x_t | x_(t−1)^(i), u_t)`; weight `w^(i) ∝ P(
 **Where it is used:** Robot vacuums and warehouse robots, lidar mapping and SLAM, and self-driving occupancy grids (increasingly predicted directly by networks).
 **In the book:** Chapter 50 (Perception: what is around me?) defines occupancy grids; the update is only here.
 
+### Motion-forecasting metrics: minADE, minFDE and miss rate
+
+**What it does:** Scores predictions of where other road users will go when a model offers several possible futures.
+
+`ADE_k = (1 ÷ T) × sum over t = 1..T of ||ŷ_t^k − y_t||`; `FDE_k = ||ŷ_T^k − y_T||`; `minADE_K = min over k of ADE_k`; `minFDE_K = min over k of FDE_k`; `miss rate = share of agents with minFDE_K > threshold` (2 m in Argoverse); training often uses a winner-takes-all loss that regresses only the closest of the K futures, plus a cross-entropy on which future that was
+
+- **K**: how many candidate futures the model may output (usually 6); **k**: one of them
+- **T**: the number of future time steps; **t**: one step
+- **ŷ_t^k**: the predicted position at step t in future k; **y_t**: the true position
+- **||·||**: the straight-line distance in meters
+- **ADE**, **FDE**: average and final displacement error
+
+**In plain words:** Each predicted future is compared with what actually happened, averaged along the whole path (ADE) or only at its end (FDE), and the model is credited with its best guess, because offering several plausible futures is the point. A miss is a prediction whose best endpoint is still more than a couple of meters off. Taking the minimum rewards covering the real outcome, so benchmarks add probability-weighted scores (Brier-minFDE, mean average precision) to check that likely futures are also ranked high.
+
+**Tiny example:** The truth is (1, 0) then (2, 0). Future 1 predicts (1, 0) then (2, 1): errors 0 and 1, ADE = 0.5 and FDE = 1. Future 2 predicts (1, 1) then (2, 2): errors 1 and 2, ADE = 1.5 and FDE = 2. So minADE = 0.5 m and minFDE = 1 m, which is not a miss under the 2-meter threshold.
+
+**Where it is used:** The Argoverse 2 (K = 6, 6-second futures) and Waymo Open Motion (K = 6, 8-second futures) benchmarks and nuScenes prediction; motion-forecasting models such as MultiPath, Wayformer and MTR, whose predicted futures feed the planner's cost.
+**In the book:** Chapter 50 (Prediction: what will everyone else do?), which describes predicting several futures, each with a probability; the metrics are only here.
+
+> **Definition — minADE and minFDE:** Scores for motion prediction with several possible futures: the average (ADE) or final (FDE) distance between the predicted and the true path, taking the best of the futures the model proposed.
+
 ### Forward kinematics and transform chains
 
 **What it does:** Computes where a robot's hand is from its joint angles.
@@ -14113,6 +15937,34 @@ two-link planar arm `x = l_1 × cos(θ_1) + l_2 × cos(θ_1 + θ_2)`, `y = l_1 �
 
 **Where it is used:** Robot arms and humanoids and animation rigs; robot foundation models that output hand poses rely on inverse kinematics to turn them into joint commands.
 **In the book:** Chapter 49 (From "go there" to motor commands: the classic toolkit) in words; the formulas are only here.
+
+### Differential kinematics: the Jacobian, damped least-squares IK, τ = J^T × F and impedance control
+
+**What it does:** Relates small joint motions to hand motions, and joint torques to hand forces, which gives stable inverse kinematics and gentle, spring-like force control.
+
+`ẋ = J(q) × q̇`; damped least squares `Δq = J^T × (J × J^T + λ^2 × I)^(−1) × e`; statics `τ = J^T × F`; Cartesian impedance control `F = K × (x_d − x) + D × (ẋ_d − ẋ)`, then `τ = J^T × F + G(q)`; for a two-link planar arm `J = [[−l_1 × sin(θ_1) − l_2 × sin(θ_1 + θ_2), −l_2 × sin(θ_1 + θ_2)], [l_1 × cos(θ_1) + l_2 × cos(θ_1 + θ_2), l_2 × cos(θ_1 + θ_2)]]`
+
+- **q**, **q̇**: the joint angles and joint speeds; **x**, **ẋ**: the hand position and velocity
+- **J(q)**: the Jacobian, the matrix of how each hand coordinate changes with each joint angle in the current pose (Jacobians are in the foundations section)
+- **e**: the remaining hand-position error; **Δq**: the joint step that reduces it
+- **λ** (lambda): the damping, which keeps steps small near poses where J loses rank (singularities, such as a fully stretched arm)
+- **I**: the identity matrix; **^T**: transpose; **^(−1)**: matrix inverse
+- **τ** (tau): the joint torques; **F**: the force the hand applies to the world
+- **x_d**, **ẋ_d**: the desired hand position and velocity
+- **K**, **D**: the stiffness and damping, how hard the hand is pulled toward the target and how strongly its motion is braked
+- **G(q)**: the torques needed to hold the arm up against gravity (from the manipulator equation)
+- **l_1**, **l_2**, **θ_1**, **θ_2** (theta): the link lengths and joint angles of a two-link arm
+
+**In plain words:** Near any pose, the arm behaves like a matrix that turns joint speeds into hand speed. Inverting it gives inverse kinematics one small step at a time (the pseudo-inverse step of the forward-kinematics entry), and the damping trades a little accuracy for safety where the plain inverse would demand huge joint speeds. Used backward, transposed, the same matrix turns a desired hand force into joint torques, which lets an arm act like a spring around its target instead of a rigid position servo, so it gives way when it touches something.
+
+**Tiny example:** The two-link arm of the forward-kinematics entry (l_1 = l_2 = 1, θ_1 = 30°, θ_2 = 60°) has J = [[−1.5, −1], [0.866, 0]]. Turning joint 1 at 1 radian per second moves the hand at (−1.5, 0.866) meters per second. To push straight up with F = (0, 10) newtons: τ = J^T × F = (0.866 × 10, 0) = (8.66, 0) newton-meters; joint 2 needs nothing, because link 2 points straight up through it. To move the hand 0.1 m to the right with λ = 0.1: J × J^T + 0.01 × I = [[3.26, −1.30], [−1.30, 0.76]], solving gives (0.096, 0.164), and Δq = J^T × (0.096, 0.164) ≈ (−0.002, −0.096) radians, which moves the hand by about (0.099, −0.002), almost exactly as asked (the undamped answer is (0, −0.1)). With K = 500 newtons per meter and D = 40, a hand 0.02 m short of its target and closing at 0.1 m/s is pushed with 500 × 0.02 − 40 × 0.1 = 6 newtons.
+
+**Where it is used:** Inverse-kinematics solvers in robotics libraries such as Orocos KDL and Drake, which turn the hand poses output by learned policies into joint commands; Cartesian impedance controllers on torque-controlled arms such as Franka's, often the layer that learned manipulation policies command; the force-limited contact of collaborative robots. Impedance control is due to Hogan (1985).
+**In the book:** Chapter 49 (From "go there" to motor commands: the classic toolkit, which explains inverse kinematics; Safety: robots near people, on power and force limiting) in words; the formulas are only here.
+
+> **Definition — Damped least squares (inverse kinematics):** A way of computing small joint motions that move a robot's hand toward a target, with a damping term added so the joints never spin wildly near poses where the arm is fully stretched or folded.
+
+> **Definition — Impedance control:** Controlling a robot so that its hand behaves like a spring and shock absorber pulled toward a target, rather than holding a rigid position, so it gives way safely when it touches something.
 
 ### Rigid-body dynamics (the manipulator equation) and a physics-simulator step
 
@@ -14137,6 +15989,32 @@ two-link planar arm `x = l_1 × cos(θ_1) + l_2 × cos(θ_1 + θ_2)`, `y = l_1 �
 **In the book:** Chapter 49 (From "go there" to motor commands: the classic toolkit) defines dynamics in words; the equation is only here.
 
 > **Definition — Manipulator equation:** The standard equation of robot dynamics, which says that the motor torques equal the inertia times the joint accelerations plus the torques used up by motion effects and by gravity. Simulators solve it forward to predict motion, and controllers solve it backward to choose torques.
+
+### Wheeled-vehicle kinematics: differential drive, the kinematic bicycle model and pure pursuit
+
+**What it does:** Says how wheel speeds or a steering angle move a robot or a car, and gives the classic rule for steering toward a point on a planned path.
+
+differential drive `v = (v_R + v_L) ÷ 2`, `ω = (v_R − v_L) ÷ b`; pose update `x ← x + v × cos(θ) × Δt`, `y ← y + v × sin(θ) × Δt`, `θ ← θ + ω × Δt`; bicycle model `θ̇ = v × tan(δ) ÷ L`, turning radius `R = L ÷ tan(δ)`; pure pursuit `δ = arctan(2 × L × sin(α) ÷ l_d)`
+
+- **v_R**, **v_L**: the right and left wheel speeds; **b**: the distance between the wheels
+- **v**: the forward speed; **ω** (omega): the turning rate in radians per second
+- **(x, y)**: the position; **θ** (theta): the heading; **Δt**: the time step
+- **δ** (delta): the front-wheel steering angle; **L**: the wheelbase, from front to rear axle
+- **θ̇**: how fast the heading changes; **R**: the radius of the circle driven
+- **l_d**: the look-ahead distance to a target point on the path; **α** (alpha): the angle between the vehicle's heading and that point
+
+**In plain words:** A two-wheeled robot turns by running one wheel faster than the other; a car turns by angling its front wheels, and the bicycle model squeezes each axle's pair of wheels into one. Pure pursuit picks a point a little way ahead on the planned path and computes the steering angle that would drive a circle through it, again and again; a longer look-ahead gives smoother but lazier tracking.
+
+**Tiny example:** Wheels at 1.2 and 0.8 meters per second, 0.5 m apart: v = 1.0 m/s and ω = 0.4 ÷ 0.5 = 0.8 radians per second, a circle of radius 1.0 ÷ 0.8 = 1.25 m. A car with a 2.8 m wheelbase steering 5° (tan 5° ≈ 0.0875): R = 2.8 ÷ 0.0875 ≈ 32 m, and at 10 m/s it turns at 10 × 0.0875 ÷ 2.8 ≈ 0.31 radians per second. Pure pursuit with a target 10 m ahead and 10° off the heading (sin 10° ≈ 0.174): δ = arctan(2 × 2.8 × 0.174 ÷ 10) = arctan(0.097) ≈ 5.6°.
+
+**Where it is used:** Robot vacuums, warehouse drive units and teaching robots (differential drive); motion planners and model predictive controllers for cars, which predict motion with the bicycle model; pure pursuit (Coulter, Carnegie Mellon, 1992) in open-source driving stacks such as Autoware and in delivery robots.
+**In the book:** Chapter 49 (From "go there" to motor commands: the classic toolkit, including Braitenberg's two-wheeled vehicles) and Chapter 50 (Control: make the car do it) in words; the formulas are only here.
+
+> **Definition — Differential drive:** A way of moving a robot on two independently driven wheels, steering by turning them at different speeds; robot vacuums and many warehouse robots use it.
+
+> **Definition — Kinematic bicycle model:** A simple model of a car that treats each axle's pair of wheels as a single wheel, used to predict how speed and steering angle change its position and heading.
+
+> **Definition — Pure pursuit:** A path-following rule that repeatedly chooses a point a fixed distance ahead on the planned path and steers along the circle that reaches it.
 
 ### PID controller
 
@@ -14176,6 +16054,27 @@ at each step solve `min over u_0, ..., u_(H−1) of sum over k = 0..H−1 of (||
 
 **Where it is used:** Legged robots, self-driving planning and control and process control; sampling versions (MPPI, the cross-entropy method) plan in learned world models, as V-JEPA 2-AC (2025) does by minimizing the distance between predicted and goal embeddings. The reinforcement-learning section shows the same receding-horizon idea with a learned reward model.
 **In the book:** Chapter 49 (From "go there" to motor commands: the classic toolkit) defines MPC; the cost function is only here.
+
+### Motion-planning trajectory cost (weighted penalties over predicted futures)
+
+**What it does:** Scores each candidate path for the next few seconds by adding up weighted penalties, averaged over the possible futures of other road users, and picks the cheapest.
+
+`J(τ) = sum over terms k of w_k × c_k(τ)`, for example a comfort term `c_comfort = sum over t of jerk_t^2 × Δt` with `jerk_t = (a_(t+1) − a_t) ÷ Δt`; with predicted futures `E[J(τ)] = sum over futures m of p_m × J(τ, m)`; choose `τ* = argmin over candidates τ of E[J(τ)]`; NAVSIM's planner score `PDMS = NC × DAC × (5 × EP + 5 × TTC + 2 × C) ÷ 12`
+
+- **τ** (tau): a candidate trajectory, the positions and speeds planned for the next few seconds
+- **c_k**: one penalty, such as closeness to other road users, rule violations, lost progress, harsh braking or jerk; **w_k**: its weight, set by engineers or learned
+- **a_t**: the acceleration at time step t; **jerk_t**: how fast the acceleration changes; **Δt**: the time step
+- **m**: one predicted future (the cyclist goes straight, swerves or stops); **p_m**: its probability
+- **NC**, **DAC**: penalty factors for no at-fault collision and for staying on the drivable area (1 when satisfied, 0 when violated); **EP**, **TTC**, **C**: subscores from 0 to 1 for ego progress, keeping a safe time-to-collision and comfort
+
+**In plain words:** Each candidate plan gets a bill: so much for coming close to the cyclist, so much for a jolt, so much for arriving late. Because the cyclist's next move is uncertain, the bill is averaged over the predicted futures, weighted by their probabilities. The weights are value judgments: weigh comfort too much and the car drives into danger, weigh caution too much and it blocks traffic.
+
+**Tiny example:** Chapter 50's cyclist goes straight (0.70), swerves (0.25) or stops (0.05). Keeping speed costs nothing for comfort or progress, but its closeness penalties are 0, 40 and 20 in the three futures: E[J] = 0.70 × 0 + 0.25 × 40 + 0.05 × 20 = 11. Slowing to 7 m/s costs 1 for comfort and 1 for lost time, plus a closeness penalty of 2 only if she swerves: E[J] = 1 + 1 + 0.25 × 2 = 2.5, so the planner slows down. A plan with no collision that stays on the road, with EP = 0.9, TTC = 1 and C = 0.5, scores PDMS = (4.5 + 5 + 1) ÷ 12 = 0.875.
+
+**Where it is used:** Sampling and lattice planners in automated driving (Werling et al. 2010 scored candidate trajectories by jerk, time taken and distance from the lane center); the scoring stages that choose among trajectories proposed by learned planners; NAVSIM (2024), a benchmark for end-to-end driving models, ranks planners by the PDM score above.
+**In the book:** Chapter 50 (Planning: what should I do?, which defines the cost function in words; One scene, five stages); the formulas are only here.
+
+> **Definition — Jerk:** The rate at which acceleration changes; sudden changes in braking or steering have high jerk and feel like jolts to passengers, so motion planners penalize it.
 
 ### Linear-quadratic regulator (LQR) and the Riccati equation
 
@@ -14217,6 +16116,29 @@ sample `x_rand`; `x_near = argmin over tree nodes x of ||x − x_rand||`; `x_new
 
 **Where it is used:** Robot-arm motion planning (MoveIt and OMPL), automated parking and drones.
 **In the book:** Chapter 49 (From "go there" to motor commands: the classic toolkit) defines RRT; the step formula is only here.
+
+### Stopping distance, time-to-collision and the RSS safe following distance
+
+**What it does:** Computes how far a vehicle travels before it can stop, how many seconds remain before it would hit what is ahead, and how much gap is safe even if the car in front brakes as hard as it can.
+
+`d_stop = v × t_r + v^2 ÷ (2 × a)`; `TTC = gap ÷ (v_follow − v_lead)` when the follower is faster; RSS `d_min = max(0, v_r × ρ + 0.5 × a_accel × ρ^2 + (v_r + ρ × a_accel)^2 ÷ (2 × b_min) − v_f^2 ÷ (2 × b_max))`
+
+- **v**: speed in meters per second; **t_r**: the reaction time (sensing and deciding); **a**: the braking deceleration in meters per second squared
+- **gap**: the distance to the vehicle or obstacle ahead; **v_follow**, **v_lead**: the speeds of the following and the leading vehicle
+- **v_r**, **v_f**: the speeds of the rear (our) and the front vehicle
+- **ρ** (rho): our response time; **a_accel**: the most we might accelerate during it
+- **b_min**: the braking we promise to apply at least; **b_max**: the hardest the car in front could brake
+
+**In plain words:** The first term of the stopping distance is the ground covered before the brakes act; the second is the braking distance, which grows with the square of speed. Time-to-collision divides the gap by how fast it is closing. Mobileye's Responsibility-Sensitive Safety rule asks for enough gap that, even if we keep accelerating through our response time and then brake only moderately while the car ahead brakes as hard as possible, we still stop in time.
+
+**Tiny example:** Chapter 50: at 29 m/s, braking at 7 m/s^2, the braking distance is 29^2 ÷ 14 = 841 ÷ 14 ≈ 60 m; with a 1.5-second human reaction the total is 43.5 + 60 ≈ 104 m, and with 0.3 seconds it is 8.7 + 60 ≈ 69 m. A car 30 m behind another, at 25 m/s against 15 m/s, has TTC = 30 ÷ 10 = 3 seconds. RSS with both cars at 25 m/s, ρ = 0.5 s, a_accel = 2, b_min = 4 and b_max = 8 m/s^2: 12.5 + 0.25 + 26^2 ÷ 8 − 25^2 ÷ 16 = 12.5 + 0.25 + 84.5 − 39.06 ≈ 58 m.
+
+**Where it is used:** Automatic emergency braking and forward-collision warnings, which act on time-to-collision; traffic-safety studies that use TTC (Hayward 1972) as a surrogate for crashes, such as the US Federal Highway Administration's SSAM tool, which flags conflicts below 1.5 seconds by default; Mobileye's RSS model (Shalev-Shwartz, Shammah and Shashua, 2017), which informed the IEEE 2846-2022 standard; and the time-to-collision subscore of the NAVSIM planner benchmark.
+**In the book:** Chapter 50 (Worked example: why milliseconds and meters matter), which works the stopping distances; time-to-collision and RSS are only here.
+
+> **Definition — Time-to-collision (TTC):** The time left before two road users would collide if both kept their current speeds and paths: the gap between them divided by the speed at which it is closing.
+
+> **Definition — Responsibility-Sensitive Safety (RSS):** A formal driving-safety model published by Mobileye in 2017 that defines, with equations, the safe distances an automated vehicle must keep and the responses it must make so that it never causes a collision.
 
 ### Pinhole camera projection, rigid transforms and stereo depth
 
@@ -14268,6 +16190,31 @@ epipolar constraint `x'^T × F × x = 0`, and for calibrated cameras `E = [t]_×
 
 > **Definition — Bundle adjustment:** Jointly refining all camera positions and all 3D points of a scene so that the points, projected back into every photo, land as close as possible to where they were actually observed.
 
+### Homography and RANSAC (perspective mapping between images, fitted robustly)
+
+**What it does:** Maps points between two pictures of a flat surface (or two views from a camera that only rotates), and fits that mapping even when many matched points are wrong.
+
+`s × [x', y', 1] = H × [x, y, 1]`, that is `x' = (h_11 × x + h_12 × y + h_13) ÷ (h_31 × x + h_32 × y + h_33)` and `y' = (h_21 × x + h_22 × y + h_23) ÷ (h_31 × x + h_32 × y + h_33)`; H has 8 degrees of freedom, so 4 point pairs fix it; RANSAC trials needed `N = ln(1 − p) ÷ ln(1 − w^n)`
+
+- **(x, y)**, **(x', y')**: matching pixels in the two images
+- **H**: a 3 × 3 homography matrix with entries h_11 to h_33, defined only up to an overall scale
+- **s**: the scale factor removed by dividing by the third coordinate
+- **N**: the number of random trials RANSAC needs
+- **p**: the desired chance that at least one trial uses only correct matches (often 0.99)
+- **w**: the share of matches that are correct (the inliers)
+- **n**: the number of matches each trial uses (4 for a homography)
+
+**In plain words:** A homography is the most general way perspective can warp a flat picture: straight lines stay straight, but parallel lines may meet. RANSAC fits it by repeatedly picking 4 random matches, computing H, and counting how many other matches agree within a few pixels; the model with the most agreement wins and is refined on its inliers. The formula says how many tries are needed before an all-correct sample is almost certain, a number that climbs fast as the share of bad matches grows.
+
+**Tiny example:** H = [[1.2, 0, 10], [0, 1.2, 5], [0.001, 0, 1]] maps the pixel (100, 50) to (1.2 × 100 + 10, 1.2 × 50 + 5) ÷ (0.001 × 100 + 1) = (130, 65) ÷ 1.1 ≈ (118.2, 59.1). With half the matches wrong (w = 0.5), n = 4 and p = 0.99: N = ln(0.01) ÷ ln(1 − 0.0625) = −4.61 ÷ −0.0645 ≈ 72 trials; with 80% good matches, ln(0.01) ÷ ln(1 − 0.41) ≈ 9.
+
+**Where it is used:** Panorama stitching and document-scanning apps that straighten a photographed page (OpenCV's findHomography with RANSAC); augmented reality on flat surfaces; sports broadcasts that map the pitch to a top-down view; RANSAC (Fischler and Bolles, 1981) also screens feature matches in structure-from-motion (COLMAP) and visual SLAM.
+**In the book:** Chapter 45 (Reading the world: OCR and document AI, whose pipeline straightens a phone photo of a page; Seeing in 3D, where photogrammetry matches features between photos) in words; the formulas are only here.
+
+> **Definition — Homography:** The 3 × 3 transformation that maps one perspective image of a flat surface onto another, or onto a straight-on view, keeping straight lines straight; it is how apps straighten a photographed document or stitch a panorama.
+
+> **Definition — RANSAC (random sample consensus):** A robust fitting method that repeatedly fits a model to a small random sample of the data and keeps the model that the most other data points agree with, so a large share of wrong matches does not spoil the result.
+
 ### Bilinear interpolation (image resizing and sampling)
 
 **What it does:** Estimates an image's value between pixel centers by blending the four nearest pixels.
@@ -14288,6 +16235,30 @@ epipolar constraint `x'^T × F × x = 0`, and for calibrated cameras `E = [t]_×
 
 > **Definition — Bilinear interpolation:** Estimating a value between grid points by blending the four nearest grid values, each weighted by how close it is; it is the standard way to resize images and to sample them at fractional positions.
 
+### Image gradients and edge detection (Sobel filter, Gaussian smoothing, Canny)
+
+**What it does:** Finds edges by measuring how fast brightness changes at each pixel and in which direction.
+
+`G_x = K_x ⋆ I` with `K_x` rows [−1, 0, 1], [−2, 0, 2] and [−1, 0, 1]; `G_y = K_y ⋆ I` with `K_y = K_x^T`; `magnitude = sqrt(G_x^2 + G_y^2)`; `direction = atan2(G_y, G_x)`; smoothing first with `G_σ(u, v) = exp(−(u^2 + v^2) ÷ (2 × σ^2)) ÷ (2 × π × σ^2)`; Canny then keeps only the local maxima along the gradient direction and links edges with a high and a low threshold
+
+- **I**: the image (a grid of brightness values)
+- **⋆**: sliding the 3 × 3 kernel over the image and summing the products (cross-correlation, as in CNN layers)
+- **K_x**, **K_y**: the Sobel kernels for left-to-right and top-to-bottom change
+- **G_x**, **G_y**: the horizontal and vertical brightness slopes at each pixel
+- **atan2**: the angle of the vector (G_x, G_y)
+- **G_σ**: the Gaussian blur kernel with spread σ (sigma); **u**, **v**: offsets from the kernel's center; **π**: 3.14159...
+
+**In plain words:** An edge is where brightness jumps. The Sobel kernel subtracts the left column from the right column (counting the middle row twice), which estimates the horizontal slope while averaging away some noise; its transpose does the same vertically. The two slopes form a gradient vector whose length is the edge strength and whose angle points across the edge. Blurring first suppresses noise that would otherwise look like tiny edges.
+
+**Tiny example:** A patch whose columns read 10, 10 and 80 (dark to bright toward the right): G_x = (−10 + 80) + 2 × (−10 + 80) + (−10 + 80) = 70 + 140 + 70 = 280 and G_y = 0, so the strength is 280 at angle 0°, across a vertical edge. A diagonal step, rows [10, 10, 10], [10, 10, 80] and [10, 80, 80], gives G_x = G_y = 210: strength sqrt(2) × 210 ≈ 297 at 45°.
+
+**Where it is used:** Classical vision pipelines in OpenCV (cv2.Sobel and cv2.Canny); Canny edge maps as the control image for ControlNet (the ControlNet entry in this section names the Sobel gradient size); image-gradient features such as HOG; the first-layer filters CNNs learn by themselves look like oriented edge detectors (Krizhevsky, Sutskever and Hinton 2012; Zeiler and Fergus 2014).
+**In the book:** Chapter 14 (Working one convolution by hand) slides a vertical-edge filter over a tiny image by hand; Chapter 45 (An image is a grid of numbers) shows what an edge-detector filter responds to; Appendix F (Shapes, contours and modular recognition) defines edge detection; the formulas are only here.
+
+> **Definition — Sobel filter:** A pair of 3 × 3 convolution kernels that estimate how fast brightness changes horizontally and vertically at each pixel; together they give each pixel's edge strength and direction.
+
+> **Definition — Canny edge detector:** A classic edge-finding procedure (John Canny, 1986) that blurs the image, computes gradients, thins edges to one-pixel lines and keeps them using a high and a low threshold.
+
 ### Optical flow: brightness constancy and endpoint error
 
 **What it does:** Estimates how far each pixel moved between two video frames, and scores such estimates.
@@ -14307,6 +16278,30 @@ brightness constancy `I(x + u, y + v, t + 1) = I(x, y, t)`; its small-motion for
 **In the book:** Chapter 45 (Following things through time: tracking, action and video) defines optical flow in words; the equations are only here.
 
 > **Definition — Aperture problem:** The fact that, seen through a small window, the motion of a straight edge along its own length is invisible, so local brightness changes reveal only the part of the motion across the edge.
+
+### Multi-object tracking metrics (MOTA, IDF1 and HOTA)
+
+**What it does:** Scores a tracker both on finding objects in every frame and on keeping each object's identity over time.
+
+`MOTA = 1 − (FN + FP + IDSW) ÷ GT`; `IDF1 = 2 × IDTP ÷ (2 × IDTP + IDFP + IDFN)`; `HOTA_α = sqrt(DetA_α × AssA_α)`, averaged over overlap thresholds α from 0.05 to 0.95
+
+- **FN**, **FP**: missed and false detections, summed over all frames
+- **IDSW**: identity switches, the times a true object's track label changes
+- **GT**: the number of true object appearances, summed over all frames
+- **IDTP**, **IDFP**, **IDFN**: detections counted as correct, false or missed after each true object is matched to the single predicted track that follows it best over the whole video
+- **DetA**: detection accuracy, a Jaccard score over detections; **AssA**: association accuracy, how well predicted and true tracks overlap over time
+- **α** (alpha): the IoU a detection needs to count as matched
+
+**In plain words:** MOTA counts every kind of mistake per frame and is dominated by detection errors, so a tracker can score well while swapping identities. IDF1 matches whole tracks to whole objects and asks how much of the time each identity is right. HOTA balances the two by taking the geometric mean of a detection score and an association score.
+
+**Tiny example:** A video with 1,000 true object appearances, 100 missed, 50 false and 10 identity switches: MOTA = 1 − 160 ÷ 1,000 = 0.84. With 800 identity-correct detections, 150 identity-false and 200 identity-missed: IDF1 = 1,600 ÷ (1,600 + 350) ≈ 0.82. With DetA = 0.64 and AssA = 0.49: HOTA = sqrt(0.3136) = 0.56.
+
+**Where it is used:** The MOTChallenge and KITTI tracking benchmarks (CLEAR MOT metrics from 2008, IDF1 from 2016, HOTA from Luiten et al. 2021); trackers such as SORT, DeepSORT and ByteTrack in sports analytics, retail and self-driving perception; nuScenes tracking uses an averaged variant (AMOTA).
+**In the book:** Chapter 45 (Following things through time: tracking, action and video), which describes identity switches in words; the metrics are only here.
+
+> **Definition — Identity switch:** A tracking error in which the label attached to one real object changes partway through a video, for example when two players cross and the tracker swaps them.
+
+> **Definition — HOTA (higher order tracking accuracy):** A multi-object tracking score that combines, by a geometric mean, how well objects are detected and how well each one's identity is kept over time.
 
 ### Monocular depth losses (scale-and-shift-invariant and scale-invariant log)
 
@@ -14371,6 +16366,49 @@ matching `σ̂ = argmin over one-to-one pairings σ of sum over i of cost(y_i, �
 > **Definition — Hungarian algorithm:** A classic method (1955) that finds the cheapest one-to-one pairing between two equal-sized lists given the cost of every possible pair, without trying every pairing.
 
 > **Definition — GIoU (generalized intersection over union):** A box-overlap score that subtracts from IoU the share of the smallest enclosing box left empty by the two boxes, so it still measures how far apart boxes are when they do not overlap; 1 minus GIoU is a common box loss.
+
+### Distance-IoU and complete-IoU box losses (DIoU, CIoU)
+
+**What it does:** Extends the IoU box loss with penalties for the distance between box centers and for a mismatched shape, so predicted boxes converge faster and more precisely.
+
+`L_DIoU = 1 − IoU + ρ^2 ÷ c^2`; `L_CIoU = 1 − IoU + ρ^2 ÷ c^2 + α × v`, with `v = (4 ÷ π^2) × (arctan(w_gt ÷ h_gt) − arctan(w ÷ h))^2` and `α = v ÷ ((1 − IoU) + v)`
+
+- **IoU**: the intersection over union of the predicted and true boxes (classical-machine-learning section)
+- **ρ** (rho): the distance between the two boxes' centers
+- **c**: the diagonal length of the smallest box enclosing both
+- **w**, **h**: the predicted box's width and height; **w_gt**, **h_gt**: the true box's
+- **v**: how different the two aspect ratios are, 0 for the same shape
+- **α** (alpha): a weight that lets the shape term matter more once the boxes already overlap well
+
+**In plain words:** IoU alone gives no direction when boxes do not overlap, and GIoU fixes that only slowly, by first growing the box. DIoU pulls the centers together directly, measured relative to the size of the enclosing box. CIoU adds a third term that matches the width-to-height ratio.
+
+**Tiny example:** The DETR entry's boxes, (0, 0) to (2, 2) and (1, 1) to (3, 3): IoU = 1 ÷ 7 ≈ 0.143, the centers (1, 1) and (2, 2) give ρ^2 = 2, and the enclosing box (0, 0) to (3, 3) gives c^2 = 18, so L_DIoU = 1 − 0.143 + 0.111 ≈ 0.968; both boxes are square, so CIoU adds nothing. A predicted box from (0, 0) to (2, 4) against a true box from (0, 0) to (2, 2): IoU = 4 ÷ 8 = 0.5, ρ^2 = 1 and c^2 = 2^2 + 4^2 = 20, so L_DIoU = 0.5 + 0.05 = 0.55; v = 0.405 × (0.785 − 0.464)^2 ≈ 0.042 and α = 0.042 ÷ 0.542 ≈ 0.077, so L_CIoU ≈ 0.55 + 0.003 = 0.553.
+
+**Where it is used:** Zheng et al. (2020); CIoU is the box-regression loss of the Ultralytics YOLO detectors (YOLOv5, and YOLOv8 and YOLO11, which pair it with a distribution focal loss); DIoU also replaces IoU inside non-maximum suppression (DIoU-NMS) so that nearby objects with different centers are kept.
+**In the book:** Chapter 45 (How a one-stage detector works) describes the YOLO family in words; the losses are only here.
+
+> **Definition — CIoU (complete intersection over union) loss:** A bounding-box training loss that combines lack of overlap, the distance between box centers and the difference in shape; the YOLO family of detectors uses it.
+
+### Panoptic quality (PQ)
+
+**What it does:** Scores a panoptic segmentation, which must both label every pixel and separate every object, with one number that combines mask quality and detection quality.
+
+`PQ = (sum over matched pairs (p, g) in TP of IoU(p, g)) ÷ (|TP| + 0.5 × |FP| + 0.5 × |FN|) = SQ × RQ`, with `SQ = (sum over TP of IoU) ÷ |TP|` and `RQ = |TP| ÷ (|TP| + 0.5 × |FP| + 0.5 × |FN|)`; a predicted segment p matches a true segment g of the same class when `IoU(p, g) > 0.5`
+
+- **p**, **g**: a predicted segment and a ground-truth segment
+- **IoU(p, g)**: the intersection over union of their pixel sets
+- **TP**: matched pairs (true positives); **FP**: unmatched predicted segments (false positives); **FN**: unmatched true segments (false negatives); **|...|**: how many there are
+- **SQ**: segmentation quality, the average IoU of the matched pairs
+- **RQ**: recognition quality, the F1 score of the matching
+
+**In plain words:** First match predicted segments to true ones; requiring an IoU above 0.5 guarantees that each segment has at most one match. Then reward how well matched segments overlap, and charge each miss and each false alarm as half a match. PQ is computed for each class and averaged over classes, and countable "things" (cars, people) and shapeless "stuff" (sky, road) are scored the same way.
+
+**Tiny example:** Three matches with IoU 0.9, 0.8 and 0.7, one false positive and two false negatives: PQ = 2.4 ÷ (3 + 0.5 + 1) = 0.533. SQ = 2.4 ÷ 3 = 0.8 and RQ = 3 ÷ 4.5 = 0.667, and 0.8 × 0.667 = 0.533.
+
+**Where it is used:** Kirillov and colleagues (2019), who defined the panoptic task; the COCO, Cityscapes, ADE20K and Mapillary Vistas panoptic benchmarks and the models ranked on them, such as Panoptic-DeepLab, Mask2Former and OneFormer.
+**In the book:** Chapter 45 (Segmentation: "which pixels?") defines panoptic segmentation; the score is only here.
+
+> **Definition — Panoptic quality (PQ):** The standard score for panoptic segmentation: the summed overlap of correctly matched segments divided by the number of matches plus half the number of misses and half the number of false alarms.
 
 ### Peak signal-to-noise ratio (PSNR)
 
@@ -14462,6 +16500,27 @@ pixel color `C = sum over i of c_i × α_i × product over j < i of (1 − α_j)
 
 > **Definition — Alpha compositing:** Combining semi-transparent layers into one image by blending them front to back, where each layer's opacity (alpha) decides how much of it shows and how much of what lies behind shows through.
 
+### Chamfer distance (comparing point clouds)
+
+**What it does:** Measures how far apart two sets of 3D points are by matching every point to its nearest neighbor in the other set, in both directions.
+
+`CD(S_1, S_2) = (1 ÷ |S_1|) × sum over x in S_1 of (min over y in S_2 of length(x − y)^2) + (1 ÷ |S_2|) × sum over y in S_2 of (min over x in S_1 of length(x − y)^2)`; F-score at a tolerance τ: `F = 2 × precision × recall ÷ (precision + recall)`, where precision is the share of predicted points within τ of the true set and recall the share of true points within τ of the predicted set
+
+- **S_1**, **S_2**: the two point sets, for example a predicted shape and a scanned one; **|S|**: how many points a set has
+- **x**, **y**: points, each a list of coordinates
+- **length(x − y)^2**: the squared straight-line distance (some papers use the plain distance, or sums instead of averages)
+- **min over y in S_2**: the distance to the closest point of the other set
+- **τ** (tau): a distance tolerance
+
+**In plain words:** The first half asks how close each predicted point lies to the real surface (accuracy); the second asks whether every part of the real surface is covered by some predicted point (completeness). It ignores the order in which points are listed and needs only nearest-neighbor searches, so it works as a training loss as well as a score. The F-score version is less swayed by a few stray points.
+
+**Tiny example:** S_1 = {(0, 0), (2, 0)} and S_2 = {(0, 1), (2, 0), (3, 0)}. From S_1: (0, 0) is a squared distance 1 from (0, 1), and (2, 0) is 0 from itself, an average of 0.5. From S_2: 1, 0 and 1 (the point (3, 0) is 1 from (2, 0)), an average of 0.667. CD = 0.5 + 0.667 = 1.167.
+
+**Where it is used:** Point-cloud generation and completion networks since Fan, Su and Guibas (2017), single-image 3D reconstruction and mesh generation, and the accuracy-and-completeness score of the DTU multi-view benchmark, on which NeRF-style and Gaussian-splatting surface methods report their Chamfer distance in millimeters; Mesh R-CNN (2019) trains its predicted meshes with it.
+**In the book:** Chapter 45 (Seeing in 3D) defines point clouds; the distance is only here.
+
+> **Definition — Chamfer distance:** A measure of the difference between two sets of points: the average squared distance from each point to its nearest neighbor in the other set, computed in both directions and added together.
+
 ### Gram-matrix style loss (neural style transfer)
 
 **What it does:** Measures "style" as which feature channels fire together, and matches it between two images.
@@ -14483,6 +16542,26 @@ pixel color `C = sum over i of c_i × α_i × product over j < i of (1 − α_j)
 **In the book:** Chapter 14 (Looking inside a trained CNN) defines neural style transfer; the Gram matrix is only here.
 
 > **Definition — Gram matrix:** A table of the dot products between every pair of feature channels, summed over all positions; it records which features occur together while ignoring where, and is used as a description of texture or style.
+
+### Total variation regularizer (TV loss for images)
+
+**What it does:** Penalizes differences between neighboring pixels, so an optimized or reconstructed image stays smooth instead of filling with speckled noise.
+
+`TV(x) = sum over i, j of ((x[i, j+1] − x[i, j])^2 + (x[i+1, j] − x[i, j])^2)`; absolute-value (anisotropic) version `sum over i, j of (|x[i, j+1] − x[i, j]| + |x[i+1, j] − x[i, j]|)`; Rudin-Osher-Fatemi (isotropic) version `sum over i, j of sqrt((x[i, j+1] − x[i, j])^2 + (x[i+1, j] − x[i, j])^2)`; full objective `L = L_task + λ × TV(x)`
+
+- **x[i, j]**: the pixel value in row i and column j (summed over color channels)
+- **x[i, j+1] − x[i, j]**: the jump to the right-hand neighbor; **x[i+1, j] − x[i, j]**: the jump to the neighbor below
+- **L_task**: the main objective, such as a style-transfer, feature-inversion or reconstruction loss
+- **λ** (lambda): how strongly smoothness is enforced
+
+**In plain words:** When pixels are optimized directly to excite a network, they tend to turn into a checkerboard of noise that the network likes but people do not; adding the summed squared jumps between neighbors makes that noise expensive. The squared version charges one large jump far more than several small ones adding up to the same total, so it blurs edges; the absolute-value versions charge them the same, so they keep sharp edges while flattening noise, which is why they are the classic tool for removing noise from photos.
+
+**Tiny example:** The 2 × 2 image with rows [1, 2] and [3, 5]. The horizontal jumps are 1 and 2 and the vertical jumps are 2 and 3. Squared TV = 1 + 4 + 4 + 9 = 18; absolute-value TV = 1 + 2 + 2 + 3 = 8.
+
+**Where it is used:** Stanford CS231n's style-transfer assignment (content loss, Gram-matrix style loss and TV loss); feature inversion and network visualization (Mahendran and Vedaldi, 2015); image denoising since Rudin, Osher and Fatemi (1992); and TV penalties on the voxel or plane grids of fast radiance-field methods such as Plenoxels and K-Planes.
+**In the book:** Chapter 14 (Looking inside a trained CNN) describes neural style transfer; the smoothness penalty is only here.
+
+> **Definition — Total variation regularizer (TV loss):** A penalty that adds up the differences between neighboring pixels of an image, used to keep optimized or reconstructed images smooth and free of speckled noise.
 
 ### LPIPS perceptual distance (and perceptual loss)
 
@@ -14718,6 +16797,27 @@ STFT `X[m, k] = sum over n = 0..N−1 of x[n + m × H] × w[n] × exp(−2π × 
 **In the book:** Chapter 45 (Faces: the most personal kind of vision) and Chapter 46 (Who spoke when: diarization and voice biometrics) describe face and speaker embeddings in words; the formula is only here.
 
 > **Definition — ArcFace:** A 2019 training loss for face recognition that adds an angular margin to the correct identity inside a softmax over all identities, forcing the embeddings of different people to sit clearly apart.
+
+### Biometric error rates: false match rate, false non-match rate and equal error rate
+
+**What it does:** Measures the two errors of face, voice or fingerprint matching at a chosen threshold, and how false matches grow when one probe is searched against a large gallery.
+
+`FMR(t) = P(score ≥ t given two different people)`; `FNMR(t) = P(score < t given the same person)`; `EER = the common value where FMR(t) = FNMR(t)`; one-to-many search against a gallery of N people: `expected false matches = N × FMR`, `P(at least one false match) = 1 − (1 − FMR)^N ≈ 1 − exp(−N × FMR)`
+
+- **score**: the similarity between two embeddings, usually their cosine similarity (foundations section)
+- **t**: the decision threshold
+- **FMR**: false match rate, the share of impostor comparisons accepted; **FNMR**: false non-match rate, the share of genuine comparisons rejected
+- **EER**: the equal error rate
+- **N**: the number of people in the gallery
+
+**In plain words:** Raising the threshold trades false matches for false non-matches, so a system is described by its two error rates at a stated threshold, or by the single point where they are equal. A false match rate that is superb for unlocking one phone becomes a crowd of look-alikes when each search compares against millions of faces, because every comparison is another chance to be wrong.
+
+**Tiny example:** Genuine-pair scores 0.9, 0.8, 0.7 and 0.4; impostor scores 0.1, 0.3, 0.5 and 0.6. At t = 0.55 one genuine pair (0.4) is rejected, FNMR = 1 ÷ 4 = 25%, and one impostor (0.6) is accepted, FMR = 25%, so the EER is 25%. Chapter 45's search: FMR = 1 in 1,000,000 against a gallery of 1,000,000 gives 1,000,000 × 0.000001 = 1 expected false match per search, and a 1 − (1 − 0.000001)^1,000,000 ≈ 1 − e^(−1) ≈ 63% chance of at least one.
+
+**Where it is used:** NIST's face-recognition evaluations report the false non-match rate at a fixed false match rate such as 1 in 1,000,000, broken down by demographic group; speaker-verification benchmarks such as VoxCeleb report EER; phone makers quote FMR-style figures (Apple gives about 1 in 1,000,000 for Face ID); the ISO/IEC 19795 standard defines the terms.
+**In the book:** Chapter 45 (Faces: the most personal kind of vision, which works the gallery example; Accuracy gaps across groups) and Chapter 46 (Who spoke when: diarization and voice biometrics); the formulas are only here.
+
+> **Definition — Equal error rate (EER):** The error rate of a verification system at the threshold where false matches and false non-matches are equally common; a single number used to compare face, voice and fingerprint systems.
 
 ### InfoNCE contrastive loss
 
@@ -14958,6 +17058,29 @@ encoder `q_φ(z | x) = N(z; μ_φ(x), diag(σ_φ(x)^2))`; prior `p(z) = N(0, I)`
 
 **Where it is used:** Training VAEs; the theory behind diffusion's loss (the same bound over many noise steps); variational inference in Bayesian models and EM. The IWAE variant (K = 1 gives back the ELBO) is used for tighter likelihood estimates.
 **In the book:** Chapter 16 (The variational autoencoder (VAE)), which shows this formula; Appendix F (The ELBO, MAP inference and wake-sleep); Chapter 54 (A Bayesian network, worked by hand) for variational inference.
+
+### Mean-field variational inference (coordinate-ascent updates)
+
+**What it does:** Approximates an intractable posterior with a product of simple independent pieces and improves each piece in turn, using an exact formula for the best piece given the others.
+
+`q(z) = product over j of q_j(z_j)`; best factor `ln q_j*(z_j) = E over all the other factors of [ln p(x, z)] + constant`; cycle over j (coordinate ascent variational inference, CAVI); each update can only raise the ELBO
+
+- **z = (z_1, ..., z_m)**: the hidden variables or parameters; **x**: the observed data
+- **q(z)**: the approximating distribution; **q_j**: its factor for z_j; **q_j***: the best such factor
+- **p(x, z)**: the joint probability of the data and the hidden variables
+- **E over all the other factors of [...]**: the average when every z_i except z_j is drawn from its current q_i
+- **constant**: whatever makes q_j add up to 1
+
+**In plain words:** Pretending the hidden variables are independent makes the problem tractable: each factor only needs the average effect of the others, as each magnet in a physicist's "mean field" feels only the average pull of its neighbors. With conjugate models every update has a closed form. The price is that correlations are lost and uncertainty is underestimated.
+
+**Tiny example:** The target is a two-dimensional Gaussian with mean zero and precision matrix with rows [2, 1] and [1, 2]. The mean-field updates are m_1 = −(1 ÷ 2) × m_2 and m_2 = −(1 ÷ 2) × m_1, each factor with variance 1 ÷ 2. Starting from m = [1, 1]: [−0.5, 0.25], then [−0.125, 0.0625], converging to the true mean [0, 0]. But each factor's variance is 0.5, while the true variance of each coordinate is 2 ÷ 3 ≈ 0.667: mean field is overconfident.
+
+**Where it is used:** Variational EM for topic models such as latent Dirichlet allocation (Blei, Ng and Jordan 2003); scikit-learn's LatentDirichletAllocation and BayesianGaussianMixture are fitted by variational inference; stochastic variational inference for large data sets (Hoffman et al. 2013); fully factorized Gaussian posteriors over network weights in Bayes by Backprop (Blundell et al. 2015) and in the AutoNormal guides of Pyro and NumPyro.
+**In the book:** Chapter 54 (A Bayesian network, worked by hand) describes variational inference in words; Appendix F (The ELBO, MAP inference and wake-sleep); the update is only here.
+
+> **Definition — Mean-field approximation:** Approximating a joint probability distribution by a product of independent distributions, one per variable or group of variables, each of which feels only the average influence of the others.
+
+> **Definition — CAVI (coordinate ascent variational inference):** Fitting a mean-field approximation by updating one factor at a time to its best value given the current others, which never lowers the evidence lower bound.
 
 ### Gumbel-softmax (concrete) relaxation
 
@@ -15283,6 +17406,26 @@ split x into `(x_a, x_b)`: `y_a = x_a`; `y_b = x_b × exp(s(x_a)) + t(x_a)`; `ln
 
 **Where it is used:** Training energy-based and other unnormalized models (Gutmann and Hyvärinen 2010), early neural language models with large vocabularies (Mnih and Teh 2012), word2vec's negative sampling, and the root of the InfoNCE loss used by CPC, CLIP and embedding models.
 **In the book:** Appendix F (The partition function and the ways around it) defines NCE in words; Chapter 16 (Contrastive learning and CLIP) spells out the name; the formula is only here.
+
+### Pseudo-likelihood (and pseudo-log-likelihood scores for masked language models)
+
+**What it does:** Replaces the probability of a whole data point, which needs an intractable normalizing constant, with the product of each variable's probability given all the others.
+
+`PL(x) = product over i of p(x_i given x_(−i))`; train by maximizing `sum over the data of sum over i of ln p(x_i given x_(−i))`; for a masked language model, `PLL(sentence) = sum over positions t of ln P_MLM(w_t given the sentence with w_t masked)`
+
+- **x = (x_1, ..., x_d)**: one data point with d variables (pixels, amino acids, words)
+- **x_(−i)**: all the variables except x_i
+- **p(x_i given x_(−i))**: a conditional probability, which needs only a sum over the possible values of x_i
+- **w_t**: the word or token at position t; **P_MLM**: a masked language model's prediction for a hidden position
+
+**In plain words:** In an undirected or energy-based model, the full probability divides by a sum over every possible configuration, which is hopeless to compute. Each conditional, though, divides only by a sum over one variable's values. Maximizing their product still recovers the true parameters with enough data, and it is what masked prediction does, one position at a time.
+
+**Tiny example:** Two variables that are each +1 or −1, with energy −J × x_1 × x_2 and J = 1: p(x_1 = +1 given x_2 = +1) = e^1 ÷ (e^1 + e^(−1)) ≈ 0.881, with no global sum needed. For a three-token sentence whose masked-prediction probabilities are 0.5, 0.2 and 0.9, PLL = ln 0.5 + ln 0.2 + ln 0.9 = −0.693 − 1.609 − 0.105 = −2.408.
+
+**Where it is used:** Fitting Potts models to aligned protein sequences to predict which residues touch (plmDCA, Ekeberg et al. 2013), the co-evolution method that preceded deep-learning structure prediction; scoring and reranking sentences with BERT-style models (Salazar et al. 2020); estimating Markov random fields and Ising models in statistics (Besag 1975).
+**In the book:** Appendix F (The partition function and the ways around it) describes pseudolikelihood in words; the formula is only here.
+
+> **Definition — Potts model:** A probability model over many variables that each take one of several values (such as the 20 amino acids), with interaction strengths between pairs of them; it generalizes the Ising model of magnetism, whose variables take only two values.
 
 ### Langevin dynamics sampling (and annealed Langevin)
 
@@ -16307,6 +18450,28 @@ flowchart TD
 **Where it is used:** Kernel optimization (NVIDIA Nsight Compute draws rooflines), chip design and batching decisions (Williams, Waterman and Patterson, 2009). Variants: one roof per memory level (hierarchical roofline) and network rooflines that use link bandwidth. Gholami and others (2024) measured peak compute growing about 3.0 times every two years against about 1.6 for DRAM bandwidth.
 **In the book:** Chapter 33 (The roofline model, worked with numbers; Newer chips are even hungrier) and Appendix B (Ridge point).
 
+### IO complexity of attention (why FlashAttention is faster)
+
+**What it does:** Counts how many numbers attention must move between a GPU's large, slow memory and its small, fast memory, with and without tiling.
+
+`standard attention: Θ(N × d + N^2) reads and writes of HBM`; `FlashAttention: Θ(N^2 × d^2 ÷ M)`, for d ≤ M ≤ N × d; tile sizes `B_c = ceil(M ÷ (4 × d))` and `B_r = min(B_c, d)`; no exact attention algorithm can do better than order N^2 × d^2 ÷ M for every M
+
+- **N**: the sequence length; **d**: the head dimension
+- **M**: how many numbers fit in on-chip fast memory (SRAM) at once
+- **HBM**: the GPU's main high-bandwidth memory
+- **Θ(...)**: "grows in proportion to", ignoring constant factors
+- **B_c**, **B_r**: how many key-value rows and query rows each tile holds
+- **ceil**: round up to a whole number
+
+**In plain words:** Standard attention writes the full N × N table of scores to HBM and reads it back for the softmax and for multiplying by the values, so its traffic grows with N^2 whatever the chip. FlashAttention keeps each tile of scores inside SRAM and uses the online softmax, so its traffic is just the inputs and outputs, read about N × d ÷ M times over. Because d^2 is much smaller than M, that is many times less, and since attention is limited by memory traffic rather than arithmetic, less traffic means less time even though the arithmetic is the same or slightly more.
+
+**Tiny example:** N = 4,096, d = 64 and fast memory holding M = 100,000 numbers (about 200 KB in 16-bit, roughly one streaming multiprocessor's on-chip memory). Standard: 4,096 × 64 + 4,096^2 = 17.0 million numbers. FlashAttention: 4,096^2 × 64^2 ÷ 100,000 = 0.69 million, about 25 times fewer (constants ignored). With d = 128 it is 2.75 million, about 6 times fewer. Tiles: B_c = ceil(100,000 ÷ 256) = 391 key rows and B_r = min(391, 64) = 64 query rows.
+
+**Where it is used:** Dao, Fu, Ermon, Rudra and Ré (2022), who proved both the bound and the matching lower bound and measured attention on GPT-2 running up to 7.6 times faster; the same IO-aware reasoning guides FlashAttention-2 and -3, FlashInfer and kernel fusion in compilers, and Stanford CS336's systems lectures.
+**In the book:** Chapter 15 (Making attention cheaper) and Chapter 23 (Long context: making a million tokens affordable) describe FlashAttention in words, and Chapter 33 (Tiling: how software reuses data) explains tiling; the bound is only here.
+
+> **Definition — IO complexity:** The number of transfers between slow and fast memory an algorithm needs, as opposed to its number of arithmetic operations; on modern accelerators it often decides the running time.
+
 ### HBM stack bandwidth and capacity
 
 **What it does:** Computes the bandwidth and size of high-bandwidth memory from its very wide interface.
@@ -16641,6 +18806,30 @@ flowchart TD
 **Where it is used:** Choosing global batch size and parallelism layout; How to Scale Your Model gives about 2,550 tokens per chip for TPU v5p.
 **In the book:** Chapter 37 (Worked example: when does the network become the bottleneck?); the TPU form is only here.
 
+### Low-communication data parallelism (local SGD and DiLoCo)
+
+**What it does:** Lets distant groups of GPUs train one model while exchanging updates only every H steps, by treating each group's accumulated change as a gradient for an outer optimizer.
+
+each of k workers starts from θ^(t−1) and takes H inner AdamW steps to reach θ_i^(t); `outer gradient Δ^(t) = (1 ÷ k) × sum over i of (θ^(t−1) − θ_i^(t))`; `θ^(t) = OuterOpt(θ^(t−1), Δ^(t))`, with Nesterov momentum `v ← μ × v + Δ` and `θ ← θ − η_out × (Δ + μ × v)`; synchronizations per inner step `= 1 ÷ H` of plain data parallelism's
+
+- **θ** (theta): the shared model weights; **t**: the outer round
+- **k**: the number of workers, each a whole cluster or data center training normally inside
+- **H**: inner steps between synchronizations (500 in the DiLoCo paper)
+- **θ_i^(t)**: worker i's weights after its inner steps
+- **Δ^(t)**: the outer gradient (pseudo-gradient), the workers' average change with its sign flipped
+- **OuterOpt**: the outer optimizer; **v**: its momentum; **μ** (mu): the momentum coefficient (0.9); **η_out** (eta): the outer learning rate (0.7)
+
+**In plain words:** Ordinary data parallelism averages gradients after every step, which needs fast links between all GPUs. Here each worker trains alone for hundreds of steps, then the workers average how far they moved and hand that average to an outer optimizer as if it were one big gradient. With an outer learning rate of 1 and no momentum this is plain model averaging (local SGD, or federated averaging); adding Nesterov momentum is what let it match fully synchronous training. Traffic drops by the factor H, and the exchange can also be quantized and overlapped with the next round.
+
+**Tiny example:** θ = 1.0 and two workers that end a round at 0.8 and 0.6: Δ = ((1 − 0.8) + (1 − 0.6)) ÷ 2 = 0.3. Plain averaging moves θ to 0.7. DiLoCo's first outer step with μ = 0.9 and η_out = 0.7: v = 0.3, and θ = 1.0 − 0.7 × (0.3 + 0.9 × 0.3) = 1.0 − 0.399 = 0.601. With H = 500, the workers talk 500 times less often.
+
+**Where it is used:** DiLoCo (Douillard and others, Google DeepMind, 2023), which on 8 workers matched fully synchronous training while communicating 500 times less; Streaming DiLoCo and Google DeepMind's DiLoCo scaling-law study (2025); Prime Intellect's INTELLECT-1 (2024), a 10-billion-parameter model trained on 1 trillion tokens on up to 14 nodes across 3 continents with DiLoCo and an 8-bit all-reduce, reporting 400 times less communication bandwidth than data parallelism.
+**In the book:** Chapter 37 (When things break: failures, checkpointing and goodput) names multi-data-center training as a frontier problem; low-communication training is only here.
+
+> **Definition — DiLoCo (distributed low-communication training):** A training method in which separate groups of chips each take hundreds of optimizer steps on their own and then combine the average change in their weights through an outer momentum optimizer, cutting communication by hundreds of times.
+
+> **Definition — Pseudo-gradient (outer gradient):** In low-communication training, the workers' average change in weights over a round, with its sign flipped, which the outer optimizer treats as if it were a gradient.
+
 ### Tensor parallelism communication cost (Megatron-style)
 
 **What it does:** Compares the time a Transformer layer spends computing with the time its tensor-parallel GPUs spend exchanging activations.
@@ -16713,6 +18902,26 @@ flowchart TD
 
 **Where it is used:** Long-context training: Ring Attention (Liu and others, 2023), Megatron context parallelism, all-gather-based context parallelism (Llama 3 used 16 for its long-context stage) and DeepSpeed-Ulysses (an all-to-all over heads). Causal masks unbalance the work, so chunks are assigned in zig-zag order.
 **In the book:** Chapter 37 (Sequence and context parallelism: splitting long inputs) in words; the condition is only here.
+
+### All-to-all sequence parallelism (DeepSpeed-Ulysses)
+
+**What it does:** Splits a long sequence across GPUs and, for the attention step only, reshuffles the data so each GPU holds the whole sequence for a subset of the attention heads.
+
+before attention, one all-to-all each for Q, K and V turns `[N ÷ P tokens, all h heads]` into `[all N tokens, h ÷ P heads]`; after attention, one all-to-all turns the output back; values sent per GPU per layer in the forward pass `≈ 4 × N × d_model ÷ P` (fewer with grouped-query attention); requires `P ≤ h` (and `P ≤` the number of key-value heads unless those are copied)
+
+- **N**: the sequence length; **P**: the GPUs in the sequence-parallel group
+- **h**: the number of attention heads; **d_model**: the model width, h × the head size
+- **all-to-all**: a collective in which every GPU sends a different slice of its data to every other GPU
+- **4**: the query, key, value and output tensors
+
+**In plain words:** Outside attention every token is processed on its own, so each GPU can simply hold N ÷ P tokens. Attention needs all the tokens, so one all-to-all trades "my tokens, all heads" for "all tokens, my heads"; each GPU then runs ordinary attention (FlashAttention included) on its heads, and a second all-to-all trades back. The traffic per GPU shrinks as P grows, so doubling the sequence and the GPUs together keeps it constant, but P cannot exceed the number of heads; ring attention has no such limit, and hybrid schemes combine the two.
+
+**Tiny example:** N = 131,072 tokens, d_model = 4,096, P = 8 and 2 bytes per value: 4 × 131,072 × 4,096 ÷ 8 × 2 = 537 MB per GPU per layer in the forward pass, about 1.2 ms at 450 GB/s. A model with 32 query heads but 8 key-value heads can use at most P = 8 without copying key-value heads.
+
+**Where it is used:** DeepSpeed-Ulysses (Jacobs and others, 2023), which reported training 2.5 times faster on 4 times longer sequences than the previous best method; Unified Sequence Parallelism and the xDiT inference engine combine it with ring attention for long-context LLM training and for video diffusion Transformers, whose clips run to tens of thousands of tokens.
+**In the book:** Chapter 37 (Sequence and context parallelism: splitting long inputs) describes ring-style context parallelism in words; the all-to-all form is only here.
+
+> **Definition — DeepSpeed-Ulysses (all-to-all sequence parallelism):** A way to split a long sequence across GPUs that, just for the attention step, swaps data so each GPU holds every token for only some of the attention heads, then swaps back.
 
 ### Parallelism layout arithmetic (3D, 4D and 5D parallelism)
 
